@@ -1,0 +1,237 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>The table doubling from 1024 buckets to 2048 as the book&#x27;s 1025th different word comes, seen through one old bucket</title>
+<defs><marker id="f0103a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0103a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0103a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="10.5">bin/freq data/book.txt at 01.03: FNV-1a, and twice the buckets once there are as many entries</text>
+<g class="step"><title>1024 entries in 1024 buckets, and "contralto" is the 1025th different word: table_put() calls grow() before it adds it. Old bucket 13 holds 3 entries.</title>
+<text class="tm" x="128" y="54" font-size="10.5">each entry: its word, its index in the array, and its hash &amp; 2047 in binary;</text>
+<text class="tm" x="128" y="70" font-size="10.5">the first bit, bit 10, is the one the old bucket number did not use</text>
+<text class="t mono" x="24" y="102" font-size="11.5" font-weight="600">bucket 13</text>
+<text class="tm" x="24" y="117" font-size="10">old, of 1024</text>
+<rect class="s f" x="128" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="136" y="100" font-size="11.5" font-weight="600">pink</text>
+<text class="tm mono" x="248" y="100" font-size="9.5" text-anchor="end">579</text>
+<text class="ta mono" x="136" y="116" font-size="11" font-weight="700">1</text>
+<text class="tm mono" x="145" y="116" font-size="11">0000001101</text>
+<line class="s" x1="256" y1="104" x2="274" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="s f" x="276" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="284" y="100" font-size="11.5" font-weight="600">habit</text>
+<text class="tm mono" x="396" y="100" font-size="9.5" text-anchor="end">346</text>
+<text class="ta mono" x="284" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="293" y="116" font-size="11">0000001101</text>
+<line class="s" x1="404" y1="104" x2="422" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="s f" x="424" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="432" y="100" font-size="11.5" font-weight="600">pacing</text>
+<text class="tm mono" x="544" y="100" font-size="9.5" text-anchor="end">335</text>
+<text class="ta mono" x="432" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="441" y="116" font-size="11">0000001101</text>
+<text class="t mono" x="24" y="306" font-size="11.5" font-weight="600">resizes 0, moves 0</text>
+</g>
+<g class="step"><title>grow(): a new bucket array of 2048, every list empty. Each entry is linked in again, in the order of the entries array, at hash &amp; 2047.</title>
+<text class="tm" x="128" y="54" font-size="10.5">each entry: its word, its index in the array, and its hash &amp; 2047 in binary;</text>
+<text class="tm" x="128" y="70" font-size="10.5">the first bit, bit 10, is the one the old bucket number did not use</text>
+<text class="t mono" x="24" y="102" font-size="11.5" font-weight="600">bucket 13</text>
+<text class="tm" x="24" y="117" font-size="10">old, of 1024</text>
+<rect class="m fs" x="128" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="136" y="100" font-size="11.5" font-weight="600">pink</text>
+<text class="tm mono" x="248" y="100" font-size="9.5" text-anchor="end">579</text>
+<text class="ta mono" x="136" y="116" font-size="11" font-weight="700">1</text>
+<text class="tm mono" x="145" y="116" font-size="11">0000001101</text>
+<line class="s" x1="256" y1="104" x2="274" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="m fs" x="276" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="284" y="100" font-size="11.5" font-weight="600">habit</text>
+<text class="tm mono" x="396" y="100" font-size="9.5" text-anchor="end">346</text>
+<text class="ta mono" x="284" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="293" y="116" font-size="11">0000001101</text>
+<line class="s" x1="404" y1="104" x2="422" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="m fs" x="424" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="432" y="100" font-size="11.5" font-weight="600">pacing</text>
+<text class="tm mono" x="544" y="100" font-size="9.5" text-anchor="end">335</text>
+<text class="ta mono" x="432" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="441" y="116" font-size="11">0000001101</text>
+<text class="t mono" x="24" y="188" font-size="11.5" font-weight="600">bucket 13</text>
+<text class="tm" x="24" y="203" font-size="10">new, of 2048</text>
+<text class="tm mono" x="128" y="194" font-size="10.5">-1 (empty)</text>
+<text class="t mono" x="24" y="254" font-size="11.5" font-weight="600">bucket 1037</text>
+<text class="tm" x="24" y="269" font-size="10">new, of 2048</text>
+<text class="tm mono" x="128" y="260" font-size="10.5">-1 (empty)</text>
+<text class="t mono" x="24" y="306" font-size="11.5" font-weight="600">resizes 0, moves 0</text>
+</g>
+<g class="step"><title>Entry 335, "pacing": bit 10 of its hash is 0, so it goes to bucket 13, at the head of that list.</title>
+<text class="tm" x="128" y="54" font-size="10.5">each entry: its word, its index in the array, and its hash &amp; 2047 in binary;</text>
+<text class="tm" x="128" y="70" font-size="10.5">the first bit, bit 10, is the one the old bucket number did not use</text>
+<text class="t mono" x="24" y="102" font-size="11.5" font-weight="600">bucket 13</text>
+<text class="tm" x="24" y="117" font-size="10">old, of 1024</text>
+<rect class="s f" x="128" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="136" y="100" font-size="11.5" font-weight="600">pink</text>
+<text class="tm mono" x="248" y="100" font-size="9.5" text-anchor="end">579</text>
+<text class="ta mono" x="136" y="116" font-size="11" font-weight="700">1</text>
+<text class="tm mono" x="145" y="116" font-size="11">0000001101</text>
+<line class="s" x1="256" y1="104" x2="274" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="s f" x="276" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="284" y="100" font-size="11.5" font-weight="600">habit</text>
+<text class="tm mono" x="396" y="100" font-size="9.5" text-anchor="end">346</text>
+<text class="ta mono" x="284" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="293" y="116" font-size="11">0000001101</text>
+<line class="s" x1="404" y1="104" x2="422" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="m fs" x="424" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="432" y="100" font-size="11.5" font-weight="600">pacing</text>
+<text class="tm mono" x="544" y="100" font-size="9.5" text-anchor="end">335</text>
+<text class="ta mono" x="432" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="441" y="116" font-size="11">0000001101</text>
+<text class="t mono" x="24" y="188" font-size="11.5" font-weight="600">bucket 13</text>
+<text class="tm" x="24" y="203" font-size="10">new, of 2048</text>
+<rect class="a fa" x="128" y="170" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="136" y="186" font-size="11.5" font-weight="600">pacing</text>
+<text class="f mono" x="248" y="186" font-size="9.5" text-anchor="end">335</text>
+<text class="f mono" x="136" y="202" font-size="11" font-weight="700">0</text>
+<text class="f mono" x="145" y="202" font-size="11">0000001101</text>
+<text class="t mono" x="24" y="254" font-size="11.5" font-weight="600">bucket 1037</text>
+<text class="tm" x="24" y="269" font-size="10">new, of 2048</text>
+<text class="tm mono" x="128" y="260" font-size="10.5">-1 (empty)</text>
+<text class="t mono" x="24" y="306" font-size="11.5" font-weight="600">resizes 0, moves 0</text>
+</g>
+<g class="step"><title>Entry 346, "habit": bit 10 of its hash is 0, so it goes to bucket 13, at the head of that list.</title>
+<text class="tm" x="128" y="54" font-size="10.5">each entry: its word, its index in the array, and its hash &amp; 2047 in binary;</text>
+<text class="tm" x="128" y="70" font-size="10.5">the first bit, bit 10, is the one the old bucket number did not use</text>
+<text class="t mono" x="24" y="102" font-size="11.5" font-weight="600">bucket 13</text>
+<text class="tm" x="24" y="117" font-size="10">old, of 1024</text>
+<rect class="s f" x="128" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="136" y="100" font-size="11.5" font-weight="600">pink</text>
+<text class="tm mono" x="248" y="100" font-size="9.5" text-anchor="end">579</text>
+<text class="ta mono" x="136" y="116" font-size="11" font-weight="700">1</text>
+<text class="tm mono" x="145" y="116" font-size="11">0000001101</text>
+<line class="s" x1="256" y1="104" x2="274" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="m fs" x="276" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="284" y="100" font-size="11.5" font-weight="600">habit</text>
+<text class="tm mono" x="396" y="100" font-size="9.5" text-anchor="end">346</text>
+<text class="ta mono" x="284" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="293" y="116" font-size="11">0000001101</text>
+<line class="s" x1="404" y1="104" x2="422" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="m fs" x="424" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="432" y="100" font-size="11.5" font-weight="600">pacing</text>
+<text class="tm mono" x="544" y="100" font-size="9.5" text-anchor="end">335</text>
+<text class="ta mono" x="432" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="441" y="116" font-size="11">0000001101</text>
+<text class="t mono" x="24" y="188" font-size="11.5" font-weight="600">bucket 13</text>
+<text class="tm" x="24" y="203" font-size="10">new, of 2048</text>
+<rect class="a fa" x="128" y="170" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="136" y="186" font-size="11.5" font-weight="600">habit</text>
+<text class="f mono" x="248" y="186" font-size="9.5" text-anchor="end">346</text>
+<text class="f mono" x="136" y="202" font-size="11" font-weight="700">0</text>
+<text class="f mono" x="145" y="202" font-size="11">0000001101</text>
+<line class="s" x1="256" y1="190" x2="274" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="a af" x="276" y="170" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="284" y="186" font-size="11.5" font-weight="600">pacing</text>
+<text class="ta mono" x="396" y="186" font-size="9.5" text-anchor="end">335</text>
+<text class="ta mono" x="284" y="202" font-size="11" font-weight="700">0</text>
+<text class="ta mono" x="293" y="202" font-size="11">0000001101</text>
+<text class="t mono" x="24" y="254" font-size="11.5" font-weight="600">bucket 1037</text>
+<text class="tm" x="24" y="269" font-size="10">new, of 2048</text>
+<text class="tm mono" x="128" y="260" font-size="10.5">-1 (empty)</text>
+<text class="t mono" x="24" y="306" font-size="11.5" font-weight="600">resizes 0, moves 0</text>
+</g>
+<g class="step"><title>Entry 579, "pink": bit 10 of its hash is 1, so it goes to bucket 1037, at the head of that list.</title>
+<text class="tm" x="128" y="54" font-size="10.5">each entry: its word, its index in the array, and its hash &amp; 2047 in binary;</text>
+<text class="tm" x="128" y="70" font-size="10.5">the first bit, bit 10, is the one the old bucket number did not use</text>
+<text class="t mono" x="24" y="102" font-size="11.5" font-weight="600">bucket 13</text>
+<text class="tm" x="24" y="117" font-size="10">old, of 1024</text>
+<rect class="m fs" x="128" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="136" y="100" font-size="11.5" font-weight="600">pink</text>
+<text class="tm mono" x="248" y="100" font-size="9.5" text-anchor="end">579</text>
+<text class="ta mono" x="136" y="116" font-size="11" font-weight="700">1</text>
+<text class="tm mono" x="145" y="116" font-size="11">0000001101</text>
+<line class="s" x1="256" y1="104" x2="274" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="m fs" x="276" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="284" y="100" font-size="11.5" font-weight="600">habit</text>
+<text class="tm mono" x="396" y="100" font-size="9.5" text-anchor="end">346</text>
+<text class="ta mono" x="284" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="293" y="116" font-size="11">0000001101</text>
+<line class="s" x1="404" y1="104" x2="422" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="m fs" x="424" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="432" y="100" font-size="11.5" font-weight="600">pacing</text>
+<text class="tm mono" x="544" y="100" font-size="9.5" text-anchor="end">335</text>
+<text class="ta mono" x="432" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="441" y="116" font-size="11">0000001101</text>
+<text class="t mono" x="24" y="188" font-size="11.5" font-weight="600">bucket 13</text>
+<text class="tm" x="24" y="203" font-size="10">new, of 2048</text>
+<rect class="a af" x="128" y="170" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="136" y="186" font-size="11.5" font-weight="600">habit</text>
+<text class="ta mono" x="248" y="186" font-size="9.5" text-anchor="end">346</text>
+<text class="ta mono" x="136" y="202" font-size="11" font-weight="700">0</text>
+<text class="ta mono" x="145" y="202" font-size="11">0000001101</text>
+<line class="s" x1="256" y1="190" x2="274" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="a af" x="276" y="170" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="284" y="186" font-size="11.5" font-weight="600">pacing</text>
+<text class="ta mono" x="396" y="186" font-size="9.5" text-anchor="end">335</text>
+<text class="ta mono" x="284" y="202" font-size="11" font-weight="700">0</text>
+<text class="ta mono" x="293" y="202" font-size="11">0000001101</text>
+<text class="t mono" x="24" y="254" font-size="11.5" font-weight="600">bucket 1037</text>
+<text class="tm" x="24" y="269" font-size="10">new, of 2048</text>
+<rect class="a fa" x="128" y="236" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="136" y="252" font-size="11.5" font-weight="600">pink</text>
+<text class="f mono" x="248" y="252" font-size="9.5" text-anchor="end">579</text>
+<text class="f mono" x="136" y="268" font-size="11" font-weight="700">1</text>
+<text class="f mono" x="145" y="268" font-size="11">0000001101</text>
+<text class="t mono" x="24" y="306" font-size="11.5" font-weight="600">resizes 0, moves 0</text>
+</g>
+<g class="step"><title>Done: all 1024 entries linked in again (resizes 1, moves 1024); none of them was copied. Then "contralto" is added to its own bucket.</title>
+<text class="tm" x="128" y="54" font-size="10.5">each entry: its word, its index in the array, and its hash &amp; 2047 in binary;</text>
+<text class="tm" x="128" y="70" font-size="10.5">the first bit, bit 10, is the one the old bucket number did not use</text>
+<text class="t mono" x="24" y="102" font-size="11.5" font-weight="600">bucket 13</text>
+<text class="tm" x="24" y="117" font-size="10">old, of 1024</text>
+<rect class="m fs" x="128" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="136" y="100" font-size="11.5" font-weight="600">pink</text>
+<text class="tm mono" x="248" y="100" font-size="9.5" text-anchor="end">579</text>
+<text class="ta mono" x="136" y="116" font-size="11" font-weight="700">1</text>
+<text class="tm mono" x="145" y="116" font-size="11">0000001101</text>
+<line class="s" x1="256" y1="104" x2="274" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="m fs" x="276" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="284" y="100" font-size="11.5" font-weight="600">habit</text>
+<text class="tm mono" x="396" y="100" font-size="9.5" text-anchor="end">346</text>
+<text class="ta mono" x="284" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="293" y="116" font-size="11">0000001101</text>
+<line class="s" x1="404" y1="104" x2="422" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="m fs" x="424" y="84" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="432" y="100" font-size="11.5" font-weight="600">pacing</text>
+<text class="tm mono" x="544" y="100" font-size="9.5" text-anchor="end">335</text>
+<text class="ta mono" x="432" y="116" font-size="11" font-weight="700">0</text>
+<text class="tm mono" x="441" y="116" font-size="11">0000001101</text>
+<text class="t mono" x="24" y="188" font-size="11.5" font-weight="600">bucket 13</text>
+<text class="tm" x="24" y="203" font-size="10">new, of 2048</text>
+<rect class="a af" x="128" y="170" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="136" y="186" font-size="11.5" font-weight="600">habit</text>
+<text class="ta mono" x="248" y="186" font-size="9.5" text-anchor="end">346</text>
+<text class="ta mono" x="136" y="202" font-size="11" font-weight="700">0</text>
+<text class="ta mono" x="145" y="202" font-size="11">0000001101</text>
+<line class="s" x1="256" y1="190" x2="274" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="a af" x="276" y="170" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="284" y="186" font-size="11.5" font-weight="600">pacing</text>
+<text class="ta mono" x="396" y="186" font-size="9.5" text-anchor="end">335</text>
+<text class="ta mono" x="284" y="202" font-size="11" font-weight="700">0</text>
+<text class="ta mono" x="293" y="202" font-size="11">0000001101</text>
+<text class="t mono" x="24" y="254" font-size="11.5" font-weight="600">bucket 1037</text>
+<text class="tm" x="24" y="269" font-size="10">new, of 2048</text>
+<rect class="a af" x="128" y="236" width="128" height="40" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="136" y="252" font-size="11.5" font-weight="600">pink</text>
+<text class="ta mono" x="248" y="252" font-size="9.5" text-anchor="end">579</text>
+<text class="ta mono" x="136" y="268" font-size="11" font-weight="700">1</text>
+<text class="ta mono" x="145" y="268" font-size="11">0000001101</text>
+<text class="ta mono" x="24" y="306" font-size="11.5" font-weight="600">resizes 1, moves 1024</text>
+</g>
+<g class="step"><title>The whole book: the table doubled 3 times, to 8192 buckets, and moved 7168 entries in all, fewer than its 7818 words: 1.48 probes a lookup.</title>
+<text class="t" x="24" y="54" font-size="12" font-weight="600">all 7818 different words of the book: the buckets it has had, to scale</text>
+<text class="t mono" x="24" y="91" font-size="12" font-weight="600">1024</text>
+<rect class="a af" x="76" y="76" width="45" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="24" y="125" font-size="12" font-weight="600">2048</text>
+<rect class="a af" x="76" y="110" width="90" height="22" rx="3" stroke-width="1.5"/>
+<text class="tm" x="616" y="125" font-size="10.5" text-anchor="end">1024 entries moved</text>
+<text class="t mono" x="24" y="159" font-size="12" font-weight="600">4096</text>
+<rect class="a af" x="76" y="144" width="180" height="22" rx="3" stroke-width="1.5"/>
+<text class="tm" x="616" y="159" font-size="10.5" text-anchor="end">2048 entries moved</text>
+<text class="ta mono" x="24" y="193" font-size="12" font-weight="600">8192</text>
+<rect class="a fa" x="76" y="178" width="360" height="22" rx="3" stroke-width="1.5"/>
+<text class="tm" x="616" y="193" font-size="10.5" text-anchor="end">4096 entries moved</text>
+<text class="t mono" x="24" y="232" font-size="11.5">lookups 113703, probes 168145, inserts 7818</text>
+<text class="ta mono" x="24" y="306" font-size="11.5" font-weight="600">resizes 3, moves 7168 = 1024 + 2048 + 4096</text>
+</g>
+</svg>

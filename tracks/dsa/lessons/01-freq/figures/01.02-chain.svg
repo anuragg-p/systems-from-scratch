@@ -1,0 +1,341 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" fill="none">
+<title>Counting the cat sat on the mat, the act with the first table: each word&#x27;s bytes summed pick its bucket, and only that bucket&#x27;s list is walked</title>
+<defs><marker id="f0102a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0102a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0102a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="22" font-size="11">printf &#x27;the cat sat on the mat, the act\n&#x27; | DS_STATS=1 bin/freq</text>
+<text class="tm" x="24" y="140" font-size="10">bucket</text>
+<text class="tm" x="118" y="140" font-size="10" text-anchor="middle">first</text>
+<text class="tm" x="170" y="140" font-size="10">its list, newest first: each entry&#x27;s index, then its key</text>
+<text class="t mono" x="24" y="165" font-size="12.5">221</text>
+<text class="t mono" x="24" y="197" font-size="12.5">312</text>
+<text class="t mono" x="24" y="229" font-size="12.5">321</text>
+<text class="t mono" x="24" y="261" font-size="12.5">322</text>
+<text class="t mono" x="24" y="293" font-size="12.5">328</text>
+<text class="tm" x="24" y="324" font-size="10.5">5 of the 1024 buckets are used; the others hold -1, an empty list</text>
+<g class="step"><title>"the" sums to 321, bucket 321, which is empty: "the" is new and goes in as entry 0.</title>
+<text class="ta mono" x="24" y="48" font-size="12" font-weight="700">the</text>
+<text class="tm mono" x="57.6" y="48" font-size="12">cat</text>
+<text class="tm mono" x="91.2" y="48" font-size="12">sat</text>
+<text class="tm mono" x="124.8" y="48" font-size="12">on</text>
+<text class="tm mono" x="151.2" y="48" font-size="12">the</text>
+<text class="tm mono" x="184.8" y="48" font-size="12">mat</text>
+<text class="tm mono" x="218.4" y="48" font-size="12">the</text>
+<text class="tm mono" x="252" y="48" font-size="12">act</text>
+<text class="t mono" x="24" y="76" font-size="11.5">&quot;the&quot;: 116 + 104 + 101 = 321</text>
+<text class="ta mono" x="24" y="96" font-size="11.5" font-weight="600">321 &amp; 1023 = 321: bucket 321</text>
+<text class="t mono" x="616" y="76" font-size="11" text-anchor="end">lookups 2</text>
+<text class="ta mono" x="616" y="94" font-size="11" font-weight="600" text-anchor="end">probes 0</text>
+<text class="t mono" x="616" y="112" font-size="11" text-anchor="end">inserts 1</text>
+<rect class="a af" x="100" y="214" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="118" y="229" font-size="11" text-anchor="middle">0</text>
+<line class="a" x1="136" y1="225" x2="166" y2="225" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-aa)"/>
+<rect class="a fa" x="168" y="214" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="176" y="229" font-size="10">0</text>
+<text class="f mono" x="220" y="230" font-size="12.5" font-weight="600" text-anchor="middle">the</text>
+<text class="tm mono" x="268" y="229" font-size="10">-1</text>
+</g>
+<g class="step"><title>"cat" sums to 312, bucket 312, which is empty: "cat" is new and goes in as entry 1.</title>
+<text class="t mono" x="24" y="48" font-size="12">the</text>
+<text class="ta mono" x="57.6" y="48" font-size="12" font-weight="700">cat</text>
+<text class="tm mono" x="91.2" y="48" font-size="12">sat</text>
+<text class="tm mono" x="124.8" y="48" font-size="12">on</text>
+<text class="tm mono" x="151.2" y="48" font-size="12">the</text>
+<text class="tm mono" x="184.8" y="48" font-size="12">mat</text>
+<text class="tm mono" x="218.4" y="48" font-size="12">the</text>
+<text class="tm mono" x="252" y="48" font-size="12">act</text>
+<text class="t mono" x="24" y="76" font-size="11.5">&quot;cat&quot;: 99 + 97 + 116 = 312</text>
+<text class="ta mono" x="24" y="96" font-size="11.5" font-weight="600">312 &amp; 1023 = 312: bucket 312</text>
+<text class="t mono" x="616" y="76" font-size="11" text-anchor="end">lookups 4</text>
+<text class="ta mono" x="616" y="94" font-size="11" font-weight="600" text-anchor="end">probes 0</text>
+<text class="t mono" x="616" y="112" font-size="11" text-anchor="end">inserts 2</text>
+<rect class="a af" x="100" y="182" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="118" y="197" font-size="11" text-anchor="middle">1</text>
+<line class="a" x1="136" y1="193" x2="166" y2="193" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-aa)"/>
+<rect class="a fa" x="168" y="182" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="176" y="197" font-size="10">1</text>
+<text class="f mono" x="220" y="198" font-size="12.5" font-weight="600" text-anchor="middle">cat</text>
+<text class="tm mono" x="268" y="197" font-size="10">-1</text>
+<rect class="s f" x="100" y="214" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="229" font-size="11" text-anchor="middle">0</text>
+<line class="s" x1="136" y1="225" x2="166" y2="225" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="214" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="229" font-size="10">0</text>
+<text class="t mono" x="220" y="230" font-size="12.5" font-weight="600" text-anchor="middle">the</text>
+<text class="tm mono" x="268" y="229" font-size="10">-1</text>
+</g>
+<g class="step"><title>"sat" sums to 328, bucket 328, which is empty: "sat" is new and goes in as entry 2.</title>
+<text class="t mono" x="24" y="48" font-size="12">the</text>
+<text class="t mono" x="57.6" y="48" font-size="12">cat</text>
+<text class="ta mono" x="91.2" y="48" font-size="12" font-weight="700">sat</text>
+<text class="tm mono" x="124.8" y="48" font-size="12">on</text>
+<text class="tm mono" x="151.2" y="48" font-size="12">the</text>
+<text class="tm mono" x="184.8" y="48" font-size="12">mat</text>
+<text class="tm mono" x="218.4" y="48" font-size="12">the</text>
+<text class="tm mono" x="252" y="48" font-size="12">act</text>
+<text class="t mono" x="24" y="76" font-size="11.5">&quot;sat&quot;: 115 + 97 + 116 = 328</text>
+<text class="ta mono" x="24" y="96" font-size="11.5" font-weight="600">328 &amp; 1023 = 328: bucket 328</text>
+<text class="t mono" x="616" y="76" font-size="11" text-anchor="end">lookups 6</text>
+<text class="ta mono" x="616" y="94" font-size="11" font-weight="600" text-anchor="end">probes 0</text>
+<text class="t mono" x="616" y="112" font-size="11" text-anchor="end">inserts 3</text>
+<rect class="s f" x="100" y="182" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="197" font-size="11" text-anchor="middle">1</text>
+<line class="s" x1="136" y1="193" x2="166" y2="193" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="182" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="197" font-size="10">1</text>
+<text class="t mono" x="220" y="198" font-size="12.5" font-weight="600" text-anchor="middle">cat</text>
+<text class="tm mono" x="268" y="197" font-size="10">-1</text>
+<rect class="s f" x="100" y="214" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="229" font-size="11" text-anchor="middle">0</text>
+<line class="s" x1="136" y1="225" x2="166" y2="225" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="214" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="229" font-size="10">0</text>
+<text class="t mono" x="220" y="230" font-size="12.5" font-weight="600" text-anchor="middle">the</text>
+<text class="tm mono" x="268" y="229" font-size="10">-1</text>
+<rect class="a af" x="100" y="278" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="118" y="293" font-size="11" text-anchor="middle">2</text>
+<line class="a" x1="136" y1="289" x2="166" y2="289" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-aa)"/>
+<rect class="a fa" x="168" y="278" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="176" y="293" font-size="10">2</text>
+<text class="f mono" x="220" y="294" font-size="12.5" font-weight="600" text-anchor="middle">sat</text>
+<text class="tm mono" x="268" y="293" font-size="10">-1</text>
+</g>
+<g class="step"><title>"on" sums to 221, bucket 221, which is empty: "on" is new and goes in as entry 3.</title>
+<text class="t mono" x="24" y="48" font-size="12">the</text>
+<text class="t mono" x="57.6" y="48" font-size="12">cat</text>
+<text class="t mono" x="91.2" y="48" font-size="12">sat</text>
+<text class="ta mono" x="124.8" y="48" font-size="12" font-weight="700">on</text>
+<text class="tm mono" x="151.2" y="48" font-size="12">the</text>
+<text class="tm mono" x="184.8" y="48" font-size="12">mat</text>
+<text class="tm mono" x="218.4" y="48" font-size="12">the</text>
+<text class="tm mono" x="252" y="48" font-size="12">act</text>
+<text class="t mono" x="24" y="76" font-size="11.5">&quot;on&quot;: 111 + 110 = 221</text>
+<text class="ta mono" x="24" y="96" font-size="11.5" font-weight="600">221 &amp; 1023 = 221: bucket 221</text>
+<text class="t mono" x="616" y="76" font-size="11" text-anchor="end">lookups 8</text>
+<text class="ta mono" x="616" y="94" font-size="11" font-weight="600" text-anchor="end">probes 0</text>
+<text class="t mono" x="616" y="112" font-size="11" text-anchor="end">inserts 4</text>
+<rect class="a af" x="100" y="150" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="118" y="165" font-size="11" text-anchor="middle">3</text>
+<line class="a" x1="136" y1="161" x2="166" y2="161" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-aa)"/>
+<rect class="a fa" x="168" y="150" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="176" y="165" font-size="10">3</text>
+<text class="f mono" x="220" y="166" font-size="12.5" font-weight="600" text-anchor="middle">on</text>
+<text class="tm mono" x="268" y="165" font-size="10">-1</text>
+<rect class="s f" x="100" y="182" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="197" font-size="11" text-anchor="middle">1</text>
+<line class="s" x1="136" y1="193" x2="166" y2="193" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="182" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="197" font-size="10">1</text>
+<text class="t mono" x="220" y="198" font-size="12.5" font-weight="600" text-anchor="middle">cat</text>
+<text class="tm mono" x="268" y="197" font-size="10">-1</text>
+<rect class="s f" x="100" y="214" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="229" font-size="11" text-anchor="middle">0</text>
+<line class="s" x1="136" y1="225" x2="166" y2="225" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="214" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="229" font-size="10">0</text>
+<text class="t mono" x="220" y="230" font-size="12.5" font-weight="600" text-anchor="middle">the</text>
+<text class="tm mono" x="268" y="229" font-size="10">-1</text>
+<rect class="s f" x="100" y="278" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="293" font-size="11" text-anchor="middle">2</text>
+<line class="s" x1="136" y1="289" x2="166" y2="289" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="278" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="293" font-size="10">2</text>
+<text class="t mono" x="220" y="294" font-size="12.5" font-weight="600" text-anchor="middle">sat</text>
+<text class="tm mono" x="268" y="293" font-size="10">-1</text>
+</g>
+<g class="step"><title>"the" sums to 321, bucket 321: its list is walked and "the" is found after 1 probe. Its count goes up; the table is not changed.</title>
+<text class="t mono" x="24" y="48" font-size="12">the</text>
+<text class="t mono" x="57.6" y="48" font-size="12">cat</text>
+<text class="t mono" x="91.2" y="48" font-size="12">sat</text>
+<text class="t mono" x="124.8" y="48" font-size="12">on</text>
+<text class="ta mono" x="151.2" y="48" font-size="12" font-weight="700">the</text>
+<text class="tm mono" x="184.8" y="48" font-size="12">mat</text>
+<text class="tm mono" x="218.4" y="48" font-size="12">the</text>
+<text class="tm mono" x="252" y="48" font-size="12">act</text>
+<text class="t mono" x="24" y="76" font-size="11.5">&quot;the&quot;: 116 + 104 + 101 = 321</text>
+<text class="ta mono" x="24" y="96" font-size="11.5" font-weight="600">321 &amp; 1023 = 321: bucket 321</text>
+<text class="t mono" x="616" y="76" font-size="11" text-anchor="end">lookups 9</text>
+<text class="ta mono" x="616" y="94" font-size="11" font-weight="600" text-anchor="end">probes 1</text>
+<text class="t mono" x="616" y="112" font-size="11" text-anchor="end">inserts 4</text>
+<rect class="s f" x="100" y="150" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="165" font-size="11" text-anchor="middle">3</text>
+<line class="s" x1="136" y1="161" x2="166" y2="161" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="150" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="165" font-size="10">3</text>
+<text class="t mono" x="220" y="166" font-size="12.5" font-weight="600" text-anchor="middle">on</text>
+<text class="tm mono" x="268" y="165" font-size="10">-1</text>
+<rect class="s f" x="100" y="182" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="197" font-size="11" text-anchor="middle">1</text>
+<line class="s" x1="136" y1="193" x2="166" y2="193" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="182" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="197" font-size="10">1</text>
+<text class="t mono" x="220" y="198" font-size="12.5" font-weight="600" text-anchor="middle">cat</text>
+<text class="tm mono" x="268" y="197" font-size="10">-1</text>
+<rect class="a af" x="100" y="214" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="118" y="229" font-size="11" text-anchor="middle">0</text>
+<line class="a" x1="136" y1="225" x2="166" y2="225" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-aa)"/>
+<rect class="a fa" x="168" y="214" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="176" y="229" font-size="10">0</text>
+<text class="f mono" x="220" y="230" font-size="12.5" font-weight="600" text-anchor="middle">the</text>
+<text class="tm mono" x="268" y="229" font-size="10">-1</text>
+<rect class="s f" x="100" y="278" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="293" font-size="11" text-anchor="middle">2</text>
+<line class="s" x1="136" y1="289" x2="166" y2="289" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="278" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="293" font-size="10">2</text>
+<text class="t mono" x="220" y="294" font-size="12.5" font-weight="600" text-anchor="middle">sat</text>
+<text class="tm mono" x="268" y="293" font-size="10">-1</text>
+</g>
+<g class="step"><title>"mat" sums to 322, bucket 322, which is empty: "mat" is new and goes in as entry 4.</title>
+<text class="t mono" x="24" y="48" font-size="12">the</text>
+<text class="t mono" x="57.6" y="48" font-size="12">cat</text>
+<text class="t mono" x="91.2" y="48" font-size="12">sat</text>
+<text class="t mono" x="124.8" y="48" font-size="12">on</text>
+<text class="t mono" x="151.2" y="48" font-size="12">the</text>
+<text class="ta mono" x="184.8" y="48" font-size="12" font-weight="700">mat</text>
+<text class="tm mono" x="218.4" y="48" font-size="12">the</text>
+<text class="tm mono" x="252" y="48" font-size="12">act</text>
+<text class="t mono" x="24" y="76" font-size="11.5">&quot;mat&quot;: 109 + 97 + 116 = 322</text>
+<text class="ta mono" x="24" y="96" font-size="11.5" font-weight="600">322 &amp; 1023 = 322: bucket 322</text>
+<text class="t mono" x="616" y="76" font-size="11" text-anchor="end">lookups 11</text>
+<text class="ta mono" x="616" y="94" font-size="11" font-weight="600" text-anchor="end">probes 1</text>
+<text class="t mono" x="616" y="112" font-size="11" text-anchor="end">inserts 5</text>
+<rect class="s f" x="100" y="150" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="165" font-size="11" text-anchor="middle">3</text>
+<line class="s" x1="136" y1="161" x2="166" y2="161" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="150" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="165" font-size="10">3</text>
+<text class="t mono" x="220" y="166" font-size="12.5" font-weight="600" text-anchor="middle">on</text>
+<text class="tm mono" x="268" y="165" font-size="10">-1</text>
+<rect class="s f" x="100" y="182" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="197" font-size="11" text-anchor="middle">1</text>
+<line class="s" x1="136" y1="193" x2="166" y2="193" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="182" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="197" font-size="10">1</text>
+<text class="t mono" x="220" y="198" font-size="12.5" font-weight="600" text-anchor="middle">cat</text>
+<text class="tm mono" x="268" y="197" font-size="10">-1</text>
+<rect class="s f" x="100" y="214" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="229" font-size="11" text-anchor="middle">0</text>
+<line class="s" x1="136" y1="225" x2="166" y2="225" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="214" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="229" font-size="10">0</text>
+<text class="t mono" x="220" y="230" font-size="12.5" font-weight="600" text-anchor="middle">the</text>
+<text class="tm mono" x="268" y="229" font-size="10">-1</text>
+<rect class="a af" x="100" y="246" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="118" y="261" font-size="11" text-anchor="middle">4</text>
+<line class="a" x1="136" y1="257" x2="166" y2="257" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-aa)"/>
+<rect class="a fa" x="168" y="246" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="176" y="261" font-size="10">4</text>
+<text class="f mono" x="220" y="262" font-size="12.5" font-weight="600" text-anchor="middle">mat</text>
+<text class="tm mono" x="268" y="261" font-size="10">-1</text>
+<rect class="s f" x="100" y="278" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="293" font-size="11" text-anchor="middle">2</text>
+<line class="s" x1="136" y1="289" x2="166" y2="289" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="278" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="293" font-size="10">2</text>
+<text class="t mono" x="220" y="294" font-size="12.5" font-weight="600" text-anchor="middle">sat</text>
+<text class="tm mono" x="268" y="293" font-size="10">-1</text>
+</g>
+<g class="step"><title>"the" sums to 321, bucket 321: its list is walked and "the" is found after 1 probe. Its count goes up; the table is not changed.</title>
+<text class="t mono" x="24" y="48" font-size="12">the</text>
+<text class="t mono" x="57.6" y="48" font-size="12">cat</text>
+<text class="t mono" x="91.2" y="48" font-size="12">sat</text>
+<text class="t mono" x="124.8" y="48" font-size="12">on</text>
+<text class="t mono" x="151.2" y="48" font-size="12">the</text>
+<text class="t mono" x="184.8" y="48" font-size="12">mat</text>
+<text class="ta mono" x="218.4" y="48" font-size="12" font-weight="700">the</text>
+<text class="tm mono" x="252" y="48" font-size="12">act</text>
+<text class="t mono" x="24" y="76" font-size="11.5">&quot;the&quot;: 116 + 104 + 101 = 321</text>
+<text class="ta mono" x="24" y="96" font-size="11.5" font-weight="600">321 &amp; 1023 = 321: bucket 321</text>
+<text class="t mono" x="616" y="76" font-size="11" text-anchor="end">lookups 12</text>
+<text class="ta mono" x="616" y="94" font-size="11" font-weight="600" text-anchor="end">probes 2</text>
+<text class="t mono" x="616" y="112" font-size="11" text-anchor="end">inserts 5</text>
+<rect class="s f" x="100" y="150" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="165" font-size="11" text-anchor="middle">3</text>
+<line class="s" x1="136" y1="161" x2="166" y2="161" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="150" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="165" font-size="10">3</text>
+<text class="t mono" x="220" y="166" font-size="12.5" font-weight="600" text-anchor="middle">on</text>
+<text class="tm mono" x="268" y="165" font-size="10">-1</text>
+<rect class="s f" x="100" y="182" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="197" font-size="11" text-anchor="middle">1</text>
+<line class="s" x1="136" y1="193" x2="166" y2="193" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="182" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="197" font-size="10">1</text>
+<text class="t mono" x="220" y="198" font-size="12.5" font-weight="600" text-anchor="middle">cat</text>
+<text class="tm mono" x="268" y="197" font-size="10">-1</text>
+<rect class="a af" x="100" y="214" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="118" y="229" font-size="11" text-anchor="middle">0</text>
+<line class="a" x1="136" y1="225" x2="166" y2="225" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-aa)"/>
+<rect class="a fa" x="168" y="214" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="176" y="229" font-size="10">0</text>
+<text class="f mono" x="220" y="230" font-size="12.5" font-weight="600" text-anchor="middle">the</text>
+<text class="tm mono" x="268" y="229" font-size="10">-1</text>
+<rect class="s f" x="100" y="246" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="261" font-size="11" text-anchor="middle">4</text>
+<line class="s" x1="136" y1="257" x2="166" y2="257" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="246" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="261" font-size="10">4</text>
+<text class="t mono" x="220" y="262" font-size="12.5" font-weight="600" text-anchor="middle">mat</text>
+<text class="tm mono" x="268" y="261" font-size="10">-1</text>
+<rect class="s f" x="100" y="278" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="293" font-size="11" text-anchor="middle">2</text>
+<line class="s" x1="136" y1="289" x2="166" y2="289" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="278" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="293" font-size="10">2</text>
+<text class="t mono" x="220" y="294" font-size="12.5" font-weight="600" text-anchor="middle">sat</text>
+<text class="tm mono" x="268" y="293" font-size="10">-1</text>
+</g>
+<g class="step"><title>"act" sums to 312, the same as "cat": bucket 312. "cat" has the same hash but other bytes, so "act" is not there, and goes in at the head of the list.</title>
+<text class="t mono" x="24" y="48" font-size="12">the</text>
+<text class="t mono" x="57.6" y="48" font-size="12">cat</text>
+<text class="t mono" x="91.2" y="48" font-size="12">sat</text>
+<text class="t mono" x="124.8" y="48" font-size="12">on</text>
+<text class="t mono" x="151.2" y="48" font-size="12">the</text>
+<text class="t mono" x="184.8" y="48" font-size="12">mat</text>
+<text class="t mono" x="218.4" y="48" font-size="12">the</text>
+<text class="ta mono" x="252" y="48" font-size="12" font-weight="700">act</text>
+<text class="t mono" x="24" y="76" font-size="11.5">&quot;act&quot;: 97 + 99 + 116 = 312</text>
+<text class="ta mono" x="24" y="96" font-size="11.5" font-weight="600">312 &amp; 1023 = 312: bucket 312</text>
+<text class="t mono" x="616" y="76" font-size="11" text-anchor="end">lookups 14</text>
+<text class="ta mono" x="616" y="94" font-size="11" font-weight="600" text-anchor="end">probes 4</text>
+<text class="t mono" x="616" y="112" font-size="11" text-anchor="end">inserts 6</text>
+<rect class="s f" x="100" y="150" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="165" font-size="11" text-anchor="middle">3</text>
+<line class="s" x1="136" y1="161" x2="166" y2="161" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="150" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="165" font-size="10">3</text>
+<text class="t mono" x="220" y="166" font-size="12.5" font-weight="600" text-anchor="middle">on</text>
+<text class="tm mono" x="268" y="165" font-size="10">-1</text>
+<rect class="a af" x="100" y="182" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="118" y="197" font-size="11" text-anchor="middle">5</text>
+<line class="a" x1="136" y1="193" x2="166" y2="193" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-aa)"/>
+<rect class="a fa" x="168" y="182" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="176" y="197" font-size="10">5</text>
+<text class="f mono" x="220" y="198" font-size="12.5" font-weight="600" text-anchor="middle">act</text>
+<line class="s" x1="260" y1="193" x2="286" y2="193" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="a af" x="288" y="182" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="296" y="197" font-size="10">1</text>
+<text class="ta mono" x="340" y="198" font-size="12.5" font-weight="600" text-anchor="middle">cat</text>
+<text class="tm mono" x="388" y="197" font-size="10">-1</text>
+<rect class="s f" x="100" y="214" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="229" font-size="11" text-anchor="middle">0</text>
+<line class="s" x1="136" y1="225" x2="166" y2="225" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="214" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="229" font-size="10">0</text>
+<text class="t mono" x="220" y="230" font-size="12.5" font-weight="600" text-anchor="middle">the</text>
+<text class="tm mono" x="268" y="229" font-size="10">-1</text>
+<rect class="s f" x="100" y="246" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="261" font-size="11" text-anchor="middle">4</text>
+<line class="s" x1="136" y1="257" x2="166" y2="257" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="246" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="261" font-size="10">4</text>
+<text class="t mono" x="220" y="262" font-size="12.5" font-weight="600" text-anchor="middle">mat</text>
+<text class="tm mono" x="268" y="261" font-size="10">-1</text>
+<rect class="s f" x="100" y="278" width="36" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="118" y="293" font-size="11" text-anchor="middle">2</text>
+<line class="s" x1="136" y1="289" x2="166" y2="289" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="168" y="278" width="92" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="176" y="293" font-size="10">2</text>
+<text class="t mono" x="220" y="294" font-size="12.5" font-weight="600" text-anchor="middle">sat</text>
+<text class="tm mono" x="268" y="293" font-size="10">-1</text>
+</g>
+</svg>

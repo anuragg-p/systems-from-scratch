@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 310" fill="none">
+<title>Where the book&#x27;s 7818 different words land in 8192 buckets: summed, they pile into the first quarter; FNV-1a spreads them over all of it</title>
+<defs><marker id="f0103b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0103b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0103b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="10.5">the book&#x27;s 7818 different words, in 8192 buckets (the table&#x27;s size at the end); one bar for each 128 buckets</text>
+<text class="t mono" x="24" y="54" font-size="12" font-weight="600">hash_sum: the bytes added up</text>
+<line class="m" x1="24" y1="150" x2="408" y2="150" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="fa" x="24.5" y="148.5" width="5" height="1.5" rx="1"/>
+<rect class="fa" x="30.5" y="147.7" width="5" height="2.3" rx="1"/>
+<rect class="fa" x="36.5" y="139.3" width="5" height="10.7" rx="1"/>
+<rect class="fa" x="42.5" y="115.2" width="5" height="34.8" rx="1"/>
+<rect class="fa" x="48.5" y="83" width="5" height="67" rx="1"/>
+<rect class="fa" x="54.5" y="66" width="5" height="84" rx="1"/>
+<rect class="fa" x="60.5" y="90.9" width="5" height="59.1" rx="1"/>
+<rect class="fa" x="66.5" y="114.3" width="5" height="35.7" rx="1"/>
+<rect class="fa" x="72.5" y="128" width="5" height="22" rx="1"/>
+<rect class="fa" x="78.5" y="136.1" width="5" height="13.9" rx="1"/>
+<rect class="fa" x="84.5" y="144.3" width="5" height="5.7" rx="1"/>
+<rect class="fa" x="90.5" y="147.9" width="5" height="2.1" rx="1"/>
+<rect class="fa" x="96.5" y="148.5" width="5" height="1.5" rx="1"/>
+<rect class="fa" x="108.5" y="148.5" width="5" height="1.5" rx="1"/>
+<rect class="fa" x="114.5" y="148.5" width="5" height="1.5" rx="1"/>
+<text class="tm mono" x="24" y="165" font-size="10">bucket 0</text>
+<text class="tm mono" x="408" y="165" font-size="10" text-anchor="end">8191</text>
+<text class="t" x="436" y="92" font-size="12">917 buckets used</text>
+<text class="t" x="436" y="112" font-size="12">longest list: 42</text>
+<text class="ta" x="436" y="132" font-size="12" font-weight="600">7.24 probes a lookup</text>
+<text class="t mono" x="24" y="188" font-size="12" font-weight="600">hash_fnv1a: FNV-1a</text>
+<line class="m" x1="24" y1="284" x2="408" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="fa" x="24.5" y="279" width="5" height="5" rx="1"/>
+<rect class="fa" x="30.5" y="277.8" width="5" height="6.2" rx="1"/>
+<rect class="fa" x="36.5" y="278.8" width="5" height="5.2" rx="1"/>
+<rect class="fa" x="42.5" y="277.9" width="5" height="6.1" rx="1"/>
+<rect class="fa" x="48.5" y="278.1" width="5" height="5.9" rx="1"/>
+<rect class="fa" x="54.5" y="279" width="5" height="5" rx="1"/>
+<rect class="fa" x="60.5" y="277.7" width="5" height="6.3" rx="1"/>
+<rect class="fa" x="66.5" y="279" width="5" height="5" rx="1"/>
+<rect class="fa" x="72.5" y="278.7" width="5" height="5.3" rx="1"/>
+<rect class="fa" x="78.5" y="279" width="5" height="5" rx="1"/>
+<rect class="fa" x="84.5" y="278.3" width="5" height="5.7" rx="1"/>
+<rect class="fa" x="90.5" y="278.6" width="5" height="5.4" rx="1"/>
+<rect class="fa" x="96.5" y="278.5" width="5" height="5.5" rx="1"/>
+<rect class="fa" x="102.5" y="279.4" width="5" height="4.6" rx="1"/>
+<rect class="fa" x="108.5" y="279.1" width="5" height="4.9" rx="1"/>
+<rect class="fa" x="114.5" y="278.8" width="5" height="5.2" rx="1"/>
+<rect class="fa" x="120.5" y="279.1" width="5" height="4.9" rx="1"/>
+<rect class="fa" x="126.5" y="278.1" width="5" height="5.9" rx="1"/>
+<rect class="fa" x="132.5" y="278.6" width="5" height="5.4" rx="1"/>
+<rect class="fa" x="138.5" y="279.2" width="5" height="4.8" rx="1"/>
+<rect class="fa" x="144.5" y="278.8" width="5" height="5.2" rx="1"/>
+<rect class="fa" x="150.5" y="278.6" width="5" height="5.4" rx="1"/>
+<rect class="fa" x="156.5" y="278.7" width="5" height="5.3" rx="1"/>
+<rect class="fa" x="162.5" y="278.8" width="5" height="5.2" rx="1"/>
+<rect class="fa" x="168.5" y="278.2" width="5" height="5.8" rx="1"/>
+<rect class="fa" x="174.5" y="278.8" width="5" height="5.2" rx="1"/>
+<rect class="fa" x="180.5" y="278.4" width="5" height="5.6" rx="1"/>
+<rect class="fa" x="186.5" y="278.4" width="5" height="5.6" rx="1"/>
+<rect class="fa" x="192.5" y="279.4" width="5" height="4.6" rx="1"/>
+<rect class="fa" x="198.5" y="278.3" width="5" height="5.7" rx="1"/>
+<rect class="fa" x="204.5" y="279.1" width="5" height="4.9" rx="1"/>
+<rect class="fa" x="210.5" y="278" width="5" height="6" rx="1"/>
+<rect class="fa" x="216.5" y="277.8" width="5" height="6.2" rx="1"/>
+<rect class="fa" x="222.5" y="278.5" width="5" height="5.5" rx="1"/>
+<rect class="fa" x="228.5" y="278.4" width="5" height="5.6" rx="1"/>
+<rect class="fa" x="234.5" y="279.1" width="5" height="4.9" rx="1"/>
+<rect class="fa" x="240.5" y="278.1" width="5" height="5.9" rx="1"/>
+<rect class="fa" x="246.5" y="278.8" width="5" height="5.2" rx="1"/>
+<rect class="fa" x="252.5" y="279.1" width="5" height="4.9" rx="1"/>
+<rect class="fa" x="258.5" y="278.1" width="5" height="5.9" rx="1"/>
+<rect class="fa" x="264.5" y="278.5" width="5" height="5.5" rx="1"/>
+<rect class="fa" x="270.5" y="278.5" width="5" height="5.5" rx="1"/>
+<rect class="fa" x="276.5" y="279.2" width="5" height="4.8" rx="1"/>
+<rect class="fa" x="282.5" y="279.2" width="5" height="4.8" rx="1"/>
+<rect class="fa" x="288.5" y="278.8" width="5" height="5.2" rx="1"/>
+<rect class="fa" x="294.5" y="279.8" width="5" height="4.2" rx="1"/>
+<rect class="fa" x="300.5" y="279" width="5" height="5" rx="1"/>
+<rect class="fa" x="306.5" y="278.6" width="5" height="5.4" rx="1"/>
+<rect class="fa" x="312.5" y="278.9" width="5" height="5.1" rx="1"/>
+<rect class="fa" x="318.5" y="279.1" width="5" height="4.9" rx="1"/>
+<rect class="fa" x="324.5" y="278.2" width="5" height="5.8" rx="1"/>
+<rect class="fa" x="330.5" y="279.1" width="5" height="4.9" rx="1"/>
+<rect class="fa" x="336.5" y="279.2" width="5" height="4.8" rx="1"/>
+<rect class="fa" x="342.5" y="277.9" width="5" height="6.1" rx="1"/>
+<rect class="fa" x="348.5" y="278.6" width="5" height="5.4" rx="1"/>
+<rect class="fa" x="354.5" y="278.5" width="5" height="5.5" rx="1"/>
+<rect class="fa" x="360.5" y="278.5" width="5" height="5.5" rx="1"/>
+<rect class="fa" x="366.5" y="278.4" width="5" height="5.6" rx="1"/>
+<rect class="fa" x="372.5" y="279.8" width="5" height="4.2" rx="1"/>
+<rect class="fa" x="378.5" y="278.8" width="5" height="5.2" rx="1"/>
+<rect class="fa" x="384.5" y="278.8" width="5" height="5.2" rx="1"/>
+<rect class="fa" x="390.5" y="279.2" width="5" height="4.8" rx="1"/>
+<rect class="fa" x="396.5" y="279.3" width="5" height="4.7" rx="1"/>
+<rect class="fa" x="402.5" y="279.3" width="5" height="4.7" rx="1"/>
+<text class="tm mono" x="24" y="299" font-size="10">bucket 0</text>
+<text class="tm mono" x="408" y="299" font-size="10" text-anchor="end">8191</text>
+<text class="t" x="436" y="226" font-size="12">5035 buckets used</text>
+<text class="t" x="436" y="246" font-size="12">longest list: 7</text>
+<text class="ta" x="436" y="266" font-size="12" font-weight="600">1.48 probes a lookup</text>
+<line class="a" x1="116.8" y1="66" x2="116.8" y2="150" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="ta" x="122.8" y="76" font-size="10.5">no word sums to more than 1979</text>
+</svg>
