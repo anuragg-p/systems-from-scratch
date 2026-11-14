@@ -126,6 +126,19 @@ Licence    The book is public domain. Project Gutenberg's licence (its
 Generated  Every larger input is made by data/gen.py, with a fixed seed,
            from the book's words and words it makes up; none is stored.
 
+Data       tools/spell/words.txt: the 2of4brif list of Alan Beale's
+           12dicts word lists, 60388 English words, unchanged.
+Source     https://github.com/en-wl/wordlist (alt12dicts/2of4brif.txt,
+           commit b22230cc5250887737fdefe9ca4c9d9d01230eaa), which says
+           the file is identical to the one in the 12dicts package
+           (http://wordlist.aspell.net/12dicts/).
+Licence    Public domain: "I explicitly release them to the public
+           domain, but request acknowledgment of their use" (the 12dicts
+           readme; the two lists it excepts are not this one). The word
+           list is the work of Alan Beale, and this is that
+           acknowledgment. tracks/dsa/tools/spell/NOTICE.txt has the
+           hashes and the full text as read.
+
 
 Planned tracks (outlines/)
 --------------------------
