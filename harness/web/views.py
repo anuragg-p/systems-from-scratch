@@ -1221,6 +1221,53 @@ def split_doc(md):
     return {k: "\n\n".join(x for x in v if x).strip() for k, v in out.items()}
 
 
+FENCE_LANG = {".c": "c", ".h": "c", ".S": "asm", ".s": "asm", ".py": "python", ".mk": "make", ".sh": "sh",
+              ".ld": "ld", ".md": "markdown", ".html": "html", ".js": "js", ".css": "css", ".json": "json"}
+
+
+def page_text(track, lesson, md, blocks, files=(), shows_figure=None):
+    """The lesson as plain Markdown for the Copy page button, to paste into a chat with a language
+    model: the title, where it sits, the notes as written (comments and front matter already gone,
+    each figure the page shows as its caption, a figure it does not show left out), then the code
+    it adds, each piece under its file's path. files: the doc's own code: files, (name, text,
+    truncated), when the lesson has no regions. shows_figure(src): does the page show that figure."""
+    mid, mtitle = lesson.module
+    out = [f"# {lesson.id} {lesson.title}", "",
+           f"From \"{SITE}\": the track \"{getattr(track.module, 'TITLE', track.id)}\", "
+           f"module {mid}, {mtitle}. The code below is what this lesson adds, as the project has it at {lesson.id}.", ""]
+    if md:
+        lines, fence = [], None
+        for line in md.strip().split("\n"):
+            fm = FENCE_LINE.match(line)
+            if fm:
+                fence = None if fence and line.strip().startswith(fence) else (fence or fm.group(1))
+            m = None if fence or fm else re.match(r"^!\[([^\]]*)\]\(([^)]*)\)\s*$", line)
+            if m:
+                if shows_figure is None or shows_figure(m.group(2)):
+                    lines.append(f"(Figure: {m.group(1)})")
+                continue
+            lines.append(line)
+        out += ["\n".join(lines), ""]
+    pieces = []
+    for b in blocks:
+        if not b.get("shown"):
+            continue
+        what = "new file" if b.get("new") else ", ".join(b.get("titles", []))
+        if what == os.path.basename(b["path"]):          # a part of an older file: its name says it
+            what = "added to it"
+        lang = "make" if os.path.basename(b["path"]) == "Makefile" else FENCE_LANG.get(os.path.splitext(b["path"])[1], "")
+        body = "\n".join("..." if n is None else t for n, t in b["shown"])
+        fence = "````" if "```" in body else "```"
+        pieces += [f"### {b['path']}" + (f" ({what})" if what else ""), "", f"{fence}{lang}", body, fence, ""]
+    for name, src, trunc in files:
+        lang = FENCE_LANG.get(os.path.splitext(name)[1], "")
+        fence = "````" if "```" in src else "```"
+        pieces += [f"### {name}" + (" (cut short)" if trunc else ""), "", f"{fence}{lang}", src.rstrip("\n"), fence, ""]
+    if pieces:
+        out += ["## The code this lesson adds", ""] + pieces
+    return "\n".join(out).rstrip("\n") + "\n"
+
+
 def lesson_page(track, lesson, static=False):
     """static: for ./learn export (harness/web/export.py), with nothing that needs ./learn serve or this machine."""
     meta, md = doc_info(lesson)
@@ -1397,13 +1444,19 @@ def lesson_page(track, lesson, static=False):
         "".join(f'<span class="tag">{esc(x)}</span>' for x in lesson.labels)
     mod_icon = art.module_art(track, lesson.module[0], "icon")
     mod_icon = f'<span class="mod-ic">{mod_icon}</span>' if mod_icon else ""
+    # Copy page: the lesson as Markdown, kept in a hidden textarea (its value is the text, unescaped)
+    copy = page_text(track, lesson, md, blocks + extra, files if not blocks else (), lambda src: bool(figure(src)))
+    copy_btn = ('<button class="btn copy-page" type="button" data-copy-from="page-text" '
+                'title="Copy this lesson and its code as Markdown, to paste into a chat with a language model">'
+                f'{COPY}<span>Copy page</span></button>')
     body = f"""<div class="wrap lesson-wrap">
 <div class="lesson-cols"><div class="lesson-main">
 <header class="lesson-head">
 <p class="crumb-line"><a href="/t/{esc(track.id)}">{CHEV_L}<span>Overview</span></a><span class="sep">/</span><span class="cl-mod">{mod_icon}<span>Module {esc(lesson.module[0])} &middot; {esc(lesson.module[1])}</span></span><span class="sep">/</span><span class="cl-id">{esc(lesson.id)}</span></p>
 <h1>{esc(lesson.title)}</h1>
-<div class="head-meta">{labels}<span class="spacer"></span><button class="btn" type="button" data-drawer-open="files-drawer" aria-controls="files-drawer" aria-expanded="false" aria-haspopup="dialog">{FOLDER}<span>Files</span></button></div>
+<div class="head-meta">{labels}<span class="spacer"></span>{copy_btn}<button class="btn" type="button" data-drawer-open="files-drawer" aria-controls="files-drawer" aria-expanded="false" aria-haspopup="dialog">{FOLDER}<span>Files</span></button></div>
 </header>
+<textarea id="page-text" class="page-text" hidden readonly aria-hidden="true" tabindex="-1">{esc(copy)}</textarea>
 {notice}
 {sections}
 </div>

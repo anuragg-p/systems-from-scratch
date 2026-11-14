@@ -684,6 +684,39 @@ class ServerTests(unittest.TestCase):
         self.assertNotIn("<script>alert(1)", body)
         self.assertIn('href="/t/sample/01.02"', body)  # relative lesson link and pager
 
+    def test_copy_page_holds_the_lesson_as_markdown(self):
+        status, body = self.req("GET", "/t/sample/01.01")
+        self.assertEqual(status, 200)
+        self.assertIn('data-copy-from="page-text"', body)
+        self.assertIn("<span>Copy page</span>", body)
+        m = re.search(r'<textarea id="page-text"[^>]*\bhidden\b[^>]*>(.*?)</textarea>', body, re.S)
+        self.assertIsNotNone(m, "no hidden textarea with the page's text")
+        import html as html_mod
+        text = html_mod.unescape(m.group(1))
+        self.assertTrue(text.startswith("# 01.01 Say hello\n"), text[:80])
+        self.assertIn("module 01, Basics", text)
+        self.assertIn("Intro with `code`", text)                 # the notes as written, Markdown and all
+        self.assertIn("## Run it", text)
+        self.assertNotIn("test: tests/0101", text)               # no front matter
+        self.assertIn("### src/hello.txt", text)                 # the code, under its path
+        self.assertIn("line one\nline <two>\n", text)
+        self.assertNotIn("<script>alert(1)</script>", m.group(1))   # escaped in the page
+        self.assertLess(body.index('id="page-text"'), body.index('id="step-'))
+        js = self.req("GET", "/static/app.js")[1]
+        self.assertIn("data-copy-from", js)
+
+    def test_copy_page_leaves_out_authors_comments_and_shows_figures_as_captions(self):
+        from harness.web import views
+        from harness.core import Lesson
+        md = views.strip_comments("Text.\n\n<!-- verify: session -->\n![The map](figures/01.01-map.svg)\n\nMore.\n")
+        track = type("T", (), {"id": "x", "module": type("M", (), {"TITLE": "X"})})()
+        lesson = Lesson(track, "01.01", "One", ("01", "Mod"))
+        text = views.page_text(track, lesson, md, [{"path": "src/a.c", "new": True, "titles": ["a.c"],
+                                                     "shown": [(1, "int a;"), (None, ""), (9, "int b;")]}])
+        self.assertNotIn("verify", text)
+        self.assertIn("(Figure: The map)", text)
+        self.assertIn("### src/a.c (new file)\n\n```c\nint a;\n...\nint b;\n```", text)
+
     def test_no_code_to_build(self):
         status, body = self.req("GET", "/t/sample/01.02")
         self.assertEqual(status, 200)
@@ -739,9 +772,11 @@ def http_req(port, method, path, headers=None, body=None):
 
 
 def plain(markup):
-    """Visible text of an HTML fragment: tags removed, entities decoded."""
+    """Visible text of an HTML fragment: tags removed, entities decoded, and nothing of the hidden
+    textarea Copy page copies (the lesson again, as Markdown: never shown)."""
     import html as _html
     import re as _re
+    markup = _re.sub(r'<textarea id="page-text"[^>]*>.*?</textarea>', "", markup, flags=_re.S)
     return _html.unescape(_re.sub(r"<[^>]+>", "", markup))
 
 

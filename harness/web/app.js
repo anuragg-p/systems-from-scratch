@@ -49,10 +49,16 @@
       document.body.removeChild(ta);
     });
   }
-  document.querySelectorAll("[data-copy]").forEach(function (btn) {
+  // Copy page: data-copy-from names a (hidden) textarea whose value is the lesson as Markdown
+  function textToCopy(btn) {
+    if (btn.hasAttribute("data-copy")) return btn.getAttribute("data-copy");
+    var from = document.getElementById(btn.getAttribute("data-copy-from"));
+    return from ? from.value : "";
+  }
+  document.querySelectorAll("[data-copy], [data-copy-from]").forEach(function (btn) {
     btn.addEventListener("click", function () {
       var label = btn.querySelector("span"), old = label ? label.textContent : "";
-      copyText(btn.getAttribute("data-copy")).then(function () {
+      copyText(textToCopy(btn)).then(function () {
         if (label) label.textContent = "Copied";
       }, function () {
         if (label) label.textContent = "Press Ctrl+C";

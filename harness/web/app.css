@@ -502,6 +502,7 @@ a.btn[data-editor] { height: 30px; padding: 0 12px; font-size: 13px; }
 
 /* files: a drawer from the right */
 .head-meta .btn { gap: 8px; }
+.page-text { display: none; }   /* what Copy page copies: never shown */
 .drawer[hidden] { display: none; }
 .drawer { position: fixed; inset: 0; z-index: 60; display: flex; justify-content: flex-end; }
 .drawer-scrim { position: absolute; inset: 0; background: #0000004d; animation: fade .18s ease-out; }
