@@ -124,6 +124,14 @@ Upstream   None. The tools are written from the documented behaviour of
            GPL-3.0-or-later; 3.81 on macOS, 4.4.1 on Linux) on the
            features this track's own Makefile uses; no code from it is in
            the track.
+           git (module 10) is written to git's repository formats as git
+           documents them (loose objects, trees, commits, the version 2
+           index: Pro Git chapter 10 and gitformat-index(5)), with SHA-1
+           from FIPS PUB 180-4 and zlib framing from RFC 1950, and held
+           to the real git (https://github.com/git/git, GPL-2.0), which
+           reads and checks the repositories it writes. No code of git,
+           zlib or any other program is in the track.
+           tracks/dsa/tools/git/NOTICE.txt has the details.
 Upstream   For module 03 only (tools/edit): kilo, by Salvatore Sanfilippo
            (antirez), https://github.com/antirez/kilo (master, commit
            323d93b29bd89a2cb446de90c4ed4fea1764176e), by way of this
