@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>git&#x27;s object graph: commits point at trees, trees at blobs and trees, each named by the SHA-1 of its content</title>
+<defs><marker id="d10-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="d10-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s fs" x="24" y="48" width="120" height="42" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="34" y="65" font-size="11.5"><tspan font-weight="700">commit</tspan> 2402ac3</text>
+<text class="tm" x="34" y="81" font-size="10">&quot;say hello, world&quot;</text>
+<rect class="s fs" x="24" y="180" width="120" height="42" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="34" y="197" font-size="11.5"><tspan font-weight="700">commit</tspan> 9265dc4</text>
+<text class="tm" x="34" y="213" font-size="10">&quot;first&quot;</text>
+<rect class="s f" x="184" y="48" width="120" height="42" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="194" y="65" font-size="11.5"><tspan font-weight="700">tree</tspan> 720ecf2</text>
+<text class="tm" x="194" y="81" font-size="10">README, src/</text>
+<rect class="s f" x="184" y="180" width="120" height="42" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="194" y="197" font-size="11.5"><tspan font-weight="700">tree</tspan> 4727881</text>
+<text class="tm" x="194" y="213" font-size="10">README, src/</text>
+<rect class="s f" x="344" y="22" width="120" height="42" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="354" y="39" font-size="11.5"><tspan font-weight="700">blob</tspan> 4b5fa63</text>
+<text class="tm mono" x="354" y="55" font-size="10">&quot;hello, world\n&quot;</text>
+<rect class="a af" x="344" y="114" width="120" height="42" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="354" y="131" font-size="11.5"><tspan font-weight="700">tree</tspan> ed46dd1</text>
+<text class="ta" x="354" y="147" font-size="10">main.c</text>
+<rect class="s f" x="344" y="206" width="120" height="42" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="354" y="223" font-size="11.5"><tspan font-weight="700">blob</tspan> ce01362</text>
+<text class="tm mono" x="354" y="239" font-size="10">&quot;hello\n&quot;</text>
+<rect class="a af" x="496" y="114" width="120" height="42" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="506" y="131" font-size="11.5"><tspan font-weight="700">blob</tspan> 78f2de1</text>
+<text class="ta mono" x="506" y="147" font-size="10">int main(void)...</text>
+<path class="s" d="M144 69.0 C 164 69.0, 162 69.0, 182 69.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#d10-ah)"/>
+<path class="s" d="M144 201.0 C 164 201.0, 162 201.0, 182 201.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#d10-ah)"/>
+<path class="s" d="M304 60 C 324 60, 322 43.0, 342 43.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#d10-ah)"/>
+<path class="a" d="M304 80 C 324 80, 322 130, 342 130" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#d10-aa)"/>
+<path class="a" d="M304 188 C 324 188, 322 144, 342 144" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#d10-aa)"/>
+<path class="s" d="M304 212 C 324 212, 322 227.0, 342 227.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#d10-ah)"/>
+<path class="a" d="M464 135.0 C 484 135.0, 474 135.0, 494 135.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#d10-aa)"/>
+<line class="s" x1="84" y1="90" x2="84" y2="178" stroke-width="1.5" stroke-linecap="round" marker-end="url(#d10-ah)"/>
+<text class="tm" x="94" y="128" font-size="10.5">parent</text>
+<text class="tm" x="94" y="143" font-size="10.5">git log</text>
+<text class="tm" x="94" y="158" font-size="10.5">walks these</text>
+<rect class="s" x="24" y="12" width="46" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="47" y="27" font-size="11" font-weight="700" text-anchor="middle">main</text>
+<line class="s" x1="47" y1="34" x2="47" y2="46" stroke-width="1.5" stroke-linecap="round" marker-end="url(#d10-ah)"/>
+<text class="ta" x="556" y="196" font-size="10.5" font-weight="600" text-anchor="middle">src/ did not change:</text>
+<text class="ta" x="556" y="211" font-size="10.5" text-anchor="middle">both trees name it</text>
+<text class="ta" x="556" y="226" font-size="10.5" text-anchor="middle">by the same hash</text>
+<text class="tm" x="24" y="270" font-size="11">An object is named by the SHA-1 of its content: what did not change keeps its name and is stored once,</text>
+<text class="tm" x="24" y="286" font-size="11">and a change renames every object above it, up to the commit. These ids are the ones git computes.</text>
+</svg>
