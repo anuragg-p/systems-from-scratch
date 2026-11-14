@@ -1,0 +1,69 @@
+route's maps (tracks/dsa/tools/route): where they come from, and on what terms
+-------------------------------------------------------------------------------
+
+Data       london.map: the roads of central London, 17260 junctions and
+           22498 roads, as plain text (lib/roadgraph.h has the format).
+           Map data (c) OpenStreetMap contributors,
+           https://www.openstreetmap.org/copyright
+Source     OpenStreetMap, https://www.openstreetmap.org, fetched once on
+           2026-11-14 from the Overpass API
+           (https://overpass-api.de/api/interpreter) with the query that is
+           QUERY in gen.py: every way tagged highway=trunk, primary,
+           secondary, tertiary (and their _link roads), unclassified,
+           residential, living_street or pedestrian, not area=yes, not
+           access=private or no, in the box below, with its nodes. The
+           extract says its data is OpenStreetMap's as of
+           2026-11-14T13:48:38Z (timestamp_osm_base). It was 12128591
+           bytes of JSON, SHA-256 bb0437114eb4a342cd5c2708195d2829
+           90e278002ab1def842251d243ce0eb06; it is not shipped (gen.py
+           makes the map from it, and anyone can fetch it again).
+Bounds     South 51.475, west -0.210, north 51.545, east -0.030 (degrees,
+           WGS84): central London, on both banks of the Thames; 12457 by
+           7783 metres on the map.
+Changed    The map is made from the extract by gen.py ("python3
+           tools/route/gen.py osm EXTRACT.json"), whose opening comment
+           gives every step: keep the nodes in the box, cutting ways where
+           they leave it; put them on a flat map in whole metres from the
+           box's south-west corner; keep the junctions (the nodes where
+           other than two pieces of road meet) and drop the bends, each
+           road between two junctions one line with its length, the sum of
+           its pieces rounded up to a metre; drop loops onto one junction,
+           and of two roads between the same junctions keep the shorter;
+           number the junctions south to north. Nothing else of
+           OpenStreetMap is kept: no names, tags, ids or one-way streets.
+           486185 bytes, SHA-256 8103ec114d66d0d6089836b7a393a160
+           eeb158e38174b33cac0a04c3c8d07af6. gen.py makes the same bytes
+           from the same extract.
+Licence    OpenStreetMap is open data under the Open Data Commons Open
+           Database License 1.0 (ODbL),
+           https://opendatacommons.org/licenses/odbl/1-0/. london.map is a
+           Derivative Database of it (ODbL 4.4 b: a substantial part of
+           its contents in a new database), so london.map is under the
+           ODbL too, and not under this repository's MIT licence. What the
+           licence and the OpenStreetMap Foundation's attribution
+           guidelines
+           (https://osmfoundation.org/wiki/Licence/Attribution_Guidelines)
+           ask, and where it is done:
+           - Attribution to OpenStreetMap, and that the data is under the
+             ODbL, with the URL openstreetmap.org/copyright: in this file,
+             in the comment at the top of london.map, and on the site's
+             credits for the track.
+           - The licence's URI with the database (ODbL 4.2): at the top of
+             london.map and here.
+           - Share-alike (ODbL 4.4) and access (4.6): london.map, the whole
+             Derivative Database, is offered here under the ODbL, free of
+             charge, with the method that made it (gen.py).
+           - Pictures made from it are Produced Works (ODbL 4.3): every SVG
+             route draws from london.map carries, in its bottom right
+             corner, the map's credit line, "Map data from OpenStreetMap
+             (openstreetmap.org/copyright), under the Open Database License
+             (ODbL 1.0)". A lesson figure made from such a picture keeps
+             that line, or says it beside the figure.
+           OpenStreetMap's own credit uses the copyright sign; this
+           repository's text is ASCII only, so it is written (c) here.
+
+Ours       tiny.map (a dozen junctions, made up by hand to follow a search
+           step by step) and the made-up cities of gen.py's citymap kind
+           (a seeded grid, for the growth harness) hold no OpenStreetMap
+           data. They, route.c, gen.py and lib/roadgraph.c are this
+           course's own, under the repository's MIT licence.

@@ -1,0 +1,44 @@
+# route map: a dozen junctions, made up to follow a search by hand.
+# This course's own (no OpenStreetMap data in it), under the repository's licence.
+#
+# Three rows of junctions: 0 and 1 in the south (y 0); 2 to 8 along a main
+# street in the middle (y 300), 200 metres a road from 3 to 8, so 1000
+# metres in five roads; 9, 10 and 11 in the north (y 600). A ring road joins
+# 3 to 8 through junction 1 in two roads, but 1200 metres: the fewest
+# junctions are not the fewest metres. Going from 3 to 8, Dijkstra finishes
+# the streets west and north of 3 as well; A* need not.
+junctions 12
+100 0
+900 0
+100 300
+400 300
+600 300
+800 300
+1000 300
+1200 300
+1400 300
+200 600
+700 600
+1100 600
+roads 21
+0 1 800
+0 2 300
+0 3 430
+1 3 600
+1 6 320
+1 8 600
+2 3 300
+2 9 320
+3 4 200
+3 9 370
+4 5 200
+4 10 320
+5 6 200
+5 10 320
+6 7 200
+6 11 320
+7 8 200
+7 11 320
+8 11 430
+9 10 500
+10 11 400
