@@ -542,8 +542,6 @@ int main(int argc, char **argv)
     // @from 07.03
     int order_mode = 0;
     const char *algo = "topo";
-    // @else
-    // const char *algo = "recurse";
     // @end
     long jobs = 1;      // @from 07.04
     Array goal_names;
@@ -651,8 +649,10 @@ int main(int argc, char **argv)
         if (strcmp(algo, "queue") == 0)
             build_queue(&order, jobs);
         else
+            build_in_order(&order);
+        // @else
+        // build_in_order(&order);
         // @end
-        build_in_order(&order);
         /* a goal had nothing done for it if nothing ran among the targets
          * the search finished from the goal before it up to it */
         size_t from = 0;

@@ -65,10 +65,14 @@ def test(t):
                 f"{n} diamonds: {fast['depgraph']} {slow['depgraph']}")
 
     # what the walk leaves: common.h made again after liba used it, so liba is older than it
-    d = fx.case(t, "walked", open(f"{ex}/diamond.mk").read())
+    # (each touch a twentieth of a second after the last: Linux keeps file times to a clock tick)
+    d = fx.case(t, "walked", open(f"{ex}/diamond.mk").read().replace("\ttouch", "\t@sleep 0.05\n\ttouch"))
     r = fx.ours(t, d, ["--algo=recurse"])
     t.check(r.lines() == ["touch common.h", "touch liba", "touch common.h", "touch libb", "touch app"], r.out)
-    t.check(fx.ours(t, d, ["-n"]).lines()[:1] == ["touch liba"], "after the walk, liba is out of date")
+    r = fx.ours(t, d, ["-n"], env={"DS_TRACE": "1"})
+    made = [l for l in r.lines() if l.startswith("touch")]
+    t.check(made == ["touch liba", "touch app"] and "trace: check liba: common.h is newer\n" in r.err,
+            f"after the walk, liba is out of date:\n{r}")
     fx.ours(t, d, ["-s"])
     t.check(fx.message(fx.ours(t, d, []).out) == "make: 'app' is up to date.\n", "and once made in order, it is not")
 
