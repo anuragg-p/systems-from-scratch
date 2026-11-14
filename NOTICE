@@ -110,7 +110,21 @@ Upstream   None. The tools are written from the documented behaviour of
            expressions and the published algorithms: Horspool's search
            (1980), Thompson's construction (1968), and a DFA built as it
            runs, as Russ Cox describes RE2's.
-Ours       All of the code (lib/, tools/, bench/, data/gen.py, the
+Upstream   For module 03 only (tools/edit): kilo, by Salvatore Sanfilippo
+           (antirez), https://github.com/antirez/kilo (master, commit
+           323d93b29bd89a2cb446de90c4ed4fea1764176e), by way of this
+           course's kilo track (tracks/kilo).
+Licence    BSD-2-Clause. Copyright (c) 2016, Salvatore Sanfilippo
+           <antirez at gmail dot com>. The full text is in
+           tracks/dsa/tools/edit/LICENSE, which comes with the project's
+           files from lesson 03.01 on; edit.c keeps the notice in its
+           header.
+Taken      tools/edit/edit.c: the kilo track's finished kilo.c (raw mode,
+           reading keys, drawing the screen, moving the cursor, search,
+           saving), with its rows replaced by the text interface of
+           lib/text.h, undo and redo keys, and a replay mode with no
+           terminal. The changes are listed in tools/edit/NOTES.md.
+Ours       All of the code but tools/edit/edit.c (lib/, tools/, bench/, data/gen.py, the
            Makefile and the tool.mk files), the lessons and the internal
            checks (tracks/dsa/track.py and tests/).
 
