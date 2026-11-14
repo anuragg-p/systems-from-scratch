@@ -96,6 +96,13 @@ Upstream   None. The tools are written from the documented behaviour of
            GPL-3.0-or-later) and the FreeBSD utilities macOS ships
            (https://github.com/freebsd/freebsd-src, BSD licences). No
            code from either is in the track.
+           diff and patch are also held to GNU diffutils
+           (https://www.gnu.org/software/diffutils/) and GNU patch
+           (https://savannah.gnu.org/projects/patch/), both
+           GPL-3.0-or-later, and to the diff and patch macOS ships; no
+           code from any of them is in the track. lib/myers.c is written
+           from the paper: Eugene W. Myers, "An O(ND) Difference Algorithm
+           and Its Variations", Algorithmica 1 (1986), 251-266.
 Ours       All of the code (lib/, tools/, bench/, data/gen.py, the
            Makefile and the tool.mk files), the lessons and the internal
            checks (tracks/dsa/track.py and tests/).
