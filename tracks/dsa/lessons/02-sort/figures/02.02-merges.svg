@@ -1,0 +1,500 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 256" fill="none">
+<title>Merge sort on eight lines: sorted runs of 1, 2, 4 and 8, each merged from two of the row above</title>
+<defs><marker id="f0202a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0202a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0202a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="step"><title>The eight lines as read: each line alone is a sorted run of one.</title>
+<text class="t" x="24" y="52" font-size="11" font-weight="600">runs of 1</text>
+<rect class="s f" x="84" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="52.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="s f" x="152" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="52.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="220" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="52.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="52.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="356" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="52.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="s f" x="424" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="52.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="492" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="524" y="52.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="s f" x="560" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="592" y="52.14" font-size="11.5" text-anchor="middle">woman</text>
+<text class="tm" x="24" y="114" font-size="11">runs of 2</text>
+<rect class="m" x="84" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="220" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="356" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="492" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="116" y1="64" x2="136" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="184" y1="64" x2="164" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="252" y1="64" x2="272" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="320" y1="64" x2="300" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="388" y1="64" x2="408" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="456" y1="64" x2="436" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="524" y1="64" x2="544" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="592" y1="64" x2="572" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="176" font-size="11">runs of 4</text>
+<rect class="m" x="84" y="158" width="268" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="356" y="158" width="268" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="150" y1="126" x2="204" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="286" y1="126" x2="232" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="422" y1="126" x2="476" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="558" y1="126" x2="504" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="238" font-size="11">all 8</text>
+<rect class="m" x="84" y="220" width="540" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="218" y1="188" x2="340" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="490" y1="188" x2="368" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+</g>
+<g class="step"><title>merge v[0..1) and v[1..2) into v[0..2): 1 comparison, 1 in all.</title>
+<text class="t" x="24" y="52" font-size="11" font-weight="600">runs of 1</text>
+<rect class="s f" x="84" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="52.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="s f" x="152" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="52.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="220" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="52.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="52.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="356" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="52.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="s f" x="424" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="52.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="492" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="524" y="52.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="s f" x="560" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="592" y="52.14" font-size="11.5" text-anchor="middle">woman</text>
+<text class="tm" x="24" y="114" font-size="11">runs of 2</text>
+<rect class="a" x="81" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="84" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="116" y="114.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="a af" x="152" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="184" y="114.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="m" x="220" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="356" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="492" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="a" x1="116" y1="64" x2="136" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<line class="a" x1="184" y1="64" x2="164" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<line class="m" x1="252" y1="64" x2="272" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="320" y1="64" x2="300" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="388" y1="64" x2="408" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="456" y1="64" x2="436" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="524" y1="64" x2="544" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="592" y1="64" x2="572" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="176" font-size="11">runs of 4</text>
+<rect class="m" x="84" y="158" width="268" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="356" y="158" width="268" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="150" y1="126" x2="204" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="286" y1="126" x2="232" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="422" y1="126" x2="476" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="558" y1="126" x2="504" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="238" font-size="11">all 8</text>
+<rect class="m" x="84" y="220" width="540" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="218" y1="188" x2="340" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="490" y1="188" x2="368" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+</g>
+<g class="step"><title>merge v[2..3) and v[3..4) into v[2..4): 1 comparison, 2 in all.</title>
+<text class="t" x="24" y="52" font-size="11" font-weight="600">runs of 1</text>
+<rect class="s f" x="84" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="52.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="s f" x="152" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="52.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="220" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="52.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="52.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="356" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="52.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="s f" x="424" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="52.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="492" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="524" y="52.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="s f" x="560" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="592" y="52.14" font-size="11.5" text-anchor="middle">woman</text>
+<text class="tm" x="24" y="114" font-size="11">runs of 2</text>
+<rect class="m" x="81" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="84" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="114.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="152" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="114.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="a" x="217" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="220" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="252" y="114.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="a af" x="288" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="320" y="114.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="m" x="356" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="492" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="116" y1="64" x2="136" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="184" y1="64" x2="164" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="252" y1="64" x2="272" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<line class="a" x1="320" y1="64" x2="300" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<line class="m" x1="388" y1="64" x2="408" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="456" y1="64" x2="436" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="524" y1="64" x2="544" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="592" y1="64" x2="572" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="176" font-size="11">runs of 4</text>
+<rect class="m" x="84" y="158" width="268" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="356" y="158" width="268" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="150" y1="126" x2="204" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="286" y1="126" x2="232" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="422" y1="126" x2="476" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="558" y1="126" x2="504" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="238" font-size="11">all 8</text>
+<rect class="m" x="84" y="220" width="540" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="218" y1="188" x2="340" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="490" y1="188" x2="368" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+</g>
+<g class="step"><title>merge v[0..2) and v[2..4) into v[0..4): 2 comparisons, 4 in all (one side ran out first, so the rest of the other is copied without comparing).</title>
+<text class="t" x="24" y="52" font-size="11" font-weight="600">runs of 1</text>
+<rect class="s f" x="84" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="52.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="s f" x="152" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="52.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="220" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="52.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="52.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="356" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="52.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="s f" x="424" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="52.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="492" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="524" y="52.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="s f" x="560" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="592" y="52.14" font-size="11.5" text-anchor="middle">woman</text>
+<text class="tm" x="24" y="114" font-size="11">runs of 2</text>
+<rect class="m" x="81" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="84" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="114.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="152" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="114.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="m" x="217" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="220" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="114.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="114.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="m" x="356" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="492" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="116" y1="64" x2="136" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="184" y1="64" x2="164" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="252" y1="64" x2="272" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="320" y1="64" x2="300" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="388" y1="64" x2="408" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="456" y1="64" x2="436" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="524" y1="64" x2="544" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="592" y1="64" x2="572" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="176" font-size="11">runs of 4</text>
+<rect class="a" x="81" y="155" width="274" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="84" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="116" y="176.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="a af" x="152" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="184" y="176.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="a af" x="220" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="252" y="176.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="a af" x="288" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="320" y="176.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="m" x="356" y="158" width="268" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="a" x1="150" y1="126" x2="204" y2="154" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<line class="a" x1="286" y1="126" x2="232" y2="154" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<line class="m" x1="422" y1="126" x2="476" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="558" y1="126" x2="504" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="238" font-size="11">all 8</text>
+<rect class="m" x="84" y="220" width="540" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="218" y1="188" x2="340" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="490" y1="188" x2="368" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+</g>
+<g class="step"><title>merge v[4..5) and v[5..6) into v[4..6): 1 comparison, 5 in all.</title>
+<text class="t" x="24" y="52" font-size="11" font-weight="600">runs of 1</text>
+<rect class="s f" x="84" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="52.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="s f" x="152" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="52.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="220" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="52.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="52.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="356" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="52.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="s f" x="424" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="52.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="492" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="524" y="52.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="s f" x="560" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="592" y="52.14" font-size="11.5" text-anchor="middle">woman</text>
+<text class="tm" x="24" y="114" font-size="11">runs of 2</text>
+<rect class="m" x="81" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="84" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="114.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="152" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="114.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="m" x="217" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="220" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="114.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="114.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="a" x="353" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="356" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="388" y="114.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="a af" x="424" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="456" y="114.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="m" x="492" y="96" width="132" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="116" y1="64" x2="136" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="184" y1="64" x2="164" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="252" y1="64" x2="272" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="320" y1="64" x2="300" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="388" y1="64" x2="408" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<line class="a" x1="456" y1="64" x2="436" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<line class="m" x1="524" y1="64" x2="544" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="592" y1="64" x2="572" y2="92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="176" font-size="11">runs of 4</text>
+<rect class="m" x="81" y="155" width="274" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="84" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="176.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="152" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="176.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="220" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="176.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="288" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="176.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="m" x="356" y="158" width="268" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="150" y1="126" x2="204" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="286" y1="126" x2="232" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="422" y1="126" x2="476" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="558" y1="126" x2="504" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="238" font-size="11">all 8</text>
+<rect class="m" x="84" y="220" width="540" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="218" y1="188" x2="340" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="490" y1="188" x2="368" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+</g>
+<g class="step"><title>merge v[6..7) and v[7..8) into v[6..8): 1 comparison, 6 in all.</title>
+<text class="t" x="24" y="52" font-size="11" font-weight="600">runs of 1</text>
+<rect class="s f" x="84" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="52.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="s f" x="152" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="52.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="220" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="52.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="52.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="356" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="52.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="s f" x="424" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="52.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="492" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="524" y="52.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="s f" x="560" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="592" y="52.14" font-size="11.5" text-anchor="middle">woman</text>
+<text class="tm" x="24" y="114" font-size="11">runs of 2</text>
+<rect class="m" x="81" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="84" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="114.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="152" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="114.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="m" x="217" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="220" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="114.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="114.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="m" x="353" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="356" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="114.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="424" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="114.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="a" x="489" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="492" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="524" y="114.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="a af" x="560" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="592" y="114.14" font-size="11.5" text-anchor="middle">woman</text>
+<line class="m" x1="116" y1="64" x2="136" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="184" y1="64" x2="164" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="252" y1="64" x2="272" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="320" y1="64" x2="300" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="388" y1="64" x2="408" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="456" y1="64" x2="436" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="524" y1="64" x2="544" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<line class="a" x1="592" y1="64" x2="572" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<text class="tm" x="24" y="176" font-size="11">runs of 4</text>
+<rect class="m" x="81" y="155" width="274" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="84" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="176.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="152" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="176.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="220" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="176.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="288" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="176.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="m" x="356" y="158" width="268" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="150" y1="126" x2="204" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="286" y1="126" x2="232" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="422" y1="126" x2="476" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="558" y1="126" x2="504" y2="154" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="238" font-size="11">all 8</text>
+<rect class="m" x="84" y="220" width="540" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="218" y1="188" x2="340" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="490" y1="188" x2="368" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+</g>
+<g class="step"><title>merge v[4..6) and v[6..8) into v[4..8): 2 comparisons, 8 in all (one side ran out first, so the rest of the other is copied without comparing).</title>
+<text class="t" x="24" y="52" font-size="11" font-weight="600">runs of 1</text>
+<rect class="s f" x="84" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="52.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="s f" x="152" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="52.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="220" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="52.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="52.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="356" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="52.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="s f" x="424" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="52.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="492" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="524" y="52.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="s f" x="560" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="592" y="52.14" font-size="11.5" text-anchor="middle">woman</text>
+<text class="tm" x="24" y="114" font-size="11">runs of 2</text>
+<rect class="m" x="81" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="84" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="114.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="152" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="114.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="m" x="217" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="220" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="114.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="114.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="m" x="353" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="356" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="114.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="424" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="114.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="m" x="489" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="492" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="524" y="114.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="s f" x="560" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="592" y="114.14" font-size="11.5" text-anchor="middle">woman</text>
+<line class="m" x1="116" y1="64" x2="136" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="184" y1="64" x2="164" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="252" y1="64" x2="272" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="320" y1="64" x2="300" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="388" y1="64" x2="408" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="456" y1="64" x2="436" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="524" y1="64" x2="544" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="592" y1="64" x2="572" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="24" y="176" font-size="11">runs of 4</text>
+<rect class="m" x="81" y="155" width="274" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="84" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="176.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="152" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="176.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="220" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="176.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="288" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="176.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="a" x="353" y="155" width="274" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="356" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="388" y="176.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="a af" x="424" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="456" y="176.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="a af" x="492" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="524" y="176.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="a af" x="560" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="592" y="176.14" font-size="11.5" text-anchor="middle">woman</text>
+<line class="m" x1="150" y1="126" x2="204" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="286" y1="126" x2="232" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="422" y1="126" x2="476" y2="154" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<line class="a" x1="558" y1="126" x2="504" y2="154" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<text class="tm" x="24" y="238" font-size="11">all 8</text>
+<rect class="m" x="84" y="220" width="540" height="28" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line class="m" x1="218" y1="188" x2="340" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="490" y1="188" x2="368" y2="216" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+</g>
+<g class="step"><title>merge v[0..4) and v[4..8) into v[0..8): 7 comparisons, 15 in all.</title>
+<text class="t" x="24" y="52" font-size="11" font-weight="600">runs of 1</text>
+<rect class="s f" x="84" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="52.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="s f" x="152" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="52.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="220" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="52.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="52.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="356" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="52.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="s f" x="424" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="52.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="492" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="524" y="52.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="s f" x="560" y="34" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="592" y="52.14" font-size="11.5" text-anchor="middle">woman</text>
+<text class="tm" x="24" y="114" font-size="11">runs of 2</text>
+<rect class="m" x="81" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="84" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="114.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="152" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="114.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="m" x="217" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="220" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="114.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="288" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="114.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="m" x="353" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="356" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="114.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="424" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="114.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="m" x="489" y="93" width="138" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="492" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="524" y="114.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="s f" x="560" y="96" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="592" y="114.14" font-size="11.5" text-anchor="middle">woman</text>
+<line class="m" x1="116" y1="64" x2="136" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="184" y1="64" x2="164" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="252" y1="64" x2="272" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="320" y1="64" x2="300" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="388" y1="64" x2="408" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="456" y1="64" x2="436" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="524" y1="64" x2="544" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="592" y1="64" x2="572" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="24" y="176" font-size="11">runs of 4</text>
+<rect class="m" x="81" y="155" width="274" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="84" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="116" y="176.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="s f" x="152" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="184" y="176.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="s f" x="220" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="252" y="176.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="s f" x="288" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="176.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="m" x="353" y="155" width="274" height="34" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="356" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="388" y="176.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="s f" x="424" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="456" y="176.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="s f" x="492" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="524" y="176.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="s f" x="560" y="158" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="592" y="176.14" font-size="11.5" text-anchor="middle">woman</text>
+<line class="m" x1="150" y1="126" x2="204" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="286" y1="126" x2="232" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="422" y1="126" x2="476" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="558" y1="126" x2="504" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="24" y="238" font-size="11">all 8</text>
+<rect class="a" x="81" y="217" width="546" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="84" y="220" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="116" y="238.14" font-size="11.5" text-anchor="middle">always</text>
+<rect class="a af" x="152" y="220" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="184" y="238.14" font-size="11.5" text-anchor="middle">holmes</text>
+<rect class="a af" x="220" y="220" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="252" y="238.14" font-size="11.5" text-anchor="middle">is</text>
+<rect class="a af" x="288" y="220" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="320" y="238.14" font-size="11.5" text-anchor="middle">she</text>
+<rect class="a af" x="356" y="220" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="388" y="238.14" font-size="11.5" text-anchor="middle">sherlock</text>
+<rect class="a af" x="424" y="220" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="456" y="238.14" font-size="11.5" text-anchor="middle">the</text>
+<rect class="a af" x="492" y="220" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="524" y="238.14" font-size="11.5" text-anchor="middle">to</text>
+<rect class="a af" x="560" y="220" width="64" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="592" y="238.14" font-size="11.5" text-anchor="middle">woman</text>
+<line class="a" x1="218" y1="188" x2="340" y2="216" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+<line class="a" x1="490" y1="188" x2="368" y2="216" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-aa)"/>
+</g>
+</svg>
