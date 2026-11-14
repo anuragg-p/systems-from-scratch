@@ -154,26 +154,29 @@ static const char *pick(const char *algo, const char *const *names, const char *
 }
 
 // @from 04.02
-/* Without -F: parse the pattern, and get the matcher --algo names ready. */
+/* Without -F: parse the pattern, and get the matcher --algo names ready.
+ * The backtracker walks the tree itself; the NFA is made from the tree, and   @from 04.03
+ * the DFA from the NFA.                                                      @from 04.04
+ */
 static void use_regex(const char *pattern, size_t len, const char *algo)
 {
     const char *how = pick(algo, regex_algos, "a regular expression");
     re = re_parse(pattern, len, icase);
-    matches = by_backtracking;
-    // @from 04.03
-    if (strcmp(how, "nfa") == 0) {
-        nfa_compile(&nfa, re);
-        matches = by_nfa;
+    next_match = next_regex;
+    if (strcmp(how, "backtrack") == 0) {
+        matches = by_backtracking;
+        return;
     }
+    // @from 04.03
+    nfa_compile(&nfa, re);
+    matches = by_nfa;
     // @end
     // @from 04.04
     if (strcmp(how, "dfa") == 0) {
-        nfa_compile(&nfa, re);
         dfa_init(&dfa, &nfa, cache);
         matches = by_dfa;
     }
     // @end
-    next_match = next_regex;
 }
 // @end
 
