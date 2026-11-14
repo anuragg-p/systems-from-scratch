@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 318" fill="none">
+<title>Three keys, a then Enter then Ctrl-C, through the terminal driver in each mode</title>
+<defs><marker id="f0101a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0101a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0101a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="36" font-size="12.5" font-weight="700">cooked: how the shell leaves the terminal</text>
+<rect class="s f" x="24" y="78" width="42" height="32" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="45" y="91" font-size="11.5" font-weight="600" text-anchor="middle">97</text>
+<text class="tm mono" x="45" y="103" font-size="9" text-anchor="middle">a</text>
+<rect class="s f" x="70" y="78" width="42" height="32" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="91" y="91" font-size="11.5" font-weight="600" text-anchor="middle">13</text>
+<text class="tm mono" x="91" y="103" font-size="9" text-anchor="middle">Enter</text>
+<rect class="s f" x="116" y="78" width="42" height="32" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="137" y="91" font-size="11.5" font-weight="600" text-anchor="middle">3</text>
+<text class="tm mono" x="137" y="103" font-size="9" text-anchor="middle">Ctrl-C</text>
+<text class="tm" x="24" y="68" font-size="10.5">the terminal sends</text>
+<line class="s" x1="164" y1="94" x2="190" y2="94" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0101a-ah)"/>
+<rect class="s fs" x="192" y="58" width="236" height="88" rx="8" stroke-width="1.5"/>
+<text class="t" x="204" y="76" font-size="11.5" font-weight="600">the terminal driver</text>
+<text class="t" x="204" y="96" font-size="11">97: echoed to the screen, kept</text>
+<text class="t" x="204" y="113" font-size="11">13: made 10 (ICRNL): the line is done</text>
+<text class="t" x="204" y="130" font-size="11">3: not passed on: SIGINT (ISIG)</text>
+<line class="s" x1="432" y1="94" x2="458" y2="94" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0101a-ah)"/>
+<text class="tm" x="462" y="68" font-size="10.5">the program gets</text>
+<text class="t mono" x="462" y="88" font-size="11.5">read() returns 97 10,</text>
+<text class="t" x="462" y="105" font-size="11.5">both at once, after Enter;</text>
+<text class="t" x="462" y="122" font-size="11.5">then the program is killed</text>
+<text class="ta" x="24" y="174" font-size="12.5" font-weight="700">raw: how kilo sets it</text>
+<rect class="s f" x="24" y="216" width="42" height="32" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="45" y="229" font-size="11.5" font-weight="600" text-anchor="middle">97</text>
+<text class="tm mono" x="45" y="241" font-size="9" text-anchor="middle">a</text>
+<rect class="s f" x="70" y="216" width="42" height="32" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="91" y="229" font-size="11.5" font-weight="600" text-anchor="middle">13</text>
+<text class="tm mono" x="91" y="241" font-size="9" text-anchor="middle">Enter</text>
+<rect class="s f" x="116" y="216" width="42" height="32" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="137" y="229" font-size="11.5" font-weight="600" text-anchor="middle">3</text>
+<text class="tm mono" x="137" y="241" font-size="9" text-anchor="middle">Ctrl-C</text>
+<text class="tm" x="24" y="206" font-size="10.5">the terminal sends</text>
+<line class="s" x1="164" y1="232" x2="190" y2="232" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0101a-ah)"/>
+<rect class="a af" x="192" y="196" width="236" height="88" rx="8" stroke-width="1.5"/>
+<text class="ta" x="204" y="214" font-size="11.5" font-weight="600">the terminal driver</text>
+<text class="t" x="204" y="234" font-size="11">every byte passed on as it comes,</text>
+<text class="t" x="204" y="251" font-size="11">unchanged and not echoed</text>
+<line class="s" x1="432" y1="232" x2="458" y2="232" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0101a-ah)"/>
+<text class="tm" x="462" y="206" font-size="10.5">the program gets</text>
+<text class="t mono" x="462" y="226" font-size="11.5">read() returns 97,</text>
+<text class="t" x="462" y="243" font-size="11.5">then 13, then 3,</text>
+<text class="t" x="462" y="260" font-size="11.5">each as it is typed</text>
+<text class="tm" x="24" y="308" font-size="11">Raw mode is the same terminal with the driver&#x27;s processing switched off, flag by flag.</text>
+</svg>

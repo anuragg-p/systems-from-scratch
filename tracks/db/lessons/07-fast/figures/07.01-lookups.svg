@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" fill="none">
+<title>Point lookups per second, one statement each, and inside one BEGIN</title>
+<defs><marker id="f0701c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0701c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0701c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">100000 lookups by primary key on the benchmark file, median of 5 runs</text>
+<text class="t" x="234" y="55" font-size="11" text-anchor="end">./db, each its own statement</text>
+<rect class="s fs" x="244" y="43" width="300" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="552" y="56" font-size="10.5" text-anchor="None">611,393/s</text>
+<text class="t" x="234" y="85" font-size="11" text-anchor="end">./db, all inside BEGIN ... COMMIT</text>
+<rect class="s fs" x="244" y="73" width="295.5" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="547.5" y="86" font-size="10.5" text-anchor="None">602,220/s</text>
+<text class="t" x="234" y="123" font-size="11" text-anchor="end">sqlite3, each its own statement</text>
+<rect class="a fa" x="244" y="111" width="85.38" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="337.38" y="124" font-size="10.5" text-anchor="None">174,005/s</text>
+<text class="t" x="234" y="153" font-size="11" text-anchor="end">sqlite3, all inside BEGIN ... COMMIT</text>
+<rect class="a af" x="244" y="141" width="209.38" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="461.38" y="154" font-size="10.5" text-anchor="None">426,707/s</text>
+<text class="t" x="24" y="194" font-size="11">outside a transaction sqlite3 takes a file lock and checks for a hot journal before every</text>
+<text class="t" x="24" y="210" font-size="11">statement, so that other processes can share the file; ./db assumes it is alone</text>
+</svg>

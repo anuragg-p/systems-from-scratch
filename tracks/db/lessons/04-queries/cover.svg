@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>A query runs as a stack of operators that pull rows up from a B-tree</title>
+<defs><marker id="m04-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m04-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m04-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="fs" x="24" y="18" width="592" height="36" rx="10"/>
+<text class="t mono" x="40" y="41" font-size="13">SELECT name FROM fruit WHERE price &gt; 0.5 ORDER BY name LIMIT 2;</text>
+<rect class="s f" x="150" y="76" width="200" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="250" y="95.5" font-size="12.5" text-anchor="middle">Limit 2 offset 0</text>
+<rect class="s f" x="150" y="126" width="200" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="250" y="145.5" font-size="12.5" text-anchor="middle">Sort by name</text>
+<rect class="s f" x="150" y="176" width="200" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="250" y="195.5" font-size="12.5" text-anchor="middle">Filter (price &gt; 0.5)</text>
+<rect class="a af" x="150" y="226" width="200" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="250" y="245.5" font-size="12.5" text-anchor="middle">Scan fruit</text>
+<line class="s" x1="230" y1="108" x2="230" y2="124" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m04-ah)"/>
+<line class="a" x1="270" y1="124" x2="270" y2="108" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m04-aa)"/>
+<line class="s" x1="230" y1="158" x2="230" y2="174" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m04-ah)"/>
+<line class="a" x1="270" y1="174" x2="270" y2="158" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m04-aa)"/>
+<line class="s" x1="230" y1="208" x2="230" y2="224" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m04-ah)"/>
+<line class="a" x1="270" y1="224" x2="270" y2="208" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m04-aa)"/>
+<text class="tm mono" x="220" y="120" font-size="10.5" text-anchor="end">next()</text>
+<text class="ta" x="280" y="120" font-size="10.5">row</text>
+<rect class="s fs" x="392" y="92" width="200" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="404" y="112" font-size="12">1  apple 0.5</text>
+<rect class="s fs" x="392" y="134" width="200" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="404" y="154" font-size="12">2  fig 2.0</text>
+<rect class="s fs" x="392" y="176" width="200" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="404" y="196" font-size="12">3  kiwi 0.75</text>
+<rect class="s fs" x="392" y="218" width="200" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="404" y="238" font-size="12">4  pear 0.6</text>
+<text class="tm" x="392" y="80" font-size="11">fruit&#x27;s B-tree leaf</text>
+<path class="a" d="M390 240 C 370 240, 368 246, 352 246" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m04-aa)"/>
+<text class="tm" x="150" y="280" font-size="11">prints fig, kiwi. One row moves up at a time; only Sort holds them all.</text>
+</svg>

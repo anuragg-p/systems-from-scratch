@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 160">
+<rect class="m f" x="14" y="10" width="252" height="140" rx="6" stroke-width="1.25"/>
+<path class="m" d="M28 11v138M42 11v138M56 11v138M70 11v138M84 11v138M98 11v138M112 11v138M126 11v138M140 11v138M154 11v138M168 11v138M182 11v138M196 11v138M210 11v138M224 11v138M238 11v138M252 11v138M15 24h250M15 38h250M15 52h250M15 66h250M15 80h250M15 94h250M15 108h250M15 122h250M15 136h250" stroke-width=".5" opacity=".55"/>
+<path class="s" d="M36 24V128H254" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="40" y="21" font-size="8" text-anchor="start">loss</text>
+<text class="tm mono" x="252" y="140" font-size="8" text-anchor="end">step</text>
+<path class="m" d="M38 40C70 52 102 62 142 66S222 73 252 75" stroke-width="1.75" stroke-dasharray="4 4" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M152 30V126" stroke-width="1.25" stroke-dasharray="3 3" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="af" x="158" y="30" width="62" height="18" rx="9"/>
+<text class="ta mono" x="189" y="42.5" font-size="9" text-anchor="middle" font-weight="600">H1: warmup</text>
+<path class="a draw" d="M38 38C70 50 104 60 144 63C152 64 154 98 162 103C184 108 222 111 252 113" pathLength="1" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="fa" cx="152" cy="74" r="3.5"/>
+</svg>

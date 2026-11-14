@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The 16550 UART: eight one-byte registers at UART0</title>
+<defs><marker id="f0103a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0103a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="41" font-size="11.5">0x10000000</text>
+<rect class="s f" x="150" y="24" width="130" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="215" y="41" font-size="12" font-weight="600" text-anchor="middle">RHR / THR</text>
+<text class="t" x="296" y="41" font-size="11.5">read: the next byte in. write: the next byte out</text>
+<text class="t mono" x="24" y="71" font-size="11.5">0x10000001</text>
+<rect class="s f" x="150" y="54" width="130" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="215" y="71" font-size="12" font-weight="600" text-anchor="middle">IER</text>
+<text class="t" x="296" y="71" font-size="11.5">interrupt enable: bit 1 TX, bit 0 RX</text>
+<text class="t mono" x="24" y="101" font-size="11.5">0x10000002</text>
+<rect class="s f" x="150" y="84" width="130" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="215" y="101" font-size="12" font-weight="600" text-anchor="middle">ISR / FCR</text>
+<text class="t" x="296" y="101" font-size="11.5">read: interrupt status. write: FIFO control</text>
+<text class="t mono" x="24" y="131" font-size="11.5">0x10000003</text>
+<rect class="s f" x="150" y="114" width="130" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="215" y="131" font-size="12" font-weight="600" text-anchor="middle">LCR</text>
+<text class="t" x="296" y="131" font-size="11.5">line control: 8 data bits; bit 7 = baud latch</text>
+<text class="tm mono" x="24" y="161" font-size="11.5">0x10000004</text>
+<rect class="m fs" x="150" y="144" width="130" height="26" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="215" y="161" font-size="12" text-anchor="middle">MCR</text>
+<text class="tm" x="296" y="161" font-size="11.5">not used by this kernel</text>
+<text class="t mono" x="24" y="191" font-size="11.5">0x10000005</text>
+<rect class="s f" x="150" y="174" width="130" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="215" y="191" font-size="12" font-weight="600" text-anchor="middle">LSR</text>
+<text class="t" x="296" y="191" font-size="11.5">line status: bit 5 TX_IDLE, bit 0 RX_READY</text>
+<text class="tm mono" x="24" y="221" font-size="11.5">0x10000006</text>
+<rect class="m fs" x="150" y="204" width="130" height="26" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="215" y="221" font-size="12" text-anchor="middle">MSR</text>
+<text class="tm" x="296" y="221" font-size="11.5">not used by this kernel</text>
+<text class="tm mono" x="24" y="251" font-size="11.5">0x10000007</text>
+<rect class="m fs" x="150" y="234" width="130" height="26" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="215" y="251" font-size="12" text-anchor="middle">SPR</text>
+<text class="tm" x="296" y="251" font-size="11.5">not used by this kernel</text>
+<path class="a" d="M148 187.0 H126 Q118 187.0 118 179.0 V45.0 Q118 37.0 126 37.0 H146" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0103a-aa)"/>
+<text class="ta" x="24" y="278" font-size="11.5" font-weight="600">uartputc_sync: wait until LSR says TX_IDLE, then store the byte to THR</text>
+<text class="tm" x="24" y="294" font-size="11">UART0 = 0x10000000; register r is the byte at UART0 + r</text>
+</svg>

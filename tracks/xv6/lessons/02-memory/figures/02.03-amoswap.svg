@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 236" fill="none">
+<title>amoswap: the memory does one swap at a time</title>
+<defs><marker id="f0203b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0203b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="54" font-size="12" font-weight="600">hart 0</text>
+<text class="t" x="24" y="190" font-size="12" font-weight="600">hart 1</text>
+<text class="t mono" x="24" y="125" font-size="12" font-weight="600">lk-&gt;locked</text>
+<rect class="s f" x="120" y="106" width="110" height="30" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="230" y="106" width="386" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="175.0" y="126" font-size="14" font-weight="600" text-anchor="middle">0</text>
+<text class="t mono" x="330.0" y="126" font-size="14" font-weight="600" text-anchor="middle">1</text>
+<text class="t mono" x="523.0" y="126" font-size="14" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="160" y="38" width="140" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="230" y="56" font-size="11" text-anchor="middle">amoswap  a5 = 1</text>
+<line class="s" x1="222" y1="64" x2="222" y2="104" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0203b-ah)"/>
+<line class="a" x1="238" y1="106" x2="238" y2="70" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0203b-aa)"/>
+<text class="ta mono" x="246" y="90" font-size="11" font-weight="600">old 0</text>
+<text class="ta" x="306" y="56" font-size="11.5" font-weight="600">-&gt; lock taken</text>
+<rect class="s f" x="360" y="174" width="140" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="430" y="192" font-size="11" text-anchor="middle">amoswap  a5 = 1</text>
+<line class="s" x1="422" y1="172" x2="422" y2="138" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0203b-ah)"/>
+<line class="s" x1="438" y1="138" x2="438" y2="172" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0203b-ah)"/>
+<text class="t mono" x="446" y="160" font-size="11" font-weight="600">old 1</text>
+<text class="t" x="506" y="192" font-size="11.5">-&gt; bnez: again</text>
+<line class="m" x1="120" y1="222" x2="616" y2="222" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0203b-ah)"/>
+<text class="tm" x="120" y="216" font-size="10.5">time</text>
+</svg>

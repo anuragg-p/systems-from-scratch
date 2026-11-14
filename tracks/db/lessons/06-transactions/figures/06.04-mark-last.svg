@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 272" fill="none">
+<title>A crash halfway through appending a commit, with the mark in the right place and the wrong one</title>
+<defs><marker id="f0604c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0604c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0604c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">UPDATE t SET b = &#x27;new&#x27; in WAL mode: 90 frames to append (pages 3-92); DB_CRASH=wal-partial after 45</text>
+<text class="t" x="24" y="48" font-size="11.5" font-weight="600" text-anchor="None">as written: the mark goes on the last frame</text>
+<rect class="a af" x="24" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="32" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="40" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="48" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="56" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="64" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="72" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="80" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="88" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="96" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="104" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="112" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="120" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="128" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="136" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="144" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="152" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="160" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="168" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="176" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="184" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="192" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="200" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="208" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="216" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="224" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="232" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="240" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="248" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="256" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="264" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="272" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="280" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="288" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="296" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="304" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="312" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="320" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="328" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="336" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="344" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="352" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="360" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="368" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="376" y="58" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="m" x="390" y="58" width="226" height="30" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="503" y="78" font-size="10.5" text-anchor="middle">45 frames never written</text>
+<text class="tm mono" x="24" y="102" font-size="10.5" text-anchor="None">pages 3 ... 47, marks 0</text>
+<text class="t" x="24" y="120" font-size="11">nothing is marked: the next open uses no frame, 0 rows changed</text>
+<text class="t" x="24" y="156" font-size="11.5" font-weight="600" text-anchor="None">broken: the mark on the first frame</text>
+<rect class="a fa" x="24" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="32" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="40" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="48" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="56" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="64" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="72" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="80" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="88" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="96" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="104" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="112" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="120" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="128" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="136" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="144" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="152" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="160" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="168" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="176" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="184" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="192" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="200" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="208" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="216" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="224" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="232" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="240" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="248" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="256" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="264" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="272" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="280" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="288" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="296" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="304" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="312" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="320" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="328" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="336" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="344" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="352" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="360" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="368" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="376" y="166" width="6" height="30" rx="1" stroke-width="1.5"/>
+<rect class="m" x="390" y="166" width="226" height="30" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="503" y="186" font-size="10.5" text-anchor="middle">45 frames never written</text>
+<text class="ta mono" x="24" y="210" font-size="10.5" font-weight="600" text-anchor="None">mark 92</text>
+<text class="ta" x="24" y="228" font-size="11">frame 1 (page 3, rows 1961-2000) looks like a whole commit: 40 rows changed</text>
+<text class="tm" x="24" y="262" font-size="10.5">a commit mark is a promise that every frame before it is in the log; put first, it promises too soon</text>
+</svg>

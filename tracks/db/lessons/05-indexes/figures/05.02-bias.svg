@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 244" fill="none">
+<title>Where a seek lands among equal keys: bias -1 and bias +1</title>
+<defs><marker id="f0502b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0502b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0502b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">index d_a of dup.db, in key order; probe: a = 7 (compare 1 field, ignore the rowid)</text>
+<rect class="s f" x="90" y="76" width="82" height="40" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="131" y="101" font-size="12" text-anchor="middle">(5, 3)</text>
+<rect class="a af" x="182" y="76" width="82" height="40" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="223" y="101" font-size="12" text-anchor="middle">(7, 1)</text>
+<rect class="a af" x="274" y="76" width="82" height="40" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="315" y="101" font-size="12" text-anchor="middle">(7, 8)</text>
+<rect class="a af" x="366" y="76" width="82" height="40" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="407" y="101" font-size="12" text-anchor="middle">(7, 9)</text>
+<rect class="s f" x="458" y="76" width="82" height="40" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="499" y="101" font-size="12" text-anchor="middle">(9, 2)</text>
+<text class="tm" x="78" y="101" font-size="10.5" text-anchor="end">a, rowid</text>
+<line class="a" x1="177" y1="54" x2="177" y2="72" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0502b-aa)"/>
+<text class="ta" x="177" y="50" font-size="11" font-weight="600" text-anchor="middle">bias -1: before every 7</text>
+<line class="s" x1="453" y1="138" x2="453" y2="120" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0502b-ah)"/>
+<text class="t" x="453" y="154" font-size="11" font-weight="600" text-anchor="middle">bias +1: after every 7</text>
+<text class="t" x="24" y="190" font-size="11">-1 is the start of a range: WHERE a = 7 reads (7,1) (7,8) (7,9), stops at (9,2): ids 1, 8, 9</text>
+<text class="t" x="24" y="210" font-size="11">+1 skips them all: the first entry it sees is (9, 2), already past the bound: no rows</text>
+<text class="tm" x="24" y="230" font-size="10.5">bias is only the answer to a tie: with no equal entries both land in the same place</text>
+</svg>

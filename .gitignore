@@ -1,0 +1,7 @@
+build/
+build-*/
+.test-logs/
+__pycache__/
+/work/
+# ./learn run/bench/files --at NN.LL write the project at a lesson here (build/ above covers it too)
+/build/at/

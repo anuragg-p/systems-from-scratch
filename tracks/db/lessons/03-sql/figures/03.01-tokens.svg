@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 210" fill="none">
+<title>next_token() cutting a statement into tokens</title>
+<defs><marker id="f0301a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0301a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0301a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="18" font-size="11">the text, one byte per cell; each call to next_token() returns the token that starts there</text>
+<rect class="fs" x="22" y="48" width="591.2" height="30" rx="6"/>
+<text class="t mono" x="31.4" y="69" font-size="15" text-anchor="middle">S</text>
+<text class="t mono" x="42.2" y="69" font-size="15" text-anchor="middle">E</text>
+<text class="t mono" x="53" y="69" font-size="15" text-anchor="middle">L</text>
+<text class="t mono" x="63.8" y="69" font-size="15" text-anchor="middle">E</text>
+<text class="t mono" x="74.6" y="69" font-size="15" text-anchor="middle">C</text>
+<text class="t mono" x="85.4" y="69" font-size="15" text-anchor="middle">T</text>
+<circle class="m" cx="96.2" cy="63" r="1.4" stroke-width="1.5"/>
+<text class="t mono" x="107" y="69" font-size="15" text-anchor="middle">p</text>
+<text class="t mono" x="117.8" y="69" font-size="15" text-anchor="middle">r</text>
+<text class="t mono" x="128.6" y="69" font-size="15" text-anchor="middle">i</text>
+<text class="t mono" x="139.4" y="69" font-size="15" text-anchor="middle">c</text>
+<text class="t mono" x="150.2" y="69" font-size="15" text-anchor="middle">e</text>
+<text class="t mono" x="161" y="69" font-size="15" text-anchor="middle">*</text>
+<text class="t mono" x="171.8" y="69" font-size="15" text-anchor="middle">2</text>
+<circle class="m" cx="182.6" cy="63" r="1.4" stroke-width="1.5"/>
+<text class="t mono" x="193.4" y="69" font-size="15" text-anchor="middle">F</text>
+<text class="t mono" x="204.2" y="69" font-size="15" text-anchor="middle">R</text>
+<text class="t mono" x="215" y="69" font-size="15" text-anchor="middle">O</text>
+<text class="t mono" x="225.8" y="69" font-size="15" text-anchor="middle">M</text>
+<circle class="m" cx="236.6" cy="63" r="1.4" stroke-width="1.5"/>
+<text class="t mono" x="247.4" y="69" font-size="15" text-anchor="middle">f</text>
+<text class="t mono" x="258.2" y="69" font-size="15" text-anchor="middle">r</text>
+<text class="t mono" x="269" y="69" font-size="15" text-anchor="middle">u</text>
+<text class="t mono" x="279.8" y="69" font-size="15" text-anchor="middle">i</text>
+<text class="t mono" x="290.6" y="69" font-size="15" text-anchor="middle">t</text>
+<circle class="m" cx="301.4" cy="63" r="1.4" stroke-width="1.5"/>
+<text class="t mono" x="312.2" y="69" font-size="15" text-anchor="middle">W</text>
+<text class="t mono" x="323" y="69" font-size="15" text-anchor="middle">H</text>
+<text class="t mono" x="333.8" y="69" font-size="15" text-anchor="middle">E</text>
+<text class="t mono" x="344.6" y="69" font-size="15" text-anchor="middle">R</text>
+<text class="t mono" x="355.4" y="69" font-size="15" text-anchor="middle">E</text>
+<circle class="m" cx="366.2" cy="63" r="1.4" stroke-width="1.5"/>
+<text class="t mono" x="377" y="69" font-size="15" text-anchor="middle">n</text>
+<text class="t mono" x="387.8" y="69" font-size="15" text-anchor="middle">a</text>
+<text class="t mono" x="398.6" y="69" font-size="15" text-anchor="middle">m</text>
+<text class="t mono" x="409.4" y="69" font-size="15" text-anchor="middle">e</text>
+<circle class="m" cx="420.2" cy="63" r="1.4" stroke-width="1.5"/>
+<text class="t mono" x="431" y="69" font-size="15" text-anchor="middle">&lt;</text>
+<text class="t mono" x="441.8" y="69" font-size="15" text-anchor="middle">&gt;</text>
+<circle class="m" cx="452.6" cy="63" r="1.4" stroke-width="1.5"/>
+<text class="t mono" x="463.4" y="69" font-size="15" text-anchor="middle">&#x27;</text>
+<text class="t mono" x="474.2" y="69" font-size="15" text-anchor="middle">i</text>
+<text class="t mono" x="485" y="69" font-size="15" text-anchor="middle">t</text>
+<text class="t mono" x="495.8" y="69" font-size="15" text-anchor="middle">&#x27;</text>
+<text class="t mono" x="506.6" y="69" font-size="15" text-anchor="middle">&#x27;</text>
+<text class="t mono" x="517.4" y="69" font-size="15" text-anchor="middle">s</text>
+<text class="t mono" x="528.2" y="69" font-size="15" text-anchor="middle">&#x27;</text>
+<text class="t mono" x="539" y="69" font-size="15" text-anchor="middle">;</text>
+<circle class="m" cx="549.8" cy="63" r="1.4" stroke-width="1.5"/>
+<text class="t mono" x="560.6" y="69" font-size="15" text-anchor="middle">-</text>
+<text class="t mono" x="571.4" y="69" font-size="15" text-anchor="middle">-</text>
+<circle class="m" cx="582.2" cy="63" r="1.4" stroke-width="1.5"/>
+<text class="t mono" x="593" y="69" font-size="15" text-anchor="middle">h</text>
+<text class="t mono" x="603.8" y="69" font-size="15" text-anchor="middle">i</text>
+<path class="a" d="M27.5 82 L27.5 88 L89.3 88 L89.3 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="58.4" y="106" font-size="10.5" font-weight="600" text-anchor="middle">TK_SELECT</text>
+<path class="s" d="M103.1 82 L103.1 88 L154.1 88 L154.1 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="128.6" y="106" font-size="10.5" text-anchor="middle">TK_ID</text>
+<line class="m" x1="161" y1="46" x2="161" y2="40" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="161" y="36" font-size="10.5" text-anchor="middle">TK_STAR</text>
+<path class="s" d="M157.1 82 L157.1 88 L164.9 88 L164.9 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M167.9 82 L167.9 88 L175.7 88 L175.7 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="171.8" y1="90" x2="171.8" y2="113" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="171.8" y="124" font-size="10.5" text-anchor="middle">TK_INTEGER</text>
+<path class="a" d="M189.5 82 L189.5 88 L229.7 88 L229.7 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="209.6" y="106" font-size="10.5" font-weight="600" text-anchor="middle">TK_FROM</text>
+<path class="s" d="M243.5 82 L243.5 88 L294.5 88 L294.5 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="269" y="106" font-size="10.5" text-anchor="middle">TK_ID</text>
+<path class="a" d="M308.3 82 L308.3 88 L359.3 88 L359.3 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="333.8" y="106" font-size="10.5" font-weight="600" text-anchor="middle">TK_WHERE</text>
+<path class="s" d="M373.1 82 L373.1 88 L413.3 88 L413.3 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="393.2" y="106" font-size="10.5" text-anchor="middle">TK_ID</text>
+<path class="s" d="M427.1 82 L427.1 88 L445.7 88 L445.7 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="436.4" y="106" font-size="10.5" text-anchor="middle">TK_NE</text>
+<path class="s" d="M459.5 82 L459.5 88 L532.1 88 L532.1 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="495.8" y="106" font-size="10.5" text-anchor="middle">TK_STRING</text>
+<line class="m" x1="539" y1="46" x2="539" y2="40" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="539" y="36" font-size="10.5" text-anchor="middle">TK_SEMI</text>
+<path class="s" d="M535.1 82 L535.1 88 L542.9 88 L542.9 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M556.7 82 L556.7 88 L607.7 88 L607.7 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="582.2" y="106" font-size="10.5" text-anchor="middle">TK_SPACE</text>
+<line class="m" x1="609.2" y1="44" x2="609.2" y2="80" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="613.2" y="36" font-size="10.5" text-anchor="end">TK_EOF</text>
+<line class="m" x1="26" y1="146" x2="609.2" y2="146" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="26" y1="142" x2="26" y2="150" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="26" y="162" font-size="9.5" text-anchor="middle">0</text>
+<line class="m" x1="134" y1="142" x2="134" y2="150" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="134" y="162" font-size="9.5" text-anchor="middle">10</text>
+<line class="m" x1="242" y1="142" x2="242" y2="150" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="242" y="162" font-size="9.5" text-anchor="middle">20</text>
+<line class="m" x1="350" y1="142" x2="350" y2="150" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="350" y="162" font-size="9.5" text-anchor="middle">30</text>
+<line class="m" x1="458" y1="142" x2="458" y2="150" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="458" y="162" font-size="9.5" text-anchor="middle">40</text>
+<line class="m" x1="566" y1="142" x2="566" y2="150" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="566" y="162" font-size="9.5" text-anchor="middle">50</text>
+<line class="m" x1="609.2" y1="142" x2="609.2" y2="150" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="609.2" y="162" font-size="9.5" text-anchor="middle">54</text>
+<text class="tm" x="24" y="186" font-size="11">Each dot is a one-byte TK_SPACE token, and so is the comment: every byte belongs to some token.</text>
+<text class="tm" x="24" y="202" font-size="11">The parser&#x27;s advance() skips TK_SPACE, so it sees 11 tokens and then TK_EOF (length 0, at byte 54).</text>
+</svg>

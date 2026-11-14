@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 270" fill="none">
+<title>Removing one cell: rebuild the page, or drop its pointer and leave a hole</title>
+<defs><marker id="f0702c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">a leaf with cells A..E; C is deleted</text>
+<text class="t" x="24" y="46" font-size="11.5" font-weight="600" text-anchor="None">before</text>
+<rect class="s f" x="24" y="54" width="280" height="44" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="24" y="54" width="30" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="39" y="81" font-size="10" text-anchor="middle">hdr</text>
+<rect class="s fs" x="268" y="58" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="285" y="81" font-size="11.5" font-weight="600" text-anchor="middle">A</text>
+<rect class="s fs" x="232" y="58" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="249" y="81" font-size="11.5" font-weight="600" text-anchor="middle">B</text>
+<rect class="s fs" x="196" y="58" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="213" y="81" font-size="11.5" font-weight="600" text-anchor="middle">C</text>
+<rect class="s fs" x="160" y="58" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="177" y="81" font-size="11.5" font-weight="600" text-anchor="middle">D</text>
+<rect class="s fs" x="124" y="58" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="141" y="81" font-size="11.5" font-weight="600" text-anchor="middle">E</text>
+<text class="ta" x="336" y="46" font-size="11.5" font-weight="600" text-anchor="None">./db: copy every cell out, lay them out again</text>
+<rect class="s f" x="336" y="54" width="280" height="44" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="336" y="54" width="30" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="351" y="81" font-size="10" text-anchor="middle">hdr</text>
+<rect class="s fs" x="580" y="58" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="597" y="81" font-size="11.5" font-weight="600" text-anchor="middle">A</text>
+<rect class="s fs" x="544" y="58" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="561" y="81" font-size="11.5" font-weight="600" text-anchor="middle">B</text>
+<rect class="a af" x="508" y="58" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="525" y="81" font-size="11.5" font-weight="600" text-anchor="middle">D</text>
+<rect class="a af" x="472" y="58" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="489" y="81" font-size="11.5" font-weight="600" text-anchor="middle">E</text>
+<text class="tm" x="336" y="116" font-size="10.5">all of D and E move; the whole page</text>
+<text class="tm" x="336" y="130" font-size="10.5">is rewritten (node_rebuild)</text>
+<text class="t" x="24" y="168" font-size="11.5" font-weight="600" text-anchor="None">sqlite3: remove the pointer, free the bytes</text>
+<rect class="s f" x="24" y="176" width="280" height="44" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="24" y="176" width="30" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="39" y="203" font-size="10" text-anchor="middle">hdr</text>
+<rect class="s fs" x="268" y="180" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="285" y="203" font-size="11.5" font-weight="600" text-anchor="middle">A</text>
+<rect class="s fs" x="232" y="180" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="249" y="203" font-size="11.5" font-weight="600" text-anchor="middle">B</text>
+<rect class="m" x="196" y="180" width="34" height="36" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="213" y="203" font-size="10" text-anchor="middle">free</text>
+<rect class="s fs" x="160" y="180" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="177" y="203" font-size="11.5" font-weight="600" text-anchor="middle">D</text>
+<rect class="s fs" x="124" y="180" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="141" y="203" font-size="11.5" font-weight="600" text-anchor="middle">E</text>
+<text class="tm" x="24" y="238" font-size="10.5">the hole goes on the page&#x27;s freeblock list</text>
+<text class="tm" x="24" y="252" font-size="10.5">(header offset 1): nothing else moves</text>
+<text class="t" x="336" y="168" font-size="11.5" font-weight="600" text-anchor="None">the experiment: remove the pointer only</text>
+<rect class="s f" x="336" y="176" width="280" height="44" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="336" y="176" width="30" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="351" y="203" font-size="10" text-anchor="middle">hdr</text>
+<rect class="s fs" x="580" y="180" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="597" y="203" font-size="11.5" font-weight="600" text-anchor="middle">A</text>
+<rect class="s fs" x="544" y="180" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="561" y="203" font-size="11.5" font-weight="600" text-anchor="middle">B</text>
+<rect class="m" x="508" y="180" width="34" height="36" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="525" y="203" font-size="10" text-anchor="middle">?</text>
+<rect class="s fs" x="472" y="180" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="489" y="203" font-size="11.5" font-weight="600" text-anchor="middle">D</text>
+<rect class="s fs" x="436" y="180" width="34" height="36" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="453" y="203" font-size="11.5" font-weight="600" text-anchor="middle">E</text>
+<text class="tm" x="336" y="238" font-size="10.5">the hole is in no list: sqlite3&#x27;s check</text>
+<text class="tm" x="336" y="252" font-size="10.5">reports it as fragmentation nobody counted</text>
+</svg>

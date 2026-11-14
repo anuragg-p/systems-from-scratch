@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 262" fill="none">
+<title>In an index the interior cells are entries too: the order a cursor visits them</title>
+<defs><marker id="f0204b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0204b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0204b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">index t_a of ix.db: root page 3 holds 7 entries, its 8 children hold the other 2993</text>
+<rect class="s fs" x="52" y="44" width="536" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="46" y="66" font-size="11" font-weight="600" text-anchor="end">page 3</text>
+<rect class="a af" x="70.7" y="50" width="50" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="95.7" y="64.96" font-size="11" text-anchor="middle">389</text>
+<rect class="a af" x="146.1" y="50" width="50" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="171.1" y="64.96" font-size="11" text-anchor="middle">762</text>
+<rect class="a af" x="221.5" y="50" width="50" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="246.5" y="64.96" font-size="11" text-anchor="middle">1135</text>
+<rect class="a af" x="296.9" y="50" width="50" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="321.9" y="64.96" font-size="11" text-anchor="middle">1509</text>
+<rect class="a af" x="372.3" y="50" width="50" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="397.3" y="64.96" font-size="11" text-anchor="middle">1884</text>
+<rect class="a af" x="447.7" y="50" width="50" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="472.7" y="64.96" font-size="11" text-anchor="middle">2254</text>
+<rect class="a af" x="523.1" y="50" width="50" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="548.1" y="64.96" font-size="11" text-anchor="middle">2627</text>
+<rect class="s f" x="24" y="140" width="68" height="44" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="58" y="158" font-size="10.5" font-weight="600" text-anchor="middle">page 16</text>
+<text class="tm mono" x="58" y="174" font-size="10" text-anchor="middle">1-388</text>
+<line class="m" x1="70.7" y1="72" x2="58" y2="138" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="99.4" y="140" width="68" height="44" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="133.4" y="158" font-size="10.5" font-weight="600" text-anchor="middle">page 10</text>
+<text class="tm mono" x="133.4" y="174" font-size="10" text-anchor="middle">390-761</text>
+<line class="m" x1="146.1" y1="72" x2="133.4" y2="138" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="174.8" y="140" width="68" height="44" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="208.8" y="158" font-size="10.5" font-weight="600" text-anchor="middle">page 19</text>
+<text class="tm mono" x="208.8" y="174" font-size="10" text-anchor="middle">763-1134</text>
+<line class="m" x1="221.5" y1="72" x2="208.8" y2="138" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="250.2" y="140" width="68" height="44" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="284.2" y="158" font-size="10.5" font-weight="600" text-anchor="middle">page 7</text>
+<text class="tm mono" x="284.2" y="174" font-size="10" text-anchor="middle">1136-1508</text>
+<line class="m" x1="296.9" y1="72" x2="284.2" y2="138" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="325.6" y="140" width="68" height="44" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="359.6" y="158" font-size="10.5" font-weight="600" text-anchor="middle">page 18</text>
+<text class="tm mono" x="359.6" y="174" font-size="10" text-anchor="middle">1510-1883</text>
+<line class="m" x1="372.3" y1="72" x2="359.6" y2="138" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="401" y="140" width="68" height="44" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="435" y="158" font-size="10.5" font-weight="600" text-anchor="middle">page 11</text>
+<text class="tm mono" x="435" y="174" font-size="10" text-anchor="middle">1885-2253</text>
+<line class="m" x1="447.7" y1="72" x2="435" y2="138" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="476.4" y="140" width="68" height="44" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="158" font-size="10.5" font-weight="600" text-anchor="middle">page 17</text>
+<text class="tm mono" x="510.4" y="174" font-size="10" text-anchor="middle">2255-2626</text>
+<line class="m" x1="523.1" y1="72" x2="510.4" y2="138" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="551.8" y="140" width="68" height="44" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="585.8" y="158" font-size="10.5" font-weight="600" text-anchor="middle">page 6</text>
+<text class="tm mono" x="585.8" y="174" font-size="10" text-anchor="middle">2628-3000</text>
+<line class="m" x1="573.1" y1="72" x2="585.8" y2="138" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="58" cy="204" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="58" y="208" font-size="10" font-weight="600" text-anchor="middle">1</text>
+<circle class="a f" cx="133.4" cy="204" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="133.4" y="208" font-size="10" font-weight="600" text-anchor="middle">3</text>
+<circle class="a f" cx="208.8" cy="204" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="208.8" y="208" font-size="10" font-weight="600" text-anchor="middle">5</text>
+<circle class="a f" cx="284.2" cy="204" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="284.2" y="208" font-size="10" font-weight="600" text-anchor="middle">7</text>
+<circle class="a f" cx="359.6" cy="204" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="359.6" y="208" font-size="10" font-weight="600" text-anchor="middle">9</text>
+<circle class="a f" cx="435" cy="204" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="435" y="208" font-size="10" font-weight="600" text-anchor="middle">11</text>
+<circle class="a f" cx="510.4" cy="204" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="510.4" y="208" font-size="10" font-weight="600" text-anchor="middle">13</text>
+<circle class="a f" cx="585.8" cy="204" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="585.8" y="208" font-size="10" font-weight="600" text-anchor="middle">15</text>
+<circle class="a f" cx="95.7" cy="100" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="95.7" y="104" font-size="10" font-weight="600" text-anchor="middle">2</text>
+<circle class="a f" cx="171.1" cy="100" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="171.1" y="104" font-size="10" font-weight="600" text-anchor="middle">4</text>
+<circle class="a f" cx="246.5" cy="100" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="246.5" y="104" font-size="10" font-weight="600" text-anchor="middle">6</text>
+<circle class="a f" cx="321.9" cy="100" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="321.9" y="104" font-size="10" font-weight="600" text-anchor="middle">8</text>
+<circle class="a f" cx="397.3" cy="100" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="397.3" y="104" font-size="10" font-weight="600" text-anchor="middle">10</text>
+<circle class="a f" cx="472.7" cy="100" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="472.7" y="104" font-size="10" font-weight="600" text-anchor="middle">12</text>
+<circle class="a f" cx="548.1" cy="100" r="9" stroke-width="1.5"/>
+<text class="ta mono" x="548.1" y="104" font-size="10" font-weight="600" text-anchor="middle">14</text>
+<text class="t" x="24" y="236" font-size="10.5">Visiting order: a leaf, then the root entry after it, then the next leaf. A table&#x27;s cursor skips</text>
+<text class="t" x="24" y="252" font-size="10.5">interior cells (they only repeat a rowid); an index&#x27;s cursor must stop on them, or lose 7 rows.</text>
+</svg>

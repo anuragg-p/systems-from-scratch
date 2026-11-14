@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 214" fill="none">
+<title>Draw in the back buffer, then present it all at once</title>
+<defs><marker id="f0904c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0904c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0904c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s fs" x="24" y="40" width="152" height="64" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="34" y="66" font-size="10" font-weight="600">your drawing calls</text>
+<text class="tm" x="34" y="84" font-size="9.5">fillrect, line, drawtext</text>
+<rect class="s f" x="244" y="40" width="152" height="64" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="254" y="66" font-size="10" font-weight="600">back: malloc(1228800)</text>
+<text class="tm" x="254" y="84" font-size="9.5">ordinary memory, not shown</text>
+<rect class="a af" x="464" y="40" width="152" height="64" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="474" y="66" font-size="10" font-weight="600">the screen: fbmap()</text>
+<text class="ta" x="474" y="84" font-size="9.5">at 0x40000000: shown</text>
+<line class="s" x1="178" y1="72" x2="242" y2="72" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0904c-ah)"/>
+<line class="a" x1="398" y1="72" x2="462" y2="72" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0904c-aa)"/>
+<text class="ta mono" x="430" y="62" font-size="10" font-weight="600" text-anchor="middle">present()</text>
+<text class="tm" x="24" y="140" font-size="10.5">QEMU reads the screen whenever it refreshes the window, never knowing a frame is half done.</text>
+<text class="tm" x="24" y="158" font-size="10.5">Drawn straight onto the screen, a frame would show while it is being built: a clear, then</text>
+<text class="tm" x="24" y="176" font-size="10.5">the shapes one by one, then the pointer. present() copies a finished frame in one pass,</text>
+<text class="tm" x="24" y="194" font-size="10.5">8 bytes at a time, so the window only ever moves from one whole frame to the next.</text>
+</svg>

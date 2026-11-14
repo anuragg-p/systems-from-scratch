@@ -1,0 +1,1399 @@
+// @from 04.01
+/*
+ * exec.c - running statements.
+ *
+ * A query runs as a tree of operators, each with a next() that hands back
+ * one row at a time, pulling rows from its child as it needs them (the
+ * "Volcano" or iterator model):
+ *
+ *   Limit          stops after n rows @from 04.03
+ *    Sort          pulls every row, sorts them, hands them out in order @from 04.03
+ *     Filter       passes on only the rows WHERE is true for @from 04.02
+ *      Scan        reads the table's B-tree
+ *                  (or a range of it, or an index) @from 05.02
+ *
+ * No operator knows what is above or below it, so they combine freely,
+ * and nothing is materialised unless an operator needs every row at once.
+ * UPDATE and DELETE use the same operators to find their rows. @from 04.04
+ */
+// @else
+// /*
+//  * exec.c - running statements: each one the parser hands over is carried
+//  * out here, and an error stops the rest of the input.
+//  */
+// @end
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#include <strings.h>
+
+#include "db.h"
+
+// @from 04.01
+/* Allocates a zeroed operator with its name (shown by EXPLAIN) and next(). */
+static Op *new_op(Db *db, const char *name, int (*next)(Op *, Row **))
+{
+    Op *op = xcalloc(1, sizeof *op);
+    op->db = db;
+    op->name = name;
+    op->next = next;
+    return op;
+}
+
+/* Frees op and every operator below it, with the cursors and buffers each
+ * owns. */
+void op_close(Op *op)
+{
+    while (op) {
+        Op *child = op->child;
+        cursor_close(&op->cur);
+        cursor_close(&op->icur);  // @from 05.02
+        buf_free(&op->key);  // @from 05.02
+        if (op->table)              /* only a scan allocates the row it hands out */
+            free(op->row.cols);
+        // @from 04.03
+        free(op->rows);
+        if (op->sort_arena.head) {
+            arena_reset(&op->sort_arena);
+            free(op->sort_arena.head);
+        }
+        // @end
+        free(op);
+        op = child;
+    }
+}
+
+/* ------------------------------------------------------------ reading rows (04.01) */
+
+/* Decodes the row at cursor c into row, which has room for t->ncols values:
+ * one value per column of t. The record may be shorter than the table
+ * (the row predates an ALTER TABLE ADD COLUMN); the missing columns take
+ * their DEFAULT. The INTEGER PRIMARY KEY column is stored as NULL in the
+ * record because its value is the rowid, so it is filled in from c. A
+ * malformed record is fatal: the file is corrupt. */
+void decode_row(Table *t, Cursor *c, Row *row)
+{
+    // @build 04.01 decode a row
+    int n = record_decode(c->payload, c->npayload, row->cols, t->ncols);
+    if (n < 0)
+        fatal("database is corrupt: bad record in table %s, rowid %lld", t->name, (long long)c->rowid);
+    for (int i = n; i < t->ncols; i++)
+        row->cols[i] = t->cols[i].dflt_value;
+    /* sqlite3 stores a whole-number float in a REAL column as an integer,
+     * to save space; it is still a float. */
+    for (int i = 0; i < n && i < t->ncols; i++) {
+        if (t->cols[i].affinity == AFF_REAL && row->cols[i].type == V_INT) {
+            row->cols[i].r = (double)row->cols[i].i;
+            row->cols[i].type = V_REAL;
+        }
+    }
+    row->ncols = t->ncols;
+    row->rowid = c->rowid;
+    if (t->rowid_col >= 0) {
+        Value *v = &row->cols[t->rowid_col];
+        memset(v, 0, sizeof *v);
+        v->type = V_INT;
+        v->i = c->rowid;
+    }
+    // @end
+}
+
+/* Returns every row of the table, in rowid order. */
+static int scan_next(Op *op, Row **out)
+{
+    // @build 04.01 the table scan
+    int more = op->started ? cursor_next(&op->cur) : cursor_first(&op->cur);
+    op->started = 1;
+    if (!more)
+        return 0;
+    decode_row(op->table, &op->cur, &op->row);
+    *out = &op->row;
+    return 1;
+    // @end
+}
+
+/* SELECT without FROM: yields one row with no columns. */
+static int one_next(Op *op, Row **out)
+{
+    if (op->started)
+        return 0;
+    op->started = 1;
+    *out = &op->row;
+    return 1;
+}
+
+/* Yields no rows (used when the database file is empty). */
+static int nothing_next(Op *op, Row **out)
+{
+    (void)op;
+    (void)out;
+    return 0;
+}
+
+/* Yields the rows whose rowid lies in [lo_i, hi_i]; has_lo and has_hi say
+ * which ends are bounded. The scan seeks to the lower bound, then ends at
+ * the first rowid past the upper one. done set before the first call
+ * means the range is empty. */
+static int rowid_range_next(Op *op, Row **out)
+{
+    // @build 05.02 a range of rowids
+    if (op->done)
+        return 0;
+    int more;
+    if (!op->started) {
+        op->started = 1;
+        more = op->has_lo ? cursor_seek_rowid(&op->cur, op->lo_i) : cursor_first(&op->cur);
+    } else {
+        more = cursor_next(&op->cur);
+    }
+    if (!more || (op->has_hi && op->cur.rowid > op->hi_i)) {
+        op->done = 1;
+        return 0;
+    }
+    decode_row(op->table, &op->cur, &op->row);
+    *out = &op->row;
+    return 1;
+    // @end
+}
+
+/* Yields the rows whose indexed column lies between the bounds, in index
+ * order. Each index entry is a record of the indexed values followed by
+ * the rowid; the row itself is fetched from the table by that rowid. The
+ * scan seeks to the first entry not below the lower bound (comparing only
+ * the first field) and stops at the first one above the upper bound. An
+ * entry whose row is missing means the index is corrupt. */
+static int index_range_next(Op *op, Row **out)
+{
+    Index *ix = op->acc.index;
+    Value key[9];
+    // @build 05.02 an index range
+    if (op->done)
+        return 0;
+    int more;
+    if (!op->started) {
+        op->started = 1;
+        more = op->has_lo ? cursor_seek_key(&op->icur, op->key.p, (u32)op->key.n, 1, -1) : cursor_first(&op->icur);
+    } else {
+        more = cursor_next(&op->icur);
+    }
+    if (!more) {
+        op->done = 1;
+        return 0;
+    }
+    int n = record_decode(op->icur.payload, op->icur.npayload, key, ix->ncols + 1);
+    if (n != ix->ncols + 1 || key[ix->ncols].type != V_INT)
+        fatal("database is corrupt: bad entry in index %s", ix->name);
+    if (op->has_hi && value_compare(&key[0], &op->hi) > 0) {
+        op->done = 1;
+        return 0;
+    }
+    i64 rowid = key[ix->ncols].i;
+    if (!cursor_seek_rowid(&op->cur, rowid) || op->cur.rowid != rowid)
+        fatal("database is corrupt: index %s points at row %lld, which is not there", ix->name, (long long)rowid);
+    decode_row(op->table, &op->cur, &op->row);
+    *out = &op->row;
+    return 1;
+    // @end
+}
+
+// @from 05.02
+/* Evaluates a constant bound with the column's affinity applied, copying
+ * text and blobs into the statement arena so they last across rows. */
+static int bound_value(Db *db, Expr *e, int aff, Value *v)
+{
+    if (eval(db, e, NULL, v) < 0)
+        return -1;
+    apply_affinity(v, aff, &db->stmt);
+    if (v->type == V_TEXT || v->type == V_BLOB)     /* keep it past this row */
+        v->s = arena_strndup(&db->stmt, v->s, (size_t)v->n);
+    return 0;
+}
+
+/* A rowid bound as an integer, widened to whole numbers (WHERE re-checks
+ * every row, so a wider range is only slower, never wrong). Returns 0 for
+ * no usable bound on that side, 1 for a bound in *out, -1 if no row can
+ * match. */
+static int rowid_bound(Value v, int upper, i64 *out)
+{
+    if (v.type == V_NULL)
+        return -1;                      /* x < NULL is never true */
+    if (v.type == V_TEXT || v.type == V_BLOB)
+        return upper ? 0 : -1;          /* every integer sorts below text */
+    if (v.type == V_INT) {
+        *out = v.i;
+        return 1;
+    }
+    double r = upper ? ceil(v.r) : floor(v.r);
+    if (r >= 9223372036854775807.0)
+        return upper ? 0 : -1;
+    if (r <= -9223372036854775807.0)
+        return upper ? -1 : 0;
+    *out = (i64)r;
+    return 1;
+}
+// @end
+
+// @from 05.02
+/* Returns the operator that reads table t the way acc says (t NULL: the
+ * one-row source for SELECT without FROM), or NULL if a bound cannot be
+ * evaluated. */
+Op *op_scan(Db *db, Table *t, Access *acc)
+// @else
+// /* Returns the operator that reads every row of table t, in rowid order
+//  * (t NULL: the one-row source for SELECT without FROM). */
+// Op *op_scan(Db *db, Table *t)
+// @end
+{
+    if (!t) {
+        Op *op = new_op(db, "Constant row", one_next);
+        return op;
+    }
+    Op *op = new_op(db, "Scan", scan_next);
+    op->table = t;
+    op->acc = *acc;  // @from 05.02
+    op->row.cols = xcalloc((size_t)t->ncols + 1, sizeof(Value));
+    cursor_open(&op->cur, &db->pager, t->root, 1);
+    if (db->pager.npages == 0) {
+        op->next = nothing_next;     /* an empty file: no tables at all */
+        return op;
+    }
+    // @from 05.02
+    Arena *a = &db->stmt;
+    if (acc->kind == ACCESS_SCAN) {
+        op->detail = t->name;
+        return op;
+    }
+    if (acc->kind == ACCESS_ROWID_EQ || acc->kind == ACCESS_ROWID_RANGE) {
+        op->name = acc->kind == ACCESS_ROWID_EQ ? "Rowid lookup" : "Rowid range";
+        Value v;
+        if (acc->lo) {
+            if (bound_value(db, acc->lo, AFF_INTEGER, &v) < 0)
+                goto fail;
+            int r = rowid_bound(v, 0, &op->lo_i);
+            if (r < 0)
+                op->done = 1;
+            op->has_lo = r > 0;
+        }
+        if (acc->hi) {
+            if (bound_value(db, acc->hi, AFF_INTEGER, &v) < 0)
+                goto fail;
+            int r = rowid_bound(v, 1, &op->hi_i);
+            if (r < 0)
+                op->done = 1;
+            op->has_hi = r > 0;
+        }
+        op->next = rowid_range_next;
+        char *d = arena_alloc(a, 300);
+        snprintf(d, 300, "%s rowid %s", t->name,
+                 acc->kind == ACCESS_ROWID_EQ ? "= ?" : acc->lo && acc->hi ? "between ? and ?" : acc->lo ? "> ?" : "< ?");
+        op->detail = d;
+        return op;
+    }
+    Index *ix = acc->index;
+    int aff = t->cols[ix->cols[0]].affinity;
+    op->name = acc->kind == ACCESS_INDEX_EQ ? "Index lookup" : "Index range";
+    cursor_open(&op->icur, &db->pager, ix->root, 0);
+    if (acc->lo) {
+        Value v;
+        if (bound_value(db, acc->lo, aff, &v) < 0)
+            goto fail;
+        if (v.type == V_NULL)
+            op->done = 1;
+        record_build(&op->key, &v, 1);
+        op->has_lo = 1;
+    }
+    if (acc->hi) {
+        if (bound_value(db, acc->hi, aff, &op->hi) < 0)
+            goto fail;
+        if (op->hi.type == V_NULL)
+            op->done = 1;
+        op->has_hi = 1;
+    }
+    op->next = index_range_next;
+    char *d = arena_alloc(a, 300);
+    snprintf(d, 300, "%s using %s (%s %s)", t->name, ix->name, t->cols[ix->cols[0]].name,
+             acc->kind == ACCESS_INDEX_EQ ? "= ?" : acc->lo && acc->hi ? "between ? and ?" : acc->lo ? "> ?" : "< ?");
+    op->detail = d;
+    return op;
+fail:
+    op_close(op);
+    return NULL;
+    // @else
+    // op->detail = t->name;
+    // return op;
+    // @end
+}
+
+// @from 04.02
+/* ------------------------------------------------------------ Filter (04.02) */
+
+/* Passes on only the rows for which the predicate is true; false and NULL
+ * both drop the row. The row arena is reset for each dropped row, so
+ * whatever evaluating it allocated does not pile up. */
+static int filter_next(Op *op, Row **out)
+{
+    // @build 04.02 keep the rows WHERE is true for
+    for (;;) {
+        int rc = op->child->next(op->child, out);
+        if (rc <= 0)
+            return rc;
+        Value v;
+        if (eval(op->db, op->pred, *out, &v) < 0)
+            return -1;
+        if (value_truth(&v) == 1)
+            return 1;
+        arena_reset(&op->db->rowa);
+    }
+    // @end
+}
+
+Op *op_filter(Db *db, Op *child, Expr *pred)
+{
+    Op *op = new_op(db, "Filter", filter_next);
+    op->child = child;
+    op->pred = pred;
+    op->detail = expr_text(&db->stmt, pred);
+    return op;
+}
+// @end
+
+// @from 04.03
+/* ------------------------------------------------------------ Sort and Limit (04.03) */
+
+/* One buffered row of a Sort: its values and ORDER BY keys are copies that
+ * live in the operator's own arena. */
+typedef struct SortRow {
+    Value *keys;
+    Value *cols;
+    int ncols;
+    i64 rowid;
+    i64 seq;             /* arrival order: equal keys keep it */
+} SortRow;
+
+/* qsort() takes no context argument, so the terms sort_cmp() orders by are
+ * passed in these statics. */
+static OrderTerm *sort_terms;
+static int sort_nterms;
+
+/* Orders by each ORDER BY key in turn; rows equal on all keys keep their
+ * arrival order, which makes the sort stable. */
+static int sort_cmp(const void *pa, const void *pb)
+{
+    const SortRow *a = pa, *b = pb;
+    for (int i = 0; i < sort_nterms; i++) {
+        int c = value_compare(&a->keys[i], &b->keys[i]);
+        if (c)
+            return sort_terms[i].desc ? -c : c;
+    }
+    return a->seq < b->seq ? -1 : a->seq > b->seq;
+}
+
+/* Returns a copy of v whose text or blob bytes live in arena a. */
+static Value keep(Arena *a, Value v)
+{
+    if ((v.type == V_TEXT || v.type == V_BLOB) && v.n > 0)
+        v.s = arena_strndup(a, v.s, (size_t)v.n);
+    return v;
+}
+
+/* A sort cannot hand out its first row before it has seen the last, so the
+ * first call drains the child into op->rows (copying each row and its
+ * keys into the operator's arena, since the child's buffers are reused)
+ * and sorts them; later calls walk the sorted array. */
+static int sort_next(Op *op, Row **out)
+{
+    if (!op->started) {
+        op->started = 1;
+        Db *db = op->db;
+        // @build 04.03 sort the rows
+        i64 cap = 0;
+        Row *r;
+        int rc;
+        while ((rc = op->child->next(op->child, &r)) == 1) {
+            if (op->nrows == cap) {
+                cap = cap ? 2 * cap : 256;
+                op->rows = xrealloc(op->rows, (size_t)cap * sizeof(SortRow));
+            }
+            SortRow *s = &op->rows[op->nrows];
+            s->keys = arena_alloc(&op->sort_arena, (size_t)op->norder * sizeof(Value));
+            s->cols = arena_alloc(&op->sort_arena, (size_t)(r->ncols + 1) * sizeof(Value));
+            for (int i = 0; i < op->norder; i++) {
+                Value v;
+                if (eval(db, op->order[i].e, r, &v) < 0)
+                    return -1;
+                s->keys[i] = keep(&op->sort_arena, v);
+            }
+            for (int i = 0; i < r->ncols; i++)
+                s->cols[i] = keep(&op->sort_arena, r->cols[i]);
+            s->ncols = r->ncols;
+            s->rowid = r->rowid;
+            s->seq = op->nrows;
+            op->nrows++;
+            arena_reset(&db->rowa);
+        }
+        if (rc < 0)
+            return -1;
+        sort_terms = op->order;
+        sort_nterms = op->norder;
+        qsort(op->rows, (size_t)op->nrows, sizeof(SortRow), sort_cmp);
+        // @end
+    }
+    if (op->pos >= op->nrows)
+        return 0;
+    SortRow *s = &op->rows[op->pos++];
+    op->row.cols = s->cols;
+    op->row.ncols = s->ncols;
+    op->row.rowid = s->rowid;
+    *out = &op->row;
+    return 1;
+}
+
+Op *op_sort(Db *db, Op *child, OrderTerm *order, int norder)
+{
+    Op *op = new_op(db, "Sort", sort_next);
+    op->child = child;
+    op->order = order;
+    op->norder = norder;
+    Buf b = {0};
+    buf_put(&b, "by ", 3);
+    for (int i = 0; i < norder; i++) {
+        const char *s = expr_text(&db->stmt, order[i].e);
+        if (i)
+            buf_put(&b, ", ", 2);
+        buf_put(&b, s, strlen(s));
+        if (order[i].desc)
+            buf_put(&b, " DESC", 5);
+    }
+    op->detail = arena_strndup(&db->stmt, (const char *)b.p, b.n);
+    buf_free(&b);
+    return op;
+}
+
+/* Skips the first op->offset rows, then passes on at most op->limit (a
+ * negative limit means no limit). Once the limit is reached the child is
+ * not asked for another row. */
+static int limit_next(Op *op, Row **out)
+{
+    // @build 04.03 LIMIT and OFFSET
+    int rc;
+    while (op->seen < op->offset) {
+        rc = op->child->next(op->child, out);
+        if (rc <= 0)
+            return rc;
+        op->seen++;
+        arena_reset(&op->db->rowa);
+    }
+    if (op->limit >= 0 && op->seen - op->offset >= op->limit)
+        return 0;
+    rc = op->child->next(op->child, out);
+    if (rc == 1)
+        op->seen++;
+    return rc;
+    // @end
+}
+
+Op *op_limit(Db *db, Op *child, i64 limit, i64 offset)
+{
+    Op *op = new_op(db, "Limit", limit_next);
+    op->child = child;
+    op->limit = limit;
+    op->offset = offset;
+    char *d = arena_alloc(&db->stmt, 64);
+    snprintf(d, 64, "%lld offset %lld", (long long)limit, (long long)offset);
+    op->detail = d;
+    return op;
+}
+// @end
+
+// @from 05.01
+/* ------------------------------------------------------------ indexes (05.01) */
+
+/* Builds into out the key of row in index ix: the indexed columns' values,
+ * then the rowid, as one record. The rowid makes every entry unique and is
+ * how a lookup gets back to the row. */
+void index_key(Index *ix, Row *row, Buf *out)
+{
+    Value vals[9];
+    // @build 05.01 an index entry
+    for (int i = 0; i < ix->ncols; i++)
+        vals[i] = row->cols[ix->cols[i]];
+    memset(&vals[ix->ncols], 0, sizeof vals[0]);
+    vals[ix->ncols].type = V_INT;
+    vals[ix->ncols].i = row->rowid;
+    out->n = 0;
+    record_build(out, vals, ix->ncols + 1);
+    // @end
+}
+
+/* Inserts the entry for row into index ix. */
+static void index_add(Db *db, Index *ix, Row *row)
+{
+    Buf k = {0};
+    Cursor c;
+    index_key(ix, row, &k);
+    cursor_open(&c, &db->pager, ix->root, 0);
+    btree_insert(&c, 0, k.p, (u32)k.n);
+    cursor_close(&c);
+    buf_free(&k);
+}
+
+/* Deletes the entry for row from index ix, using the row's current values
+ * to find it. A missing entry means the index is corrupt. */
+static void index_remove(Db *db, Index *ix, Row *row)
+{
+    Buf k = {0};
+    Cursor c;
+    index_key(ix, row, &k);
+    cursor_open(&c, &db->pager, ix->root, 0);
+    if (!cursor_seek_key(&c, k.p, (u32)k.n, ix->ncols + 1, -1) ||
+        record_compare(c.payload, c.npayload, k.p, (u32)k.n, ix->ncols + 1) != 0)
+        fatal("database is corrupt: index %s has no entry for row %lld", ix->name, (long long)row->rowid);
+    btree_delete(&c);
+    cursor_close(&c);
+    buf_free(&k);
+}
+
+/* Fills a new, empty index with an entry for every row of its table. */
+int index_build(Db *db, Index *ix)
+{
+    Table *t = ix->table;
+    Cursor c;
+    Row row;
+    row.cols = xcalloc((size_t)t->ncols + 1, sizeof(Value));
+    cursor_open(&c, &db->pager, t->root, 1);
+    // @build 05.01 fill a new index
+    /* index_add() touches only the index's pages, so the table cursor c
+     * stays valid. */
+    for (int more = cursor_first(&c); more; more = cursor_next(&c)) {
+        decode_row(t, &c, &row);
+        index_add(db, ix, &row);
+    }
+    // @end
+    cursor_close(&c);
+    free(row.cols);
+    return 0;
+}
+// @end
+
+/* ------------------------------------------------------------ INSERT (04.01) */
+
+/* Returns 0 if t can be modified, else reports why and returns -1. */
+static int writable(Db *db, Table *t)
+{
+    (void)db;
+    if (t->root == 1)
+        return err("table %s may not be modified", t->name);
+    if (t->opaque || t->readonly)
+        return table_refused(t);
+    return 0;
+}
+
+/* Stores one row and adds it to every index. vals has a value for every
+ * column, with affinity applied. rowid_val is the rowid the statement
+ * asked for (the INTEGER PRIMARY KEY's value, or a value given for the
+ * rowid itself), or NULL to take one more than the largest in the table.
+ * Returns 0, or -1 with the error set (datatype mismatch, UNIQUE or NOT
+ * NULL failure) before anything has been written. */
+static int insert_row(Db *db, Table *t, Value *vals, Value rowid_val)
+{
+    Cursor c;
+    Buf rec = {0};
+    int rc = 0;
+    cursor_open(&c, &db->pager, t->root, 1);
+    // @build 04.01 insert a row
+    i64 rowid;
+    const char *keyname = t->rowid_col >= 0 ? t->cols[t->rowid_col].name : "rowid";
+    if (rowid_val.type != V_NULL) {
+        if (rowid_val.type != V_INT) {
+            rc = err("datatype mismatch");
+            goto done;
+        }
+        rowid = rowid_val.i;
+        if (cursor_seek_rowid(&c, rowid) && c.rowid == rowid) {
+            rc = err("UNIQUE constraint failed: %s.%s", t->name, keyname);
+            goto done;
+        }
+    } else {
+        i64 max = btree_max_rowid(&c);
+        if (max == INT64_MAX) {
+            rc = err("database or disk is full");
+            goto done;
+        }
+        rowid = max + 1;
+    }
+    /* The INTEGER PRIMARY KEY column's value is the rowid. */
+    if (t->rowid_col >= 0) {
+        memset(&vals[t->rowid_col], 0, sizeof(Value));
+        vals[t->rowid_col].type = V_INT;
+        vals[t->rowid_col].i = rowid;
+    }
+    for (int i = 0; i < t->ncols; i++) {
+        if (t->cols[i].not_null && vals[i].type == V_NULL) {
+            rc = err("NOT NULL constraint failed: %s.%s", t->name, t->cols[i].name);
+            goto done;
+        }
+    }
+    /* The record stores NULL for the INTEGER PRIMARY KEY column: the rowid
+     * already holds its value. */
+    Value saved = {0};
+    if (t->rowid_col >= 0) {
+        saved = vals[t->rowid_col];
+        memset(&vals[t->rowid_col], 0, sizeof(Value));
+    }
+    record_build(&rec, vals, t->ncols);
+    if (t->rowid_col >= 0)
+        vals[t->rowid_col] = saved;
+    btree_insert(&c, rowid, rec.p, (u32)rec.n);
+    // @from 05.01
+    Row row = {vals, t->ncols, rowid};
+    for (Index *ix = t->indexes; ix; ix = ix->next)
+        index_add(db, ix, &row);
+    // @end
+done:
+    // @end
+    cursor_close(&c);
+    buf_free(&rec);
+    return rc;
+}
+
+/* True for the names sqlite3 accepts for the rowid. */
+static int is_rowid_name(const char *s)
+{
+    return strcasecmp(s, "rowid") == 0 || strcasecmp(s, "oid") == 0 || strcasecmp(s, "_rowid_") == 0;
+}
+
+/* Returns the number of column name in t (case-insensitive), or -1. */
+static int column_index(Table *t, const char *name)
+{
+    for (int i = 0; i < t->ncols; i++)
+        if (strcasecmp(t->cols[i].name, name) == 0)
+            return i;
+    return -1;
+}
+
+/* Executes INSERT: maps the value lists onto the table's columns, fills
+ * unlisted columns from their DEFAULT, applies affinity, and stores each
+ * row with insert_row(). */
+static int exec_insert(Db *db, Stmt *s)
+{
+    Table *t = find_table(db, s->table);
+    if (!t)
+        return err("no such table: %s", s->table);
+    if (writable(db, t) < 0)
+        return -1;
+    int map[1024];
+    int nmap = s->nnames ? s->nnames : t->ncols;
+    if (s->nnames) {
+        for (int i = 0; i < s->nnames; i++) {
+            int c = column_index(t, s->names[i]);
+            if (c < 0 && is_rowid_name(s->names[i]))
+                c = -2;    /* the rowid itself */
+            if (c == -1)
+                return err("table %s has no column named %s", t->name, s->names[i]);
+            map[i] = c;
+        }
+    } else {
+        for (int i = 0; i < t->ncols; i++)
+            map[i] = i;
+    }
+    if (s->ncols != nmap) {
+        if (s->nnames)
+            return err("%d values for %d columns", s->ncols, nmap);
+        return err("table %s has %d columns but %d values were supplied", t->name, t->ncols, s->ncols);
+    }
+    Value *vals = arena_alloc(&db->stmt, (size_t)(t->ncols + 1) * sizeof(Value));
+    for (int r = 0; r < s->nrows; r++) {
+        int given[1024] = {0};
+        Value rowid = {0};
+        for (int i = 0; i < nmap; i++) {
+            Value v;
+            if (resolve_expr(s->rows[r][i], NULL, NULL) < 0 || eval(db, s->rows[r][i], NULL, &v) < 0)
+                return -1;
+            if (map[i] == -2) {
+                apply_affinity(&v, AFF_INTEGER, &db->rowa);
+                rowid = v;
+                continue;
+            }
+            vals[map[i]] = v;
+            given[map[i]] = 1;
+        }
+        for (int i = 0; i < t->ncols; i++) {
+            if (!given[i]) {
+                memset(&vals[i], 0, sizeof vals[i]);
+                if (t->cols[i].dflt && eval(db, t->cols[i].dflt, NULL, &vals[i]) < 0)
+                    return -1;
+            }
+            apply_affinity(&vals[i], t->cols[i].affinity, &db->rowa);
+        }
+        if (t->rowid_col >= 0 && vals[t->rowid_col].type != V_NULL)
+            rowid = vals[t->rowid_col];
+        if (insert_row(db, t, vals, rowid) < 0)
+            return -1;
+        arena_reset(&db->rowa);
+    }
+    return 0;
+}
+
+// @from 04.04
+/* ------------------------------------------------------------ UPDATE and DELETE (04.04) */
+
+/* Collects into *out (caller frees) the rowids of the rows WHERE picks,
+ * found with the planner. UPDATE and DELETE gather them first because
+ * changing rows while a scan walks the same B-tree would move them under
+ * it. */
+static int collect_rowids(Db *db, Table *t, Expr *where, i64 **out, i64 *nout)
+{
+    Plan plan;
+    if (plan_query(db, t, where, NULL, 0, NULL, NULL, &plan) < 0)
+        return -1;
+    i64 cap = 64, n = 0;
+    i64 *ids = xmalloc((size_t)cap * sizeof(i64));
+    Row *row;
+    int rc;
+    while ((rc = plan.root->next(plan.root, &row)) == 1) {
+        if (n == cap) {
+            cap *= 2;
+            ids = xrealloc(ids, (size_t)cap * sizeof(i64));
+        }
+        ids[n++] = row->rowid;
+        arena_reset(&db->rowa);
+        if ((n & 255) == 0)
+            pager_shrink(&db->pager);
+    }
+    op_close(plan.root);
+    if (rc < 0) {
+        free(ids);
+        return -1;
+    }
+    *out = ids;
+    *nout = n;
+    return 0;
+}
+
+/* Copies row's values into the row arena, so they outlive the page they
+ * were decoded from. */
+static void keep_row(Db *db, Row *row)
+{
+    for (int i = 0; i < row->ncols; i++)
+        row->cols[i] = keep(&db->rowa, row->cols[i]);
+}
+// @end
+
+// @from 05.01
+/* Returns 1 if changing old into (newv, newid) changes its entry in ix. Most
+ * updates leave the indexed columns alone, and then the index need not
+ * be touched at all. */
+static int index_changes(Index *ix, Row *old, Value *newv, i64 newid)
+{
+    if (newid != old->rowid)
+        return 1;
+    for (int i = 0; i < ix->ncols; i++) {
+        Value *a = &old->cols[ix->cols[i]], *b = &newv[ix->cols[i]];
+        if (a->type != b->type || value_compare(a, b) != 0)
+            return 1;
+    }
+    return 0;
+}
+// @end
+
+/* Executes UPDATE. Each SET expression is evaluated against the OLD row.
+ * The new rowid is the old one, or the new INTEGER PRIMARY KEY value; if it
+ * changed, no other row may have it. A row leaves the indexes whose entry
+ * changes (and the table, if its rowid changes) before the new record is
+ * stored and added back to those same indexes. btree_insert() replaces a
+ * row with the same rowid. */
+static int exec_update(Db *db, Stmt *s)
+{
+    Table *t = find_table(db, s->table);
+    if (!t)
+        return err("no such table: %s", s->table);
+    if (writable(db, t) < 0)
+        return -1;
+    int cols[256];
+    for (int i = 0; i < s->nnames; i++) {
+        cols[i] = column_index(t, s->names[i]);
+        if (cols[i] < 0 && is_rowid_name(s->names[i]))
+            cols[i] = t->rowid_col >= 0 ? t->rowid_col : -2;
+        if (cols[i] == -1)
+            return err("no such column: %s", s->names[i]);
+        if (resolve_expr(s->sets[i], t, NULL) < 0)
+            return -1;
+    }
+    if (resolve_expr(s->where, t, NULL) < 0)
+        return -1;
+    i64 *ids, n;
+    if (collect_rowids(db, t, s->where, &ids, &n) < 0)
+        return -1;
+    Value *oldv = xcalloc((size_t)t->ncols + 1, sizeof(Value));
+    Value *newv = xcalloc((size_t)t->ncols + 1, sizeof(Value));
+    Buf rec = {0};
+    Cursor c;
+    cursor_open(&c, &db->pager, t->root, 1);
+    int rc = 0;
+    // @build 04.04 UPDATE
+    /* The old row is copied out (keep_row) because the page it was decoded
+     * from is about to change. */
+    for (i64 k = 0; k < n && rc == 0; k++) {
+        if (!cursor_seek_rowid(&c, ids[k]) || c.rowid != ids[k])
+            continue;
+        Row old = {oldv, t->ncols, ids[k]};
+        decode_row(t, &c, &old);
+        keep_row(db, &old);
+        memcpy(newv, oldv, (size_t)t->ncols * sizeof(Value));
+        i64 newid = old.rowid;
+        for (int i = 0; i < s->nnames && rc == 0; i++) {
+            Value v;
+            if (eval(db, s->sets[i], &old, &v) < 0) {
+                rc = -1;
+                break;
+            }
+            if (cols[i] == -2) {
+                apply_affinity(&v, AFF_INTEGER, &db->rowa);
+                if (v.type != V_INT)
+                    rc = err("datatype mismatch");
+                else
+                    newid = v.i;
+                continue;
+            }
+            apply_affinity(&v, t->cols[cols[i]].affinity, &db->rowa);
+            newv[cols[i]] = v;
+        }
+        if (rc)
+            break;
+        if (t->rowid_col >= 0) {
+            Value *v = &newv[t->rowid_col];
+            if (v->type != V_INT) {
+                rc = err("datatype mismatch");
+                break;
+            }
+            newid = v->i;
+        }
+        if (newid != old.rowid) {
+            if (cursor_seek_rowid(&c, newid) && c.rowid == newid) {
+                rc = err("UNIQUE constraint failed: %s.%s", t->name,
+                         t->rowid_col >= 0 ? t->cols[t->rowid_col].name : "rowid");
+                break;
+            }
+        }
+        for (int i = 0; i < t->ncols; i++) {
+            if (t->cols[i].not_null && newv[i].type == V_NULL) {
+                rc = err("NOT NULL constraint failed: %s.%s", t->name, t->cols[i].name);
+                break;
+            }
+        }
+        if (rc)
+            break;
+        // @from 05.01
+        for (Index *ix = t->indexes; ix; ix = ix->next)
+            if (index_changes(ix, &old, newv, newid))
+                index_remove(db, ix, &old);
+        // @end
+        if (newid != old.rowid) {
+            if (cursor_seek_rowid(&c, old.rowid) && c.rowid == old.rowid)
+                btree_delete(&c);
+        }
+        Value saved = {0};
+        if (t->rowid_col >= 0) {
+            saved = newv[t->rowid_col];
+            memset(&newv[t->rowid_col], 0, sizeof(Value));
+        }
+        rec.n = 0;
+        record_build(&rec, newv, t->ncols);
+        if (t->rowid_col >= 0)
+            newv[t->rowid_col] = saved;
+        btree_insert(&c, newid, rec.p, (u32)rec.n);
+        // @from 05.01
+        Row nrow = {newv, t->ncols, newid};
+        for (Index *ix = t->indexes; ix; ix = ix->next)
+            if (index_changes(ix, &old, newv, newid))
+                index_add(db, ix, &nrow);
+        // @end
+        arena_reset(&db->rowa);
+    }
+    // @end
+    cursor_close(&c);
+    buf_free(&rec);
+    free(oldv);
+    free(newv);
+    free(ids);
+    return rc;
+}
+
+/* Executes DELETE. With indexes, each row's entries are removed before the
+ * row goes, since its values are what find them. */
+static int exec_delete(Db *db, Stmt *s)
+{
+    Table *t = find_table(db, s->table);
+    if (!t)
+        return err("no such table: %s", s->table);
+    if (writable(db, t) < 0)
+        return -1;
+    if (resolve_expr(s->where, t, NULL) < 0)
+        return -1;
+    i64 *ids, n;
+    if (collect_rowids(db, t, s->where, &ids, &n) < 0)
+        return -1;
+    Value *vals = xcalloc((size_t)t->ncols + 1, sizeof(Value));
+    Cursor c;
+    cursor_open(&c, &db->pager, t->root, 1);
+    // @build 04.04 DELETE
+    for (i64 k = 0; k < n; k++) {
+        if (!cursor_seek_rowid(&c, ids[k]) || c.rowid != ids[k])
+            continue;
+        // @from 05.01
+        if (t->indexes) {
+            Row row = {vals, t->ncols, ids[k]};
+            decode_row(t, &c, &row);
+            keep_row(db, &row);
+            for (Index *ix = t->indexes; ix; ix = ix->next)
+                index_remove(db, ix, &row);
+            if (!cursor_seek_rowid(&c, ids[k]) || c.rowid != ids[k])
+                fatal("internal error: row %lld vanished", (long long)ids[k]);
+        }
+        // @end
+        btree_delete(&c);
+        arena_reset(&db->rowa);
+    }
+    // @end
+    cursor_close(&c);
+    free(vals);
+    free(ids);
+    return 0;
+}
+
+/* ------------------------------------------------------------ SELECT */
+
+/* Prints one result row, columns separated by '|'. */
+static void print_row(Db *db, Value *vals, int n)
+{
+    for (int i = 0; i < n; i++) {
+        if (i)
+            fputc('|', db->out);
+        print_value(db->out, &vals[i]);
+    }
+    fputc('\n', db->out);
+}
+
+// @from 04.03
+/* Returns the expression ORDER BY e stands for: ORDER BY 2 and ORDER BY
+ * alias name a result column; anything else is e itself. */
+static Expr *order_target(Stmt *s, Table *t, Expr *e, Expr **cols, int ncols)
+{
+    (void)t;
+    if (e->op == E_INT && e->v.i >= 1 && e->v.i <= ncols)
+        return cols[e->v.i - 1];
+    if (e->op == E_COLUMN && !e->qual) {
+        for (int i = 0; i < s->ncols; i++)
+            if (s->cols[i].alias && strcasecmp(s->cols[i].alias, e->name) == 0 && s->cols[i].e)
+                return s->cols[i].e;
+    }
+    return e;
+}
+// @end
+
+/* Executes SELECT: expands *, resolves names, plans, then streams the
+ * plan's rows through the result expressions. */
+static int exec_select(Db *db, Stmt *s)
+{
+    Table *t = NULL;
+    if (s->table) {
+        t = find_table(db, s->table);
+        if (!t)
+            return err("no such table: %s", s->table);
+        if (t->opaque)
+            return table_refused(t);
+    }
+    /* Expand * and resolve every name. */
+    int n = 0;
+    for (int i = 0; i < s->ncols; i++)
+        n += s->cols[i].e ? 1 : (t ? t->ncols : 0);
+    if (n == 0)
+        return err(t ? "no columns" : "no tables specified");
+    Expr **cols = arena_alloc(&db->stmt, (size_t)n * sizeof(Expr *));
+    n = 0;
+    for (int i = 0; i < s->ncols; i++) {
+        if (s->cols[i].e) {
+            if (resolve_expr(s->cols[i].e, t, s->alias) < 0)
+                return -1;
+            cols[n++] = s->cols[i].e;
+            continue;
+        }
+        for (int c = 0; c < t->ncols; c++) {
+            Expr *e = arena_alloc(&db->stmt, sizeof *e);
+            e->op = E_COLUMN;
+            e->name = t->cols[c].name;
+            e->col = c;
+            e->aff = t->cols[c].affinity;
+            cols[n++] = e;
+        }
+    }
+    if (resolve_expr(s->where, t, s->alias) < 0)
+        return -1;
+    // @from 04.03
+    for (int i = 0; i < s->norder; i++) {
+        s->order[i].e = order_target(s, t, s->order[i].e, cols, n);
+        if (resolve_expr(s->order[i].e, t, s->alias) < 0)
+            return -1;
+    }
+    // @end
+    if (resolve_expr(s->limit, NULL, NULL) < 0 || resolve_expr(s->offset, NULL, NULL) < 0)
+        return -1;
+    Plan plan;
+    if (plan_query(db, t, s->where, s->order, s->norder, s->limit, s->offset, &plan) < 0)
+        return -1;
+    // @from 05.03
+    if (s->explain == 2) {
+        explain_query_plan(db, s, t, &plan);
+        op_close(plan.root);
+        return 0;
+    }
+    // @else
+    // if (s->explain == 2) {
+    //     op_close(plan.root);
+    //     return err("EXPLAIN QUERY PLAN is not supported");
+    // }
+    // @end
+    if (s->explain == 1) {
+        explain_tree(db, s, &plan);
+        op_close(plan.root);
+        return 0;
+    }
+    Value *out = xmalloc((size_t)n * sizeof(Value));
+    Row *row;
+    int rc;
+    i64 count = 0;
+    while ((rc = plan.root->next(plan.root, &row)) == 1) {
+        for (int i = 0; i < n; i++)
+            if (eval(db, cols[i], row, &out[i]) < 0) {
+                rc = -1;
+                break;
+            }
+        if (rc < 0)
+            break;
+        print_row(db, out, n);
+        arena_reset(&db->rowa);
+        if ((++count & 255) == 0)
+            pager_shrink(&db->pager);    /* no page pointer is held between rows */
+    }
+    free(out);
+    op_close(plan.root);
+    return rc < 0 ? -1 : 0;
+}
+
+// @from 04.04
+/* EXPLAIN [QUERY PLAN] of UPDATE and DELETE: how they find their rows. */
+static int explain_write(Db *db, Stmt *s)
+{
+    Table *t = find_table(db, s->table);
+    if (!t)
+        return err("no such table: %s", s->table);
+    if (resolve_expr(s->where, t, NULL) < 0)
+        return -1;
+    Plan plan;
+    if (plan_query(db, t, s->where, NULL, 0, NULL, NULL, &plan) < 0)
+        return -1;
+    // @from 05.03
+    if (s->explain == 2)
+        explain_query_plan(db, s, t, &plan);
+    else
+        explain_tree(db, s, &plan);
+    // @else
+    // if (s->explain == 2) {
+    //     op_close(plan.root);
+    //     return err("EXPLAIN QUERY PLAN is not supported");
+    // }
+    // explain_tree(db, s, &plan);
+    // @end
+    op_close(plan.root);
+    return 0;
+}
+// @end
+// @end
+
+/* ------------------------------------------------------------ PRAGMA */
+
+/* Executes the PRAGMAs this engine supports: with a value it sets, without
+ * one it prints. */
+static int exec_pragma(Db *db, Stmt *s)
+{
+    Pager *p = &db->pager;
+    const char *v = s->pragma_value;
+    const char *name = s->name;
+    if (strcasecmp(name, "journal_mode") == 0) {
+        static const char *names[] = {"delete", "wal", "off"};
+        // @from 06.02
+        if (v) {
+            int mode;
+            if (strcasecmp(v, "delete") == 0)
+                mode = JOURNAL_DELETE;
+            // @from 06.04
+            else if (strcasecmp(v, "wal") == 0)
+                mode = JOURNAL_WAL;
+            // @end
+            else if (strcasecmp(v, "off") == 0)
+                mode = JOURNAL_OFF;
+            // @from 06.04
+            else
+                return err("journal_mode %s is not supported (delete, wal or off)", v);
+            // @else
+            // else
+            //     return err("journal_mode %s is not supported (delete or off)", v);
+            // @end
+            if (db->in_txn)
+                return err("cannot change the journal mode from within a transaction");
+            if (pager_set_journal_mode(p, mode) < 0)
+                return -1;
+        }
+        // @else
+        // if (v && strcasecmp(v, "off") != 0)
+        //     return err("journal_mode %s is not supported (off)", v);
+        // @end
+        fprintf(db->out, "%s\n", names[p->journal_mode]);
+        return 0;
+    }
+    if (strcasecmp(name, "page_size") == 0) {
+        if (v) {
+            u32 ps = (u32)atoi(v);
+            if (p->npages == 0 && ps >= 512 && ps <= 65536 && (ps & (ps - 1)) == 0)
+                p->page_size = p->usable = ps;
+            return 0;
+        }
+        fprintf(db->out, "%u\n", p->page_size);
+        return 0;
+    }
+    if (strcasecmp(name, "page_count") == 0) {
+        fprintf(db->out, "%u\n", p->npages);
+        return 0;
+    }
+    if (strcasecmp(name, "freelist_count") == 0) {
+        fprintf(db->out, "%u\n", p->npages ? get4(pager_get(p, 1) + 36) : 0);
+        return 0;
+    }
+    if (strcasecmp(name, "schema_version") == 0) {
+        fprintf(db->out, "%u\n", p->npages ? get4(pager_get(p, 1) + 40) : 0);
+        return 0;
+    }
+    if (strcasecmp(name, "cache_size") == 0) {
+        if (v) {
+            long n = atol(v);
+            if (n < 0)
+                n = -n * 1024 / (long)p->page_size;
+            p->cache_max = n > 10 ? (u32)n : 10;
+            return 0;
+        }
+        fprintf(db->out, "%u\n", p->cache_max);
+        return 0;
+    }
+    if (strcasecmp(name, "synchronous") == 0) {
+        /* This engine always syncs as sqlite3 does with synchronous=FULL. */
+        if (v && strcasecmp(v, "full") != 0 && strcmp(v, "2") != 0)
+            return err("only synchronous=FULL is supported");
+        if (!v)
+            fprintf(db->out, "2\n");
+        return 0;
+    }
+    if (strcasecmp(name, "fullfsync") == 0) {
+        /* fsync(2), never F_FULLFSYNC: sqlite3's default. */
+        if (v && strcasecmp(v, "off") != 0 && strcmp(v, "0") != 0 && strcasecmp(v, "false") != 0)
+            return err("only fullfsync=OFF is supported");
+        if (!v)
+            fprintf(db->out, "0\n");
+        return 0;
+    }
+    return err("unknown pragma: %s", name);
+}
+
+/* ------------------------------------------------------------ statements */
+
+/* True for statements that change the database file. */
+static int is_write(int kind)
+{
+    return kind == S_INSERT || kind == S_UPDATE || kind == S_DELETE || kind == S_CREATE_TABLE ||
+           kind == S_CREATE_INDEX || kind == S_DROP_TABLE || kind == S_DROP_INDEX;
+}
+
+/* Dispatches a write statement to its executor. */
+static int run_write(Db *db, Stmt *s)
+{
+    switch (s->kind) {
+    // @from 04.01
+    case S_INSERT: return exec_insert(db, s);
+    // @else
+    // case S_INSERT: return err("INSERT is not supported");
+    // @end
+    // @from 04.04
+    case S_UPDATE: return exec_update(db, s);
+    case S_DELETE: return exec_delete(db, s);
+    // @else
+    // case S_UPDATE: return err("UPDATE is not supported");
+    // case S_DELETE: return err("DELETE is not supported");
+    // @end
+    // @from 03.03
+    case S_CREATE_TABLE: return create_table(db, s);
+    // @else
+    // case S_CREATE_TABLE: return err("CREATE TABLE is not supported");
+    // @end
+    // @from 05.01
+    case S_CREATE_INDEX: return create_index(db, s);
+    // @else
+    // case S_CREATE_INDEX: return err("CREATE INDEX is not supported");
+    // @end
+    // @from 03.03
+    default: return drop_object(db, s);
+    // @else
+    // default: return err("DROP is not supported");
+    // @end
+    }
+}
+
+// @from 03.03
+/* Runs one parsed statement. Transaction control and reads run directly; a
+ * write outside BEGIN is a transaction of its own, committed here or
+ * rolled back on error. After a failed write the catalog is reloaded, so
+ * it matches the file as the rollback left it; the error message is kept
+ * across the reload. */
+// @else
+// /* Runs one parsed statement. Transaction control and reads run directly; a
+//  * write outside BEGIN is a transaction of its own, committed here or
+//  * rolled back on error. */
+// @end
+static int run_stmt(Db *db, Stmt *s)
+{
+    Pager *p = &db->pager;
+    pager_shrink(p);
+    switch (s->kind) {
+    case S_BEGIN:
+        if (db->in_txn)
+            return err("cannot start a transaction within a transaction");
+        db->in_txn = 1;
+        return 0;
+    case S_COMMIT:
+        if (!db->in_txn)
+            return err("cannot commit - no transaction is active");
+        db->in_txn = 0;
+        return pager_commit(p);
+    case S_ROLLBACK:
+        if (!db->in_txn)
+            return err("cannot rollback - no transaction is active");
+        db->in_txn = 0;
+        pager_rollback(p);
+        // @from 03.03
+        return schema_load(db);
+        // @else
+        // return 0;
+        // @end
+    case S_PRAGMA:
+        return exec_pragma(db, s);
+    // @from 04.01
+    case S_SELECT:
+        return exec_select(db, s);
+    // @else
+    // case S_SELECT:
+    //     return err("SELECT is not supported");
+    // @end
+    }
+    // @from 04.04
+    if (s->explain) {
+        if (s->kind == S_UPDATE || s->kind == S_DELETE)
+            return explain_write(db, s);
+        return 0;
+    }
+    // @else
+    // if (s->explain)
+    //     return err("EXPLAIN is only supported for SELECT");
+    // @end
+    if (!is_write(s->kind))
+        return err("internal error: statement kind %d", s->kind);
+    /* A write. Outside BEGIN it is a transaction of its own; inside, it
+     * can still fail alone, so the pager keeps what it changes. */
+    if (p->npages == 0)
+        header_init(p);
+    /* A one-row INSERT checks everything before it writes anything, so if
+     * it fails there is nothing to undo; any other write may fail after
+     * changing some rows. */
+    int savepoint = db->in_txn && !(s->kind == S_INSERT && s->nrows == 1);
+    if (savepoint)
+        pager_stmt_begin(p);
+    int rc = run_write(db, s);
+    if (rc < 0) {
+        if (savepoint)
+            pager_stmt_rollback(p);
+        else if (!db->in_txn)
+            pager_rollback(p);
+        /* else a one-row INSERT inside BEGIN failed before it wrote anything */
+        // @from 03.03
+        char keep[sizeof errmsg];
+        memcpy(keep, errmsg, sizeof keep);
+        schema_load(db);
+        memcpy(errmsg, keep, sizeof keep);
+        // @end
+        return -1;
+    }
+    if (db->in_txn)
+        pager_stmt_end(p);
+    else if (pager_commit(p) < 0)
+        return -1;
+    // @from 03.03
+    if (s->kind != S_INSERT && s->kind != S_UPDATE && s->kind != S_DELETE)
+        return schema_load(db);
+    // @end
+    return 0;
+}
+
+/* Prints the last error message on stderr. */
+static void report(Db *db)
+{
+    fflush(db->out);
+    fprintf(stderr, "Error: %s\n", errmsg);
+}
+
+/* Runs every statement in sql in order, stopping at the first error
+ * (reported on stderr). Returns 0 or -1. */
+int db_exec(Db *db, const char *sql)
+{
+    Parser ps;
+    parser_init(&ps, sql, &db->stmt);
+    for (;;) {
+        Stmt *s;
+        int rc = parse_statement(&ps, &s);
+        if (rc == 0)
+            break;
+        if (rc > 0)
+            rc = run_stmt(db, s);
+        arena_reset(&db->rowa);  // @from 04.01
+        arena_reset(&db->stmt);    /* the parser keeps nothing in it between statements */
+        if (rc < 0) {
+            report(db);
+            return -1;
+        }
+    }
+    return 0;
+}
+
+// @from 03.03
+/* Opens the database file at path and loads the catalog. Returns 0 or -1. */
+// @else
+// /* Opens the database file at path. Returns 0 or -1. */
+// @end
+int db_open(Db *db, const char *path)
+{
+    memset(db, 0, sizeof *db);
+    db->out = stdout;
+    // @from 03.03
+    if (pager_open(&db->pager, path) < 0 || schema_load(db) < 0) {
+    // @else
+    // if (pager_open(&db->pager, path) < 0) {
+    // @end
+        report(db);
+        return -1;
+    }
+    return 0;
+}
+
+/* Closes the database; an open transaction is rolled back. */
+void db_close(Db *db)
+{
+    if (db->in_txn)
+        pager_rollback(&db->pager);
+    pager_close(&db->pager);
+}

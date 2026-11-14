@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Rows arriving in rowid order: a split in the middle against a split at the end</title>
+<defs><marker id="f0703a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">a full leaf, and the next row (larger than every rowid in it) arrives</text>
+<text class="t" x="24" y="48" font-size="12" font-weight="600" text-anchor="None">split in the middle</text>
+<rect class="s f" x="24" y="60" width="120" height="30" rx="4" stroke-width="1.5"/>
+<rect class="s fs" x="26" y="62" width="116" height="26" rx="3" stroke-width="1.5"/>
+<text class="t" x="84" y="80" font-size="11" text-anchor="middle">full</text>
+<text class="tm" x="156" y="80" font-size="10.5">+ the new row</text>
+<line class="s" x1="84" y1="92" x2="84" y2="112" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<rect class="s f" x="24" y="116" width="120" height="30" rx="4" stroke-width="1.5"/>
+<rect class="s fs" x="26" y="118" width="58" height="26" rx="3" stroke-width="1.5"/>
+<rect class="s f" x="164" y="116" width="120" height="30" rx="4" stroke-width="1.5"/>
+<rect class="a af" x="166" y="118" width="62" height="26" rx="3" stroke-width="1.5"/>
+<text class="t" x="84" y="162" font-size="10.5" font-weight="600" text-anchor="middle">half full, forever</text>
+<text class="tm" x="224" y="162" font-size="10.5" text-anchor="middle">half, then fills, then splits</text>
+<text class="t" x="24" y="196" font-size="11">every leaf but the last stays half</text>
+<text class="t" x="24" y="212" font-size="11">empty: no later row can land there</text>
+<text class="ta" x="336" y="48" font-size="12" font-weight="600" text-anchor="None">split for an append (07.03)</text>
+<rect class="s f" x="336" y="60" width="120" height="30" rx="4" stroke-width="1.5"/>
+<rect class="s fs" x="338" y="62" width="116" height="26" rx="3" stroke-width="1.5"/>
+<text class="t" x="396" y="80" font-size="11" text-anchor="middle">full</text>
+<text class="tm" x="468" y="80" font-size="10.5">+ the new row</text>
+<line class="s" x1="396" y1="92" x2="396" y2="112" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<rect class="s f" x="336" y="116" width="120" height="30" rx="4" stroke-width="1.5"/>
+<rect class="s fs" x="338" y="118" width="116" height="26" rx="3" stroke-width="1.5"/>
+<rect class="s f" x="476" y="116" width="120" height="30" rx="4" stroke-width="1.5"/>
+<rect class="a af" x="478" y="118" width="8" height="26" rx="3" stroke-width="1.5"/>
+<text class="t" x="396" y="162" font-size="10.5" font-weight="600" text-anchor="middle">stays full</text>
+<text class="tm" x="536" y="162" font-size="10.5" text-anchor="middle">the new row alone</text>
+<text class="t" x="336" y="196" font-size="11">every old cell stays together on the</text>
+<text class="t" x="336" y="212" font-size="11">left; the next rows fill the right page</text>
+<line class="m" x1="316" y1="40" x2="316" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="24" y1="236" x2="616" y2="236" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="24" y="258" font-size="11">20000 rows: 493 splits, 494 leaves 50.2% full</text>
+<text class="ta" x="336" y="258" font-size="11" font-weight="600" text-anchor="None">249 splits, 250 leaves 99.0% full</text>
+<text class="tm" x="24" y="282" font-size="10.5">it applies only to a table leaf, and only when the row goes after every row on the right-most leaf</text>
+</svg>

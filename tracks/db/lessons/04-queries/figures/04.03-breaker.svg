@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 262" fill="none">
+<title>LIMIT stops the scan early; a Sort in between reads everything first</title>
+<defs><marker id="f0403a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0403a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0403a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">the same table: 3000 rows on 59 pages</text>
+<text class="t mono" x="24" y="48" font-size="11" font-weight="600">SELECT id FROM t LIMIT 3;</text>
+<rect class="s f" x="44" y="64" width="160" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="124" y="83.32" font-size="12" text-anchor="middle">Limit 3 offset 0</text>
+<rect class="s f" x="44" y="114" width="160" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="124" y="133.32" font-size="12" text-anchor="middle">Scan t</text>
+<line class="s" x1="124" y1="112" x2="124" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0403a-ah)"/>
+<text class="t" x="124" y="166" font-size="12" font-weight="600" text-anchor="middle">3 rows pulled</text>
+<text class="ta mono" x="124" y="184" font-size="12" font-weight="600" text-anchor="middle">pages read 3</text>
+<text class="t mono" x="330" y="48" font-size="11" font-weight="600">SELECT id, n FROM t ORDER BY n LIMIT 3;</text>
+<rect class="s f" x="350" y="64" width="160" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="430" y="83.32" font-size="12" text-anchor="middle">Limit 3 offset 0</text>
+<rect class="a af" x="350" y="114" width="160" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="430" y="133.32" font-size="12" text-anchor="middle">Sort by n</text>
+<line class="s" x1="430" y1="112" x2="430" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0403a-ah)"/>
+<rect class="s f" x="350" y="164" width="160" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="430" y="183.32" font-size="12" text-anchor="middle">Scan t</text>
+<line class="s" x1="430" y1="162" x2="430" y2="146" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0403a-ah)"/>
+<text class="t" x="430" y="216" font-size="12" font-weight="600" text-anchor="middle">3000 rows pulled</text>
+<text class="ta mono" x="430" y="234" font-size="12" font-weight="600" text-anchor="middle">pages read 59</text>
+<text class="tm" x="522" y="125" font-size="10.5">the first row out</text>
+<text class="tm" x="522" y="139" font-size="10.5">needs the last row in</text>
+<text class="tm" x="24" y="252" font-size="11">Measured with DB_STATS=1. Without ORDER BY the scan stops after the first leaf.</text>
+</svg>

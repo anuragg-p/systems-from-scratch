@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Every trap enters the kernel through stvec</title>
+<defs><marker id="m03-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m03-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="fs" x="24" y="20" width="592" height="98" rx="12"/>
+<text class="tm" x="40" y="40" font-size="11">user mode</text>
+<rect class="m f" x="24" y="158" width="592" height="122" rx="12" stroke-width="1.5"/>
+<text class="tm" x="40" y="178" font-size="11">supervisor mode: the kernel</text>
+<line class="m" x1="24" y1="138" x2="616" y2="138" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect class="s f" x="56" y="58" width="92" height="30" rx="15" stroke-width="1.5"/>
+<text class="t mono" x="102.0" y="78" font-size="12" text-anchor="middle">ecall</text>
+<line class="s" x1="102.0" y1="88" x2="320" y2="132" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="168" y="58" width="112" height="30" rx="15" stroke-width="1.5"/>
+<text class="t" x="224.0" y="78" font-size="12" text-anchor="middle">page fault</text>
+<line class="s" x1="224.0" y1="88" x2="320" y2="132" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="300" y="58" width="84" height="30" rx="15" stroke-width="1.5"/>
+<text class="t" x="342.0" y="78" font-size="12" text-anchor="middle">timer</text>
+<line class="s" x1="342.0" y1="88" x2="320" y2="132" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="404" y="58" width="150" height="30" rx="15" stroke-width="1.5"/>
+<text class="t" x="479.0" y="78" font-size="12" text-anchor="middle">device (PLIC)</text>
+<line class="s" x1="479.0" y1="88" x2="320" y2="132" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a af" cx="320" cy="138" r="7" stroke-width="1.5"/>
+<text class="ta mono" x="336" y="152" font-size="12" font-weight="600">stvec</text>
+<line class="s" x1="320" y1="146" x2="320" y2="186" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m03-ah)"/>
+<rect class="s f" x="214" y="188" width="212" height="30" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="320" y="208" font-size="12" text-anchor="middle">uservec / kernelvec</text>
+<line class="s" x1="320" y1="218" x2="320" y2="230" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m03-ah)"/>
+<rect class="s f" x="214" y="232" width="212" height="30" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="320" y="252" font-size="12" text-anchor="middle">usertrap() / kerneltrap()</text>
+<path class="s" d="M426 247 C 448 247, 448 206, 470 206" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m03-ah)"/>
+<path class="s" d="M426 247 C 448 247, 448 252, 470 252" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m03-ah)"/>
+<rect class="s f" x="472" y="192" width="108" height="28" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="526" y="211" font-size="12" text-anchor="middle">syscall()</text>
+<rect class="s f" x="472" y="238" width="108" height="28" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="526" y="257" font-size="12" text-anchor="middle">devintr()</text>
+<path class="a" d="M596 192 C 596 140, 596 100, 572 90" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m03-aa)"/>
+<text class="ta mono" x="588" y="128" font-size="12" font-weight="600" text-anchor="end">sret</text>
+<text class="tm" x="40" y="262" font-size="11">scause says why</text>
+<text class="tm" x="40" y="247" font-size="11">sepc, stval: where</text>
+</svg>

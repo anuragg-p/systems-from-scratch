@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" fill="none">
+<title>The journal file, as the crash left it</title>
+<defs><marker id="f0602b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0602b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0602b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">demo.db-journal after a crash at db-partial: 373976 bytes = 512 + 91 x (4 + 4096 + 4)</text>
+<rect class="a af" x="24" y="34" width="168" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="108" y="53" font-size="10.5" text-anchor="middle">d9 d5 05 f9 20 a1 63 d7</text>
+<text class="tm" x="108" y="78" font-size="10.5" text-anchor="middle">magic</text>
+<rect class="s f" x="192" y="34" width="84" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="234" y="53" font-size="10.5" text-anchor="middle">00 00 00 5b</text>
+<text class="tm" x="234" y="78" font-size="10.5" text-anchor="middle">91 records</text>
+<rect class="s f" x="276" y="34" width="84" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="318" y="53" font-size="10.5" text-anchor="middle">3f b5 44 4e</text>
+<text class="tm" x="318" y="78" font-size="10.5" text-anchor="middle">nonce</text>
+<rect class="s f" x="360" y="34" width="84" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="402" y="53" font-size="10.5" text-anchor="middle">00 00 00 5c</text>
+<text class="tm" x="402" y="78" font-size="10.5" text-anchor="middle">92 pages</text>
+<rect class="s fs" x="444" y="34" width="84" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="486" y="53" font-size="10.5" text-anchor="middle">00 00 02 00</text>
+<text class="tm" x="486" y="78" font-size="10.5" text-anchor="middle">sector 512</text>
+<rect class="s fs" x="528" y="34" width="84" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="570" y="53" font-size="10.5" text-anchor="middle">00 00 10 00</text>
+<text class="tm" x="570" y="78" font-size="10.5" text-anchor="middle">page 4096</text>
+<text class="tm" x="24" y="100" font-size="10.5">header: offsets 0, 8, 12, 16, 20, 24, then zeroes to byte 512 (one sector)</text>
+<rect class="a af" x="24" y="124" width="84" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="66" y="143" font-size="10.5" text-anchor="middle">00 00 00 01</text>
+<text class="tm" x="66" y="168" font-size="10.5" text-anchor="middle">page 1</text>
+<rect class="s f" x="108" y="124" width="300" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="258" y="143" font-size="10.5" text-anchor="middle">53 51 4c 69 74 65 20 66 ... (4096 bytes)</text>
+<text class="tm" x="258" y="168" font-size="10.5" text-anchor="middle">its content before the commit</text>
+<rect class="s fs" x="408" y="124" width="78" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="447" y="143" font-size="10.5" text-anchor="middle">4 bytes</text>
+<text class="tm" x="447" y="168" font-size="10.5" text-anchor="middle">checksum</text>
+<text class="t" x="496" y="144" font-size="12" font-weight="600" text-anchor="None">x 91</text>
+<text class="t" x="24" y="196" font-size="11">the 92 is how big the database was before: recovery cuts the file back to it,</text>
+<text class="t" x="24" y="212" font-size="11">so pages a transaction added need no record at all</text>
+<text class="tm" x="24" y="232" font-size="10.5">the checksum is the nonce plus every 200th byte of the page: enough to spot a record cut short</text>
+</svg>

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 270" fill="none">
+<title>WHERE a = 7919: five page reads, through the index and back to the table</title>
+<defs><marker id="f0502a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0502a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0502a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">SELECT id, a FROM t WHERE a = 7919, on demo.db: the pages read, in order</text>
+<rect class="s f" x="24" y="48" width="170" height="62" rx="8" stroke-width="1.5"/>
+<circle class="s fs" cx="42" cy="66" r="11" stroke-width="1.5"/>
+<text class="t" x="42" y="70" font-size="11.5" font-weight="700" text-anchor="middle">1</text>
+<text class="t mono" x="62" y="71" font-size="12" font-weight="600" text-anchor="None">page 1</text>
+<text class="tm" x="38" y="90" font-size="10.5">the schema:</text>
+<text class="t mono" x="38" y="104" font-size="10.5" text-anchor="None">t_a is at 497</text>
+<rect class="a af" x="210" y="48" width="170" height="62" rx="8" stroke-width="1.5"/>
+<circle class="a fa" cx="228" cy="66" r="11" stroke-width="1.5"/>
+<text class="t" x="228" y="70" font-size="11.5" font-weight="700" text-anchor="middle">2</text>
+<text class="ta mono" x="248" y="71" font-size="12" font-weight="600" text-anchor="None">page 497</text>
+<text class="tm" x="224" y="90" font-size="10.5">index root: left</text>
+<text class="t mono" x="224" y="104" font-size="10.5" text-anchor="None">of (8153, 1123)</text>
+<rect class="a af" x="210" y="156" width="170" height="62" rx="8" stroke-width="1.5"/>
+<circle class="a fa" cx="228" cy="174" r="11" stroke-width="1.5"/>
+<text class="t" x="228" y="178" font-size="11.5" font-weight="700" text-anchor="middle">3</text>
+<text class="ta mono" x="248" y="179" font-size="12" font-weight="600" text-anchor="None">page 523</text>
+<text class="tm" x="224" y="198" font-size="10.5">index leaf:</text>
+<text class="t mono" x="224" y="212" font-size="10.5" text-anchor="None">(7919, rowid 1)</text>
+<rect class="s f" x="436" y="48" width="170" height="62" rx="8" stroke-width="1.5"/>
+<circle class="s fs" cx="454" cy="66" r="11" stroke-width="1.5"/>
+<text class="t" x="454" y="70" font-size="11.5" font-weight="700" text-anchor="middle">4</text>
+<text class="t mono" x="474" y="71" font-size="12" font-weight="600" text-anchor="None">page 2</text>
+<text class="tm" x="450" y="90" font-size="10.5">table root:</text>
+<text class="t mono" x="450" y="104" font-size="10.5" text-anchor="None">1 &lt;= 44: child 4</text>
+<rect class="s f" x="436" y="156" width="170" height="62" rx="8" stroke-width="1.5"/>
+<circle class="s fs" cx="454" cy="174" r="11" stroke-width="1.5"/>
+<text class="t" x="454" y="178" font-size="11.5" font-weight="700" text-anchor="middle">5</text>
+<text class="t mono" x="474" y="179" font-size="12" font-weight="600" text-anchor="None">page 4</text>
+<text class="tm" x="450" y="198" font-size="10.5">table leaf:</text>
+<text class="t mono" x="450" y="212" font-size="10.5" text-anchor="None">the row 1|7919</text>
+<line class="s" x1="194" y1="79" x2="208" y2="79" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0502a-ah)"/>
+<line class="a" x1="295" y1="110" x2="295" y2="154" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0502a-aa)"/>
+<path class="a" d="M380 187 C 410 187, 400 79, 434 79" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0502a-aa)"/>
+<text class="ta mono" x="432" y="140" font-size="10.5" font-weight="600" text-anchor="None">rowid 1</text>
+<line class="s" x1="521" y1="110" x2="521" y2="154" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0502a-ah)"/>
+<text class="t" x="24" y="248" font-size="11">DB_STATS: pages read 5. A scan for the same row reads page 1 and every page of the table: 496.</text>
+</svg>

@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 372" fill="none">
+<title>A row&#x27;s bytes, the columns it takes on the screen, and where the cursor goes</title>
+<defs><marker id="f0303a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0303a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0303a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">at 03.03: chars is what the file holds, render what the screen shows; a tab runs to the next multiple of 8</text>
+<text class="t mono" x="24" y="68" font-size="11.5" font-weight="600">chars</text>
+<text class="t mono" x="24" y="134" font-size="11.5" font-weight="600">render</text>
+<rect class="s f" x="118" y="52" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="130" y="67.96" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="130" y="48" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="144" y="52" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="156" y="67.96" font-size="11" text-anchor="middle">b</text>
+<text class="tm mono" x="156" y="48" font-size="9" text-anchor="middle">1</text>
+<rect class="a af" x="170" y="52" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="182" y="67.96" font-size="11" text-anchor="middle">\t</text>
+<text class="tm mono" x="182" y="48" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="196" y="52" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="208" y="67.96" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="208" y="48" font-size="9" text-anchor="middle">3</text>
+<rect class="s f" x="118" y="118" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="130" y="133.96" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="130" y="154" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="144" y="118" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="156" y="133.96" font-size="11" text-anchor="middle">b</text>
+<text class="tm mono" x="156" y="154" font-size="9" text-anchor="middle">1</text>
+<rect class="a af" x="170" y="118" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="182" y="154" font-size="9" text-anchor="middle">2</text>
+<rect class="a af" x="196" y="118" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="208" y="154" font-size="9" text-anchor="middle">3</text>
+<rect class="a af" x="222" y="118" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="234" y="154" font-size="9" text-anchor="middle">4</text>
+<rect class="a af" x="248" y="118" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="260" y="154" font-size="9" text-anchor="middle">5</text>
+<rect class="a af" x="274" y="118" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="286" y="154" font-size="9" text-anchor="middle">6</text>
+<rect class="a af" x="300" y="118" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="312" y="154" font-size="9" text-anchor="middle">7</text>
+<rect class="s f" x="326" y="118" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="338" y="133.96" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="338" y="154" font-size="9" text-anchor="middle">8</text>
+<line class="m" x1="130" y1="77" x2="130" y2="116" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="156" y1="77" x2="156" y2="116" stroke-width="1.5" stroke-linecap="round"/>
+<path class="a" d="M182.0 77 L172 116" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M182.0 77 L322 116" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="208" y1="77" x2="338" y2="116" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="238" y="68" font-size="11">a tab at column 2: 6 spaces</text>
+<rect class="a" x="325" y="115" width="26" height="30" rx="3" stroke-width="1.5"/>
+<text class="t" x="362" y="134" font-size="11">E.cx = 3, on the c: screen column 9</text>
+<text class="t mono" x="24" y="226" font-size="11.5" font-weight="600">chars</text>
+<text class="t mono" x="24" y="292" font-size="11.5" font-weight="600">render</text>
+<rect class="a af" x="118" y="210" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="130" y="225.96" font-size="11" text-anchor="middle">\t</text>
+<text class="tm mono" x="130" y="206" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="144" y="210" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="156" y="225.96" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="156" y="206" font-size="9" text-anchor="middle">1</text>
+<rect class="s f" x="170" y="210" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="182" y="225.96" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="182" y="206" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="196" y="210" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="208" y="225.96" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="208" y="206" font-size="9" text-anchor="middle">3</text>
+<rect class="a af" x="118" y="276" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="130" y="312" font-size="9" text-anchor="middle">0</text>
+<rect class="a af" x="144" y="276" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="156" y="312" font-size="9" text-anchor="middle">1</text>
+<rect class="a af" x="170" y="276" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="182" y="312" font-size="9" text-anchor="middle">2</text>
+<rect class="a af" x="196" y="276" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="208" y="312" font-size="9" text-anchor="middle">3</text>
+<rect class="a af" x="222" y="276" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="234" y="312" font-size="9" text-anchor="middle">4</text>
+<rect class="a af" x="248" y="276" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="260" y="312" font-size="9" text-anchor="middle">5</text>
+<rect class="a af" x="274" y="276" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="286" y="312" font-size="9" text-anchor="middle">6</text>
+<rect class="a af" x="300" y="276" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="312" y="312" font-size="9" text-anchor="middle">7</text>
+<rect class="s f" x="326" y="276" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="338" y="291.96" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="338" y="312" font-size="9" text-anchor="middle">8</text>
+<rect class="s f" x="352" y="276" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="364" y="291.96" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="364" y="312" font-size="9" text-anchor="middle">9</text>
+<rect class="s f" x="378" y="276" width="24" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="390" y="291.96" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="390" y="312" font-size="9" text-anchor="middle">10</text>
+<path class="a" d="M130.0 235 L120 274" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M130.0 235 L322 274" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="156" y1="235" x2="338" y2="274" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="182" y1="235" x2="364" y2="274" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="208" y1="235" x2="390" y2="274" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="238" y="226" font-size="11">a tab at column 0: 8 spaces</text>
+<rect class="a" x="403" y="273" width="26" height="30" rx="3" stroke-width="1.5"/>
+<text class="t" x="440" y="292" font-size="11">E.cx = 4, the end of the row: column 12</text>
+<text class="tm" x="24" y="360" font-size="10.5">Screen columns count from 1 in ESC [ row ; col H: render column 8 is screen column 9.</text>
+</svg>

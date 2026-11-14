@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" fill="none">
+<title>From a key press to a struct inputevent</title>
+<defs><marker id="f0903a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0903a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0903a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s fs" x="24" y="24" width="270" height="38" rx="6" stroke-width="1.5"/>
+<text class="t" x="34" y="40" font-size="10.5" font-weight="600">a key goes down in the window</text>
+<text class="tm" x="34" y="55" font-size="9.5">QEMU&#x27;s virtio-keyboard-device</text>
+<line class="s" x1="159" y1="62" x2="159" y2="76" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903a-ah)"/>
+<rect class="s f" x="24" y="78" width="270" height="38" rx="6" stroke-width="1.5"/>
+<text class="t" x="34" y="94" font-size="10.5" font-weight="600">the device writes 8 bytes into ev[i]</text>
+<text class="tm" x="34" y="109" font-size="9.5">a buffer the driver gave it ahead</text>
+<line class="s" x1="159" y1="116" x2="159" y2="130" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903a-ah)"/>
+<rect class="s f" x="24" y="132" width="270" height="38" rx="6" stroke-width="1.5"/>
+<text class="t" x="34" y="148" font-size="10.5" font-weight="600">used ring: i; interrupt 3</text>
+<text class="tm" x="34" y="163" font-size="9.5">the PLIC picks a hart</text>
+<line class="s" x1="159" y1="170" x2="159" y2="184" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903a-ah)"/>
+<rect class="a af" x="24" y="186" width="270" height="52" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="34" y="202" font-size="10.5" font-weight="600">virtio_input_intr(3)</text>
+<text class="ta" x="34" y="217" font-size="9.5">copies the event to input.q, gives</text>
+<text class="ta" x="34" y="231" font-size="9.5">ev[i] back, wakeup(&amp;input.r)</text>
+<text class="t" x="346" y="20" font-size="11" font-weight="600">events, meanwhile</text>
+<rect class="s fs" x="346" y="28" width="270" height="38" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="356" y="44" font-size="10.5" font-weight="600">read(fd, ev, 128)</text>
+<text class="tm" x="356" y="59" font-size="9.5">user space</text>
+<line class="s" x1="481" y1="66" x2="481" y2="80" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903a-ah)"/>
+<rect class="s f" x="346" y="82" width="270" height="38" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="356" y="98" font-size="10.5" font-weight="600">fileread: FD_DEVICE</text>
+<text class="tm" x="356" y="113" font-size="9.5">devsw[INPUT].read</text>
+<line class="s" x1="481" y1="120" x2="481" y2="134" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903a-ah)"/>
+<rect class="a af" x="346" y="136" width="270" height="38" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="152" font-size="10.5" font-weight="600">inputread</text>
+<text class="ta" x="356" y="167" font-size="9.5">sleeps on &amp;input.r</text>
+<path class="a" d="M294 212 C 324 212, 316 166, 344 166" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0903a-aa)"/>
+<text class="ta" x="322" y="156" font-size="10" font-weight="600" text-anchor="middle">wakeup</text>
+<rect class="s f" x="346" y="190" width="270" height="52" rx="6" stroke-width="1.5"/>
+<text class="t" x="356" y="206" font-size="10.5">it wakes: copyout of every</text>
+<text class="t" x="356" y="221" font-size="10.5">whole event waiting, oldest first</text>
+<text class="tm" x="356" y="235" font-size="9.5">a key going down: read returns 16</text>
+<line class="s" x1="481" y1="174" x2="481" y2="188" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903a-ah)"/>
+<line class="m" x1="24" y1="286" x2="616" y2="286" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="306" font-size="10.5">The mouse takes the same path on interrupt 4: a tablet at slot 3 whose positions run 0 to</text>
+<text class="tm" x="24" y="322" font-size="10.5">32767; the driver turns them into pixels. Both devices feed the one queue, input.q, of 64</text>
+<text class="tm" x="24" y="338" font-size="10.5">events: when it is full, new events are dropped until someone reads.</text>
+</svg>

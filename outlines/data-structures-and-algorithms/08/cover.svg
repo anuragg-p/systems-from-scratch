@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Shortest paths on a road map: Dijkstra pops the nearest junction from a heap until it pops the goal</title>
+<defs><marker id="d08-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="d08-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="64.5" y1="133.7" x2="151.5" y2="76.3" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="98.0" y="103.0" font-size="11" text-anchor="middle">5</text>
+<line class="a" x1="64.8" y1="149.8" x2="151.2" y2="202.2" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="98.0" y="192.0" font-size="11" font-weight="700" text-anchor="middle">2</text>
+<line class="m" x1="67.0" y1="142.0" x2="275.0" y2="142.0" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="171.0" y="139.0" font-size="11" text-anchor="middle">12</text>
+<line class="m" x1="178.9" y1="66.7" x2="285.1" y2="57.3" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="232.0" y="58.0" font-size="11" text-anchor="middle">4</text>
+<line class="m" x1="176.9" y1="75.6" x2="277.1" y2="134.4" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="237.0" y="103.0" font-size="11" text-anchor="middle">4</text>
+<line class="m" x1="177.2" y1="202.9" x2="276.8" y2="149.1" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="237.0" y="192.0" font-size="11" text-anchor="middle">6</text>
+<line class="a" x1="179.0" y1="211.1" x2="285.0" y2="218.9" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="232.0" y="235.0" font-size="11" font-weight="700" text-anchor="middle">3</text>
+<line class="m" x1="305.0" y1="142.0" x2="405.0" y2="142.0" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="355.0" y="139.0" font-size="11" text-anchor="middle">6</text>
+<line class="m" x1="312.2" y1="64.7" x2="407.8" y2="133.3" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="370.0" y="97.0" font-size="11" text-anchor="middle">7</text>
+<line class="a" x1="312.6" y1="211.8" x2="407.4" y2="150.2" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="370.0" y="197.0" font-size="11" font-weight="700" text-anchor="middle">5</text>
+<circle class="a af" cx="52" cy="142" r="15" stroke-width="1.5"/>
+<text class="ta" x="52" y="146.4" font-size="12.5" font-weight="700" text-anchor="middle">A</text>
+<text class="ta mono" x="52" y="120" font-size="10.5" font-weight="600" text-anchor="middle">0</text>
+<circle class="s f" cx="164" cy="68" r="15" stroke-width="1.5"/>
+<text class="t" x="164" y="72.4" font-size="12.5" font-weight="700" text-anchor="middle">B</text>
+<text class="tm mono" x="164" y="46" font-size="10.5" font-weight="600" text-anchor="middle">5</text>
+<circle class="a af" cx="164" cy="210" r="15" stroke-width="1.5"/>
+<text class="ta" x="164" y="214.4" font-size="12.5" font-weight="700" text-anchor="middle">C</text>
+<text class="ta mono" x="164" y="242" font-size="10.5" font-weight="600" text-anchor="middle">2</text>
+<circle class="s f" cx="290" cy="142" r="15" stroke-width="1.5"/>
+<text class="t" x="290" y="146.4" font-size="12.5" font-weight="700" text-anchor="middle">D</text>
+<text class="tm mono" x="290" y="120" font-size="10.5" font-weight="600" text-anchor="middle">8</text>
+<circle class="s f" cx="300" cy="56" r="15" stroke-width="1.5"/>
+<text class="t" x="300" y="60.4" font-size="12.5" font-weight="700" text-anchor="middle">E</text>
+<text class="tm mono" x="300" y="34" font-size="10.5" font-weight="600" text-anchor="middle">9</text>
+<circle class="a af" cx="300" cy="220" r="15" stroke-width="1.5"/>
+<text class="ta" x="300" y="224.4" font-size="12.5" font-weight="700" text-anchor="middle">F</text>
+<text class="ta mono" x="300" y="252" font-size="10.5" font-weight="600" text-anchor="middle">5</text>
+<circle class="a af" cx="420" cy="142" r="15" stroke-width="1.5"/>
+<text class="ta" x="420" y="146.4" font-size="12.5" font-weight="700" text-anchor="middle">G</text>
+<text class="ta mono" x="420" y="120" font-size="10.5" font-weight="600" text-anchor="middle">10</text>
+<text class="tm" x="52" y="173" font-size="10.5" text-anchor="middle">start</text>
+<text class="tm" x="446" y="146" font-size="10.5">goal</text>
+<text class="t" x="492" y="28" font-size="12" font-weight="700">pops, nearest first</text>
+<text class="ta mono" x="492" y="50" font-size="11.5" font-weight="700">A</text>
+<text class="ta mono" x="510" y="50" font-size="11.5">0</text>
+<text class="ta mono" x="492" y="67" font-size="11.5" font-weight="700">C</text>
+<text class="ta mono" x="510" y="67" font-size="11.5">2</text>
+<text class="t mono" x="492" y="84" font-size="11.5" font-weight="700">B</text>
+<text class="tm mono" x="510" y="84" font-size="11.5">5</text>
+<text class="ta mono" x="492" y="101" font-size="11.5" font-weight="700">F</text>
+<text class="ta mono" x="510" y="101" font-size="11.5">5</text>
+<text class="t mono" x="492" y="118" font-size="11.5" font-weight="700">D</text>
+<text class="tm mono" x="510" y="118" font-size="11.5">8</text>
+<text class="t mono" x="492" y="135" font-size="11.5" font-weight="700">E</text>
+<text class="tm mono" x="510" y="135" font-size="11.5">9</text>
+<text class="ta mono" x="492" y="152" font-size="11.5" font-weight="700">G</text>
+<text class="ta mono" x="510" y="152" font-size="11.5">10</text>
+<text class="ta" x="536" y="152" font-size="10.5">goal: stop</text>
+<text class="tm" x="492" y="192" font-size="10.5">fewest roads (BFS)</text>
+<text class="t mono" x="492" y="208" font-size="11.5">A-D-G = 18</text>
+<text class="ta" x="492" y="232" font-size="10.5">shortest (Dijkstra)</text>
+<text class="ta mono" x="492" y="248" font-size="11.5" font-weight="700">A-C-F-G = 10</text>
+<text class="tm" x="24" y="286" font-size="11">Numbers on nodes: distance from A. A* also adds a guess of the distance left, so it pops fewer.</text>
+</svg>

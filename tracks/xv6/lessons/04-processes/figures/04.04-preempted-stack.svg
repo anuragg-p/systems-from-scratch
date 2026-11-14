@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 318" fill="none">
+<title>A&#x27;s kernel stack while a tick has it switched out</title>
+<defs><marker id="f0404a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0404a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0404a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="40" y="18" font-size="11.5" font-weight="600">A&#x27;s kernel stack</text>
+<text class="tm mono" x="254" y="18" font-size="10" text-anchor="end">p-&gt;kstack + 4096</text>
+<rect class="s f" x="40" y="30" width="214" height="42" rx="0" stroke-width="1.5"/>
+<text class="t" x="52" y="49" font-size="11.5" text-anchor="None">the interrupted kernel code</text>
+<text class="tm" x="52" y="64" font-size="10.5" text-anchor="None">a long system call, say</text>
+<rect class="s f" x="40" y="72" width="214" height="52" rx="0" stroke-width="1.5"/>
+<text class="t" x="52" y="96" font-size="11.5" text-anchor="None">kernelvec&#x27;s frame</text>
+<text class="tm" x="52" y="111" font-size="10.5" text-anchor="None">256 bytes: ra, gp, tp, t0-t6, a0-a7</text>
+<rect class="a af" x="40" y="124" width="214" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="52" y="145" font-size="11.5" font-weight="600" text-anchor="None">kerneltrap()</text>
+<text class="ta mono" x="52" y="160" font-size="10.5" text-anchor="None">locals: sepc, sstatus</text>
+<rect class="s f" x="40" y="170" width="214" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="52" y="189" font-size="11.5" text-anchor="None">yield()</text>
+<rect class="s f" x="40" y="200" width="214" height="40" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="52" y="218" font-size="11.5" text-anchor="None">sched()</text>
+<text class="tm mono" x="52" y="233" font-size="10.5" text-anchor="None">local: intena</text>
+<rect class="m" x="40" y="240" width="214" height="30" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="147" y="259" font-size="10.5" text-anchor="middle">free</text>
+<line class="m" x1="32" y1="34" x2="32" y2="230" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-am)"/>
+<rect class="s fs" x="40" y="282" width="120" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="100" y="299" font-size="10.5" text-anchor="middle">A-&gt;context.sp</text>
+<path class="s" d="M160 295 C 210 295, 274 282, 274 250 L274 240 L258 240" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0404a-ah)"/>
+<circle class="s f" cx="310" cy="36" r="10" stroke-width="1.5"/>
+<text class="t mono" x="310" y="40" font-size="10.5" font-weight="600" text-anchor="middle">1</text>
+<text class="t" x="328" y="40" font-size="11">the tick: trap into kernelvec on A&#x27;s stack</text>
+<circle class="s f" cx="310" cy="69" r="10" stroke-width="1.5"/>
+<text class="t mono" x="310" y="73" font-size="10.5" font-weight="600" text-anchor="middle">2</text>
+<text class="t" x="328" y="73" font-size="11">kernelvec saves registers, calls kerneltrap()</text>
+<circle class="a af" cx="310" cy="102" r="10" stroke-width="1.5"/>
+<text class="ta mono" x="310" y="106" font-size="10.5" font-weight="600" text-anchor="middle">3</text>
+<text class="ta" x="328" y="106" font-size="11">kerneltrap saves sepc, sstatus; devintr() is 2</text>
+<circle class="s f" cx="310" cy="135" r="10" stroke-width="1.5"/>
+<text class="t mono" x="310" y="139" font-size="10.5" font-weight="600" text-anchor="middle">4</text>
+<text class="t" x="328" y="139" font-size="11">yield(), sched(), swtch to the scheduler</text>
+<circle class="s f" cx="310" cy="168" r="10" stroke-width="1.5"/>
+<text class="t mono" x="310" y="172" font-size="10.5" font-weight="600" text-anchor="middle">5</text>
+<text class="t" x="328" y="172" font-size="11">other threads run; their traps overwrite sepc</text>
+<circle class="s f" cx="310" cy="201" r="10" stroke-width="1.5"/>
+<text class="t mono" x="310" y="205" font-size="10.5" font-weight="600" text-anchor="middle">6</text>
+<text class="t" x="328" y="205" font-size="11">the scheduler picks A: swtch back, yield returns</text>
+<circle class="a af" cx="310" cy="234" r="10" stroke-width="1.5"/>
+<text class="ta mono" x="310" y="238" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="ta" x="328" y="238" font-size="11">kerneltrap writes sepc and sstatus back</text>
+<circle class="s f" cx="310" cy="267" r="10" stroke-width="1.5"/>
+<text class="t mono" x="310" y="271" font-size="10.5" font-weight="600" text-anchor="middle">8</text>
+<text class="t" x="328" y="271" font-size="11">kernelvec restores; sret resumes A where it was</text>
+</svg>

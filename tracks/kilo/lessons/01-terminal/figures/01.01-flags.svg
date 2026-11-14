@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 384" fill="none">
+<title>What enableRawMode() changes in the terminal&#x27;s settings</title>
+<defs><marker id="f0101b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0101b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0101b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">struct termios, a copy of orig_termios; each line is what the flag&#x27;s change does</text>
+<text class="t mono" x="24" y="51" font-size="11.5" font-weight="600">c_iflag &amp;= ~</text>
+<rect class="a af" x="150" y="38" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="51" font-size="11" font-weight="600" text-anchor="middle">BRKINT</text>
+<text class="t" x="236" y="51" font-size="11.5">a break on the line no longer sends SIGINT</text>
+<rect class="a af" x="150" y="62" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="75" font-size="11" font-weight="600" text-anchor="middle">ICRNL</text>
+<text class="t" x="236" y="75" font-size="11.5">Enter&#x27;s 13 is no longer turned into 10</text>
+<rect class="a af" x="150" y="86" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="99" font-size="11" font-weight="600" text-anchor="middle">INPCK</text>
+<text class="t" x="236" y="99" font-size="11.5">no parity check on input</text>
+<rect class="a af" x="150" y="110" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="123" font-size="11" font-weight="600" text-anchor="middle">ISTRIP</text>
+<text class="t" x="236" y="123" font-size="11.5">the 8th bit of each byte is kept</text>
+<rect class="a af" x="150" y="134" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="147" font-size="11" font-weight="600" text-anchor="middle">IXON</text>
+<text class="t" x="236" y="147" font-size="11.5">Ctrl-S and Ctrl-Q reach the program: no flow control</text>
+<line class="m" x1="24" y1="154" x2="616" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="24" y="171" font-size="11.5" font-weight="600">c_oflag &amp;= ~</text>
+<rect class="a af" x="150" y="158" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="171" font-size="11" font-weight="600" text-anchor="middle">OPOST</text>
+<text class="t" x="236" y="171" font-size="11.5">output goes out as written: \n is not made \r\n</text>
+<line class="m" x1="24" y1="178" x2="616" y2="178" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="24" y="195" font-size="11.5" font-weight="600">c_cflag |=</text>
+<rect class="a af" x="150" y="182" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="195" font-size="11" font-weight="600" text-anchor="middle">CS8</text>
+<text class="t" x="236" y="195" font-size="11.5">8-bit characters</text>
+<line class="m" x1="24" y1="202" x2="616" y2="202" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="24" y="219" font-size="11.5" font-weight="600">c_lflag &amp;= ~</text>
+<rect class="a af" x="150" y="206" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="219" font-size="11" font-weight="600" text-anchor="middle">ECHO</text>
+<text class="t" x="236" y="219" font-size="11.5">nothing typed is echoed</text>
+<rect class="a af" x="150" y="230" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="243" font-size="11" font-weight="600" text-anchor="middle">ICANON</text>
+<text class="t" x="236" y="243" font-size="11.5">each byte as it comes, not a line at a time</text>
+<rect class="a af" x="150" y="254" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="267" font-size="11" font-weight="600" text-anchor="middle">IEXTEN</text>
+<text class="t" x="236" y="267" font-size="11.5">no extra keys: Ctrl-V reaches the program</text>
+<rect class="a af" x="150" y="278" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="291" font-size="11" font-weight="600" text-anchor="middle">ISIG</text>
+<text class="t" x="236" y="291" font-size="11.5">Ctrl-C, Ctrl-Z, Ctrl-\ are bytes, not signals</text>
+<line class="m" x1="24" y1="298" x2="616" y2="298" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="24" y="315" font-size="11.5" font-weight="600">c_cc[] =</text>
+<rect class="a af" x="150" y="302" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="315" font-size="11" font-weight="600" text-anchor="middle">VMIN 0</text>
+<text class="t" x="236" y="315" font-size="11.5">read() may return with no byte at all</text>
+<rect class="a af" x="150" y="326" width="74" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="187" y="339" font-size="11" font-weight="600" text-anchor="middle">VTIME 1</text>
+<text class="t" x="236" y="339" font-size="11.5">after waiting at most 0.1 s for one</text>
+<line class="m" x1="24" y1="346" x2="616" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="24" y="366" font-size="11">Then tcsetattr(fd, TCSAFLUSH, &amp;raw): the change waits for pending output, and throws</text>
+<text class="tm" x="24" y="382" font-size="11">away input typed before it.</text>
+</svg>

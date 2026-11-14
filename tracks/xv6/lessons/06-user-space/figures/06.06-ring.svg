@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 232" fill="none">
+<title>A pipe&#x27;s 512-byte ring: nread and nwrite only count up, and % 512 gives the position</title>
+<defs><marker id="f0606a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0606a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0606a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="af" x="40" y="70" width="179.38" height="40" rx="0"/>
+<rect class="af" x="451.25" y="70" width="148.75" height="40" rx="0"/>
+<line class="m" x1="75" y1="70" x2="75" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="110" y1="70" x2="110" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="145" y1="70" x2="145" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="180" y1="70" x2="180" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="215" y1="70" x2="215" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="250" y1="70" x2="250" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="285" y1="70" x2="285" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="320" y1="70" x2="320" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="355" y1="70" x2="355" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="390" y1="70" x2="390" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="425" y1="70" x2="425" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="460" y1="70" x2="460" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="495" y1="70" x2="495" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="530" y1="70" x2="530" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="565" y1="70" x2="565" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s" x="40" y="70" width="560" height="40" rx="0" stroke-width="1.5"/>
+<line class="a" x1="219.38" y1="70" x2="219.38" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="451.25" y1="70" x2="451.25" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="525.62" y="95" font-size="11" font-weight="600" text-anchor="middle">oldest bytes</text>
+<text class="ta" x="129.69" y="95" font-size="11" font-weight="600" text-anchor="middle">newest bytes</text>
+<text class="tm" x="335.31" y="95" font-size="11" text-anchor="middle">free</text>
+<text class="tm mono" x="40" y="124" font-size="10">data[0]</text>
+<text class="tm mono" x="600" y="124" font-size="10" text-anchor="end">data[511]</text>
+<line class="s" x1="451.25" y1="44" x2="451.25" y2="66" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0606a-ah)"/>
+<text class="t mono" x="451.25" y="22" font-size="11.5" font-weight="600" text-anchor="middle">nread = 1400</text>
+<text class="tm" x="451.25" y="37" font-size="10.5" text-anchor="middle">1400 % 512 = 376: next byte to read</text>
+<line class="s" x1="219.38" y1="140" x2="219.38" y2="114" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0606a-ah)"/>
+<text class="t mono" x="219.38" y="156" font-size="11.5" font-weight="600" text-anchor="middle">nwrite = 1700</text>
+<text class="tm" x="219.38" y="171" font-size="10.5" text-anchor="middle">1700 % 512 = 164: next free slot</text>
+<text class="t" x="40" y="22" font-size="11">nwrite - nread = 300 bytes waiting</text>
+<text class="tm mono" x="40" y="37" font-size="10">empty: nread == nwrite</text>
+<text class="tm mono" x="40" y="51" font-size="10">full:  nwrite == nread + 512</text>
+<path class="m" d="M600 132 C 600 226, 40 226, 40 132" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0606a-am)"/>
+<text class="tm" x="320" y="222" font-size="10.5" text-anchor="middle">the byte after data[511] goes to data[0]</text>
+</svg>

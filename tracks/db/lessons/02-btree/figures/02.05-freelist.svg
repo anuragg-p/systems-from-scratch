@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 286" fill="none">
+<title>The freelist of del.db after DELETE FROM t WHERE id &gt; 1000</title>
+<defs><marker id="f0205a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0205a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0205a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">del.db: 37 pages, 23 of them free; page 1&#x27;s header points at the list</text>
+<text class="t" x="24" y="50" font-size="11" font-weight="600">page 1, offset 32</text>
+<rect class="a af" x="24" y="58" width="110" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="79" y="75.96" font-size="11" text-anchor="middle">00 00 00 10</text>
+<rect class="a af" x="138" y="58" width="110" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="193" y="75.96" font-size="11" text-anchor="middle">00 00 00 17</text>
+<text class="t" x="79" y="102" font-size="10.5" text-anchor="middle">first trunk: 16</text>
+<text class="t" x="193" y="102" font-size="10.5" text-anchor="middle">free pages: 23</text>
+<text class="tm" x="268" y="70" font-size="10.5">two numbers in the file header are the</text>
+<text class="tm" x="268" y="84" font-size="10.5">whole record of free space: no bitmap</text>
+<path class="a" d="M50 108 C 50 124, 44 136, 44 152" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0205a-aa)"/>
+<text class="t" x="110" y="140" font-size="11" font-weight="600">page 16, the trunk: 4-byte numbers</text>
+<rect class="s fs" x="24" y="156" width="56" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="52" y="173.96" font-size="11" text-anchor="middle">0</text>
+<text class="tm" x="52" y="200" font-size="10" text-anchor="middle">next trunk</text>
+<rect class="s fs" x="82" y="156" width="56" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="110" y="173.96" font-size="11" text-anchor="middle">22</text>
+<text class="tm" x="110" y="200" font-size="10" text-anchor="middle">how many</text>
+<rect class="s f" x="140" y="156" width="40" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="160" y="173.96" font-size="11" text-anchor="middle">17</text>
+<rect class="s f" x="182" y="156" width="40" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="202" y="173.96" font-size="11" text-anchor="middle">18</text>
+<rect class="s f" x="224" y="156" width="40" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="244" y="173.96" font-size="11" text-anchor="middle">19</text>
+<text class="tm mono" x="282" y="175" font-size="11" text-anchor="middle">...</text>
+<rect class="s f" x="300" y="156" width="40" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="320" y="173.96" font-size="11" text-anchor="middle">36</text>
+<rect class="s f" x="342" y="156" width="40" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="362" y="173.96" font-size="11" text-anchor="middle">37</text>
+<rect class="a af" x="384" y="156" width="40" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="404" y="173.96" font-size="11" text-anchor="middle">3</text>
+<text class="tm" x="220" y="200" font-size="10" text-anchor="middle">the free pages: 17-37, then 3</text>
+<rect class="m" x="428" y="158" width="186" height="24" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="521" y="175" font-size="10.5" text-anchor="middle">unused: room for 1016 in all</text>
+<text class="t" x="24" y="228" font-size="10.5">Freeing a page adds its number at the end; when a trunk is full, the freed page becomes</text>
+<text class="t" x="24" y="244" font-size="10.5">the new first trunk. Taking a page takes the last number: page 3 first, then 37, 36, ...</text>
+<text class="tm" x="24" y="268" font-size="10.5">500 new rows later: still 37 pages, 17 free. The file did not grow; it never shrinks either.</text>
+</svg>

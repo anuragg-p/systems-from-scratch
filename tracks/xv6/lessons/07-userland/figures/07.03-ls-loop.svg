@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 262" fill="none">
+<title>ls reads the directory 16 bytes at a time, then stats each name it finds</title>
+<defs><marker id="f0703-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="10.5">the file &quot;.&quot; (the root directory)</text>
+<text class="tm mono" x="58" y="40" font-size="10" text-anchor="end">off</text>
+<text class="tm mono" x="98" y="40" font-size="10" text-anchor="end">inum</text>
+<text class="tm mono" x="110" y="40" font-size="10">name</text>
+<rect class="s f" x="24" y="46" width="182" height="18" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="58" y="59" font-size="10" text-anchor="end">0</text>
+<text class="t mono" x="98" y="59" font-size="10.5" text-anchor="end">1</text>
+<text class="t mono" x="110" y="59" font-size="11">.</text>
+<rect class="s f" x="24" y="64" width="182" height="18" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="58" y="77" font-size="10" text-anchor="end">16</text>
+<text class="t mono" x="98" y="77" font-size="10.5" text-anchor="end">1</text>
+<text class="t mono" x="110" y="77" font-size="11">..</text>
+<rect class="a af" x="24" y="82" width="182" height="18" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="58" y="95" font-size="10" text-anchor="end">32</text>
+<text class="ta mono" x="98" y="95" font-size="10.5" text-anchor="end">2</text>
+<text class="ta mono" x="110" y="95" font-size="11" font-weight="600">README</text>
+<rect class="s f" x="24" y="100" width="182" height="18" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="58" y="113" font-size="10" text-anchor="end">48</text>
+<text class="t mono" x="98" y="113" font-size="10.5" text-anchor="end">3</text>
+<text class="t mono" x="110" y="113" font-size="11">cat</text>
+<rect class="m fs" x="24" y="118" width="182" height="18" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="110" y="131" font-size="10.5">...</text>
+<rect class="s f" x="24" y="136" width="182" height="18" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="58" y="149" font-size="10" text-anchor="end">224</text>
+<text class="t mono" x="98" y="149" font-size="10.5" text-anchor="end">14</text>
+<text class="t mono" x="110" y="149" font-size="11">wc</text>
+<rect class="s f" x="24" y="154" width="182" height="18" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="58" y="167" font-size="10" text-anchor="end">240</text>
+<text class="t mono" x="98" y="167" font-size="10.5" text-anchor="end">15</text>
+<text class="t mono" x="110" y="167" font-size="11">console</text>
+<rect class="m fs" x="24" y="172" width="182" height="18" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="58" y="185" font-size="10" text-anchor="end">256</text>
+<text class="tm mono" x="98" y="185" font-size="10.5" text-anchor="end">0</text>
+<text class="tm" x="110" y="185" font-size="10.5">skipped</text>
+<rect class="m fs" x="24" y="190" width="182" height="18" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="110" y="203" font-size="10.5">...</text>
+<rect class="m fs" x="24" y="208" width="182" height="18" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="58" y="221" font-size="10" text-anchor="end">1008</text>
+<text class="tm mono" x="98" y="221" font-size="10.5" text-anchor="end">0</text>
+<text class="tm" x="110" y="221" font-size="10.5">skipped</text>
+<text class="tm" x="24" y="242" font-size="10.5">each entry is a struct dirent: a 2-byte inum and a 14-byte name; inum 0 means no file</text>
+<rect class="s f" x="246" y="34" width="164" height="40" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="256" y="50" font-size="10.5">read(fd, &amp;de, 16)</text>
+<text class="tm mono" x="256" y="65" font-size="10">de = {2, &quot;README&quot;}</text>
+<rect class="s f" x="246" y="90" width="164" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="256" y="106" font-size="10.5">buf = &quot;./README&quot;</text>
+<rect class="s f" x="246" y="130" width="164" height="40" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="256" y="146" font-size="10.5">stat(buf, &amp;st)</text>
+<text class="tm" x="256" y="161" font-size="10">open, fstat, close</text>
+<rect class="s f" x="246" y="186" width="164" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="256" y="202" font-size="10.5">type 2, ino 2, size 480</text>
+<line class="s" x1="328" y1="74" x2="328" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703-ah)"/>
+<line class="s" x1="328" y1="114" x2="328" y2="128" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703-ah)"/>
+<line class="s" x1="328" y1="170" x2="328" y2="184" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703-ah)"/>
+<path class="a" d="M206 91 C 226 91, 226 50, 244 50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0703-aa)"/>
+<text class="tm" x="328" y="226" font-size="10" text-anchor="middle">repeat until read() is short</text>
+<text class="tm" x="440" y="20" font-size="10.5">what ls prints</text>
+<rect class="s fs" x="440" y="30" width="176" height="106" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="450" y="50" font-size="10">.</text>
+<text class="t mono" x="540" y="50" font-size="10">1 1 1024</text>
+<text class="t mono" x="450" y="68" font-size="10">..</text>
+<text class="t mono" x="540" y="68" font-size="10">1 1 1024</text>
+<text class="ta mono" x="450" y="86" font-size="10" font-weight="600">README</text>
+<text class="ta mono" x="540" y="86" font-size="10" font-weight="600">2 2 480</text>
+<text class="tm mono" x="450" y="104" font-size="10">...</text>
+<text class="t mono" x="450" y="122" font-size="10">console</text>
+<text class="t mono" x="540" y="122" font-size="10">3 15 0</text>
+<path class="a" d="M410 198 C 430 198, 432 86, 438 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0703-aa)"/>
+<text class="tm" x="450" y="156" font-size="10.5">fmtname pads each name</text>
+<text class="tm" x="450" y="170" font-size="10.5">to 14 characters</text>
+</svg>

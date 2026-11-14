@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 236" fill="none">
+<title>push_off and pop_off count: interrupts return at the last release</title>
+<defs><marker id="f0203c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0203c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="176" y="32" font-size="11.5" font-weight="600" text-anchor="middle">acquire(&amp;a)</text>
+<text class="tm mono" x="176" y="48" font-size="10.5" text-anchor="middle">push_off</text>
+<line class="m" x1="176" y1="58" x2="176" y2="204" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="t mono" x="290" y="32" font-size="11.5" font-weight="600" text-anchor="middle">acquire(&amp;b)</text>
+<text class="tm mono" x="290" y="48" font-size="10.5" text-anchor="middle">push_off</text>
+<line class="m" x1="290" y1="58" x2="290" y2="204" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="t mono" x="404" y="32" font-size="11.5" font-weight="600" text-anchor="middle">release(&amp;b)</text>
+<text class="tm mono" x="404" y="48" font-size="10.5" text-anchor="middle">pop_off</text>
+<line class="m" x1="404" y1="58" x2="404" y2="204" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="t mono" x="518" y="32" font-size="11.5" font-weight="600" text-anchor="middle">release(&amp;a)</text>
+<text class="tm mono" x="518" y="48" font-size="10.5" text-anchor="middle">pop_off</text>
+<line class="m" x1="518" y1="58" x2="518" y2="204" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="t mono" x="24" y="90" font-size="11" font-weight="600">mycpu()-&gt;noff</text>
+<text class="tm mono" x="130" y="158" font-size="11" text-anchor="end">0</text>
+<text class="tm mono" x="130" y="124" font-size="11" text-anchor="end">1</text>
+<text class="tm mono" x="130" y="90" font-size="11" text-anchor="end">2</text>
+<path class="s" d="M140 154 H176 V120 H290 V86 H404 V120 H518 V154 H616" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="182" y="112" font-size="10.5">intena = 1</text>
+<text class="t" x="24" y="197" font-size="11.5" font-weight="600">interrupts</text>
+<rect class="s f" x="140" y="184" width="36" height="20" rx="4" stroke-width="1.5"/>
+<text class="t" x="158.0" y="198" font-size="11" text-anchor="middle">on</text>
+<rect class="s fs" x="176" y="184" width="342" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm" x="347.0" y="198" font-size="11" text-anchor="middle">off</text>
+<rect class="a af" x="518" y="184" width="98" height="20" rx="4" stroke-width="1.5"/>
+<text class="ta" x="567.0" y="198" font-size="11" font-weight="600" text-anchor="middle">on</text>
+<text class="ta mono" x="567.0" y="226" font-size="11" font-weight="600" text-anchor="middle">intr_on()</text>
+<text class="tm" x="347" y="226" font-size="11" text-anchor="middle">still off: b was not the last</text>
+</svg>

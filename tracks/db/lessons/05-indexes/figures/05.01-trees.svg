@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The table and its index: two B-trees in one file</title>
+<defs><marker id="f0501b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0501b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0501b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="160" y="22" font-size="12" font-weight="600" text-anchor="middle">table t (rowid order)</text>
+<rect class="s f" x="70" y="38" width="180" height="40" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="160" y="54" font-size="11.5" text-anchor="middle">page 2: 493 signposts</text>
+<text class="tm" x="160" y="70" font-size="10.5" text-anchor="middle">rowids only, no rows</text>
+<rect class="s f" x="24" y="128" width="82" height="40" rx="6" stroke-width="1.5"/>
+<line class="s" x1="160" y1="78" x2="65" y2="126" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0501b-ah)"/>
+<text class="t mono" x="65" y="146" font-size="11" text-anchor="middle">leaf 4</text>
+<text class="tm" x="65" y="160" font-size="10.5" text-anchor="middle">rows 1-44</text>
+<rect class="s f" x="110" y="128" width="82" height="40" rx="6" stroke-width="1.5"/>
+<line class="s" x1="160" y1="78" x2="151" y2="126" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0501b-ah)"/>
+<text class="t mono" x="151" y="146" font-size="11" text-anchor="middle">leaf 53</text>
+<text class="tm" x="151" y="160" font-size="10.5" text-anchor="middle">2039-2079</text>
+<rect class="s f" x="196" y="128" width="82" height="40" rx="6" stroke-width="1.5"/>
+<line class="s" x1="160" y1="78" x2="237" y2="126" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0501b-ah)"/>
+<text class="t mono" x="237" y="146" font-size="11" text-anchor="middle">leaf 3</text>
+<text class="tm" x="237" y="160" font-size="10.5" text-anchor="middle">19956-20000</text>
+<text class="ta" x="480" y="22" font-size="12" font-weight="600" text-anchor="middle">index t_a (a order, then rowid)</text>
+<rect class="a af" x="370" y="38" width="220" height="40" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="480" y="54" font-size="11.5" text-anchor="middle">page 497: 63 entries</text>
+<text class="tm" x="480" y="70" font-size="10.5" text-anchor="middle">each one (a, rowid), like any other</text>
+<rect class="a af" x="352" y="128" width="82" height="40" rx="6" stroke-width="1.5"/>
+<line class="a" x1="480" y1="78" x2="393" y2="126" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0501b-aa)"/>
+<text class="ta mono" x="393" y="146" font-size="11" text-anchor="middle">leaf 537</text>
+<text class="tm" x="393" y="160" font-size="10.5" text-anchor="middle">a 1..322</text>
+<rect class="a af" x="438" y="128" width="82" height="40" rx="6" stroke-width="1.5"/>
+<line class="a" x1="480" y1="78" x2="479" y2="126" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0501b-aa)"/>
+<text class="ta mono" x="479" y="146" font-size="11" text-anchor="middle">leaf 523</text>
+<text class="tm" x="479" y="160" font-size="10.5" text-anchor="middle">a 7843..8152</text>
+<rect class="a af" x="524" y="128" width="82" height="40" rx="6" stroke-width="1.5"/>
+<line class="a" x1="480" y1="78" x2="565" y2="126" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0501b-aa)"/>
+<text class="ta mono" x="565" y="146" font-size="11" text-anchor="middle">...</text>
+<text class="tm" x="565" y="160" font-size="10.5" text-anchor="middle">64 leaves</text>
+<path class="a" d="M479 170 C 479 232, 65 232, 65 172" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0501b-aa)" stroke-dasharray="4 4"/>
+<text class="ta" x="320" y="248" font-size="11" text-anchor="middle">the entry (7919, 1) in leaf 523 leads back to row 1 in leaf 4</text>
+<text class="tm" x="160" y="276" font-size="10.5" text-anchor="middle">494 leaves hold all 20000 rows</text>
+<text class="tm" x="480" y="276" font-size="10.5" text-anchor="middle">63 entries in the root + 19937 in the leaves</text>
+<text class="tm" x="480" y="292" font-size="10.5" text-anchor="middle">= 20000: one entry per row</text>
+</svg>

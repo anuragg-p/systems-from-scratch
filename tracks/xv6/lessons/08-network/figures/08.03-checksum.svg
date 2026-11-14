@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280" fill="none">
+<title>Two Internet checksums, worked by hand</title>
+<defs><marker id="f0803b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0803b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0803b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="20" font-size="11" font-weight="600">the IP header, 10 words</text>
+<text class="t mono" x="132" y="40" font-size="11" text-anchor="end">  4500</text>
+<text class="tm" x="144" y="40" font-size="10">vhl tos</text>
+<text class="t mono" x="132" y="58" font-size="11" text-anchor="end">+ 0039</text>
+<text class="tm" x="144" y="58" font-size="10">length</text>
+<text class="t mono" x="132" y="76" font-size="11" text-anchor="end">+ 0000</text>
+<text class="tm" x="144" y="76" font-size="10">id</text>
+<text class="t mono" x="132" y="94" font-size="11" text-anchor="end">+ 0000</text>
+<text class="tm" x="144" y="94" font-size="10">flags</text>
+<text class="t mono" x="132" y="112" font-size="11" text-anchor="end">+ 4011</text>
+<text class="tm" x="144" y="112" font-size="10">ttl proto</text>
+<text class="ta mono" x="132" y="130" font-size="11" text-anchor="end">+ 0000</text>
+<text class="ta" x="144" y="130" font-size="10">checksum (0 while summing)</text>
+<text class="t mono" x="132" y="148" font-size="11" text-anchor="end">+ 0a00</text>
+<text class="tm" x="144" y="148" font-size="10">source</text>
+<text class="t mono" x="132" y="166" font-size="11" text-anchor="end">+ 020f</text>
+<text class="tm" x="144" y="166" font-size="10"></text>
+<text class="t mono" x="132" y="184" font-size="11" text-anchor="end">+ 0a00</text>
+<text class="tm" x="144" y="184" font-size="10">destination</text>
+<text class="t mono" x="132" y="202" font-size="11" text-anchor="end">+ 0203</text>
+<text class="tm" x="144" y="202" font-size="10"></text>
+<line class="s" x1="70" y1="210" x2="134" y2="210" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="132" y="226" font-size="11" font-weight="600" text-anchor="end">9d5c</text>
+<text class="tm" x="144" y="226" font-size="10">sum, no carry</text>
+<text class="ta mono" x="132" y="246" font-size="11" font-weight="600" text-anchor="end">62a3</text>
+<text class="ta" x="144" y="246" font-size="10">complement: goes in bytes 10-11</text>
+<text class="tm" x="24" y="268" font-size="10.5">the receiver: 9d5c + 62a3 = ffff, complement 0000</text>
+<text class="t" x="360" y="20" font-size="11" font-weight="600">UDP: pseudo-header, header, data</text>
+<text class="tm" x="360" y="44" font-size="10">pseudo-header</text>
+<text class="t mono" x="360" y="58" font-size="10.5">0a00 020f 0a00 0203</text>
+<text class="tm" x="616" y="58" font-size="9.5" text-anchor="end">addresses</text>
+<text class="t mono" x="360" y="88" font-size="10.5">0011 0025</text>
+<text class="tm" x="616" y="88" font-size="9.5" text-anchor="end">protocol, UDP length</text>
+<text class="tm" x="360" y="104" font-size="10">UDP header</text>
+<text class="t mono" x="360" y="118" font-size="10.5">c000 0035 0025 0000</text>
+<text class="tm" x="616" y="118" font-size="9.5" text-anchor="end">ports, length, sum 0</text>
+<text class="tm" x="360" y="134" font-size="10">data</text>
+<text class="t mono" x="360" y="148" font-size="10.5">5cce 0100 0001 ...</text>
+<text class="tm" x="616" y="148" font-size="9.5" text-anchor="end">29 bytes, 15 words:</text>
+<text class="t mono" x="360" y="178" font-size="10.5">... 0001 0100</text>
+<text class="tm" x="616" y="178" font-size="9.5" text-anchor="end">the odd last byte is 01 00</text>
+<line class="s" x1="360" y1="188" x2="616" y2="188" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="360" y="206" font-size="11" font-weight="600">3 04dc</text>
+<text class="tm" x="430" y="206" font-size="10">sum: 3 carried out of 16 bits</text>
+<text class="t mono" x="360" y="226" font-size="11" font-weight="600">04df</text>
+<text class="tm" x="430" y="226" font-size="10">fold: 04dc + 3</text>
+<text class="ta mono" x="360" y="246" font-size="11" font-weight="600">fb20</text>
+<text class="ta" x="430" y="246" font-size="10">complement: bytes 26-27</text>
+<line class="m" x1="330" y1="12" x2="330" y2="272" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+</svg>

@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 358" fill="none">
+<title>A DNS answer with compressed names</title>
+<defs><marker id="f0805b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0805b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0805b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="40" y="20" font-size="11" font-weight="600">header</text>
+<rect class="s f" x="40" y="30" width="60" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="70" y="44" font-size="9.5" text-anchor="middle">id</text>
+<text class="t mono" x="70" y="64" font-size="11" text-anchor="middle">5c ce</text>
+<rect class="a af" x="100" y="30" width="60" height="44" rx="0" stroke-width="1.5"/>
+<text class="ta" x="130" y="44" font-size="9.5" text-anchor="middle">flags</text>
+<text class="ta mono" x="130" y="64" font-size="11" font-weight="600" text-anchor="middle">81 80</text>
+<rect class="s f" x="160" y="30" width="60" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="190" y="44" font-size="9.5" text-anchor="middle">qd</text>
+<text class="t mono" x="190" y="64" font-size="11" text-anchor="middle">00 01</text>
+<rect class="a af" x="220" y="30" width="60" height="44" rx="0" stroke-width="1.5"/>
+<text class="ta" x="250" y="44" font-size="9.5" text-anchor="middle">an</text>
+<text class="ta mono" x="250" y="64" font-size="11" font-weight="600" text-anchor="middle">00 02</text>
+<rect class="s f" x="280" y="30" width="60" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="310" y="44" font-size="9.5" text-anchor="middle">ns</text>
+<text class="t mono" x="310" y="64" font-size="11" text-anchor="middle">00 00</text>
+<rect class="s f" x="340" y="30" width="60" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="370" y="44" font-size="9.5" text-anchor="middle">ar</text>
+<text class="t mono" x="370" y="64" font-size="11" text-anchor="middle">00 00</text>
+<text class="tm" x="414" y="48" font-size="10">81 80: a response (QR), RD and RA,</text>
+<text class="tm" x="414" y="63" font-size="10">response code 0; an: 2 answers</text>
+<text class="t" x="40" y="96" font-size="11" font-weight="600">question, as sent</text>
+<rect class="s f" x="40" y="106" width="250" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="50" y="126" font-size="10.5">07 example 03 com 00</text>
+<text class="tm mono" x="43" y="150" font-size="9">12</text>
+<rect class="s f" x="290" y="106" width="116" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="348" y="126" font-size="10.5" text-anchor="middle">00 01  00 01</text>
+<text class="tm mono" x="293" y="150" font-size="9">25</text>
+<text class="ta" x="420" y="119" font-size="10">c0 0c: the top two bits are set,</text>
+<text class="ta" x="420" y="134" font-size="10">so it points to the name at offset 12</text>
+<text class="t" x="40" y="176" font-size="11" font-weight="600">answer 1</text>
+<rect class="a af" x="40" y="186" width="56" height="44" rx="0" stroke-width="1.5"/>
+<text class="ta" x="68" y="200" font-size="9.5" text-anchor="middle">name</text>
+<text class="ta mono" x="68" y="220" font-size="11" font-weight="600" text-anchor="middle">c0 0c</text>
+<rect class="s f" x="96" y="186" width="52" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="122" y="200" font-size="9.5" text-anchor="middle">type</text>
+<text class="t mono" x="122" y="220" font-size="11" text-anchor="middle">00 01</text>
+<rect class="s f" x="148" y="186" width="52" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="174" y="200" font-size="9.5" text-anchor="middle">class</text>
+<text class="t mono" x="174" y="220" font-size="11" text-anchor="middle">00 01</text>
+<rect class="s f" x="200" y="186" width="104" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="252" y="200" font-size="9.5" text-anchor="middle">ttl</text>
+<text class="t mono" x="252" y="220" font-size="11" text-anchor="middle">00 00 00 74</text>
+<rect class="s f" x="304" y="186" width="66" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="337" y="200" font-size="9.5" text-anchor="middle">rdlength</text>
+<text class="t mono" x="337" y="220" font-size="11" text-anchor="middle">00 04</text>
+<rect class="s fs" x="370" y="186" width="206" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="473" y="200" font-size="9.5" text-anchor="middle">rdata: 172.66.147.243</text>
+<text class="t mono" x="473" y="220" font-size="11" text-anchor="middle">ac 42 93 f3</text>
+<text class="tm mono" x="43" y="242" font-size="9">29</text>
+<path class="a" d="M44 216 C 14 210, 14 126, 38 122" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0805b-aa)"/>
+<text class="t" x="40" y="260" font-size="11" font-weight="600">answer 2</text>
+<rect class="a af" x="40" y="270" width="56" height="44" rx="0" stroke-width="1.5"/>
+<text class="ta" x="68" y="284" font-size="9.5" text-anchor="middle">name</text>
+<text class="ta mono" x="68" y="304" font-size="11" font-weight="600" text-anchor="middle">c0 0c</text>
+<rect class="s f" x="96" y="270" width="52" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="122" y="284" font-size="9.5" text-anchor="middle">type</text>
+<text class="t mono" x="122" y="304" font-size="11" text-anchor="middle">00 01</text>
+<rect class="s f" x="148" y="270" width="52" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="174" y="284" font-size="9.5" text-anchor="middle">class</text>
+<text class="t mono" x="174" y="304" font-size="11" text-anchor="middle">00 01</text>
+<rect class="s f" x="200" y="270" width="104" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="252" y="284" font-size="9.5" text-anchor="middle">ttl</text>
+<text class="t mono" x="252" y="304" font-size="11" text-anchor="middle">00 00 00 74</text>
+<rect class="s f" x="304" y="270" width="66" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="337" y="284" font-size="9.5" text-anchor="middle">rdlength</text>
+<text class="t mono" x="337" y="304" font-size="11" text-anchor="middle">00 04</text>
+<rect class="s fs" x="370" y="270" width="206" height="44" rx="0" stroke-width="1.5"/>
+<text class="tm" x="473" y="284" font-size="9.5" text-anchor="middle">rdata: 104.20.23.154</text>
+<text class="t mono" x="473" y="304" font-size="11" text-anchor="middle">68 14 17 9a</text>
+<text class="tm mono" x="43" y="326" font-size="9">45</text>
+<path class="a" d="M44 300 C 14 294, 14 126, 38 122" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0805b-aa)"/>
+<text class="tm" x="40" y="348" font-size="10.5">type 00 01 is A, ttl 00 00 00 74 is 116 seconds, rdlength 4: one IPv4 address</text>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 346" fill="none">
+<title>A reader that arrives first and a writer with 600 bytes: each side wakes the other&#x27;s channel</title>
+<defs><marker id="f0606b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0606b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0606b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="196" y="20" font-size="12" font-weight="600" text-anchor="middle">writer</text>
+<text class="t" x="444" y="20" font-size="12" font-weight="600" text-anchor="middle">reader</text>
+<line class="m" x1="196" y1="30" x2="196" y2="338" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="444" y1="30" x2="444" y2="338" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="444" cy="44" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="458" y="48" font-size="10.5">read(p[0], buf, 512)</text>
+<text class="tm mono" x="458" y="62" font-size="10.5">empty: sleep(&amp;pi-&gt;nread)</text>
+<rect class="m fs" x="438" y="70" width="12" height="86" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="460" y="117" font-size="10">asleep</text>
+<circle class="s f" cx="196" cy="88" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="182" y="92" font-size="10.5" text-anchor="end">write(p[1], buf, 600)</text>
+<text class="tm" x="182" y="106" font-size="10.5" text-anchor="end">512 bytes in: full</text>
+<line class="a" x1="196" y1="124" x2="436" y2="124" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0606b-aa)"/>
+<text class="ta mono" x="320" y="118" font-size="10" text-anchor="middle">wakeup(&amp;pi-&gt;nread)</text>
+<circle class="s f" cx="196" cy="138" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="182" y="142" font-size="10.5" text-anchor="end">sleep(&amp;pi-&gt;nwrite)</text>
+<rect class="m fs" x="190" y="150" width="12" height="72" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="180" y="190" font-size="10" text-anchor="end">asleep</text>
+<circle class="s f" cx="444" cy="166" r="3.5" stroke-width="1.5"/>
+<text class="t" x="458" y="170" font-size="10.5">wakes, copies 512 bytes out</text>
+<line class="a" x1="444" y1="190" x2="204" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0606b-aa)"/>
+<text class="ta mono" x="320" y="184" font-size="10" text-anchor="middle">wakeup(&amp;pi-&gt;nwrite)</text>
+<circle class="s f" cx="444" cy="204" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="458" y="208" font-size="10.5">read returns 512</text>
+<circle class="s f" cx="196" cy="232" r="3.5" stroke-width="1.5"/>
+<text class="t" x="182" y="236" font-size="10.5" text-anchor="end">wakes, copies the last 88 in</text>
+<text class="tm mono" x="182" y="250" font-size="10.5" text-anchor="end">write returns 600</text>
+<circle class="s f" cx="444" cy="262" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="458" y="266" font-size="10.5">read returns 88</text>
+<text class="tm mono" x="458" y="280" font-size="10.5">empty: sleep(&amp;pi-&gt;nread)</text>
+<rect class="m fs" x="438" y="286" width="12" height="20" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="460" y="300" font-size="10"></text>
+<circle class="s f" cx="196" cy="296" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="182" y="300" font-size="10.5" text-anchor="end">close(p[1]): writeopen = 0</text>
+<line class="s" x1="196" y1="300" x2="436" y2="300" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0606b-ah)"/>
+<text class="tm mono" x="320" y="294" font-size="10" text-anchor="middle">wakeup(&amp;pi-&gt;nread)</text>
+<circle class="s f" cx="444" cy="318" r="3.5" stroke-width="1.5"/>
+<text class="t" x="458" y="322" font-size="10.5">empty, no writer left:</text>
+<text class="tm mono" x="458" y="336" font-size="10.5">read returns 0, end of file</text>
+</svg>

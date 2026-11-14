@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 214" fill="none">
+<title>One autocommit INSERT: four fsyncs with the journal, one with the log</title>
+<defs><marker id="f0702b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="38" font-size="11.5" font-weight="600" text-anchor="None">rollback journal</text>
+<line class="m" x1="24" y1="64" x2="616" y2="64" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a fa" x="60" y="50" width="26" height="28" rx="4" stroke-width="1.5"/>
+<text class="t" x="94" y="69" font-size="11">journal</text>
+<rect class="a fa" x="200" y="50" width="26" height="28" rx="4" stroke-width="1.5"/>
+<text class="t" x="234" y="69" font-size="11">its directory</text>
+<rect class="a fa" x="340" y="50" width="26" height="28" rx="4" stroke-width="1.5"/>
+<text class="t" x="374" y="69" font-size="11">journal header</text>
+<rect class="a fa" x="480" y="50" width="26" height="28" rx="4" stroke-width="1.5"/>
+<text class="t" x="514" y="69" font-size="11">database</text>
+<text class="t" x="24" y="108" font-size="11.5" font-weight="600" text-anchor="None">write-ahead log</text>
+<line class="m" x1="24" y1="134" x2="616" y2="134" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a fa" x="60" y="120" width="26" height="28" rx="4" stroke-width="1.5"/>
+<text class="t" x="94" y="139" font-size="11">the log</text>
+<text class="t" x="24" y="186" font-size="11">DB_STATS for five INSERTs: fsyncs 20 with the journal; 8 in WAL mode</text>
+<text class="tm" x="24" y="204" font-size="10.5">(5 commits, 1 for the new log&#x27;s directory, 2 for the checkpoint when the file is closed)</text>
+</svg>

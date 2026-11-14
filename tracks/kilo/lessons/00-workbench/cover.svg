@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The bytes kilo writes for one screen, in one write(), and the screen a 6 x 20 terminal shows</title>
+<defs><marker id="k00-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="k00-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="24" font-size="11">what kilo writes: 108 bytes, in one write()</text>
+<text class="tm" x="430" y="24" font-size="11">what a 6 x 20 terminal shows</text>
+<text class="ta mono" x="24" y="46" font-size="11.5">ESC[?25l</text>
+<text class="ta mono" x="83.2" y="46" font-size="11.5">ESC[H</text>
+<text class="tm" x="129.7" y="46" font-size="10.5">hide the cursor, go to the top left</text>
+<text class="t mono" x="24" y="70" font-size="11.5">ab</text>
+<text class="ta mono" x="41.8" y="70" font-size="11.5">ESC[0K</text>
+<text class="tm mono" x="87.2" y="70" font-size="11.5">\r\n</text>
+<text class="t mono" x="24" y="98" font-size="11.5">~</text>
+<text class="ta mono" x="34.9" y="98" font-size="11.5">ESC[0K</text>
+<text class="tm mono" x="80.3" y="98" font-size="11.5">\r\n</text>
+<text class="t mono" x="24" y="126" font-size="11.5">~</text>
+<text class="ta mono" x="34.9" y="126" font-size="11.5">ESC[0K</text>
+<text class="tm mono" x="80.3" y="126" font-size="11.5">\r\n</text>
+<text class="t mono" x="24" y="154" font-size="11.5">~</text>
+<text class="ta mono" x="34.9" y="154" font-size="11.5">ESC[0K</text>
+<text class="tm mono" x="80.3" y="154" font-size="11.5">\r\n</text>
+<text class="ta mono" x="24" y="182" font-size="11.5">ESC[0K</text>
+<text class="ta mono" x="69.4" y="182" font-size="11.5">ESC[7m</text>
+<text class="t mono" x="114.8" y="182" font-size="11.5">f.txt</text>
+<text class="t mono" x="156.2" y="182" font-size="11.5">-</text>
+<text class="t mono" x="170" y="182" font-size="11.5">1</text>
+<text class="t mono" x="183.8" y="182" font-size="11.5">lines</text>
+<text class="t mono" x="232.1" y="182" font-size="11.5">1/1</text>
+<text class="ta mono" x="256.8" y="182" font-size="11.5">ESC[0m</text>
+<text class="tm mono" x="302.2" y="182" font-size="11.5">\r\n</text>
+<text class="ta mono" x="24" y="210" font-size="11.5">ESC[0K</text>
+<text class="t mono" x="69.4" y="210" font-size="11.5">HELP:</text>
+<text class="t mono" x="110.8" y="210" font-size="11.5">Ctrl-S</text>
+<text class="t mono" x="159.1" y="210" font-size="11.5">=</text>
+<text class="t mono" x="172.9" y="210" font-size="11.5">save</text>
+<text class="ta mono" x="24" y="238" font-size="11.5">ESC[1;1H</text>
+<text class="ta mono" x="83.2" y="238" font-size="11.5">ESC[?25h</text>
+<text class="tm" x="150.4" y="238" font-size="10.5">the cursor to row 1, column 1; show it</text>
+<path class="m" d="M340 34 L346 34 L346 244 L340 244" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="a" x1="352" y1="140" x2="424" y2="140" stroke-width="1.5" stroke-linecap="round" marker-end="url(#k00-aa)"/>
+<text class="ta mono" x="388" y="131" font-size="11.5" font-weight="600" text-anchor="middle">write()</text>
+<rect class="s fs" x="428" y="50" width="192" height="178" rx="10" stroke-width="1.5"/>
+<rect class="fa" x="440" y="57" width="8.4" height="17" rx="1.5"/>
+<text class="f mono" x="440" y="70" font-size="14">a</text>
+<text class="t mono" x="448.4" y="70" font-size="14">b</text>
+<text class="t mono" x="440" y="98" font-size="14">~</text>
+<text class="t mono" x="440" y="126" font-size="14">~</text>
+<text class="t mono" x="440" y="154" font-size="14">~</text>
+<rect class="t" x="438" y="168" width="172" height="19" rx="2"/>
+<text class="f mono" x="440" y="182" font-size="14">f.txt</text>
+<text class="f mono" x="490.4" y="182" font-size="14">-</text>
+<text class="f mono" x="507.2" y="182" font-size="14">1</text>
+<text class="f mono" x="524" y="182" font-size="14">lines</text>
+<text class="f mono" x="582.8" y="182" font-size="14">1/1</text>
+<text class="t mono" x="440" y="210" font-size="14">HELP:</text>
+<text class="t mono" x="490.4" y="210" font-size="14">Ctrl-S</text>
+<text class="t mono" x="549.2" y="210" font-size="14">=</text>
+<text class="t mono" x="566" y="210" font-size="14">save</text>
+<text class="tm" x="24" y="284" font-size="11.5">Then kilo reads one key (Up arrives as ESC [ A), acts on it, and writes the whole screen again.</text>
+</svg>

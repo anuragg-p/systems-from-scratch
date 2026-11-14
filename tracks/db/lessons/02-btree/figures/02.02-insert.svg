@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 262" fill="none">
+<title>Putting rowid 5 into demo.db&#x27;s leaf: pointers grow down, cells grow up</title>
+<defs><marker id="f0202b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0202b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0202b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">page 2 of a fresh demo.db holding only 02.01&#x27;s rows 7, 3, 9; then ./db inserts (5, &#x27;five&#x27;)</text>
+<text class="t" x="24" y="48" font-size="11" font-weight="600">3 cells, content starts at 4067</text>
+<rect class="s fs" x="24" y="56" width="60" height="34" rx="0" stroke-width="1.5"/>
+<text class="t" x="54" y="77" font-size="10.5" text-anchor="middle">header</text>
+<rect class="a af" x="84" y="56" width="44" height="34" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="106" y="76.78" font-size="10.5" text-anchor="middle">4076</text>
+<rect class="a af" x="128" y="56" width="44" height="34" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="150" y="76.78" font-size="10.5" text-anchor="middle">4086</text>
+<rect class="a af" x="172" y="56" width="44" height="34" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="194" y="76.78" font-size="10.5" text-anchor="middle">4067</text>
+<rect class="m" x="218" y="58" width="220" height="30" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="328" y="77" font-size="10.5" text-anchor="middle">free</text>
+<rect class="s f" x="440" y="56" width="56" height="34" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="468" y="76.78" font-size="10.5" text-anchor="middle">9</text>
+<rect class="s f" x="496" y="56" width="60" height="34" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="526" y="76.78" font-size="10.5" text-anchor="middle">3</text>
+<rect class="s f" x="556" y="56" width="60" height="34" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="586" y="76.78" font-size="10.5" text-anchor="middle">7</text>
+<text class="tm" x="616" y="48" font-size="10" text-anchor="end">rowids, as stored</text>
+<text class="t" x="24" y="168" font-size="11" font-weight="600">4 cells, content starts at 4058</text>
+<rect class="s fs" x="24" y="176" width="60" height="34" rx="0" stroke-width="1.5"/>
+<text class="t" x="54" y="197" font-size="10.5" text-anchor="middle">header</text>
+<rect class="a af" x="84" y="176" width="44" height="34" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="106" y="196.78" font-size="10.5" text-anchor="middle">4076</text>
+<rect class="a fa" x="128" y="176" width="44" height="34" rx="0" stroke-width="1.5"/>
+<text class="f mono" x="150" y="196.78" font-size="10.5" font-weight="600" text-anchor="middle">4058</text>
+<rect class="a af" x="172" y="176" width="44" height="34" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="194" y="196.78" font-size="10.5" text-anchor="middle">4086</text>
+<rect class="a af" x="216" y="176" width="44" height="34" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="238" y="196.78" font-size="10.5" text-anchor="middle">4067</text>
+<rect class="m" x="262" y="178" width="124" height="30" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="324" y="197" font-size="10.5" text-anchor="middle">free</text>
+<rect class="a fa" x="388" y="176" width="52" height="34" rx="0" stroke-width="1.5"/>
+<text class="f mono" x="414" y="196.78" font-size="10.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="440" y="176" width="56" height="34" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="468" y="196.78" font-size="10.5" text-anchor="middle">9</text>
+<rect class="s f" x="496" y="176" width="60" height="34" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="526" y="196.78" font-size="10.5" text-anchor="middle">3</text>
+<rect class="s f" x="556" y="176" width="60" height="34" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="586" y="196.78" font-size="10.5" text-anchor="middle">7</text>
+<path class="s" d="M150 92 C 150 128, 194 136, 194 172" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0202b-ah)"/>
+<path class="s" d="M194 92 C 194 128, 238 136, 238 172" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0202b-ah)"/>
+<text class="tm" x="24" y="120" font-size="10.5">the pointers after</text>
+<text class="tm" x="24" y="134" font-size="10.5">slot 1 move along</text>
+<text class="tm" x="24" y="148" font-size="10.5">2 bytes</text>
+<path class="a" d="M392 124 C 360 124, 346 140, 346 172" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0202b-aa)"/>
+<text class="ta" x="400" y="120" font-size="10.5">new cell: 9 bytes at 4058, just</text>
+<text class="ta" x="400" y="134" font-size="10.5">below where the content started</text>
+<text class="tm" x="24" y="240" font-size="10.5">free space: 4053 bytes before, 4042 after (9 for the cell, 2 for its pointer)</text>
+</svg>

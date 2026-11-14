@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 312" fill="none">
+<title>The free list lives inside the free pages</title>
+<defs><marker id="f0202a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0202a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="30" font-size="12" font-weight="600">after kinit()</text>
+<rect class="s fs" x="24" y="68" width="100" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="74" y="83" font-size="10.5" font-weight="600" text-anchor="middle">kmem.freelist</text>
+<line class="s" x1="124" y1="79" x2="144" y2="79" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-ah)"/>
+<text class="t mono" x="192.0" y="60" font-size="11.5" font-weight="600" text-anchor="middle">0x87fff000</text>
+<rect class="s fs" x="146" y="68" width="92" height="64" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="146" y="68" width="92" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="192.0" y="83" font-size="10.5" text-anchor="middle">0x87ffe000</text>
+<text class="tm mono" x="192.0" y="115" font-size="10.5" text-anchor="middle">01 01 01 01</text>
+<text class="t mono" x="310.0" y="60" font-size="11.5" font-weight="600" text-anchor="middle">0x87ffe000</text>
+<rect class="s fs" x="264" y="68" width="92" height="64" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="264" y="68" width="92" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="310.0" y="83" font-size="10.5" text-anchor="middle">0x87ffd000</text>
+<text class="tm mono" x="310.0" y="115" font-size="10.5" text-anchor="middle">01 01 01 01</text>
+<text class="t mono" x="428.0" y="60" font-size="11.5" font-weight="600" text-anchor="middle">0x87ffd000</text>
+<rect class="s fs" x="382" y="68" width="92" height="64" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="382" y="68" width="92" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="428.0" y="83" font-size="10.5" text-anchor="middle">0x87ffc000</text>
+<text class="tm mono" x="428.0" y="115" font-size="10.5" text-anchor="middle">01 01 01 01</text>
+<text class="t mono" x="566.0" y="60" font-size="10.5" font-weight="600" text-anchor="middle">PGROUNDUP(end)</text>
+<rect class="s fs" x="520" y="68" width="92" height="64" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="520" y="68" width="92" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="566.0" y="83" font-size="10.5" text-anchor="middle">0</text>
+<text class="tm mono" x="566.0" y="115" font-size="10.5" text-anchor="middle">01 01 01 01</text>
+<line class="s" x1="238" y1="79" x2="262" y2="79" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-ah)"/>
+<line class="s" x1="356" y1="79" x2="380" y2="79" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-ah)"/>
+<line class="s" x1="474" y1="79" x2="486" y2="79" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="497" y="83" font-size="12" text-anchor="middle">...</text>
+<line class="s" x1="508" y1="79" x2="518" y2="79" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-ah)"/>
+<text class="tm" x="74" y="110" font-size="10.5" text-anchor="middle">next pointer</text>
+<text class="tm" x="74" y="124" font-size="10.5" text-anchor="middle">in the first 8 bytes</text>
+<text class="t" x="24" y="168" font-size="12" font-weight="600">after one kalloc()</text>
+<rect class="s fs" x="24" y="206" width="100" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="74" y="221" font-size="10.5" font-weight="600" text-anchor="middle">kmem.freelist</text>
+<text class="ta mono" x="192.0" y="198" font-size="11.5" font-weight="600" text-anchor="middle">0x87fff000</text>
+<rect class="a af" x="146" y="206" width="92" height="64" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="192.0" y="234" font-size="10.5" text-anchor="middle">05 05 05 05</text>
+<text class="ta mono" x="192.0" y="250" font-size="10.5" text-anchor="middle">05 05 05 05</text>
+<path class="s" d="M74 228 V294 Q74 302 82 302 H302 Q310 302 310 294 V272" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0202a-ah)"/>
+<text class="t mono" x="310.0" y="198" font-size="11.5" font-weight="600" text-anchor="middle">0x87ffe000</text>
+<rect class="s fs" x="264" y="206" width="92" height="64" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="264" y="206" width="92" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="310.0" y="221" font-size="10.5" text-anchor="middle">0x87ffd000</text>
+<text class="tm mono" x="310.0" y="253" font-size="10.5" text-anchor="middle">01 01 01 01</text>
+<text class="t mono" x="428.0" y="198" font-size="11.5" font-weight="600" text-anchor="middle">0x87ffd000</text>
+<rect class="s fs" x="382" y="206" width="92" height="64" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="382" y="206" width="92" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="428.0" y="221" font-size="10.5" text-anchor="middle">0x87ffc000</text>
+<text class="tm mono" x="428.0" y="253" font-size="10.5" text-anchor="middle">01 01 01 01</text>
+<text class="t mono" x="566.0" y="198" font-size="10.5" font-weight="600" text-anchor="middle">PGROUNDUP(end)</text>
+<rect class="s fs" x="520" y="206" width="92" height="64" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="520" y="206" width="92" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="566.0" y="221" font-size="10.5" text-anchor="middle">0</text>
+<text class="tm mono" x="566.0" y="253" font-size="10.5" text-anchor="middle">01 01 01 01</text>
+<line class="s" x1="356" y1="217" x2="380" y2="217" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-ah)"/>
+<line class="s" x1="474" y1="217" x2="486" y2="217" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="497" y="221" font-size="12" text-anchor="middle">...</text>
+<line class="s" x1="508" y1="217" x2="518" y2="217" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202a-ah)"/>
+<text class="ta" x="192" y="288" font-size="11" text-anchor="middle">returned, filled with 5s</text>
+</svg>

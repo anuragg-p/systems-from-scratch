@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 358" fill="none">
+<title>Where 06.01 fits in xv6</title>
+<defs><marker id="map0601-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0601-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0601-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="m" x="12.75" y="10.75" width="454.5" height="38.5" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="240" y="28" font-size="16" font-weight="600" text-anchor="middle">shell and programs</text>
+<text class="tm" x="240" y="43" font-size="12" text-anchor="middle">user space</text>
+<rect class="a af" x="12" y="56" width="456" height="40" rx="6" stroke-width="1.5"/>
+<text class="ta" x="240" y="74" font-size="16" font-weight="700" text-anchor="middle">system calls</text>
+<text class="ta" x="240" y="89" font-size="12" text-anchor="middle">how a program asks the kernel for something</text>
+<rect class="s f" x="12" y="102" width="146" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="85" y="120" font-size="16" font-weight="600" text-anchor="middle">processes</text>
+<text class="tm" x="85" y="135" font-size="12" text-anchor="middle">and the scheduler</text>
+<rect class="s f" x="166" y="102" width="147" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="239.5" y="120" font-size="16" font-weight="600" text-anchor="middle">memory</text>
+<text class="tm" x="239.5" y="135" font-size="12" text-anchor="middle">pages and page tables</text>
+<rect class="s f" x="321" y="102" width="147" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="394.5" y="120" font-size="16" font-weight="600" text-anchor="middle">file system</text>
+<text class="tm" x="394.5" y="135" font-size="12" text-anchor="middle">files on the disk</text>
+<rect class="s f" x="12" y="148" width="300" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="162" y="166" font-size="16" font-weight="600" text-anchor="middle">traps and interrupts</text>
+<text class="tm" x="162" y="181" font-size="12" text-anchor="middle">timer, devices, faults</text>
+<rect class="s f" x="320" y="148" width="148" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="394" y="166" font-size="16" font-weight="600" text-anchor="middle">locks</text>
+<text class="tm" x="394" y="181" font-size="12" text-anchor="middle">harts take turns</text>
+<rect class="s f" x="12" y="194" width="108" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="66" y="212" font-size="16" font-weight="600" text-anchor="middle">console</text>
+<text class="tm" x="66" y="227" font-size="12" text-anchor="middle">serial port</text>
+<rect class="s f" x="128" y="194" width="108" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="182" y="212" font-size="16" font-weight="600" text-anchor="middle">disk</text>
+<text class="tm" x="182" y="227" font-size="12" text-anchor="middle">virtio</text>
+<rect class="m fs" x="244.75" y="194.75" width="106.5" height="38.5" rx="6" stroke-width="1.5" stroke-dasharray="1.5 3" stroke-linecap="round"/>
+<text class="tm" x="298" y="212" font-size="16" font-weight="600" text-anchor="middle">network</text>
+<text class="tm" x="298" y="227" font-size="12" text-anchor="middle">optional</text>
+<rect class="m fs" x="360.75" y="194.75" width="106.5" height="38.5" rx="6" stroke-width="1.5" stroke-dasharray="1.5 3" stroke-linecap="round"/>
+<text class="tm" x="414" y="212" font-size="16" font-weight="600" text-anchor="middle">screen</text>
+<text class="tm" x="414" y="227" font-size="12" text-anchor="middle">optional</text>
+<rect class="s f" x="12" y="240" width="456" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="240" y="258" font-size="16" font-weight="600" text-anchor="middle">boot</text>
+<text class="tm" x="240" y="273" font-size="12" text-anchor="middle">from power-on to C on every hart</text>
+<rect class="s fs" x="12" y="286" width="456" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="240" y="304" font-size="16" font-weight="600" text-anchor="middle">QEMU virt machine</text>
+<text class="tm" x="240" y="319" font-size="12" text-anchor="middle">RISC-V harts, RAM, UART, disk, interrupt controller</text>
+<rect class="a af" x="12" y="338" width="12" height="12" rx="3" stroke-width="1.5"/>
+<text class="ta" x="30" y="348" font-size="13" font-weight="600">this lesson</text>
+<rect class="s f" x="118" y="338" width="12" height="12" rx="3" stroke-width="1.5"/>
+<text class="t" x="136" y="348" font-size="13">built</text>
+<rect class="m" x="190" y="338" width="12" height="12" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="208" y="348" font-size="13">still to come</text>
+<rect class="m fs" x="306" y="338" width="12" height="12" rx="3" stroke-width="1.5" stroke-dasharray="1.5 3" stroke-linecap="round"/>
+<text class="tm" x="324" y="348" font-size="13">optional extension</text>
+</svg>

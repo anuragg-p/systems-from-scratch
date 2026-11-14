@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 344" fill="none">
+<title>The kernel&#x27;s address space at 02.04: a direct map, with the top still empty</title>
+<defs><marker id="f0204b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0204b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="251.0" y="20" font-size="12" font-weight="600" text-anchor="middle">virtual</text>
+<text class="t" x="507.0" y="130" font-size="12" font-weight="600" text-anchor="middle">physical</text>
+<rect class="m" x="176" y="30" width="150" height="24" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="184" y="46.0" font-size="11">trampoline</text>
+<text class="tm mono" x="318" y="46.0" font-size="10.5" text-anchor="end">06.01</text>
+<text class="tm mono" x="166" y="46" font-size="10.5" text-anchor="end">TRAMPOLINE 0x3ffffff000</text>
+<rect class="m" x="176" y="62" width="150" height="30" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="184" y="81.0" font-size="11">kernel stacks</text>
+<text class="tm mono" x="318" y="81.0" font-size="10.5" text-anchor="end">04.01</text>
+<text class="tm mono" x="166" y="80" font-size="10.5" text-anchor="end">KSTACK(0) .. KSTACK(63)</text>
+<rect class="m" x="176" y="100" width="150" height="20" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="184" y="114.0" font-size="11">unmapped</text>
+<text class="tm" x="342" y="46" font-size="11">not mapped yet: both come later,</text>
+<text class="tm" x="342" y="62" font-size="11">and neither will be at its own address</text>
+<rect class="s f" x="176" y="140" width="150" height="52" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="176" y="192" width="150" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="432" y="140" width="150" height="52" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="432" y="192" width="150" height="40" rx="0" stroke-width="1.5"/>
+<text class="t" x="184" y="170" font-size="11">data, free RAM</text>
+<text class="tm mono" x="318" y="170" font-size="10.5" text-anchor="end">R W</text>
+<text class="t" x="184" y="216" font-size="11">kernel text</text>
+<text class="tm mono" x="318" y="216" font-size="10.5" text-anchor="end">R X</text>
+<text class="t" x="440" y="170" font-size="11">data, free RAM</text>
+<text class="t" x="440" y="216" font-size="11">kernel text</text>
+<text class="tm mono" x="166" y="150" font-size="10.5" text-anchor="end">PHYSTOP 0x88000000</text>
+<text class="tm mono" x="166" y="196" font-size="10.5" text-anchor="end">etext 0x80001000</text>
+<text class="tm mono" x="166" y="236" font-size="10.5" text-anchor="end">KERNBASE 0x80000000</text>
+<rect class="s f" x="176" y="252" width="150" height="16" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="176" y="268" width="150" height="16" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="176" y="284" width="150" height="30" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="432" y="252" width="150" height="16" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="432" y="268" width="150" height="16" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="432" y="284" width="150" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="184" y="264.0" font-size="11">VIRTIO0</text>
+<text class="tm mono" x="318" y="264.0" font-size="10.5" text-anchor="end">R W</text>
+<text class="t mono" x="440" y="264.0" font-size="11">VIRTIO0</text>
+<text class="t mono" x="184" y="280.0" font-size="11">UART0</text>
+<text class="tm mono" x="318" y="280.0" font-size="10.5" text-anchor="end">R W</text>
+<text class="t mono" x="440" y="280.0" font-size="11">UART0</text>
+<text class="t" x="184" y="303.0" font-size="11">PLIC, 64 MB</text>
+<text class="tm mono" x="318" y="303.0" font-size="10.5" text-anchor="end">R W</text>
+<text class="t" x="440" y="303.0" font-size="11">PLIC, 64 MB</text>
+<text class="tm mono" x="166" y="266" font-size="10.5" text-anchor="end">0x10001000</text>
+<text class="tm mono" x="166" y="282" font-size="10.5" text-anchor="end">0x10000000</text>
+<text class="tm mono" x="166" y="312" font-size="10.5" text-anchor="end">0x0c000000</text>
+<line class="m" x1="328" y1="166" x2="428" y2="166" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0204b-ah)"/>
+<line class="m" x1="328" y1="212" x2="428" y2="212" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0204b-ah)"/>
+<line class="m" x1="328" y1="260" x2="428" y2="260" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0204b-ah)"/>
+<line class="m" x1="328" y1="276" x2="428" y2="276" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0204b-ah)"/>
+<line class="m" x1="328" y1="299" x2="428" y2="299" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0204b-ah)"/>
+<text class="tm" x="379.0" y="330" font-size="11" text-anchor="middle">same address on both sides</text>
+</svg>

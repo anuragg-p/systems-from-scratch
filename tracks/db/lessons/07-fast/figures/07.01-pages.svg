@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 268" fill="none">
+<title>Where the file&#x27;s extra 1365 pages are: both trees, about half full</title>
+<defs><marker id="f0701b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0701b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0701b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">pages per B-tree in the benchmark&#x27;s file (sqlite3&#x27;s dbstat on both files), and how full they are</text>
+<text class="ta" x="204" y="55" font-size="11" font-weight="600" text-anchor="end">table t, ./db</text>
+<rect class="a fa" x="214" y="43" width="260" height="18" rx="3" stroke-width="1.5"/>
+<text class="ta" x="482" y="56" font-size="10.5">2292 pages, 50.3% full</text>
+<text class="t" x="204" y="85" font-size="11" text-anchor="end">table t, sqlite3</text>
+<rect class="s fs" x="214" y="73" width="131.02" height="18" rx="3" stroke-width="1.5"/>
+<text class="t" x="353.02" y="86" font-size="10.5">1155 pages, 99.3% full</text>
+<text class="ta" x="204" y="123" font-size="11" font-weight="600" text-anchor="end">index t_a, ./db</text>
+<rect class="a fa" x="214" y="111" width="58.53" height="18" rx="3" stroke-width="1.5"/>
+<text class="ta" x="280.53" y="124" font-size="10.5">516 pages, 55.4% full</text>
+<text class="t" x="204" y="153" font-size="11" text-anchor="end">index t_a, sqlite3</text>
+<rect class="s fs" x="214" y="141" width="32.67" height="18" rx="3" stroke-width="1.5"/>
+<text class="t" x="254.67" y="154" font-size="10.5">288 pages, 99.0% full</text>
+<text class="t" x="204" y="183" font-size="11" text-anchor="end">t_a, sqlite3, kept during inserts</text>
+<rect class="s f" x="214" y="171" width="35.28" height="18" rx="3" stroke-width="1.5"/>
+<text class="t" x="257.28" y="184" font-size="10.5">311 pages, 91.7% full</text>
+<text class="t" x="24" y="222" font-size="11">table: the rows arrive in rowid order and ./db splits every full leaf in the middle (07.03)</text>
+<text class="t" x="24" y="240" font-size="11">index: sqlite3 sorts the entries before it builds an index, and rebalances pages when it inserts;</text>
+<text class="t" x="24" y="256" font-size="11">./db inserts entries one by one in table order and splits pages in half</text>
+</svg>

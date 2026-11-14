@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 282" fill="none">
+<title>How devintr reads scause</title>
+<defs><marker id="f0301b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0301b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0301b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">scause, 64 bits</text>
+<text class="tm mono" x="75" y="40" font-size="10" text-anchor="middle">63</text>
+<text class="tm mono" x="114" y="40" font-size="10">62</text>
+<text class="tm mono" x="596" y="40" font-size="10" text-anchor="end">0</text>
+<rect class="a af" x="40" y="46" width="70" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta" x="75" y="65" font-size="11" font-weight="600" text-anchor="middle">interrupt</text>
+<rect class="s f" x="110" y="46" width="490" height="30" rx="0" stroke-width="1.5"/>
+<text class="t" x="355" y="65" font-size="12" text-anchor="middle">cause code</text>
+<path class="m" d="M75 76 L75 90 M75 90 L360 90 M360 90 L360 100" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="75" y1="90" x2="75" y2="100" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="40" y="116" font-size="12" font-weight="600">bit 63 = 1: an interrupt</text>
+<text class="t" x="345" y="116" font-size="12" font-weight="600">bit 63 = 0: an exception</text>
+<rect class="s f" x="40" y="128" width="270" height="46" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="52" y="146" font-size="11.5">0x8000000000000005</text>
+<text class="tm" x="52" y="164" font-size="11">timer: devintr() returns 2</text>
+<rect class="s f" x="40" y="184" width="270" height="46" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="52" y="202" font-size="11.5">0x8000000000000009</text>
+<text class="tm" x="52" y="220" font-size="11">device, via the PLIC: returns 1</text>
+<text class="t mono" x="345" y="140" font-size="11.5">0x8</text>
+<text class="tm" x="385" y="140" font-size="11">ecall from user mode</text>
+<text class="t mono" x="345" y="159" font-size="11.5">0xc</text>
+<text class="tm" x="385" y="159" font-size="11">instruction page fault</text>
+<text class="t mono" x="345" y="178" font-size="11.5">0xd</text>
+<text class="tm" x="385" y="178" font-size="11">load page fault</text>
+<text class="t mono" x="345" y="197" font-size="11.5">0xf</text>
+<text class="tm" x="385" y="197" font-size="11">store page fault</text>
+<rect class="fs" x="345" y="214" width="255" height="16" rx="4"/>
+<text class="t" x="352" y="226" font-size="11">devintr() returns 0: unexpected() panics</text>
+<line class="m" x1="24" y1="248" x2="616" y2="248" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="40" y="268" font-size="11.5" font-weight="600">sepc</text>
+<text class="tm" x="80" y="268" font-size="11">the instruction that trapped</text>
+<text class="t mono" x="345" y="268" font-size="11.5" font-weight="600">stval</text>
+<text class="tm" x="390" y="268" font-size="11">the bad address, for a page fault</text>
+</svg>

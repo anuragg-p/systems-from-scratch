@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 262" fill="none">
+<title>Deleting an index entry that lives in an interior page</title>
+<defs><marker id="f0205c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0205c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0205c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">ix.db: DELETE FROM t WHERE id = 91 must remove the index entry (389, 91) from root page 3</text>
+<text class="t" x="24" y="50" font-size="11.5" font-weight="600">before</text>
+<rect class="s fs" x="24" y="62" width="270" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="32" y="68" width="95.2" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="79.6" y="82.96" font-size="11" text-anchor="middle">16 | 389, 91</text>
+<text class="tm mono" x="135.2" y="83" font-size="10.5">(762, 780) ...</text>
+<text class="tm" x="286" y="112" font-size="10" text-anchor="end">root page 3</text>
+<rect class="s f" x="24" y="146" width="270" height="34" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="34" y="167" font-size="10.5">(1, 1088) ...</text>
+<rect class="s f" x="128" y="152" width="68.8" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="162.4" y="166.96" font-size="11" text-anchor="middle">387, 916</text>
+<rect class="a af" x="202.8" y="152" width="75.4" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="240.5" y="166.96" font-size="11" text-anchor="middle">388, 2004</text>
+<text class="tm" x="286" y="196" font-size="10" text-anchor="end">leaf page 16</text>
+<line class="m" x1="54" y1="90" x2="54" y2="144" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0205c-am)"/>
+<text class="t" x="334" y="50" font-size="11.5" font-weight="600">after</text>
+<rect class="s fs" x="334" y="62" width="270" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="342" y="68" width="108.4" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="396.2" y="82.96" font-size="11" text-anchor="middle">16 | 388, 2004</text>
+<text class="tm mono" x="458.4" y="83" font-size="10.5">(762, 780) ...</text>
+<text class="tm" x="596" y="112" font-size="10" text-anchor="end">root page 3</text>
+<rect class="s f" x="334" y="146" width="270" height="34" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="344" y="167" font-size="10.5">(1, 1088) ...</text>
+<rect class="s f" x="438" y="152" width="68.8" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="472.4" y="166.96" font-size="11" text-anchor="middle">387, 916</text>
+<text class="tm" x="596" y="196" font-size="10" text-anchor="end">leaf page 16</text>
+<line class="m" x1="364" y1="90" x2="364" y2="144" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0205c-am)"/>
+<path class="a" d="M248 150 C 248 120, 140 126, 112 92" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0205c-aa)"/>
+<text class="ta" x="258" y="134" font-size="10.5" font-weight="600">1. copy up</text>
+<text class="t" x="24" y="222" font-size="10.5">1. The entry just before it in key order, the last one in the leaf under its left child,</text>
+<text class="t" x="24" y="238" font-size="10.5">takes its place, so the root keeps a cell. 2. That leaf&#x27;s copy is then deleted, an easy leaf delete.</text>
+</svg>

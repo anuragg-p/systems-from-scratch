@@ -1,0 +1,106 @@
+systems from scratch - credits and notices
+==========================================
+
+Each track is backed by real, widely used code or formats. This file says,
+per track, what was taken from where and under which licence, and what is
+the course's own. The site shows the same at /credits.
+
+The course's own work is under the MIT licence: see LICENSE.
+
+
+xv6 - A Unix kernel for RISC-V (tracks/xv6)
+-------------------------------------------
+
+Upstream   xv6 for RISC-V, MIT PDOS
+           https://github.com/mit-pdos/xv6-riscv (branch riscv)
+Licence    MIT. Copyright (c) 2006-2024 Frans Kaashoek, Robert Morris,
+           Russ Cox, Massachusetts Institute of Technology.
+           The full text is in tracks/xv6/LICENSE, which comes with the
+           project's files at every lesson.
+Taken      The kernel (kernel/), the user programs and user library (user/)
+           and mkfs (mkfs/): 63 of the track's files start from the xv6
+           file of the same name, most of them with the code nearly as
+           xv6 has it, re-commented as lesson notes and cut into lessons.
+           user/usertests.c is a smaller suite in the style of xv6's:
+           15 tests, 7 of them after xv6's own.
+Ours       The lessons, the order the code is built in and its markers,
+           the Makefile and README.md, the network extension (module 08: kernel/ether.c,
+           ip.c, sock.c, virtio_net.c, net.h, user/nslookup.c, udpecho.c),
+           the GUI extension (module 09: kernel/fb.c, fb.h, virtio_input.c,
+           input.h, user/gui.c, gui.h, font.c, paint.c, colors.c,
+           events.c) and the internal checks (kernel/selftest.c).
+
+Tests      xv6's own user/usertests.c, from the same repository at commit
+           7e95e76a19a7168c8db63f3ea40c6641f9ead93e (2025-08-04)
+Licence    MIT, as above (tracks/xv6/LICENSE).
+Taken      That one file, in tracks/xv6/tests/upstream/, for the internal
+           tests only; the site does not show it. Four regression tests
+           from later commits of the same repository are backported into
+           it (pipezero, killzero, partial_write, unlinkcwd); README.md
+           there lists them and says how it is built and run.
+
+
+db - A SQL database in C (tracks/db)
+------------------------------------
+
+Upstream   SQLite, https://sqlite.org/src
+           (GitHub mirror: https://github.com/sqlite/sqlite)
+Licence    Public domain (https://sqlite.org/copyright.html)
+Taken      No code. The engine follows SQLite's documented database file
+           format, rollback journal and write-ahead log
+           (https://www.sqlite.org/fileformat2.html), and is checked
+           against the real sqlite3 program: each opens what the other
+           writes, and the same SQL gives the same answers.
+Ours       All of the engine (tracks/db/src), written from scratch in C.
+
+Tests      sqllogictest, SQLite's query test corpus, by D. Richard Hipp
+           https://www.sqlite.org/sqllogictest/ (GitHub mirror:
+           https://github.com/gregrahn/sqllogictest, commit c93ac416f056)
+Licence    Copyright (c) 2008 D. Richard Hipp. "You can redistribute it
+           and/or modify the code as you see fit. No attribution is
+           required", under whichever of the GPL, BSD, MIT or CC0
+           licences best applies. The full text is in
+           tracks/db/tests/sqllogictest/COPYRIGHT.md.
+Taken      15 of its test scripts, unchanged, in
+           tracks/db/tests/sqllogictest/test/ (13.9 MB), for the
+           internal tests only; the site does not show them. README.md
+           there lists them.
+
+
+kilo - A text editor in C (tracks/kilo)
+---------------------------------------
+
+Upstream   kilo, by Salvatore Sanfilippo (antirez)
+           https://github.com/antirez/kilo (master, commit
+           323d93b29bd89a2cb446de90c4ed4fea1764176e)
+Licence    BSD-2-Clause. Copyright (c) 2016, Salvatore Sanfilippo
+           <antirez at gmail dot com>. The full text is in
+           tracks/kilo/LICENSE, which comes with the project's files at
+           every lesson; kilo.c keeps the notice in its header.
+Taken      kilo.c: the editor, with kilo's functions and their structure,
+           without its syntax highlighting, re-commented as lesson notes
+           and cut into lessons. A handful of fixes to its behaviour are
+           marked where they are made, in comments that name the original
+           code. The Makefile is kilo's, with a comment and "rm -f".
+Ours       The lessons, the order the code is built in and its markers,
+           what the project shows before its screen exists (01.01-01.03),
+           and the internal checks (tracks/kilo/track.py and tests/).
+
+
+Planned tracks (outlines/)
+--------------------------
+
+Each outline names, in its "upstream" field, the repositories it is
+proposed to follow. These are proposals, not decisions, and nothing is
+taken from them yet.
+
+
+The site
+--------
+
+Fonts      Figtree (Copyright 2022 The Figtree Project Authors) and
+           Geist Mono (Copyright 2024 The Geist Project Authors), under the
+           SIL Open Font License 1.1: harness/web/fonts/LICENSE-OFL.txt
+Reading    Operating Systems: Three Easy Pieces, by Remzi H.
+           Arpaci-Dusseau and Andrea C. Arpaci-Dusseau, is linked from the
+           xv6 lessons to the authors' own pages, never copied.

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The engine, the file it writes, sqlite3 on the same file, and the benchmark</title>
+<defs><marker id="m00db-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m00db-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="24" y="56" width="120" height="54" rx="10" stroke-width="1.5"/>
+<text class="t mono" x="40" y="79" font-size="13">src/*.c</text>
+<text class="tm" x="40" y="97" font-size="11">13 files of C</text>
+<line class="s" x1="144" y1="83" x2="194" y2="83" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m00db-ah)"/>
+<text class="tm mono" x="169" y="74" font-size="11" text-anchor="middle">make</text>
+<rect class="a af" x="196" y="56" width="104" height="54" rx="10" stroke-width="1.5"/>
+<text class="ta mono" x="212" y="79" font-size="13" font-weight="700">./db</text>
+<text class="tm" x="212" y="97" font-size="11">REPL, one-shot</text>
+<rect class="s f" x="386" y="40" width="112" height="80" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="380" y="46" width="112" height="80" rx="6" stroke-width="1.5"/>
+<rect class="s f" x="374" y="52" width="112" height="80" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="386" y="76" font-size="13" font-weight="600">learn.db</text>
+<text class="tm" x="386" y="94" font-size="11">4096-byte pages</text>
+<text class="tm mono" x="386" y="110" font-size="10.5">SQLite format 3</text>
+<line class="a" x1="300" y1="83" x2="370" y2="83" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m00db-aa)"/>
+<rect class="s f" x="528" y="56" width="88" height="54" rx="10" stroke-width="1.5"/>
+<text class="t mono" x="544" y="79" font-size="13" font-weight="600">sqlite3</text>
+<text class="tm" x="544" y="97" font-size="11">the real one</text>
+<line class="s" x1="528" y1="83" x2="500" y2="83" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m00db-ah)"/>
+<text class="ta" x="335" y="74" font-size="11" text-anchor="middle">reads, writes</text>
+<text class="tm" x="572" y="44" font-size="11" text-anchor="middle">opens the same file</text>
+<rect class="s fs" x="196" y="196" width="316" height="70" rx="12" stroke-width="1.5"/>
+<text class="t mono" x="212" y="220" font-size="13" font-weight="600">bench/bench.py</text>
+<text class="tm" x="212" y="240" font-size="11">the same SQL into both shells, timed</text>
+<text class="tm" x="212" y="256" font-size="11">ops/s per workload, and the file size</text>
+<path class="s" d="M248 196 C 248 160, 248 140, 248 112" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m00db-ah)"/>
+<path class="s" d="M480 196 C 480 160, 572 150, 572 112" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m00db-ah)"/>
+<text class="tm" x="24" y="288" font-size="11">each later lesson is one piece of ./db; this is how the whole is run and measured</text>
+</svg>

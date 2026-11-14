@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 310" fill="none">
+<title>What CREATE TABLE does, in order</title>
+<defs><marker id="f0303b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0303b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0303b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="22" font-size="12" font-weight="600">CREATE TABLE fruit(id INTEGER PRIMARY KEY, name TEXT);</text>
+<text class="tm" x="24" y="40" font-size="10.5">on an empty file, which has just been given its page 1 and header</text>
+<line class="m" x1="40" y1="68" x2="40" y2="272" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="40" cy="68" r="5" stroke-width="1.5"/>
+<text class="t" x="56" y="72" font-size="12" font-weight="600">read the statement</text>
+<text class="tm mono" x="186.64" y="72" font-size="10.5">parse_create()</text>
+<text class="tm" x="56" y="87" font-size="10.5">keep its text from the name on, for the catalog</text>
+<circle class="s f" cx="40" cy="102" r="5" stroke-width="1.5"/>
+<text class="t" x="56" y="106" font-size="12" font-weight="600">check it can be honoured</text>
+<text class="tm mono" x="225.52" y="106" font-size="10.5">create_table()</text>
+<text class="tm" x="56" y="121" font-size="10.5">no unsupported feature, no reserved or taken name, no column twice</text>
+<circle class="a fa" cx="40" cy="136" r="5" stroke-width="1.5"/>
+<text class="ta" x="56" y="140" font-size="12" font-weight="600">give the table a root page</text>
+<text class="tm mono" x="238.48" y="140" font-size="10.5">btree_create()</text>
+<text class="tm" x="56" y="155" font-size="10.5">an empty table leaf; the file grows by one page</text>
+<rect class="a af" x="512" y="126" width="104" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta" x="564" y="141" font-size="11" font-weight="600" text-anchor="middle">page 2 (new)</text>
+<line class="m" x1="470" y1="136" x2="508" y2="136" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="a fa" cx="40" cy="170" r="5" stroke-width="1.5"/>
+<text class="ta" x="56" y="174" font-size="12" font-weight="600">write its catalog row</text>
+<text class="tm mono" x="206.08" y="174" font-size="10.5">schema_insert_row()</text>
+<text class="tm" x="56" y="189" font-size="10.5">table, fruit, fruit, 2, and the CREATE text</text>
+<rect class="a af" x="512" y="160" width="104" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta" x="564" y="175" font-size="11" font-weight="600" text-anchor="middle">page 1</text>
+<line class="m" x1="470" y1="170" x2="508" y2="170" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="a fa" cx="40" cy="204" r="5" stroke-width="1.5"/>
+<text class="ta" x="56" y="208" font-size="12" font-weight="600">bump the schema cookie</text>
+<text class="tm mono" x="212.56" y="208" font-size="10.5">schema_bump_cookie()</text>
+<text class="tm" x="56" y="223" font-size="10.5">header offset 40: 0 -&gt; 1</text>
+<rect class="a af" x="512" y="194" width="104" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta" x="564" y="209" font-size="11" font-weight="600" text-anchor="middle">page 1</text>
+<line class="m" x1="470" y1="204" x2="508" y2="204" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="a fa" cx="40" cy="238" r="5" stroke-width="1.5"/>
+<text class="ta" x="56" y="242" font-size="12" font-weight="600">commit</text>
+<text class="tm mono" x="108.88" y="242" font-size="10.5">pager_commit()</text>
+<text class="tm" x="56" y="257" font-size="10.5">both dirty pages go to the file</text>
+<rect class="a af" x="512" y="228" width="104" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta" x="564" y="243" font-size="11" font-weight="600" text-anchor="middle">pages 1, 2</text>
+<line class="m" x1="470" y1="238" x2="508" y2="238" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="s f" cx="40" cy="272" r="5" stroke-width="1.5"/>
+<text class="t" x="56" y="276" font-size="12" font-weight="600">rebuild the catalog in memory</text>
+<text class="tm mono" x="257.92" y="276" font-size="10.5">schema_load()</text>
+<text class="tm" x="56" y="291" font-size="10.5">from page 1, exactly as when the file is opened</text>
+<text class="tm" x="564" y="56" font-size="10.5" text-anchor="middle">what it changes</text>
+</svg>

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 346" fill="none">
+<title>The physical address space of QEMU virt, as this kernel uses it</title>
+<defs><marker id="f0201a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0201a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="m" x="250" y="26" width="150" height="298" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="a af" x="250" y="26" width="150" height="72" rx="0" stroke-width="1.5"/>
+<text class="ta" x="414" y="66.0" font-size="12">free pages</text>
+<text class="tm mono" x="238" y="36" font-size="11" text-anchor="end">PHYSTOP 0x88000000</text>
+<text class="ta" x="325" y="58" font-size="11.5" text-anchor="middle">kalloc hands</text>
+<text class="ta" x="325" y="74" font-size="11.5" text-anchor="middle">these out</text>
+<rect class="s f" x="250" y="98" width="150" height="24" rx="0" stroke-width="1.5"/>
+<text class="t" x="414" y="114.0" font-size="12">kernel data, bss<tspan class="tm mono">  R W</tspan></text>
+<text class="tm mono" x="238" y="101" font-size="11" text-anchor="end">end</text>
+<rect class="s fs" x="250" y="122" width="150" height="24" rx="0" stroke-width="1.5"/>
+<text class="t" x="414" y="138.0" font-size="12">kernel text<tspan class="tm mono">  R X</tspan></text>
+<text class="tm mono" x="238" y="125" font-size="11" text-anchor="end">etext 0x80001000</text>
+<text class="tm mono" x="238" y="150" font-size="11" text-anchor="end">KERNBASE 0x80000000</text>
+<text class="tm" x="325" y="186" font-size="11" text-anchor="middle">unused</text>
+<rect class="s f" x="250" y="204" width="150" height="14" rx="0" stroke-width="1.5"/>
+<text class="t" x="414" y="215.0" font-size="12">virtio disk<tspan class="tm mono">  VIRTIO0, IRQ 1</tspan></text>
+<text class="tm mono" x="238" y="217" font-size="11" text-anchor="end">0x10001000</text>
+<rect class="s f" x="250" y="218" width="150" height="14" rx="0" stroke-width="1.5"/>
+<text class="t" x="414" y="229.0" font-size="12">UART<tspan class="tm mono">  UART0, IRQ 10</tspan></text>
+<text class="tm mono" x="238" y="231" font-size="11" text-anchor="end">0x10000000</text>
+<rect class="s f" x="250" y="244" width="150" height="22" rx="0" stroke-width="1.5"/>
+<text class="t" x="414" y="259.0" font-size="12">PLIC<tspan class="tm mono">  PLIC, 6 MB</tspan></text>
+<text class="tm mono" x="238" y="265" font-size="11" text-anchor="end">0x0c000000</text>
+<rect class="m fs" x="250" y="280" width="150" height="12" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t" x="414" y="290.0" font-size="12">CLINT<tspan class="tm mono">  not used</tspan></text>
+<text class="tm mono" x="238" y="291" font-size="11" text-anchor="end">0x02000000</text>
+<rect class="s fs" x="250" y="304" width="150" height="10" rx="0" stroke-width="1.5"/>
+<text class="t" x="414" y="313.0" font-size="12">boot ROM<tspan class="tm mono">  QEMU&#x27;s</tspan></text>
+<text class="tm mono" x="238" y="313" font-size="11" text-anchor="end">0x00001000</text>
+<text class="tm mono" x="238" y="334" font-size="11" text-anchor="end">0</text>
+<path class="m" d="M70 28 H64 V144 H70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="56" y="86.0" font-size="12" font-weight="600" text-anchor="end">RAM</text>
+<text class="tm mono" x="56" y="102.0" font-size="11" text-anchor="end">128 MB</text>
+<path class="m" d="M70 206 H64 V312 H70" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="56" y="263.0" font-size="12" font-weight="600" text-anchor="end">devices</text>
+<text class="tm" x="616" y="340" font-size="10.5" text-anchor="end">not to scale</text>
+</svg>

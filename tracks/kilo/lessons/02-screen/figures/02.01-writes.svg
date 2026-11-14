@@ -1,0 +1,228 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 236" fill="none">
+<title>Four screens, the same 928 bytes: 4 write() calls with the frame buffer, 204 without</title>
+<defs><marker id="f0201b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0201b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0201b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 02.01 on 24 x 80: the first screen and three Ctrl-L, 928 bytes in all; each mark is one write()</text>
+<text class="ta" x="24" y="44" font-size="12" font-weight="600">a frame built in memory, then one write(): 4 calls</text>
+<text class="t" x="24" y="126" font-size="12" font-weight="600">every piece written at once: 204 calls</text>
+<rect class="a af" x="24" y="54" width="148" height="34" rx="2" stroke-width="1.5"/>
+<text class="ta" x="98" y="76" font-size="11" text-anchor="middle">frame 1: 232 bytes</text>
+<rect class="a af" x="172" y="54" width="148" height="34" rx="2" stroke-width="1.5"/>
+<text class="ta" x="246" y="76" font-size="11" text-anchor="middle">frame 2: 232 bytes</text>
+<rect class="a af" x="320" y="54" width="148" height="34" rx="2" stroke-width="1.5"/>
+<text class="ta" x="394" y="76" font-size="11" text-anchor="middle">frame 3: 232 bytes</text>
+<rect class="a af" x="468" y="54" width="148" height="34" rx="2" stroke-width="1.5"/>
+<text class="ta" x="542" y="76" font-size="11" text-anchor="middle">frame 4: 232 bytes</text>
+<rect class="m f" x="24" y="136" width="592" height="34" rx="2" stroke-width="1.5"/>
+<line class="s" x1="24.00" y1="136" x2="24.00" y2="170" stroke-width="0.6"/>
+<line class="s" x1="27.83" y1="136" x2="27.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="29.74" y1="136" x2="29.74" y2="170" stroke-width="0.6"/>
+<line class="s" x1="34.21" y1="136" x2="34.21" y2="170" stroke-width="0.6"/>
+<line class="s" x1="38.67" y1="136" x2="38.67" y2="170" stroke-width="0.6"/>
+<line class="s" x1="43.14" y1="136" x2="43.14" y2="170" stroke-width="0.6"/>
+<line class="s" x1="47.60" y1="136" x2="47.60" y2="170" stroke-width="0.6"/>
+<line class="s" x1="52.07" y1="136" x2="52.07" y2="170" stroke-width="0.6"/>
+<line class="s" x1="56.53" y1="136" x2="56.53" y2="170" stroke-width="0.6"/>
+<line class="s" x1="61.00" y1="136" x2="61.00" y2="170" stroke-width="0.6"/>
+<line class="s" x1="61.64" y1="136" x2="61.64" y2="170" stroke-width="0.6"/>
+<line class="s" x1="62.28" y1="136" x2="62.28" y2="170" stroke-width="0.6"/>
+<line class="s" x1="62.91" y1="136" x2="62.91" y2="170" stroke-width="0.6"/>
+<line class="s" x1="63.55" y1="136" x2="63.55" y2="170" stroke-width="0.6"/>
+<line class="s" x1="64.19" y1="136" x2="64.19" y2="170" stroke-width="0.6"/>
+<line class="s" x1="64.83" y1="136" x2="64.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="65.47" y1="136" x2="65.47" y2="170" stroke-width="0.6"/>
+<line class="s" x1="66.10" y1="136" x2="66.10" y2="170" stroke-width="0.6"/>
+<line class="s" x1="66.74" y1="136" x2="66.74" y2="170" stroke-width="0.6"/>
+<line class="s" x1="67.38" y1="136" x2="67.38" y2="170" stroke-width="0.6"/>
+<line class="s" x1="68.02" y1="136" x2="68.02" y2="170" stroke-width="0.6"/>
+<line class="s" x1="68.66" y1="136" x2="68.66" y2="170" stroke-width="0.6"/>
+<line class="s" x1="69.29" y1="136" x2="69.29" y2="170" stroke-width="0.6"/>
+<line class="s" x1="69.93" y1="136" x2="69.93" y2="170" stroke-width="0.6"/>
+<line class="s" x1="70.57" y1="136" x2="70.57" y2="170" stroke-width="0.6"/>
+<line class="s" x1="71.21" y1="136" x2="71.21" y2="170" stroke-width="0.6"/>
+<line class="s" x1="71.84" y1="136" x2="71.84" y2="170" stroke-width="0.6"/>
+<line class="s" x1="72.48" y1="136" x2="72.48" y2="170" stroke-width="0.6"/>
+<line class="s" x1="73.12" y1="136" x2="73.12" y2="170" stroke-width="0.6"/>
+<line class="s" x1="73.76" y1="136" x2="73.76" y2="170" stroke-width="0.6"/>
+<line class="s" x1="74.40" y1="136" x2="74.40" y2="170" stroke-width="0.6"/>
+<line class="s" x1="75.03" y1="136" x2="75.03" y2="170" stroke-width="0.6"/>
+<line class="s" x1="75.67" y1="136" x2="75.67" y2="170" stroke-width="0.6"/>
+<line class="s" x1="97.36" y1="136" x2="97.36" y2="170" stroke-width="0.6"/>
+<line class="s" x1="101.83" y1="136" x2="101.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="106.29" y1="136" x2="106.29" y2="170" stroke-width="0.6"/>
+<line class="s" x1="110.76" y1="136" x2="110.76" y2="170" stroke-width="0.6"/>
+<line class="s" x1="115.22" y1="136" x2="115.22" y2="170" stroke-width="0.6"/>
+<line class="s" x1="119.69" y1="136" x2="119.69" y2="170" stroke-width="0.6"/>
+<line class="s" x1="124.16" y1="136" x2="124.16" y2="170" stroke-width="0.6"/>
+<line class="s" x1="128.62" y1="136" x2="128.62" y2="170" stroke-width="0.6"/>
+<line class="s" x1="133.09" y1="136" x2="133.09" y2="170" stroke-width="0.6"/>
+<line class="s" x1="137.55" y1="136" x2="137.55" y2="170" stroke-width="0.6"/>
+<line class="s" x1="142.02" y1="136" x2="142.02" y2="170" stroke-width="0.6"/>
+<line class="s" x1="146.48" y1="136" x2="146.48" y2="170" stroke-width="0.6"/>
+<line class="s" x1="150.95" y1="136" x2="150.95" y2="170" stroke-width="0.6"/>
+<line class="s" x1="155.41" y1="136" x2="155.41" y2="170" stroke-width="0.6"/>
+<line class="s" x1="159.88" y1="136" x2="159.88" y2="170" stroke-width="0.6"/>
+<line class="s" x1="164.34" y1="136" x2="164.34" y2="170" stroke-width="0.6"/>
+<line class="s" x1="168.17" y1="136" x2="168.17" y2="170" stroke-width="0.6"/>
+<line class="s" x1="172.00" y1="136" x2="172.00" y2="170" stroke-width="0.6"/>
+<line class="s" x1="172.00" y1="136" x2="172.00" y2="170" stroke-width="0.6"/>
+<line class="s" x1="175.83" y1="136" x2="175.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="177.74" y1="136" x2="177.74" y2="170" stroke-width="0.6"/>
+<line class="s" x1="182.21" y1="136" x2="182.21" y2="170" stroke-width="0.6"/>
+<line class="s" x1="186.67" y1="136" x2="186.67" y2="170" stroke-width="0.6"/>
+<line class="s" x1="191.14" y1="136" x2="191.14" y2="170" stroke-width="0.6"/>
+<line class="s" x1="195.60" y1="136" x2="195.60" y2="170" stroke-width="0.6"/>
+<line class="s" x1="200.07" y1="136" x2="200.07" y2="170" stroke-width="0.6"/>
+<line class="s" x1="204.53" y1="136" x2="204.53" y2="170" stroke-width="0.6"/>
+<line class="s" x1="209.00" y1="136" x2="209.00" y2="170" stroke-width="0.6"/>
+<line class="s" x1="209.64" y1="136" x2="209.64" y2="170" stroke-width="0.6"/>
+<line class="s" x1="210.28" y1="136" x2="210.28" y2="170" stroke-width="0.6"/>
+<line class="s" x1="210.91" y1="136" x2="210.91" y2="170" stroke-width="0.6"/>
+<line class="s" x1="211.55" y1="136" x2="211.55" y2="170" stroke-width="0.6"/>
+<line class="s" x1="212.19" y1="136" x2="212.19" y2="170" stroke-width="0.6"/>
+<line class="s" x1="212.83" y1="136" x2="212.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="213.47" y1="136" x2="213.47" y2="170" stroke-width="0.6"/>
+<line class="s" x1="214.10" y1="136" x2="214.10" y2="170" stroke-width="0.6"/>
+<line class="s" x1="214.74" y1="136" x2="214.74" y2="170" stroke-width="0.6"/>
+<line class="s" x1="215.38" y1="136" x2="215.38" y2="170" stroke-width="0.6"/>
+<line class="s" x1="216.02" y1="136" x2="216.02" y2="170" stroke-width="0.6"/>
+<line class="s" x1="216.66" y1="136" x2="216.66" y2="170" stroke-width="0.6"/>
+<line class="s" x1="217.29" y1="136" x2="217.29" y2="170" stroke-width="0.6"/>
+<line class="s" x1="217.93" y1="136" x2="217.93" y2="170" stroke-width="0.6"/>
+<line class="s" x1="218.57" y1="136" x2="218.57" y2="170" stroke-width="0.6"/>
+<line class="s" x1="219.21" y1="136" x2="219.21" y2="170" stroke-width="0.6"/>
+<line class="s" x1="219.84" y1="136" x2="219.84" y2="170" stroke-width="0.6"/>
+<line class="s" x1="220.48" y1="136" x2="220.48" y2="170" stroke-width="0.6"/>
+<line class="s" x1="221.12" y1="136" x2="221.12" y2="170" stroke-width="0.6"/>
+<line class="s" x1="221.76" y1="136" x2="221.76" y2="170" stroke-width="0.6"/>
+<line class="s" x1="222.40" y1="136" x2="222.40" y2="170" stroke-width="0.6"/>
+<line class="s" x1="223.03" y1="136" x2="223.03" y2="170" stroke-width="0.6"/>
+<line class="s" x1="223.67" y1="136" x2="223.67" y2="170" stroke-width="0.6"/>
+<line class="s" x1="245.36" y1="136" x2="245.36" y2="170" stroke-width="0.6"/>
+<line class="s" x1="249.83" y1="136" x2="249.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="254.29" y1="136" x2="254.29" y2="170" stroke-width="0.6"/>
+<line class="s" x1="258.76" y1="136" x2="258.76" y2="170" stroke-width="0.6"/>
+<line class="s" x1="263.22" y1="136" x2="263.22" y2="170" stroke-width="0.6"/>
+<line class="s" x1="267.69" y1="136" x2="267.69" y2="170" stroke-width="0.6"/>
+<line class="s" x1="272.16" y1="136" x2="272.16" y2="170" stroke-width="0.6"/>
+<line class="s" x1="276.62" y1="136" x2="276.62" y2="170" stroke-width="0.6"/>
+<line class="s" x1="281.09" y1="136" x2="281.09" y2="170" stroke-width="0.6"/>
+<line class="s" x1="285.55" y1="136" x2="285.55" y2="170" stroke-width="0.6"/>
+<line class="s" x1="290.02" y1="136" x2="290.02" y2="170" stroke-width="0.6"/>
+<line class="s" x1="294.48" y1="136" x2="294.48" y2="170" stroke-width="0.6"/>
+<line class="s" x1="298.95" y1="136" x2="298.95" y2="170" stroke-width="0.6"/>
+<line class="s" x1="303.41" y1="136" x2="303.41" y2="170" stroke-width="0.6"/>
+<line class="s" x1="307.88" y1="136" x2="307.88" y2="170" stroke-width="0.6"/>
+<line class="s" x1="312.34" y1="136" x2="312.34" y2="170" stroke-width="0.6"/>
+<line class="s" x1="316.17" y1="136" x2="316.17" y2="170" stroke-width="0.6"/>
+<line class="s" x1="320.00" y1="136" x2="320.00" y2="170" stroke-width="0.6"/>
+<line class="s" x1="320.00" y1="136" x2="320.00" y2="170" stroke-width="0.6"/>
+<line class="s" x1="323.83" y1="136" x2="323.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="325.74" y1="136" x2="325.74" y2="170" stroke-width="0.6"/>
+<line class="s" x1="330.21" y1="136" x2="330.21" y2="170" stroke-width="0.6"/>
+<line class="s" x1="334.67" y1="136" x2="334.67" y2="170" stroke-width="0.6"/>
+<line class="s" x1="339.14" y1="136" x2="339.14" y2="170" stroke-width="0.6"/>
+<line class="s" x1="343.60" y1="136" x2="343.60" y2="170" stroke-width="0.6"/>
+<line class="s" x1="348.07" y1="136" x2="348.07" y2="170" stroke-width="0.6"/>
+<line class="s" x1="352.53" y1="136" x2="352.53" y2="170" stroke-width="0.6"/>
+<line class="s" x1="357.00" y1="136" x2="357.00" y2="170" stroke-width="0.6"/>
+<line class="s" x1="357.64" y1="136" x2="357.64" y2="170" stroke-width="0.6"/>
+<line class="s" x1="358.28" y1="136" x2="358.28" y2="170" stroke-width="0.6"/>
+<line class="s" x1="358.91" y1="136" x2="358.91" y2="170" stroke-width="0.6"/>
+<line class="s" x1="359.55" y1="136" x2="359.55" y2="170" stroke-width="0.6"/>
+<line class="s" x1="360.19" y1="136" x2="360.19" y2="170" stroke-width="0.6"/>
+<line class="s" x1="360.83" y1="136" x2="360.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="361.47" y1="136" x2="361.47" y2="170" stroke-width="0.6"/>
+<line class="s" x1="362.10" y1="136" x2="362.10" y2="170" stroke-width="0.6"/>
+<line class="s" x1="362.74" y1="136" x2="362.74" y2="170" stroke-width="0.6"/>
+<line class="s" x1="363.38" y1="136" x2="363.38" y2="170" stroke-width="0.6"/>
+<line class="s" x1="364.02" y1="136" x2="364.02" y2="170" stroke-width="0.6"/>
+<line class="s" x1="364.66" y1="136" x2="364.66" y2="170" stroke-width="0.6"/>
+<line class="s" x1="365.29" y1="136" x2="365.29" y2="170" stroke-width="0.6"/>
+<line class="s" x1="365.93" y1="136" x2="365.93" y2="170" stroke-width="0.6"/>
+<line class="s" x1="366.57" y1="136" x2="366.57" y2="170" stroke-width="0.6"/>
+<line class="s" x1="367.21" y1="136" x2="367.21" y2="170" stroke-width="0.6"/>
+<line class="s" x1="367.84" y1="136" x2="367.84" y2="170" stroke-width="0.6"/>
+<line class="s" x1="368.48" y1="136" x2="368.48" y2="170" stroke-width="0.6"/>
+<line class="s" x1="369.12" y1="136" x2="369.12" y2="170" stroke-width="0.6"/>
+<line class="s" x1="369.76" y1="136" x2="369.76" y2="170" stroke-width="0.6"/>
+<line class="s" x1="370.40" y1="136" x2="370.40" y2="170" stroke-width="0.6"/>
+<line class="s" x1="371.03" y1="136" x2="371.03" y2="170" stroke-width="0.6"/>
+<line class="s" x1="371.67" y1="136" x2="371.67" y2="170" stroke-width="0.6"/>
+<line class="s" x1="393.36" y1="136" x2="393.36" y2="170" stroke-width="0.6"/>
+<line class="s" x1="397.83" y1="136" x2="397.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="402.29" y1="136" x2="402.29" y2="170" stroke-width="0.6"/>
+<line class="s" x1="406.76" y1="136" x2="406.76" y2="170" stroke-width="0.6"/>
+<line class="s" x1="411.22" y1="136" x2="411.22" y2="170" stroke-width="0.6"/>
+<line class="s" x1="415.69" y1="136" x2="415.69" y2="170" stroke-width="0.6"/>
+<line class="s" x1="420.16" y1="136" x2="420.16" y2="170" stroke-width="0.6"/>
+<line class="s" x1="424.62" y1="136" x2="424.62" y2="170" stroke-width="0.6"/>
+<line class="s" x1="429.09" y1="136" x2="429.09" y2="170" stroke-width="0.6"/>
+<line class="s" x1="433.55" y1="136" x2="433.55" y2="170" stroke-width="0.6"/>
+<line class="s" x1="438.02" y1="136" x2="438.02" y2="170" stroke-width="0.6"/>
+<line class="s" x1="442.48" y1="136" x2="442.48" y2="170" stroke-width="0.6"/>
+<line class="s" x1="446.95" y1="136" x2="446.95" y2="170" stroke-width="0.6"/>
+<line class="s" x1="451.41" y1="136" x2="451.41" y2="170" stroke-width="0.6"/>
+<line class="s" x1="455.88" y1="136" x2="455.88" y2="170" stroke-width="0.6"/>
+<line class="s" x1="460.34" y1="136" x2="460.34" y2="170" stroke-width="0.6"/>
+<line class="s" x1="464.17" y1="136" x2="464.17" y2="170" stroke-width="0.6"/>
+<line class="s" x1="468.00" y1="136" x2="468.00" y2="170" stroke-width="0.6"/>
+<line class="s" x1="468.00" y1="136" x2="468.00" y2="170" stroke-width="0.6"/>
+<line class="s" x1="471.83" y1="136" x2="471.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="473.74" y1="136" x2="473.74" y2="170" stroke-width="0.6"/>
+<line class="s" x1="478.21" y1="136" x2="478.21" y2="170" stroke-width="0.6"/>
+<line class="s" x1="482.67" y1="136" x2="482.67" y2="170" stroke-width="0.6"/>
+<line class="s" x1="487.14" y1="136" x2="487.14" y2="170" stroke-width="0.6"/>
+<line class="s" x1="491.60" y1="136" x2="491.60" y2="170" stroke-width="0.6"/>
+<line class="s" x1="496.07" y1="136" x2="496.07" y2="170" stroke-width="0.6"/>
+<line class="s" x1="500.53" y1="136" x2="500.53" y2="170" stroke-width="0.6"/>
+<line class="s" x1="505.00" y1="136" x2="505.00" y2="170" stroke-width="0.6"/>
+<line class="s" x1="505.64" y1="136" x2="505.64" y2="170" stroke-width="0.6"/>
+<line class="s" x1="506.28" y1="136" x2="506.28" y2="170" stroke-width="0.6"/>
+<line class="s" x1="506.91" y1="136" x2="506.91" y2="170" stroke-width="0.6"/>
+<line class="s" x1="507.55" y1="136" x2="507.55" y2="170" stroke-width="0.6"/>
+<line class="s" x1="508.19" y1="136" x2="508.19" y2="170" stroke-width="0.6"/>
+<line class="s" x1="508.83" y1="136" x2="508.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="509.47" y1="136" x2="509.47" y2="170" stroke-width="0.6"/>
+<line class="s" x1="510.10" y1="136" x2="510.10" y2="170" stroke-width="0.6"/>
+<line class="s" x1="510.74" y1="136" x2="510.74" y2="170" stroke-width="0.6"/>
+<line class="s" x1="511.38" y1="136" x2="511.38" y2="170" stroke-width="0.6"/>
+<line class="s" x1="512.02" y1="136" x2="512.02" y2="170" stroke-width="0.6"/>
+<line class="s" x1="512.66" y1="136" x2="512.66" y2="170" stroke-width="0.6"/>
+<line class="s" x1="513.29" y1="136" x2="513.29" y2="170" stroke-width="0.6"/>
+<line class="s" x1="513.93" y1="136" x2="513.93" y2="170" stroke-width="0.6"/>
+<line class="s" x1="514.57" y1="136" x2="514.57" y2="170" stroke-width="0.6"/>
+<line class="s" x1="515.21" y1="136" x2="515.21" y2="170" stroke-width="0.6"/>
+<line class="s" x1="515.84" y1="136" x2="515.84" y2="170" stroke-width="0.6"/>
+<line class="s" x1="516.48" y1="136" x2="516.48" y2="170" stroke-width="0.6"/>
+<line class="s" x1="517.12" y1="136" x2="517.12" y2="170" stroke-width="0.6"/>
+<line class="s" x1="517.76" y1="136" x2="517.76" y2="170" stroke-width="0.6"/>
+<line class="s" x1="518.40" y1="136" x2="518.40" y2="170" stroke-width="0.6"/>
+<line class="s" x1="519.03" y1="136" x2="519.03" y2="170" stroke-width="0.6"/>
+<line class="s" x1="519.67" y1="136" x2="519.67" y2="170" stroke-width="0.6"/>
+<line class="s" x1="541.36" y1="136" x2="541.36" y2="170" stroke-width="0.6"/>
+<line class="s" x1="545.83" y1="136" x2="545.83" y2="170" stroke-width="0.6"/>
+<line class="s" x1="550.29" y1="136" x2="550.29" y2="170" stroke-width="0.6"/>
+<line class="s" x1="554.76" y1="136" x2="554.76" y2="170" stroke-width="0.6"/>
+<line class="s" x1="559.22" y1="136" x2="559.22" y2="170" stroke-width="0.6"/>
+<line class="s" x1="563.69" y1="136" x2="563.69" y2="170" stroke-width="0.6"/>
+<line class="s" x1="568.16" y1="136" x2="568.16" y2="170" stroke-width="0.6"/>
+<line class="s" x1="572.62" y1="136" x2="572.62" y2="170" stroke-width="0.6"/>
+<line class="s" x1="577.09" y1="136" x2="577.09" y2="170" stroke-width="0.6"/>
+<line class="s" x1="581.55" y1="136" x2="581.55" y2="170" stroke-width="0.6"/>
+<line class="s" x1="586.02" y1="136" x2="586.02" y2="170" stroke-width="0.6"/>
+<line class="s" x1="590.48" y1="136" x2="590.48" y2="170" stroke-width="0.6"/>
+<line class="s" x1="594.95" y1="136" x2="594.95" y2="170" stroke-width="0.6"/>
+<line class="s" x1="599.41" y1="136" x2="599.41" y2="170" stroke-width="0.6"/>
+<line class="s" x1="603.88" y1="136" x2="603.88" y2="170" stroke-width="0.6"/>
+<line class="s" x1="608.34" y1="136" x2="608.34" y2="170" stroke-width="0.6"/>
+<line class="s" x1="612.17" y1="136" x2="612.17" y2="170" stroke-width="0.6"/>
+<line class="s" x1="616.00" y1="136" x2="616.00" y2="170" stroke-width="0.6"/>
+<line class="a" x1="24" y1="134" x2="24" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="172" y1="134" x2="172" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="320" y1="134" x2="320" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="468" y1="134" x2="468" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="616" y1="134" x2="616" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<path class="m" d="M61.64 172 L61.64 178 L75.67 178 L75.67 172" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm" x="57.64" y="196" font-size="10.5">the welcome&#x27;s padding: 22 writes of one space each</text>
+<text class="tm" x="24" y="222" font-size="11">Between any two writes the terminal may show the screen: written in pieces, a frame can be seen half drawn.</text>
+</svg>

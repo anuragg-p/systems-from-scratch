@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 236" fill="none">
+<title>The rows of f.txt that hold line 2, and where each arrow key goes from a match</title>
+<defs><marker id="f0502a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0502a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0502a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">f.txt, rows 1 to 30; the query &quot;line 2&quot; is in rows 2 and 20 to 29</text>
+<rect class="m f" x="40" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="47.75" y="117" font-size="9" text-anchor="middle">1</text>
+<rect class="a af" x="58.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="66.25" y="117" font-size="9" text-anchor="middle">2</text>
+<rect class="m f" x="77" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="84.75" y="117" font-size="9" text-anchor="middle">3</text>
+<rect class="m f" x="95.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="103.25" y="117" font-size="9" text-anchor="middle">4</text>
+<rect class="m f" x="114" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="121.75" y="117" font-size="9" text-anchor="middle">5</text>
+<rect class="m f" x="132.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="140.25" y="117" font-size="9" text-anchor="middle">6</text>
+<rect class="m f" x="151" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="158.75" y="117" font-size="9" text-anchor="middle">7</text>
+<rect class="m f" x="169.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="177.25" y="117" font-size="9" text-anchor="middle">8</text>
+<rect class="m f" x="188" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="195.75" y="117" font-size="9" text-anchor="middle">9</text>
+<rect class="m f" x="206.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="214.25" y="117" font-size="8" text-anchor="middle">10</text>
+<rect class="m f" x="225" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="232.75" y="117" font-size="8" text-anchor="middle">11</text>
+<rect class="m f" x="243.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="251.25" y="117" font-size="8" text-anchor="middle">12</text>
+<rect class="m f" x="262" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="269.75" y="117" font-size="8" text-anchor="middle">13</text>
+<rect class="m f" x="280.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="288.25" y="117" font-size="8" text-anchor="middle">14</text>
+<rect class="m f" x="299" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="306.75" y="117" font-size="8" text-anchor="middle">15</text>
+<rect class="m f" x="317.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="325.25" y="117" font-size="8" text-anchor="middle">16</text>
+<rect class="m f" x="336" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="343.75" y="117" font-size="8" text-anchor="middle">17</text>
+<rect class="m f" x="354.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="362.25" y="117" font-size="8" text-anchor="middle">18</text>
+<rect class="m f" x="373" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="380.75" y="117" font-size="8" text-anchor="middle">19</text>
+<rect class="a af" x="391.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="399.25" y="117" font-size="8" text-anchor="middle">20</text>
+<rect class="a af" x="410" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="417.75" y="117" font-size="8" text-anchor="middle">21</text>
+<rect class="a af" x="428.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="436.25" y="117" font-size="8" text-anchor="middle">22</text>
+<rect class="a af" x="447" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="454.75" y="117" font-size="8" text-anchor="middle">23</text>
+<rect class="a af" x="465.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="473.25" y="117" font-size="8" text-anchor="middle">24</text>
+<rect class="a af" x="484" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="491.75" y="117" font-size="8" text-anchor="middle">25</text>
+<rect class="a af" x="502.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="510.25" y="117" font-size="8" text-anchor="middle">26</text>
+<rect class="a af" x="521" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="528.75" y="117" font-size="8" text-anchor="middle">27</text>
+<rect class="a af" x="539.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="547.25" y="117" font-size="8" text-anchor="middle">28</text>
+<rect class="a af" x="558" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="565.75" y="117" font-size="8" text-anchor="middle">29</text>
+<rect class="m f" x="576.5" y="98" width="15.5" height="30" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="584.25" y="117" font-size="8" text-anchor="middle">30</text>
+<text class="tm" x="39.75" y="52" font-size="10">typing: from row 1</text>
+<line class="a" x1="47.75" y1="58" x2="66.25" y2="94" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0502a-aa)"/>
+<path class="a" d="M66.2 94 C 66.2 52, 399.2 52, 399.2 94" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0502a-aa)"/>
+<text class="ta" x="232.75" y="56" font-size="10.5" text-anchor="middle">Down or Right: the next row with it</text>
+<path class="a" d="M399.2 94 C 399.2 78, 417.8 78, 417.8 94" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0502a-aa)"/>
+<path class="s" d="M66.2 132 L66.2 168 L26 168 L26 190 L606.2 190 L606.2 168 L565.8 168 L565.8 132" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0502a-ah)"/>
+<text class="t" x="320" y="208" font-size="10.5" text-anchor="middle">Up or Left at row 2: back past row 1, around the end, to row 29</text>
+<text class="tm" x="320" y="224" font-size="10.5" text-anchor="middle">(Down at row 29 goes around the other way, to row 2)</text>
+</svg>

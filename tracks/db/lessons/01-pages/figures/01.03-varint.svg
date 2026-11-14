@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Three varints, as the engine wrote them</title>
+<defs><marker id="f0103b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0103b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0103b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">7 bits of the number per byte, most significant first; a set top bit means another byte follows</text>
+<text class="t" x="24" y="68" font-size="12" font-weight="600">length 5</text>
+<rect class="s f" x="140" y="50" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="155" y="68" font-size="12" text-anchor="middle">05</text>
+<text class="tm" x="186" y="68" font-size="11">0 0000101: top bit clear, the varint ends here</text>
+<text class="t" x="24" y="122" font-size="12" font-weight="600">rowid 300</text>
+<rect class="a af" x="140" y="104" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="155" y="122" font-size="12" text-anchor="middle">82</text>
+<rect class="s f" x="174" y="104" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="189" y="122" font-size="12" text-anchor="middle">2c</text>
+<text class="tm" x="220" y="116" font-size="11">300 = 100101100 in binary, cut into 7-bit groups 0000010 0101100</text>
+<text class="t mono" x="220" y="132" font-size="11">1 0000010 = 82: more follows</text>
+<text class="t mono" x="430" y="132" font-size="11">0 0101100 = 2c: the last</text>
+<text class="t" x="24" y="188" font-size="12" font-weight="600">rowid -1</text>
+<rect class="a af" x="140" y="170" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="155" y="188" font-size="12" text-anchor="middle">ff</text>
+<rect class="a af" x="174" y="170" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="189" y="188" font-size="12" text-anchor="middle">ff</text>
+<rect class="a af" x="208" y="170" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="223" y="188" font-size="12" text-anchor="middle">ff</text>
+<rect class="a af" x="242" y="170" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="257" y="188" font-size="12" text-anchor="middle">ff</text>
+<rect class="a af" x="276" y="170" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="291" y="188" font-size="12" text-anchor="middle">ff</text>
+<rect class="a af" x="310" y="170" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="325" y="188" font-size="12" text-anchor="middle">ff</text>
+<rect class="a af" x="344" y="170" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="359" y="188" font-size="12" text-anchor="middle">ff</text>
+<rect class="a af" x="378" y="170" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="393" y="188" font-size="12" text-anchor="middle">ff</text>
+<rect class="s f" x="412" y="170" width="30" height="28" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="427" y="188" font-size="12" text-anchor="middle">ff</text>
+<text class="tm" x="140" y="218" font-size="11">-1 is 64 one-bits. Eight bytes carry 7 bits each (56), and the ninth carries all 8 of its bits:</text>
+<text class="tm" x="140" y="234" font-size="11">8 x 7 + 8 = 64, so every 64-bit value fits in at most 9 bytes.</text>
+<text class="tm" x="24" y="286" font-size="11">From xxd of two real cells: 05 is a cell&#x27;s payload length; 82 2c and the nine ff are rowids.</text>
+</svg>

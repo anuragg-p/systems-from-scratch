@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 362" fill="none">
+<title>The order of a commit with a rollback journal, and what a crash at each point leaves</title>
+<defs><marker id="f0602a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0602a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0602a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">journal_commit, top to bottom; middle: the crash points; right: what the next open does</text>
+<line class="m" x1="40" y1="54" x2="40" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="40" cy="54" r="9" stroke-width="1.5"/>
+<text class="t" x="40" y="58" font-size="10.5" font-weight="700" text-anchor="middle">1</text>
+<text class="t" x="58" y="58" font-size="11.5" text-anchor="None">copy each original page to the journal</text>
+<text class="tm" x="58" y="73" font-size="10.5">its magic is still zeroes</text>
+<text class="tm mono" x="326" y="58" font-size="10.5" text-anchor="None">journal-partial</text>
+<circle class="s f" cx="40" cy="94" r="9" stroke-width="1.5"/>
+<text class="t" x="40" y="98" font-size="10.5" font-weight="700" text-anchor="middle">2</text>
+<text class="t" x="58" y="98" font-size="11.5" text-anchor="None">fsync the journal and its directory</text>
+<circle class="s f" cx="40" cy="134" r="9" stroke-width="1.5"/>
+<text class="t" x="40" y="138" font-size="10.5" font-weight="700" text-anchor="middle">3</text>
+<text class="t" x="58" y="138" font-size="11.5" text-anchor="None">write the magic and the count, fsync</text>
+<text class="ta" x="58" y="153" font-size="10.5">now the journal is hot</text>
+<text class="tm mono" x="326" y="138" font-size="10.5" text-anchor="None">journal-hot</text>
+<circle class="s f" cx="40" cy="174" r="9" stroke-width="1.5"/>
+<text class="t" x="40" y="178" font-size="10.5" font-weight="700" text-anchor="middle">4</text>
+<text class="t" x="58" y="178" font-size="11.5" text-anchor="None">write the new pages into demo.db</text>
+<text class="tm mono" x="326" y="178" font-size="10.5" text-anchor="None">db-partial</text>
+<text class="tm mono" x="326" y="193" font-size="10.5" text-anchor="None">db-torn</text>
+<circle class="s f" cx="40" cy="214" r="9" stroke-width="1.5"/>
+<text class="t" x="40" y="218" font-size="10.5" font-weight="700" text-anchor="middle">5</text>
+<text class="t" x="58" y="218" font-size="11.5" text-anchor="None">fsync demo.db</text>
+<text class="tm mono" x="326" y="218" font-size="10.5" text-anchor="None">db-written</text>
+<circle class="a fa" cx="40" cy="254" r="9" stroke-width="1.5"/>
+<text class="t" x="40" y="258" font-size="10.5" font-weight="700" text-anchor="middle">6</text>
+<text class="ta" x="58" y="258" font-size="11.5" font-weight="600" text-anchor="None">delete the journal</text>
+<text class="ta" x="58" y="273" font-size="10.5">the commit point</text>
+<text class="tm mono" x="326" y="258" font-size="10.5" text-anchor="None">before-delete</text>
+<rect class="s fs" x="452" y="40" width="164" height="76" rx="6" stroke-width="1.5"/>
+<text class="t" x="462" y="58" font-size="10.5">not hot: the next open</text>
+<text class="t" x="462" y="73" font-size="10.5">deletes it; demo.db</text>
+<text class="t" x="462" y="88" font-size="10.5">was never touched</text>
+<rect class="a af" x="452" y="120" width="164" height="158" rx="6" stroke-width="1.5"/>
+<text class="ta" x="462" y="138" font-size="10.5">hot: the next open</text>
+<text class="ta" x="462" y="153" font-size="10.5">copies the originals</text>
+<text class="ta" x="462" y="168" font-size="10.5">back (91 pages)</text>
+<rect class="s f" x="452" y="286" width="164" height="30" rx="6" stroke-width="1.5"/>
+<text class="t" x="462" y="305" font-size="10.5" font-weight="600" text-anchor="None">gone: committed</text>
+<text class="tm" x="40" y="305" font-size="10.5">after step 6</text>
+<line class="m" x1="24" y1="312" x2="616" y2="312" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="24" y="332" font-size="11">every crash point above, run on the 2000-row table and then opened by sqlite3: 0 rows changed</text>
+<text class="tm" x="24" y="348" font-size="10.5">(this engine reads a journal from 06.03 on; until then sqlite3 is the next open)</text>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 188" fill="none">
+<title>With r-&gt;next = 0, the list keeps only the last page freed</title>
+<defs><marker id="f0202b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0202b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="30" font-size="12" font-weight="600">after kinit(), with r-&gt;next = 0</text>
+<rect class="s fs" x="24" y="68" width="100" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="74" y="83" font-size="10.5" font-weight="600" text-anchor="middle">kmem.freelist</text>
+<line class="s" x1="124" y1="79" x2="144" y2="79" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202b-ah)"/>
+<text class="t mono" x="192.0" y="60" font-size="11.5" font-weight="600" text-anchor="middle">0x87fff000</text>
+<rect class="s fs" x="146" y="68" width="92" height="64" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="146" y="68" width="92" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="192.0" y="83" font-size="10.5" text-anchor="middle">0</text>
+<text class="tm mono" x="192.0" y="115" font-size="10.5" text-anchor="middle">01 01 01 01</text>
+<text class="tm mono" x="310.0" y="60" font-size="11.5" font-weight="600" text-anchor="middle">0x87ffe000</text>
+<rect class="m" x="264" y="68" width="92" height="64" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s f" x="264" y="68" width="92" height="22" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="310.0" y="83" font-size="10.5" text-anchor="middle">0</text>
+<text class="tm mono" x="310.0" y="115" font-size="10.5" text-anchor="middle">01 01 01 01</text>
+<text class="tm mono" x="428.0" y="60" font-size="11.5" font-weight="600" text-anchor="middle">0x87ffd000</text>
+<rect class="m" x="382" y="68" width="92" height="64" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s f" x="382" y="68" width="92" height="22" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="428.0" y="83" font-size="10.5" text-anchor="middle">0</text>
+<text class="tm mono" x="428.0" y="115" font-size="10.5" text-anchor="middle">01 01 01 01</text>
+<text class="tm mono" x="566.0" y="60" font-size="10.5" font-weight="600" text-anchor="middle">PGROUNDUP(end)</text>
+<rect class="m" x="520" y="68" width="92" height="64" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s f" x="520" y="68" width="92" height="22" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="566.0" y="83" font-size="10.5" text-anchor="middle">0</text>
+<text class="tm mono" x="566.0" y="115" font-size="10.5" text-anchor="middle">01 01 01 01</text>
+<text class="tm" x="497" y="104" font-size="12" text-anchor="middle">...</text>
+<path class="a" d="M264 144 V150 H612 V144" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="438" y="168" font-size="11.5" font-weight="600" text-anchor="middle">still free, but nothing points to them</text>
+</svg>

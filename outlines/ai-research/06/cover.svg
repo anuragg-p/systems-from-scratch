@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>An induction head: two attention heads that together continue repeated text</title>
+<defs><marker id="r06-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="r06-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="110" y="196" width="76" height="30" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="148" y="216" font-size="12.5" text-anchor="middle">the</text>
+<rect class="s f" x="202" y="196" width="76" height="30" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="240" y="216" font-size="12.5" font-weight="600" text-anchor="middle">cat</text>
+<rect class="s f" x="294" y="196" width="76" height="30" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="332" y="216" font-size="12.5" text-anchor="middle">sat</text>
+<rect class="s f" x="386" y="196" width="76" height="30" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="424" y="216" font-size="12.5" text-anchor="middle">.</text>
+<rect class="s f" x="478" y="196" width="76" height="30" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="516" y="216" font-size="12.5" font-weight="600" text-anchor="middle">the</text>
+<rect class="a af" x="574" y="196" width="42" height="30" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="595" y="216" font-size="12" font-weight="700" text-anchor="middle">cat</text>
+<text class="ta" x="595" y="188" font-size="10.5" text-anchor="middle">next</text>
+<path class="s" d="M148 196 C 148 170, 232 170, 232 194" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r06-ah)"/>
+<path class="m" d="M240 196 C 240 170, 324 170, 324 194" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M332 196 C 332 170, 416 170, 416 194" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M424 196 C 424 170, 508 170, 508 194" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="24" y="160" font-size="12" font-weight="700">layer 0</text>
+<text class="tm" x="24" y="176" font-size="10.5">previous token</text>
+<path class="a" d="M246 196 C 246 70, 516 70, 516 194" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r06-aa)"/>
+<path class="a" d="M554 211 H 572" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r06-aa)"/>
+<text class="t" x="24" y="84" font-size="12" font-weight="700">layer 1</text>
+<text class="tm" x="24" y="100" font-size="10.5">induction head</text>
+<text class="ta" x="381.0" y="42" font-size="10.5" text-anchor="middle">the second &#x27;the&#x27; attends to &#x27;cat&#x27;,</text>
+<text class="ta" x="381.0" y="57" font-size="10.5" text-anchor="middle">the token that followed &#x27;the&#x27; before,</text>
+<text class="ta" x="381.0" y="72" font-size="10.5" text-anchor="middle">and copies it to the output</text>
+<text class="tm" x="240" y="244" font-size="10.5" text-anchor="middle">&#x27;cat&#x27; now also holds: the token before me was &#x27;the&#x27;</text>
+<text class="tm" x="24" y="284" font-size="10.5">Pattern: [A][B] ... [A] -&gt; predict [B]. Found in small attention-only models (Elhage et al. 2021).</text>
+</svg>

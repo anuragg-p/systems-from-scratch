@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 346" fill="none">
+<title>Two processes, one screen</title>
+<defs><marker id="f0902a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="20" font-size="11" font-weight="600">colors (pid 3)</text>
+<rect class="s fs" x="24" y="30" width="170" height="42" rx="0" stroke-width="1.5"/>
+<text class="t" x="32" y="48" font-size="10.5">TRAMPOLINE, TRAPFRAME</text>
+<text class="tm mono" x="32" y="63" font-size="9.5">at the top: 0x3fffffe000</text>
+<rect class="m f" x="24" y="72" width="170" height="24" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="a af" x="24" y="96" width="170" height="64" rx="0" stroke-width="1.5"/>
+<text class="ta" x="32" y="114" font-size="10.5" font-weight="600">FBVA: the screen</text>
+<text class="ta mono" x="32" y="129" font-size="9.5">0x40000000, 300 pages</text>
+<rect class="m f" x="24" y="160" width="170" height="46" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s f" x="24" y="206" width="170" height="84" rx="0" stroke-width="1.5"/>
+<text class="t" x="32" y="224" font-size="10.5">text, data, stack, heap</text>
+<text class="tm mono" x="32" y="239" font-size="9.5">0 to p-&gt;sz</text>
+<text class="tm" x="109" y="308" font-size="9.5" text-anchor="middle">uvmcopy, uvmfree: 0 to sz only</text>
+<text class="t" x="446" y="20" font-size="11" font-weight="600">its child (pid 4)</text>
+<rect class="s fs" x="446" y="30" width="170" height="42" rx="0" stroke-width="1.5"/>
+<text class="t" x="454" y="48" font-size="10.5">TRAMPOLINE, TRAPFRAME</text>
+<text class="tm mono" x="454" y="63" font-size="9.5">at the top: 0x3fffffe000</text>
+<rect class="m f" x="446" y="72" width="170" height="24" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="a af" x="446" y="96" width="170" height="64" rx="0" stroke-width="1.5"/>
+<text class="ta" x="454" y="114" font-size="10.5" font-weight="600">FBVA: the screen</text>
+<text class="ta mono" x="454" y="129" font-size="9.5">0x40000000, 300 pages</text>
+<rect class="m f" x="446" y="160" width="170" height="46" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s f" x="446" y="206" width="170" height="84" rx="0" stroke-width="1.5"/>
+<text class="t" x="454" y="224" font-size="10.5">text, data, stack, heap</text>
+<text class="tm mono" x="454" y="239" font-size="9.5">0 to p-&gt;sz</text>
+<text class="tm" x="531" y="308" font-size="9.5" text-anchor="middle">uvmcopy, uvmfree: 0 to sz only</text>
+<text class="t" x="320" y="20" font-size="11" font-weight="600" text-anchor="middle">physical memory</text>
+<rect class="s fs" x="236" y="30" width="168" height="40" rx="0" stroke-width="1.5"/>
+<text class="tm" x="244" y="54" font-size="10">kernel text and data</text>
+<rect class="a af" x="236" y="70" width="168" height="100" rx="0" stroke-width="1.5"/>
+<text class="ta" x="244" y="90" font-size="10.5" font-weight="600">fb[], in the kernel&#x27;s bss</text>
+<text class="ta mono" x="244" y="106" font-size="10">0x80013000</text>
+<text class="ta" x="244" y="126" font-size="10">below end: kalloc never</text>
+<text class="ta" x="244" y="140" font-size="10">hands it out, and kfree</text>
+<text class="ta" x="244" y="154" font-size="10">panics if given it</text>
+<rect class="s f" x="236" y="170" width="168" height="90" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="244" y="188" font-size="10">end</text>
+<text class="tm" x="244" y="206" font-size="10">pages from kalloc: each</text>
+<text class="tm" x="244" y="220" font-size="10">process&#x27;s own memory, the</text>
+<text class="tm" x="244" y="234" font-size="10">child&#x27;s a copy of its parent&#x27;s</text>
+<path class="a" d="M194 128 C 214.0 128, 214.0 118, 234 118" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0902a-aa)"/>
+<path class="s" d="M194 248 C 214.0 248, 214.0 222, 234 222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0902a-ah)"/>
+<path class="a" d="M446 128 C 426.0 128, 426.0 118, 406 118" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0902a-aa)"/>
+<path class="s" d="M446 248 C 426.0 248, 426.0 222, 406 222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0902a-ah)"/>
+<text class="ta" x="320" y="290" font-size="10.5" font-weight="600" text-anchor="middle">the same 300 pages,</text>
+<text class="ta" x="320" y="306" font-size="10.5" font-weight="600" text-anchor="middle">mapped in both page tables</text>
+<text class="tm" x="24" y="336" font-size="10.5">fork copies 0 to sz, so the child starts without the screen; its own fbmap() maps the same pages.</text>
+</svg>

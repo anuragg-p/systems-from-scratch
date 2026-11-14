@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 348" fill="none">
+<title>Two ways to learn the window&#x27;s size: ask the kernel, or ask the terminal</title>
+<defs><marker id="f0103a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0103a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0103a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="22" font-size="12.5" font-weight="700">the usual way: the kernel knows</text>
+<rect class="s f" x="24" y="34" width="250" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="56" font-size="11.5">ioctl(1, TIOCGWINSZ, &amp;ws)</text>
+<line class="s" x1="274" y1="51" x2="300" y2="51" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<rect class="a af" x="302" y="34" width="314" height="34" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="314" y="56" font-size="11.5" font-weight="600">ws.ws_row = 24</text>
+<text class="ta mono" x="450" y="56" font-size="11.5" font-weight="600">ws.ws_col = 80</text>
+<text class="tm" x="24" y="88" font-size="11">The terminal tells the kernel its size when it opens and on every resize.</text>
+<text class="t" x="24" y="124" font-size="12.5" font-weight="700">when the kernel says 0 columns: ask the terminal</text>
+<rect class="s f" x="66" y="136" width="108" height="28" rx="6" stroke-width="1.5"/>
+<text class="t" x="120" y="155" font-size="12" font-weight="600" text-anchor="middle">kilo</text>
+<rect class="s f" x="456" y="136" width="128" height="28" rx="6" stroke-width="1.5"/>
+<text class="t" x="520" y="155" font-size="12" font-weight="600" text-anchor="middle">the terminal</text>
+<line class="m" x1="120" y1="164" x2="120" y2="334" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="520" y1="164" x2="520" y2="334" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="122" y1="186" x2="516" y2="186" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<text class="t mono" x="130" y="181" font-size="11" font-weight="600">ESC[6n</text>
+<text class="tm" x="510" y="181" font-size="10.5" text-anchor="end">where is the cursor?</text>
+<line class="a" x1="518" y1="214" x2="124" y2="214" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-aa)"/>
+<text class="ta mono" x="510" y="209" font-size="11" font-weight="600" text-anchor="end">ESC[1;1R</text>
+<text class="tm" x="130" y="209" font-size="10.5">row 1, column 1</text>
+<line class="s" x1="122" y1="242" x2="516" y2="242" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<text class="t mono" x="130" y="237" font-size="11" font-weight="600">ESC[999C ESC[999B</text>
+<text class="tm" x="510" y="237" font-size="10.5" text-anchor="end">right and down: it stops at the edges</text>
+<line class="s" x1="122" y1="270" x2="516" y2="270" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<text class="t mono" x="130" y="265" font-size="11" font-weight="600">ESC[6n</text>
+<line class="a" x1="518" y1="298" x2="124" y2="298" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-aa)"/>
+<text class="ta mono" x="510" y="293" font-size="11" font-weight="600" text-anchor="end">ESC[24;80R</text>
+<text class="tm" x="130" y="293" font-size="10.5">row 24, column 80: the size</text>
+<line class="s" x1="122" y1="326" x2="516" y2="326" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-ah)"/>
+<text class="t mono" x="130" y="321" font-size="11" font-weight="600">ESC[1;1H</text>
+<text class="tm" x="510" y="321" font-size="10.5" text-anchor="end">back to where it was</text>
+</svg>

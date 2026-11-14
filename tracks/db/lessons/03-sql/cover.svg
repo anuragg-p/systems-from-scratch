@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>SQL text becomes tokens, a tree, and rows of the catalog on page 1</title>
+<defs><marker id="m03-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m03-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m03-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="fs" x="24" y="22" width="592" height="40" rx="10"/>
+<text class="t mono" x="44" y="48" font-size="15">SELECT name FROM fruit WHERE price &gt; 0.5;</text>
+<text class="tm" x="24" y="92" font-size="11">tokens</text>
+<rect class="a af" x="24" y="102" width="59.2" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="53.6" y="118" font-size="12" font-weight="600" text-anchor="middle">SELECT</text>
+<rect class="s f" x="91.2" y="102" width="44.8" height="24" rx="12" stroke-width="1.5"/>
+<text class="t mono" x="113.6" y="118" font-size="12" text-anchor="middle">name</text>
+<rect class="a af" x="144" y="102" width="44.8" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="166.4" y="118" font-size="12" font-weight="600" text-anchor="middle">FROM</text>
+<rect class="s f" x="196.8" y="102" width="52" height="24" rx="12" stroke-width="1.5"/>
+<text class="t mono" x="222.8" y="118" font-size="12" text-anchor="middle">fruit</text>
+<rect class="a af" x="256.8" y="102" width="52" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="282.8" y="118" font-size="12" font-weight="600" text-anchor="middle">WHERE</text>
+<rect class="s f" x="316.8" y="102" width="52" height="24" rx="12" stroke-width="1.5"/>
+<text class="t mono" x="342.8" y="118" font-size="12" text-anchor="middle">price</text>
+<rect class="s f" x="376.8" y="102" width="23.2" height="24" rx="12" stroke-width="1.5"/>
+<text class="t mono" x="388.4" y="118" font-size="12" text-anchor="middle">&gt;</text>
+<rect class="s f" x="408" y="102" width="37.6" height="24" rx="12" stroke-width="1.5"/>
+<text class="t mono" x="426.8" y="118" font-size="12" text-anchor="middle">0.5</text>
+<rect class="s f" x="453.6" y="102" width="23.2" height="24" rx="12" stroke-width="1.5"/>
+<text class="t mono" x="465.2" y="118" font-size="12" text-anchor="middle">;</text>
+<text class="tm" x="24" y="160" font-size="11">tree</text>
+<rect class="s f" x="150" y="150" width="86" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="193" y="167.32" font-size="12" font-weight="600" text-anchor="middle">SELECT</text>
+<rect class="s f" x="64" y="214" width="70" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="99" y="231.32" font-size="12" text-anchor="middle">name</text>
+<rect class="s f" x="150" y="214" width="70" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="185" y="231.32" font-size="12" text-anchor="middle">fruit</text>
+<rect class="a af" x="236" y="214" width="50" height="26" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="261" y="231.68" font-size="13" text-anchor="middle">&gt;</text>
+<rect class="s f" x="196" y="258" width="60" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="226" y="273.96" font-size="11" text-anchor="middle">price</text>
+<rect class="s f" x="266" y="258" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="291" y="273.96" font-size="11" text-anchor="middle">0.5</text>
+<line class="s" x1="193" y1="176" x2="99" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="193" y1="176" x2="185" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="193" y1="176" x2="261" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="255" y1="240" x2="226" y2="257" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="267" y1="240" x2="291" y2="257" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="380" y="160" font-size="11">catalog: sqlite_schema on page 1</text>
+<rect class="s fs" x="380" y="172" width="236" height="96" rx="10" stroke-width="1.5"/>
+<text class="t mono" x="394" y="196" font-size="12">table fruit fruit 2</text>
+<text class="tm mono" x="394" y="214" font-size="11">CREATE TABLE fruit(...)</text>
+<line class="m" x1="394" y1="228" x2="602" y2="228" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="394" y="250" font-size="12">table veg veg 3</text>
+<path class="a" d="M330 214 C 352 214, 356 200, 378 200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m03-aa)"/>
+<text class="ta mono" x="354" y="236" font-size="11" font-weight="600" text-anchor="middle">fruit?</text>
+</svg>

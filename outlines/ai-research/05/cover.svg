@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>One run can mislead: compare five seeds each, with error bars, and keep a test set you look at once</title>
+<defs><marker id="r05-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="r05-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="96" y1="50" x2="96" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="88" y="234" font-size="10" text-anchor="end">70</text>
+<line class="m" x1="92" y1="230" x2="96" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="88" y="174" font-size="10" text-anchor="end">72</text>
+<line class="m" x1="92" y1="170" x2="96" y2="170" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="88" y="114" font-size="10" text-anchor="end">74</text>
+<line class="m" x1="92" y1="110" x2="96" y2="110" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="88" y="54" font-size="10" text-anchor="end">76</text>
+<line class="m" x1="92" y1="50" x2="96" y2="50" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="96" y="36" font-size="10.5">accuracy %, 5 seeds each</text>
+<circle class="s f" cx="132" cy="194.0" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="140" cy="170.0" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="148" cy="155.0" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="156" cy="137.0" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="164" cy="176.0" r="3.5" stroke-width="1.5"/>
+<line class="s" x1="180" y1="187.9708136146968" x2="180" y2="144.82918638530293" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="175" y1="187.9708136146968" x2="185" y2="187.9708136146968" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="175" y1="144.82918638530293" x2="185" y2="144.82918638530293" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s fs" cx="180" cy="166.4" r="4" stroke-width="1.5"/>
+<circle class="a af" cx="266" cy="185.0" r="3.5" stroke-width="1.5"/>
+<circle class="a af" cx="274" cy="143.0" r="3.5" stroke-width="1.5"/>
+<circle class="a af" cx="282" cy="104.0" r="3.5" stroke-width="1.5"/>
+<circle class="a af" cx="290" cy="167.0" r="3.5" stroke-width="1.5"/>
+<circle class="a af" cx="298" cy="140.0" r="3.5" stroke-width="1.5"/>
+<line class="a" x1="314" y1="178.43821143604842" x2="314" y2="117.16178856395189" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="309" y1="178.43821143604842" x2="319" y2="178.43821143604842" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="309" y1="117.16178856395189" x2="319" y2="117.16178856395189" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="314" cy="147.8" r="4" stroke-width="1.5"/>
+<text class="t" x="162" y="252" font-size="12" font-weight="600" text-anchor="middle">baseline</text>
+<text class="ta" x="296" y="252" font-size="12" font-weight="700" text-anchor="middle">your idea</text>
+<line class="m" x1="288" y1="99.99999999999991" x2="340" y2="77.00000000000017" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="344" y="81.00000000000017" font-size="10.5">lucky seed</text>
+<text class="t" x="420" y="60" font-size="12" font-weight="700">one run each</text>
+<text class="tm mono" x="420" y="78" font-size="10.5">74.2 vs 72.5: &quot;+1.7 points&quot;</text>
+<text class="t" x="420" y="110" font-size="12" font-weight="700">five seeds each</text>
+<text class="tm mono" x="420" y="128" font-size="10.5">72.7 +- 1.0 vs 72.1 +- 0.7</text>
+<text class="ta" x="420" y="146" font-size="11" font-weight="600">the bars overlap: no evidence yet</text>
+<text class="t" x="420" y="188" font-size="12" font-weight="700">an evaluation you cannot game</text>
+<rect class="s f" x="420" y="198" width="104" height="26" stroke-width="1.5"/>
+<text class="t" x="472" y="215" font-size="11" text-anchor="middle">train</text>
+<rect class="s f" x="524" y="198" width="46" height="26" stroke-width="1.5"/>
+<text class="t" x="547" y="215" font-size="11" text-anchor="middle">val</text>
+<rect class="s fs" x="570" y="198" width="46" height="26" stroke-width="1.5"/>
+<text class="t" x="593" y="215" font-size="11" font-weight="700" text-anchor="middle">test</text>
+<text class="tm" x="420" y="242" font-size="10.5">tune on val; open test once,</text>
+<text class="tm" x="420" y="257" font-size="10.5">at the very end</text>
+<text class="tm" x="24" y="284" font-size="10.5">Bars: mean +- one standard deviation over seeds.</text>
+</svg>

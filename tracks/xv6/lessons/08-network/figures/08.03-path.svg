@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 392" fill="none">
+<title>One datagram down the stack and back up</title>
+<defs><marker id="f0803c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0803c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0803c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="18" font-size="11" font-weight="600">sending</text>
+<text class="t" x="616" y="18" font-size="11" font-weight="600" text-anchor="end">receiving</text>
+<rect class="s fs" x="24" y="28" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="34" y="43" font-size="11" font-weight="600">sendto()</text>
+<text class="tm" x="34" y="57" font-size="9.5">user space: fd, buf, n, ip, port</text>
+<rect class="s fs" x="376" y="28" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="386" y="43" font-size="11" font-weight="600">recvfrom()</text>
+<text class="tm" x="386" y="57" font-size="9.5">the process wakes with the data</text>
+<line class="s" x1="144" y1="64" x2="144" y2="77" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0803c-ah)"/>
+<line class="s" x1="496" y1="78" x2="496" y2="65" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0803c-ah)"/>
+<rect class="s f" x="24" y="78" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="34" y="93" font-size="11" font-weight="600">socksend</text>
+<text class="tm" x="34" y="107" font-size="9.5">copyin the data to page + 42</text>
+<rect class="s f" x="376" y="78" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="386" y="93" font-size="11" font-weight="600">sock_deliver</text>
+<text class="tm" x="386" y="107" font-size="9.5">destination port: queue, wakeup</text>
+<line class="s" x1="144" y1="114" x2="144" y2="127" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0803c-ah)"/>
+<line class="s" x1="496" y1="128" x2="496" y2="115" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0803c-ah)"/>
+<rect class="s f" x="24" y="128" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="34" y="143" font-size="11" font-weight="600">udp_send</text>
+<text class="tm" x="34" y="157" font-size="9.5">8-byte UDP header at + 34</text>
+<rect class="s f" x="376" y="128" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="386" y="143" font-size="11" font-weight="600">udp_rx</text>
+<text class="tm" x="386" y="157" font-size="9.5">checksum and length</text>
+<line class="s" x1="144" y1="164" x2="144" y2="177" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0803c-ah)"/>
+<line class="s" x1="496" y1="178" x2="496" y2="165" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0803c-ah)"/>
+<rect class="s f" x="24" y="178" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="34" y="193" font-size="11" font-weight="600">ip_send</text>
+<text class="tm" x="34" y="207" font-size="9.5">20-byte IP header at + 14, arp_resolve</text>
+<rect class="s f" x="376" y="178" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="386" y="193" font-size="11" font-weight="600">ip_rx</text>
+<text class="tm" x="386" y="207" font-size="9.5">checksum, MYIP, protocol 17</text>
+<line class="s" x1="144" y1="214" x2="144" y2="227" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0803c-ah)"/>
+<line class="s" x1="496" y1="228" x2="496" y2="215" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0803c-ah)"/>
+<rect class="s f" x="24" y="228" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="34" y="243" font-size="11" font-weight="600">eth_send</text>
+<text class="tm" x="34" y="257" font-size="9.5">14-byte Ethernet header at + 0</text>
+<rect class="s f" x="376" y="228" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="386" y="243" font-size="11" font-weight="600">net_rx</text>
+<text class="tm" x="386" y="257" font-size="9.5">our card or broadcast, ethertype</text>
+<line class="s" x1="144" y1="264" x2="144" y2="277" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0803c-ah)"/>
+<line class="s" x1="496" y1="278" x2="496" y2="265" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0803c-ah)"/>
+<rect class="s f" x="24" y="278" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="34" y="293" font-size="11" font-weight="600">virtio_net_send</text>
+<text class="tm" x="34" y="307" font-size="9.5">copy header and frame to the card</text>
+<rect class="s f" x="376" y="278" width="240" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="386" y="293" font-size="11" font-weight="600">virtio_net_intr</text>
+<text class="tm" x="386" y="307" font-size="9.5">irq 2: frame at buffer + 12</text>
+<line class="a" x1="266" y1="296" x2="374" y2="296" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0803c-aa)"/>
+<text class="ta" x="320" y="289" font-size="10" text-anchor="middle">the wire</text>
+<text class="tm" x="24" y="334" font-size="10">the page socksend fills, back to front</text>
+<rect class="s f" x="24" y="344" width="70" height="26" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="59" y="361" font-size="10.5" text-anchor="middle">eth</text>
+<text class="tm mono" x="24" y="383" font-size="9.5" text-anchor="middle">0</text>
+<rect class="s f" x="94" y="344" width="100" height="26" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="144" y="361" font-size="10.5" text-anchor="middle">ip</text>
+<text class="tm mono" x="94" y="383" font-size="9.5" text-anchor="middle">14</text>
+<rect class="s f" x="194" y="344" width="40" height="26" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="214" y="361" font-size="10.5" text-anchor="middle">udp</text>
+<text class="tm mono" x="194" y="383" font-size="9.5" text-anchor="middle">34</text>
+<rect class="a af" x="234" y="344" width="230" height="26" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="349" y="361" font-size="10.5" font-weight="600" text-anchor="middle">data</text>
+<text class="tm mono" x="234" y="383" font-size="9.5" text-anchor="middle">42</text>
+<rect class="m" x="464" y="344" width="152" height="26" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="540" y="361" font-size="10" text-anchor="middle">rest of the page</text>
+</svg>

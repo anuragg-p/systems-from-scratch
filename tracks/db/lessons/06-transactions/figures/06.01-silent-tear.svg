@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" fill="none">
+<title>The same tear with a same-size update: every check passes, one row is half old</title>
+<defs><marker id="f0601c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0601c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0601c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">UPDATE t SET b = upper(b) WHERE id &gt; 1960 writes pages 1 and 3; page 3 torn at 2048</text>
+<rect class="m fs" x="40" y="58" width="12.03" height="40" rx="0" stroke-width="1.5"/>
+<rect class="m" x="52.03" y="58" width="50.31" height="40" rx="0" stroke-width="1.5"/>
+<text class="tm" x="40" y="52" font-size="10" text-anchor="None">hdr</text>
+<text class="tm" x="77.19" y="83" font-size="10.5" text-anchor="middle">free</text>
+<rect class="s fs" x="587.56" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="575.12" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="562.68" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="550.23" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="537.79" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="525.35" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="512.91" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="500.47" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="488.03" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="475.59" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="463.14" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="450.7" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="438.26" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="425.82" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="413.38" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="400.94" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="388.5" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="376.05" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="363.61" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="351.17" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="338.73" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="326.29" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="313.85" y="58" width="6.15" height="40" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="320" y="58" width="6.29" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="301.41" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="288.96" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="276.52" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="264.08" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="251.64" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="239.2" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="226.76" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="214.32" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="201.88" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="189.43" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="176.99" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="164.55" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="152.11" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="139.67" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="127.23" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="114.79" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="102.34" y="58" width="12.44" height="40" rx="0" stroke-width="1.5"/>
+<line class="a" x1="320" y1="48" x2="320" y2="108" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="320" y="44" font-size="10.5" text-anchor="middle">2048</text>
+<text class="ta" x="190.39" y="124" font-size="11" font-weight="600" text-anchor="middle">rows 2000 ... 1984: written, upper case</text>
+<text class="t" x="461.09" y="124" font-size="11" font-weight="600" text-anchor="middle">rows 1982 ... 1961: still lower case</text>
+<line class="a" x1="320" y1="98" x2="320" y2="142" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="t" x="24" y="166" font-size="11.5" font-weight="600" text-anchor="None">row 1983 straddles the tear:</text>
+<text class="t mono" x="24" y="184" font-size="10.5" text-anchor="None">1983|OLD OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOoooooooooooooooooooooooooooooooooooooooooooooo</text>
+<text class="t" x="24" y="214" font-size="11">PRAGMA integrity_check: ok. Nothing in the file says this page is half one commit, half another.</text>
+<text class="tm" x="24" y="232" font-size="10.5">Only a copy of the page from before the commit can put it right: the next lesson&#x27;s journal.</text>
+</svg>

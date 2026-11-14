@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>A fair comparison: hold everything fixed but the engine, and report spread, not one number</title>
+<defs><marker id="i07-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="i07-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="24" y="40" width="140" height="40" rx="8" stroke-width="1.5"/>
+<text class="t" x="36" y="57" font-size="12" font-weight="600">same weights</text>
+<text class="tm" x="36" y="72" font-size="10.5">GPT-2, 8-bit</text>
+<line class="m" x1="164" y1="60" x2="186" y2="60" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="24" y="88" width="140" height="40" rx="8" stroke-width="1.5"/>
+<text class="t" x="36" y="105" font-size="12" font-weight="600">same prompts</text>
+<text class="tm" x="36" y="120" font-size="10.5">200, fixed order</text>
+<line class="m" x1="164" y1="108" x2="186" y2="108" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="24" y="136" width="140" height="40" rx="8" stroke-width="1.5"/>
+<text class="t" x="36" y="153" font-size="12" font-weight="600">same settings</text>
+<text class="tm" x="36" y="168" font-size="10.5">greedy, 256 tokens</text>
+<line class="m" x1="164" y1="156" x2="186" y2="156" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="24" y="184" width="140" height="40" rx="8" stroke-width="1.5"/>
+<text class="t" x="36" y="201" font-size="12" font-weight="600">same machine</text>
+<text class="tm" x="36" y="216" font-size="10.5">same threads, idle</text>
+<line class="m" x1="164" y1="204" x2="186" y2="204" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="186" y1="60" x2="186" y2="204" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="186" y1="92" x2="214" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#i07-ah)"/>
+<line class="s" x1="186" y1="172" x2="214" y2="172" stroke-width="1.5" stroke-linecap="round" marker-end="url(#i07-ah)"/>
+<rect class="a af" x="216" y="72" width="120" height="40" rx="8" stroke-width="1.5"/>
+<text class="ta" x="276" y="97" font-size="12" font-weight="700" text-anchor="middle">your server</text>
+<rect class="s fs" x="216" y="152" width="120" height="40" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="276" y="177" font-size="12" font-weight="700" text-anchor="middle">llama.cpp</text>
+<path class="a" d="M336 92 C 356 92, 356 132, 374 132" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#i07-aa)"/>
+<path class="s" d="M336 172 C 356 172, 356 132, 374 132" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#i07-ah)"/>
+<rect class="s f" x="380" y="40" width="236" height="176" rx="10" stroke-width="1.5"/>
+<text class="t" x="392" y="60" font-size="12" font-weight="700">report</text>
+<text class="ta" x="512" y="60" font-size="11" font-weight="600" text-anchor="middle">yours</text>
+<text class="tm mono" x="578" y="60" font-size="10.5" text-anchor="middle">llama.cpp</text>
+<line class="m" x1="380" y1="70" x2="616" y2="70" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="392" y="94" font-size="11">decode tok/s</text>
+<line class="m" x1="494.2" y1="90" x2="511.2" y2="90" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="503.2" cy="90" r="3.2" stroke-width="1.5"/>
+<line class="m" x1="571.2" y1="90" x2="588.2" y2="90" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s fs" cx="580.2" cy="90" r="3.2" stroke-width="1.5"/>
+<text class="t" x="392" y="121" font-size="11">TTFT p50</text>
+<line class="m" x1="501.48" y1="117" x2="516.48" y2="117" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="508.5" cy="117" r="3.2" stroke-width="1.5"/>
+<line class="m" x1="576.28" y1="117" x2="591.28" y2="117" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s fs" cx="583.3" cy="117" r="3.2" stroke-width="1.5"/>
+<line class="m" x1="388" y1="104" x2="608" y2="104" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="392" y="148" font-size="11">TTFT p99</text>
+<line class="m" x1="492.0" y1="144" x2="509.0" y2="144" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="501.0" cy="144" r="3.2" stroke-width="1.5"/>
+<line class="m" x1="569.0" y1="144" x2="586.0" y2="144" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s fs" cx="578.0" cy="144" r="3.2" stroke-width="1.5"/>
+<line class="m" x1="388" y1="131" x2="608" y2="131" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="392" y="175" font-size="11">peak memory</text>
+<line class="m" x1="505.0" y1="171" x2="520.0" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="512.0" cy="171" r="3.2" stroke-width="1.5"/>
+<line class="m" x1="574.52" y1="171" x2="589.52" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s fs" cx="581.5" cy="171" r="3.2" stroke-width="1.5"/>
+<line class="m" x1="388" y1="158" x2="608" y2="158" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="392" y="202" font-size="11">perplexity</text>
+<line class="m" x1="500.8" y1="198" x2="517.8" y2="198" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="509.8" cy="198" r="3.2" stroke-width="1.5"/>
+<line class="m" x1="567.68" y1="198" x2="584.68" y2="198" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s fs" cx="576.7" cy="198" r="3.2" stroke-width="1.5"/>
+<line class="m" x1="388" y1="185" x2="608" y2="185" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s fs" cx="392" cy="232" r="3.2" stroke-width="1.5"/>
+<line class="m" x1="382" y1="232" x2="402" y2="232" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="410" y="236" font-size="10.5">median and range of 5 runs</text>
+<text class="tm" x="24" y="282" font-size="11">Change one thing at a time, keep the rest fixed, and publish the scripts so anyone can rerun the table.</text>
+</svg>

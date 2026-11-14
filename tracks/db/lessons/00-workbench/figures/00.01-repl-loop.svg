@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 322" fill="none">
+<title>The loop in main.c&#x27;s repl()</title>
+<defs><marker id="f0001b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0001b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0001b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="40" y="16" width="236" height="34" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="158" y="37" font-size="12" text-anchor="middle">print  db&gt;  or  ...&gt;</text>
+<rect class="s f" x="40" y="72" width="236" height="34" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="158" y="93" font-size="12" text-anchor="middle">getline(): one line</text>
+<rect class="s f" x="40" y="128" width="236" height="34" rx="8" stroke-width="1.5"/>
+<text class="t" x="158" y="149" font-size="11.5" text-anchor="middle">buffer empty and the line starts with . ?</text>
+<rect class="s f" x="40" y="184" width="236" height="34" rx="8" stroke-width="1.5"/>
+<text class="t" x="158" y="205" font-size="11.5" text-anchor="middle">append the line to the buffer</text>
+<rect class="s f" x="40" y="240" width="236" height="34" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="158" y="261" font-size="12" text-anchor="middle">sql_complete(buffer) ?</text>
+<line class="s" x1="158" y1="50" x2="158" y2="70" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001b-ah)"/>
+<line class="s" x1="158" y1="106" x2="158" y2="126" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001b-ah)"/>
+<line class="s" x1="158" y1="162" x2="158" y2="182" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001b-ah)"/>
+<line class="s" x1="158" y1="218" x2="158" y2="238" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001b-ah)"/>
+<text class="tm" x="166" y="178" font-size="11">no</text>
+<rect class="s fs" x="356" y="72" width="260" height="42" rx="8" stroke-width="1.5"/>
+<text class="t" x="370" y="89" font-size="12" font-weight="600">end of input: run what is left</text>
+<text class="tm" x="370" y="105" font-size="10.5">exit 1 if a statement failed</text>
+<rect class="s f" x="356" y="128" width="260" height="42" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="370" y="145" font-size="12" font-weight="600">dot_command()</text>
+<text class="tm mono" x="370" y="161" font-size="10.5">.tables  .schema  .help  .exit</text>
+<rect class="a af" x="356" y="240" width="260" height="42" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="370" y="257" font-size="12" font-weight="600">db_exec(buffer)</text>
+<text class="tm" x="370" y="273" font-size="10.5">then empty the buffer</text>
+<line class="s" x1="276" y1="89" x2="354" y2="89" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001b-ah)"/>
+<text class="tm" x="316" y="83" font-size="11" text-anchor="middle">EOF</text>
+<line class="s" x1="276" y1="145" x2="354" y2="145" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001b-ah)"/>
+<text class="tm" x="316" y="139" font-size="11" text-anchor="middle">yes</text>
+<line class="a" x1="276" y1="257" x2="354" y2="257" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001b-aa)"/>
+<text class="tm" x="316" y="251" font-size="11" text-anchor="middle">yes</text>
+<path class="m" d="M616 149 H628 V33 H278" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0001b-am)"/>
+<path class="m" d="M616 261 H628 V149" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M40 257 H24 V33 H38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0001b-ah)"/>
+<text class="tm" x="20" y="148" font-size="11" text-anchor="end">no</text>
+<text class="tm" x="40" y="300" font-size="11">A statement may span lines: only a ; outside quotes and comments ends it.</text>
+</svg>

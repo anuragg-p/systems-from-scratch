@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 316" fill="none">
+<title>Kernel stacks and guard pages under the trampoline</title>
+<defs><marker id="f0401a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0401a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0401a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="150" y="18" font-size="10.5" text-anchor="end">page at</text>
+<text class="tm" x="170" y="18" font-size="10.5">kernel page table, top of the address space</text>
+<rect class="s fs" x="166" y="28" width="176" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="254" y="46" font-size="11.5" text-anchor="middle">trampoline</text>
+<text class="tm mono" x="150" y="46" font-size="10.5" text-anchor="end">0x3ffffff000</text>
+<rect class="m" x="168" y="58" width="172" height="24" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="254" y="74" font-size="10.5" text-anchor="middle">not mapped</text>
+<text class="tm mono" x="150" y="74" font-size="10.5" text-anchor="end">0x3fffffe000</text>
+<rect class="s f" x="166" y="84" width="176" height="28" rx="0" stroke-width="1.5"/>
+<text class="t" x="254" y="102" font-size="11.5" text-anchor="middle">proc[0] kernel stack</text>
+<text class="tm mono" x="150" y="102" font-size="10.5" text-anchor="end">0x3fffffd000</text>
+<rect class="m" x="168" y="114" width="172" height="24" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="254" y="130" font-size="10.5" text-anchor="middle">guard page: not mapped</text>
+<text class="tm mono" x="150" y="130" font-size="10.5" text-anchor="end">0x3fffffc000</text>
+<rect class="s f" x="166" y="140" width="176" height="28" rx="0" stroke-width="1.5"/>
+<text class="t" x="254" y="158" font-size="11.5" text-anchor="middle">proc[1] kernel stack</text>
+<text class="tm mono" x="150" y="158" font-size="10.5" text-anchor="end">0x3fffffb000</text>
+<rect class="m" x="168" y="170" width="172" height="24" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="254" y="186" font-size="10.5" text-anchor="middle">guard page: not mapped</text>
+<text class="tm mono" x="150" y="186" font-size="10.5" text-anchor="end">0x3fffffa000</text>
+<text class="tm" x="254" y="214" font-size="12" text-anchor="middle">...</text>
+<rect class="s f" x="166" y="224" width="176" height="28" rx="0" stroke-width="1.5"/>
+<text class="t" x="254" y="242" font-size="11.5" text-anchor="middle">proc[63] kernel stack</text>
+<text class="tm mono" x="150" y="242" font-size="10.5" text-anchor="end">0x3ffff7f000</text>
+<rect class="m" x="168" y="254" width="172" height="24" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="254" y="270" font-size="10.5" text-anchor="middle">guard page: not mapped</text>
+<text class="tm mono" x="150" y="270" font-size="10.5" text-anchor="end">0x3ffff7e000</text>
+<line class="s" x1="364" y1="84" x2="345" y2="84" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-ah)"/>
+<text class="t mono" x="370" y="88" font-size="10.5">context.sp = p-&gt;kstack + 4096</text>
+<text class="tm" x="370" y="103" font-size="10.5">one past the top: the first push goes below it</text>
+<line class="m" x1="328" y1="90" x2="328" y2="106" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-am)"/>
+<path class="a" d="M182 92 L182 128" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0401a-aa)"/>
+<text class="ta" x="370" y="138" font-size="10.5">an overflow lands here and page-faults,</text>
+<text class="ta" x="370" y="153" font-size="10.5">instead of writing into proc[1]&#x27;s stack</text>
+<line class="a" x1="364" y1="126" x2="345" y2="126" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-aa)"/>
+<text class="t mono" x="166" y="296" font-size="11">KSTACK(p) = TRAMPOLINE - (p + 1) * 2 * PGSIZE</text>
+<text class="tm" x="166" y="311" font-size="10.5">64 slots, 8192 bytes apart: one stack page, one guard page</text>
+</svg>

@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>How 1 + 2 * 3 - 4 groups, and the binding strengths op_prec() gives</title>
+<defs><marker id="f0302b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0302b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0302b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">the tokens, with how tightly each operator binds</text>
+<rect class="s f" x="24" y="30" width="38" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="43" y="49" font-size="14" text-anchor="middle">1</text>
+<rect class="a af" x="70" y="30" width="38" height="28" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="89" y="49" font-size="14" text-anchor="middle">+</text>
+<text class="tm mono" x="89" y="74" font-size="10.5" text-anchor="middle">6</text>
+<rect class="s f" x="116" y="30" width="38" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="135" y="49" font-size="14" text-anchor="middle">2</text>
+<rect class="a af" x="162" y="30" width="38" height="28" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="181" y="49" font-size="14" text-anchor="middle">*</text>
+<text class="tm mono" x="181" y="74" font-size="10.5" text-anchor="middle">7</text>
+<rect class="s f" x="208" y="30" width="38" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="227" y="49" font-size="14" text-anchor="middle">3</text>
+<rect class="a af" x="254" y="30" width="38" height="28" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="273" y="49" font-size="14" text-anchor="middle">-</text>
+<text class="tm mono" x="273" y="74" font-size="10.5" text-anchor="middle">6</text>
+<rect class="s f" x="300" y="30" width="38" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="319" y="49" font-size="14" text-anchor="middle">4</text>
+<line class="s" x1="250" y1="125" x2="170" y2="153" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="250" y1="125" x2="330" y2="153" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="170" y1="179" x2="120" y2="207" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="170" y1="179" x2="220" y2="207" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="220" y1="233" x2="180" y2="261" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="220" y1="233" x2="260" y2="261" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a af" x="232" y="99" width="36" height="26" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="250" y="116.68" font-size="13" text-anchor="middle">-</text>
+<rect class="a af" x="152" y="153" width="36" height="26" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="170" y="170.68" font-size="13" text-anchor="middle">+</text>
+<rect class="s f" x="312" y="153" width="36" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="330" y="170.68" font-size="13" text-anchor="middle">4</text>
+<rect class="s f" x="102" y="207" width="36" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="120" y="224.68" font-size="13" text-anchor="middle">1</text>
+<rect class="a af" x="202" y="207" width="36" height="26" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="220" y="224.68" font-size="13" text-anchor="middle">*</text>
+<rect class="s f" x="162" y="261" width="36" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="180" y="278.68" font-size="13" text-anchor="middle">2</text>
+<rect class="s f" x="242" y="261" width="36" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="260" y="278.68" font-size="13" text-anchor="middle">3</text>
+<text class="t mono" x="276" y="117" font-size="12" font-weight="600">= 3</text>
+<text class="tm" x="24" y="112" font-size="11">the tree</text>
+<text class="tm" x="250" y="216" font-size="10.5">* binds tighter than +,</text>
+<text class="tm" x="250" y="231" font-size="10.5">so 2 * 3 is grouped first</text>
+<text class="tm" x="24" y="132" font-size="10.5">- binds no tighter than +,</text>
+<text class="tm" x="24" y="147" font-size="10.5">so it takes 1 + 2 * 3 whole</text>
+<text class="tm" x="436" y="96" font-size="10.5">op_prec(): higher binds tighter</text>
+<rect class="s fs" x="436" y="106" width="180" height="17" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="446" y="118.5" font-size="10.5" font-weight="600" text-anchor="middle">8</text>
+<text class="t mono" x="460" y="118.5" font-size="10.5">||</text>
+<rect class="s fs" x="436" y="126" width="180" height="17" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="446" y="138.5" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="460" y="138.5" font-size="10.5">*  /  %</text>
+<rect class="s fs" x="436" y="146" width="180" height="17" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="446" y="158.5" font-size="10.5" font-weight="600" text-anchor="middle">6</text>
+<text class="t mono" x="460" y="158.5" font-size="10.5">+  -</text>
+<rect class="s fs" x="436" y="166" width="180" height="17" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="446" y="178.5" font-size="10.5" font-weight="600" text-anchor="middle">5</text>
+<text class="t mono" x="460" y="178.5" font-size="10.5">&lt;  &lt;=  &gt;  &gt;=</text>
+<rect class="s fs" x="436" y="186" width="180" height="17" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="446" y="198.5" font-size="10.5" font-weight="600" text-anchor="middle">4</text>
+<text class="t mono" x="460" y="198.5" font-size="10.5">= != IS IN LIKE BETWEEN</text>
+<text class="tm" x="460" y="218.5" font-size="10">NOT x: x read with min_prec 4</text>
+<rect class="s fs" x="436" y="226" width="180" height="17" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="446" y="238.5" font-size="10.5" font-weight="600" text-anchor="middle">2</text>
+<text class="t mono" x="460" y="238.5" font-size="10.5">AND</text>
+<rect class="s fs" x="436" y="246" width="180" height="17" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="446" y="258.5" font-size="10.5" font-weight="600" text-anchor="middle">1</text>
+<text class="t mono" x="460" y="258.5" font-size="10.5">OR</text>
+<rect class="m f" x="436" y="266" width="180" height="17" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="ta mono" x="446" y="278.5" font-size="10.5" font-weight="600" text-anchor="middle">0</text>
+<text class="tm" x="460" y="278.5" font-size="10.5">anything else: stop</text>
+</svg>

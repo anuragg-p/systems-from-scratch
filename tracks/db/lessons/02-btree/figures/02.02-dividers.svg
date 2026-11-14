@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 252" fill="none">
+<title>What a split sends up to the parent, by kind of page</title>
+<defs><marker id="f0202c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0202c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0202c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="22" font-size="11.5" font-weight="600">table leaf: a copy</text>
+<rect class="s fs" x="77.2" y="38" width="73.6" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="85.2" y="44" width="57.6" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="114" y="58.96" font-size="11" text-anchor="middle">5 | 19</text>
+<rect class="s f" x="24" y="112" width="88" height="46" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="68" y="130" font-size="11" font-weight="600" text-anchor="middle">page 5</text>
+<text class="tm mono" x="68" y="147" font-size="10" text-anchor="middle">1 ... 19</text>
+<rect class="s f" x="120" y="112" width="88" height="46" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="164" y="130" font-size="11" font-weight="600" text-anchor="middle">page 4</text>
+<text class="tm mono" x="164" y="147" font-size="10" text-anchor="middle">20 ... 180</text>
+<line class="s" x1="94" y1="72" x2="68" y2="110" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202c-ah)"/>
+<text class="tm" x="24" y="186" font-size="10.5">19 stays in page 5: the parent</text>
+<text class="tm" x="24" y="201" font-size="10.5">holds a copy, a signpost</text>
+<text class="tm" x="24" y="216" font-size="10.5">(s.db)</text>
+<text class="t" x="230" y="22" font-size="11.5" font-weight="600">index leaf: the entry</text>
+<rect class="s fs" x="263.4" y="38" width="113.2" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="271.4" y="44" width="97.2" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="320" y="58.96" font-size="11" text-anchor="middle">16 | 389, 91</text>
+<rect class="s f" x="230" y="112" width="88" height="46" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="274" y="130" font-size="11" font-weight="600" text-anchor="middle">page 16</text>
+<text class="tm mono" x="274" y="147" font-size="10" text-anchor="middle">a 1 ... 388</text>
+<rect class="s f" x="326" y="112" width="88" height="46" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="370" y="130" font-size="11" font-weight="600" text-anchor="middle">page 10</text>
+<text class="tm mono" x="370" y="147" font-size="10" text-anchor="middle">a 390 ... 761</text>
+<line class="s" x1="300" y1="72" x2="274" y2="110" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202c-ah)"/>
+<text class="tm" x="230" y="186" font-size="10.5">a = 389 is in no leaf: the</text>
+<text class="tm" x="230" y="201" font-size="10.5">entry itself moved up</text>
+<text class="tm" x="230" y="216" font-size="10.5">(index t_a of ix.db)</text>
+<text class="t" x="436" y="22" font-size="11.5" font-weight="600">interior page: a cell</text>
+<rect class="s fs" x="476" y="38" width="100" height="34" rx="6" stroke-width="1.5"/>
+<rect class="a af" x="484" y="44" width="84" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="526" y="58.96" font-size="11" text-anchor="middle">518 | 2031</text>
+<rect class="s f" x="436" y="112" width="88" height="46" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="480" y="130" font-size="11" font-weight="600" text-anchor="middle">page 518</text>
+<text class="tm mono" x="480" y="147" font-size="10" text-anchor="middle">right: 22</text>
+<rect class="s f" x="532" y="112" width="88" height="46" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="576" y="130" font-size="11" font-weight="600" text-anchor="middle">page 517</text>
+<text class="tm mono" x="576" y="147" font-size="10" text-anchor="middle">&gt; 2031</text>
+<line class="s" x1="506" y1="72" x2="480" y2="110" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0202c-ah)"/>
+<text class="tm" x="436" y="186" font-size="10.5">cell (22 | 2031) moved up;</text>
+<text class="tm" x="436" y="201" font-size="10.5">page 22 became page 518&#x27;s</text>
+<text class="tm" x="436" y="216" font-size="10.5">right-most child (deep.db)</text>
+<text class="tm" x="24" y="240" font-size="10.5">the arrow is the divider&#x27;s left child: everything in it sorts before (or, in a table, up to) the divider</text>
+</svg>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 446" fill="none">
+<title>One key through the finished kilo: ! typed at the end of world</title>
+<defs><marker id="f0001a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0001a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0001a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">./kilo hello.txt on a 10 x 44 terminal; the file holds Hello and world, the cursor is after world</text>
+<rect class="s f" x="48" y="38" width="464" height="26" rx="6" stroke-width="1.5"/>
+<text class="t" x="60" y="55" font-size="12" font-weight="600">the terminal</text>
+<text class="tm" x="232" y="55" font-size="11.5">turns the key ! into one byte, 0x21, and writes it</text>
+<rect class="a af" x="520" y="41" width="96" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta" x="568" y="55" font-size="10.5" font-weight="600" text-anchor="middle">module 00</text>
+<rect class="s f" x="48" y="70" width="464" height="26" rx="6" stroke-width="1.5"/>
+<text class="t" x="60" y="87" font-size="12" font-weight="600">raw mode</text>
+<text class="tm" x="232" y="87" font-size="11.5">the kernel passes it on at once, unechoed</text>
+<rect class="a af" x="520" y="73" width="96" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta" x="568" y="87" font-size="10.5" font-weight="600" text-anchor="middle">module 01</text>
+<rect class="s f" x="48" y="102" width="464" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="60" y="119" font-size="12" font-weight="600">editorReadKey()</text>
+<text class="tm" x="232" y="119" font-size="11.5">reads one key: 33, the code of !</text>
+<rect class="a af" x="520" y="105" width="96" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta" x="568" y="119" font-size="10.5" font-weight="600" text-anchor="middle">module 01</text>
+<rect class="s f" x="48" y="134" width="464" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="60" y="151" font-size="12" font-weight="600">editorProcessKeypress()</text>
+<text class="tm" x="232" y="151" font-size="11.5">has no case of its own for 33, so it is text</text>
+<rect class="a af" x="520" y="137" width="96" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta" x="568" y="151" font-size="10.5" font-weight="600" text-anchor="middle">module 04</text>
+<rect class="s f" x="48" y="166" width="464" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="60" y="183" font-size="12" font-weight="600">editorInsertChar(33)</text>
+<text class="tm mono" x="232" y="183" font-size="11.5">E.row[1]: world -&gt; world!</text>
+<text class="tm mono" x="412" y="183" font-size="11.5">E.cx: 5 -&gt; 6</text>
+<rect class="a af" x="520" y="169" width="96" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta" x="568" y="183" font-size="10.5" font-weight="600" text-anchor="middle">module 04</text>
+<rect class="s f" x="48" y="198" width="464" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="60" y="215" font-size="12" font-weight="600">editorRefreshScreen()</text>
+<text class="tm" x="232" y="215" font-size="11.5">the whole screen, drawn from E: 192 bytes</text>
+<rect class="a af" x="520" y="201" width="96" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta" x="568" y="215" font-size="10.5" font-weight="600" text-anchor="middle">modules 02, 03</text>
+<rect class="s f" x="48" y="230" width="464" height="26" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="60" y="247" font-size="12" font-weight="600">write()</text>
+<text class="tm" x="232" y="247" font-size="11.5">one call; the terminal draws the screen below</text>
+<rect class="a af" x="520" y="233" width="96" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta" x="568" y="247" font-size="10.5" font-weight="600" text-anchor="middle">module 02</text>
+<path class="a" d="M47 243.0 H30 V51.0 H46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0001a-aa)"/>
+<path class="m" d="M32 51.0 L32 243.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="s" x1="32" y1="51" x2="46" y2="51" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001a-ah)"/>
+<text class="tm" x="24" y="270" font-size="11">then main()&#x27;s loop waits for the next key</text>
+<rect class="s fs" x="24" y="284" width="293.2" height="152" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="32" y="300.5" font-size="10.5">Hello</text>
+<rect class="a" x="69.8" y="305" width="6.3" height="12" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="32" y="314.5" font-size="10.5">world!</text>
+<text class="t mono" x="32" y="328.5" font-size="10.5">~</text>
+<text class="t mono" x="32" y="342.5" font-size="10.5">~</text>
+<text class="t mono" x="32" y="356.5" font-size="10.5">~</text>
+<text class="t mono" x="32" y="370.5" font-size="10.5">~</text>
+<text class="t mono" x="32" y="384.5" font-size="10.5">~</text>
+<text class="t mono" x="32" y="398.5" font-size="10.5">~</text>
+<rect class="af" x="32" y="402" width="277.2" height="14" rx="0"/>
+<text class="ta mono" x="32" y="412.5" font-size="10.5">hello.txt - 2 lines (modified)</text>
+<text class="ta mono" x="290.3" y="412.5" font-size="10.5">2/2</text>
+<text class="t mono" x="32" y="426.5" font-size="10.5">HELP: Ctrl-S = save | Ctrl-Q = quit | Ctrl-F</text>
+<text class="t" x="337.2" y="302" font-size="12" font-weight="600">the screen after !</text>
+<text class="tm" x="337.2" y="322" font-size="11">10 rows of 44 columns:</text>
+<text class="tm" x="337.2" y="338" font-size="11">8 for the file (~ past its end),</text>
+<text class="tm" x="337.2" y="354" font-size="11">the status bar in reverse video,</text>
+<text class="tm" x="337.2" y="370" font-size="11">the message line, cut at 44.</text>
+<text class="tm" x="337.2" y="394" font-size="11">The cursor is drawn last: row 2,</text>
+<text class="tm" x="337.2" y="410" font-size="11">column 7, just after the !</text>
+</svg>

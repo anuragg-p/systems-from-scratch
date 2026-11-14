@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>A query as a stack of operators, each asked for one row at a time</title>
+<defs><marker id="f0401a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0401a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0401a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s fs" x="150" y="14" width="180" height="32" rx="6" stroke-width="1.5"/>
+<text class="t" x="240" y="34.32" font-size="12" font-weight="600" text-anchor="middle">the SELECT loop</text>
+<text class="tm" x="340" y="34" font-size="10.5">prints each row it gets, until it gets none</text>
+<rect class="s f" x="150" y="74" width="180" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="240" y="94.68" font-size="13" font-weight="600" text-anchor="middle">Limit</text>
+<text class="t" x="352" y="88" font-size="11">stops asking once it has n rows</text>
+<text class="tm" x="352" y="102" font-size="10.5">04.03</text>
+<rect class="s f" x="150" y="128" width="180" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="240" y="148.68" font-size="13" font-weight="600" text-anchor="middle">Sort</text>
+<text class="t" x="352" y="142" font-size="11">asks for every row, then hands them out in order</text>
+<text class="tm" x="352" y="156" font-size="10.5">04.03</text>
+<rect class="s f" x="150" y="182" width="180" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="240" y="202.68" font-size="13" font-weight="600" text-anchor="middle">Filter</text>
+<text class="t" x="352" y="196" font-size="11">passes on only the rows WHERE is true for</text>
+<text class="tm" x="352" y="210" font-size="10.5">04.02</text>
+<rect class="a af" x="150" y="236" width="180" height="32" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="240" y="256.68" font-size="13" font-weight="600" text-anchor="middle">Scan</text>
+<text class="t" x="352" y="250" font-size="11">one row per call, read from the table&#x27;s B-tree</text>
+<text class="ta" x="352" y="264" font-size="10.5">this lesson</text>
+<line class="s" x1="196" y1="49" x2="196" y2="71" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-ah)"/>
+<line class="a" x1="284" y1="71" x2="284" y2="49" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-aa)"/>
+<line class="s" x1="196" y1="109" x2="196" y2="125" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-ah)"/>
+<line class="a" x1="284" y1="125" x2="284" y2="109" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-aa)"/>
+<line class="s" x1="196" y1="163" x2="196" y2="179" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-ah)"/>
+<line class="a" x1="284" y1="179" x2="284" y2="163" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-aa)"/>
+<line class="s" x1="196" y1="217" x2="196" y2="233" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-ah)"/>
+<line class="a" x1="284" y1="233" x2="284" y2="217" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-aa)"/>
+<text class="tm mono" x="186" y="64" font-size="10.5" text-anchor="end">next()</text>
+<text class="ta" x="294" y="64" font-size="10.5">a row</text>
+<text class="tm" x="24" y="311" font-size="10.5">table p&#x27;s leaf</text>
+<rect class="a af" x="150" y="294" width="45" height="26" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="172.5" y="311" font-size="12" text-anchor="middle">1</text>
+<rect class="s fs" x="195" y="294" width="45" height="26" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="217.5" y="311" font-size="12" text-anchor="middle">2</text>
+<rect class="s fs" x="240" y="294" width="45" height="26" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="262.5" y="311" font-size="12" text-anchor="middle">10</text>
+<rect class="s fs" x="285" y="294" width="45" height="26" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="307.5" y="311" font-size="12" text-anchor="middle">11</text>
+<line class="a" x1="172" y1="274" x2="172" y2="291" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0401a-aa)"/>
+<text class="ta" x="180" y="286" font-size="10.5">cursor</text>
+<text class="tm" x="340" y="311" font-size="10.5">the cursor moves one cell per call</text>
+</svg>

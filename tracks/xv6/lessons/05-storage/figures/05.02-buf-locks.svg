@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 262" fill="none">
+<title>Which lock guards which field of struct buf</title>
+<defs><marker id="f0502b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0502b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0502b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="60" y="22" font-size="11.5" font-weight="600" text-anchor="None">struct buf</text>
+<rect class="a af" x="60" y="34" width="150" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="49" font-size="11" font-weight="600" text-anchor="None">valid</text>
+<rect class="s f" x="60" y="56" width="150" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="72" y="71" font-size="11" text-anchor="None">disk</text>
+<rect class="s f" x="60" y="78" width="150" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="72" y="93" font-size="11" text-anchor="None">dev</text>
+<rect class="s f" x="60" y="100" width="150" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="72" y="115" font-size="11" text-anchor="None">blockno</text>
+<rect class="s fs" x="60" y="122" width="150" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="72" y="137" font-size="11" text-anchor="None">lock</text>
+<rect class="s f" x="60" y="144" width="150" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="72" y="159" font-size="11" text-anchor="None">refcnt</text>
+<rect class="s f" x="60" y="166" width="150" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="72" y="181" font-size="11" text-anchor="None">prev</text>
+<rect class="s f" x="60" y="188" width="150" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="72" y="203" font-size="11" text-anchor="None">next</text>
+<rect class="a af" x="60" y="210" width="150" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="225" font-size="11" font-weight="600" text-anchor="None">data[1024]</text>
+<rect class="s f" x="360" y="50" width="256" height="52" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="372" y="68" font-size="11.5" font-weight="600" text-anchor="None">bcache.lock</text>
+<text class="tm" x="372" y="83" font-size="10.5">spinlock: the list, refcnt, and which</text>
+<text class="tm" x="372" y="96" font-size="10.5">block the buffer holds</text>
+<path class="m" d="M210 89.0 C 280 89.0, 290 76, 360 76" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M210 111.0 C 280 111.0, 290 76, 360 76" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M210 155.0 C 280 155.0, 290 76, 360 76" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M210 177.0 C 280 177.0, 290 76, 360 76" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M210 199.0 C 280 199.0, 290 76, 360 76" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="360" y="132" width="256" height="52" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="372" y="150" font-size="11.5" font-weight="600" text-anchor="None">b-&gt;lock</text>
+<text class="ta" x="372" y="165" font-size="10.5">sleep lock: held from bread() to</text>
+<text class="ta" x="372" y="178" font-size="10.5">brelse(), across the disk I/O</text>
+<path class="a" d="M210 45.0 C 280 45.0, 290 158, 360 158" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M210 221.0 C 280 221.0, 290 158, 360 158" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="360" y="204" width="256" height="52" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="372" y="222" font-size="11.5" font-weight="600" text-anchor="None">disk.vdisk_lock</text>
+<text class="tm" x="372" y="237" font-size="10.5">b-&gt;disk is 1 while the device</text>
+<text class="tm" x="372" y="250" font-size="10.5">owns the buffer (05.01)</text>
+<path class="m" d="M210 67.0 C 280 67.0, 290 230, 360 230" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

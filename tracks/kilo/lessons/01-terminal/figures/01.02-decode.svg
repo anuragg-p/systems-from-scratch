@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 504" fill="none">
+<title>editorReadKey(): one byte, or ESC and the bytes after it, become one key</title>
+<defs><marker id="f0102a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0102a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0102a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="24" y="20" width="150" height="34" rx="6" stroke-width="1.5"/>
+<text class="t" x="99" y="42" font-size="12" font-weight="600" text-anchor="middle">read one byte</text>
+<line class="s" x1="174" y1="37" x2="214" y2="37" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<text class="tm" x="194" y="30" font-size="10.5" text-anchor="middle">not 27</text>
+<rect class="s fs" x="216" y="20" width="400" height="34" rx="6" stroke-width="1.5"/>
+<text class="t" x="228" y="42" font-size="11.5">that byte is the key: a is 97, Enter 13, Ctrl-Q 17</text>
+<line class="a" x1="99" y1="54" x2="99" y2="76" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-aa)"/>
+<text class="ta" x="106" y="70" font-size="10.5" font-weight="600">27, ESC</text>
+<rect class="a af" x="24" y="78" width="150" height="34" rx="6" stroke-width="1.5"/>
+<text class="ta" x="99" y="93" font-size="11.5" font-weight="600" text-anchor="middle">two more bytes,</text>
+<text class="ta" x="99" y="107" font-size="11.5" font-weight="600" text-anchor="middle">each within 0.1 s?</text>
+<line class="s" x1="174" y1="95" x2="214" y2="95" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<text class="tm" x="194" y="88" font-size="10.5" text-anchor="middle">no</text>
+<rect class="s fs" x="216" y="78" width="400" height="34" rx="6" stroke-width="1.5"/>
+<text class="t" x="228" y="100" font-size="11.5">the Escape key itself: 27</text>
+<line class="s" x1="99" y1="112" x2="99" y2="134" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<text class="tm" x="106" y="128" font-size="10.5">yes</text>
+<rect class="s f" x="24" y="140" width="150" height="134" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="160" font-size="12" font-weight="600">ESC [ letter</text>
+<text class="t mono" x="216" y="160" font-size="11.5">ESC [ A</text>
+<text class="ta mono" x="340" y="160" font-size="11.5" font-weight="600">1002</text>
+<text class="t" x="392" y="160" font-size="11.5">Up</text>
+<text class="t mono" x="216" y="180" font-size="11.5">ESC [ B</text>
+<text class="ta mono" x="340" y="180" font-size="11.5" font-weight="600">1003</text>
+<text class="t" x="392" y="180" font-size="11.5">Down</text>
+<text class="t mono" x="216" y="200" font-size="11.5">ESC [ C</text>
+<text class="ta mono" x="340" y="200" font-size="11.5" font-weight="600">1001</text>
+<text class="t" x="392" y="200" font-size="11.5">Right</text>
+<text class="t mono" x="216" y="220" font-size="11.5">ESC [ D</text>
+<text class="ta mono" x="340" y="220" font-size="11.5" font-weight="600">1000</text>
+<text class="t" x="392" y="220" font-size="11.5">Left</text>
+<text class="t mono" x="216" y="240" font-size="11.5">ESC [ H</text>
+<text class="ta mono" x="340" y="240" font-size="11.5" font-weight="600">1005</text>
+<text class="t" x="392" y="240" font-size="11.5">Home</text>
+<text class="t mono" x="216" y="260" font-size="11.5">ESC [ F</text>
+<text class="ta mono" x="340" y="260" font-size="11.5" font-weight="600">1006</text>
+<text class="t" x="392" y="260" font-size="11.5">End</text>
+<line class="s" x1="174" y1="154" x2="210" y2="154" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="24" y="282" width="150" height="74" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="302" font-size="12" font-weight="600">ESC [ digit ~</text>
+<text class="t mono" x="216" y="302" font-size="11.5">ESC [ 3 ~</text>
+<text class="ta mono" x="340" y="302" font-size="11.5" font-weight="600">1004</text>
+<text class="t" x="392" y="302" font-size="11.5">Delete</text>
+<text class="t mono" x="216" y="322" font-size="11.5">ESC [ 5 ~</text>
+<text class="ta mono" x="340" y="322" font-size="11.5" font-weight="600">1007</text>
+<text class="t" x="392" y="322" font-size="11.5">Page Up</text>
+<text class="t mono" x="216" y="342" font-size="11.5">ESC [ 6 ~</text>
+<text class="ta mono" x="340" y="342" font-size="11.5" font-weight="600">1008</text>
+<text class="t" x="392" y="342" font-size="11.5">Page Down</text>
+<line class="s" x1="174" y1="296" x2="210" y2="296" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="s f" x="24" y="364" width="150" height="54" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="384" font-size="12" font-weight="600">ESC O letter</text>
+<text class="t mono" x="216" y="384" font-size="11.5">ESC O H</text>
+<text class="ta mono" x="340" y="384" font-size="11.5" font-weight="600">1005</text>
+<text class="t" x="392" y="384" font-size="11.5">Home</text>
+<text class="t mono" x="216" y="404" font-size="11.5">ESC O F</text>
+<text class="ta mono" x="340" y="404" font-size="11.5" font-weight="600">1006</text>
+<text class="t" x="392" y="404" font-size="11.5">End</text>
+<line class="s" x1="174" y1="378" x2="210" y2="378" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-ah)"/>
+<rect class="m f" x="24" y="426" width="150" height="34" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="36" y="447" font-size="12" font-weight="600">anything else</text>
+<line class="m" x1="174" y1="443" x2="210" y2="443" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102a-am)"/>
+<text class="tm" x="216" y="440" font-size="11">not a key kilo knows (Insert is ESC [ 2 ~): go round and read on;</text>
+<text class="tm" x="216" y="455" font-size="11">with nothing more within 0.1 s, the key is 27</text>
+<text class="tm" x="24" y="484" font-size="11">The codes are kilo&#x27;s own, from 1000 up: above 255, so no byte can be mistaken for one.</text>
+</svg>

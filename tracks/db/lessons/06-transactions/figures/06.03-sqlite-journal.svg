@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 270" fill="none">
+<title>A journal sqlite3 left: hot segments, one per cache spill</title>
+<defs><marker id="f0603b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0603b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0603b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">sqlite3 killed inside BEGIN; UPDATE ... with cache_size=10: demo.db-journal, 381488 bytes</text>
+<rect class="a af" x="24" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="24" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="46.55" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="46.55" y="76" font-size="9.5" text-anchor="middle">4-10</text>
+<rect class="a af" x="67.59" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="67.59" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="90.14" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="90.14" y="76" font-size="9.5" text-anchor="middle">11-17</text>
+<rect class="a af" x="111.18" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="111.18" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="133.73" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="133.73" y="76" font-size="9.5" text-anchor="middle">18-24</text>
+<rect class="a af" x="154.78" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="154.78" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="177.32" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="177.32" y="76" font-size="9.5" text-anchor="middle">25-31</text>
+<rect class="a af" x="198.37" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="198.37" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="220.91" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="220.91" y="76" font-size="9.5" text-anchor="middle">32-38</text>
+<rect class="a af" x="241.96" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="241.96" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="264.51" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="264.51" y="76" font-size="9.5" text-anchor="middle">39-45</text>
+<rect class="a af" x="285.55" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="285.55" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="308.1" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="308.1" y="76" font-size="9.5" text-anchor="middle">46-52</text>
+<rect class="a af" x="329.14" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="329.14" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="351.69" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="351.69" y="76" font-size="9.5" text-anchor="middle">53-59</text>
+<rect class="a af" x="372.73" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="372.73" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="395.28" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="395.28" y="76" font-size="9.5" text-anchor="middle">60-66</text>
+<rect class="a af" x="416.33" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="416.33" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="438.87" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="438.87" y="76" font-size="9.5" text-anchor="middle">67-73</text>
+<rect class="a af" x="459.92" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="459.92" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="482.46" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="482.46" y="76" font-size="9.5" text-anchor="middle">74-80</text>
+<rect class="a af" x="503.51" y="40" width="41.09" height="46" rx="3" stroke-width="1.5"/>
+<rect class="a fa" x="503.51" y="40" width="4" height="46" rx="0" stroke-width="1.5"/>
+<text class="ta" x="526.06" y="58" font-size="10.5" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="526.06" y="76" font-size="9.5" text-anchor="middle">81-87</text>
+<rect class="m" x="547.1" y="40" width="36.9" height="46" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="565.55" y="58" font-size="10.5" text-anchor="middle">not</text>
+<text class="tm" x="565.55" y="76" font-size="10.5" text-anchor="middle">hot</text>
+<text class="tm mono" x="24" y="102" font-size="10" text-anchor="None">0</text>
+<text class="tm mono" x="67.59" y="102" font-size="10" text-anchor="None">29696</text>
+<text class="tm mono" x="547.1" y="102" font-size="10" text-anchor="None">356352</text>
+<text class="t" x="24" y="128" font-size="11">each segment: a header (the magic, its own record count: the 7 above), then 7 records of 4104 bytes,</text>
+<text class="t" x="24" y="144" font-size="11">starting on a 512-byte boundary; sqlite3 makes a segment hot before it writes those pages</text>
+<line class="m" x1="24" y1="162" x2="616" y2="162" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="24" y="184" font-size="11.5" font-weight="600" text-anchor="None">demo.db at the moment of the kill: pages 4-86 already hold the new rows (1828 of them)</text>
+<rect class="s fs" x="24" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="30.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="36.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="43.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="49.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="56" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="62.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="68.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="75.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="81.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="88" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="94.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="100.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="107.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="113.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="120" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="126.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="132.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="139.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="145.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="152" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="158.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="164.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="171.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="177.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="184" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="190.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="196.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="203.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="209.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="216" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="222.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="228.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="235.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="241.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="248" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="254.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="260.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="267.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="273.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="280" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="286.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="292.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="299.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="305.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="312" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="318.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="324.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="331.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="337.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="344" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="350.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="356.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="363.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="369.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="376" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="382.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="388.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="395.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="401.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="408" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="414.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="420.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="427.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="433.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="440" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="446.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="452.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="459.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="465.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="472" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="478.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="484.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="491.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="497.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="504" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="510.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="516.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="523.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="529.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="536" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="542.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="548.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="555.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="561.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="a fa" x="568" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="574.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="580.8" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="587.2" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="593.6" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="600" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="606.4" y="196" width="4.8" height="22" rx="1" stroke-width="1.5"/>
+<text class="tm" x="24" y="238" font-size="10.5">pages 1-92</text>
+<text class="ta" x="616" y="238" font-size="11" font-weight="600" text-anchor="end">recovery: 84 pages restored (the twelve hot segments), 0 rows left changed</text>
+</svg>

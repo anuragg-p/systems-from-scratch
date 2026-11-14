@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 296" fill="none">
+<title>The avail and used rings</title>
+<defs><marker id="f0501b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0501b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0501b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="54" font-size="11.5" font-weight="600" text-anchor="None">disk.avail</text>
+<text class="tm" x="24" y="69" font-size="10.5">driver writes</text>
+<text class="tm mono" x="152" y="34" font-size="9.5" text-anchor="middle">flags</text>
+<rect class="s f" x="128" y="40" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="152" y="59" font-size="11" text-anchor="middle">0</text>
+<text class="tm mono" x="200" y="34" font-size="9.5" text-anchor="middle">idx</text>
+<rect class="s f" x="176" y="40" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="200" y="59" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="248" y="34" font-size="9.5" text-anchor="middle">ring[0]</text>
+<rect class="s f" x="224" y="40" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="248" y="59" font-size="11" text-anchor="middle">0</text>
+<text class="tm mono" x="296" y="34" font-size="9.5" text-anchor="middle">ring[1]</text>
+<rect class="m f" x="272" y="40" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="344" y="34" font-size="9.5" text-anchor="middle">ring[2]</text>
+<rect class="m f" x="320" y="40" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="392" y="34" font-size="9.5" text-anchor="middle">ring[3]</text>
+<rect class="m f" x="368" y="40" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="440" y="34" font-size="9.5" text-anchor="middle">ring[4]</text>
+<rect class="m f" x="416" y="40" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="488" y="34" font-size="9.5" text-anchor="middle">ring[5]</text>
+<rect class="m f" x="464" y="40" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="536" y="34" font-size="9.5" text-anchor="middle">ring[6]</text>
+<rect class="m f" x="512" y="40" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="584" y="34" font-size="9.5" text-anchor="middle">ring[7]</text>
+<rect class="m f" x="560" y="40" width="48" height="30" rx="0" stroke-width="1.5"/>
+<circle class="s f" cx="136" cy="96" r="8" stroke-width="1.5"/>
+<text class="t mono" x="136" y="100" font-size="10" font-weight="600" text-anchor="middle">1</text>
+<text class="t mono" x="150" y="100" font-size="11" text-anchor="None">ring[idx % 8] = 0</text>
+<text class="tm" x="150" y="115" font-size="10.5">the head of the chain</text>
+<circle class="a af" cx="386" cy="96" r="8" stroke-width="1.5"/>
+<text class="ta mono" x="386" y="100" font-size="10" font-weight="600" text-anchor="middle">2</text>
+<text class="ta mono" x="400" y="100" font-size="11" font-weight="600" text-anchor="None">__sync_synchronize()</text>
+<text class="ta" x="400" y="115" font-size="10.5">the entry lands first</text>
+<circle class="s f" cx="136" cy="132" r="8" stroke-width="1.5"/>
+<text class="t mono" x="136" y="136" font-size="10" font-weight="600" text-anchor="middle">3</text>
+<text class="t mono" x="150" y="136" font-size="11" text-anchor="None">idx += 1</text>
+<text class="tm" x="150" y="151" font-size="10.5">now the device may look</text>
+<circle class="s f" cx="386" cy="132" r="8" stroke-width="1.5"/>
+<text class="t mono" x="386" y="136" font-size="10" font-weight="600" text-anchor="middle">4</text>
+<text class="t mono" x="400" y="136" font-size="11" text-anchor="None">fence, QUEUE_NOTIFY = 0</text>
+<text class="tm" x="400" y="151" font-size="10.5">poke the device</text>
+<line class="m" x1="248" y1="88" x2="248" y2="74" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0501b-am)"/>
+<line class="m" x1="200" y1="88" x2="200" y2="74" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0501b-am)"/>
+<text class="t mono" x="24" y="210" font-size="11.5" font-weight="600" text-anchor="None">disk.used</text>
+<text class="tm" x="24" y="225" font-size="10.5">device writes</text>
+<text class="tm mono" x="152" y="190" font-size="9.5" text-anchor="middle">flags</text>
+<rect class="s f" x="128" y="196" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="152" y="215" font-size="11" text-anchor="middle">0</text>
+<text class="tm mono" x="200" y="190" font-size="9.5" text-anchor="middle">idx</text>
+<rect class="s f" x="176" y="196" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="200" y="215" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="248" y="190" font-size="9.5" text-anchor="middle">ring[0]</text>
+<rect class="s f" x="224" y="196" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="248" y="215" font-size="11" text-anchor="middle">id 0</text>
+<text class="tm mono" x="296" y="190" font-size="9.5" text-anchor="middle">ring[1]</text>
+<rect class="m f" x="272" y="196" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="344" y="190" font-size="9.5" text-anchor="middle">ring[2]</text>
+<rect class="m f" x="320" y="196" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="392" y="190" font-size="9.5" text-anchor="middle">ring[3]</text>
+<rect class="m f" x="368" y="196" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="440" y="190" font-size="9.5" text-anchor="middle">ring[4]</text>
+<rect class="m f" x="416" y="196" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="488" y="190" font-size="9.5" text-anchor="middle">ring[5]</text>
+<rect class="m f" x="464" y="196" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="536" y="190" font-size="9.5" text-anchor="middle">ring[6]</text>
+<rect class="m f" x="512" y="196" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="584" y="190" font-size="9.5" text-anchor="middle">ring[7]</text>
+<rect class="m f" x="560" y="196" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm" x="24" y="260" font-size="10.5">the device</text>
+<text class="t" x="128" y="260" font-size="11">fills ring[0] with the finished head, bumps idx, raises irq 1</text>
+<text class="tm" x="24" y="282" font-size="10.5">the driver</text>
+<text class="t" x="128" y="282" font-size="11">virtio_disk_intr(): disk.used_idx 0 -&gt; 1, info[0].b: b-&gt;disk = 0, wakeup(b)</text>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 214" fill="none">
+<title>Filter keeps a row only when WHERE is true for it</title>
+<defs><marker id="f0402a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0402a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0402a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="22" font-size="12.5" font-weight="600">SELECT id FROM t WHERE n &lt; 6;</text>
+<text class="tm" x="24" y="52" font-size="10.5">rows from the scan</text>
+<text class="tm" x="250" y="52" font-size="10.5">n &lt; 6 evaluated</text>
+<text class="tm" x="430" y="52" font-size="10.5">Filter</text>
+<rect class="s fs" x="24" y="62" width="170" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="83" font-size="12">id 1</text>
+<text class="t mono" x="110" y="83" font-size="12">n 5</text>
+<line class="s" x1="198" y1="78" x2="244" y2="78" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0402a-ah)"/>
+<rect class="a af" x="250" y="62" width="150" height="32" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="325" y="83" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<line class="s" x1="404" y1="78" x2="424" y2="78" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0402a-ah)"/>
+<text class="ta" x="430" y="83" font-size="12" font-weight="600">true: kept</text>
+<rect class="s fs" x="24" y="106" width="170" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="127" font-size="12">id 2</text>
+<text class="t mono" x="110" y="127" font-size="12">n NULL</text>
+<line class="s" x1="198" y1="122" x2="244" y2="122" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0402a-ah)"/>
+<rect class="s f" x="250" y="106" width="150" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="325" y="127" font-size="13" font-weight="600" text-anchor="middle">NULL</text>
+<line class="m" x1="404" y1="122" x2="424" y2="122" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0402a-am)"/>
+<text class="tm" x="430" y="127" font-size="12">unknown: dropped</text>
+<rect class="s fs" x="24" y="150" width="170" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="171" font-size="12">id 3</text>
+<text class="t mono" x="110" y="171" font-size="12">n 7</text>
+<line class="s" x1="198" y1="166" x2="244" y2="166" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0402a-ah)"/>
+<rect class="s f" x="250" y="150" width="150" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="325" y="171" font-size="13" font-weight="600" text-anchor="middle">0</text>
+<line class="m" x1="404" y1="166" x2="424" y2="166" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0402a-am)"/>
+<text class="tm" x="430" y="171" font-size="12">false: dropped</text>
+<text class="tm" x="24" y="202" font-size="11">Only 1 passes. NULL is not false, but it is not true either, and WHERE wants true.</text>
+</svg>

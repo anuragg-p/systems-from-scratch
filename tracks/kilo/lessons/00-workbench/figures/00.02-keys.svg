@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 418" fill="none">
+<title>What ten keys send: one byte, or an escape sequence of three or four</title>
+<defs><marker id="f0002a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0002a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0002a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">decimal byte values, as the project at 01.01 prints them; under each, its name or character</text>
+<text class="t" x="24" y="57" font-size="12.5" font-weight="600">a</text>
+<rect class="s f" x="132" y="40" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="154" y="52" font-size="11.5" font-weight="600" text-anchor="middle">97</text>
+<text class="tm mono" x="154" y="63" font-size="9" text-anchor="middle">a</text>
+<text class="tm" x="346" y="57" font-size="11.5">itself, in ASCII</text>
+<text class="t" x="24" y="91" font-size="12.5" font-weight="600">Enter</text>
+<rect class="s f" x="132" y="74" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="154" y="86" font-size="11.5" font-weight="600" text-anchor="middle">13</text>
+<text class="tm mono" x="154" y="97" font-size="9" text-anchor="middle">CR</text>
+<text class="tm" x="346" y="91" font-size="11.5">a carriage return</text>
+<text class="t" x="24" y="125" font-size="12.5" font-weight="600">Tab</text>
+<rect class="s f" x="132" y="108" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="154" y="120" font-size="11.5" font-weight="600" text-anchor="middle">9</text>
+<text class="tm mono" x="154" y="131" font-size="9" text-anchor="middle">HT</text>
+<text class="t" x="24" y="159" font-size="12.5" font-weight="600">Backspace</text>
+<rect class="s f" x="132" y="142" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="154" y="154" font-size="11.5" font-weight="600" text-anchor="middle">127</text>
+<text class="tm mono" x="154" y="165" font-size="9" text-anchor="middle">DEL</text>
+<text class="t" x="24" y="193" font-size="12.5" font-weight="600">Ctrl-Q</text>
+<rect class="s f" x="132" y="176" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="154" y="188" font-size="11.5" font-weight="600" text-anchor="middle">17</text>
+<text class="tm mono" x="154" y="199" font-size="9" text-anchor="middle">DC1</text>
+<text class="tm" x="346" y="193" font-size="11.5">&#x27;q&#x27; is 113; 113 &amp; 0x1f = 17</text>
+<text class="t" x="24" y="227" font-size="12.5" font-weight="600">Escape</text>
+<rect class="a af" x="132" y="210" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="154" y="222" font-size="11.5" font-weight="600" text-anchor="middle">27</text>
+<text class="ta mono" x="154" y="233" font-size="9" text-anchor="middle">ESC</text>
+<text class="t" x="24" y="261" font-size="12.5" font-weight="600">Up</text>
+<rect class="a af" x="132" y="244" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="154" y="256" font-size="11.5" font-weight="600" text-anchor="middle">27</text>
+<text class="ta mono" x="154" y="267" font-size="9" text-anchor="middle">ESC</text>
+<rect class="s f" x="182" y="244" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="204" y="256" font-size="11.5" font-weight="600" text-anchor="middle">91</text>
+<text class="tm mono" x="204" y="267" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="232" y="244" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="254" y="256" font-size="11.5" font-weight="600" text-anchor="middle">65</text>
+<text class="tm mono" x="254" y="267" font-size="9" text-anchor="middle">A</text>
+<text class="t mono" x="346" y="261" font-size="11.5">ESC [ A</text>
+<text class="t" x="24" y="295" font-size="12.5" font-weight="600">Home</text>
+<rect class="a af" x="132" y="278" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="154" y="290" font-size="11.5" font-weight="600" text-anchor="middle">27</text>
+<text class="ta mono" x="154" y="301" font-size="9" text-anchor="middle">ESC</text>
+<rect class="s f" x="182" y="278" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="204" y="290" font-size="11.5" font-weight="600" text-anchor="middle">91</text>
+<text class="tm mono" x="204" y="301" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="232" y="278" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="254" y="290" font-size="11.5" font-weight="600" text-anchor="middle">72</text>
+<text class="tm mono" x="254" y="301" font-size="9" text-anchor="middle">H</text>
+<text class="t" x="346" y="295" font-size="11.5">ESC [ H; some send ESC O H</text>
+<text class="t" x="24" y="329" font-size="12.5" font-weight="600">Delete</text>
+<rect class="a af" x="132" y="312" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="154" y="324" font-size="11.5" font-weight="600" text-anchor="middle">27</text>
+<text class="ta mono" x="154" y="335" font-size="9" text-anchor="middle">ESC</text>
+<rect class="s f" x="182" y="312" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="204" y="324" font-size="11.5" font-weight="600" text-anchor="middle">91</text>
+<text class="tm mono" x="204" y="335" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="232" y="312" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="254" y="324" font-size="11.5" font-weight="600" text-anchor="middle">51</text>
+<text class="tm mono" x="254" y="335" font-size="9" text-anchor="middle">3</text>
+<rect class="s f" x="282" y="312" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="304" y="324" font-size="11.5" font-weight="600" text-anchor="middle">126</text>
+<text class="tm mono" x="304" y="335" font-size="9" text-anchor="middle">~</text>
+<text class="t mono" x="346" y="329" font-size="11.5">ESC [ 3 ~</text>
+<text class="t" x="24" y="363" font-size="12.5" font-weight="600">Page Down</text>
+<rect class="a af" x="132" y="346" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="154" y="358" font-size="11.5" font-weight="600" text-anchor="middle">27</text>
+<text class="ta mono" x="154" y="369" font-size="9" text-anchor="middle">ESC</text>
+<rect class="s f" x="182" y="346" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="204" y="358" font-size="11.5" font-weight="600" text-anchor="middle">91</text>
+<text class="tm mono" x="204" y="369" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="232" y="346" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="254" y="358" font-size="11.5" font-weight="600" text-anchor="middle">54</text>
+<text class="tm mono" x="254" y="369" font-size="9" text-anchor="middle">6</text>
+<rect class="s f" x="282" y="346" width="44" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="304" y="358" font-size="11.5" font-weight="600" text-anchor="middle">126</text>
+<text class="tm mono" x="304" y="369" font-size="9" text-anchor="middle">~</text>
+<text class="t mono" x="346" y="363" font-size="11.5">ESC [ 6 ~</text>
+<text class="tm" x="24" y="394" font-size="11">A key that has a character sends that character&#x27;s byte. A key that has none sends ESC (27)</text>
+<text class="tm" x="24" y="410" font-size="11">and a few more bytes: the same 27 the Escape key sends on its own.</text>
+</svg>

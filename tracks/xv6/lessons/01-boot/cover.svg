@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Every hart, from reset to main</title>
+<defs><marker id="m01-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m01-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="fs" x="112" y="46" width="368" height="200" rx="12"/>
+<rect class="af" x="480" y="46" width="136" height="200" rx="12"/>
+<text class="tm" x="126" y="64" font-size="11">machine mode</text>
+<text class="ta" x="494" y="64" font-size="11">supervisor mode</text>
+<text class="t" x="162" y="92" font-size="12" font-weight="600" text-anchor="middle">boot ROM</text>
+<text class="tm mono" x="162" y="108" font-size="10.5" text-anchor="middle">0x1000</text>
+<text class="t mono" x="262" y="92" font-size="12" font-weight="600" text-anchor="middle">_entry</text>
+<text class="tm mono" x="262" y="108" font-size="10.5" text-anchor="middle">0x80000000</text>
+<text class="t mono" x="382" y="92" font-size="12" font-weight="600" text-anchor="middle">start()</text>
+<text class="tm mono" x="382" y="108" font-size="10.5" text-anchor="middle">start.c</text>
+<text class="ta mono" x="480" y="92" font-size="12" font-weight="600" text-anchor="middle">mret</text>
+<text class="t mono" x="552" y="92" font-size="12" font-weight="600" text-anchor="middle">main()</text>
+<text class="tm mono" x="552" y="108" font-size="10.5" text-anchor="middle">main.c</text>
+<line class="a" x1="480" y1="116" x2="480" y2="236" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="24" y="150" font-size="12">hart 0</text>
+<line class="m" x1="100" y1="146" x2="606" y2="146" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="162" cy="146" r="5" stroke-width="1.5"/>
+<circle class="s f" cx="262" cy="146" r="5" stroke-width="1.5"/>
+<circle class="s f" cx="382" cy="146" r="5" stroke-width="1.5"/>
+<circle class="a f" cx="480" cy="146" r="5" stroke-width="1.5"/>
+<circle class="s f" cx="552" cy="146" r="5" stroke-width="1.5"/>
+<text class="t mono" x="24" y="186" font-size="12">hart 1</text>
+<line class="m" x1="100" y1="182" x2="606" y2="182" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="162" cy="182" r="5" stroke-width="1.5"/>
+<circle class="s f" cx="262" cy="182" r="5" stroke-width="1.5"/>
+<circle class="s f" cx="382" cy="182" r="5" stroke-width="1.5"/>
+<circle class="a f" cx="480" cy="182" r="5" stroke-width="1.5"/>
+<circle class="s f" cx="552" cy="182" r="5" stroke-width="1.5"/>
+<text class="t mono" x="24" y="222" font-size="12">hart 2</text>
+<line class="m" x1="100" y1="218" x2="606" y2="218" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="162" cy="218" r="5" stroke-width="1.5"/>
+<circle class="s f" cx="262" cy="218" r="5" stroke-width="1.5"/>
+<circle class="s f" cx="382" cy="218" r="5" stroke-width="1.5"/>
+<circle class="a f" cx="480" cy="218" r="5" stroke-width="1.5"/>
+<circle class="s f" cx="552" cy="218" r="5" stroke-width="1.5"/>
+<text class="ta mono" x="262" y="272" font-size="11.5" text-anchor="middle">sp = stack0 + (hartid + 1) * 4096</text>
+<text class="tm" x="552" y="272" font-size="11" text-anchor="middle">hart 0 sets up; the rest wait</text>
+</svg>

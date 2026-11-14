@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The disk layout, the layers above it, and one logged transaction</title>
+<defs><marker id="m05-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m05-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">fs.img, block by block (1024 bytes each)</text>
+<rect class="s f" x="24" y="32" width="40" height="44" stroke-width="1.5"/>
+<text class="t" x="44.0" y="58" font-size="10.5" font-weight="600" text-anchor="middle">boot</text>
+<text class="tm mono" x="44.0" y="92" font-size="10.5" text-anchor="middle">0</text>
+<rect class="s f" x="64" y="32" width="40" height="44" stroke-width="1.5"/>
+<text class="t" x="84.0" y="58" font-size="10.5" font-weight="600" text-anchor="middle">super</text>
+<text class="tm mono" x="84.0" y="92" font-size="10.5" text-anchor="middle">1</text>
+<rect class="a af" x="104" y="32" width="120" height="44" stroke-width="1.5"/>
+<text class="ta" x="164.0" y="58" font-size="12" font-weight="600" text-anchor="middle">log</text>
+<text class="tm mono" x="164.0" y="92" font-size="10.5" text-anchor="middle">2-32</text>
+<rect class="s f" x="224" y="32" width="90" height="44" stroke-width="1.5"/>
+<text class="t" x="269.0" y="58" font-size="12" font-weight="600" text-anchor="middle">inodes</text>
+<text class="tm mono" x="269.0" y="92" font-size="10.5" text-anchor="middle">33-45</text>
+<rect class="s f" x="314" y="32" width="40" height="44" stroke-width="1.5"/>
+<text class="t" x="334.0" y="58" font-size="10.5" font-weight="600" text-anchor="middle">bitmap</text>
+<text class="tm mono" x="334.0" y="92" font-size="10.5" text-anchor="middle">46</text>
+<rect class="s f" x="354" y="32" width="262" height="44" stroke-width="1.5"/>
+<text class="t" x="485.0" y="58" font-size="12" font-weight="600" text-anchor="middle">data</text>
+<text class="tm mono" x="485.0" y="92" font-size="10.5" text-anchor="middle">47-1999</text>
+<text class="tm" x="24" y="122" font-size="11">the layers</text>
+<rect class="s f" x="24" y="130" width="250" height="18" rx="5" stroke-width="1.5"/>
+<text class="t" x="36" y="143" font-size="11.5">file descriptors</text>
+<rect class="s f" x="24" y="153" width="250" height="18" rx="5" stroke-width="1.5"/>
+<text class="t" x="36" y="166" font-size="11.5">path names</text>
+<rect class="s f" x="24" y="176" width="250" height="18" rx="5" stroke-width="1.5"/>
+<text class="t" x="36" y="189" font-size="11.5">directories</text>
+<rect class="s f" x="24" y="199" width="250" height="18" rx="5" stroke-width="1.5"/>
+<text class="t" x="36" y="212" font-size="11.5">inodes</text>
+<rect class="a af" x="24" y="222" width="250" height="18" rx="5" stroke-width="1.5"/>
+<text class="ta" x="36" y="235" font-size="11.5" font-weight="600">log</text>
+<rect class="s f" x="24" y="245" width="250" height="18" rx="5" stroke-width="1.5"/>
+<text class="t" x="36" y="258" font-size="11.5">buffer cache</text>
+<rect class="s f" x="24" y="268" width="250" height="18" rx="5" stroke-width="1.5"/>
+<text class="t" x="36" y="281" font-size="11.5">virtio disk</text>
+<text class="tm" x="330" y="122" font-size="11">one transaction</text>
+<line class="m" x1="338" y1="140" x2="338" y2="270" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="338" cy="140" r="4.5" stroke-width="1.5"/>
+<text class="t mono" x="352" y="144" font-size="11.5">begin_op()</text>
+<circle class="s f" cx="338" cy="166" r="4.5" stroke-width="1.5"/>
+<text class="t" x="352" y="170" font-size="11.5">log_write(b) for each changed block</text>
+<circle class="s f" cx="338" cy="192" r="4.5" stroke-width="1.5"/>
+<text class="t" x="352" y="196" font-size="11.5">end_op(): copy the blocks into the log</text>
+<circle class="a fa" cx="338" cy="218" r="4.5" stroke-width="1.5"/>
+<text class="ta" x="352" y="222" font-size="11.5" font-weight="600">write the header: the commit point</text>
+<circle class="s f" cx="338" cy="244" r="4.5" stroke-width="1.5"/>
+<text class="t" x="352" y="248" font-size="11.5">install the blocks at home</text>
+<circle class="s f" cx="338" cy="270" r="4.5" stroke-width="1.5"/>
+<text class="t" x="352" y="274" font-size="11.5">clear the header</text>
+</svg>

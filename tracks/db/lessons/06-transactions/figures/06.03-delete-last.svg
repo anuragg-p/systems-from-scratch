@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 236" fill="none">
+<title>Why the journal is deleted last: a crash during recovery</title>
+<defs><marker id="f0603c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0603c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0603c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="ta" x="24" y="24" font-size="12" font-weight="600" text-anchor="None">as written: copy, then delete</text>
+<rect class="s f" x="24" y="40" width="286" height="34" rx="6" stroke-width="1.5"/>
+<text class="t" x="34" y="61" font-size="11" text-anchor="None">copy page 1 back</text>
+<line class="s" x1="167" y1="74" x2="167" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0603c-ah)"/>
+<rect class="a af" x="24" y="84" width="286" height="34" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="ta" x="34" y="105" font-size="11" font-weight="600" text-anchor="None">SIGKILL (recover-partial)</text>
+<line class="s" x1="167" y1="118" x2="167" y2="126" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0603c-ah)"/>
+<rect class="s f" x="24" y="128" width="286" height="34" rx="6" stroke-width="1.5"/>
+<text class="t" x="34" y="149" font-size="11" text-anchor="None">next open: the journal is still there</text>
+<line class="s" x1="167" y1="162" x2="167" y2="170" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0603c-ah)"/>
+<rect class="a af" x="24" y="172" width="286" height="34" rx="6" stroke-width="1.5"/>
+<text class="t" x="34" y="193" font-size="11" font-weight="600" text-anchor="None">copies all 91 again: 0 rows changed</text>
+<text class="t" x="330" y="24" font-size="12" font-weight="600" text-anchor="None">broken: delete, then copy</text>
+<rect class="s f" x="330" y="40" width="286" height="34" rx="6" stroke-width="1.5"/>
+<text class="t" x="340" y="61" font-size="11" text-anchor="None">delete the journal</text>
+<line class="s" x1="473" y1="74" x2="473" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0603c-ah)"/>
+<rect class="s f" x="330" y="84" width="286" height="34" rx="6" stroke-width="1.5"/>
+<text class="t" x="340" y="105" font-size="11" text-anchor="None">copy page 1 back</text>
+<line class="s" x1="473" y1="118" x2="473" y2="126" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0603c-ah)"/>
+<rect class="a af" x="330" y="128" width="286" height="34" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="ta" x="340" y="149" font-size="11" font-weight="600" text-anchor="None">SIGKILL (recover-partial)</text>
+<line class="s" x1="473" y1="162" x2="473" y2="170" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0603c-ah)"/>
+<rect class="s fs" x="330" y="172" width="286" height="34" rx="6" stroke-width="1.5"/>
+<text class="t" x="340" y="193" font-size="11" font-weight="600" text-anchor="None">next open: no journal: 1010 rows stay changed</text>
+<text class="tm" x="24" y="228" font-size="10.5">recovery has to survive being cut short too: the journal is the only copy of the originals</text>
+</svg>

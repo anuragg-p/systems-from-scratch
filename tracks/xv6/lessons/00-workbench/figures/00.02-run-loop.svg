@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 252" fill="none">
+<title>The loop: edit, make qemu, read the console, quit, look up the address</title>
+<defs><marker id="f0002b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0002b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0002b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="24" y="46" width="120" height="46" rx="6" stroke-width="1.5"/>
+<text class="t" x="84" y="67" font-size="12" font-weight="600" text-anchor="middle">edit</text>
+<text class="tm mono" x="84" y="80.5" font-size="10.5" text-anchor="middle">kernel/*.c</text>
+<rect class="s f" x="176" y="46" width="140" height="46" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="246" y="67" font-size="12" font-weight="600" text-anchor="middle">make qemu</text>
+<text class="tm" x="246" y="80.5" font-size="10.5" text-anchor="middle">build, then boot</text>
+<rect class="s f" x="348" y="46" width="140" height="46" rx="6" stroke-width="1.5"/>
+<text class="t" x="418" y="67" font-size="12" font-weight="600" text-anchor="middle">console</text>
+<text class="tm" x="418" y="80.5" font-size="10.5" text-anchor="middle">the kernel&#x27;s UART</text>
+<rect class="s f" x="520" y="46" width="96" height="46" rx="6" stroke-width="1.5"/>
+<text class="t" x="568" y="67" font-size="12" font-weight="600" text-anchor="middle">Control-a x</text>
+<text class="tm" x="568" y="80.5" font-size="10.5" text-anchor="middle">QEMU quits</text>
+<line class="s" x1="146" y1="69" x2="172" y2="69" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0002b-ah)"/>
+<line class="s" x1="318" y1="69" x2="344" y2="69" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0002b-ah)"/>
+<line class="s" x1="490" y1="69" x2="516" y2="69" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0002b-ah)"/>
+<path class="m" d="M568 44 L568 26 L84 26 L84 42" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0002b-am)"/>
+<text class="tm" x="326" y="20" font-size="11" text-anchor="middle">fix it, and go round again</text>
+<line class="a" x1="418" y1="94" x2="418" y2="136" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0002b-aa)"/>
+<text class="ta" x="428" y="122" font-size="11" font-weight="600">when it dies</text>
+<rect class="a af" x="348" y="140" width="268" height="72" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="360" y="168" font-size="10.5">scause=0xd </text>
+<text class="ta mono" x="429.3" y="168" font-size="10.5" font-weight="600">sepc=0x80005020</text>
+<text class="t mono" x="530.1" y="168" font-size="10.5">stval=0x10</text>
+<text class="t mono" x="360" y="190" font-size="10.5">panic: kerneltrap</text>
+<rect class="s fs" x="24" y="140" width="270" height="72" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="36" y="160" font-size="10.5">build/kernel/kernel.asm</text>
+<text class="t mono" x="36" y="181" font-size="11" font-weight="600">pid = *(volatile int *)0x10;</text>
+<text class="ta mono" x="36" y="200" font-size="11" font-weight="600">80005020:</text>
+<text class="t mono" x="102" y="200" font-size="11">lw  a0,16(zero)</text>
+<line class="a" x1="346" y1="180" x2="298" y2="180" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0002b-aa)"/>
+<text class="ta" x="321" y="172" font-size="10.5" text-anchor="middle">look up</text>
+<line class="s" x1="84" y1="138" x2="84" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0002b-ah)"/>
+<text class="t" x="94" y="122" font-size="11">the line to fix</text>
+<text class="tm" x="24" y="240" font-size="11">Also on the console: Control-P lists the processes, Control-a c opens QEMU&#x27;s monitor.</text>
+</svg>

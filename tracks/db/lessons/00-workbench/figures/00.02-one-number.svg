@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 282" fill="none">
+<title>How one number in the benchmark table is made</title>
+<defs><marker id="f0002a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0002a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0002a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">one workload on one engine: here range scan, 100 rows each, on ./db (full run)</text>
+<rect class="s fs" x="24" y="40" width="120" height="44" rx="6" stroke-width="1.5"/>
+<text class="t" x="84" y="59" font-size="12" font-weight="600" text-anchor="middle">set-up</text>
+<text class="tm mono" x="84" y="75" font-size="10.5" text-anchor="middle">copy base.db</text>
+<rect class="s fs" x="156" y="40" width="74" height="44" rx="6" stroke-width="1.5"/>
+<text class="t" x="193" y="59" font-size="12" font-weight="600" text-anchor="middle">warm-up</text>
+<text class="tm" x="193" y="75" font-size="10.5" text-anchor="middle">not timed</text>
+<rect class="a af" x="242" y="40" width="58" height="44" rx="6" stroke-width="1.5"/>
+<text class="ta" x="271" y="67" font-size="12" font-weight="600" text-anchor="middle">run 1</text>
+<rect class="a af" x="306" y="40" width="58" height="44" rx="6" stroke-width="1.5"/>
+<text class="ta" x="335" y="67" font-size="12" font-weight="600" text-anchor="middle">run 2</text>
+<rect class="a af" x="370" y="40" width="58" height="44" rx="6" stroke-width="1.5"/>
+<text class="ta" x="399" y="67" font-size="12" font-weight="600" text-anchor="middle">run 3</text>
+<rect class="s f" x="440" y="40" width="70" height="44" rx="6" stroke-width="1.5"/>
+<text class="t" x="475" y="59" font-size="12" font-weight="600" text-anchor="middle">median</text>
+<text class="tm mono" x="475" y="75" font-size="10.5" text-anchor="middle">26.2 ms</text>
+<rect class="s f" x="522" y="40" width="94" height="44" rx="6" stroke-width="1.5"/>
+<text class="t" x="569" y="59" font-size="12" font-weight="600" text-anchor="middle">ops/s</text>
+<text class="tm mono" x="569" y="75" font-size="10.5" text-anchor="middle">1000 / median</text>
+<line class="s" x1="144" y1="62" x2="154" y2="62" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0002a-ah)"/>
+<line class="s" x1="230" y1="62" x2="240" y2="62" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0002a-ah)"/>
+<line class="s" x1="428" y1="62" x2="438" y2="62" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0002a-ah)"/>
+<line class="s" x1="510" y1="62" x2="520" y2="62" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0002a-ah)"/>
+<path class="m" d="M242 88 L242 94 L428 94 L428 88" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm" x="335" y="110" font-size="10.5" text-anchor="middle">timed: wall clock, the whole process</text>
+<text class="t mono" x="616" y="110" font-size="12" font-weight="600" text-anchor="end">38,170 ops/s</text>
+<text class="t" x="24" y="156" font-size="12" font-weight="600">one timed run, to scale: ./db run.db &lt; w3.sql (1,000 SELECTs on stdin)</text>
+<rect class="s fs" x="24" y="168" width="122.02" height="30" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="146.02" y="168" width="469.98" height="30" rx="0" stroke-width="1.5"/>
+<text class="t" x="85.01" y="187" font-size="11" text-anchor="middle">start-up</text>
+<text class="ta" x="381.01" y="187" font-size="11" text-anchor="middle">parse and run 1,000 SELECTs, print 100,000 rows</text>
+<text class="tm mono" x="24" y="214" font-size="10.5">0</text>
+<text class="tm mono" x="146.02" y="214" font-size="10.5" text-anchor="middle">5.4 ms</text>
+<text class="tm mono" x="616" y="214" font-size="10.5" text-anchor="end">26.2 ms</text>
+<text class="tm" x="24" y="252" font-size="11">start-up: start the process, open the file, exit; timed apart with an empty script</text>
+<text class="tm" x="24" y="270" font-size="11">sqlite3 gets the same w3.sql, on a copy of a base file it built itself</text>
+</svg>

@@ -1,0 +1,3 @@
+# The corpus files are kept byte for byte as upstream has them (some end lines with CRLF):
+# MANIFEST holds their SHA-256.
+*.test -text

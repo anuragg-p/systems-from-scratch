@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 280" fill="none">
+<title>Two ways to commit: save the old pages, or append the new ones</title>
+<defs><marker id="f0604a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0604a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0604a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="22" font-size="12" font-weight="600" text-anchor="None">rollback journal (06.02)</text>
+<text class="ta" x="336" y="22" font-size="12" font-weight="600" text-anchor="None">write-ahead log</text>
+<rect class="s f" x="24" y="40" width="130" height="120" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="34" y="58" font-size="11.5" font-weight="600" text-anchor="None">demo.db</text>
+<rect class="a af" x="34" y="68" width="110" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta" x="42" y="83" font-size="10.5">page 4: new</text>
+<rect class="a af" x="34" y="96" width="110" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta" x="42" y="111" font-size="10.5">page 5: new</text>
+<rect class="a af" x="34" y="124" width="110" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta" x="42" y="139" font-size="10.5">page 6: new</text>
+<rect class="s fs" x="184" y="40" width="120" height="120" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="194" y="58" font-size="11.5" font-weight="600" text-anchor="None">-journal</text>
+<rect class="s f" x="194" y="68" width="100" height="22" rx="4" stroke-width="1.5"/>
+<text class="t" x="202" y="83" font-size="10.5">page 4: old</text>
+<rect class="s f" x="194" y="96" width="100" height="22" rx="4" stroke-width="1.5"/>
+<text class="t" x="202" y="111" font-size="10.5">page 5: old</text>
+<rect class="s f" x="194" y="124" width="100" height="22" rx="4" stroke-width="1.5"/>
+<text class="t" x="202" y="139" font-size="10.5">page 6: old</text>
+<text class="t" x="24" y="182" font-size="10.5">1 copy the originals aside</text>
+<text class="t" x="24" y="198" font-size="10.5">2 overwrite the pages in place</text>
+<text class="t" x="24" y="214" font-size="10.5">3 delete the journal: committed</text>
+<text class="tm" x="24" y="238" font-size="10.5">4 fsyncs per commit</text>
+<rect class="s f" x="336" y="40" width="120" height="120" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="346" y="58" font-size="11.5" font-weight="600" text-anchor="None">demo.db</text>
+<rect class="s f" x="346" y="68" width="100" height="22" rx="4" stroke-width="1.5"/>
+<text class="t" x="354" y="83" font-size="10.5">page 4: old</text>
+<rect class="s f" x="346" y="96" width="100" height="22" rx="4" stroke-width="1.5"/>
+<text class="t" x="354" y="111" font-size="10.5">page 5: old</text>
+<rect class="s f" x="346" y="124" width="100" height="22" rx="4" stroke-width="1.5"/>
+<text class="t" x="354" y="139" font-size="10.5">page 6: old</text>
+<rect class="a af" x="476" y="40" width="140" height="120" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="486" y="58" font-size="11.5" font-weight="600" text-anchor="None">-wal</text>
+<rect class="a f" x="486" y="68" width="120" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta" x="494" y="83" font-size="10.5" text-anchor="None">page 4: new</text>
+<rect class="a f" x="486" y="96" width="120" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta" x="494" y="111" font-size="10.5" text-anchor="None">page 5: new</text>
+<rect class="a f" x="486" y="124" width="120" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta" x="494" y="139" font-size="10.5" font-weight="700" text-anchor="None">page 6: new, commit</text>
+<text class="t" x="336" y="182" font-size="10.5">1 append the new pages; the last one</text>
+<text class="t" x="336" y="198" font-size="10.5">  carries the commit mark</text>
+<text class="t" x="336" y="214" font-size="10.5">2 fsync the log: committed</text>
+<text class="tm" x="336" y="238" font-size="10.5">readers look in the log first; a checkpoint</text>
+<text class="tm" x="336" y="254" font-size="10.5">copies the pages home later</text>
+<line class="m" x1="318" y1="34" x2="318" y2="264" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

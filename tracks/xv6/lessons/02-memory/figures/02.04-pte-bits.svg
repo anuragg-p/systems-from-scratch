@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 252" fill="none">
+<title>A PTE holds the page number from a physical address, and the flags</title>
+<defs><marker id="f0204a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0204a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="70" font-size="13" font-weight="600">pa</text>
+<rect class="m" x="88" y="50" width="54" height="30" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="115.0" y="70" font-size="11" text-anchor="middle">0</text>
+<rect class="s f" x="142" y="50" width="200" height="30" rx="0" stroke-width="1.5"/>
+<text class="t" x="242.0" y="70" font-size="12" font-weight="600" text-anchor="middle">page number, 44 bits</text>
+<rect class="s fs" x="342" y="50" width="274" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm" x="479.0" y="70" font-size="11.5" text-anchor="middle">offset: 0 for a page</text>
+<text class="tm mono" x="145" y="44" font-size="10">55</text>
+<text class="tm mono" x="339" y="44" font-size="10" text-anchor="end">12</text>
+<text class="tm mono" x="345" y="44" font-size="10">11</text>
+<text class="tm mono" x="613" y="44" font-size="10" text-anchor="end">0</text>
+<line class="a" x1="242.0" y1="82" x2="242.0" y2="146" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0204a-aa)"/>
+<text class="ta mono" x="252.0" y="108" font-size="11.5" font-weight="600">PA2PTE(pa) = (pa &gt;&gt; 12) &lt;&lt; 10</text>
+<text class="tm" x="252.0" y="126" font-size="11">PTE2PA undoes it</text>
+<text class="t mono" x="24" y="170" font-size="13" font-weight="600">pte</text>
+<rect class="m fs" x="88" y="150" width="54" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="115.0" y="170" font-size="11" text-anchor="middle">0</text>
+<rect class="a af" x="142" y="150" width="200" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta" x="242.0" y="170" font-size="12" font-weight="600" text-anchor="middle">page number, 44 bits</text>
+<rect class="m fs" x="342" y="150" width="48" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="366.0" y="170" font-size="10.5" text-anchor="middle">RSW</text>
+<text class="tm mono" x="91" y="144" font-size="10">63</text>
+<text class="tm mono" x="139" y="144" font-size="10" text-anchor="end">54</text>
+<text class="tm mono" x="145" y="144" font-size="10">53</text>
+<text class="tm mono" x="339" y="144" font-size="10" text-anchor="end">10</text>
+<text class="tm mono" x="345" y="144" font-size="10">9</text>
+<text class="tm mono" x="387" y="144" font-size="10" text-anchor="end">8</text>
+<rect class="s f" x="390.0" y="150" width="28.25" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="404.125" y="144" font-size="10" text-anchor="middle">7</text>
+<text class="t mono" x="404.125" y="170" font-size="12.5" font-weight="600" text-anchor="middle">D</text>
+<rect class="s f" x="418.25" y="150" width="28.25" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="432.375" y="144" font-size="10" text-anchor="middle">6</text>
+<text class="t mono" x="432.375" y="170" font-size="12.5" font-weight="600" text-anchor="middle">A</text>
+<rect class="m fs" x="446.5" y="150" width="28.25" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="460.625" y="144" font-size="10" text-anchor="middle">5</text>
+<text class="tm mono" x="460.625" y="170" font-size="12.5" text-anchor="middle">G</text>
+<rect class="s f" x="474.75" y="150" width="28.25" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="488.875" y="144" font-size="10" text-anchor="middle">4</text>
+<text class="t mono" x="488.875" y="170" font-size="12.5" font-weight="600" text-anchor="middle">U</text>
+<rect class="s f" x="503.0" y="150" width="28.25" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="517.125" y="144" font-size="10" text-anchor="middle">3</text>
+<text class="t mono" x="517.125" y="170" font-size="12.5" font-weight="600" text-anchor="middle">X</text>
+<rect class="s f" x="531.25" y="150" width="28.25" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="545.375" y="144" font-size="10" text-anchor="middle">2</text>
+<text class="t mono" x="545.375" y="170" font-size="12.5" font-weight="600" text-anchor="middle">W</text>
+<rect class="s f" x="559.5" y="150" width="28.25" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="573.625" y="144" font-size="10" text-anchor="middle">1</text>
+<text class="t mono" x="573.625" y="170" font-size="12.5" font-weight="600" text-anchor="middle">R</text>
+<rect class="s f" x="587.75" y="150" width="28.25" height="30" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="601.875" y="144" font-size="10" text-anchor="middle">0</text>
+<text class="t mono" x="601.875" y="170" font-size="12.5" font-weight="600" text-anchor="middle">V</text>
+<text class="t" x="24" y="210" font-size="11.5">V valid, R read, W write, X execute, U user, A accessed, D dirty</text>
+<text class="tm" x="24" y="228" font-size="11.5">V set with R, W and X all clear: the entry points at the next table, not at a page</text>
+<text class="tm" x="24" y="244" font-size="11">G and RSW are not used by this kernel</text>
+</svg>

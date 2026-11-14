@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 214" fill="none">
+<title>AND and OR with NULL as unknown</title>
+<defs><marker id="f0402b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0402b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0402b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="30" font-size="13" font-weight="700">a AND b</text>
+<text class="tm mono" x="190" y="30" font-size="11" text-anchor="middle">b</text>
+<text class="tm mono" x="40" y="118" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="110" y="52" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<text class="tm mono" x="190" y="52" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<text class="tm mono" x="270" y="52" font-size="11" font-weight="600" text-anchor="middle">NULL</text>
+<text class="tm mono" x="64" y="87" font-size="11" font-weight="600" text-anchor="end">1</text>
+<rect class="s f" x="70" y="62" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="110" y="87" font-size="13" text-anchor="middle">1</text>
+<rect class="s f" x="150" y="62" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="190" y="87" font-size="13" text-anchor="middle">0</text>
+<rect class="s f" x="230" y="62" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="270" y="87" font-size="13" text-anchor="middle">NULL</text>
+<text class="tm mono" x="64" y="127" font-size="11" font-weight="600" text-anchor="end">0</text>
+<rect class="a af" x="70" y="102" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="110" y="127" font-size="13" font-weight="600" text-anchor="middle">0</text>
+<rect class="a af" x="150" y="102" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="190" y="127" font-size="13" font-weight="600" text-anchor="middle">0</text>
+<rect class="a af" x="230" y="102" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="270" y="127" font-size="13" font-weight="600" text-anchor="middle">0</text>
+<text class="tm mono" x="64" y="167" font-size="11" font-weight="600" text-anchor="end">NULL</text>
+<rect class="s f" x="70" y="142" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="110" y="167" font-size="13" text-anchor="middle">NULL</text>
+<rect class="s f" x="150" y="142" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="190" y="167" font-size="13" text-anchor="middle">0</text>
+<rect class="s f" x="230" y="142" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="270" y="167" font-size="13" text-anchor="middle">NULL</text>
+<text class="t mono" x="324" y="30" font-size="13" font-weight="700">a OR b</text>
+<text class="tm mono" x="490" y="30" font-size="11" text-anchor="middle">b</text>
+<text class="tm mono" x="340" y="118" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="410" y="52" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<text class="tm mono" x="490" y="52" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<text class="tm mono" x="570" y="52" font-size="11" font-weight="600" text-anchor="middle">NULL</text>
+<text class="tm mono" x="364" y="87" font-size="11" font-weight="600" text-anchor="end">1</text>
+<rect class="a af" x="370" y="62" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="410" y="87" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<rect class="a af" x="450" y="62" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="490" y="87" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<rect class="a af" x="530" y="62" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="570" y="87" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<text class="tm mono" x="364" y="127" font-size="11" font-weight="600" text-anchor="end">0</text>
+<rect class="s f" x="370" y="102" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="410" y="127" font-size="13" text-anchor="middle">1</text>
+<rect class="s f" x="450" y="102" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="490" y="127" font-size="13" text-anchor="middle">0</text>
+<rect class="s f" x="530" y="102" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="570" y="127" font-size="13" text-anchor="middle">NULL</text>
+<text class="tm mono" x="364" y="167" font-size="11" font-weight="600" text-anchor="end">NULL</text>
+<rect class="s f" x="370" y="142" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="410" y="167" font-size="13" text-anchor="middle">1</text>
+<rect class="s f" x="450" y="142" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="490" y="167" font-size="13" text-anchor="middle">NULL</text>
+<rect class="s f" x="530" y="142" width="80" height="40" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="570" y="167" font-size="13" text-anchor="middle">NULL</text>
+<rect class="a af" x="70" y="192" width="14" height="14" rx="2" stroke-width="1.5"/>
+<text class="tm" x="92" y="203" font-size="11">decided by a alone: b is not evaluated</text>
+</svg>

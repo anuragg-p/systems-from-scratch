@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 176" fill="none">
+<title>ORDER BY x over five different kinds of value</title>
+<defs><marker id="f0403b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0403b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0403b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="52" font-size="11.5" font-weight="600">ORDER BY x</text>
+<rect class="m f" x="180" y="30" width="80" height="34" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="220" y="52" font-size="13" text-anchor="middle">NULL</text>
+<text class="tm mono" x="220" y="80" font-size="10" text-anchor="middle">id 3</text>
+<rect class="s f" x="268" y="30" width="80" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="308" y="52" font-size="13" text-anchor="middle">2.5</text>
+<text class="tm mono" x="308" y="80" font-size="10" text-anchor="middle">id 5</text>
+<text class="ta mono" x="264" y="52" font-size="12" font-weight="700" text-anchor="middle">&lt;</text>
+<rect class="s f" x="356" y="30" width="80" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="396" y="52" font-size="13" text-anchor="middle">3</text>
+<text class="tm mono" x="396" y="80" font-size="10" text-anchor="middle">id 2</text>
+<text class="ta mono" x="352" y="52" font-size="12" font-weight="700" text-anchor="middle">&lt;</text>
+<rect class="s fs" x="444" y="30" width="80" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="484" y="52" font-size="13" text-anchor="middle">&#x27;a&#x27;</text>
+<text class="tm mono" x="484" y="80" font-size="10" text-anchor="middle">id 4</text>
+<text class="ta mono" x="440" y="52" font-size="12" font-weight="700" text-anchor="middle">&lt;</text>
+<rect class="s fs" x="532" y="30" width="80" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="572" y="52" font-size="13" text-anchor="middle">&#x27;b&#x27;</text>
+<text class="tm mono" x="572" y="80" font-size="10" text-anchor="middle">id 1</text>
+<text class="ta mono" x="528" y="52" font-size="12" font-weight="700" text-anchor="middle">&lt;</text>
+<text class="t mono" x="24" y="124" font-size="11.5" font-weight="600">ORDER BY x DESC</text>
+<rect class="s fs" x="180" y="102" width="80" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="220" y="124" font-size="13" text-anchor="middle">&#x27;b&#x27;</text>
+<text class="tm mono" x="220" y="152" font-size="10" text-anchor="middle">id 1</text>
+<rect class="s fs" x="268" y="102" width="80" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="308" y="124" font-size="13" text-anchor="middle">&#x27;a&#x27;</text>
+<text class="tm mono" x="308" y="152" font-size="10" text-anchor="middle">id 4</text>
+<text class="ta mono" x="264" y="124" font-size="12" font-weight="700" text-anchor="middle">&gt;</text>
+<rect class="s f" x="356" y="102" width="80" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="396" y="124" font-size="13" text-anchor="middle">3</text>
+<text class="tm mono" x="396" y="152" font-size="10" text-anchor="middle">id 2</text>
+<text class="ta mono" x="352" y="124" font-size="12" font-weight="700" text-anchor="middle">&gt;</text>
+<rect class="s f" x="444" y="102" width="80" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="484" y="124" font-size="13" text-anchor="middle">2.5</text>
+<text class="tm mono" x="484" y="152" font-size="10" text-anchor="middle">id 5</text>
+<text class="ta mono" x="440" y="124" font-size="12" font-weight="700" text-anchor="middle">&gt;</text>
+<rect class="m f" x="532" y="102" width="80" height="34" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="572" y="124" font-size="13" text-anchor="middle">NULL</text>
+<text class="tm mono" x="572" y="152" font-size="10" text-anchor="middle">id 3</text>
+<text class="ta mono" x="528" y="124" font-size="12" font-weight="700" text-anchor="middle">&gt;</text>
+<text class="tm" x="24" y="168" font-size="11">NULL first, then numbers by value, then text: the order comparisons already use.</text>
+</svg>

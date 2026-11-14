@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 272" fill="none">
+<title>The top of the stack page after exec(&quot;echo&quot;, [&quot;echo&quot;, &quot;a&quot;, &quot;bb&quot;, &quot;ccc&quot;])</title>
+<defs><marker id="f0603b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0603b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0603b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="s" x1="236" y1="30" x2="404" y2="30" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="412" y="34" font-size="10.5">0x4000</text>
+<text class="tm" x="458" y="34" font-size="10.5">the top of the stack page</text>
+<rect class="s f" x="244" y="30" width="160" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="254" y="45" font-size="11.5">&quot;echo\0&quot;</text>
+<text class="tm mono" x="232" y="45" font-size="10.5" text-anchor="end">0x3FF0</text>
+<rect class="s f" x="244" y="52" width="160" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="254" y="67" font-size="11.5">&quot;a\0&quot;</text>
+<text class="tm mono" x="232" y="67" font-size="10.5" text-anchor="end">0x3FE0</text>
+<rect class="s f" x="244" y="74" width="160" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="254" y="89" font-size="11.5">&quot;bb\0&quot;</text>
+<text class="tm mono" x="232" y="89" font-size="10.5" text-anchor="end">0x3FD0</text>
+<rect class="s f" x="244" y="96" width="160" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="254" y="111" font-size="11.5">&quot;ccc\0&quot;</text>
+<text class="tm mono" x="232" y="111" font-size="10.5" text-anchor="end">0x3FC0</text>
+<rect class="m fs" x="244" y="118" width="160" height="12" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s f" x="244" y="130" width="160" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="254" y="144" font-size="11.5">0</text>
+<text class="tm mono" x="396" y="144" font-size="10" text-anchor="end">argv[4]</text>
+<text class="tm mono" x="232" y="144" font-size="10.5" text-anchor="end">0x3FB0</text>
+<rect class="s f" x="244" y="150" width="160" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="254" y="164" font-size="11.5">0x3FC0</text>
+<text class="tm mono" x="396" y="164" font-size="10" text-anchor="end">argv[3]</text>
+<text class="tm mono" x="232" y="164" font-size="10.5" text-anchor="end">0x3FA8</text>
+<rect class="s f" x="244" y="170" width="160" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="254" y="184" font-size="11.5">0x3FD0</text>
+<text class="tm mono" x="396" y="184" font-size="10" text-anchor="end">argv[2]</text>
+<text class="tm mono" x="232" y="184" font-size="10.5" text-anchor="end">0x3FA0</text>
+<rect class="s f" x="244" y="190" width="160" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="254" y="204" font-size="11.5">0x3FE0</text>
+<text class="tm mono" x="396" y="204" font-size="10" text-anchor="end">argv[1]</text>
+<text class="tm mono" x="232" y="204" font-size="10.5" text-anchor="end">0x3F98</text>
+<rect class="a af" x="244" y="210" width="160" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="254" y="224" font-size="11.5">0x3FF0</text>
+<text class="ta mono" x="396" y="224" font-size="10" text-anchor="end">argv[0]</text>
+<text class="ta mono" x="232" y="224" font-size="10.5" text-anchor="end">0x3F90</text>
+<path class="m" d="M404 220.0 C 474 220.0, 474 41.0, 406 41.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0603b-am)"/>
+<path class="m" d="M404 200.0 C 458 200.0, 458 63.0, 406 63.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0603b-am)"/>
+<path class="m" d="M404 180.0 C 442 180.0, 442 85.0, 406 85.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0603b-am)"/>
+<path class="m" d="M404 160.0 C 426 160.0, 426 107.0, 406 107.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0603b-am)"/>
+<text class="tm" x="484" y="72" font-size="10.5">the strings, each start</text>
+<text class="tm" x="484" y="86" font-size="10.5">rounded down to 16 bytes</text>
+<text class="tm" x="484" y="186" font-size="10.5">argv[]: argc + 1</text>
+<text class="tm" x="484" y="200" font-size="10.5">pointers, ending in 0</text>
+<rect class="s fs" x="24" y="140" width="132" height="102" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="36" y="158" font-size="10.5">p-&gt;trapframe</text>
+<text class="t mono" x="36" y="180" font-size="11.5">epc</text>
+<text class="t mono" x="146" y="180" font-size="11.5" text-anchor="end">0x90</text>
+<text class="t mono" x="36" y="198" font-size="11.5">a0</text>
+<text class="t mono" x="146" y="198" font-size="11.5" text-anchor="end">4</text>
+<text class="t mono" x="36" y="216" font-size="11.5">a1</text>
+<text class="t mono" x="146" y="216" font-size="11.5" text-anchor="end">0x3F90</text>
+<text class="ta mono" x="36" y="234" font-size="11.5">sp</text>
+<text class="ta mono" x="146" y="234" font-size="11.5" text-anchor="end">0x3F90</text>
+<line class="a" x1="156" y1="234" x2="186" y2="234" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0603b-aa)"/>
+<text class="tm" x="24" y="262" font-size="10.5">a0 = argc, a1 = argv; main(argc, argv) runs on this stack</text>
+</svg>

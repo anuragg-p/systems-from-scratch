@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 304" fill="none">
+<title>editorInsertRow reallocs E.row: a pointer taken before the call points into freed memory</title>
+<defs><marker id="f0402b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0402b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0402b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">E.row is one array of struct erow, 24 bytes each: size, rsize, chars, render</text>
+<rect class="m f" x="48" y="38" width="196" height="24" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="56" y="54" font-size="10.5">row, taken before the call</text>
+<line class="m" x1="156" y1="62" x2="156" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0402b-am)" stroke-dasharray="4 4"/>
+<rect class="a af" x="352" y="38" width="196" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="360" y="54" font-size="10.5">row = &amp;E.row[filerow]</text>
+<line class="a" x1="460" y1="62" x2="460" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0402b-aa)"/>
+<rect class="m fs" x="48" y="96" width="196" height="30" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="54" y="101" width="32" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="70" y="114.5" font-size="9" text-anchor="middle">size</text>
+<rect class="m f" x="90" y="101" width="38" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="109" y="114.5" font-size="9" text-anchor="middle">rsize</text>
+<rect class="a af" x="132" y="101" width="48" height="20" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="156" y="114.5" font-size="9" text-anchor="middle">chars</text>
+<rect class="m f" x="184" y="101" width="50" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="209" y="114.5" font-size="9" text-anchor="middle">render</text>
+<text class="tm mono" x="252" y="115" font-size="10.5">hello world</text>
+<text class="tm mono" x="42" y="100" font-size="9" text-anchor="end">0</text>
+<rect class="m fs" x="48" y="130" width="196" height="30" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="54" y="135" width="32" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="70" y="148.5" font-size="9" text-anchor="middle">size</text>
+<rect class="m f" x="90" y="135" width="38" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="109" y="148.5" font-size="9" text-anchor="middle">rsize</text>
+<rect class="m f" x="132" y="135" width="48" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="156" y="148.5" font-size="9" text-anchor="middle">chars</text>
+<rect class="m f" x="184" y="135" width="50" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="209" y="148.5" font-size="9" text-anchor="middle">render</text>
+<text class="tm mono" x="252" y="149" font-size="10.5">second</text>
+<text class="tm mono" x="42" y="134" font-size="9" text-anchor="end">24</text>
+<rect class="m fs" x="48" y="164" width="196" height="30" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="54" y="169" width="32" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="70" y="182.5" font-size="9" text-anchor="middle">size</text>
+<rect class="m f" x="90" y="169" width="38" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="109" y="182.5" font-size="9" text-anchor="middle">rsize</text>
+<rect class="m f" x="132" y="169" width="48" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="156" y="182.5" font-size="9" text-anchor="middle">chars</text>
+<rect class="m f" x="184" y="169" width="50" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="209" y="182.5" font-size="9" text-anchor="middle">render</text>
+<text class="tm mono" x="252" y="183" font-size="10.5">third</text>
+<text class="tm mono" x="42" y="168" font-size="9" text-anchor="end">48</text>
+<text class="tm mono" x="42" y="198" font-size="9" text-anchor="end">72</text>
+<text class="tm" x="48" y="216" font-size="11" font-weight="600">old block, 72 bytes: freed</text>
+<rect class="s f" x="352" y="96" width="196" height="30" rx="4" stroke-width="1.5"/>
+<rect class="m f" x="358" y="101" width="32" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="374" y="114.5" font-size="9" text-anchor="middle">size</text>
+<rect class="m f" x="394" y="101" width="38" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="413" y="114.5" font-size="9" text-anchor="middle">rsize</text>
+<rect class="m f" x="436" y="101" width="48" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="460" y="114.5" font-size="9" text-anchor="middle">chars</text>
+<rect class="m f" x="488" y="101" width="50" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="513" y="114.5" font-size="9" text-anchor="middle">render</text>
+<text class="t mono" x="556" y="115" font-size="10.5">hello world</text>
+<text class="tm mono" x="346" y="100" font-size="9" text-anchor="end">0</text>
+<rect class="a af" x="352" y="130" width="196" height="30" rx="4" stroke-width="1.5"/>
+<rect class="m f" x="358" y="135" width="32" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="374" y="148.5" font-size="9" text-anchor="middle">size</text>
+<rect class="m f" x="394" y="135" width="38" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="413" y="148.5" font-size="9" text-anchor="middle">rsize</text>
+<rect class="m f" x="436" y="135" width="48" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="460" y="148.5" font-size="9" text-anchor="middle">chars</text>
+<rect class="m f" x="488" y="135" width="50" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="513" y="148.5" font-size="9" text-anchor="middle">render</text>
+<text class="ta mono" x="556" y="149" font-size="10.5">&quot; world&quot;</text>
+<text class="tm mono" x="346" y="134" font-size="9" text-anchor="end">24</text>
+<rect class="s f" x="352" y="164" width="196" height="30" rx="4" stroke-width="1.5"/>
+<rect class="m f" x="358" y="169" width="32" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="374" y="182.5" font-size="9" text-anchor="middle">size</text>
+<rect class="m f" x="394" y="169" width="38" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="413" y="182.5" font-size="9" text-anchor="middle">rsize</text>
+<rect class="m f" x="436" y="169" width="48" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="460" y="182.5" font-size="9" text-anchor="middle">chars</text>
+<rect class="m f" x="488" y="169" width="50" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="513" y="182.5" font-size="9" text-anchor="middle">render</text>
+<text class="t mono" x="556" y="183" font-size="10.5">second</text>
+<text class="tm mono" x="346" y="168" font-size="9" text-anchor="end">48</text>
+<rect class="s f" x="352" y="198" width="196" height="30" rx="4" stroke-width="1.5"/>
+<rect class="m f" x="358" y="203" width="32" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="374" y="216.5" font-size="9" text-anchor="middle">size</text>
+<rect class="m f" x="394" y="203" width="38" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="413" y="216.5" font-size="9" text-anchor="middle">rsize</text>
+<rect class="m f" x="436" y="203" width="48" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="460" y="216.5" font-size="9" text-anchor="middle">chars</text>
+<rect class="m f" x="488" y="203" width="50" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="513" y="216.5" font-size="9" text-anchor="middle">render</text>
+<text class="t mono" x="556" y="217" font-size="10.5">third</text>
+<text class="tm mono" x="346" y="202" font-size="9" text-anchor="end">72</text>
+<text class="tm mono" x="346" y="232" font-size="9" text-anchor="end">96</text>
+<text class="t" x="352" y="250" font-size="11" font-weight="600">new block, 96 bytes</text>
+<text class="tm" x="352" y="270" font-size="10.5">the new row is [1]; [2] and [3] moved down</text>
+<text class="tm" x="24" y="296" font-size="10.5">Through the old pointer, row-&gt;chars is read 8 bytes into freed memory: a use-after-free.</text>
+</svg>

@@ -1,0 +1,6 @@
+# Built by make, and the database the REPL keeps between runs.
+/db
+*.db
+*.db-journal
+*.db-wal
+*.db-shm

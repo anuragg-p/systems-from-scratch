@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 252" fill="none">
+<title>What proc_freepagetable does with each kind of page</title>
+<defs><marker id="f0902b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="24" y="24" width="592" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="44" font-size="10.5" font-weight="600">uvmunmap(TRAMPOLINE, 1, 0)</text>
+<text class="tm" x="250" y="44" font-size="10.5">the trampoline: shared by every process</text>
+<text class="t" x="604" y="44" font-size="10.5" font-weight="600" text-anchor="end">unmap</text>
+<rect class="s f" x="24" y="64" width="592" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="84" font-size="10.5" font-weight="600">uvmunmap(TRAPFRAME, 1, 0)</text>
+<text class="tm" x="250" y="84" font-size="10.5">the trapframe: freeproc frees it</text>
+<text class="t" x="604" y="84" font-size="10.5" font-weight="600" text-anchor="end">unmap</text>
+<rect class="a af" x="24" y="104" width="592" height="32" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="124" font-size="10.5" font-weight="600">fbunmap(pagetable)</text>
+<text class="ta" x="250" y="124" font-size="10.5">the screen, if mapped: fb[] is the kernel&#x27;s</text>
+<text class="ta" x="604" y="124" font-size="10.5" font-weight="600" text-anchor="end">unmap</text>
+<rect class="s f" x="24" y="144" width="592" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="164" font-size="10.5" font-weight="600">uvmfree(pagetable, sz)</text>
+<text class="tm" x="250" y="164" font-size="10.5">0 to sz: this process&#x27;s own pages</text>
+<text class="t" x="604" y="164" font-size="10.5" font-weight="600" text-anchor="end">unmap and kfree</text>
+<rect class="s f" x="24" y="184" width="592" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="204" font-size="10.5" font-weight="600">then, inside uvmfree: freewalk</text>
+<text class="tm" x="250" y="204" font-size="10.5">the page-table pages; panics at any leaf left</text>
+<text class="t" x="604" y="204" font-size="10.5" font-weight="600" text-anchor="end">kfree</text>
+<text class="tm" x="24" y="242" font-size="10.5">on exit, and on exec for the old page table. Without fbunmap: panic: freewalk: leaf</text>
+</svg>

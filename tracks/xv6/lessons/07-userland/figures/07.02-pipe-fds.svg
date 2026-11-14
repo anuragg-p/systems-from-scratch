@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 282" fill="none">
+<title>echo hi | wc: the descriptor tables just before each child execs</title>
+<defs><marker id="f0702b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="20" font-size="11.5" font-weight="600">left child: echo hi</text>
+<text class="tm mono" x="24" y="38" font-size="10">close(1); dup(p[1])</text>
+<text class="tm mono" x="24" y="52" font-size="10">close(p[0]); close(p[1])</text>
+<text class="tm mono" x="24" y="66" font-size="10">exec(&quot;echo&quot;, ...)</text>
+<rect class="s f" x="24" y="80" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="34" y="95" font-size="10.5">0</text>
+<text class="t" x="54" y="95" font-size="11">console</text>
+<rect class="a af" x="24" y="102" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="34" y="117" font-size="10.5">1</text>
+<text class="ta" x="54" y="117" font-size="11" font-weight="600">pipe write end</text>
+<rect class="s f" x="24" y="124" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="34" y="139" font-size="10.5">2</text>
+<text class="t" x="54" y="139" font-size="11">console</text>
+<rect class="m f" x="24" y="146" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="34" y="161" font-size="10.5">3</text>
+<text class="tm" x="54" y="161" font-size="11">closed</text>
+<rect class="m f" x="24" y="168" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="34" y="183" font-size="10.5">4</text>
+<text class="tm" x="54" y="183" font-size="11">closed</text>
+<text class="t" x="230" y="20" font-size="11.5" font-weight="600">right child: wc</text>
+<text class="tm mono" x="230" y="38" font-size="10">close(0); dup(p[0])</text>
+<text class="tm mono" x="230" y="52" font-size="10">close(p[0]); close(p[1])</text>
+<text class="tm mono" x="230" y="66" font-size="10">exec(&quot;wc&quot;, ...)</text>
+<rect class="a af" x="230" y="80" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="240" y="95" font-size="10.5">0</text>
+<text class="ta" x="260" y="95" font-size="11" font-weight="600">pipe read end</text>
+<rect class="s f" x="230" y="102" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="240" y="117" font-size="10.5">1</text>
+<text class="t" x="260" y="117" font-size="11">console</text>
+<rect class="s f" x="230" y="124" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="240" y="139" font-size="10.5">2</text>
+<text class="t" x="260" y="139" font-size="11">console</text>
+<rect class="m f" x="230" y="146" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="240" y="161" font-size="10.5">3</text>
+<text class="tm" x="260" y="161" font-size="11">closed</text>
+<rect class="m f" x="230" y="168" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="240" y="183" font-size="10.5">4</text>
+<text class="tm" x="260" y="183" font-size="11">closed</text>
+<text class="t" x="436" y="20" font-size="11.5" font-weight="600">runcmd, the parent</text>
+<text class="tm mono" x="436" y="38" font-size="10">pipe(p): p[0] = 3, p[1] = 4</text>
+<text class="tm mono" x="436" y="52" font-size="10">fork twice, then</text>
+<text class="tm mono" x="436" y="66" font-size="10">close(p[0]); close(p[1])</text>
+<rect class="s f" x="436" y="80" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="446" y="95" font-size="10.5">0</text>
+<text class="t" x="466" y="95" font-size="11">console</text>
+<rect class="s f" x="436" y="102" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="446" y="117" font-size="10.5">1</text>
+<text class="t" x="466" y="117" font-size="11">console</text>
+<rect class="s f" x="436" y="124" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="446" y="139" font-size="10.5">2</text>
+<text class="t" x="466" y="139" font-size="11">console</text>
+<rect class="m f" x="436" y="146" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="446" y="161" font-size="10.5">3</text>
+<text class="tm" x="466" y="161" font-size="11">closed</text>
+<rect class="m f" x="436" y="168" width="180" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="446" y="183" font-size="10.5">4</text>
+<text class="tm" x="466" y="183" font-size="11">closed</text>
+<rect class="s f" x="60" y="214" width="320" height="36" rx="8" stroke-width="1.5"/>
+<text class="t" x="130" y="236" font-size="11.5" font-weight="600" text-anchor="middle">write end</text>
+<text class="t" x="310" y="236" font-size="11.5" font-weight="600" text-anchor="middle">read end</text>
+<line class="s" x1="178" y1="232" x2="262" y2="232" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702b-ah)"/>
+<text class="tm mono" x="220" y="226" font-size="10" text-anchor="middle">512 bytes</text>
+<path class="a" d="M24 113 C 8 113, 8 232, 58 232" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0702b-aa)"/>
+<path class="a" d="M410 91 C 424 91, 424 232, 382 232" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0702b-aa)"/>
+<text class="tm" x="436" y="210" font-size="10.5">then wait(0) twice; it</text>
+<text class="tm" x="436" y="224" font-size="10.5">holds no pipe end, so wc</text>
+<text class="tm" x="436" y="238" font-size="10.5">sees end of file when</text>
+<text class="tm" x="436" y="252" font-size="10.5">echo exits</text>
+<text class="tm" x="60" y="272" font-size="10.5">each pipe end is now open in exactly one process</text>
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 432" fill="none">
+<title>One ls, from the shell down to the disk and back</title>
+<defs><marker id="f0001c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0001c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0001c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="196" y="44" width="248" height="42" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="320" y="62" font-size="14" font-weight="600" text-anchor="middle">ls</text>
+<text class="tm" x="320" y="78" font-size="11" text-anchor="middle">a user program, started by the shell</text>
+<rect class="s f" x="196" y="118" width="248" height="42" rx="6" stroke-width="1.5"/>
+<text class="t" x="320" y="136" font-size="14" font-weight="600" text-anchor="middle">system calls</text>
+<text class="tm" x="320" y="152" font-size="11" text-anchor="middle">the door into the kernel</text>
+<rect class="s f" x="196" y="192" width="248" height="42" rx="6" stroke-width="1.5"/>
+<text class="t" x="320" y="210" font-size="14" font-weight="600" text-anchor="middle">file system</text>
+<text class="tm" x="320" y="226" font-size="11" text-anchor="middle">names, files and disk blocks</text>
+<rect class="s f" x="196" y="266" width="248" height="42" rx="6" stroke-width="1.5"/>
+<text class="t" x="320" y="284" font-size="14" font-weight="600" text-anchor="middle">disk driver</text>
+<text class="tm" x="320" y="300" font-size="11" text-anchor="middle">asks the disk, sleeps until it answers</text>
+<rect class="s fs" x="196" y="340" width="248" height="42" rx="6" stroke-width="1.5"/>
+<text class="t" x="320" y="358" font-size="14" font-weight="600" text-anchor="middle">the disk</text>
+<text class="tm" x="320" y="374" font-size="11" text-anchor="middle">fs.img, inside QEMU</text>
+<line class="s" x1="266" y1="90" x2="266" y2="114" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001c-ah)"/>
+<line class="a" x1="374" y1="114" x2="374" y2="90" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001c-aa)"/>
+<text class="t" x="182" y="106.5" font-size="12.5" text-anchor="end">read the directory</text>
+<text class="ta" x="458" y="106.5" font-size="12.5">back in ls, with the names</text>
+<line class="s" x1="266" y1="164" x2="266" y2="188" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001c-ah)"/>
+<line class="a" x1="374" y1="188" x2="374" y2="164" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001c-aa)"/>
+<text class="t" x="182" y="180.5" font-size="12.5" text-anchor="end">a trap into the kernel</text>
+<text class="ta" x="458" y="180.5" font-size="12.5">the entries, copied out</text>
+<line class="s" x1="266" y1="238" x2="266" y2="262" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001c-ah)"/>
+<line class="a" x1="374" y1="262" x2="374" y2="238" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001c-aa)"/>
+<text class="t" x="182" y="254.5" font-size="12.5" text-anchor="end">which blocks hold it?</text>
+<text class="ta" x="458" y="254.5" font-size="12.5">the blocks, now in memory</text>
+<line class="s" x1="266" y1="312" x2="266" y2="336" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001c-ah)"/>
+<line class="a" x1="374" y1="336" x2="374" y2="312" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001c-aa)"/>
+<text class="t" x="182" y="328.5" font-size="12.5" text-anchor="end">read these blocks</text>
+<text class="ta" x="458" y="328.5" font-size="12.5">an interrupt: done</text>
+<text class="t" x="182" y="24" font-size="12.5" font-weight="600" text-anchor="end">the request goes down</text>
+<text class="ta" x="458" y="24" font-size="12.5" font-weight="600" text-anchor="None">the answer comes back up</text>
+<line class="m" x1="24" y1="400" x2="616" y2="400" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="320" y="422" font-size="12" text-anchor="middle">Then ls prints the names: write() goes down the same door, out the serial port to your terminal.</text>
+</svg>
