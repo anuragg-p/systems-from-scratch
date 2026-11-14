@@ -1,0 +1,491 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" fill="none">
+<title>One file changed deep in a directory: the trees above it renamed, one by one up to the top</title>
+<defs><marker id="f1002a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f1002a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f1002a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="24" font-size="11">the trees and blobs, as ls-tree -r -t lists them</text>
+<text class="tm" x="404" y="24" font-size="11">the index&#x27;s cached trees (TREE)</text>
+<line class="m" x1="390" y1="14" x2="390" y2="316" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a fa" x="404" y="238" width="18" height="12" rx="3" stroke-width="1.5"/>
+<text class="tm" x="430" y="248" font-size="10.5">new name, this step</text>
+<rect class="a af" x="404" y="256" width="18" height="12" rx="3" stroke-width="1.5"/>
+<text class="tm" x="430" y="266" font-size="10.5">new name, earlier</text>
+<rect class="a f" x="404" y="274" width="18" height="12" rx="3" stroke-width="1.5"/>
+<text class="tm" x="430" y="284" font-size="10.5">taken from the cache</text>
+<rect class="m f" x="404" y="292" width="18" height="12" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="430" y="302" font-size="10.5">cached tree gone</text>
+<g class="step"><title>After add and write-tree: one tree for each directory, built bottom up, and the top one, dcd4984, stands for all five files. The index keeps each directory's tree.</title>
+<rect class="s f" x="24" y="46" width="276" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="32" y="61.5" font-size="12" font-weight="600">/ (the top)</text>
+<text class="tm" x="230" y="61.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="t mono" x="292" y="61.5" font-size="12" font-weight="600" text-anchor="end">dcd4984</text>
+<path class="m" d="M32 68 L32 86 L44 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="75" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="90.5" font-size="12">b c</text>
+<text class="tm" x="230" y="90.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="90.5" font-size="12" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M32 97 L32 115 L44 115" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="104" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="119.5" font-size="12" font-weight="600">b/</text>
+<text class="tm" x="230" y="119.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="t mono" x="292" y="119.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M52 126 L52 144 L64 144" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="133" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="148.5" font-size="12">c</text>
+<text class="tm" x="230" y="148.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="148.5" font-size="12" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M32 155 L32 173 L44 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="162" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="177.5" font-size="12" font-weight="600">d/</text>
+<text class="tm" x="230" y="177.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="t mono" x="292" y="177.5" font-size="12" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M52 184 L52 202 L64 202" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="191" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="206.5" font-size="12" font-weight="600">e/</text>
+<text class="tm" x="230" y="206.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="t mono" x="292" y="206.5" font-size="12" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M72 213 L72 231 L84 231" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="84" y="220" width="216" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="92" y="235.5" font-size="12">f.txt</text>
+<text class="tm" x="230" y="235.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="235.5" font-size="12" font-weight="600" text-anchor="end">4cdb226</text>
+<path class="m" d="M52 242 L52 260 L64 260" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="249" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="264.5" font-size="12">g.txt</text>
+<text class="tm" x="230" y="264.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="264.5" font-size="12" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M32 271 L32 289 L44 289" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="278" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="293.5" font-size="12">hello.txt</text>
+<text class="tm" x="230" y="293.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="293.5" font-size="12" font-weight="600" text-anchor="end">ce01362</text>
+<rect class="s f" x="404" y="40" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="56.5" font-size="12" font-weight="600">/</text>
+<text class="tm" x="470" y="56.5" font-size="11">5 files</text>
+<text class="t mono" x="606" y="56.5" font-size="12" font-weight="600" text-anchor="end">dcd4984</text>
+<rect class="s f" x="404" y="72" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="88.5" font-size="12" font-weight="600">b/</text>
+<text class="tm" x="470" y="88.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="88.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<rect class="s f" x="404" y="104" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="120.5" font-size="12" font-weight="600">d/</text>
+<text class="tm" x="470" y="120.5" font-size="11">2 files</text>
+<text class="t mono" x="606" y="120.5" font-size="12" font-weight="600" text-anchor="end">d61f885</text>
+<rect class="s f" x="404" y="136" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="152.5" font-size="12" font-weight="600">d/e/</text>
+<text class="tm" x="470" y="152.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="152.5" font-size="12" font-weight="600" text-anchor="end">8588183</text>
+<text class="tm" x="404" y="184" font-size="10.5">each directory&#x27;s last tree, with how</text>
+<text class="tm" x="404" y="198" font-size="10.5">many index entries are under it;</text>
+<text class="tm" x="404" y="212" font-size="10.5">-1 once one of them changes</text>
+<text class="tm" x="24" y="320" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="337" font-size="11">tree: / (4 entries, 5 files under it): dcd4984, built</text>
+</g>
+<g class="step"><title>d/e/f.txt gets a line, and add stores it: new bytes, so a new blob, 06654ae, and the file's index entry names it now.</title>
+<rect class="s f" x="24" y="46" width="276" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="32" y="61.5" font-size="12" font-weight="600">/ (the top)</text>
+<text class="tm" x="230" y="61.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="t mono" x="292" y="61.5" font-size="12" font-weight="600" text-anchor="end">dcd4984</text>
+<path class="m" d="M32 68 L32 86 L44 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="75" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="90.5" font-size="12">b c</text>
+<text class="tm" x="230" y="90.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="90.5" font-size="12" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M32 97 L32 115 L44 115" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="104" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="119.5" font-size="12" font-weight="600">b/</text>
+<text class="tm" x="230" y="119.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="t mono" x="292" y="119.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M52 126 L52 144 L64 144" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="133" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="148.5" font-size="12">c</text>
+<text class="tm" x="230" y="148.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="148.5" font-size="12" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M32 155 L32 173 L44 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="162" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="177.5" font-size="12" font-weight="600">d/</text>
+<text class="tm" x="230" y="177.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="t mono" x="292" y="177.5" font-size="12" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M52 184 L52 202 L64 202" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="191" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="206.5" font-size="12" font-weight="600">e/</text>
+<text class="tm" x="230" y="206.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="t mono" x="292" y="206.5" font-size="12" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M72 213 L72 231 L84 231" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="84" y="220" width="216" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="92" y="235.5" font-size="12">f.txt</text>
+<text class="f" x="230" y="235.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="f mono" x="292" y="235.5" font-size="12" font-weight="600" text-anchor="end">06654ae</text>
+<text class="ta" x="306" y="235.5" font-size="10.5" font-weight="600">was 4cdb226</text>
+<path class="m" d="M52 242 L52 260 L64 260" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="249" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="264.5" font-size="12">g.txt</text>
+<text class="tm" x="230" y="264.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="264.5" font-size="12" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M32 271 L32 289 L44 289" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="278" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="293.5" font-size="12">hello.txt</text>
+<text class="tm" x="230" y="293.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="293.5" font-size="12" font-weight="600" text-anchor="end">ce01362</text>
+<rect class="s f" x="404" y="40" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="56.5" font-size="12" font-weight="600">/</text>
+<text class="tm" x="470" y="56.5" font-size="11">5 files</text>
+<text class="t mono" x="606" y="56.5" font-size="12" font-weight="600" text-anchor="end">dcd4984</text>
+<rect class="s f" x="404" y="72" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="88.5" font-size="12" font-weight="600">b/</text>
+<text class="tm" x="470" y="88.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="88.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<rect class="s f" x="404" y="104" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="120.5" font-size="12" font-weight="600">d/</text>
+<text class="tm" x="470" y="120.5" font-size="11">2 files</text>
+<text class="t mono" x="606" y="120.5" font-size="12" font-weight="600" text-anchor="end">d61f885</text>
+<rect class="s f" x="404" y="136" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="152.5" font-size="12" font-weight="600">d/e/</text>
+<text class="tm" x="470" y="152.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="152.5" font-size="12" font-weight="600" text-anchor="end">8588183</text>
+<text class="tm" x="404" y="184" font-size="10.5">each directory&#x27;s last tree, with how</text>
+<text class="tm" x="404" y="198" font-size="10.5">many index entries are under it;</text>
+<text class="tm" x="404" y="212" font-size="10.5">-1 once one of them changes</text>
+<text class="tm" x="24" y="320" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="337" font-size="11">index: update d/e/f.txt 100644 06654ae</text>
+</g>
+<g class="step"><title>The same add forgets the cached tree of every directory above d/e/f.txt: the top, d and d/e. b keeps its own, since nothing under it changed.</title>
+<rect class="m f" x="24" y="46" width="276" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="32" y="61.5" font-size="12" font-weight="600">/ (the top)</text>
+<text class="tm" x="230" y="61.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="tm mono" x="292" y="61.5" font-size="12" font-weight="600" text-anchor="end">dcd4984</text>
+<path class="m" d="M32 68 L32 86 L44 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="75" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="90.5" font-size="12">b c</text>
+<text class="tm" x="230" y="90.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="90.5" font-size="12" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M32 97 L32 115 L44 115" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="104" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="119.5" font-size="12" font-weight="600">b/</text>
+<text class="tm" x="230" y="119.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="t mono" x="292" y="119.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M52 126 L52 144 L64 144" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="133" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="148.5" font-size="12">c</text>
+<text class="tm" x="230" y="148.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="148.5" font-size="12" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M32 155 L32 173 L44 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="44" y="162" width="256" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="52" y="177.5" font-size="12" font-weight="600">d/</text>
+<text class="tm" x="230" y="177.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="tm mono" x="292" y="177.5" font-size="12" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M52 184 L52 202 L64 202" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="64" y="191" width="236" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="72" y="206.5" font-size="12" font-weight="600">e/</text>
+<text class="tm" x="230" y="206.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="tm mono" x="292" y="206.5" font-size="12" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M72 213 L72 231 L84 231" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="84" y="220" width="216" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="92" y="235.5" font-size="12">f.txt</text>
+<text class="ta" x="230" y="235.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="ta mono" x="292" y="235.5" font-size="12" font-weight="600" text-anchor="end">06654ae</text>
+<path class="m" d="M52 242 L52 260 L64 260" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="249" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="264.5" font-size="12">g.txt</text>
+<text class="tm" x="230" y="264.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="264.5" font-size="12" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M32 271 L32 289 L44 289" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="278" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="293.5" font-size="12">hello.txt</text>
+<text class="tm" x="230" y="293.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="293.5" font-size="12" font-weight="600" text-anchor="end">ce01362</text>
+<rect class="m f" x="404" y="40" width="212" height="25" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="414" y="56.5" font-size="12" font-weight="600">/</text>
+<text class="tm mono" x="470" y="56.5" font-size="11">-1</text>
+<text class="tm" x="606" y="56.5" font-size="12" text-anchor="end">gone</text>
+<rect class="s f" x="404" y="72" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="88.5" font-size="12" font-weight="600">b/</text>
+<text class="tm" x="470" y="88.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="88.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<rect class="m f" x="404" y="104" width="212" height="25" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="414" y="120.5" font-size="12" font-weight="600">d/</text>
+<text class="tm mono" x="470" y="120.5" font-size="11">-1</text>
+<text class="tm" x="606" y="120.5" font-size="12" text-anchor="end">gone</text>
+<rect class="m f" x="404" y="136" width="212" height="25" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="414" y="152.5" font-size="12" font-weight="600">d/e/</text>
+<text class="tm mono" x="470" y="152.5" font-size="11">-1</text>
+<text class="tm" x="606" y="152.5" font-size="12" text-anchor="end">gone</text>
+<text class="tm" x="404" y="184" font-size="10.5">each directory&#x27;s last tree, with how</text>
+<text class="tm" x="404" y="198" font-size="10.5">many index entries are under it;</text>
+<text class="tm" x="404" y="212" font-size="10.5">-1 once one of them changes</text>
+<text class="tm" x="24" y="320" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="337" font-size="11">index: d/e/f.txt changed: the cached tree of / is gone</text>
+<text class="t mono" x="24" y="353" font-size="11">index: d/e/f.txt changed: the cached tree of d/ is gone</text>
+<text class="t mono" x="24" y="369" font-size="11">index: d/e/f.txt changed: the cached tree of d/e/ is gone</text>
+</g>
+<g class="step"><title>write-tree, bottom up. b's cached tree is still good, so 1933da3 is taken as it is: no tree is built for b.</title>
+<rect class="m f" x="24" y="46" width="276" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="32" y="61.5" font-size="12" font-weight="600">/ (the top)</text>
+<text class="tm" x="230" y="61.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="tm mono" x="292" y="61.5" font-size="12" font-weight="600" text-anchor="end">dcd4984</text>
+<path class="m" d="M32 68 L32 86 L44 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="75" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="90.5" font-size="12">b c</text>
+<text class="tm" x="230" y="90.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="90.5" font-size="12" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M32 97 L32 115 L44 115" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a f" x="44" y="104" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="52" y="119.5" font-size="12" font-weight="600">b/</text>
+<text class="ta" x="230" y="119.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="ta mono" x="292" y="119.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<text class="ta" x="306" y="119.5" font-size="10.5" font-weight="600">from the cache</text>
+<path class="m" d="M52 126 L52 144 L64 144" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="133" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="148.5" font-size="12">c</text>
+<text class="tm" x="230" y="148.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="148.5" font-size="12" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M32 155 L32 173 L44 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="44" y="162" width="256" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="52" y="177.5" font-size="12" font-weight="600">d/</text>
+<text class="tm" x="230" y="177.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="tm mono" x="292" y="177.5" font-size="12" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M52 184 L52 202 L64 202" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="64" y="191" width="236" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="72" y="206.5" font-size="12" font-weight="600">e/</text>
+<text class="tm" x="230" y="206.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="tm mono" x="292" y="206.5" font-size="12" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M72 213 L72 231 L84 231" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="84" y="220" width="216" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="92" y="235.5" font-size="12">f.txt</text>
+<text class="ta" x="230" y="235.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="ta mono" x="292" y="235.5" font-size="12" font-weight="600" text-anchor="end">06654ae</text>
+<path class="m" d="M52 242 L52 260 L64 260" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="249" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="264.5" font-size="12">g.txt</text>
+<text class="tm" x="230" y="264.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="264.5" font-size="12" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M32 271 L32 289 L44 289" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="278" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="293.5" font-size="12">hello.txt</text>
+<text class="tm" x="230" y="293.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="293.5" font-size="12" font-weight="600" text-anchor="end">ce01362</text>
+<rect class="m f" x="404" y="40" width="212" height="25" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="414" y="56.5" font-size="12" font-weight="600">/</text>
+<text class="tm mono" x="470" y="56.5" font-size="11">-1</text>
+<text class="tm" x="606" y="56.5" font-size="12" text-anchor="end">gone</text>
+<rect class="s f" x="404" y="72" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="88.5" font-size="12" font-weight="600">b/</text>
+<text class="tm" x="470" y="88.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="88.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<rect class="m f" x="404" y="104" width="212" height="25" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="414" y="120.5" font-size="12" font-weight="600">d/</text>
+<text class="tm mono" x="470" y="120.5" font-size="11">-1</text>
+<text class="tm" x="606" y="120.5" font-size="12" text-anchor="end">gone</text>
+<rect class="m f" x="404" y="136" width="212" height="25" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="414" y="152.5" font-size="12" font-weight="600">d/e/</text>
+<text class="tm mono" x="470" y="152.5" font-size="11">-1</text>
+<text class="tm" x="606" y="152.5" font-size="12" text-anchor="end">gone</text>
+<text class="tm" x="404" y="184" font-size="10.5">each directory&#x27;s last tree, with how</text>
+<text class="tm" x="404" y="198" font-size="10.5">many index entries are under it;</text>
+<text class="tm" x="404" y="212" font-size="10.5">-1 once one of them changes</text>
+<text class="tm" x="24" y="320" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="337" font-size="11">tree: b/ (1 file under it): 1933da3, from the cache</text>
+</g>
+<g class="step"><title>d/e built. Its one entry, f.txt, names 06654ae now: its bytes changed, so its name did, 8588183 becomes cd21a79.</title>
+<rect class="m f" x="24" y="46" width="276" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="32" y="61.5" font-size="12" font-weight="600">/ (the top)</text>
+<text class="tm" x="230" y="61.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="tm mono" x="292" y="61.5" font-size="12" font-weight="600" text-anchor="end">dcd4984</text>
+<path class="m" d="M32 68 L32 86 L44 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="75" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="90.5" font-size="12">b c</text>
+<text class="tm" x="230" y="90.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="90.5" font-size="12" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M32 97 L32 115 L44 115" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a f" x="44" y="104" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="52" y="119.5" font-size="12" font-weight="600">b/</text>
+<text class="ta" x="230" y="119.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="ta mono" x="292" y="119.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M52 126 L52 144 L64 144" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="133" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="148.5" font-size="12">c</text>
+<text class="tm" x="230" y="148.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="148.5" font-size="12" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M32 155 L32 173 L44 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="44" y="162" width="256" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="52" y="177.5" font-size="12" font-weight="600">d/</text>
+<text class="tm" x="230" y="177.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="tm mono" x="292" y="177.5" font-size="12" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M52 184 L52 202 L64 202" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="64" y="191" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="72" y="206.5" font-size="12" font-weight="600">e/</text>
+<text class="f" x="230" y="206.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="f mono" x="292" y="206.5" font-size="12" font-weight="600" text-anchor="end">cd21a79</text>
+<text class="ta" x="306" y="206.5" font-size="10.5" font-weight="600">was 8588183</text>
+<path class="m" d="M72 213 L72 231 L84 231" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="84" y="220" width="216" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="92" y="235.5" font-size="12">f.txt</text>
+<text class="ta" x="230" y="235.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="ta mono" x="292" y="235.5" font-size="12" font-weight="600" text-anchor="end">06654ae</text>
+<path class="m" d="M52 242 L52 260 L64 260" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="249" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="264.5" font-size="12">g.txt</text>
+<text class="tm" x="230" y="264.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="264.5" font-size="12" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M32 271 L32 289 L44 289" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="278" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="293.5" font-size="12">hello.txt</text>
+<text class="tm" x="230" y="293.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="293.5" font-size="12" font-weight="600" text-anchor="end">ce01362</text>
+<rect class="m f" x="404" y="40" width="212" height="25" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="414" y="56.5" font-size="12" font-weight="600">/</text>
+<text class="tm mono" x="470" y="56.5" font-size="11">-1</text>
+<text class="tm" x="606" y="56.5" font-size="12" text-anchor="end">gone</text>
+<rect class="s f" x="404" y="72" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="88.5" font-size="12" font-weight="600">b/</text>
+<text class="tm" x="470" y="88.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="88.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<rect class="m f" x="404" y="104" width="212" height="25" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="414" y="120.5" font-size="12" font-weight="600">d/</text>
+<text class="tm mono" x="470" y="120.5" font-size="11">-1</text>
+<text class="tm" x="606" y="120.5" font-size="12" text-anchor="end">gone</text>
+<rect class="s f" x="404" y="136" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="152.5" font-size="12" font-weight="600">d/e/</text>
+<text class="tm" x="470" y="152.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="152.5" font-size="12" font-weight="600" text-anchor="end">cd21a79</text>
+<text class="tm" x="404" y="184" font-size="10.5">each directory&#x27;s last tree, with how</text>
+<text class="tm" x="404" y="198" font-size="10.5">many index entries are under it;</text>
+<text class="tm" x="404" y="212" font-size="10.5">-1 once one of them changes</text>
+<text class="tm" x="24" y="320" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="337" font-size="11">tree: d/e/ (1 entry, 1 file under it): cd21a79, built</text>
+</g>
+<g class="step"><title>d built. It lists e by e's new name, and g.txt as before: its bytes changed, so its name did, d61f885 becomes 7ecc4e4.</title>
+<rect class="m f" x="24" y="46" width="276" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="32" y="61.5" font-size="12" font-weight="600">/ (the top)</text>
+<text class="tm" x="230" y="61.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="tm mono" x="292" y="61.5" font-size="12" font-weight="600" text-anchor="end">dcd4984</text>
+<path class="m" d="M32 68 L32 86 L44 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="75" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="90.5" font-size="12">b c</text>
+<text class="tm" x="230" y="90.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="90.5" font-size="12" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M32 97 L32 115 L44 115" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a f" x="44" y="104" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="52" y="119.5" font-size="12" font-weight="600">b/</text>
+<text class="ta" x="230" y="119.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="ta mono" x="292" y="119.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M52 126 L52 144 L64 144" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="133" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="148.5" font-size="12">c</text>
+<text class="tm" x="230" y="148.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="148.5" font-size="12" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M32 155 L32 173 L44 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="44" y="162" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="52" y="177.5" font-size="12" font-weight="600">d/</text>
+<text class="f" x="230" y="177.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="f mono" x="292" y="177.5" font-size="12" font-weight="600" text-anchor="end">7ecc4e4</text>
+<text class="ta" x="306" y="177.5" font-size="10.5" font-weight="600">was d61f885</text>
+<path class="m" d="M52 184 L52 202 L64 202" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="64" y="191" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="206.5" font-size="12" font-weight="600">e/</text>
+<text class="ta" x="230" y="206.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="ta mono" x="292" y="206.5" font-size="12" font-weight="600" text-anchor="end">cd21a79</text>
+<path class="m" d="M72 213 L72 231 L84 231" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="84" y="220" width="216" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="92" y="235.5" font-size="12">f.txt</text>
+<text class="ta" x="230" y="235.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="ta mono" x="292" y="235.5" font-size="12" font-weight="600" text-anchor="end">06654ae</text>
+<path class="m" d="M52 242 L52 260 L64 260" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="249" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="264.5" font-size="12">g.txt</text>
+<text class="tm" x="230" y="264.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="264.5" font-size="12" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M32 271 L32 289 L44 289" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="278" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="293.5" font-size="12">hello.txt</text>
+<text class="tm" x="230" y="293.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="293.5" font-size="12" font-weight="600" text-anchor="end">ce01362</text>
+<rect class="m f" x="404" y="40" width="212" height="25" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="414" y="56.5" font-size="12" font-weight="600">/</text>
+<text class="tm mono" x="470" y="56.5" font-size="11">-1</text>
+<text class="tm" x="606" y="56.5" font-size="12" text-anchor="end">gone</text>
+<rect class="s f" x="404" y="72" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="88.5" font-size="12" font-weight="600">b/</text>
+<text class="tm" x="470" y="88.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="88.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<rect class="s f" x="404" y="104" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="120.5" font-size="12" font-weight="600">d/</text>
+<text class="tm" x="470" y="120.5" font-size="11">2 files</text>
+<text class="t mono" x="606" y="120.5" font-size="12" font-weight="600" text-anchor="end">7ecc4e4</text>
+<rect class="s f" x="404" y="136" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="152.5" font-size="12" font-weight="600">d/e/</text>
+<text class="tm" x="470" y="152.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="152.5" font-size="12" font-weight="600" text-anchor="end">cd21a79</text>
+<text class="tm" x="404" y="184" font-size="10.5">each directory&#x27;s last tree, with how</text>
+<text class="tm" x="404" y="198" font-size="10.5">many index entries are under it;</text>
+<text class="tm" x="404" y="212" font-size="10.5">-1 once one of them changes</text>
+<text class="tm" x="24" y="320" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="337" font-size="11">tree: d/ (2 entries, 2 files under it): 7ecc4e4, built</text>
+</g>
+<g class="step"><title>The top built. It lists d by d's new name, and b c, b and hello.txt as before: its bytes changed, so its name did, dcd4984 becomes 6f0dd63. Three trees built, one from the cache: every tree on the path to f.txt has a new name, and nothing else does.</title>
+<rect class="a fa" x="24" y="46" width="276" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="32" y="61.5" font-size="12" font-weight="600">/ (the top)</text>
+<text class="f" x="230" y="61.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="f mono" x="292" y="61.5" font-size="12" font-weight="600" text-anchor="end">6f0dd63</text>
+<text class="ta" x="306" y="61.5" font-size="10.5" font-weight="600">was dcd4984</text>
+<path class="m" d="M32 68 L32 86 L44 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="75" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="90.5" font-size="12">b c</text>
+<text class="tm" x="230" y="90.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="90.5" font-size="12" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M32 97 L32 115 L44 115" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a f" x="44" y="104" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="52" y="119.5" font-size="12" font-weight="600">b/</text>
+<text class="ta" x="230" y="119.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="ta mono" x="292" y="119.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M52 126 L52 144 L64 144" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="133" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="148.5" font-size="12">c</text>
+<text class="tm" x="230" y="148.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="148.5" font-size="12" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M32 155 L32 173 L44 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="44" y="162" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="52" y="177.5" font-size="12" font-weight="600">d/</text>
+<text class="ta" x="230" y="177.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="ta mono" x="292" y="177.5" font-size="12" font-weight="600" text-anchor="end">7ecc4e4</text>
+<path class="m" d="M52 184 L52 202 L64 202" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="64" y="191" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="206.5" font-size="12" font-weight="600">e/</text>
+<text class="ta" x="230" y="206.5" font-size="10.5" text-anchor="end">tree</text>
+<text class="ta mono" x="292" y="206.5" font-size="12" font-weight="600" text-anchor="end">cd21a79</text>
+<path class="m" d="M72 213 L72 231 L84 231" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="84" y="220" width="216" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="92" y="235.5" font-size="12">f.txt</text>
+<text class="ta" x="230" y="235.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="ta mono" x="292" y="235.5" font-size="12" font-weight="600" text-anchor="end">06654ae</text>
+<path class="m" d="M52 242 L52 260 L64 260" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="64" y="249" width="236" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="264.5" font-size="12">g.txt</text>
+<text class="tm" x="230" y="264.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="264.5" font-size="12" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M32 271 L32 289 L44 289" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="44" y="278" width="256" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="52" y="293.5" font-size="12">hello.txt</text>
+<text class="tm" x="230" y="293.5" font-size="10.5" text-anchor="end">blob</text>
+<text class="t mono" x="292" y="293.5" font-size="12" font-weight="600" text-anchor="end">ce01362</text>
+<rect class="s f" x="404" y="40" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="56.5" font-size="12" font-weight="600">/</text>
+<text class="tm" x="470" y="56.5" font-size="11">5 files</text>
+<text class="t mono" x="606" y="56.5" font-size="12" font-weight="600" text-anchor="end">6f0dd63</text>
+<rect class="s f" x="404" y="72" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="88.5" font-size="12" font-weight="600">b/</text>
+<text class="tm" x="470" y="88.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="88.5" font-size="12" font-weight="600" text-anchor="end">1933da3</text>
+<rect class="s f" x="404" y="104" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="120.5" font-size="12" font-weight="600">d/</text>
+<text class="tm" x="470" y="120.5" font-size="11">2 files</text>
+<text class="t mono" x="606" y="120.5" font-size="12" font-weight="600" text-anchor="end">7ecc4e4</text>
+<rect class="s f" x="404" y="136" width="212" height="25" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="414" y="152.5" font-size="12" font-weight="600">d/e/</text>
+<text class="tm" x="470" y="152.5" font-size="11">1 file</text>
+<text class="t mono" x="606" y="152.5" font-size="12" font-weight="600" text-anchor="end">cd21a79</text>
+<text class="tm" x="404" y="184" font-size="10.5">each directory&#x27;s last tree, with how</text>
+<text class="tm" x="404" y="198" font-size="10.5">many index entries are under it;</text>
+<text class="tm" x="404" y="212" font-size="10.5">-1 once one of them changes</text>
+<text class="tm" x="24" y="320" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="337" font-size="11">tree: / (4 entries, 5 files under it): 6f0dd63, built</text>
+</g>
+</svg>

@@ -1,0 +1,634 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 384" fill="none">
+<title>diff of first and second: the two trees walked side by side, entries with the same name on both sides passed over unopened</title>
+<defs><marker id="f1004a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f1004a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f1004a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="18" font-size="11">bin/git diff main~2 main~1: the two top trees, walked in step, entry by entry</text>
+<text class="t" x="24" y="38" font-size="11.5" font-weight="600">first&#x27;s tree, dcd4984</text>
+<text class="t" x="366" y="38" font-size="11.5" font-weight="600">second&#x27;s tree, 6f0dd63</text>
+<rect class="a fa" x="24" y="314" width="18" height="12" rx="3" stroke-width="1.5"/>
+<text class="tm" x="50" y="324" font-size="10.5">compared now</text>
+<rect class="a af" x="144.04" y="314" width="18" height="12" rx="3" stroke-width="1.5"/>
+<text class="tm" x="170.04" y="324" font-size="10.5">different: opened, or changed</text>
+<rect class="s f" x="360.47" y="314" width="18" height="12" rx="3" stroke-width="1.5"/>
+<text class="tm" x="386.47" y="324" font-size="10.5">read</text>
+<rect class="m f" x="435.15" y="314" width="18" height="12" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="461.15" y="324" font-size="10.5">not read</text>
+<g class="step"><title>diff reads the two top trees, dcd4984 and 6f0dd63, and walks their entries side by side in git's order, as a merge of two sorted lists.</title>
+<rect class="a af" x="24" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="31" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="266" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">dcd4984</text>
+<rect class="a af" x="366" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="373" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="608" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">6f0dd63</text>
+<path class="m" d="M31 72 L31 89 L42 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="266" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M373 72 L373 89 L384 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="608" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M31 100 L31 117 L42 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="266" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M373 100 L373 117 L384 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="608" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M49 128 L49 145 L60 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="266" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M391 128 L391 145 L402 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="608" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M31 156 L31 173 L42 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="t mono" x="266" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M373 156 L373 173 L384 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="t mono" x="608" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">7ecc4e4</text>
+<path class="m" d="M49 184 L49 201 L60 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="190" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="tm mono" x="266" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M391 184 L391 201 L402 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="190" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="tm mono" x="608" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">cd21a79</text>
+<path class="m" d="M67 212 L67 229 L78 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="78" y="218" width="196" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="85" y="233.5" font-size="11.5">f.txt</text>
+<text class="tm mono" x="266" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">4cdb226</text>
+<path class="m" d="M409 212 L409 229 L420 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="420" y="218" width="196" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="427" y="233.5" font-size="11.5">f.txt</text>
+<text class="tm mono" x="608" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">06654ae</text>
+<path class="m" d="M49 240 L49 257 L60 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="246" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="261.5" font-size="11.5">g.txt</text>
+<text class="tm mono" x="266" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M391 240 L391 257 L402 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="246" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="261.5" font-size="11.5">g.txt</text>
+<text class="tm mono" x="608" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M31 268 L31 285 L42 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="266" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<path class="m" d="M373 268 L373 285 L384 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="608" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<text class="tm" x="24" y="360" font-size="11">the top trees differ, so the walk starts inside them</text>
+</g>
+<g class="step"><title>b c: the same blob, 9495c3c, on both sides: passed over. Equal names, equal bytes.</title>
+<rect class="a af" x="24" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="31" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="266" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">dcd4984</text>
+<rect class="a af" x="366" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="373" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="608" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">6f0dd63</text>
+<path class="m" d="M31 72 L31 89 L42 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="42" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="49" y="93.5" font-size="11.5">b c</text>
+<text class="f mono" x="266" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M373 72 L373 89 L384 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="384" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="391" y="93.5" font-size="11.5">b c</text>
+<text class="f mono" x="608" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<text class="tm" x="320" y="93.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M31 100 L31 117 L42 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="266" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M373 100 L373 117 L384 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="608" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M49 128 L49 145 L60 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="266" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M391 128 L391 145 L402 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="608" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M31 156 L31 173 L42 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="t mono" x="266" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M373 156 L373 173 L384 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="t mono" x="608" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">7ecc4e4</text>
+<path class="m" d="M49 184 L49 201 L60 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="190" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="tm mono" x="266" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M391 184 L391 201 L402 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="190" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="tm mono" x="608" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">cd21a79</text>
+<path class="m" d="M67 212 L67 229 L78 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="78" y="218" width="196" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="85" y="233.5" font-size="11.5">f.txt</text>
+<text class="tm mono" x="266" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">4cdb226</text>
+<path class="m" d="M409 212 L409 229 L420 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="420" y="218" width="196" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="427" y="233.5" font-size="11.5">f.txt</text>
+<text class="tm mono" x="608" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">06654ae</text>
+<path class="m" d="M49 240 L49 257 L60 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="246" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="261.5" font-size="11.5">g.txt</text>
+<text class="tm mono" x="266" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M391 240 L391 257 L402 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="246" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="261.5" font-size="11.5">g.txt</text>
+<text class="tm mono" x="608" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M31 268 L31 285 L42 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="266" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<path class="m" d="M373 268 L373 285 L384 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="608" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<text class="tm" x="24" y="352" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="369" font-size="11">diff: b c: 9495c3c on both sides: the same, passed over</text>
+</g>
+<g class="step"><title>b/ is 1933da3 on both sides: the same tree, so the same everything under it. Passed over, never opened: c is not read at all.</title>
+<rect class="a af" x="24" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="31" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="266" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">dcd4984</text>
+<rect class="a af" x="366" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="373" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="608" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">6f0dd63</text>
+<path class="m" d="M31 72 L31 89 L42 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="266" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M373 72 L373 89 L384 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="608" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<text class="tm" x="320" y="93.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M31 100 L31 117 L42 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="42" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="49" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="f mono" x="266" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M373 100 L373 117 L384 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="384" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="391" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="f mono" x="608" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<text class="tm" x="320" y="121.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M49 128 L49 145 L60 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="266" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M391 128 L391 145 L402 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="608" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M31 156 L31 173 L42 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="t mono" x="266" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M373 156 L373 173 L384 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="t mono" x="608" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">7ecc4e4</text>
+<path class="m" d="M49 184 L49 201 L60 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="190" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="tm mono" x="266" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M391 184 L391 201 L402 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="190" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="tm mono" x="608" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">cd21a79</text>
+<path class="m" d="M67 212 L67 229 L78 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="78" y="218" width="196" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="85" y="233.5" font-size="11.5">f.txt</text>
+<text class="tm mono" x="266" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">4cdb226</text>
+<path class="m" d="M409 212 L409 229 L420 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="420" y="218" width="196" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="427" y="233.5" font-size="11.5">f.txt</text>
+<text class="tm mono" x="608" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">06654ae</text>
+<path class="m" d="M49 240 L49 257 L60 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="246" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="261.5" font-size="11.5">g.txt</text>
+<text class="tm mono" x="266" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M391 240 L391 257 L402 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="246" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="261.5" font-size="11.5">g.txt</text>
+<text class="tm mono" x="608" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M31 268 L31 285 L42 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="266" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<path class="m" d="M373 268 L373 285 L384 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="608" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<text class="tm" x="24" y="352" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="369" font-size="11">diff: b/: 1933da3 on both sides: the same, passed over</text>
+</g>
+<g class="step"><title>d/ is d61f885 here and 7ecc4e4 there: something under it differs. Both trees are opened and walked in step, the same way.</title>
+<rect class="a af" x="24" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="31" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="266" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">dcd4984</text>
+<rect class="a af" x="366" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="373" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="608" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">6f0dd63</text>
+<path class="m" d="M31 72 L31 89 L42 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="266" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M373 72 L373 89 L384 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="608" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<text class="tm" x="320" y="93.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M31 100 L31 117 L42 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="266" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M373 100 L373 117 L384 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="608" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<text class="tm" x="320" y="121.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M49 128 L49 145 L60 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="266" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M391 128 L391 145 L402 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="608" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M31 156 L31 173 L42 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="42" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="49" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="f mono" x="266" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M373 156 L373 173 L384 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="384" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="391" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="f mono" x="608" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">7ecc4e4</text>
+<text class="ta" x="320" y="177.5" font-size="11" font-weight="700" text-anchor="middle">opened</text>
+<path class="m" d="M49 184 L49 201 L60 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="60" y="190" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="67" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="t mono" x="266" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M391 184 L391 201 L402 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="402" y="190" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="409" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="t mono" x="608" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">cd21a79</text>
+<path class="m" d="M67 212 L67 229 L78 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="78" y="218" width="196" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="85" y="233.5" font-size="11.5">f.txt</text>
+<text class="t mono" x="266" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">4cdb226</text>
+<path class="m" d="M409 212 L409 229 L420 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="420" y="218" width="196" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="427" y="233.5" font-size="11.5">f.txt</text>
+<text class="t mono" x="608" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">06654ae</text>
+<path class="m" d="M49 240 L49 257 L60 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="60" y="246" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="67" y="261.5" font-size="11.5">g.txt</text>
+<text class="t mono" x="266" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M391 240 L391 257 L402 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="402" y="246" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="409" y="261.5" font-size="11.5">g.txt</text>
+<text class="t mono" x="608" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M31 268 L31 285 L42 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="266" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<path class="m" d="M373 268 L373 285 L384 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="608" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<text class="tm" x="24" y="352" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="369" font-size="11">diff: d/: d61f885 and 7ecc4e4: different, opened</text>
+</g>
+<g class="step"><title>d/e/: 8588183 against cd21a79. Different again: opened.</title>
+<rect class="a af" x="24" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="31" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="266" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">dcd4984</text>
+<rect class="a af" x="366" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="373" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="608" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">6f0dd63</text>
+<path class="m" d="M31 72 L31 89 L42 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="266" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M373 72 L373 89 L384 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="608" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<text class="tm" x="320" y="93.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M31 100 L31 117 L42 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="266" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M373 100 L373 117 L384 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="608" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<text class="tm" x="320" y="121.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M49 128 L49 145 L60 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="266" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M391 128 L391 145 L402 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="608" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M31 156 L31 173 L42 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="42" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="49" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="ta mono" x="266" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M373 156 L373 173 L384 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="384" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="391" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="ta mono" x="608" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">7ecc4e4</text>
+<text class="ta" x="320" y="177.5" font-size="11" font-weight="700" text-anchor="middle">opened</text>
+<path class="m" d="M49 184 L49 201 L60 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="60" y="190" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="67" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="f mono" x="266" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M391 184 L391 201 L402 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="402" y="190" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="409" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="f mono" x="608" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">cd21a79</text>
+<text class="ta" x="320" y="205.5" font-size="11" font-weight="700" text-anchor="middle">opened</text>
+<path class="m" d="M67 212 L67 229 L78 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="78" y="218" width="196" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="85" y="233.5" font-size="11.5">f.txt</text>
+<text class="t mono" x="266" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">4cdb226</text>
+<path class="m" d="M409 212 L409 229 L420 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="420" y="218" width="196" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="427" y="233.5" font-size="11.5">f.txt</text>
+<text class="t mono" x="608" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">06654ae</text>
+<path class="m" d="M49 240 L49 257 L60 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="60" y="246" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="67" y="261.5" font-size="11.5">g.txt</text>
+<text class="t mono" x="266" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M391 240 L391 257 L402 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="402" y="246" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="409" y="261.5" font-size="11.5">g.txt</text>
+<text class="t mono" x="608" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M31 268 L31 285 L42 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="266" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<path class="m" d="M373 268 L373 285 L384 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="608" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<text class="tm" x="24" y="352" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="369" font-size="11">diff: d/e/: 8588183 and cd21a79: different, opened</text>
+</g>
+<g class="step"><title>d/e/f.txt: blob 4cdb226 against 06654ae: a changed file. Its two blobs are read later, to print the patch with module 06's diff.</title>
+<rect class="a af" x="24" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="31" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="266" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">dcd4984</text>
+<rect class="a af" x="366" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="373" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="608" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">6f0dd63</text>
+<path class="m" d="M31 72 L31 89 L42 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="266" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M373 72 L373 89 L384 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="608" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<text class="tm" x="320" y="93.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M31 100 L31 117 L42 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="266" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M373 100 L373 117 L384 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="608" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<text class="tm" x="320" y="121.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M49 128 L49 145 L60 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="266" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M391 128 L391 145 L402 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="608" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M31 156 L31 173 L42 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="42" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="49" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="ta mono" x="266" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M373 156 L373 173 L384 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="384" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="391" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="ta mono" x="608" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">7ecc4e4</text>
+<text class="ta" x="320" y="177.5" font-size="11" font-weight="700" text-anchor="middle">opened</text>
+<path class="m" d="M49 184 L49 201 L60 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="60" y="190" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="67" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="ta mono" x="266" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M391 184 L391 201 L402 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="402" y="190" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="409" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="ta mono" x="608" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">cd21a79</text>
+<text class="ta" x="320" y="205.5" font-size="11" font-weight="700" text-anchor="middle">opened</text>
+<path class="m" d="M67 212 L67 229 L78 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="78" y="218" width="196" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="85" y="233.5" font-size="11.5">f.txt</text>
+<text class="f mono" x="266" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">4cdb226</text>
+<path class="m" d="M409 212 L409 229 L420 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="420" y="218" width="196" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="427" y="233.5" font-size="11.5">f.txt</text>
+<text class="f mono" x="608" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">06654ae</text>
+<text class="ta" x="320" y="233.5" font-size="11" font-weight="700" text-anchor="middle">changed</text>
+<path class="m" d="M49 240 L49 257 L60 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="60" y="246" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="67" y="261.5" font-size="11.5">g.txt</text>
+<text class="t mono" x="266" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M391 240 L391 257 L402 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="402" y="246" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="409" y="261.5" font-size="11.5">g.txt</text>
+<text class="t mono" x="608" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M31 268 L31 285 L42 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="266" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<path class="m" d="M373 268 L373 285 L384 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="608" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<text class="tm" x="24" y="352" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="369" font-size="11">diff: d/e/f.txt: 4cdb226 and 06654ae: changed</text>
+</g>
+<g class="step"><title>d/g.txt: 01058d8 on both sides: passed over.</title>
+<rect class="a af" x="24" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="31" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="266" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">dcd4984</text>
+<rect class="a af" x="366" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="373" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="608" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">6f0dd63</text>
+<path class="m" d="M31 72 L31 89 L42 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="266" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M373 72 L373 89 L384 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="608" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<text class="tm" x="320" y="93.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M31 100 L31 117 L42 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="266" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M373 100 L373 117 L384 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="608" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<text class="tm" x="320" y="121.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M49 128 L49 145 L60 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="266" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M391 128 L391 145 L402 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="608" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M31 156 L31 173 L42 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="42" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="49" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="ta mono" x="266" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M373 156 L373 173 L384 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="384" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="391" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="ta mono" x="608" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">7ecc4e4</text>
+<text class="ta" x="320" y="177.5" font-size="11" font-weight="700" text-anchor="middle">opened</text>
+<path class="m" d="M49 184 L49 201 L60 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="60" y="190" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="67" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="ta mono" x="266" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M391 184 L391 201 L402 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="402" y="190" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="409" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="ta mono" x="608" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">cd21a79</text>
+<text class="ta" x="320" y="205.5" font-size="11" font-weight="700" text-anchor="middle">opened</text>
+<path class="m" d="M67 212 L67 229 L78 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="78" y="218" width="196" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="85" y="233.5" font-size="11.5">f.txt</text>
+<text class="ta mono" x="266" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">4cdb226</text>
+<path class="m" d="M409 212 L409 229 L420 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="420" y="218" width="196" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="427" y="233.5" font-size="11.5">f.txt</text>
+<text class="ta mono" x="608" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">06654ae</text>
+<text class="ta" x="320" y="233.5" font-size="11" font-weight="700" text-anchor="middle">changed</text>
+<path class="m" d="M49 240 L49 257 L60 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="60" y="246" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="67" y="261.5" font-size="11.5">g.txt</text>
+<text class="f mono" x="266" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M391 240 L391 257 L402 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="402" y="246" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="409" y="261.5" font-size="11.5">g.txt</text>
+<text class="f mono" x="608" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<text class="tm" x="320" y="261.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M31 268 L31 285 L42 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="266" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<path class="m" d="M373 268 L373 285 L384 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="289.5" font-size="11.5">hello.txt</text>
+<text class="t mono" x="608" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<text class="tm" x="24" y="352" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="369" font-size="11">diff: d/g.txt: 01058d8 on both sides: the same, passed over</text>
+</g>
+<g class="step"><title>hello.txt: ce01362 on both sides: passed over. Done: 6 trees read, 1 subtree and 3 files passed over, 1 file changed.</title>
+<rect class="a af" x="24" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="31" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="266" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">dcd4984</text>
+<rect class="a af" x="366" y="50" width="250" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="373" y="65.5" font-size="11.5" font-weight="600">/ (the top)</text>
+<text class="ta mono" x="608" y="65.5" font-size="11.5" font-weight="600" text-anchor="end">6f0dd63</text>
+<path class="m" d="M31 72 L31 89 L42 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="266" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<path class="m" d="M373 72 L373 89 L384 89" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="78" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="93.5" font-size="11.5">b c</text>
+<text class="t mono" x="608" y="93.5" font-size="11.5" font-weight="600" text-anchor="end">9495c3c</text>
+<text class="tm" x="320" y="93.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M31 100 L31 117 L42 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="42" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="49" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="266" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<path class="m" d="M373 100 L373 117 L384 117" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="384" y="106" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="391" y="121.5" font-size="11.5" font-weight="600">b/</text>
+<text class="t mono" x="608" y="121.5" font-size="11.5" font-weight="600" text-anchor="end">1933da3</text>
+<text class="tm" x="320" y="121.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M49 128 L49 145 L60 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="60" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="67" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="266" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M391 128 L391 145 L402 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="402" y="134" width="214" height="22" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="409" y="149.5" font-size="11.5">c</text>
+<text class="tm mono" x="608" y="149.5" font-size="11.5" font-weight="600" text-anchor="end">f2ad6c7</text>
+<path class="m" d="M31 156 L31 173 L42 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="42" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="49" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="ta mono" x="266" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">d61f885</text>
+<path class="m" d="M373 156 L373 173 L384 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="384" y="162" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="391" y="177.5" font-size="11.5" font-weight="600">d/</text>
+<text class="ta mono" x="608" y="177.5" font-size="11.5" font-weight="600" text-anchor="end">7ecc4e4</text>
+<text class="ta" x="320" y="177.5" font-size="11" font-weight="700" text-anchor="middle">opened</text>
+<path class="m" d="M49 184 L49 201 L60 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="60" y="190" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="67" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="ta mono" x="266" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">8588183</text>
+<path class="m" d="M391 184 L391 201 L402 201" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="402" y="190" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="409" y="205.5" font-size="11.5" font-weight="600">e/</text>
+<text class="ta mono" x="608" y="205.5" font-size="11.5" font-weight="600" text-anchor="end">cd21a79</text>
+<text class="ta" x="320" y="205.5" font-size="11" font-weight="700" text-anchor="middle">opened</text>
+<path class="m" d="M67 212 L67 229 L78 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="78" y="218" width="196" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="85" y="233.5" font-size="11.5">f.txt</text>
+<text class="ta mono" x="266" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">4cdb226</text>
+<path class="m" d="M409 212 L409 229 L420 229" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="420" y="218" width="196" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="427" y="233.5" font-size="11.5">f.txt</text>
+<text class="ta mono" x="608" y="233.5" font-size="11.5" font-weight="600" text-anchor="end">06654ae</text>
+<text class="ta" x="320" y="233.5" font-size="11" font-weight="700" text-anchor="middle">changed</text>
+<path class="m" d="M49 240 L49 257 L60 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="60" y="246" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="67" y="261.5" font-size="11.5">g.txt</text>
+<text class="t mono" x="266" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<path class="m" d="M391 240 L391 257 L402 257" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="402" y="246" width="214" height="22" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="409" y="261.5" font-size="11.5">g.txt</text>
+<text class="t mono" x="608" y="261.5" font-size="11.5" font-weight="600" text-anchor="end">01058d8</text>
+<text class="tm" x="320" y="261.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<path class="m" d="M31 268 L31 285 L42 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="42" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="49" y="289.5" font-size="11.5">hello.txt</text>
+<text class="f mono" x="266" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<path class="m" d="M373 268 L373 285 L384 285" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a fa" x="384" y="274" width="232" height="22" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="391" y="289.5" font-size="11.5">hello.txt</text>
+<text class="f mono" x="608" y="289.5" font-size="11.5" font-weight="600" text-anchor="end">ce01362</text>
+<text class="tm" x="320" y="289.5" font-size="14" font-weight="700" text-anchor="middle">=</text>
+<text class="tm" x="24" y="352" font-size="10.5">DS_TRACE=1 printed</text>
+<text class="t mono" x="24" y="369" font-size="11">diff: hello.txt: ce01362 on both sides: the same, passed over</text>
+</g>
+</svg>
