@@ -554,4 +554,4 @@ the next option; then timeline_after compares with the system's make on
 the built project: before 07.03, every command of `make -n -B` is among
 the walk's (92 commands against 36 at 07.01); from 07.03, both say
 "Nothing to be done for 'all'". Whole runs on the Mac: `./learn test dsa
-07` about 7 s; on Linux about 5 s.
+07` about 8 s; on Linux about 5 s.
