@@ -110,6 +110,16 @@ Upstream   None. The tools are written from the documented behaviour of
            expressions and the published algorithms: Horspool's search
            (1980), Thompson's construction (1968), and a DFA built as it
            runs, as Russ Cox describes RE2's.
+           gzip and gunzip are written from the two specifications, RFC
+           1951 (DEFLATE) and RFC 1952 (gzip), both by L. Peter Deutsch,
+           May 1996 (https://www.rfc-editor.org/rfc/rfc1951 and
+           /rfc1952), and held to GNU gzip
+           (https://www.gnu.org/software/gzip/, GPL-3.0-or-later) and the
+           gzip macOS ships. No text of either RFC and no code of zlib,
+           GNU gzip or any other program is in the track; what comes from
+           the RFCs is what the formats are made of (the code tables and
+           header fields). tracks/dsa/tools/gzip/NOTICE.txt has the
+           details.
 Upstream   For module 03 only (tools/edit): kilo, by Salvatore Sanfilippo
            (antirez), https://github.com/antirez/kilo (master, commit
            323d93b29bd89a2cb446de90c4ed4fea1764176e), by way of this
