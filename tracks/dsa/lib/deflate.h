@@ -32,7 +32,8 @@ typedef struct {
 #define DEFLATE_DEFAULTS {LZ77_HASH, 128, DEFLATE_BEST}
 
 /* Deflates in[0..n), appending the raw DEFLATE data to out, an Array of
- * bytes (array_init(out, 1)). opt may be NULL for the defaults. */
+ * bytes (array_init(out, 1)): whole bytes, the last block marked last.
+ * opt may be NULL for the defaults; in may not be NULL, even when n is 0. */
 void deflate_raw(const unsigned char *in, size_t n, const DeflateOptions *opt, Array *out);
 
 #endif

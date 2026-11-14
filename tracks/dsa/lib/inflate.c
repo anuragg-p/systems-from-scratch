@@ -203,9 +203,10 @@ static int build(State *s, Code *c, const unsigned char *lengths, int n, const c
     for (int i = 0; i < n; i++)
         if (lengths[i])
             c->sym[fill[lengths[i]]++] = (short)i;
-    /* The table: a code of len <= 9 bits arrives first bit first, in the
-     * lowest bit, so the 9 bits read at once end in it reversed, and the
-     * bits after it can be anything: every one of those entries is it. */
+    /* The table: a code of len <= 9 bits arrives first bit first, into the
+     * lowest bit, so in the 9 bits looked at it is the low len bits,
+     * reversed. The bits above it belong to whatever comes next and can be
+     * anything: every entry whose low bits are the code holds its symbol. */
     huff_codes(lengths, n, codes);
     for (int i = 0; i < n; i++) {
         int len = lengths[i];

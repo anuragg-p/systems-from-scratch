@@ -13,8 +13,8 @@
  *   --algo=NAME  how a match is found: hash, on the chains of a hash      @from 09.03
  *                table (the default); scan, trying every place in the     @from 09.03
  *                window; or none, finding none                            @from 09.03
- *   --chain=N    with hash, try at most N places for a match (128 unless  @from 09.03
- *                -1 ... -9 says otherwise; 0 for no limit)                @from 09.03
+ *   --chain=N    with hash, try at most N places for a match (128 if not  @from 09.03
+ *                given; 0 for no limit)                                   @from 09.03
  * Otherwise each FILE becomes FILE.gz, and FILE is removed, as the        @from 09.04
  * system's gzip does; with no file, or "-", standard input goes to        @from 09.04
  * standard output. Options:                                               @from 09.04

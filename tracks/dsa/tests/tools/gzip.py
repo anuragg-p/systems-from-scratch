@@ -43,6 +43,21 @@ FILES_FROM = {
 }
 # The brief for the lesson writers, and what the top-level NOTICE takes from this module.
 HIDDEN = ["tools/gzip/NOTES.md", "tools/gzip/NOTICE.txt"]
+UPSTREAM = [
+    {"name": "DEFLATE and gzip, RFC 1951 and RFC 1952",
+     "url": "https://www.rfc-editor.org/rfc/rfc1951",
+     "copyright": "Copyright (c) 1996 L. Peter Deutsch",
+     "licence": "Free to copy and distribute with the notice kept (the RFCs' own licence)",
+     "owes": "No code. Our gzip and gunzip are written from the two RFCs, and each reads what the "
+             "system's gzip writes and writes what the system's gunzip reads.",
+     "derived": False,
+     "also": [("RFC 1952: GZIP file format specification", "https://www.rfc-editor.org/rfc/rfc1952")]},
+    {"name": "GNU gzip",
+     "url": "https://www.gnu.org/software/gzip/",
+     "licence": "GPL-3.0-or-later",
+     "owes": "No code. On Linux our gunzip reads what it writes at every level, and it reads what ours writes.",
+     "derived": False},
+]
 
 
 # ---------------------------------------------------------------- writing DEFLATE by hand
