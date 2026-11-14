@@ -1,0 +1,459 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 262" fill="none">
+<title>A piece table: the file and the add buffer never move; only the list of pieces changes</title>
+<defs><marker id="f0304a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0304a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0304a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="step"><title>The file is opened by mapping it: nothing is read or copied. The text is one piece, orig 0+12: 12 bytes of the original, from its byte 0. The add buffer is empty.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">open</text>
+<text class="t" x="24" y="54" font-size="11" font-weight="600">original: the file</text>
+<text class="tm" x="24" y="68" font-size="10">never changed</text>
+<rect class="s f" x="150" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="161" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="174" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="185" y="59.14" font-size="11.5" text-anchor="middle">h</text>
+<rect class="s f" x="198" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="209" y="59.14" font-size="11.5" text-anchor="middle">e</text>
+<rect class="s f" x="222" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="228.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="228.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="236" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="246" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="257" y="59.14" font-size="11.5" text-anchor="middle">c</text>
+<rect class="s f" x="270" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="281" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="294" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="305" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="318" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="324.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="324.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="332" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="342" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353" y="59.14" font-size="11.5" text-anchor="middle">s</text>
+<rect class="s f" x="366" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="377" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="390" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="401" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="414" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="425" y="58.24" font-size="9" text-anchor="middle">\n</text>
+<text class="tm mono" x="161" y="38" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="257" y="38" font-size="9" text-anchor="middle">4</text>
+<text class="tm mono" x="353" y="38" font-size="9" text-anchor="middle">8</text>
+<text class="t" x="24" y="104" font-size="11" font-weight="600">add: what is typed</text>
+<text class="tm" x="24" y="118" font-size="10">only added to</text>
+<rect class="m f" x="150" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="161" y="130" font-size="9" text-anchor="middle">0</text>
+<rect class="m f" x="174" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="185" y="130" font-size="9" text-anchor="middle">1</text>
+<rect class="m f" x="198" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="209" y="130" font-size="9" text-anchor="middle">2</text>
+<rect class="m f" x="222" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="233" y="130" font-size="9" text-anchor="middle">3</text>
+<rect class="m f" x="246" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="257" y="130" font-size="9" text-anchor="middle">4</text>
+<rect class="m f" x="270" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="281" y="130" font-size="9" text-anchor="middle">5</text>
+<rect class="m f" x="294" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="305" y="130" font-size="9" text-anchor="middle">6</text>
+<rect class="m f" x="318" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="329" y="130" font-size="9" text-anchor="middle">7</text>
+<text class="t" x="24" y="158" font-size="11" font-weight="600">the pieces, in order</text>
+<rect class="s f" x="24" y="168" width="115" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="81.5" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 0+12</text>
+<text class="t mono" x="81.5" y="203" font-size="11" text-anchor="middle">&quot;the cat sat\n&quot;</text>
+<text class="tm" x="24" y="242" font-size="10.5">read in order, the text:</text>
+<text class="t mono" x="156" y="242" font-size="12">&quot;the cat sat\n&quot;</text>
+<text class="tm mono" x="616" y="242" font-size="10.5" text-anchor="end">pieces 1</text>
+</g>
+<g class="step"><title>"f" at byte 4: the byte goes on the end of the add buffer, at 0. The piece that byte 4 is inside is cut in two, orig 0+4 and orig 4+8, and a new piece, add 0+1, goes between them. Walked 1 piece to find the place.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 4 &quot;f&quot;</text>
+<text class="t" x="24" y="54" font-size="11" font-weight="600">original: the file</text>
+<text class="tm" x="24" y="68" font-size="10">never changed</text>
+<rect class="s f" x="150" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="161" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="174" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="185" y="59.14" font-size="11.5" text-anchor="middle">h</text>
+<rect class="s f" x="198" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="209" y="59.14" font-size="11.5" text-anchor="middle">e</text>
+<rect class="s f" x="222" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="228.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="228.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="236" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="246" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="257" y="59.14" font-size="11.5" text-anchor="middle">c</text>
+<rect class="s f" x="270" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="281" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="294" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="305" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="318" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="324.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="324.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="332" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="342" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353" y="59.14" font-size="11.5" text-anchor="middle">s</text>
+<rect class="s f" x="366" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="377" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="390" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="401" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="414" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="425" y="58.24" font-size="9" text-anchor="middle">\n</text>
+<text class="tm mono" x="161" y="38" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="257" y="38" font-size="9" text-anchor="middle">4</text>
+<text class="tm mono" x="353" y="38" font-size="9" text-anchor="middle">8</text>
+<text class="t" x="24" y="104" font-size="11" font-weight="600">add: what is typed</text>
+<text class="tm" x="24" y="118" font-size="10">only added to</text>
+<rect class="a fa" x="150" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="161" y="109.14" font-size="11.5" font-weight="600" text-anchor="middle">f</text>
+<text class="tm mono" x="161" y="130" font-size="9" text-anchor="middle">0</text>
+<rect class="m f" x="174" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="185" y="130" font-size="9" text-anchor="middle">1</text>
+<rect class="m f" x="198" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="209" y="130" font-size="9" text-anchor="middle">2</text>
+<rect class="m f" x="222" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="233" y="130" font-size="9" text-anchor="middle">3</text>
+<rect class="m f" x="246" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="257" y="130" font-size="9" text-anchor="middle">4</text>
+<rect class="m f" x="270" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="281" y="130" font-size="9" text-anchor="middle">5</text>
+<rect class="m f" x="294" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="305" y="130" font-size="9" text-anchor="middle">6</text>
+<rect class="m f" x="318" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="329" y="130" font-size="9" text-anchor="middle">7</text>
+<text class="t" x="24" y="158" font-size="11" font-weight="600">the pieces, in order</text>
+<rect class="s f" x="24" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="70" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="70" y="203" font-size="11" text-anchor="middle">&quot;the &quot;</text>
+<line class="s" x1="118" y1="190" x2="130" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="a fa" x="132" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="178" y="186" font-size="11.5" font-weight="600" text-anchor="middle">add 0+1</text>
+<text class="f mono" x="178" y="203" font-size="11" text-anchor="middle">&quot;f&quot;</text>
+<line class="s" x1="226" y1="190" x2="238" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="s f" x="240" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="286" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 4+8</text>
+<text class="t mono" x="286" y="203" font-size="11" text-anchor="middle">&quot;cat sat\n&quot;</text>
+<text class="tm" x="24" y="242" font-size="10.5">read in order, the text:</text>
+<text class="t mono" x="156" y="242" font-size="12">&quot;the fcat sat\n&quot;</text>
+<text class="tm mono" x="616" y="242" font-size="10.5" text-anchor="end">pieces 3</text>
+</g>
+<g class="step"><title>a, t and a space: each goes on the end of the add buffer. The piece before the cursor ends at the end of the add buffer, so it only gets longer, to add 0+4: no new piece. Walked 3 pieces for each key.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 5 &quot;a&quot;  insert 6 &quot;t&quot;  insert 7 &quot; &quot;</text>
+<text class="t" x="24" y="54" font-size="11" font-weight="600">original: the file</text>
+<text class="tm" x="24" y="68" font-size="10">never changed</text>
+<rect class="s f" x="150" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="161" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="174" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="185" y="59.14" font-size="11.5" text-anchor="middle">h</text>
+<rect class="s f" x="198" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="209" y="59.14" font-size="11.5" text-anchor="middle">e</text>
+<rect class="s f" x="222" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="228.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="228.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="236" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="246" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="257" y="59.14" font-size="11.5" text-anchor="middle">c</text>
+<rect class="s f" x="270" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="281" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="294" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="305" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="318" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="324.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="324.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="332" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="342" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353" y="59.14" font-size="11.5" text-anchor="middle">s</text>
+<rect class="s f" x="366" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="377" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="390" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="401" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="414" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="425" y="58.24" font-size="9" text-anchor="middle">\n</text>
+<text class="tm mono" x="161" y="38" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="257" y="38" font-size="9" text-anchor="middle">4</text>
+<text class="tm mono" x="353" y="38" font-size="9" text-anchor="middle">8</text>
+<text class="t" x="24" y="104" font-size="11" font-weight="600">add: what is typed</text>
+<text class="tm" x="24" y="118" font-size="10">only added to</text>
+<rect class="s f" x="150" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="161" y="109.14" font-size="11.5" text-anchor="middle">f</text>
+<text class="tm mono" x="161" y="130" font-size="9" text-anchor="middle">0</text>
+<rect class="a fa" x="174" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="185" y="109.14" font-size="11.5" font-weight="600" text-anchor="middle">a</text>
+<text class="tm mono" x="185" y="130" font-size="9" text-anchor="middle">1</text>
+<rect class="a fa" x="198" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="209" y="109.14" font-size="11.5" font-weight="600" text-anchor="middle">t</text>
+<text class="tm mono" x="209" y="130" font-size="9" text-anchor="middle">2</text>
+<rect class="a fa" x="222" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="f" x="228.5" y="111" width="9" height="1.5"/>
+<rect class="f" x="228.5" y="107.5" width="1.5" height="5"/>
+<rect class="f" x="236" y="107.5" width="1.5" height="5"/>
+<text class="tm mono" x="233" y="130" font-size="9" text-anchor="middle">3</text>
+<rect class="m f" x="246" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="257" y="130" font-size="9" text-anchor="middle">4</text>
+<rect class="m f" x="270" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="281" y="130" font-size="9" text-anchor="middle">5</text>
+<rect class="m f" x="294" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="305" y="130" font-size="9" text-anchor="middle">6</text>
+<rect class="m f" x="318" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="329" y="130" font-size="9" text-anchor="middle">7</text>
+<text class="t" x="24" y="158" font-size="11" font-weight="600">the pieces, in order</text>
+<rect class="s f" x="24" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="70" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="70" y="203" font-size="11" text-anchor="middle">&quot;the &quot;</text>
+<line class="s" x1="118" y1="190" x2="130" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="a fa" x="132" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="178" y="186" font-size="11.5" font-weight="600" text-anchor="middle">add 0+4</text>
+<text class="f mono" x="178" y="203" font-size="11" text-anchor="middle">&quot;fat &quot;</text>
+<line class="s" x1="226" y1="190" x2="238" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="s f" x="240" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="286" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 4+8</text>
+<text class="t mono" x="286" y="203" font-size="11" text-anchor="middle">&quot;cat sat\n&quot;</text>
+<text class="tm" x="24" y="242" font-size="10.5">read in order, the text:</text>
+<text class="t mono" x="156" y="242" font-size="12">&quot;the fat cat sat\n&quot;</text>
+<text class="tm mono" x="616" y="242" font-size="10.5" text-anchor="end">pieces 3</text>
+</g>
+<g class="step"><title>"!" at byte 15: the byte goes on the end of the add buffer, at 4. The piece that byte 15 is inside is cut in two, orig 4+7 and orig 11+1, and a new piece, add 4+1, goes between them. Walked 3 pieces to find the place.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 15 &quot;!&quot;</text>
+<text class="t" x="24" y="54" font-size="11" font-weight="600">original: the file</text>
+<text class="tm" x="24" y="68" font-size="10">never changed</text>
+<rect class="s f" x="150" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="161" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="174" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="185" y="59.14" font-size="11.5" text-anchor="middle">h</text>
+<rect class="s f" x="198" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="209" y="59.14" font-size="11.5" text-anchor="middle">e</text>
+<rect class="s f" x="222" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="228.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="228.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="236" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="246" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="257" y="59.14" font-size="11.5" text-anchor="middle">c</text>
+<rect class="s f" x="270" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="281" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="294" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="305" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="318" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="324.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="324.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="332" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="342" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353" y="59.14" font-size="11.5" text-anchor="middle">s</text>
+<rect class="s f" x="366" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="377" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="390" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="401" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="414" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="425" y="58.24" font-size="9" text-anchor="middle">\n</text>
+<text class="tm mono" x="161" y="38" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="257" y="38" font-size="9" text-anchor="middle">4</text>
+<text class="tm mono" x="353" y="38" font-size="9" text-anchor="middle">8</text>
+<text class="t" x="24" y="104" font-size="11" font-weight="600">add: what is typed</text>
+<text class="tm" x="24" y="118" font-size="10">only added to</text>
+<rect class="s f" x="150" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="161" y="109.14" font-size="11.5" text-anchor="middle">f</text>
+<text class="tm mono" x="161" y="130" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="174" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="185" y="109.14" font-size="11.5" text-anchor="middle">a</text>
+<text class="tm mono" x="185" y="130" font-size="9" text-anchor="middle">1</text>
+<rect class="s f" x="198" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="209" y="109.14" font-size="11.5" text-anchor="middle">t</text>
+<text class="tm mono" x="209" y="130" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="222" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="228.5" y="111" width="9" height="1.5"/>
+<rect class="tm" x="228.5" y="107.5" width="1.5" height="5"/>
+<rect class="tm" x="236" y="107.5" width="1.5" height="5"/>
+<text class="tm mono" x="233" y="130" font-size="9" text-anchor="middle">3</text>
+<rect class="a fa" x="246" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="257" y="109.14" font-size="11.5" font-weight="600" text-anchor="middle">!</text>
+<text class="tm mono" x="257" y="130" font-size="9" text-anchor="middle">4</text>
+<rect class="m f" x="270" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="281" y="130" font-size="9" text-anchor="middle">5</text>
+<rect class="m f" x="294" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="305" y="130" font-size="9" text-anchor="middle">6</text>
+<rect class="m f" x="318" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="329" y="130" font-size="9" text-anchor="middle">7</text>
+<text class="t" x="24" y="158" font-size="11" font-weight="600">the pieces, in order</text>
+<rect class="s f" x="24" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="70" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="70" y="203" font-size="11" text-anchor="middle">&quot;the &quot;</text>
+<line class="s" x1="118" y1="190" x2="130" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="a af" x="132" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="178" y="186" font-size="11.5" font-weight="600" text-anchor="middle">add 0+4</text>
+<text class="ta mono" x="178" y="203" font-size="11" text-anchor="middle">&quot;fat &quot;</text>
+<line class="s" x1="226" y1="190" x2="238" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="s f" x="240" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="286" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 4+7</text>
+<text class="t mono" x="286" y="203" font-size="11" text-anchor="middle">&quot;cat sat&quot;</text>
+<line class="s" x1="334" y1="190" x2="346" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="a fa" x="348" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="394" y="186" font-size="11.5" font-weight="600" text-anchor="middle">add 4+1</text>
+<text class="f mono" x="394" y="203" font-size="11" text-anchor="middle">&quot;!&quot;</text>
+<line class="s" x1="442" y1="190" x2="454" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="s f" x="456" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="502" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 11+1</text>
+<text class="t mono" x="502" y="203" font-size="11" text-anchor="middle">&quot;\n&quot;</text>
+<text class="tm" x="24" y="242" font-size="10.5">read in order, the text:</text>
+<text class="t mono" x="156" y="242" font-size="12">&quot;the fat cat sat!\n&quot;</text>
+<text class="tm mono" x="616" y="242" font-size="10.5" text-anchor="end">pieces 5</text>
+</g>
+<g class="step"><title>Backspace: erase byte 15. The piece add 4+1, the !, is taken out of the list. The ! itself stays where it is in the add buffer: no byte is ever taken out of a buffer. Walked 4.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">erase 15 1</text>
+<text class="t" x="24" y="54" font-size="11" font-weight="600">original: the file</text>
+<text class="tm" x="24" y="68" font-size="10">never changed</text>
+<rect class="s f" x="150" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="161" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="174" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="185" y="59.14" font-size="11.5" text-anchor="middle">h</text>
+<rect class="s f" x="198" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="209" y="59.14" font-size="11.5" text-anchor="middle">e</text>
+<rect class="s f" x="222" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="228.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="228.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="236" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="246" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="257" y="59.14" font-size="11.5" text-anchor="middle">c</text>
+<rect class="s f" x="270" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="281" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="294" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="305" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="318" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="324.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="324.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="332" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="342" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353" y="59.14" font-size="11.5" text-anchor="middle">s</text>
+<rect class="s f" x="366" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="377" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="390" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="401" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="414" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="425" y="58.24" font-size="9" text-anchor="middle">\n</text>
+<text class="tm mono" x="161" y="38" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="257" y="38" font-size="9" text-anchor="middle">4</text>
+<text class="tm mono" x="353" y="38" font-size="9" text-anchor="middle">8</text>
+<text class="t" x="24" y="104" font-size="11" font-weight="600">add: what is typed</text>
+<text class="tm" x="24" y="118" font-size="10">only added to</text>
+<rect class="s f" x="150" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="161" y="109.14" font-size="11.5" text-anchor="middle">f</text>
+<text class="tm mono" x="161" y="130" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="174" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="185" y="109.14" font-size="11.5" text-anchor="middle">a</text>
+<text class="tm mono" x="185" y="130" font-size="9" text-anchor="middle">1</text>
+<rect class="s f" x="198" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="209" y="109.14" font-size="11.5" text-anchor="middle">t</text>
+<text class="tm mono" x="209" y="130" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="222" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="228.5" y="111" width="9" height="1.5"/>
+<rect class="tm" x="228.5" y="107.5" width="1.5" height="5"/>
+<rect class="tm" x="236" y="107.5" width="1.5" height="5"/>
+<text class="tm mono" x="233" y="130" font-size="9" text-anchor="middle">3</text>
+<rect class="m f" x="246" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="257" y="109.14" font-size="11.5" text-anchor="middle">!</text>
+<text class="tm mono" x="257" y="130" font-size="9" text-anchor="middle">4</text>
+<rect class="m f" x="270" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="281" y="130" font-size="9" text-anchor="middle">5</text>
+<rect class="m f" x="294" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="305" y="130" font-size="9" text-anchor="middle">6</text>
+<rect class="m f" x="318" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="329" y="130" font-size="9" text-anchor="middle">7</text>
+<text class="t" x="24" y="158" font-size="11" font-weight="600">the pieces, in order</text>
+<rect class="s f" x="24" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="70" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="70" y="203" font-size="11" text-anchor="middle">&quot;the &quot;</text>
+<line class="s" x1="118" y1="190" x2="130" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="a af" x="132" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="178" y="186" font-size="11.5" font-weight="600" text-anchor="middle">add 0+4</text>
+<text class="ta mono" x="178" y="203" font-size="11" text-anchor="middle">&quot;fat &quot;</text>
+<line class="s" x1="226" y1="190" x2="238" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="s f" x="240" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="286" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 4+7</text>
+<text class="t mono" x="286" y="203" font-size="11" text-anchor="middle">&quot;cat sat&quot;</text>
+<line class="s" x1="334" y1="190" x2="346" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="s f" x="348" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="394" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 11+1</text>
+<text class="t mono" x="394" y="203" font-size="11" text-anchor="middle">&quot;\n&quot;</text>
+<text class="tm" x="24" y="242" font-size="10.5">read in order, the text:</text>
+<text class="t mono" x="156" y="242" font-size="12">&quot;the fat cat sat\n&quot;</text>
+<text class="tm mono" x="616" y="242" font-size="10.5" text-anchor="end">pieces 4</text>
+</g>
+<g class="step"><title>"." at byte 15: it goes on the end of the add buffer, at 5. The piece before the cursor, orig 4+7, is not the end of the add buffer (the ! is), so it cannot grow: a new piece, add 5+1. The ! stays in the add buffer, in no piece.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 15 &quot;.&quot;</text>
+<text class="t" x="24" y="54" font-size="11" font-weight="600">original: the file</text>
+<text class="tm" x="24" y="68" font-size="10">never changed</text>
+<rect class="s f" x="150" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="161" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="174" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="185" y="59.14" font-size="11.5" text-anchor="middle">h</text>
+<rect class="s f" x="198" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="209" y="59.14" font-size="11.5" text-anchor="middle">e</text>
+<rect class="s f" x="222" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="228.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="228.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="236" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="246" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="257" y="59.14" font-size="11.5" text-anchor="middle">c</text>
+<rect class="s f" x="270" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="281" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="294" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="305" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="318" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="324.5" y="61" width="9" height="1.5"/>
+<rect class="tm" x="324.5" y="57.5" width="1.5" height="5"/>
+<rect class="tm" x="332" y="57.5" width="1.5" height="5"/>
+<rect class="s f" x="342" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353" y="59.14" font-size="11.5" text-anchor="middle">s</text>
+<rect class="s f" x="366" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="377" y="59.14" font-size="11.5" text-anchor="middle">a</text>
+<rect class="s f" x="390" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="401" y="59.14" font-size="11.5" text-anchor="middle">t</text>
+<rect class="s f" x="414" y="42" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="425" y="58.24" font-size="9" text-anchor="middle">\n</text>
+<text class="tm mono" x="161" y="38" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="257" y="38" font-size="9" text-anchor="middle">4</text>
+<text class="tm mono" x="353" y="38" font-size="9" text-anchor="middle">8</text>
+<text class="t" x="24" y="104" font-size="11" font-weight="600">add: what is typed</text>
+<text class="tm" x="24" y="118" font-size="10">only added to</text>
+<rect class="s f" x="150" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="161" y="109.14" font-size="11.5" text-anchor="middle">f</text>
+<text class="tm mono" x="161" y="130" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="174" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="185" y="109.14" font-size="11.5" text-anchor="middle">a</text>
+<text class="tm mono" x="185" y="130" font-size="9" text-anchor="middle">1</text>
+<rect class="s f" x="198" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="209" y="109.14" font-size="11.5" text-anchor="middle">t</text>
+<text class="tm mono" x="209" y="130" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="222" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<rect class="tm" x="228.5" y="111" width="9" height="1.5"/>
+<rect class="tm" x="228.5" y="107.5" width="1.5" height="5"/>
+<rect class="tm" x="236" y="107.5" width="1.5" height="5"/>
+<text class="tm mono" x="233" y="130" font-size="9" text-anchor="middle">3</text>
+<rect class="m f" x="246" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="257" y="109.14" font-size="11.5" text-anchor="middle">!</text>
+<text class="tm mono" x="257" y="130" font-size="9" text-anchor="middle">4</text>
+<rect class="a fa" x="270" y="92" width="22" height="26" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="281" y="109.14" font-size="11.5" font-weight="600" text-anchor="middle">.</text>
+<text class="tm mono" x="281" y="130" font-size="9" text-anchor="middle">5</text>
+<rect class="m f" x="294" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="305" y="130" font-size="9" text-anchor="middle">6</text>
+<rect class="m f" x="318" y="92" width="22" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="329" y="130" font-size="9" text-anchor="middle">7</text>
+<text class="t" x="24" y="158" font-size="11" font-weight="600">the pieces, in order</text>
+<rect class="s f" x="24" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="70" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="70" y="203" font-size="11" text-anchor="middle">&quot;the &quot;</text>
+<line class="s" x1="118" y1="190" x2="130" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="a af" x="132" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="178" y="186" font-size="11.5" font-weight="600" text-anchor="middle">add 0+4</text>
+<text class="ta mono" x="178" y="203" font-size="11" text-anchor="middle">&quot;fat &quot;</text>
+<line class="s" x1="226" y1="190" x2="238" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="s f" x="240" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="286" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 4+7</text>
+<text class="t mono" x="286" y="203" font-size="11" text-anchor="middle">&quot;cat sat&quot;</text>
+<line class="s" x1="334" y1="190" x2="346" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="a fa" x="348" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="f mono" x="394" y="186" font-size="11.5" font-weight="600" text-anchor="middle">add 5+1</text>
+<text class="f mono" x="394" y="203" font-size="11" text-anchor="middle">&quot;.&quot;</text>
+<line class="s" x1="442" y1="190" x2="454" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0304a-ah)"/>
+<rect class="s f" x="456" y="168" width="92" height="44" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="502" y="186" font-size="11.5" font-weight="600" text-anchor="middle">orig 11+1</text>
+<text class="t mono" x="502" y="203" font-size="11" text-anchor="middle">&quot;\n&quot;</text>
+<text class="tm" x="24" y="242" font-size="10.5">read in order, the text:</text>
+<text class="t mono" x="156" y="242" font-size="12">&quot;the fat cat sat.\n&quot;</text>
+<text class="tm mono" x="616" y="242" font-size="10.5" text-anchor="end">pieces 5</text>
+</g>
+</svg>

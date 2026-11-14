@@ -1,0 +1,286 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 292" fill="none">
+<title>The pieces in an AVL tree: each node knows the length of the text under it, and a rotation mends a side that has grown two taller</title>
+<defs><marker id="f0305a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0305a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0305a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="step"><title>The file is opened, mapped as in 03.04: the tree is one node, its piece orig 0+12, with 12 bytes of text under it. h is a node's height: 1 for a node with no children.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">open</text>
+<rect class="s f" x="270" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="320" y="51" font-size="11" font-weight="600" text-anchor="middle">orig 0+12</text>
+<text class="t mono" x="320" y="65" font-size="10.5" text-anchor="middle">&quot;the cat sat\n&quot;</text>
+<text class="tm mono" x="320" y="79" font-size="9.5" text-anchor="middle">under it: 12</text>
+<text class="tm mono" x="374" y="44" font-size="9.5">h1</text>
+</g>
+<g class="step"><title>"f" at byte 4: first the piece byte 4 is inside, orig 0+12, is cut there. It keeps its first 4 bytes, and the rest, orig 4+8, is a new node just after it in the text: its right child.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 4 &quot;f&quot;</text>
+<line class="m" x1="262" y1="85" x2="378" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="212" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="262" y="51" font-size="11" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="262" y="65" font-size="10.5" text-anchor="middle">&quot;the &quot;</text>
+<text class="tm mono" x="262" y="79" font-size="9.5" text-anchor="middle">under it: 12</text>
+<text class="tm mono" x="316" y="44" font-size="9.5">h2</text>
+<rect class="a fa" x="328" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="378" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 4+8</text>
+<text class="f mono" x="378" y="133" font-size="10.5" text-anchor="middle">&quot;cat sat\n&quot;</text>
+<text class="f mono" x="378" y="147" font-size="9.5" text-anchor="middle">under it: 8</text>
+<text class="tm mono" x="432" y="112" font-size="9.5">h1</text>
+</g>
+<g class="step"><title>The new piece, add 0+1, goes in as a node at byte 4: the left child of orig 4+8. On the way back up, at orig 0+4, the two sides are 0 and 2 high: two apart, which breaks the rule.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 4 &quot;f&quot;</text>
+<line class="m" x1="436" y1="153" x2="320" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="204" y1="85" x2="436" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a af" x="154" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="204" y="51" font-size="11" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="ta mono" x="204" y="65" font-size="10.5" text-anchor="middle">&quot;the &quot;</text>
+<text class="ta mono" x="204" y="79" font-size="9.5" text-anchor="middle">under it: 13</text>
+<text class="tm mono" x="258" y="44" font-size="9.5">h3</text>
+<rect class="a fa" x="270" y="171" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="320" y="187" font-size="11" font-weight="600" text-anchor="middle">add 0+1</text>
+<text class="f mono" x="320" y="201" font-size="10.5" text-anchor="middle">&quot;f&quot;</text>
+<text class="f mono" x="320" y="215" font-size="9.5" text-anchor="middle">under it: 1</text>
+<text class="tm mono" x="374" y="180" font-size="9.5">h1</text>
+<rect class="s f" x="386" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="436" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 4+8</text>
+<text class="t mono" x="436" y="133" font-size="10.5" text-anchor="middle">&quot;cat sat\n&quot;</text>
+<text class="tm mono" x="436" y="147" font-size="9.5" text-anchor="middle">under it: 9</text>
+<text class="tm mono" x="490" y="112" font-size="9.5">h2</text>
+</g>
+<g class="step"><title>The taller side, orig 4+8, is itself taller on its inner side, and one rotation would only move that across. So first rotate right at orig 4+8: add 0+1 goes up and orig 4+8 down to its right. The order of the pieces is the same.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 4 &quot;f&quot;: rotate right</text>
+<line class="m" x1="204" y1="85" x2="320" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="320" y1="153" x2="436" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="154" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="204" y="51" font-size="11" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="204" y="65" font-size="10.5" text-anchor="middle">&quot;the &quot;</text>
+<text class="tm mono" x="204" y="79" font-size="9.5" text-anchor="middle">under it: 13</text>
+<text class="tm mono" x="258" y="44" font-size="9.5">h3</text>
+<rect class="a fa" x="270" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="320" y="119" font-size="11" font-weight="600" text-anchor="middle">add 0+1</text>
+<text class="f mono" x="320" y="133" font-size="10.5" text-anchor="middle">&quot;f&quot;</text>
+<text class="f mono" x="320" y="147" font-size="9.5" text-anchor="middle">under it: 9</text>
+<text class="tm mono" x="374" y="112" font-size="9.5">h2</text>
+<rect class="a af" x="386" y="171" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="436" y="187" font-size="11" font-weight="600" text-anchor="middle">orig 4+8</text>
+<text class="ta mono" x="436" y="201" font-size="10.5" text-anchor="middle">&quot;cat sat\n&quot;</text>
+<text class="ta mono" x="436" y="215" font-size="9.5" text-anchor="middle">under it: 8</text>
+<text class="tm mono" x="490" y="180" font-size="9.5">h1</text>
+</g>
+<g class="step"><title>Then rotate left at orig 0+4: add 0+1 goes up in its place, and orig 0+4 down to its left. The two sides are now the same height, the pieces are in the same order, and only the two nodes that turned have their lengths worked out again.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 4 &quot;f&quot;: rotate left</text>
+<line class="m" x1="320" y1="85" x2="204" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="320" y1="85" x2="436" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a af" x="154" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="204" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="ta mono" x="204" y="133" font-size="10.5" text-anchor="middle">&quot;the &quot;</text>
+<text class="ta mono" x="204" y="147" font-size="9.5" text-anchor="middle">under it: 4</text>
+<text class="tm mono" x="258" y="112" font-size="9.5">h1</text>
+<rect class="a fa" x="270" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="320" y="51" font-size="11" font-weight="600" text-anchor="middle">add 0+1</text>
+<text class="f mono" x="320" y="65" font-size="10.5" text-anchor="middle">&quot;f&quot;</text>
+<text class="f mono" x="320" y="79" font-size="9.5" text-anchor="middle">under it: 13</text>
+<text class="tm mono" x="374" y="44" font-size="9.5">h2</text>
+<rect class="s f" x="386" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="436" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 4+8</text>
+<text class="t mono" x="436" y="133" font-size="10.5" text-anchor="middle">&quot;cat sat\n&quot;</text>
+<text class="tm mono" x="436" y="147" font-size="9.5" text-anchor="middle">under it: 8</text>
+<text class="tm mono" x="490" y="112" font-size="9.5">h1</text>
+</g>
+<g class="step"><title>a, t and a space: each is typed just after the piece add 0+1, which ends at the end of the add buffer, so that piece only gets longer, to add 0+4. No node is added; the lengths on the path down to it are worked out again: 16 under the root now.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 5 &quot;a&quot;  6 &quot;t&quot;  7 &quot; &quot;</text>
+<line class="m" x1="320" y1="85" x2="204" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="320" y1="85" x2="436" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="154" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="204" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="204" y="133" font-size="10.5" text-anchor="middle">&quot;the &quot;</text>
+<text class="tm mono" x="204" y="147" font-size="9.5" text-anchor="middle">under it: 4</text>
+<text class="tm mono" x="258" y="112" font-size="9.5">h1</text>
+<rect class="a fa" x="270" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="320" y="51" font-size="11" font-weight="600" text-anchor="middle">add 0+4</text>
+<text class="f mono" x="320" y="65" font-size="10.5" text-anchor="middle">&quot;fat &quot;</text>
+<text class="f mono" x="320" y="79" font-size="9.5" text-anchor="middle">under it: 16</text>
+<text class="tm mono" x="374" y="44" font-size="9.5">h2</text>
+<rect class="s f" x="386" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="436" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 4+8</text>
+<text class="t mono" x="436" y="133" font-size="10.5" text-anchor="middle">&quot;cat sat\n&quot;</text>
+<text class="tm mono" x="436" y="147" font-size="9.5" text-anchor="middle">under it: 8</text>
+<text class="tm mono" x="490" y="112" font-size="9.5">h1</text>
+</g>
+<g class="step"><title>"!" at byte 15: down from the root by the lengths on the left. The root, add 0+4, has 4 bytes on its left and 4 of its own, so byte 15 is byte 7 of its right side: inside orig 4+8, which is cut there into orig 4+7 and orig 11+1, its right child.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 15 &quot;!&quot;</text>
+<line class="m" x1="262" y1="85" x2="146" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="262" y1="85" x2="378" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="378" y1="153" x2="494" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="96" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="146" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="146" y="133" font-size="10.5" text-anchor="middle">&quot;the &quot;</text>
+<text class="tm mono" x="146" y="147" font-size="9.5" text-anchor="middle">under it: 4</text>
+<text class="tm mono" x="200" y="112" font-size="9.5">h1</text>
+<rect class="s fs" x="212" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="262" y="51" font-size="11" font-weight="600" text-anchor="middle">add 0+4</text>
+<text class="t mono" x="262" y="65" font-size="10.5" text-anchor="middle">&quot;fat &quot;</text>
+<text class="tm mono" x="262" y="79" font-size="9.5" text-anchor="middle">under it: 16</text>
+<text class="tm mono" x="316" y="44" font-size="9.5">h3</text>
+<rect class="s f" x="328" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="378" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 4+7</text>
+<text class="t mono" x="378" y="133" font-size="10.5" text-anchor="middle">&quot;cat sat&quot;</text>
+<text class="tm mono" x="378" y="147" font-size="9.5" text-anchor="middle">under it: 8</text>
+<text class="tm mono" x="432" y="112" font-size="9.5">h2</text>
+<rect class="a fa" x="444" y="171" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="494" y="187" font-size="11" font-weight="600" text-anchor="middle">orig 11+1</text>
+<text class="f mono" x="494" y="201" font-size="10.5" text-anchor="middle">&quot;\n&quot;</text>
+<text class="f mono" x="494" y="215" font-size="9.5" text-anchor="middle">under it: 1</text>
+<text class="tm mono" x="548" y="180" font-size="9.5">h1</text>
+</g>
+<g class="step"><title>The new piece, add 4+1, goes in as a node at byte 15: the left child of orig 11+1. On the way back up, at orig 4+7, the two sides are 0 and 2 high: two apart, which breaks the rule.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 15 &quot;!&quot;</text>
+<line class="m" x1="204" y1="85" x2="88" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="204" y1="85" x2="320" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="552" y1="221" x2="436" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="320" y1="153" x2="552" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="38" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="88" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="88" y="133" font-size="10.5" text-anchor="middle">&quot;the &quot;</text>
+<text class="tm mono" x="88" y="147" font-size="9.5" text-anchor="middle">under it: 4</text>
+<text class="tm mono" x="142" y="112" font-size="9.5">h1</text>
+<rect class="s fs" x="154" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="204" y="51" font-size="11" font-weight="600" text-anchor="middle">add 0+4</text>
+<text class="t mono" x="204" y="65" font-size="10.5" text-anchor="middle">&quot;fat &quot;</text>
+<text class="tm mono" x="204" y="79" font-size="9.5" text-anchor="middle">under it: 17</text>
+<text class="tm mono" x="258" y="44" font-size="9.5">h4</text>
+<rect class="a af" x="270" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="320" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 4+7</text>
+<text class="ta mono" x="320" y="133" font-size="10.5" text-anchor="middle">&quot;cat sat&quot;</text>
+<text class="ta mono" x="320" y="147" font-size="9.5" text-anchor="middle">under it: 9</text>
+<text class="tm mono" x="374" y="112" font-size="9.5">h3</text>
+<rect class="a fa" x="386" y="239" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="436" y="255" font-size="11" font-weight="600" text-anchor="middle">add 4+1</text>
+<text class="f mono" x="436" y="269" font-size="10.5" text-anchor="middle">&quot;!&quot;</text>
+<text class="f mono" x="436" y="283" font-size="9.5" text-anchor="middle">under it: 1</text>
+<text class="tm mono" x="490" y="248" font-size="9.5">h1</text>
+<rect class="s f" x="502" y="171" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="552" y="187" font-size="11" font-weight="600" text-anchor="middle">orig 11+1</text>
+<text class="t mono" x="552" y="201" font-size="10.5" text-anchor="middle">&quot;\n&quot;</text>
+<text class="tm mono" x="552" y="215" font-size="9.5" text-anchor="middle">under it: 2</text>
+<text class="tm mono" x="606" y="180" font-size="9.5">h2</text>
+</g>
+<g class="step"><title>The taller side, orig 11+1, is itself taller on its inner side, and one rotation would only move that across. So first rotate right at orig 11+1: add 4+1 goes up and orig 11+1 down to its right. The order of the pieces is the same.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 15 &quot;!&quot;: rotate right</text>
+<line class="m" x1="204" y1="85" x2="88" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="204" y1="85" x2="320" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="320" y1="153" x2="436" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="436" y1="221" x2="552" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="38" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="88" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="88" y="133" font-size="10.5" text-anchor="middle">&quot;the &quot;</text>
+<text class="tm mono" x="88" y="147" font-size="9.5" text-anchor="middle">under it: 4</text>
+<text class="tm mono" x="142" y="112" font-size="9.5">h1</text>
+<rect class="s fs" x="154" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="204" y="51" font-size="11" font-weight="600" text-anchor="middle">add 0+4</text>
+<text class="t mono" x="204" y="65" font-size="10.5" text-anchor="middle">&quot;fat &quot;</text>
+<text class="tm mono" x="204" y="79" font-size="9.5" text-anchor="middle">under it: 17</text>
+<text class="tm mono" x="258" y="44" font-size="9.5">h4</text>
+<rect class="s f" x="270" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="320" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 4+7</text>
+<text class="t mono" x="320" y="133" font-size="10.5" text-anchor="middle">&quot;cat sat&quot;</text>
+<text class="tm mono" x="320" y="147" font-size="9.5" text-anchor="middle">under it: 9</text>
+<text class="tm mono" x="374" y="112" font-size="9.5">h3</text>
+<rect class="a fa" x="386" y="171" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="436" y="187" font-size="11" font-weight="600" text-anchor="middle">add 4+1</text>
+<text class="f mono" x="436" y="201" font-size="10.5" text-anchor="middle">&quot;!&quot;</text>
+<text class="f mono" x="436" y="215" font-size="9.5" text-anchor="middle">under it: 2</text>
+<text class="tm mono" x="490" y="180" font-size="9.5">h2</text>
+<rect class="a af" x="502" y="239" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="552" y="255" font-size="11" font-weight="600" text-anchor="middle">orig 11+1</text>
+<text class="ta mono" x="552" y="269" font-size="10.5" text-anchor="middle">&quot;\n&quot;</text>
+<text class="ta mono" x="552" y="283" font-size="9.5" text-anchor="middle">under it: 1</text>
+<text class="tm mono" x="606" y="248" font-size="9.5">h1</text>
+</g>
+<g class="step"><title>Then rotate left at orig 4+7: add 4+1 goes up in its place, and orig 4+7 down to its left. The two sides are now the same height, the pieces are in the same order, and only the two nodes that turned have their lengths worked out again.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 15 &quot;!&quot;: rotate left</text>
+<line class="m" x1="204" y1="85" x2="88" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="436" y1="153" x2="320" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="204" y1="85" x2="436" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="436" y1="153" x2="552" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="38" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="88" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="88" y="133" font-size="10.5" text-anchor="middle">&quot;the &quot;</text>
+<text class="tm mono" x="88" y="147" font-size="9.5" text-anchor="middle">under it: 4</text>
+<text class="tm mono" x="142" y="112" font-size="9.5">h1</text>
+<rect class="s fs" x="154" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="204" y="51" font-size="11" font-weight="600" text-anchor="middle">add 0+4</text>
+<text class="t mono" x="204" y="65" font-size="10.5" text-anchor="middle">&quot;fat &quot;</text>
+<text class="tm mono" x="204" y="79" font-size="9.5" text-anchor="middle">under it: 17</text>
+<text class="tm mono" x="258" y="44" font-size="9.5">h3</text>
+<rect class="a af" x="270" y="171" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="320" y="187" font-size="11" font-weight="600" text-anchor="middle">orig 4+7</text>
+<text class="ta mono" x="320" y="201" font-size="10.5" text-anchor="middle">&quot;cat sat&quot;</text>
+<text class="ta mono" x="320" y="215" font-size="9.5" text-anchor="middle">under it: 7</text>
+<text class="tm mono" x="374" y="180" font-size="9.5">h1</text>
+<rect class="a fa" x="386" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="436" y="119" font-size="11" font-weight="600" text-anchor="middle">add 4+1</text>
+<text class="f mono" x="436" y="133" font-size="10.5" text-anchor="middle">&quot;!&quot;</text>
+<text class="f mono" x="436" y="147" font-size="9.5" text-anchor="middle">under it: 9</text>
+<text class="tm mono" x="490" y="112" font-size="9.5">h2</text>
+<rect class="s f" x="502" y="171" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="552" y="187" font-size="11" font-weight="600" text-anchor="middle">orig 11+1</text>
+<text class="t mono" x="552" y="201" font-size="10.5" text-anchor="middle">&quot;\n&quot;</text>
+<text class="tm mono" x="552" y="215" font-size="9.5" text-anchor="middle">under it: 1</text>
+<text class="tm mono" x="606" y="180" font-size="9.5">h1</text>
+</g>
+<g class="step"><title>Backspace: erase byte 15. Its piece, add 4+1, is a node of its own, so that node is taken out. It had two children, so the first node after it in the text, the leftmost of its right side, orig 11+1, takes its place.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">erase 15 1</text>
+<line class="m" x1="262" y1="85" x2="146" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="494" y1="153" x2="378" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="262" y1="85" x2="494" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="96" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="146" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="146" y="133" font-size="10.5" text-anchor="middle">&quot;the &quot;</text>
+<text class="tm mono" x="146" y="147" font-size="9.5" text-anchor="middle">under it: 4</text>
+<text class="tm mono" x="200" y="112" font-size="9.5">h1</text>
+<rect class="s fs" x="212" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="262" y="51" font-size="11" font-weight="600" text-anchor="middle">add 0+4</text>
+<text class="t mono" x="262" y="65" font-size="10.5" text-anchor="middle">&quot;fat &quot;</text>
+<text class="tm mono" x="262" y="79" font-size="9.5" text-anchor="middle">under it: 16</text>
+<text class="tm mono" x="316" y="44" font-size="9.5">h3</text>
+<rect class="s f" x="328" y="171" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="378" y="187" font-size="11" font-weight="600" text-anchor="middle">orig 4+7</text>
+<text class="t mono" x="378" y="201" font-size="10.5" text-anchor="middle">&quot;cat sat&quot;</text>
+<text class="tm mono" x="378" y="215" font-size="9.5" text-anchor="middle">under it: 7</text>
+<text class="tm mono" x="432" y="180" font-size="9.5">h1</text>
+<rect class="s f" x="444" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="494" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 11+1</text>
+<text class="t mono" x="494" y="133" font-size="10.5" text-anchor="middle">&quot;\n&quot;</text>
+<text class="tm mono" x="494" y="147" font-size="9.5" text-anchor="middle">under it: 8</text>
+<text class="tm mono" x="548" y="112" font-size="9.5">h2</text>
+</g>
+<g class="step"><title>"." at byte 15: no piece to cut, and a new node, add 5+1, goes in after orig 4+7. orig 11+1 above them is then two higher on its left, and this time the inner side is on the left: rotate left at orig 4+7, then right at orig 11+1. Five pieces, height 3.</title>
+<text class="ta mono" x="24" y="18" font-size="11.5" font-weight="600">insert 15 &quot;.&quot;</text>
+<line class="m" x1="204" y1="85" x2="88" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="436" y1="153" x2="320" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="204" y1="85" x2="436" y2="103" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="436" y1="153" x2="552" y2="171" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="38" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="88" y="119" font-size="11" font-weight="600" text-anchor="middle">orig 0+4</text>
+<text class="t mono" x="88" y="133" font-size="10.5" text-anchor="middle">&quot;the &quot;</text>
+<text class="tm mono" x="88" y="147" font-size="9.5" text-anchor="middle">under it: 4</text>
+<text class="tm mono" x="142" y="112" font-size="9.5">h1</text>
+<rect class="s fs" x="154" y="35" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="204" y="51" font-size="11" font-weight="600" text-anchor="middle">add 0+4</text>
+<text class="t mono" x="204" y="65" font-size="10.5" text-anchor="middle">&quot;fat &quot;</text>
+<text class="tm mono" x="204" y="79" font-size="9.5" text-anchor="middle">under it: 17</text>
+<text class="tm mono" x="258" y="44" font-size="9.5">h3</text>
+<rect class="s f" x="270" y="171" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="320" y="187" font-size="11" font-weight="600" text-anchor="middle">orig 4+7</text>
+<text class="t mono" x="320" y="201" font-size="10.5" text-anchor="middle">&quot;cat sat&quot;</text>
+<text class="tm mono" x="320" y="215" font-size="9.5" text-anchor="middle">under it: 7</text>
+<text class="tm mono" x="374" y="180" font-size="9.5">h1</text>
+<rect class="a fa" x="386" y="103" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="436" y="119" font-size="11" font-weight="600" text-anchor="middle">add 5+1</text>
+<text class="f mono" x="436" y="133" font-size="10.5" text-anchor="middle">&quot;.&quot;</text>
+<text class="f mono" x="436" y="147" font-size="9.5" text-anchor="middle">under it: 9</text>
+<text class="tm mono" x="490" y="112" font-size="9.5">h2</text>
+<rect class="s f" x="502" y="171" width="100" height="50" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="552" y="187" font-size="11" font-weight="600" text-anchor="middle">orig 11+1</text>
+<text class="t mono" x="552" y="201" font-size="10.5" text-anchor="middle">&quot;\n&quot;</text>
+<text class="tm mono" x="552" y="215" font-size="9.5" text-anchor="middle">under it: 1</text>
+<text class="tm mono" x="606" y="180" font-size="9.5">h1</text>
+</g>
+</svg>
