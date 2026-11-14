@@ -120,6 +120,10 @@ Upstream   None. The tools are written from the documented behaviour of
            the RFCs is what the formats are made of (the code tables and
            header fields). tracks/dsa/tools/gzip/NOTICE.txt has the
            details.
+           make is held to GNU make (https://www.gnu.org/software/make/,
+           GPL-3.0-or-later; 3.81 on macOS, 4.4.1 on Linux) on the
+           features this track's own Makefile uses; no code from it is in
+           the track.
 Upstream   For module 03 only (tools/edit): kilo, by Salvatore Sanfilippo
            (antirez), https://github.com/antirez/kilo (master, commit
            323d93b29bd89a2cb446de90c4ed4fea1764176e), by way of this
