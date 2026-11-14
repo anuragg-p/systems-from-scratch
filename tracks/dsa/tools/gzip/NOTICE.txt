@@ -1,0 +1,38 @@
+For the dsa section of the top-level NOTICE: module 09, gzip and gunzip
+(tools/gzip/, lib/huffman.c, lib/inflate.c, lib/lz77.c, lib/deflate.c).
+
+Formats    DEFLATE: RFC 1951, "DEFLATE Compressed Data Format
+           Specification version 1.3", L. Peter Deutsch, May 1996,
+           https://www.rfc-editor.org/rfc/rfc1951
+           gzip: RFC 1952, "GZIP file format specification version 4.3",
+           L. Peter Deutsch, May 1996,
+           https://www.rfc-editor.org/rfc/rfc1952
+           Both fetched 2026-11-14 as plain text from www.rfc-editor.org
+           (rfc1951.txt, 36944 bytes, SHA-256 5ebf4b5b7fe1c3a0c0ab9aa3ac8c0f38
+           53a7dc484905e76e03b0b0f301350009; rfc1952.txt, 25037 bytes,
+           SHA-256 164ef0897b4cbec63abf1b57f069f3599bd0fb7c72c2a4dee21bd7e03ec9af67).
+Licence    Of the RFCs: Copyright (c) 1996 L. Peter Deutsch. "Permission is
+           granted to copy and distribute this document for any purpose and
+           without charge, including translations into other languages and
+           incorporation into compilations, provided that the copyright
+           notice and this notice are preserved, and that any substantive
+           changes or deletions from the original are clearly marked."
+           No text of either RFC is copied into the track; the lessons link
+           to them.
+Taken      No code. The code is written from the two RFCs. What comes from
+           them as it stands is what the formats are made of: the length and
+           distance code tables (RFC 1951 3.2.5), the fixed code lengths
+           (3.2.6), the order of the code-length code's lengths (3.2.7), the
+           steps that turn code lengths into canonical codes (3.2.2, which
+           huff_codes() follows), the gzip header and trailer fields (RFC
+           1952 2.3) and the CRC-32 polynomial (ISO 3309, as RFC 1952 names
+           it; the table is computed from the polynomial, RFC 1952's sample
+           code is not used). No code of zlib, GNU gzip or any other
+           implementation was used. The way code lengths are kept to 15 bits
+           (halve every count and build the tree again) is the course's own.
+Ours       All of the code, the lessons and the internal checks.
+Checked    Internal tests only: the system's gzip and gunzip (Apple gzip 479
+           on macOS; GNU gzip 1.13, https://www.gnu.org/software/gzip/,
+           GPL-3.0-or-later, on Debian), Python's zlib module (the system's
+           zlib) and Info-ZIP's zip where it is installed write the files our
+           gunzip must read, and read the files our gzip writes.
