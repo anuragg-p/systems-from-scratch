@@ -40,8 +40,11 @@
  * distance for good); junctions looked at to pick the next one to finish;
  * roads followed from a finished junction; old entries taken off the heap
  * and thrown away; and roads read to find the roads at a junction (--info).
- * DS_TRACE=1 prints on stderr one line for each junction a search
- * finishes, with what the search holds then (tools/route/NOTES.md).
+ * DS_TRACE=1 prints on stderr one line for each junction taken off the
+ * flood fill's stack: "trace: pieces: take J into piece P; stack: J J ...".
+ * For each junction a search finishes, it prints "trace: ALGO: finish J    @from 08.02
+ * at D (from P); " and what the search holds as it goes on, each junction  @from 08.02
+ * in it as J:D, the junction and its distance.                             @from 08.02
  */
 #include <math.h>
 #include <stdlib.h>
@@ -500,18 +503,38 @@ static void xml_text(FILE *f, const char *s)
     }
 }
 
+/* Where the picture puts a point of the map. Its y goes down, the map's
+ * up; and it counts in units of about a pixel of a picture 1000 wide, a
+ * whole number of metres each, so that a big map is not a big file. */
+typedef struct {
+    int left, top, unit;        /* the map's x and y at the picture's 0,0; metres a unit */
+} View;
+
+static int px(const View *v, int x)
+{
+    return (int)floor((double)(x - v->left) / v->unit + 0.5);
+}
+
+static int py(const View *v, int y)
+{
+    return (int)floor((double)(v->top - y) / v->unit + 0.5);
+}
+
+static int in_box(const RoadGraph *g, const Box *box, int j)
+{
+    return g->x[j] >= box->x0 && g->x[j] <= box->x1 && g->y[j] >= box->y0 && g->y[j] <= box->y1;
+}
+
 /* Draw the map into the SVG file at path: every road in grey; in colour
  * the roads with an end marked in mark (if not NULL); the route (n
  * junctions, if any) on top; and the map's credit, as its licence asks.
- * Only the part in box is drawn, or all of the map. The picture's y goes
- * down, the map's up: a point is drawn at (x, top - y). */
+ * Only the roads with an end in box are drawn, or all of the map. */
 static void write_svg(const RoadGraph *g, const char *path, const Box *box, const unsigned char *mark,
                       const int *route, int n, const char *caption)
 {
     FILE *f = fopen(path, "w");
     if (f == NULL)
         die("cannot write %s", path);
-    int top = 0;
     Box all = {0, 0, 1, 1};
     for (int j = 0; j < g->n; j++) {
         if (g->x[j] > all.x1)
@@ -519,19 +542,21 @@ static void write_svg(const RoadGraph *g, const char *path, const Box *box, cons
         if (g->y[j] > all.y1)
             all.y1 = g->y[j];
     }
-    top = all.y1;
     if (box == NULL)
         box = &all;
     int w = box->x1 - box->x0, h = box->y1 - box->y0, pad = (w > h ? w : h) / 40 + 1;
-    int vx = box->x0 - pad, vy = top - box->y1 - pad, vw = w + 2 * pad, vh = h + 2 * pad;
-    double font = vw / 70.0, dot = vw / 160.0;
+    int unit = (w + 2 * pad) / 1000 > 1 ? (w + 2 * pad) / 1000 : 1;
+    double font = (w + 2 * pad) / unit / 70.0, dot = (w + 2 * pad) / unit / 160.0;
+    /* a band at the top for the caption, and one at the bottom for the credit */
+    View v = {box->x0 - pad, box->y1 + pad + (int)(2.2 * font * unit), unit};
+    int vw = px(&v, box->x1 + pad), vh = py(&v, box->y0 - pad - (g->credit ? (int)(1.4 * font * unit) : 0));
 
-    fprintf(f, "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"%d %d %d %d\" width=\"1000\" height=\"%d\">\n",
-            vx, vy, vw, vh, (int)(1000.0 * vh / vw + 0.5));
+    fprintf(f, "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 %d %d\" width=\"1000\" height=\"%d\">\n",
+            vw, vh, (int)(1000.0 * vh / vw + 0.5));
     fprintf(f, "<title>");
     xml_text(f, caption);
     fprintf(f, "</title>\n");
-    fprintf(f, "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"#ffffff\"/>\n", vx, vy, vw, vh);
+    fprintf(f, "<rect x=\"0\" y=\"0\" width=\"%d\" height=\"%d\" fill=\"#ffffff\"/>\n", vw, vh);
     for (int layer = 0; layer < 2; layer++) {
         if (layer == 1 && mark == NULL)
             break;
@@ -540,32 +565,43 @@ static void write_svg(const RoadGraph *g, const char *path, const Box *box, cons
                 layer ? "#2f6fd0" : "#bbbbbb", layer ? "1.4" : "0.7");
         for (long r = 0; r < g->m; r++) {
             int a = g->road_a[r], b = g->road_b[r];
-            if (layer == 1 && !mark[a] && !mark[b])
+            if ((layer == 1 && !mark[a] && !mark[b]) || (!in_box(g, box, a) && !in_box(g, box, b)))
                 continue;
-            int in_a = g->x[a] >= box->x0 && g->x[a] <= box->x1 && g->y[a] >= box->y0 && g->y[a] <= box->y1;
-            int in_b = g->x[b] >= box->x0 && g->x[b] <= box->x1 && g->y[b] >= box->y0 && g->y[b] <= box->y1;
-            if (in_a || in_b)
-                fprintf(f, "M%d %dL%d %d", g->x[a], top - g->y[a], g->x[b], top - g->y[b]);
+            fprintf(f, "M%d %dl%d %d", px(&v, g->x[a]), py(&v, g->y[a]),
+                    px(&v, g->x[b]) - px(&v, g->x[a]), py(&v, g->y[b]) - py(&v, g->y[a]));
         }
         fprintf(f, "\"/>\n");
     }
+    int shown = 0;
+    for (int j = 0; j < g->n; j++)
+        shown += in_box(g, box, j);
+    if (shown <= 50) {           /* a small map: every junction, with its number */
+        for (int j = 0; j < g->n; j++)
+            if (in_box(g, box, j))
+                fprintf(f, "<circle cx=\"%d\" cy=\"%d\" r=\"%.1f\" fill=\"#555555\"/>"
+                        "<text x=\"%.0f\" y=\"%.0f\" font-size=\"%.0f\" fill=\"#555555\">%d</text>\n",
+                        px(&v, g->x[j]), py(&v, g->y[j]), dot / 2, px(&v, g->x[j]) + dot,
+                        py(&v, g->y[j]) - dot, font, j);
+    }
     if (n > 0) {
         fprintf(f, "<path fill=\"none\" stroke=\"#d1495b\" stroke-width=\"3.5\" stroke-linecap=\"round\" "
-                "stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\" d=\"");
-        for (int k = 0; k < n; k++)
-            fprintf(f, "%c%d %d", k ? 'L' : 'M', g->x[route[k]], top - g->y[route[k]]);
+                "stroke-linejoin=\"round\" vector-effect=\"non-scaling-stroke\" d=\"M%d %d",
+                px(&v, g->x[route[0]]), py(&v, g->y[route[0]]));
+        for (int k = 1; k < n; k++)
+            fprintf(f, "l%d %d", px(&v, g->x[route[k]]) - px(&v, g->x[route[k - 1]]),
+                    py(&v, g->y[route[k]]) - py(&v, g->y[route[k - 1]]));
         fprintf(f, "\"/>\n");
-        fprintf(f, "<circle cx=\"%d\" cy=\"%d\" r=\"%.1f\" fill=\"#2a9d4b\"/>\n", g->x[route[0]],
-                top - g->y[route[0]], dot);
-        fprintf(f, "<circle cx=\"%d\" cy=\"%d\" r=\"%.1f\" fill=\"#d1495b\"/>\n", g->x[route[n - 1]],
-                top - g->y[route[n - 1]], dot);
+        fprintf(f, "<circle cx=\"%d\" cy=\"%d\" r=\"%.1f\" fill=\"#2a9d4b\"/>\n", px(&v, g->x[route[0]]),
+                py(&v, g->y[route[0]]), dot);
+        fprintf(f, "<circle cx=\"%d\" cy=\"%d\" r=\"%.1f\" fill=\"#d1495b\"/>\n", px(&v, g->x[route[n - 1]]),
+                py(&v, g->y[route[n - 1]]), dot);
     }
-    fprintf(f, "<text x=\"%.0f\" y=\"%.0f\" font-size=\"%.0f\" fill=\"#222222\">", vx + font, vy + 1.6 * font, font);
+    fprintf(f, "<text x=\"%.0f\" y=\"%.0f\" font-size=\"%.0f\" fill=\"#222222\">", font, 1.6 * font, font);
     xml_text(f, caption);
     fprintf(f, "</text>\n");
     if (g->credit != NULL) {
         fprintf(f, "<text x=\"%.0f\" y=\"%.0f\" font-size=\"%.0f\" fill=\"#444444\" text-anchor=\"end\">",
-                vx + vw - font / 2, vy + vh - font / 2, font * 0.75);
+                vw - font / 2, vh - font / 2, font * 0.75);
         xml_text(f, g->credit);
         fprintf(f, "</text>\n");
     }

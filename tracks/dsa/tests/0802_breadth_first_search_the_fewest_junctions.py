@@ -10,6 +10,7 @@ to itself is a route of one. DS_TRACE prints one line for each junction finished
 """
 
 import os
+import re
 import xml.etree.ElementTree as ET
 
 
@@ -68,7 +69,9 @@ def test(t):
     T.run(t, "route", ["--algo=bfs", f"--svg={svg}", fx.TINY, "3", "8"])
     root = ET.parse(svg).getroot()
     paths = [e.get("d") for e in root.iter() if e.tag.endswith("path")]
-    t.check(len(paths) == 3 and paths[2] == "M400 300L900 600L1400 300", f"the route drawn: {paths}")
+    # in metres here (a small map): 3 to 1 is 500 east and 300 south, 1 to 8 500 east, 300 north
+    t.check(len(paths) == 3 and re.match(r"^M\d+ \d+l500 300l500 -300$", paths[2]), f"the route drawn: {paths}")
+    t.check(len([e for e in root.iter() if e.tag.endswith("circle")]) == 12 + 2, "each junction, and the two ends")
 
     for args, msg in (([fx.TINY, "3", "12"], "no junction 12: the map's are 0 to 11"),
                       ([fx.TINY, "3", "x,y"], "'x,y' is not a junction"),
