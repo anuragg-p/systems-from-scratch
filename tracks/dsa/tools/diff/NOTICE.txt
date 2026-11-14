@@ -1,0 +1,20 @@
+For NOTICE, the dsa section (module 06, diff and patch). Nothing is taken
+from any of the tools below; these lines say what diff and patch are held
+to, and where the algorithm comes from.
+
+Upstream   (add to the paragraph) diff and patch are checked against GNU
+           diffutils (https://www.gnu.org/software/diffutils/) and GNU
+           patch (https://savannah.gnu.org/projects/patch/), both
+           GPL-3.0-or-later, on Linux, and against the diff and patch
+           macOS ships (from FreeBSD). No code from any of them is in the
+           track.
+Ours       (already covered by "All of the code") lib/diff.c, lib/myers.c,
+           lib/diff.h, tools/diff/ and tools/patch/. lib/myers.c is
+           written from the paper, not from any program: Eugene W. Myers,
+           "An O(ND) Difference Algorithm and Its Variations",
+           Algorithmica 1 (1986), 251-266.
+Generated  (already covered) tools/diff/gen.py makes its pairs of files
+           (versions, revised, unrelated) from data/book.txt's lines; none
+           is stored.
+
+The track's UPSTREAM list gets the GNU entry from tests/tools/diff.py.
