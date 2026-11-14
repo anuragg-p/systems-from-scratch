@@ -166,7 +166,7 @@ static void trace_queue(int u, const int *queue, int head, int tail)
 }
 // @end
 
-/* --algo=bfs: the route with the fewest roads, so the fewest junctions.
+/* bfs: the route with the fewest roads, so the fewest junctions.
  * The queue hands out junctions in the order they were reached, so all
  * those one road from FROM are finished before any two roads away. */
 static int search_bfs(const RoadGraph *g, int from, int to)
