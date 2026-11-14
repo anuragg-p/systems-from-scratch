@@ -49,6 +49,14 @@ PROGRAMS = {"diff": "06.01", "patch": "06.04"}
 FILES_FROM = {"tools/diff/tool.mk": "06.01", "tools/diff/gen.py": "06.01", "lib/diff.h": "06.01",
               "tools/diff/diff.c": "06.01", "tools/patch/tool.mk": "06.04"}
 HIDDEN = ["tools/diff/NOTES.md", "tools/diff/NOTICE.txt"]
+UPSTREAM = [{"name": "GNU diffutils and GNU patch",
+             "url": "https://www.gnu.org/software/diffutils/",
+             "also": [("GNU patch", "https://savannah.gnu.org/projects/patch/")],
+             "licence": "GPL-3.0-or-later",
+             "owes": "No code. Our diff deletes and inserts as many lines as their diff -d, their patch applies "
+                     "what ours prints, and ours applies what theirs prints; the same holds for the BSD diff "
+                     "and patch that macOS ships.",
+             "derived": False}]
 
 HUNK = re.compile(rb"@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@")
 HEADER = re.compile(r"^(---|\+\+\+) (.*)\t\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.\d{9} [+-]\d{4}$")
