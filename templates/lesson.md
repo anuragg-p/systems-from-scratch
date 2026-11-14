@@ -57,7 +57,12 @@ matter. Define each new term in **bold** the first time. State the
 **invariant** the code protects and point at the line that keeps it. If a
 sentence only repeats what a line of code plainly says, delete it.
 Reference detail that is true but dull (field tables, every offset) goes in
-a figure or a short table at the end, or is dropped.>
+a figure or a short table at the end, or is dropped.
+A ### heading here is a lead-in too when it names a function the lesson's
+code defines, in backticks or as a plain word that is exactly its name
+("### Why the height matters", with a height() in the code): the page moves
+it and its text above that code in The code. To keep it here, leave the
+name out of the heading.>
 
 ## Decide the boundary
 
@@ -97,7 +102,9 @@ with the file in the figures/ folder beside the lesson. Only where the idea
 is a process (a sort, a heap fixing itself), one figure per lesson may be
 stepped: each top-level `<g class="step">` is a frame the reader steps
 through, its first `<title>` the step's caption, and the frames come from a
-real run of the reference code (art/steps.py writes them). This is a lesson,
+real run of the reference code (art/steps.py writes them). Link another
+page of the site as `[the kilo track](/t/kilo)` or `[a lesson](/t/dsa/01.02)`;
+./learn check reports a link that goes nowhere. This is a lesson,
 not an exercise: never tell the reader to write or fill in the code, and
 never mention stubs, solutions, workspaces or tests. Never refer to code
 from a later lesson as if the reader already has it. (Delete this paragraph

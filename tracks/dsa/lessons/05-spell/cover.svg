@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
-<title>A trie: a prefix is one walk from the root, and every word below it is a completion</title>
+<title>A trie: a prefix is one walk from the root, every word below it is a completion, and a word not on any path is a misspelling to suggest for</title>
 <defs><marker id="d05-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="d05-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
 <line class="a" x1="52.8" y1="142.2" x2="99.2" y2="113.8" stroke-width="1.5" stroke-linecap="round"/>
 <line class="a" x1="127.0" y1="106.0" x2="169.0" y2="106.0" stroke-width="1.5" stroke-linecap="round"/>
@@ -42,18 +42,19 @@
 <text class="ta mono" x="277" y="170" font-size="10.5">cat</text>
 <text class="tm mono" x="184" y="256" font-size="10.5" text-anchor="middle">do</text>
 <text class="tm mono" x="256" y="256" font-size="10.5" text-anchor="middle">dog</text>
-<text class="t" x="432" y="34" font-size="12" font-weight="700">complete &#x27;ca&#x27;</text>
+<text class="t mono" x="432" y="34" font-size="12" font-weight="700">spell -p ca</text>
 <text class="tm" x="432" y="52" font-size="10.5">walk c, a, then list the</text>
 <text class="tm" x="432" y="67" font-size="10.5">words below it:</text>
 <text class="ta mono" x="432" y="86" font-size="11.5" font-weight="600">car  card  care  cat</text>
-<text class="t" x="432" y="124" font-size="12" font-weight="700">check &#x27;cst&#x27;</text>
+<text class="t mono" x="432" y="124" font-size="12" font-weight="700">spell -s: &#x27;cst&#x27;</text>
 <text class="tm" x="432" y="142" font-size="10.5">after &#x27;c&#x27; there is no &#x27;s&#x27; branch:</text>
 <text class="tm" x="432" y="157" font-size="10.5">not in the dictionary</text>
-<text class="ta mono" x="432" y="176" font-size="11.5" font-weight="600">did you mean: cat?</text>
+<text class="ta mono" x="432" y="176" font-size="11.5" font-weight="600">cst: cat</text>
 <text class="tm" x="432" y="192" font-size="10.5">edit distance 1: s -&gt; a</text>
-<text class="t" x="432" y="230" font-size="12" font-weight="700">Bloom filter</text>
-<text class="tm" x="432" y="248" font-size="10.5">the same check in 9.6 bits a word:</text>
-<text class="tm" x="432" y="263" font-size="10.5">its &#x27;no&#x27; is always right, its</text>
-<text class="tm" x="432" y="278" font-size="10.5">&#x27;maybe&#x27; wrong 1% of the time</text>
+<text class="t" x="432" y="222" font-size="12" font-weight="700">Bloom filter</text>
+<text class="tm" x="432" y="240" font-size="10.5">the same check in 9.6 bits a word,</text>
+<text class="tm" x="432" y="255" font-size="10.5">72 KB, 7 hashes: its &#x27;no&#x27; is always</text>
+<text class="tm" x="432" y="270" font-size="10.5">right; its &#x27;maybe&#x27; let 7 of the book&#x27;s</text>
+<text class="tm" x="432" y="285" font-size="10.5">615 misspellings through</text>
 <text class="tm" x="24" y="284" font-size="10.5">Double ring: a word ends here.</text>
 </svg>

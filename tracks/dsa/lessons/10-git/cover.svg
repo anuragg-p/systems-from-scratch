@@ -43,5 +43,5 @@
 <text class="ta" x="556" y="211" font-size="10.5" text-anchor="middle">both trees name it</text>
 <text class="ta" x="556" y="226" font-size="10.5" text-anchor="middle">by the same hash</text>
 <text class="tm" x="24" y="270" font-size="11">An object is named by the SHA-1 of its content: what did not change keeps its name and is stored once,</text>
-<text class="tm" x="24" y="286" font-size="11">and a change renames every object above it, up to the commit. These ids are the ones git computes.</text>
+<text class="tm" x="24" y="286" font-size="11">and a change renames every object above it, up to the commit. This git and the real one give these same ids.</text>
 </svg>

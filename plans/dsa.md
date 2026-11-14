@@ -6,9 +6,9 @@ pass still running), on the owner's word: "after this start building the
 data structures and algorithm part".
 The outline is now plans/dsa-outline.md (moved out of outlines/ when
 tracks/dsa took the id over): its modules and lesson titles are the list
-to build. Its module art stays in outlines/data-structures-and-algorithms/
-until every module has copied its cover and icon. This file holds the
-decisions.
+to build. Its module art has moved to the track: art/dsa/covers.py draws
+each module's cover and icon, and the track's card and icon, from the
+finished code. This file holds the decisions.
 
 ## What the learner ends with
 

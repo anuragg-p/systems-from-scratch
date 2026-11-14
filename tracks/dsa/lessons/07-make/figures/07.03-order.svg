@@ -1,0 +1,669 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 404" fill="none">
+<title>The build in order on the cut-down build, after touch table.c: each target checked once, after everything it needs</title>
+<defs><marker id="f0703a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">touch table.c, then bin/make: the targets in the search&#x27;s finishing order</text>
+<text class="tm mono" x="444" y="44" font-size="11">--order</text>
+<rect class="m f" x="24" y="382" width="18" height="12" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="50" y="392" font-size="11">not checked yet</text>
+<rect class="s f" x="159.1" y="382" width="18" height="12" rx="3" stroke-width="1.5"/>
+<text class="tm" x="185.1" y="392" font-size="11">up to date</text>
+<rect class="a fa" x="264.5" y="382" width="18" height="12" rx="3" stroke-width="1.5"/>
+<text class="tm" x="290.5" y="392" font-size="11">out of date: made</text>
+<line class="m" x1="411.48" y1="388" x2="437.48" y2="388" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<text class="tm" x="445.48" y="392" font-size="11">needs</text>
+<g class="step"><title>Everything was built once; then table.c is touched, and is now newer than table.o. Nothing is checked yet.</title>
+<line class="m" x1="218" y1="70" x2="141.2" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="70" x2="294.8" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="66.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="369.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="56.4" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="167.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="268.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="379.6" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="137.2" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="298.8" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<rect class="m f" x="198.7" y="46" width="38.7" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="62" font-size="11.5" text-anchor="middle">all</text>
+<rect class="m f" x="118.4" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="141.24" y="124" font-size="11.5" text-anchor="middle">freq</text>
+<rect class="m f" x="272" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="294.76" y="124" font-size="11.5" text-anchor="middle">sort</text>
+<rect class="m f" x="36.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="66.5" y="248" font-size="11.5" text-anchor="middle">freq.o</text>
+<rect class="m f" x="184.8" y="170" width="66.3" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="186" font-size="11.5" text-anchor="middle">libds.a</text>
+<rect class="m f" x="339.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="369.5" y="248" font-size="11.5" text-anchor="middle">sort.o</text>
+<rect class="m f" x="137.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="167.5" y="248" font-size="11.5" text-anchor="middle">util.o</text>
+<rect class="m f" x="235.3" y="232" width="66.3" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="268.5" y="248" font-size="11.5" text-anchor="middle">table.o</text>
+<rect class="m f" x="26.7" y="294" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="56.4" y="310" font-size="11.5" text-anchor="middle">freq.c</text>
+<rect class="m f" x="195.2" y="294" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="310" font-size="11.5" text-anchor="middle">ds.h</text>
+<rect class="m f" x="349.9" y="294" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="379.6" y="310" font-size="11.5" text-anchor="middle">sort.c</text>
+<rect class="m f" x="107.5" y="294" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="137.2" y="310" font-size="11.5" text-anchor="middle">util.c</text>
+<rect class="m f" x="265.7" y="294" width="66.3" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="298.8" y="310" font-size="11.5" text-anchor="middle">table.c</text>
+<rect class="m f" x="444" y="50" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="64" font-size="10.5">freq.c</text>
+<rect class="m f" x="444" y="72" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="86" font-size="10.5">ds.h</text>
+<rect class="m f" x="444" y="94" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="108" font-size="10.5">freq.o</text>
+<rect class="m f" x="444" y="116" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="130" font-size="10.5">util.c</text>
+<rect class="m f" x="444" y="138" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="152" font-size="10.5">util.o</text>
+<rect class="m f" x="444" y="160" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="174" font-size="10.5">table.c</text>
+<rect class="m f" x="444" y="182" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="196" font-size="10.5">table.o</text>
+<rect class="m f" x="444" y="204" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="218" font-size="10.5">libds.a</text>
+<rect class="m f" x="444" y="226" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="240" font-size="10.5">freq</text>
+<rect class="m f" x="444" y="248" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="262" font-size="10.5">sort.c</text>
+<rect class="m f" x="444" y="270" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="284" font-size="10.5">sort.o</text>
+<rect class="m f" x="444" y="292" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="306" font-size="10.5">sort</text>
+<rect class="m f" x="444" y="314" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="328" font-size="10.5">all</text>
+<text class="tm" x="24" y="362" font-size="11.5" font-weight="600">out of date: (nothing yet)</text>
+</g>
+<g class="step"><title>freq.c and ds.h are files with no rule, and there. freq.o is up to date: nothing it needs was made, and none of it is newer.</title>
+<line class="m" x1="218" y1="70" x2="141.2" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="70" x2="294.8" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="66.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="369.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="s" x1="66.5" y1="256" x2="56.4" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<line class="s" x1="66.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<line class="m" x1="218" y1="194" x2="167.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="268.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="379.6" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="137.2" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="298.8" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<rect class="m f" x="198.7" y="46" width="38.7" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="62" font-size="11.5" text-anchor="middle">all</text>
+<rect class="m f" x="118.4" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="141.24" y="124" font-size="11.5" text-anchor="middle">freq</text>
+<rect class="m f" x="272" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="294.76" y="124" font-size="11.5" text-anchor="middle">sort</text>
+<rect class="s f" x="36.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="66.5" y="248" font-size="11.5" text-anchor="middle">freq.o</text>
+<rect class="m f" x="184.8" y="170" width="66.3" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="186" font-size="11.5" text-anchor="middle">libds.a</text>
+<rect class="m f" x="339.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="369.5" y="248" font-size="11.5" text-anchor="middle">sort.o</text>
+<rect class="m f" x="137.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="167.5" y="248" font-size="11.5" text-anchor="middle">util.o</text>
+<rect class="m f" x="235.3" y="232" width="66.3" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="268.5" y="248" font-size="11.5" text-anchor="middle">table.o</text>
+<rect class="s f" x="26.7" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="56.4" y="310" font-size="11.5" text-anchor="middle">freq.c</text>
+<rect class="s f" x="195.2" y="294" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="218" y="310" font-size="11.5" text-anchor="middle">ds.h</text>
+<rect class="m f" x="349.9" y="294" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="379.6" y="310" font-size="11.5" text-anchor="middle">sort.c</text>
+<rect class="m f" x="107.5" y="294" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="137.2" y="310" font-size="11.5" text-anchor="middle">util.c</text>
+<rect class="m f" x="265.7" y="294" width="66.3" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="298.8" y="310" font-size="11.5" text-anchor="middle">table.c</text>
+<rect class="a" x="32.8" y="228" width="67.4" height="32" rx="9" stroke-width="2"/>
+<rect class="s f" x="444" y="50" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="64" font-size="10.5">freq.c</text>
+<rect class="s f" x="444" y="72" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="86" font-size="10.5">ds.h</text>
+<rect class="s f" x="444" y="94" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="108" font-size="10.5">freq.o</text>
+<text class="ta" x="544" y="108" font-size="10.5" font-weight="700">&lt;- now</text>
+<rect class="m f" x="444" y="116" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="130" font-size="10.5">util.c</text>
+<rect class="m f" x="444" y="138" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="152" font-size="10.5">util.o</text>
+<rect class="m f" x="444" y="160" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="174" font-size="10.5">table.c</text>
+<rect class="m f" x="444" y="182" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="196" font-size="10.5">table.o</text>
+<rect class="m f" x="444" y="204" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="218" font-size="10.5">libds.a</text>
+<rect class="m f" x="444" y="226" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="240" font-size="10.5">freq</text>
+<rect class="m f" x="444" y="248" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="262" font-size="10.5">sort.c</text>
+<rect class="m f" x="444" y="270" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="284" font-size="10.5">sort.o</text>
+<rect class="m f" x="444" y="292" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="306" font-size="10.5">sort</text>
+<rect class="m f" x="444" y="314" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="328" font-size="10.5">all</text>
+<text class="tm" x="24" y="362" font-size="11.5" font-weight="600">out of date: (nothing yet)</text>
+</g>
+<g class="step"><title>util.c is a file with no rule, and there. util.o is up to date: nothing it needs was made, and none of it is newer.</title>
+<line class="m" x1="218" y1="70" x2="141.2" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="70" x2="294.8" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="66.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="369.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="56.4" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="167.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="268.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="379.6" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="s" x1="167.5" y1="256" x2="137.2" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<line class="s" x1="167.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<line class="m" x1="268.5" y1="256" x2="298.8" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<rect class="m f" x="198.7" y="46" width="38.7" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="62" font-size="11.5" text-anchor="middle">all</text>
+<rect class="m f" x="118.4" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="141.24" y="124" font-size="11.5" text-anchor="middle">freq</text>
+<rect class="m f" x="272" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="294.76" y="124" font-size="11.5" text-anchor="middle">sort</text>
+<rect class="s f" x="36.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="66.5" y="248" font-size="11.5" text-anchor="middle">freq.o</text>
+<rect class="m f" x="184.8" y="170" width="66.3" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="186" font-size="11.5" text-anchor="middle">libds.a</text>
+<rect class="m f" x="339.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="369.5" y="248" font-size="11.5" text-anchor="middle">sort.o</text>
+<rect class="s f" x="137.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="167.5" y="248" font-size="11.5" text-anchor="middle">util.o</text>
+<rect class="m f" x="235.3" y="232" width="66.3" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="268.5" y="248" font-size="11.5" text-anchor="middle">table.o</text>
+<rect class="s f" x="26.7" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="56.4" y="310" font-size="11.5" text-anchor="middle">freq.c</text>
+<rect class="s f" x="195.2" y="294" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="218" y="310" font-size="11.5" text-anchor="middle">ds.h</text>
+<rect class="m f" x="349.9" y="294" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="379.6" y="310" font-size="11.5" text-anchor="middle">sort.c</text>
+<rect class="s f" x="107.5" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="137.2" y="310" font-size="11.5" text-anchor="middle">util.c</text>
+<rect class="m f" x="265.7" y="294" width="66.3" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="298.8" y="310" font-size="11.5" text-anchor="middle">table.c</text>
+<rect class="a" x="133.8" y="228" width="67.4" height="32" rx="9" stroke-width="2"/>
+<rect class="s f" x="444" y="50" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="64" font-size="10.5">freq.c</text>
+<rect class="s f" x="444" y="72" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="86" font-size="10.5">ds.h</text>
+<rect class="s f" x="444" y="94" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="108" font-size="10.5">freq.o</text>
+<rect class="s f" x="444" y="116" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="130" font-size="10.5">util.c</text>
+<rect class="s f" x="444" y="138" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="152" font-size="10.5">util.o</text>
+<text class="ta" x="544" y="152" font-size="10.5" font-weight="700">&lt;- now</text>
+<rect class="m f" x="444" y="160" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="174" font-size="10.5">table.c</text>
+<rect class="m f" x="444" y="182" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="196" font-size="10.5">table.o</text>
+<rect class="m f" x="444" y="204" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="218" font-size="10.5">libds.a</text>
+<rect class="m f" x="444" y="226" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="240" font-size="10.5">freq</text>
+<rect class="m f" x="444" y="248" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="262" font-size="10.5">sort.c</text>
+<rect class="m f" x="444" y="270" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="284" font-size="10.5">sort.o</text>
+<rect class="m f" x="444" y="292" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="306" font-size="10.5">sort</text>
+<rect class="m f" x="444" y="314" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="328" font-size="10.5">all</text>
+<text class="tm" x="24" y="362" font-size="11.5" font-weight="600">out of date: (nothing yet)</text>
+</g>
+<g class="step"><title>table.c is a file with no rule, and there. table.o: table.c is newer, so table.o is out of date: its recipe runs, touch table.o.</title>
+<line class="m" x1="218" y1="70" x2="141.2" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="70" x2="294.8" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="66.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="369.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="56.4" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="167.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="268.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="379.6" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="137.2" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="s" x1="268.5" y1="256" x2="298.8" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<line class="s" x1="268.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<rect class="m f" x="198.7" y="46" width="38.7" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="62" font-size="11.5" text-anchor="middle">all</text>
+<rect class="m f" x="118.4" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="141.24" y="124" font-size="11.5" text-anchor="middle">freq</text>
+<rect class="m f" x="272" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="294.76" y="124" font-size="11.5" text-anchor="middle">sort</text>
+<rect class="s f" x="36.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="66.5" y="248" font-size="11.5" text-anchor="middle">freq.o</text>
+<rect class="m f" x="184.8" y="170" width="66.3" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="186" font-size="11.5" text-anchor="middle">libds.a</text>
+<rect class="m f" x="339.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="369.5" y="248" font-size="11.5" text-anchor="middle">sort.o</text>
+<rect class="s f" x="137.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="167.5" y="248" font-size="11.5" text-anchor="middle">util.o</text>
+<rect class="a fa" x="235.3" y="232" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="268.5" y="248" font-size="11.5" font-weight="700" text-anchor="middle">table.o</text>
+<rect class="s f" x="26.7" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="56.4" y="310" font-size="11.5" text-anchor="middle">freq.c</text>
+<rect class="s f" x="195.2" y="294" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="218" y="310" font-size="11.5" text-anchor="middle">ds.h</text>
+<rect class="m f" x="349.9" y="294" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="379.6" y="310" font-size="11.5" text-anchor="middle">sort.c</text>
+<rect class="s f" x="107.5" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="137.2" y="310" font-size="11.5" text-anchor="middle">util.c</text>
+<rect class="s f" x="265.7" y="294" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="298.8" y="310" font-size="11.5" text-anchor="middle">table.c</text>
+<rect class="a" x="231.3" y="228" width="74.3" height="32" rx="9" stroke-width="2"/>
+<rect class="s f" x="444" y="50" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="64" font-size="10.5">freq.c</text>
+<rect class="s f" x="444" y="72" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="86" font-size="10.5">ds.h</text>
+<rect class="s f" x="444" y="94" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="108" font-size="10.5">freq.o</text>
+<rect class="s f" x="444" y="116" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="130" font-size="10.5">util.c</text>
+<rect class="s f" x="444" y="138" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="152" font-size="10.5">util.o</text>
+<rect class="s f" x="444" y="160" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="174" font-size="10.5">table.c</text>
+<rect class="a fa" x="444" y="182" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="196" font-size="10.5" font-weight="700">table.o</text>
+<text class="ta" x="544" y="196" font-size="10.5" font-weight="700">&lt;- now</text>
+<rect class="m f" x="444" y="204" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="218" font-size="10.5">libds.a</text>
+<rect class="m f" x="444" y="226" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="240" font-size="10.5">freq</text>
+<rect class="m f" x="444" y="248" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="262" font-size="10.5">sort.c</text>
+<rect class="m f" x="444" y="270" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="284" font-size="10.5">sort.o</text>
+<rect class="m f" x="444" y="292" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="306" font-size="10.5">sort</text>
+<rect class="m f" x="444" y="314" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="328" font-size="10.5">all</text>
+<text class="ta mono" x="24" y="362" font-size="11.5" font-weight="600">out of date: table.o</text>
+</g>
+<g class="step"><title>libds.a: table.o was made, so libds.a is out of date: its recipe runs, touch libds.a.</title>
+<line class="m" x1="218" y1="70" x2="141.2" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="70" x2="294.8" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="66.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="369.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="56.4" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="s" x1="218" y1="194" x2="167.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<line class="a" x1="218" y1="194" x2="268.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-aa)"/>
+<line class="m" x1="369.5" y1="256" x2="379.6" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="137.2" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="298.8" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<rect class="m f" x="198.7" y="46" width="38.7" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="62" font-size="11.5" text-anchor="middle">all</text>
+<rect class="m f" x="118.4" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="141.24" y="124" font-size="11.5" text-anchor="middle">freq</text>
+<rect class="m f" x="272" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="294.76" y="124" font-size="11.5" text-anchor="middle">sort</text>
+<rect class="s f" x="36.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="66.5" y="248" font-size="11.5" text-anchor="middle">freq.o</text>
+<rect class="a fa" x="184.8" y="170" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="218" y="186" font-size="11.5" font-weight="700" text-anchor="middle">libds.a</text>
+<rect class="m f" x="339.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="369.5" y="248" font-size="11.5" text-anchor="middle">sort.o</text>
+<rect class="s f" x="137.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="167.5" y="248" font-size="11.5" text-anchor="middle">util.o</text>
+<rect class="a fa" x="235.3" y="232" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="268.5" y="248" font-size="11.5" font-weight="700" text-anchor="middle">table.o</text>
+<rect class="s f" x="26.7" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="56.4" y="310" font-size="11.5" text-anchor="middle">freq.c</text>
+<rect class="s f" x="195.2" y="294" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="218" y="310" font-size="11.5" text-anchor="middle">ds.h</text>
+<rect class="m f" x="349.9" y="294" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="379.6" y="310" font-size="11.5" text-anchor="middle">sort.c</text>
+<rect class="s f" x="107.5" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="137.2" y="310" font-size="11.5" text-anchor="middle">util.c</text>
+<rect class="s f" x="265.7" y="294" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="298.8" y="310" font-size="11.5" text-anchor="middle">table.c</text>
+<rect class="a" x="180.8" y="166" width="74.3" height="32" rx="9" stroke-width="2"/>
+<rect class="s f" x="444" y="50" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="64" font-size="10.5">freq.c</text>
+<rect class="s f" x="444" y="72" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="86" font-size="10.5">ds.h</text>
+<rect class="s f" x="444" y="94" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="108" font-size="10.5">freq.o</text>
+<rect class="s f" x="444" y="116" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="130" font-size="10.5">util.c</text>
+<rect class="s f" x="444" y="138" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="152" font-size="10.5">util.o</text>
+<rect class="s f" x="444" y="160" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="174" font-size="10.5">table.c</text>
+<rect class="a fa" x="444" y="182" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="196" font-size="10.5" font-weight="700">table.o</text>
+<rect class="a fa" x="444" y="204" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="218" font-size="10.5" font-weight="700">libds.a</text>
+<text class="ta" x="544" y="218" font-size="10.5" font-weight="700">&lt;- now</text>
+<rect class="m f" x="444" y="226" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="240" font-size="10.5">freq</text>
+<rect class="m f" x="444" y="248" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="262" font-size="10.5">sort.c</text>
+<rect class="m f" x="444" y="270" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="284" font-size="10.5">sort.o</text>
+<rect class="m f" x="444" y="292" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="306" font-size="10.5">sort</text>
+<rect class="m f" x="444" y="314" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="328" font-size="10.5">all</text>
+<text class="ta mono" x="24" y="362" font-size="11.5" font-weight="600">out of date: table.o, libds.a</text>
+</g>
+<g class="step"><title>freq: libds.a was made, so freq is out of date: its recipe runs, touch freq.</title>
+<line class="m" x1="218" y1="70" x2="141.2" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="70" x2="294.8" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="s" x1="141.2" y1="132" x2="66.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<line class="a" x1="141.2" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-aa)"/>
+<line class="m" x1="294.8" y1="132" x2="369.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="56.4" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="167.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="268.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="379.6" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="137.2" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="298.8" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<rect class="m f" x="198.7" y="46" width="38.7" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="62" font-size="11.5" text-anchor="middle">all</text>
+<rect class="a fa" x="118.4" y="108" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="141.24" y="124" font-size="11.5" font-weight="700" text-anchor="middle">freq</text>
+<rect class="m f" x="272" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="294.76" y="124" font-size="11.5" text-anchor="middle">sort</text>
+<rect class="s f" x="36.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="66.5" y="248" font-size="11.5" text-anchor="middle">freq.o</text>
+<rect class="a fa" x="184.8" y="170" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="218" y="186" font-size="11.5" font-weight="700" text-anchor="middle">libds.a</text>
+<rect class="m f" x="339.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="369.5" y="248" font-size="11.5" text-anchor="middle">sort.o</text>
+<rect class="s f" x="137.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="167.5" y="248" font-size="11.5" text-anchor="middle">util.o</text>
+<rect class="a fa" x="235.3" y="232" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="268.5" y="248" font-size="11.5" font-weight="700" text-anchor="middle">table.o</text>
+<rect class="s f" x="26.7" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="56.4" y="310" font-size="11.5" text-anchor="middle">freq.c</text>
+<rect class="s f" x="195.2" y="294" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="218" y="310" font-size="11.5" text-anchor="middle">ds.h</text>
+<rect class="m f" x="349.9" y="294" width="59.4" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="379.6" y="310" font-size="11.5" text-anchor="middle">sort.c</text>
+<rect class="s f" x="107.5" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="137.2" y="310" font-size="11.5" text-anchor="middle">util.c</text>
+<rect class="s f" x="265.7" y="294" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="298.8" y="310" font-size="11.5" text-anchor="middle">table.c</text>
+<rect class="a" x="114.4" y="104" width="53.6" height="32" rx="9" stroke-width="2"/>
+<rect class="s f" x="444" y="50" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="64" font-size="10.5">freq.c</text>
+<rect class="s f" x="444" y="72" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="86" font-size="10.5">ds.h</text>
+<rect class="s f" x="444" y="94" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="108" font-size="10.5">freq.o</text>
+<rect class="s f" x="444" y="116" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="130" font-size="10.5">util.c</text>
+<rect class="s f" x="444" y="138" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="152" font-size="10.5">util.o</text>
+<rect class="s f" x="444" y="160" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="174" font-size="10.5">table.c</text>
+<rect class="a fa" x="444" y="182" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="196" font-size="10.5" font-weight="700">table.o</text>
+<rect class="a fa" x="444" y="204" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="218" font-size="10.5" font-weight="700">libds.a</text>
+<rect class="a fa" x="444" y="226" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="240" font-size="10.5" font-weight="700">freq</text>
+<text class="ta" x="544" y="240" font-size="10.5" font-weight="700">&lt;- now</text>
+<rect class="m f" x="444" y="248" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="262" font-size="10.5">sort.c</text>
+<rect class="m f" x="444" y="270" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="284" font-size="10.5">sort.o</text>
+<rect class="m f" x="444" y="292" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="306" font-size="10.5">sort</text>
+<rect class="m f" x="444" y="314" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="328" font-size="10.5">all</text>
+<text class="ta mono" x="24" y="362" font-size="11.5" font-weight="600">out of date: table.o, libds.a, freq</text>
+</g>
+<g class="step"><title>sort.c is a file with no rule, and there. sort.o is up to date: nothing it needs was made, and none of it is newer.</title>
+<line class="m" x1="218" y1="70" x2="141.2" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="70" x2="294.8" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="66.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="369.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="56.4" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="167.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="268.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="s" x1="369.5" y1="256" x2="379.6" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<line class="s" x1="369.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<line class="m" x1="167.5" y1="256" x2="137.2" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="298.8" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<rect class="m f" x="198.7" y="46" width="38.7" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="62" font-size="11.5" text-anchor="middle">all</text>
+<rect class="a fa" x="118.4" y="108" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="141.24" y="124" font-size="11.5" font-weight="700" text-anchor="middle">freq</text>
+<rect class="m f" x="272" y="108" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="294.76" y="124" font-size="11.5" text-anchor="middle">sort</text>
+<rect class="s f" x="36.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="66.5" y="248" font-size="11.5" text-anchor="middle">freq.o</text>
+<rect class="a fa" x="184.8" y="170" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="218" y="186" font-size="11.5" font-weight="700" text-anchor="middle">libds.a</text>
+<rect class="s f" x="339.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="369.5" y="248" font-size="11.5" text-anchor="middle">sort.o</text>
+<rect class="s f" x="137.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="167.5" y="248" font-size="11.5" text-anchor="middle">util.o</text>
+<rect class="a fa" x="235.3" y="232" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="268.5" y="248" font-size="11.5" font-weight="700" text-anchor="middle">table.o</text>
+<rect class="s f" x="26.7" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="56.4" y="310" font-size="11.5" text-anchor="middle">freq.c</text>
+<rect class="s f" x="195.2" y="294" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="218" y="310" font-size="11.5" text-anchor="middle">ds.h</text>
+<rect class="s f" x="349.9" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="379.6" y="310" font-size="11.5" text-anchor="middle">sort.c</text>
+<rect class="s f" x="107.5" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="137.2" y="310" font-size="11.5" text-anchor="middle">util.c</text>
+<rect class="s f" x="265.7" y="294" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="298.8" y="310" font-size="11.5" text-anchor="middle">table.c</text>
+<rect class="a" x="335.8" y="228" width="67.4" height="32" rx="9" stroke-width="2"/>
+<rect class="s f" x="444" y="50" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="64" font-size="10.5">freq.c</text>
+<rect class="s f" x="444" y="72" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="86" font-size="10.5">ds.h</text>
+<rect class="s f" x="444" y="94" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="108" font-size="10.5">freq.o</text>
+<rect class="s f" x="444" y="116" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="130" font-size="10.5">util.c</text>
+<rect class="s f" x="444" y="138" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="152" font-size="10.5">util.o</text>
+<rect class="s f" x="444" y="160" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="174" font-size="10.5">table.c</text>
+<rect class="a fa" x="444" y="182" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="196" font-size="10.5" font-weight="700">table.o</text>
+<rect class="a fa" x="444" y="204" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="218" font-size="10.5" font-weight="700">libds.a</text>
+<rect class="a fa" x="444" y="226" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="240" font-size="10.5" font-weight="700">freq</text>
+<rect class="s f" x="444" y="248" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="262" font-size="10.5">sort.c</text>
+<rect class="s f" x="444" y="270" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="284" font-size="10.5">sort.o</text>
+<text class="ta" x="544" y="284" font-size="10.5" font-weight="700">&lt;- now</text>
+<rect class="m f" x="444" y="292" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="306" font-size="10.5">sort</text>
+<rect class="m f" x="444" y="314" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="328" font-size="10.5">all</text>
+<text class="ta mono" x="24" y="362" font-size="11.5" font-weight="600">out of date: table.o, libds.a, freq</text>
+</g>
+<g class="step"><title>sort: libds.a was made, so sort is out of date: its recipe runs, touch sort.</title>
+<line class="m" x1="218" y1="70" x2="141.2" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="70" x2="294.8" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="66.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="s" x1="294.8" y1="132" x2="369.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-ah)"/>
+<line class="a" x1="294.8" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-aa)"/>
+<line class="m" x1="66.5" y1="256" x2="56.4" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="167.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="268.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="379.6" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="137.2" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="298.8" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<rect class="m f" x="198.7" y="46" width="38.7" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="218" y="62" font-size="11.5" text-anchor="middle">all</text>
+<rect class="a fa" x="118.4" y="108" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="141.24" y="124" font-size="11.5" font-weight="700" text-anchor="middle">freq</text>
+<rect class="a fa" x="272" y="108" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="294.76" y="124" font-size="11.5" font-weight="700" text-anchor="middle">sort</text>
+<rect class="s f" x="36.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="66.5" y="248" font-size="11.5" text-anchor="middle">freq.o</text>
+<rect class="a fa" x="184.8" y="170" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="218" y="186" font-size="11.5" font-weight="700" text-anchor="middle">libds.a</text>
+<rect class="s f" x="339.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="369.5" y="248" font-size="11.5" text-anchor="middle">sort.o</text>
+<rect class="s f" x="137.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="167.5" y="248" font-size="11.5" text-anchor="middle">util.o</text>
+<rect class="a fa" x="235.3" y="232" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="268.5" y="248" font-size="11.5" font-weight="700" text-anchor="middle">table.o</text>
+<rect class="s f" x="26.7" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="56.4" y="310" font-size="11.5" text-anchor="middle">freq.c</text>
+<rect class="s f" x="195.2" y="294" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="218" y="310" font-size="11.5" text-anchor="middle">ds.h</text>
+<rect class="s f" x="349.9" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="379.6" y="310" font-size="11.5" text-anchor="middle">sort.c</text>
+<rect class="s f" x="107.5" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="137.2" y="310" font-size="11.5" text-anchor="middle">util.c</text>
+<rect class="s f" x="265.7" y="294" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="298.8" y="310" font-size="11.5" text-anchor="middle">table.c</text>
+<rect class="a" x="268" y="104" width="53.6" height="32" rx="9" stroke-width="2"/>
+<rect class="s f" x="444" y="50" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="64" font-size="10.5">freq.c</text>
+<rect class="s f" x="444" y="72" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="86" font-size="10.5">ds.h</text>
+<rect class="s f" x="444" y="94" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="108" font-size="10.5">freq.o</text>
+<rect class="s f" x="444" y="116" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="130" font-size="10.5">util.c</text>
+<rect class="s f" x="444" y="138" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="152" font-size="10.5">util.o</text>
+<rect class="s f" x="444" y="160" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="174" font-size="10.5">table.c</text>
+<rect class="a fa" x="444" y="182" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="196" font-size="10.5" font-weight="700">table.o</text>
+<rect class="a fa" x="444" y="204" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="218" font-size="10.5" font-weight="700">libds.a</text>
+<rect class="a fa" x="444" y="226" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="240" font-size="10.5" font-weight="700">freq</text>
+<rect class="s f" x="444" y="248" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="262" font-size="10.5">sort.c</text>
+<rect class="s f" x="444" y="270" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="284" font-size="10.5">sort.o</text>
+<rect class="a fa" x="444" y="292" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="306" font-size="10.5" font-weight="700">sort</text>
+<text class="ta" x="544" y="306" font-size="10.5" font-weight="700">&lt;- now</text>
+<rect class="m f" x="444" y="314" width="92" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="452" y="328" font-size="10.5">all</text>
+<text class="ta mono" x="24" y="362" font-size="11.5" font-weight="600">out of date: table.o, libds.a, freq, sort</text>
+</g>
+<g class="step"><title>all is phony, so it is always out of date, and it has no recipe to run. The build ran 4 recipes: table.o, libds.a, freq and sort.</title>
+<line class="a" x1="218" y1="70" x2="141.2" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-aa)"/>
+<line class="a" x1="218" y1="70" x2="294.8" y2="106.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-aa)"/>
+<line class="m" x1="141.2" y1="132" x2="66.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="141.2" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="369.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="294.8" y1="132" x2="218" y2="168.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="56.4" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="66.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="167.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="218" y1="194" x2="268.5" y2="230.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="379.6" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="369.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="137.2" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="167.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="298.8" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<line class="m" x1="268.5" y1="256" x2="218" y2="292.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703a-am)"/>
+<rect class="a fa" x="198.7" y="46" width="38.7" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="218" y="62" font-size="11.5" font-weight="700" text-anchor="middle">all</text>
+<rect class="a fa" x="118.4" y="108" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="141.24" y="124" font-size="11.5" font-weight="700" text-anchor="middle">freq</text>
+<rect class="a fa" x="272" y="108" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="294.76" y="124" font-size="11.5" font-weight="700" text-anchor="middle">sort</text>
+<rect class="s f" x="36.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="66.5" y="248" font-size="11.5" text-anchor="middle">freq.o</text>
+<rect class="a fa" x="184.8" y="170" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="218" y="186" font-size="11.5" font-weight="700" text-anchor="middle">libds.a</text>
+<rect class="s f" x="339.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="369.5" y="248" font-size="11.5" text-anchor="middle">sort.o</text>
+<rect class="s f" x="137.8" y="232" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="167.5" y="248" font-size="11.5" text-anchor="middle">util.o</text>
+<rect class="a fa" x="235.3" y="232" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="268.5" y="248" font-size="11.5" font-weight="700" text-anchor="middle">table.o</text>
+<rect class="s f" x="26.7" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="56.4" y="310" font-size="11.5" text-anchor="middle">freq.c</text>
+<rect class="s f" x="195.2" y="294" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="218" y="310" font-size="11.5" text-anchor="middle">ds.h</text>
+<rect class="s f" x="349.9" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="379.6" y="310" font-size="11.5" text-anchor="middle">sort.c</text>
+<rect class="s f" x="107.5" y="294" width="59.4" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="137.2" y="310" font-size="11.5" text-anchor="middle">util.c</text>
+<rect class="s f" x="265.7" y="294" width="66.3" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="298.8" y="310" font-size="11.5" text-anchor="middle">table.c</text>
+<rect class="a" x="194.7" y="42" width="46.7" height="32" rx="9" stroke-width="2"/>
+<rect class="s f" x="444" y="50" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="64" font-size="10.5">freq.c</text>
+<rect class="s f" x="444" y="72" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="86" font-size="10.5">ds.h</text>
+<rect class="s f" x="444" y="94" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="108" font-size="10.5">freq.o</text>
+<rect class="s f" x="444" y="116" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="130" font-size="10.5">util.c</text>
+<rect class="s f" x="444" y="138" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="152" font-size="10.5">util.o</text>
+<rect class="s f" x="444" y="160" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="174" font-size="10.5">table.c</text>
+<rect class="a fa" x="444" y="182" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="196" font-size="10.5" font-weight="700">table.o</text>
+<rect class="a fa" x="444" y="204" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="218" font-size="10.5" font-weight="700">libds.a</text>
+<rect class="a fa" x="444" y="226" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="240" font-size="10.5" font-weight="700">freq</text>
+<rect class="s f" x="444" y="248" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="262" font-size="10.5">sort.c</text>
+<rect class="s f" x="444" y="270" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="284" font-size="10.5">sort.o</text>
+<rect class="a fa" x="444" y="292" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="306" font-size="10.5" font-weight="700">sort</text>
+<rect class="a fa" x="444" y="314" width="92" height="19" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="452" y="328" font-size="10.5" font-weight="700">all</text>
+<text class="ta" x="544" y="328" font-size="10.5" font-weight="700">&lt;- now</text>
+<text class="ta mono" x="24" y="362" font-size="11.5" font-weight="600">out of date: table.o, libds.a, freq, sort, all</text>
+</g>
+</svg>

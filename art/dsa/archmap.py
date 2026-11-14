@@ -26,10 +26,10 @@ Everything is driven by the three tables below: MODULES (the tool of each column
 LESSONS (every lesson id, its title as the lesson's front matter has it, and its
 piece in the strip) and RAILS (the shared structures: the lessons that build each
 one, and the lesson that brings each use again, which that lesson lights too).
-When a module's code arrives, check its RAILS uses against the code (a use whose
-lesson is not known yet is None: still to come until its module's last lesson,
-never in the accent) and run this again; it reports a title that differs from
-the lesson's own and a lesson the table does not have.
+When the code changes which structures a tool calls, or from which lesson, change
+RAILS to match (its comment says how each use was found) and run this again; it
+reports a title that differs from the lesson's own and a lesson the table does
+not have.
 """
 import os
 import re
@@ -108,15 +108,32 @@ LESSONS = [
 # builds it, its uses again: [(module, the lesson that brings the use, or None if not known yet)]).
 # A use in the building module's own column is not drawn (the build node is there already). A use
 # whose lesson is None shows as still to come until its module's last lesson, and solid from there
-# on: the map never claims a use before the code has it. Modules 00 to 02 are checked against the
-# code; the rest come from plans/dsa.md and the outline (the git tool's sorting at 10.02, since a
-# tree keeps its entries in name order, and its heap at 10.03, log's newest-first walk, are expected).
+# on: the map never claims a use before the code has it. A use is a call in the tool's own code
+# (tools/<name>/ and the lib/ files its module brings), and its lesson is the first one whose project
+# (./learn files dsa --at NN.LL) has that call; a later lesson of the same tool using it again lights
+# nothing new. Every use below was checked that way, on all 43 lessons:
+#   array       sort.c 02.01, undo.c 03.03 (the two stacks), dfa.c 04.04 (the states), spell.c and
+#               trie.c 05.01, diff.c 06.01 (the lines), depgraph.c and read.c 07.01, inflate.c and
+#               gunzip.c 09.02, object.c and zframe.c 10.01; not paste (before it) or route, whose
+#               graph and queue are blocks of its own
+#   hash table  dfa.c 04.04 (a state by its NFA states), spell.c 05.01 (--algo=table; bloom.c takes
+#               its FNV-1a at 05.02), diff.c 06.01 (equal lines, equal numbers), depgraph.c and
+#               read.c 07.01 (a target or a variable by its name), commit.c 10.03 (the commits met);
+#               not gzip: lz77.c's table of three-byte strings (09.03) is its own
+#   sorting     spell.c 05.01 (merge sort), index.c 10.02 (merge sort; git.c's branch list at 10.03)
+#   heap        freq.c 02.04 (--top=heap), route.c 08.03 (A* at 08.04), huffman.c 09.01, commit.c
+#               10.03 (log; compare.c's merge-base at 10.04)
+#   diff        compare.c 10.04 (diff_text, diff_myers and the hunks of 06.02, on two blobs)
+#   deflate     zframe.c 10.01 (deflate_raw and inflate_raw, inside the zlib format)
+# Nothing else of one module is called from another's: not spell's edit distance (diff fills a table
+# of its own), not grep's, edit's, make's or route's structures.
 RAILS = [
-    ("array", ("01.01",), "01", [("02", "02.01")]),
-    ("hash table", ("01.02", "01.03"), "01", [("07", None), ("09", "09.03"), ("10", None)]),
-    ("sorting", ("02.01", "02.02", "02.03"), "02", [("10", "10.02")]),
+    ("array", ("01.01",), "01", [("02", "02.01"), ("03", "03.03"), ("04", "04.04"), ("05", "05.01"),
+                                 ("06", "06.01"), ("07", "07.01"), ("09", "09.02"), ("10", "10.01")]),
+    ("hash table", ("01.02", "01.03"), "01", [("04", "04.04"), ("05", "05.01"), ("06", "06.01"), ("07", "07.01"),
+                                              ("10", "10.03")]),
+    ("sorting", ("02.01", "02.02", "02.03"), "02", [("05", "05.01"), ("10", "10.02")]),
     ("heap", ("02.04",), "02", [("01", "02.04"), ("08", "08.03"), ("09", "09.01"), ("10", "10.03")]),
-    ("edit distance", ("05.03",), "05", [("06", "06.01")]),
     ("diff", ("06.01", "06.02", "06.03"), "06", [("10", "10.04")]),
     ("deflate", ("09.02", "09.04"), "09", [("10", "10.01")]),
 ]

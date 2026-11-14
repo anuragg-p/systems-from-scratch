@@ -806,6 +806,9 @@ def cmd_check(args):
             if l.doc:
                 for n, what in art.figure_problems(l.doc):
                     problems.append(f"{os.path.relpath(l.doc, ROOT)}:{n}: {what}")
+                from harness.web import views
+                for n, what in views.link_problems(tr, l.doc):     # a link that goes nowhere on the page
+                    problems.append(f"{os.path.relpath(l.doc, ROOT)}:{n}: {what}")
         from harness import timeline
         problems.extend(f"{tr.id}: {p}" for p in timeline.Project(tr).problems())
     from harness import verify

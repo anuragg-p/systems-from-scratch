@@ -1,0 +1,264 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>Depth-first search on loop.mk: each node new, open or done, until the search meets an open node again</title>
+<defs><marker id="f0702a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">loop.mk: diamond.mk, and two rules more</text>
+<text class="t mono" x="24" y="40" font-size="11">libb: version.h</text>
+<text class="t mono" x="160" y="40" font-size="11">version.h: app</text>
+<rect class="m f" x="24" y="306" width="18" height="12" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="50" y="316" font-size="11">new</text>
+<rect class="a af" x="87.82" y="306" width="18" height="12" rx="3" stroke-width="1.5"/>
+<text class="tm" x="113.82" y="316" font-size="11">open: on the path</text>
+<rect class="a fa" x="234.8" y="306" width="18" height="12" rx="3" stroke-width="1.5"/>
+<text class="tm" x="260.8" y="316" font-size="11">done</text>
+<line class="m" x1="304.56" y1="312" x2="330.56" y2="312" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<text class="tm" x="338.56" y="316" font-size="11">needs</text>
+<text class="tm" x="418" y="52" font-size="11">the path, goal at the bottom</text>
+<text class="tm" x="418" y="202" font-size="11">done, in the order finished</text>
+<g class="step"><title>enter app, the goal: it is open, the first node on the path.</title>
+<line class="m" x1="172" y1="94" x2="92" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="172" y1="94" x2="252" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="92" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="316" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<path class="m" d="M356.1 218 C 396.0 218, 292.0 82, 193.3 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0702a-am)"/>
+<rect class="a af" x="152.7" y="70" width="38.7" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="172" y="86" font-size="11.5" font-weight="700" text-anchor="middle">app</text>
+<rect class="m f" x="69.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="92" y="154" font-size="11.5" text-anchor="middle">liba</text>
+<rect class="m f" x="229.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="252" y="154" font-size="11.5" text-anchor="middle">libb</text>
+<rect class="m f" x="115.4" y="206" width="73.2" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="152" y="222" font-size="11.5" text-anchor="middle">common.h</text>
+<rect class="m f" x="275.9" y="206" width="80.1" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="316" y="222" font-size="11.5" text-anchor="middle">version.h</text>
+<rect class="a af" x="418" y="160" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="175" font-size="10">0</text>
+<text class="ta mono" x="442" y="175" font-size="11" font-weight="700">app</text>
+<text class="tm" x="426" y="222" font-size="11">(none yet)</text>
+<text class="ta mono" x="418" y="262" font-size="11" font-weight="600">trace: enter 0 app</text>
+</g>
+<g class="step"><title>enter liba: new, so the search opens it and puts it on the path, 1 edge below the goal.</title>
+<line class="a" x1="172" y1="94" x2="92" y2="136.5" stroke-width="2.5" stroke-linecap="round" marker-end="url(#f0702a-aa)"/>
+<line class="m" x1="172" y1="94" x2="252" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="92" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="316" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<path class="m" d="M356.1 218 C 396.0 218, 292.0 82, 193.3 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0702a-am)"/>
+<rect class="a af" x="152.7" y="70" width="38.7" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="172" y="86" font-size="11.5" font-weight="700" text-anchor="middle">app</text>
+<rect class="a af" x="69.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="92" y="154" font-size="11.5" font-weight="700" text-anchor="middle">liba</text>
+<rect class="m f" x="229.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="252" y="154" font-size="11.5" text-anchor="middle">libb</text>
+<rect class="m f" x="115.4" y="206" width="73.2" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="152" y="222" font-size="11.5" text-anchor="middle">common.h</text>
+<rect class="m f" x="275.9" y="206" width="80.1" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="316" y="222" font-size="11.5" text-anchor="middle">version.h</text>
+<rect class="a af" x="418" y="160" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="175" font-size="10">0</text>
+<text class="ta mono" x="442" y="175" font-size="11" font-weight="700">app</text>
+<rect class="a af" x="418" y="134" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="149" font-size="10">1</text>
+<text class="ta mono" x="442" y="149" font-size="11" font-weight="700">liba</text>
+<text class="tm" x="426" y="222" font-size="11">(none yet)</text>
+<text class="ta mono" x="418" y="262" font-size="11" font-weight="600">trace: enter 1 liba</text>
+</g>
+<g class="step"><title>enter common.h: new, so the search opens it and puts it on the path, 2 edges below the goal.</title>
+<line class="a" x1="172" y1="94" x2="92" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-aa)"/>
+<line class="m" x1="172" y1="94" x2="252" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="a" x1="92" y1="162" x2="152" y2="204.5" stroke-width="2.5" stroke-linecap="round" marker-end="url(#f0702a-aa)"/>
+<line class="m" x1="252" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="316" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<path class="m" d="M356.1 218 C 396.0 218, 292.0 82, 193.3 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0702a-am)"/>
+<rect class="a af" x="152.7" y="70" width="38.7" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="172" y="86" font-size="11.5" font-weight="700" text-anchor="middle">app</text>
+<rect class="a af" x="69.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="92" y="154" font-size="11.5" font-weight="700" text-anchor="middle">liba</text>
+<rect class="m f" x="229.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="252" y="154" font-size="11.5" text-anchor="middle">libb</text>
+<rect class="a af" x="115.4" y="206" width="73.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="152" y="222" font-size="11.5" font-weight="700" text-anchor="middle">common.h</text>
+<rect class="m f" x="275.9" y="206" width="80.1" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="316" y="222" font-size="11.5" text-anchor="middle">version.h</text>
+<rect class="a af" x="418" y="160" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="175" font-size="10">0</text>
+<text class="ta mono" x="442" y="175" font-size="11" font-weight="700">app</text>
+<rect class="a af" x="418" y="134" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="149" font-size="10">1</text>
+<text class="ta mono" x="442" y="149" font-size="11" font-weight="700">liba</text>
+<rect class="a af" x="418" y="108" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="123" font-size="10">2</text>
+<text class="ta mono" x="442" y="123" font-size="11" font-weight="700">common.h</text>
+<text class="tm" x="426" y="222" font-size="11">(none yet)</text>
+<text class="ta mono" x="418" y="262" font-size="11" font-weight="600">trace: enter 2 common.h</text>
+</g>
+<g class="step"><title>leave common.h: it needs nothing, so it is done at once, the first node finished.</title>
+<line class="a" x1="172" y1="94" x2="92" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-aa)"/>
+<line class="m" x1="172" y1="94" x2="252" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="92" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="316" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<path class="m" d="M356.1 218 C 396.0 218, 292.0 82, 193.3 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0702a-am)"/>
+<rect class="a af" x="152.7" y="70" width="38.7" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="172" y="86" font-size="11.5" font-weight="700" text-anchor="middle">app</text>
+<rect class="a af" x="69.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="92" y="154" font-size="11.5" font-weight="700" text-anchor="middle">liba</text>
+<rect class="m f" x="229.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="252" y="154" font-size="11.5" text-anchor="middle">libb</text>
+<rect class="a fa" x="115.4" y="206" width="73.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="152" y="222" font-size="11.5" font-weight="700" text-anchor="middle">common.h</text>
+<rect class="m f" x="275.9" y="206" width="80.1" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="316" y="222" font-size="11.5" text-anchor="middle">version.h</text>
+<rect class="a af" x="418" y="160" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="175" font-size="10">0</text>
+<text class="ta mono" x="442" y="175" font-size="11" font-weight="700">app</text>
+<rect class="a af" x="418" y="134" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="149" font-size="10">1</text>
+<text class="ta mono" x="442" y="149" font-size="11" font-weight="700">liba</text>
+<text class="t mono" x="426" y="222" font-size="11" font-weight="600">1. common.h</text>
+<text class="ta mono" x="418" y="262" font-size="11" font-weight="600">trace: leave 2 common.h</text>
+</g>
+<g class="step"><title>leave liba: everything it needs is done, so it is done too; it comes off the path and goes on the end of the finished list.</title>
+<line class="m" x1="172" y1="94" x2="92" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="172" y1="94" x2="252" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="92" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="316" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<path class="m" d="M356.1 218 C 396.0 218, 292.0 82, 193.3 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0702a-am)"/>
+<rect class="a af" x="152.7" y="70" width="38.7" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="172" y="86" font-size="11.5" font-weight="700" text-anchor="middle">app</text>
+<rect class="a fa" x="69.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="92" y="154" font-size="11.5" font-weight="700" text-anchor="middle">liba</text>
+<rect class="m f" x="229.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="252" y="154" font-size="11.5" text-anchor="middle">libb</text>
+<rect class="a fa" x="115.4" y="206" width="73.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="152" y="222" font-size="11.5" font-weight="700" text-anchor="middle">common.h</text>
+<rect class="m f" x="275.9" y="206" width="80.1" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="316" y="222" font-size="11.5" text-anchor="middle">version.h</text>
+<rect class="a af" x="418" y="160" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="175" font-size="10">0</text>
+<text class="ta mono" x="442" y="175" font-size="11" font-weight="700">app</text>
+<text class="t mono" x="426" y="222" font-size="11" font-weight="600">1. common.h</text>
+<text class="t mono" x="510" y="222" font-size="11" font-weight="600">2. liba</text>
+<text class="ta mono" x="418" y="262" font-size="11" font-weight="600">trace: leave 1 liba</text>
+</g>
+<g class="step"><title>enter libb: liba is done, so the search goes on along app's next edge, to libb, which is new.</title>
+<line class="m" x1="172" y1="94" x2="92" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="a" x1="172" y1="94" x2="252" y2="136.5" stroke-width="2.5" stroke-linecap="round" marker-end="url(#f0702a-aa)"/>
+<line class="m" x1="92" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="316" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<path class="m" d="M356.1 218 C 396.0 218, 292.0 82, 193.3 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0702a-am)"/>
+<rect class="a af" x="152.7" y="70" width="38.7" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="172" y="86" font-size="11.5" font-weight="700" text-anchor="middle">app</text>
+<rect class="a fa" x="69.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="92" y="154" font-size="11.5" font-weight="700" text-anchor="middle">liba</text>
+<rect class="a af" x="229.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="252" y="154" font-size="11.5" font-weight="700" text-anchor="middle">libb</text>
+<rect class="a fa" x="115.4" y="206" width="73.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="152" y="222" font-size="11.5" font-weight="700" text-anchor="middle">common.h</text>
+<rect class="m f" x="275.9" y="206" width="80.1" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="316" y="222" font-size="11.5" text-anchor="middle">version.h</text>
+<rect class="a af" x="418" y="160" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="175" font-size="10">0</text>
+<text class="ta mono" x="442" y="175" font-size="11" font-weight="700">app</text>
+<rect class="a af" x="418" y="134" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="149" font-size="10">1</text>
+<text class="ta mono" x="442" y="149" font-size="11" font-weight="700">libb</text>
+<text class="t mono" x="426" y="222" font-size="11" font-weight="600">1. common.h</text>
+<text class="t mono" x="510" y="222" font-size="11" font-weight="600">2. liba</text>
+<text class="ta mono" x="418" y="262" font-size="11" font-weight="600">trace: enter 1 libb</text>
+</g>
+<g class="step"><title>again common.h: libb needs common.h, which is done already: a second way to it, not a cycle. The search does not go in again.</title>
+<line class="m" x1="172" y1="94" x2="92" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="a" x1="172" y1="94" x2="252" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-aa)"/>
+<line class="m" x1="92" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="a" x1="252" y1="162" x2="152" y2="204.5" stroke-width="2.5" stroke-linecap="round" marker-end="url(#f0702a-aa)"/>
+<line class="m" x1="252" y1="162" x2="316" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<path class="m" d="M356.1 218 C 396.0 218, 292.0 82, 193.3 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0702a-am)"/>
+<rect class="a af" x="152.7" y="70" width="38.7" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="172" y="86" font-size="11.5" font-weight="700" text-anchor="middle">app</text>
+<rect class="a fa" x="69.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="92" y="154" font-size="11.5" font-weight="700" text-anchor="middle">liba</text>
+<rect class="a af" x="229.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="252" y="154" font-size="11.5" font-weight="700" text-anchor="middle">libb</text>
+<rect class="a fa" x="115.4" y="206" width="73.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="152" y="222" font-size="11.5" font-weight="700" text-anchor="middle">common.h</text>
+<rect class="m f" x="275.9" y="206" width="80.1" height="24" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="316" y="222" font-size="11.5" text-anchor="middle">version.h</text>
+<rect class="a af" x="418" y="160" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="175" font-size="10">0</text>
+<text class="ta mono" x="442" y="175" font-size="11" font-weight="700">app</text>
+<rect class="a af" x="418" y="134" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="149" font-size="10">1</text>
+<text class="ta mono" x="442" y="149" font-size="11" font-weight="700">libb</text>
+<text class="t mono" x="426" y="222" font-size="11" font-weight="600">1. common.h</text>
+<text class="t mono" x="510" y="222" font-size="11" font-weight="600">2. liba</text>
+<text class="ta mono" x="418" y="262" font-size="11" font-weight="600">trace: again 2 common.h</text>
+</g>
+<g class="step"><title>enter version.h: new, so the search opens it and puts it on the path, 2 edges below the goal.</title>
+<line class="m" x1="172" y1="94" x2="92" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="a" x1="172" y1="94" x2="252" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-aa)"/>
+<line class="m" x1="92" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="a" x1="252" y1="162" x2="316" y2="204.5" stroke-width="2.5" stroke-linecap="round" marker-end="url(#f0702a-aa)"/>
+<path class="m" d="M356.1 218 C 396.0 218, 292.0 82, 193.3 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0702a-am)"/>
+<rect class="a af" x="152.7" y="70" width="38.7" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="172" y="86" font-size="11.5" font-weight="700" text-anchor="middle">app</text>
+<rect class="a fa" x="69.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="92" y="154" font-size="11.5" font-weight="700" text-anchor="middle">liba</text>
+<rect class="a af" x="229.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="252" y="154" font-size="11.5" font-weight="700" text-anchor="middle">libb</text>
+<rect class="a fa" x="115.4" y="206" width="73.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="152" y="222" font-size="11.5" font-weight="700" text-anchor="middle">common.h</text>
+<rect class="a af" x="275.9" y="206" width="80.1" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="316" y="222" font-size="11.5" font-weight="700" text-anchor="middle">version.h</text>
+<rect class="a af" x="418" y="160" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="175" font-size="10">0</text>
+<text class="ta mono" x="442" y="175" font-size="11" font-weight="700">app</text>
+<rect class="a af" x="418" y="134" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="149" font-size="10">1</text>
+<text class="ta mono" x="442" y="149" font-size="11" font-weight="700">libb</text>
+<rect class="a af" x="418" y="108" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="123" font-size="10">2</text>
+<text class="ta mono" x="442" y="123" font-size="11" font-weight="700">version.h</text>
+<text class="t mono" x="426" y="222" font-size="11" font-weight="600">1. common.h</text>
+<text class="t mono" x="510" y="222" font-size="11" font-weight="600">2. liba</text>
+<text class="ta mono" x="418" y="262" font-size="11" font-weight="600">trace: enter 2 version.h</text>
+</g>
+<g class="step"><title>cycle: version.h needs app, which is open: on the path. The path from app down to here is the cycle: make prints app -&gt; libb -&gt; version.h -&gt; app and stops.</title>
+<line class="m" x1="172" y1="94" x2="92" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="a" x1="172" y1="94" x2="252" y2="136.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-aa)"/>
+<line class="m" x1="92" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="m" x1="252" y1="162" x2="152" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-am)"/>
+<line class="a" x1="252" y1="162" x2="316" y2="204.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0702a-aa)"/>
+<path class="a" d="M356.1 218 C 396.0 218, 292.0 82, 193.3 82" stroke-width="2.5" stroke-linecap="round" fill="none" marker-end="url(#f0702a-aa)"/>
+<rect class="a af" x="152.7" y="70" width="38.7" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="172" y="86" font-size="11.5" font-weight="700" text-anchor="middle">app</text>
+<rect class="a fa" x="69.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="92" y="154" font-size="11.5" font-weight="700" text-anchor="middle">liba</text>
+<rect class="a af" x="229.2" y="138" width="45.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="252" y="154" font-size="11.5" font-weight="700" text-anchor="middle">libb</text>
+<rect class="a fa" x="115.4" y="206" width="73.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="f mono" x="152" y="222" font-size="11.5" font-weight="700" text-anchor="middle">common.h</text>
+<rect class="a af" x="275.9" y="206" width="80.1" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="316" y="222" font-size="11.5" font-weight="700" text-anchor="middle">version.h</text>
+<rect class="a af" x="418" y="160" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="175" font-size="10">0</text>
+<text class="ta mono" x="442" y="175" font-size="11" font-weight="700">app</text>
+<rect class="a af" x="418" y="134" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="149" font-size="10">1</text>
+<text class="ta mono" x="442" y="149" font-size="11" font-weight="700">libb</text>
+<rect class="a af" x="418" y="108" width="150" height="22" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="426" y="123" font-size="10">2</text>
+<text class="ta mono" x="442" y="123" font-size="11" font-weight="700">version.h</text>
+<rect class="a" x="418" y="82" width="150" height="22" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="426" y="97" font-size="10">3</text>
+<text class="ta mono" x="442" y="97" font-size="11" font-weight="700">app again</text>
+<text class="t mono" x="426" y="222" font-size="11" font-weight="600">1. common.h</text>
+<text class="t mono" x="510" y="222" font-size="11" font-weight="600">2. liba</text>
+<text class="ta mono" x="418" y="262" font-size="11" font-weight="600">trace: cycle 3 app</text>
+<text class="t mono" x="418" y="284" font-size="10.5">make: dependency cycle:</text>
+<text class="t mono" x="418" y="300" font-size="10.5">app -&gt; libb -&gt; version.h -&gt; app</text>
+</g>
+</svg>

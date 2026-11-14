@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 352" fill="none">
+<title>One object: a header and the file&#x27;s bytes, named by their SHA-1 and stored under that name, compressed</title>
+<defs><marker id="f1001a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f1001a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f1001a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">bin/git hash-object -w hello.txt: the object is a header and the file&#x27;s 6 bytes</text>
+<rect class="a af" x="24" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="39" y="54" font-size="13" font-weight="600" text-anchor="middle">b</text>
+<rect class="a af" x="58" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="73" y="54" font-size="13" font-weight="600" text-anchor="middle">l</text>
+<rect class="a af" x="92" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="107" y="54" font-size="13" font-weight="600" text-anchor="middle">o</text>
+<rect class="a af" x="126" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="141" y="54" font-size="13" font-weight="600" text-anchor="middle">b</text>
+<rect class="a af" x="160" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<line class="a" x1="169" y1="54" x2="181" y2="54" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a af" x="194" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="209" y="54" font-size="13" font-weight="600" text-anchor="middle">6</text>
+<rect class="a af" x="228" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="243" y="54" font-size="11.5" font-weight="600" text-anchor="middle">\0</text>
+<rect class="s f" x="262" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="277" y="54" font-size="13" font-weight="600" text-anchor="middle">h</text>
+<rect class="s f" x="296" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="311" y="54" font-size="13" font-weight="600" text-anchor="middle">e</text>
+<rect class="s f" x="330" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="345" y="54" font-size="13" font-weight="600" text-anchor="middle">l</text>
+<rect class="s f" x="364" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="379" y="54" font-size="13" font-weight="600" text-anchor="middle">l</text>
+<rect class="s f" x="398" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="413" y="54" font-size="13" font-weight="600" text-anchor="middle">o</text>
+<rect class="s f" x="432" y="34" width="30" height="30" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="447" y="54" font-size="11.5" font-weight="600" text-anchor="middle">\n</text>
+<path class="a" d="M24 66 L24 72 L258 72 L258 66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="141" y="88" font-size="11" font-weight="600" text-anchor="middle">header: type, space, size, NUL</text>
+<path class="m" d="M262 66 L262 72 L462 72 L462 66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm" x="362" y="88" font-size="11" text-anchor="middle">hello.txt&#x27;s bytes</text>
+<text class="t mono" x="474" y="46" font-size="12" font-weight="600">13 bytes</text>
+<text class="tm" x="474" y="61" font-size="10.5">a tree or a commit</text>
+<text class="tm" x="474" y="74" font-size="10.5">starts the same way</text>
+<line class="s" x1="228" y1="98" x2="228" y2="122" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f1001a-ah)"/>
+<text class="tm" x="238" y="114" font-size="11">SHA-1 of those 13 bytes (one 64-byte block, padded)</text>
+<rect class="s fs" x="24" y="128" width="592" height="30" rx="6" stroke-width="1.5"/>
+<text class="tm" x="36" y="148" font-size="11">name</text>
+<text class="t mono" x="88" y="148" font-size="13.5" font-weight="700"><tspan class="ta">ce</tspan>013625030ba8dba906f756967f9e9ca394464a</text>
+<text class="tm" x="604" y="148" font-size="10.5" text-anchor="end">40 hex digits</text>
+<line class="s" x1="228" y1="162" x2="228" y2="184" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f1001a-ah)"/>
+<text class="tm" x="238" y="177" font-size="11">the first 2 digits a directory, the other 38 the file</text>
+<rect class="s f" x="24" y="190" width="592" height="30" rx="6" stroke-width="1.5"/>
+<text class="tm" x="36" y="210" font-size="11">path</text>
+<text class="t mono" x="88" y="210" font-size="12.5" font-weight="600">.git/objects/<tspan class="ta">ce/</tspan>013625030ba8dba906f756967f9e9ca394464a</text>
+<text class="tm" x="24" y="244" font-size="11">the file there: 21 bytes, read-only, written once (the second hash-object -w finds it and stops)</text>
+<rect class="a af" x="24" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="36.25" y="270.5" font-size="11" font-weight="600" text-anchor="middle">78</text>
+<rect class="a af" x="51.5" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="63.75" y="270.5" font-size="11" font-weight="600" text-anchor="middle">01</text>
+<path class="a" d="M24 280 L24 286 L76 286 L76 280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="50" y="302" font-size="10.5" font-weight="600" text-anchor="middle">zlib header</text>
+<rect class="s f" x="79" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="91.25" y="270.5" font-size="11" font-weight="600" text-anchor="middle">4b</text>
+<rect class="s f" x="106.5" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="118.75" y="270.5" font-size="11" font-weight="600" text-anchor="middle">ca</text>
+<rect class="s f" x="134" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="146.25" y="270.5" font-size="11" font-weight="600" text-anchor="middle">c9</text>
+<rect class="s f" x="161.5" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="173.75" y="270.5" font-size="11" font-weight="600" text-anchor="middle">4f</text>
+<rect class="s f" x="189" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="201.25" y="270.5" font-size="11" font-weight="600" text-anchor="middle">52</text>
+<rect class="s f" x="216.5" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="228.75" y="270.5" font-size="11" font-weight="600" text-anchor="middle">30</text>
+<rect class="s f" x="244" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="256.25" y="270.5" font-size="11" font-weight="600" text-anchor="middle">63</text>
+<rect class="s f" x="271.5" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="283.75" y="270.5" font-size="11" font-weight="600" text-anchor="middle">c8</text>
+<rect class="s f" x="299" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="311.25" y="270.5" font-size="11" font-weight="600" text-anchor="middle">48</text>
+<rect class="s f" x="326.5" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="338.75" y="270.5" font-size="11" font-weight="600" text-anchor="middle">cd</text>
+<rect class="s f" x="354" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="366.25" y="270.5" font-size="11" font-weight="600" text-anchor="middle">c9</text>
+<rect class="s f" x="381.5" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="393.75" y="270.5" font-size="11" font-weight="600" text-anchor="middle">c9</text>
+<rect class="s f" x="409" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="421.25" y="270.5" font-size="11" font-weight="600" text-anchor="middle">e7</text>
+<rect class="s f" x="436.5" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="448.75" y="270.5" font-size="11" font-weight="600" text-anchor="middle">02</text>
+<rect class="s f" x="464" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="476.25" y="270.5" font-size="11" font-weight="600" text-anchor="middle">00</text>
+<path class="m" d="M79 280 L79 286 L488.5 286 L488.5 280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="283.75" y="302" font-size="10.5" text-anchor="middle">DEFLATE, one fixed block (09.04)</text>
+<rect class="a af" x="491.5" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="503.75" y="270.5" font-size="11" font-weight="600" text-anchor="middle">1d</text>
+<rect class="a af" x="519" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="531.25" y="270.5" font-size="11" font-weight="600" text-anchor="middle">c5</text>
+<rect class="a af" x="546.5" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="558.75" y="270.5" font-size="11" font-weight="600" text-anchor="middle">04</text>
+<rect class="a af" x="574" y="254" width="24.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="586.25" y="270.5" font-size="11" font-weight="600" text-anchor="middle">14</text>
+<path class="a" d="M491.5 280 L491.5 286 L598.5 286 L598.5 280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="545" y="302" font-size="10.5" font-weight="600" text-anchor="middle">Adler-32 of the 13</text>
+<text class="tm mono" x="24" y="322" font-size="10.5">78 01: DEFLATE with a 32 KB window, the fastest level; 78 x 256 + 01 = 30721 = 31 x 991</text>
+<text class="tm mono" x="24" y="340" font-size="10.5">1d c5 04 14: the Adler-32 of the 13 bytes before compression, most significant byte first</text>
+</svg>

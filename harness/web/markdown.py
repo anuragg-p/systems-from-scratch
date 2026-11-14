@@ -10,7 +10,8 @@ span may wrap across them (a soft line break, as in CommonMark).
 
 resolve_link(href) may return a replacement href, or None to leave the link
 as it is. Links that are not http(s), mailto, anchors or relative paths are
-rendered as plain text.
+rendered as plain text; so is one that starts "//" or with a backslash, which a
+browser reads as another site.
 
 A line of its own of the form ![Caption](path) is a figure. figure(path) returns
 safe markup for it (inline SVG) or "" to refuse it; a refused figure, or any
@@ -36,6 +37,7 @@ LIST = re.compile(r"^(\s*)([-*+]|\d+[.)])\s+(.*)$")
 TABLE_SEP = re.compile(r"^\s*\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)*\|?\s*$")
 SAFE_SCHEME = re.compile(r"^(https?:|mailto:|#|/|\.|[\w-]+(/|\.|#|$))", re.I)
 BAD_SCHEME = re.compile(r"^\s*[a-z][a-z0-9+.-]*:", re.I)
+OTHER_HOST = re.compile(r"^[/\\]{2}|^\\")     # "//host", "/\host": another site, as a browser reads it
 FIGURE = re.compile(r"^\s{0,3}!\[([^\]\n]*)\]\(\s*([^)\s]+)\s*\)\s*$")
 
 
@@ -122,7 +124,7 @@ def inline(text, resolve_link=None):
             href = resolve_link(href) or href
         if BAD_SCHEME.match(href) and not re.match(r"^(https?|mailto):", href, re.I):
             return emphasis(label)
-        if not SAFE_SCHEME.match(href):
+        if not SAFE_SCHEME.match(href) or OTHER_HOST.match(href):
             return emphasis(label)
         return keep(f'<a href="{html.escape(href, quote=True)}">{emphasis(label)}</a>')
 
