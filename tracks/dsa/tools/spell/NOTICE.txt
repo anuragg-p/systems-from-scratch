@@ -1,0 +1,60 @@
+tools/spell/words.txt - the dictionary spell reads unless -d names another
+
+What it is
+  The 2of4brif list of Alan Beale's 12dicts word lists: 60388 English
+  words, one to a line. British and international spelling (-ise and -ize
+  both), with their inflections (plurals, verb forms); no proper names,
+  abbreviations, hyphenated words, contractions or words of one letter.
+  Lowercase a-z only, sorted byte by byte (LC_ALL=C sort), LF line ends,
+  all ASCII. 563527 bytes.
+
+Where it came from
+  https://raw.githubusercontent.com/en-wl/wordlist/b22230cc5250887737fdefe9ca4c9d9d01230eaa/alt12dicts/2of4brif.txt
+  fetched 2026-11-14: the file alt12dicts/2of4brif.txt of Kevin
+  Atkinson's wordlist repository (https://github.com/en-wl/wordlist,
+  branch v1, commit b22230cc5250887737fdefe9ca4c9d9d01230eaa of
+  2024-07-22), the "Unofficial Alternate 12Dicts package" version
+  2020.12.07. Its README says of this file: "2of4brif.txt, 3esl.txt, and
+  5desk.txt neol2016.txt ... These files are identical to the original
+  files in the 12Dicts package." The official 12dicts package (version
+  6.0.2) and its readme are at http://wordlist.aspell.net/12dicts/
+
+  SHA-256  c59db93135728363e3d2fd7b58eda0af08ab0eff7ffcef950c98250543c261fc
+  SHA-1    d2141886c77af580e5b169f3ffb47794590a40c6
+
+Licence, as read
+  The 12dicts readme (version 6.0.2, its last paragraph; the same text is
+  alt12dicts/README-orig in the repository above, and the readme page at
+  http://wordlist.aspell.net/12dicts-readme/):
+
+    The 12dicts lists were compiled by Alan Beale. I explicitly release
+    them to the public domain, but request acknowledgment of their use.
+    (Actually, the dependency of the 2of12inf list and the 2+2+3 lists on
+    AGID prevents their release into the public domain. However, I do not
+    impose any additional requirements on their use beyond those imposed
+    by AGID and its sources, as described in agid.txt.)
+
+  2of4brif is neither 2of12inf nor one of the 2+2+3 lists, so it is in
+  the public domain, with no condition. The alt12dicts README says the
+  same of all its files ("All of these files have been explicitly placed
+  in the Public Domain by Alan Beale."), and SCOWL's Copyright file
+  (scowl/Copyright in the same repository), which takes 2of4brif in at
+  its level 55, says: "Like his other stuff the 2of4brif is also in the
+  public domain."
+
+  So it can go into this MIT-licensed repository as it is. Nothing is
+  required; acknowledgment is asked for, and this is it: the word list is
+  the work of Alan Beale, from his 12dicts lists. Thank you.
+
+Changes made
+  None to its contents: words.txt is byte for byte the file fetched (the
+  hashes above are of both). It was renamed from 2of4brif.txt.
+
+  spell checks words of two letters or more only (as aspell does by
+  default), because the list has no words of one letter: "a" and "I" are
+  not in it. That is in spell.c, not a change to the list.
+
+Not used
+  /usr/share/dict/web2 (Webster's Second International, on macOS): its
+  README says only "The 1934 copyright has lapsed, according to the
+  supplier", and the file is 2.49 MB.
