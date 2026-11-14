@@ -3,8 +3,8 @@
   typos   [words] words of the book, picked at random, ten to a line, one in
           ten of those of three letters or more with a typo: a letter left
           out, one put in, one changed, or two side by side swapped. The
-          typos grow with the text, as a writer's do: about n/14 different
-          ones in n words.
+          different unknown words grow with the text, as a writer's typos
+          do: spell finds 756 in 10000 words, 2529 in 40000, 5521 in 100000.
 
     python3 data/gen.py typos 10000 > typos.txt
     python3 bench/grow.py --input typos bin/spell -s --near=scan
