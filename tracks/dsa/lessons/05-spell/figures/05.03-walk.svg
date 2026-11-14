@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 344" fill="none">
+<title>Suggestions for &quot;cst&quot; within one edit: the walk down the trie, a row of the table at each node</title>
+<defs><marker id="f0503b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0503b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0503b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="24" y="22" font-size="11">printf &#x27;cst\n&#x27; | bin/spell -s -e 1 -d small.txt   (car cart cat dog)</text>
+<line class="s" x1="235.33" y1="76.92" x2="147.17" y2="127.08" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="180.25" y="106" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<line class="s" x1="135" y1="148" x2="135" y2="184" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="146" y="170" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<line class="s" x1="124.35" y1="207.09" x2="73.69" y2="250.32" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="86.5" y="234" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<line class="m" x1="60" y1="276" x2="60" y2="308" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="71" y="298" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="145.65" y1="207.09" x2="196.31" y2="250.32" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="183.5" y="234" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="259.67" y1="76.92" x2="347.83" y2="127.08" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="314.75" y="106" font-size="13" font-weight="600" text-anchor="middle">d</text>
+<line class="s" x1="360" y1="148" x2="360" y2="184" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="371" y="170" font-size="13" font-weight="600" text-anchor="middle">o</text>
+<line class="m" x1="360" y1="212" x2="360" y2="244" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="371" y="234" font-size="13" font-weight="600" text-anchor="middle">g</text>
+<circle class="s f" cx="247.5" cy="70" r="14" stroke-width="1.5"/>
+<text class="t mono" x="247.5" y="74" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<text class="tm mono" x="271.5" y="67" font-size="10.5">- c s t</text>
+<text class="t mono" x="271.5" y="80" font-size="10.5">0 1 2 3</text>
+<circle class="s f" cx="135" cy="134" r="14" stroke-width="1.5"/>
+<text class="t mono" x="135" y="138" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<text class="t mono" x="159" y="131" font-size="10.5">1 0 1 2</text>
+<text class="t mono" x="159" y="144" font-size="10.5">min 0</text>
+<circle class="s f" cx="135" cy="198" r="14" stroke-width="1.5"/>
+<text class="t mono" x="135" y="202" font-size="11" font-weight="600" text-anchor="middle">2</text>
+<text class="t mono" x="159" y="195" font-size="10.5">2 1 1 2</text>
+<text class="t mono" x="159" y="208" font-size="10.5">min 1</text>
+<circle class="s" cx="60.0" cy="262" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="60" cy="262" r="14" stroke-width="1.5"/>
+<text class="t mono" x="60" y="266" font-size="11" font-weight="600" text-anchor="middle">3</text>
+<text class="t mono" x="84" y="259" font-size="10.5">3 2 2 2</text>
+<text class="ta mono" x="84" y="272" font-size="10.5">min 2: pruned</text>
+<circle class="m" cx="60" cy="326" r="18" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle class="m f" cx="60" cy="326" r="14" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text class="tm mono" x="60" y="330" font-size="11" font-weight="600" text-anchor="middle">4</text>
+<circle class="s" cx="210" cy="262" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="210" cy="262" r="14" stroke-width="1.5"/>
+<text class="t mono" x="210" y="266" font-size="11" font-weight="600" text-anchor="middle">5</text>
+<text class="t mono" x="234" y="259" font-size="10.5">3 2 2 1</text>
+<text class="ta mono" x="234" y="272" font-size="10.5">a word at 1</text>
+<circle class="s f" cx="360" cy="134" r="14" stroke-width="1.5"/>
+<text class="t mono" x="360" y="138" font-size="11" font-weight="600" text-anchor="middle">6</text>
+<text class="t mono" x="384" y="131" font-size="10.5">1 1 2 3</text>
+<text class="t mono" x="384" y="144" font-size="10.5">min 1</text>
+<circle class="s f" cx="360" cy="198" r="14" stroke-width="1.5"/>
+<text class="t mono" x="360" y="202" font-size="11" font-weight="600" text-anchor="middle">7</text>
+<text class="t mono" x="384" y="195" font-size="10.5">2 2 2 3</text>
+<text class="ta mono" x="384" y="208" font-size="10.5">min 2: pruned</text>
+<circle class="m" cx="360" cy="262" r="18" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle class="m f" cx="360" cy="262" r="14" stroke-width="1.5" stroke-dasharray="3 3"/>
+<text class="tm mono" x="360" y="266" font-size="11" font-weight="600" text-anchor="middle">8</text>
+<circle class="a" cx="210" cy="262" r="18" stroke-width="2.5"/>
+<text class="t" x="486" y="60" font-size="12" font-weight="600">each node&#x27;s row:</text>
+<text class="tm" x="486" y="78" font-size="11">the distances from the</text>
+<text class="tm" x="486" y="92" font-size="11">starts of &quot;cst&quot; to the</text>
+<text class="tm" x="486" y="106" font-size="11">letters on the way down</text>
+<text class="tm" x="486" y="134" font-size="11">last cell within 1, and a</text>
+<text class="tm" x="486" y="148" font-size="11">word ends: a suggestion</text>
+<text class="tm" x="486" y="176" font-size="11">no cell within 1: pruned,</text>
+<text class="tm" x="486" y="190" font-size="11">nothing below is visited</text>
+<text class="tm" x="486" y="218" font-size="11">dashed: never visited</text>
+<text class="tm" x="486" y="252" font-size="11">spell printed</text>
+<text class="ta mono" x="486" y="272" font-size="13" font-weight="600">cst: cat</text>
+</svg>
