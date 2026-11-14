@@ -139,6 +139,22 @@ Licence    Public domain: "I explicitly release them to the public
            acknowledgment. tracks/dsa/tools/spell/NOTICE.txt has the
            hashes and the full text as read.
 
+Data       tools/route/london.map: the roads of central London, 17260
+           junctions and 22498 roads, as plain text. Map data (c)
+           OpenStreetMap contributors,
+           https://www.openstreetmap.org/copyright
+Source     OpenStreetMap, fetched once from the Overpass API on
+           2026-11-14 and reduced by tools/route/gen.py, which documents
+           every step and makes the same bytes again.
+Licence    Open Data Commons Open Database License 1.0 (ODbL),
+           https://opendatacommons.org/licenses/odbl/1-0/. london.map is
+           a Derivative Database of OpenStreetMap, so it is offered under
+           the ODbL and NOT under this repository's MIT licence. Every
+           picture route draws from it carries the credit line.
+           tracks/dsa/tools/route/NOTICE.txt has the query, the bounds,
+           the hashes, and how each term of the licence is met.
+           tools/route/tiny.map is made up, and is the course's own.
+
 
 Planned tracks (outlines/)
 --------------------------
