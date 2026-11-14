@@ -32,7 +32,8 @@ them:
 Each lesson page shows the project as it stands at that lesson. "The code"
 holds what the lesson adds, under the notes that explain it, and "Run it"
 the commands that show it working. The Files drawer has every file of the
-project at that lesson, whole.
+project at that lesson, whole (a data file, such as dsa's book, as its first
+lines and how long it is).
 
 ## The book
 
@@ -131,8 +132,9 @@ python3 tracks/xv6/tests/upstream/run.py [--both] [--slow]
 ./learn check-timeline xv6    the project as the site shows it at each lesson builds and boots
 ./learn selftest              the harness and web UI's own unit tests
 ./learn check                 every lesson has a doc; every file has a lesson it comes with;
-                              outlines follow the template; all text is ASCII; and verify's
-                              static checks on every annotated lesson (no builds, about a second)
+                              every link in a lesson goes to a page; outlines follow the
+                              template; all text is ASCII; and verify's static checks on every
+                              annotated lesson (no builds, about a second)
 ./learn verify [db] [04.02]   every annotated lesson says only what its project really does
                               (see "Verifying a lesson" below)
 ./learn map --write           regenerate the map below
@@ -144,12 +146,37 @@ lesson `FILES_FROM` in `track.py` names for it (every file without regions
 needs one). Code of later lessons is left out with the whole definition
 around it, and "The code" shows what each lesson adds: new files whole (one
 over 150 lines that no lead-in in the notes talks about starts folded to its
-functions, or, with none to fold, as its first 20 lines), and the functions
-it builds in files that were there already. What it adds there through
-`@from` sits behind one closed "Also added in this lesson" row: an older
-definition as its signature and two lines each side of each addition, and a
-header's new prototypes as a count. A piece the notes' `### name` lead-in
-names is shown open, under its notes.
+functions, or, with none to fold, as its first 20 lines; a data file, below,
+only as its first 20 lines), and the functions it builds in files that were
+there already. What it adds there through `@from` sits behind one closed
+"Also added in this lesson" row: an older definition as its signature and
+two lines each side of each addition, and a header's new prototypes as a
+count. A piece the notes' `### name` lead-in names is shown open, under its
+notes.
+
+A `### ` heading is such a lead-in wherever it stands - under "Where this
+fits", "The idea" or "How it works" - as soon as it names a piece of the code
+the lesson adds: a region's title, a file, or a function or struct that code
+defines, in backticks or as a plain word. A plain word counts when it is
+exactly that name and could not be an ordinary word: it has an underscore, or
+it is longer than three letters and not on the list of common words (`COMMON`
+in `harness/web/views.py`). So "### Why the height matters" under How it
+works moves, with its text, above the code when that code defines `height()`.
+To keep a heading in its section, word it without the name.
+
+A **data file** - plain text the site has no highlighter for, over 500 lines
+or 64 KB, such as dsa's book, dictionary and road map, or a file `DATA` in
+`track.py` names (`{"path or glob": "where it came from"}`) - is never shown
+whole: "The code", the Files drawer, Copy page and the export all show its
+first 20 lines, how long it is in lines and bytes, and that the rest is in
+the project's files, which `./learn run` and `./learn files` write whole.
+
+A lesson links to another page of the site as `/t/<track>` (a track's or an
+outline's overview) or `/t/<track>/<NN.LL>` (a lesson), with a `#fragment` or
+not: `[the kilo track](/t/kilo)`, `[the hash table](/t/dsa/01.02)`; to a lesson
+of its own track also as that lesson's file, `01.02-a-hash-table.md`. Any other
+path, and a link to a track or lesson that does not exist, renders as a link
+that goes nowhere, and `./learn check` reports it.
 
 Code outside the regions that comes with a later lesson - a call in
 `main()`, a prototype, a syscall table entry, a Makefile rule - is marked

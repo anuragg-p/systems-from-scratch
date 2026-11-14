@@ -151,7 +151,7 @@
           if (mine !== seq) return;
           if (j.error) { body.innerHTML = ""; note.textContent = j.error; return; }
           body.innerHTML = j.html;
-          note.textContent = j.truncated ? "truncated" : (j.note || "");
+          note.textContent = j.data ? j.note : j.truncated ? "truncated" : (j.note || "");   // a data file: how much is shown
           if (foldBtn) {
             foldBtn.hidden = !j.foldable;
             if (foldBtn.getAttribute("aria-pressed") === "true") setAll(body, true);

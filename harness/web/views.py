@@ -108,7 +108,8 @@ def doc_info(lesson):
 
 
 def code_files(track, lesson, meta):
-    """-> (list of (name, source, truncated), note or None)."""
+    """-> (list of (name, source, truncated), note or None). truncated is True for a file cut at
+    MAX_FILE; for a data file (data_info), whose source is then its first lines, it is data_note."""
     root = os.path.realpath(track.root)
     declared = [x.strip() for x in meta.get("code", "").split(",") if x.strip()]
     declared = [x for x in declared if "<" not in x]
@@ -118,7 +119,13 @@ def code_files(track, lesson, meta):
         if not (path == root or path.startswith(root + os.sep)) or not os.path.isfile(path):
             missing.append(name)
             continue
-        files.append((name, *_read(path)))
+        src, cut = _read(path)
+        with open(path, "rb") as f:
+            data = data_info(track, os.path.relpath(path, root).replace(os.sep, "/"), f.read())
+        if data:
+            src = "\n".join(data_line(x) for x in src.split("\n")[:CLIP]) + "\n"
+            cut = data_note(data, min(CLIP, data["lines"]))
+        files.append((name, src, cut))
     note = None
     if files and missing:
         note = "Not in the track yet: " + ", ".join(missing)
@@ -636,6 +643,43 @@ tree_files = tl.tree_files
 # A static export (harness/web/export.py) has no /api/file: per lesson it writes this index, {path: URL of the view}
 STATIC_INDEX = "/api/file/{track}/{lesson}.json"
 
+# A data file (dsa's book, dictionary and road map) is shown as its first CLIP lines and how long
+# it is, never whole: under "The code", in the Files drawer, in the Copy page text and so in a
+# static export. It is a file track.py names in DATA ({path or glob: where it came from}, or a
+# list of them), or one the site has no highlighter for (plain text: not C, assembly, Python, make,
+# a linker script, perl or shell, and not a licence) longer than DATA_LINES lines or DATA_BYTES
+# bytes. The project ./learn run and ./learn files write still has all of it.
+DATA_LINES = 500
+DATA_BYTES = 64 * 1024
+DATA_WIDTH = 200    # a line of its first lines longer than this is cut, " ..." standing for the rest
+
+
+def data_info(track, rel, data):
+    """{"lines": n, "bytes": n} for rel (data: all its bytes) when it is a data file, else None."""
+    try:
+        named = getattr(track.module, "DATA", None) or ()
+    except Exception:
+        named = ()
+    named = [p for p in (list(named) if isinstance(named, (dict, list, tuple)) else []) if isinstance(p, str)]
+    if not (any(rel == p or fnmatch.fnmatch(rel, p) for p in named)
+            or (highlight.language_for(rel) == "plain" and not is_notice(rel)
+                and (len(data) > DATA_BYTES or data.count(b"\n") > DATA_LINES))):
+        return None
+    return {"lines": data.count(b"\n") + (0 if data.endswith(b"\n") or not data else 1), "bytes": len(data)}
+
+
+def data_line(text):
+    return text if len(text) <= DATA_WIDTH else text[:DATA_WIDTH] + " ..."
+
+
+def data_note(info, shown):
+    """What a page says under the first lines of a data file: how long it is, where the rest is."""
+    n = info["lines"]
+    head = f"Data, {n:,} line{'' if n == 1 else 's'} ({info['bytes']:,} bytes)"
+    if shown < n:
+        return f"{head}: only the first {shown} are shown. The rest is in the project's files on disk."
+    return f"{head}. The whole file is in the project's files on disk."
+
 
 def files_drawer(track, lesson, proj, static=False):
     """The project as it stands at this lesson, in a side drawer opened from the lesson header:
@@ -716,6 +760,15 @@ def render_file_view(track, lesson_id, rel, proj=None):
     if b"\0" in head:
         return {"path": rel, "binary": True, "truncated": False, "first_band": None, "note": "",
                 "html": '<p class="quiet fv-empty">This is a binary file, so there is nothing to show.</p>'}
+    data = data_info(track, rel, proj.text(rel))
+    if data:                             # its first lines, and how long it is
+        lines, shown, _band = proj.lines_at(rel, lesson_id, limit=MAX_VIEW)
+        head = shown[:CLIP]
+        body = code_rows([data_line(lines[i]) for i in head], [i + 1 for i in head], highlight.language_for(rel))
+        return {"path": rel, "binary": False, "first_band": None, "foldable": False, "data": data,
+                "truncated": len(head) < data["lines"] or any(len(lines[i]) > DATA_WIDTH for i in head),
+                "note": f"data: {len(head)} of {data['lines']:,} line{'' if data['lines'] == 1 else 's'}",
+                "html": f'<div class="fv-in">{body}</div><div class="file-note data-note">{esc(data_note(data, len(head)))}</div>'}
     truncated = len(proj.text(rel)) > MAX_VIEW
     lines, shown, band = proj.lines_at(rel, lesson_id, limit=MAX_VIEW)
     fold = tl.is_c(rel)
@@ -830,9 +883,14 @@ def code_blocks(track, lesson_id, proj=None):
                 if span:
                     names.append(tl.function_name(lines[span[0]:span[1] + 1]))
                     owner[r.title.lower()] = names[-1]
+            data = data_info(track, rel, proj.text(rel))
+            if data:                     # a data file: its first lines (see data_info)
+                shown, lines = shown[:CLIP], [data_line(x) for x in lines]
             out.append({"titles": [os.path.basename(rel)], "names": names, "path": rel, "new": True,
                         "shown": [(i + 1, lines[i]) for i in shown], "owner": owner,
                         "defs": definitions([lines[i] for i in shown], rel)})
+            if data:
+                out[-1]["data"] = data
             continue
         groups, order = {}, []
         for r in regs:
@@ -1040,6 +1098,8 @@ def code_block(track, block, lead="", editor_link=True, shut=(), clip=None):
         more, less = f"Show all {n:,} lines", f"Show the first {clip} lines"
         pane += (f'<div class="clip-bar"><button class="clip-more" type="button" aria-expanded="false" aria-controls="{pane_id}" '
                  f'data-more="{more}" data-less="{less}">{CHEV_R}<span>{more}</span></button></div>')
+    if block.get("data"):                # a data file: its first lines, then how long it is
+        pane += f'<div class="file-note data-note">{esc(data_note(block["data"], len(shown)))}</div>'
     tag = '<span class="tag">new file</span>' if block["new"] else ""
     title = " &middot; ".join(esc(t) for t in block["titles"])
     heading = (f'<h4 class="region-title also-file">{title}</h4>' if block.get("also")
@@ -1255,6 +1315,8 @@ def page_text(track, lesson, md, blocks, files=(), shows_figure=None):
         what = "new file" if b.get("new") else ", ".join(b.get("titles", []))
         if what == os.path.basename(b["path"]):          # a part of an older file: its name says it
             what = "added to it"
+        if b.get("data"):                                # a data file: its first lines (see data_info)
+            what += f"; data: the first {len(b['shown'])} of {b['data']['lines']:,} lines, {b['data']['bytes']:,} bytes"
         lang = "make" if os.path.basename(b["path"]) == "Makefile" else FENCE_LANG.get(os.path.splitext(b["path"])[1], "")
         body = "\n".join("..." if n is None else t for n, t in b["shown"])
         fence = "````" if "```" in body else "```"
@@ -1262,10 +1324,95 @@ def page_text(track, lesson, md, blocks, files=(), shows_figure=None):
     for name, src, trunc in files:
         lang = FENCE_LANG.get(os.path.splitext(name)[1], "")
         fence = "````" if "```" in src else "```"
-        pieces += [f"### {name}" + (" (cut short)" if trunc else ""), "", f"{fence}{lang}", src.rstrip("\n"), fence, ""]
+        cut = f" ({trunc})" if isinstance(trunc, str) else " (cut short)" if trunc else ""   # a data file's note, or cut at MAX_FILE
+        pieces += [f"### {name}" + cut, "", f"{fence}{lang}", src.rstrip("\n"), fence, ""]
     if pieces:
         out += ["## The code this lesson adds", ""] + pieces
     return "\n".join(out).rstrip("\n") + "\n"
+
+
+# A lesson's link to another page of the site: /t/<track> (a track's overview, or an outline's) or
+# /t/<track>/<NN.LL> (a lesson), with a #fragment or not. Nothing else that starts with "/" is one
+# ("//host", a backslash, "/t/kilo/", "/api/..."): it goes nowhere, as a link to a page that does
+# not exist does, and `./learn check` reports both (link_problems). A static export writes these
+# links in its own form (/t/kilo/, harness/web/export.py) as it does the site's own.
+SITE_LINK = re.compile(r"^/t/([A-Za-z0-9][A-Za-z0-9_-]*)(?:/(\d\d\.\d\d))?(#[A-Za-z0-9_.-]+)?$")
+
+
+def site_link(track, href):
+    """href when it is a link of the site's own form (SITE_LINK) to a page the site has, else None."""
+    m = SITE_LINK.match(href)
+    if not m:
+        return None
+    tid, lid = m.group(1), m.group(2)
+    owner = track if tid == track.id else find_track(tid)
+    if owner is None:
+        return href if lid is None and find_outline(tid) else None
+    return href if lid is None or any(l.id == lid for l in owner.lessons) else None
+
+
+def doc_link(track, href):
+    """Where a link in a lesson of track goes on the site, or None: a page of the site's own
+    (site_link), another lesson's doc ("02.03-x.md": its page), a module's README.md (the module
+    on the track's overview)."""
+    if href.startswith("/"):
+        return site_link(track, href)
+    path = href.split("#", 1)[0]
+    if re.match(r"^[a-z][a-z0-9+.-]*:", path, re.I) or not path:
+        return None
+    base = os.path.basename(path)
+    m = re.match(r"^(\d\d\.\d\d)-.*\.md$", base)
+    if m and any(l.id == m.group(1) for l in track.lessons):
+        return f"/t/{track.id}/{m.group(1)}"
+    if base == "README.md":
+        mm = re.search(r"(\d\d)-[^/]+/README\.md$", path) or re.match(r"^(\d\d)-", os.path.basename(os.path.dirname(path)))
+        if mm:
+            return f"/t/{track.id}#m-{mm.group(1)}"
+    return None
+
+
+def doc_href(track, href):
+    """The href a link in a lesson of track is given (the renderer's resolve_link): doc_link's;
+    None, as written, for a web, mail or # link; or "#", a link that goes nowhere."""
+    r = doc_link(track, href)
+    if r:
+        return r
+    if re.match(r"^(https?:|mailto:|#)", href, re.I):
+        return None
+    return "#"  # a relative link to something the web UI does not serve
+
+
+def link_problems(track, doc):
+    """[(line, what)] for each link in a lesson doc of track that goes nowhere on its page: a page
+    of the site that does not exist, a path that is not one of the site's, a file it does not serve."""
+    try:
+        with open(doc, encoding="utf-8", errors="replace") as f:
+            text = f.read()
+    except OSError:
+        return []
+    dead = []
+
+    def note(href):                      # every link as the page renders it, comments and code left out
+        got = doc_href(track, href)
+        if got == "#" and href != "#":
+            dead.append(href)
+        return got
+    render(text, note)
+    lines, out = text.split("\n"), []
+    for href in dict.fromkeys(dead):
+        at = re.compile(r"\]\(" + re.escape(href) + r"[)\s]")
+        n = next((k for k, line in enumerate(lines, 1) if at.search(line)), 0)
+        m = SITE_LINK.match(href)
+        if m and (m.group(1) == track.id or find_track(m.group(1))):
+            what = f"link {href}: the track {m.group(1)} has no lesson {m.group(2)}"
+        elif m:
+            what = f"link {href}: no track {m.group(1)}" + (" with lessons (it is an outline)" if find_outline(m.group(1)) else "")
+        elif href.startswith("/"):
+            what = f"link {href}: a lesson links to a page of the site as /t/<track> or /t/<track>/<NN.LL>"
+        else:
+            what = f"link {href}: goes nowhere on the site"
+        out.append((n, what))
+    return out
 
 
 def lesson_page(track, lesson, static=False):
@@ -1273,27 +1420,8 @@ def lesson_page(track, lesson, static=False):
     meta, md = doc_info(lesson)
     files, note = code_files(track, lesson, meta)
 
-    def resolve(href):
-        path = href.split("#", 1)[0]
-        if re.match(r"^[a-z][a-z0-9+.-]*:|^/", path, re.I) or not path:
-            return None
-        base = os.path.basename(path)
-        m = re.match(r"^(\d\d\.\d\d)-.*\.md$", base)
-        if m and any(l.id == m.group(1) for l in track.lessons):
-            return f"/t/{track.id}/{m.group(1)}"
-        if base == "README.md":
-            mm = re.search(r"(\d\d)-[^/]+/README\.md$", path) or re.match(r"^(\d\d)-", os.path.basename(os.path.dirname(path)))
-            if mm:
-                return f"/t/{track.id}#m-{mm.group(1)}"
-        return None
-
     def resolve_or_dead(href):
-        r = resolve(href)
-        if r:
-            return r
-        if re.match(r"^(https?:|mailto:|#)", href, re.I):
-            return None
-        return "#"  # a relative link to something the web UI does not serve
+        return doc_href(track, href)
 
     def figure(src):
         return art.doc_figure(lesson.doc, src)
@@ -1310,6 +1438,8 @@ def lesson_page(track, lesson, static=False):
         gutter = "\n".join(str(i) for i in range(1, len(lines) + 1))
         tabs.append(f'<button class="tab" role="tab" type="button" id="tab-{k}" aria-controls="file-{k}" aria-selected="{"true" if on else "false"}">{esc(name)}</button>')
         cut = '<div class="file-note">File truncated for display.</div>' if trunc else ""
+        if isinstance(trunc, str):      # a data file's note (code_files)
+            cut = f'<div class="file-note data-note">{esc(trunc)}</div>'
         panes.append(f'<div class="file{" on" if on else ""}" id="file-{k}" role="tabpanel" aria-labelledby="tab-{k}">'
                      f'<pre class="gutter" aria-hidden="true">{gutter}</pre><pre class="src"><code>{chr(10).join(highlight.highlight_lines(chr(10).join(lines), highlight.language_for(name)))}</code></pre></div>{cut}')
     path = lesson_path(track, lesson)    # the core, or this lesson's extension: the pager stays on it

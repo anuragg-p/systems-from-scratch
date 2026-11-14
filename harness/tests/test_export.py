@@ -53,7 +53,7 @@ labels: with code
 
 # {id} {title}
 
-Intro for {id}, see [the other one]({other}).
+Intro for {id}, see [the other one]({other}), [its run](/t/exp/01.02#step-run) and [the track](/t/exp).
 
 ## The idea
 
@@ -162,6 +162,8 @@ class ExportTests(unittest.TestCase):
         lesson = read(self.path("t", "exp", "01.01", "index.html"))
         self.assertIn('href="/t/exp/01.02/"', lesson)          # the doc's relative link and the pager
         self.assertIn('href="/t/exp/#m-01"', lesson)
+        self.assertIn('<a href="/t/exp/01.02/#step-run">its run</a>', lesson)   # the doc's links to the site's pages
+        self.assertIn('<a href="/t/exp/">the track</a>', lesson)
 
     def test_lessons_need_no_server_and_no_checkout(self):
         from harness import core

@@ -130,6 +130,11 @@ class RendererTests(unittest.TestCase):
         self.assertIn('href="/t/x/02.03"', out)
         self.assertNotIn("javascript:", out)
 
+    def test_a_link_a_browser_reads_as_another_site_is_text(self):
+        out = self.render("[a](//evil.example/x) [b](/\\evil.example) [c](\\\\evil.example) [d](\\/evil.example) [e](/t/x)")
+        self.assertEqual(re.findall(r'href="([^"]*)"', out), ["/t/x"])                     # a path of this site stays
+        self.assertEqual(plain(out).split(), ["a", "b", "c", "d", "e"])                      # the others: their labels, as text
+
 
 class HighlightTests(unittest.TestCase):
     def hl(self, text, lang):
@@ -2145,6 +2150,293 @@ class TimelineCheckTests(unittest.TestCase):
         self.assertEqual(len(got), 4, got)
         from harness import cli
         self.assertIn("timeline.Project(tr).problems()", open(cli.__file__).read())          # ./learn check runs it
+
+
+# A track that ships data with its code: a long text, one very wide line, a short file track.py
+# names in DATA; and beside them files that are not data: a short note, a long C file, a licence.
+BIG_LINES = [f"record {i:05d} of the big data file" for i in range(1, 5001)]
+LONG_C = "".join(f"/* Step {i}. */\nint step{i}(int x)\n{{\n  return x + {i};\n}}\n\n" for i in range(40))
+DATA_DOC = """---
+id: 01.01
+title: Bulk
+---
+
+# 01.01 Bulk
+
+## The idea
+
+IDEA.
+"""
+
+
+class DataFileTests(unittest.TestCase):
+    """A data file costs a page its first lines and a note of how long it is, wherever the site
+    would show it whole: "The code", the Files drawer, Copy page and a static export."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = tempfile.mkdtemp(prefix="learn-data-test-")
+        root = cls.root = os.path.join(cls.tmp, "bulk")
+        write(os.path.join(root, "track.py"), RUNNABLE + '\nFILES_FROM = {"*": "01.01"}\n'
+              'DATA = {"data/small.csv": "made up for the test"}\n')
+        write(os.path.join(root, "data", "big.txt"), "\n".join(BIG_LINES) + "\n")
+        write(os.path.join(root, "data", "wide.txt"), "w" * (100 * 1024))
+        write(os.path.join(root, "data", "small.csv"), "a,b\n1,2\n3,4\n5,6\n7,8\n")
+        write(os.path.join(root, "notes", "short.txt"), "".join(f"note line {i}\n" for i in range(1, 101)))
+        write(os.path.join(root, "src", "long.c"), LONG_C)
+        write(os.path.join(root, "LICENSE"), "".join(f"licence line {i}\n" for i in range(1, 601)))
+        write(os.path.join(root, "lessons", "01-m", "README.md"), "---\nid: 01\ntitle: M\n---\n")
+        write(os.path.join(root, "lessons", "01-m", "01.01-bulk.md"), DATA_DOC)
+        write(os.path.join(root, "lessons", "01-m", "01.02-tabs.md"),          # a doc's own code: files, no regions
+              "---\nid: 01.02\ntitle: Tabs\ncode: data/big.txt, notes/short.txt\n---\n\n# 01.02 Tabs\n\nTABS.\n")
+        from harness import core
+        cls.core = core
+        cls.old = core.TRACKS_DIR
+        core.TRACKS_DIR = cls.tmp
+        cls.track = core.Track("bulk")
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.core.TRACKS_DIR = cls.old
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def lesson(self, lid):
+        return next(l for l in self.track.lessons if l.id == lid)
+
+    def block(self, page, name):
+        """The html of the block of "The code" titled name."""
+        start = page.index(f'<h3 class="region-title">{name}<span class="tag">new file')
+        ends = [i for i in (page.find('<div class="region">', start), page.find('</section>', start)) if i > 0]
+        return page[start:min(ends)]
+
+    def test_the_rule_plain_text_long_or_big_or_named_in_data(self):
+        from types import SimpleNamespace
+        from harness.web.views import DATA_BYTES, DATA_LINES, data_info
+        plain_track = SimpleNamespace(module=SimpleNamespace())
+
+        def lines(n):
+            return b"x\n" * n
+        self.assertEqual(data_info(plain_track, "data/a.txt", lines(DATA_LINES + 1)), {"lines": DATA_LINES + 1, "bytes": 2 * DATA_LINES + 2})
+        self.assertIsNone(data_info(plain_track, "data/a.txt", lines(DATA_LINES)))
+        self.assertEqual(data_info(plain_track, "a.map", b"y" * (DATA_BYTES + 1)), {"lines": 1, "bytes": DATA_BYTES + 1})
+        for source in ("src/a.c", "kernel/x.h", "entry.S", "gen.py", "Makefile", "tool.mk", "k.ld", "usys.pl", "run.sh", "LICENSE",
+                       "tools/x/NOTICE.txt"):
+            self.assertIsNone(data_info(plain_track, source, lines(10 * DATA_LINES)), source)   # code, or a licence: never
+        for named in ({"x/*.bin": "where it came from"}, ["x/*.bin"], ("x/*.bin",)):
+            got = SimpleNamespace(module=SimpleNamespace(DATA=named))
+            self.assertEqual(data_info(got, "x/y.bin", b"1\n2"), {"lines": 2, "bytes": 3})   # named: data, however short
+            self.assertIsNone(data_info(got, "x/y.txt", b"1\n2"))
+
+    def test_the_code_shows_a_data_file_as_its_first_lines_and_how_long_it_is(self):
+        from harness.web.views import CLIP, code_blocks
+        blocks = {b["path"]: b for b in code_blocks(self.track, "01.01")}
+        big = blocks["data/big.txt"]
+        self.assertEqual(big["shown"], [(i, BIG_LINES[i - 1]) for i in range(1, CLIP + 1)])
+        self.assertEqual(big["data"], {"lines": 5000, "bytes": os.path.getsize(os.path.join(self.root, "data", "big.txt"))})
+        self.assertEqual(blocks["data/small.csv"]["data"], {"lines": 5, "bytes": 20})
+        for whole in ("notes/short.txt", "src/long.c"):
+            self.assertNotIn("data", blocks[whole])
+        self.assertEqual(len(blocks["notes/short.txt"]["shown"]), 100)
+        self.assertEqual(len(blocks["src/long.c"]["shown"]), LONG_C.count("\n") - 1)        # whole, but the last blank line
+
+    def test_the_page_holds_the_first_lines_the_count_and_never_the_rest(self):
+        from harness.web.views import CLIP, DATA_WIDTH, lesson_page
+        page = lesson_page(self.track, self.lesson("01.01"))
+        size = os.path.getsize(os.path.join(self.root, "data", "big.txt"))
+        self.assertLess(len(page), 120_000)                                                 # its data alone is 250 KB
+        big = self.block(page, "big.txt")
+        self.assertIn(BIG_LINES[CLIP - 1], big)
+        self.assertNotIn(BIG_LINES[CLIP], page)                                             # nowhere: not folded, not copied
+        self.assertNotIn(BIG_LINES[-1], page)
+        self.assertEqual(len(re.findall(r'<div class="row">', big)), CLIP)
+        self.assertNotIn("clip", big)                                                        # nothing hidden to open
+        self.assertIn(f'<div class="file-note data-note">Data, 5,000 lines ({size:,} bytes): only the first {CLIP} are shown. '
+                      "The rest is in the project&#x27;s files on disk.</div>", big)
+        wide = self.block(page, "wide.txt")
+        (row,) = re.findall(r'<span class="tx">([^<]*)</span>', wide)
+        self.assertEqual(row, "w" * DATA_WIDTH + " ...")                                     # one long line, cut
+        self.assertIn("Data, 1 line (102,400 bytes). The whole file is in the project&#x27;s files on disk.", wide)
+        small = self.block(page, "small.csv")
+        self.assertEqual(len(re.findall(r'<div class="row">', small)), 5)
+        self.assertIn("Data, 5 lines (20 bytes). The whole file", small)
+        for whole, n in (("short.txt", 100), ("long.c", LONG_C.count("\n") - 1)):
+            b = self.block(page, whole)
+            numbers = re.findall(r'<span class="ln">(?:<button[^>]*>.*?</button>)?(\d+)</span>', b, re.S)
+            self.assertEqual(len(numbers), n, whole)                                         # every line, as before
+            self.assertNotIn("data-note", b)
+        self.assertIn("note line 100", page)
+        self.assertNotIn("licence line", page)                                              # a licence: the drawer only
+
+    def test_copy_page_has_the_same_first_lines_and_says_how_long_the_file_is(self):
+        from harness.web.views import CLIP, lesson_page
+        page = lesson_page(self.track, self.lesson("01.01"))
+        import html as _html
+        text = _html.unescape(re.search(r'<textarea id="page-text"[^>]*>(.*?)</textarea>', page, re.S).group(1))
+        size = os.path.getsize(os.path.join(self.root, "data", "big.txt"))
+        self.assertIn(f"### data/big.txt (new file; data: the first {CLIP} of 5,000 lines, {size:,} bytes)\n\n```\n"
+                      + "\n".join(BIG_LINES[:CLIP]) + "\n```", text)
+        self.assertIn("note line 100", text)
+
+    def test_the_files_drawer_and_the_export_store_only_the_first_lines(self):
+        from harness import timeline
+        from harness.web import export
+        from harness.web.views import CLIP, render_file_view
+        proj = timeline.Project(self.track)
+        view = render_file_view(self.track, "01.01", "data/big.txt", proj)
+        self.assertEqual((view["data"]["lines"], view["truncated"], view["note"], view["foldable"]),
+                         (5000, True, f"data: {CLIP} of 5,000 lines", False))
+        self.assertEqual(len(re.findall(r'<div class="row">', view["html"])), CLIP)
+        self.assertNotIn(BIG_LINES[CLIP], view["html"])
+        self.assertIn('<div class="file-note data-note">Data, 5,000 lines', view["html"])
+        self.assertLess(len(export.file_view(self.track, "01.01", "data/big.txt", proj)), 4000)
+        self.assertTrue(render_file_view(self.track, "01.01", "data/wide.txt", proj)["truncated"])   # a line cut
+        self.assertFalse(render_file_view(self.track, "01.01", "data/small.csv", proj)["truncated"])
+        for whole, n in (("notes/short.txt", 100), ("LICENSE", 600)):
+            got = render_file_view(self.track, "01.01", whole, proj)
+            self.assertNotIn("data", got)
+            self.assertEqual(len(re.findall(r'<span class="ln">\d+</span>', got["html"])), n, whole)
+        web = os.path.join(os.path.dirname(os.path.dirname(__file__)), "web")
+        with open(os.path.join(web, "app.js")) as f:
+            self.assertIn('note.textContent = j.data ? j.note :', f.read())                  # the drawer's bar says how much
+        with open(os.path.join(web, "app.css")) as f:
+            self.assertIn(".data-note {", f.read())
+
+    def test_a_docs_own_code_files_cut_a_data_file_too(self):
+        from harness.web.views import CLIP, lesson_page
+        page = lesson_page(self.track, self.lesson("01.02"))
+        self.assertIn(BIG_LINES[CLIP - 1], page)
+        self.assertNotIn(BIG_LINES[CLIP], page)
+        self.assertIn('<div class="file-note data-note">Data, 5,000 lines', page)
+        self.assertIn("note line 100", page)
+        self.assertIn("### data/big.txt (Data, 5,000 lines", page)                           # Copy page
+
+    def test_the_real_tracks_data_files(self):
+        """dsa's book, dictionary and map are data; nothing of db, kilo or xv6 is, so their pages
+        are as they were."""
+        from harness import core, timeline
+        from harness.web.views import data_info
+        saved, core.TRACKS_DIR = core.TRACKS_DIR, self.old           # the checkout's own tracks
+        try:
+            seen = set()
+            for t in core.discover_tracks():
+                proj = timeline.Project(t)
+                got = sorted(rel for rel in proj.files if data_info(t, rel, proj.text(rel)))
+                seen.add(t.id)
+                if t.id in ("db", "kilo", "xv6"):
+                    self.assertEqual(got, [], t.id)
+                elif t.id == "dsa":
+                    for rel in ("data/book.txt", "tools/spell/words.txt", "tools/route/london.map"):
+                        self.assertIn(rel, got)
+        finally:
+            core.TRACKS_DIR = saved
+        self.assertTrue({"db", "dsa", "kilo", "xv6"} <= seen, seen)
+
+
+# Lessons that link to other pages of the site: tracks, lessons, an outline; and links that look
+# like one but are not, or lead to a page that does not exist.
+LINK_DOC = """---
+id: 01.01
+title: Links
+---
+
+# 01.01 Links
+
+## The idea
+
+Good: [the track](/t/alpha), [a lesson](/t/alpha/01.02), [its run](/t/alpha/01.02#step-run),
+[another track's lesson](/t/beta/02.01), [an outline](/t/demo), [a module](/t/beta#m-02)
+and [a lesson's doc](01.02-two.md).
+
+Dead: [no track](/t/nope), [no lesson](/t/alpha/09.09), [an outline's lesson](/t/demo/00.01),
+[a slash](/t/alpha/), [the api](/api/file/alpha), [credits](/credits), [a file](../NOTES.md).
+
+Refused: [protocol](//evil.example/t/alpha), [backslash](/\\evil.example), [inside](/t/alpha\\01.02),
+[script](javascript:alert), [data](data:text/html,x).
+
+Not links: `[in code](/t/nope)`, and
+
+```
+[in a fence](/t/nope)
+```
+
+<!-- [in a comment](/t/nope) -->
+"""
+
+
+class SiteLinkTests(unittest.TestCase):
+    """A lesson may link to another page of the site, /t/<track> or /t/<track>/<NN.LL>; every
+    other path stays refused, and `./learn check` reports a link that goes nowhere."""
+
+    @classmethod
+    def setUpClass(cls):
+        from harness.tests.test_outlines import DEMO
+        cls.tmp = tempfile.mkdtemp(prefix="learn-links-test-")
+        for tid, lids in (("alpha", ("01.01", "01.02")), ("beta", ("02.01",))):
+            root = os.path.join(cls.tmp, "tracks", tid)
+            write(os.path.join(root, "track.py"), SAMPLE_TRACK)
+            mid = lids[0][:2]
+            write(os.path.join(root, "lessons", f"{mid}-m", "README.md"), f"---\nid: {mid}\ntitle: M\n---\n")
+            for lid in lids:
+                write(os.path.join(root, "lessons", f"{mid}-m", f"{lid}-two.md" if lid == "01.02" else f"{lid}-x.md"),
+                      LINK_DOC if (tid, lid) == ("alpha", "01.01") else f"---\nid: {lid}\ntitle: X\n---\n\n# {lid} X\n\nX.\n")
+        write(os.path.join(cls.tmp, "outlines", "demo.md"), DEMO)
+        from harness import core
+        cls.core = core
+        cls.old = (core.TRACKS_DIR, outlines_mod.OUTLINES_DIR)
+        core.TRACKS_DIR = os.path.join(cls.tmp, "tracks")
+        outlines_mod.OUTLINES_DIR = os.path.join(cls.tmp, "outlines")
+        cls.track = core.Track("alpha")
+        cls.doc = cls.track.lessons[0].doc
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.core.TRACKS_DIR, outlines_mod.OUTLINES_DIR = cls.old
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def links(self):
+        """{label: href} of the links in the lesson's notes."""
+        from harness.web.views import lesson_page
+        page = lesson_page(self.track, self.track.lessons[0])
+        notes = page[page.index('id="step-goal"'):page.index("</section>", page.index('id="step-goal"'))]
+        return page, dict((label, href) for href, label in re.findall(r'<a href="([^"]*)">([^<]*)</a>', notes))
+
+    def test_links_to_pages_the_site_has_work(self):
+        _, links = self.links()
+        for label, href in (("the track", "/t/alpha"), ("a lesson", "/t/alpha/01.02"), ("its run", "/t/alpha/01.02#step-run"),
+                            ("another track&#x27;s lesson", "/t/beta/02.01"), ("an outline", "/t/demo"),
+                            ("a module", "/t/beta#m-02"), ("a lesson&#x27;s doc", "/t/alpha/01.02")):
+            self.assertEqual(links.get(label), href, label)
+
+    def test_everything_else_goes_nowhere(self):
+        page, links = self.links()
+        for label in ("no track", "no lesson", "an outline&#x27;s lesson", "a slash", "the api", "credits", "a file",
+                      "protocol", "backslash", "inside", "script", "data"):
+            self.assertEqual(links.get(label), "#", label)
+        for bad in ("evil.example", "javascript:", "data:text", "\\"):
+            self.assertNotIn(bad, "".join(re.findall(r'href="([^"]*)"', page)), bad)
+        for label in ("in code", "in a fence", "in a comment"):
+            self.assertNotIn(label, links)
+
+    def test_check_reports_each_link_that_goes_nowhere(self):
+        from harness.web.views import link_problems
+        got = link_problems(self.track, self.doc)
+        lines = LINK_DOC.split("\n")
+        where = {href: next((n, line.index(f"]({href})")) for n, line in enumerate(lines, 1) if f"]({href})" in line) for href in (
+            "/t/nope", "/t/alpha/09.09", "/t/demo/00.01", "/t/alpha/", "/api/file/alpha", "/credits", "../NOTES.md",
+            "//evil.example/t/alpha", "/\\evil.example", "/t/alpha\\01.02", "javascript:alert", "data:text/html,x")}
+        self.assertEqual(sorted(where, key=where.get), [w.split(": ", 1)[0][5:] for _, w in got])   # each dead link once, in order
+        self.assertEqual([n for n, _ in got], [where[h][0] for h in sorted(where, key=where.get)])  # at its line
+        what = dict((w.split(": ", 1)[0][5:], w.split(": ", 1)[1]) for _, w in got)
+        self.assertEqual(what["/t/nope"], "no track nope")
+        self.assertEqual(what["/t/alpha/09.09"], "the track alpha has no lesson 09.09")
+        self.assertEqual(what["/t/demo/00.01"], "no track demo with lessons (it is an outline)")
+        self.assertIn("/t/<track> or /t/<track>/<NN.LL>", what["/credits"])
+        self.assertEqual(what["../NOTES.md"], "goes nowhere on the site")
+        good = os.path.join(self.tmp, "tracks", "beta", "lessons", "02-m", "02.01-x.md")
+        self.assertEqual(link_problems(self.core.Track("beta"), good), [])
+        from harness import cli
+        with open(cli.__file__) as f:
+            self.assertIn("views.link_problems(tr, l.doc)", f.read())                        # ./learn check runs it
 
 
 if __name__ == "__main__":
