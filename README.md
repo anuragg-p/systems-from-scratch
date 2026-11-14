@@ -2,8 +2,9 @@
 
 **Code first, theory second.**
 
-Real systems - a SQL database and a Unix kernel - built end to end and
-read one lesson at a time. Each lesson adds a piece to a system that
+Real systems - a SQL database, a Unix kernel, and ten Unix tools on a
+library of data structures you write - built end to end and read one
+lesson at a time. Each lesson adds a piece to a system that
 builds and runs at every step, and shows it in the same order: where the
 piece fits, the idea, the code itself with the notes that explain it, a
 run that shows it working, and a way to break it on purpose. The theory
@@ -61,6 +62,13 @@ track's overview, its home card, and /credits):
 - **db** is this course's own engine, written to SQLite's file format
   (SQLite is public domain) and checked against the real sqlite3. It
   contains no SQLite code.
+- **dsa** is this course's own: ten tools, freq and sort to gzip and git,
+  written to the documented behaviour and formats of the tools they copy
+  and checked against the system's own. It contains none of their code.
+  Its editor (module 03) is derived from the kilo track's, so from
+  antirez's kilo, under the BSD 2-Clause licence
+  (`tracks/dsa/tools/edit/LICENSE`); its London road map is OpenStreetMap
+  data under the ODbL.
 
 `NOTICE` says per track what was taken and what is ours. A track names its
 upstream in `UPSTREAM` in its `track.py`; an outline names the repos it is
@@ -578,7 +586,7 @@ Track `db` - kind: database - 27 lessons - on the site: `./learn serve`, then /t
 
 ### Data structures and algorithms, by building the tools that use them
 
-Track `dsa` - kind: algorithms - 11 lessons - on the site: `./learn serve`, then /t/dsa
+Track `dsa` - kind: algorithms - 43 lessons - on the site: `./learn serve`, then /t/dsa
 
 
 **Module 00 - The workbench**
@@ -600,6 +608,62 @@ Track `dsa` - kind: algorithms - 11 lessons - on the site: `./learn serve`, then
 - 02.04 [A heap, and the top ten without sorting everything](tracks/dsa/lessons/02-sort/02.04-a-heap-and-the-top-ten-without-sorting-everything.md) - with code
 - 02.05 [Sorting a file bigger than memory](tracks/dsa/lessons/02-sort/02.05-sorting-a-file-bigger-than-memory.md) - with code
 - 02.06 [Binary search in a sorted file](tracks/dsa/lessons/02-sort/02.06-binary-search-in-a-sorted-file.md) - with code
+
+**Module 03 - A text editor: edit**
+
+- 03.01 [An editor, and its text in one array](tracks/dsa/lessons/03-edit/03.01-an-editor-and-its-text-in-one-array.md) - with code
+- 03.02 [The gap buffer](tracks/dsa/lessons/03-edit/03.02-the-gap-buffer.md) - with code
+- 03.03 [Undo and redo: two stacks](tracks/dsa/lessons/03-edit/03.03-undo-and-redo-two-stacks.md) - with code
+- 03.04 [The piece table: a list of pieces](tracks/dsa/lessons/03-edit/03.04-the-piece-table-a-list-of-pieces.md) - with code
+- 03.05 [The pieces in a balanced tree](tracks/dsa/lessons/03-edit/03.05-the-pieces-in-a-balanced-tree.md) - with code
+
+**Module 04 - Finding text: grep**
+
+- 04.01 [Searching for a string, and skipping ahead](tracks/dsa/lessons/04-grep/04.01-searching-for-a-string-and-skipping-ahead.md) - with code
+- 04.02 [Parsing a regular expression](tracks/dsa/lessons/04-grep/04.02-parsing-a-regular-expression.md) - with code
+- 04.03 [The pattern as a machine: an NFA](tracks/dsa/lessons/04-grep/04.03-the-pattern-as-a-machine-an-nfa.md) - with code
+- 04.04 [Caching the states: a DFA built as it runs](tracks/dsa/lessons/04-grep/04.04-caching-the-states-a-dfa-built-as-it-runs.md) - with code
+
+**Module 05 - Checking spelling: spell**
+
+- 05.01 [A trie, and completing a prefix](tracks/dsa/lessons/05-spell/05.01-a-trie-and-completing-a-prefix.md) - with code, decision boundary
+- 05.02 [A Bloom filter: the dictionary in far less memory](tracks/dsa/lessons/05-spell/05.02-a-bloom-filter-the-dictionary-in-far-less-memory.md) - with code, decision boundary
+- 05.03 [Edit distance, and "did you mean"](tracks/dsa/lessons/05-spell/05.03-edit-distance-and-did-you-mean.md) - with code, decision boundary
+
+**Module 06 - Comparing files: diff**
+
+- 06.01 [The longest common subsequence, as a table](tracks/dsa/lessons/06-diff/06.01-the-longest-common-subsequence-as-a-table.md) - with code
+- 06.02 [From the table to hunks: unified output](tracks/dsa/lessons/06-diff/06.02-from-the-table-to-hunks-unified-output.md) - with code
+- 06.03 [Myers: the shortest path of edits](tracks/dsa/lessons/06-diff/06.03-myers-the-shortest-path-of-edits.md) - with code
+- 06.04 [patch: applying a diff](tracks/dsa/lessons/06-diff/06.04-patch-applying-a-diff.md) - with code
+
+**Module 07 - Building in order: make**
+
+- 07.01 [A makefile as a graph](tracks/dsa/lessons/07-make/07.01-a-makefile-as-a-graph.md) - with code
+- 07.02 [Depth-first search, and finding a cycle](tracks/dsa/lessons/07-make/07.02-depth-first-search-and-finding-a-cycle.md) - with code
+- 07.03 [Topological order, and what is out of date](tracks/dsa/lessons/07-make/07.03-topological-order-and-what-is-out-of-date.md) - with code
+- 07.04 [Building in parallel: a queue of ready work](tracks/dsa/lessons/07-make/07.04-building-in-parallel-a-queue-of-ready-work.md) - with code
+
+**Module 08 - Finding the way: route**
+
+- 08.01 [A road map as a graph](tracks/dsa/lessons/08-route/08.01-a-road-map-as-a-graph.md) - with code
+- 08.02 [Breadth-first search: the fewest junctions](tracks/dsa/lessons/08-route/08.02-breadth-first-search-the-fewest-junctions.md) - with code
+- 08.03 [Dijkstra, with a heap](tracks/dsa/lessons/08-route/08.03-dijkstra-with-a-heap.md) - with code
+- 08.04 [A*: searching towards the goal](tracks/dsa/lessons/08-route/08.04-a-searching-towards-the-goal.md) - with code
+
+**Module 09 - Making files smaller: gzip**
+
+- 09.01 [Huffman codes: a greedy tree](tracks/dsa/lessons/09-gzip/09.01-huffman-codes-a-greedy-tree.md) - with code
+- 09.02 [Inflate: reading a real gzip file](tracks/dsa/lessons/09-gzip/09.02-inflate-reading-a-real-gzip-file.md) - with code
+- 09.03 [LZ77: finding repeats with a hash table](tracks/dsa/lessons/09-gzip/09.03-lz77-finding-repeats-with-a-hash-table.md) - with code
+- 09.04 [Deflate: writing a file gunzip accepts](tracks/dsa/lessons/09-gzip/09.04-deflate-writing-a-file-gunzip-accepts.md) - with code, decision boundary
+
+**Module 10 - Capstone: git**
+
+- 10.01 [Objects: a hash is a name](tracks/dsa/lessons/10-git/10.01-objects-a-hash-is-a-name.md) - with code
+- 10.02 [Trees and the index: a directory as a hash](tracks/dsa/lessons/10-git/10.02-trees-and-the-index-a-directory-as-a-hash.md) - with code
+- 10.03 [Commits: walking a graph for log](tracks/dsa/lessons/10-git/10.03-commits-walking-a-graph-for-log.md) - with code
+- 10.04 [diff between commits, and the merge base](tracks/dsa/lessons/10-git/10.04-diff-between-commits-and-the-merge-base.md) - with code
 
 ### A text editor in C, from scratch
 
