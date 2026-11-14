@@ -421,24 +421,31 @@ static void merge_runs(char **paths, size_t n, FILE *out)
     // @end
 }
 
-/* Merge all the runs into out: MERGE_WAYS at a time into a new run, which
- * takes their place at the front, while there are more than that; then
- * the rest at once. */
+/* Merge all the runs into out, in passes. While there are more than
+ * MERGE_WAYS runs, a pass merges each MERGE_WAYS of them in turn (the last
+ * group perhaps fewer) into a new run, put on the end of the list, so the
+ * new runs keep the input's order; then the runs it merged are dropped
+ * from the front. Each pass leaves a sixteenth as many runs, and every line
+ * goes through one merge a pass. The last merge writes to out. */
 static void merge_all(FILE *out)
 {
-    // @build 02.05 merge every run, MERGE_WAYS at a time
+    // @build 02.05 merge every run, in passes of MERGE_WAYS at a time
     while (runs.len > MERGE_WAYS) {
+        size_t n = runs.len;            /* this pass merges runs 0 to n-1 */
+        for (size_t i = 0; i < n; i += MERGE_WAYS) {
+            size_t k = n - i < MERGE_WAYS ? n - i : MERGE_WAYS;
+            char *path;
+            FILE *f = new_run(&path);
+            *(char **)array_push(&runs) = path;
+            merge_runs((char **)runs.data + i, k, f);
+            if (fclose(f) != 0)
+                die("%s: %s", path, strerror(errno));
+        }
         char **p = (char **)runs.data;
-        char *path;
-        FILE *f = new_run(&path);
-        merge_runs(p, MERGE_WAYS, f);
-        if (fclose(f) != 0)
-            die("%s: %s", path, strerror(errno));
-        for (size_t i = 0; i < MERGE_WAYS; i++)
+        for (size_t i = 0; i < n; i++)
             free(p[i]);
-        p[0] = path;
-        memmove(p + 1, p + MERGE_WAYS, (runs.len - MERGE_WAYS) * sizeof *p);
-        runs.len -= MERGE_WAYS - 1;
+        memmove(p, p + n, (runs.len - n) * sizeof *p);
+        runs.len -= n;
     }
     merge_runs((char **)runs.data, runs.len, out);
     // @end

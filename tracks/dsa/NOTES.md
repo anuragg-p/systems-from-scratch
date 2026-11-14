@@ -583,30 +583,41 @@ pointer; the unit is K unless it says b, K, M or G, as GNU's.
 ```
 $ DS_STATS=1 bin/sort -S 256K lines.txt > out.txt      (gen.py lines 100000, 2.4 MB)
 stats: lines: read 100000, peak bytes 262142
-stats: runs: written 19, merges 2
+stats: runs: written 19, merges 3
 stats: sort: comparisons 1113625, moves 1245995
-stats: heap: pushes 186724, pops 186724, comparisons 1089905, moves 994331
+stats: heap: pushes 200000, pops 200000, comparisons 824161, moves 838655
 $ cmp out.txt <(sort lines.txt) && echo same
 same
 ```
 
-Without -S: peak bytes 4836133. -S 64K: 74 runs, 5 merges; -S 16K: 296
-runs, 20 merges (each merge of 16 runs leaves one). Measured with -S 1M:
-2048000 lines in 2.942 s, against 1.003 s all in memory; the ratio is
-nearer 2.8 than 2 (the merges grow as log16 of the runs, and every pass
-writes and reads the file again). The runs go in $TMPDIR, or -T; they are
-unlinked as soon as a merge opens them, and at exit.
+merge_all merges in passes: while there are more than 16 runs, a pass
+merges each 16 in turn (the last group perhaps fewer) into a new run on
+the end of the list, then drops the runs it merged from the front; the
+last merge writes the output. So a line goes through ceil(log16 runs)
+merges, which the heap's pushes count (one push per line per merge): 19
+runs, 2 merges in the pass and 1 to the output, 200000 pushes. Without
+-S: peak bytes 4836133. -S 64K: 74 runs, 6 merges (5 + 1), 200000 pushes;
+-S 16K: 296 runs, 22 merges (19 + 2 + 1), 300000 pushes, 3 a line. With
+-S 1M on 2048000 lines: 96 runs, 7 merges, 4096000 pushes, 2 a line
+(the chain merge it replaced, the first 16 into one run that went into
+the next merge with 15 more, made 8914352 pushes there, 4.35 a line, and
+took 2.6 s). Measured with -S 1M, grow.py --input lines: 2048000 lines
+in 1.373 s, against 0.91 to 1.0 s all in memory; the ratio is 2.0 to 2.2 but
+2.6 at 512000, the first size (24 runs) with a second pass. The 02.05
+test asserts the pushes and merges exactly. The runs go in $TMPDIR, or
+-T; they are unlinked as soon as a merge opens them, and at exit.
 
 Break it (forget `held = 0;` in spill): every line after the first run is
 a run of its own. Same bytes out, but:
 
 ```
 stats: lines: read 100000, peak bytes 4836133
-stats: runs: written 94561, merges 6304
-real	2m9.968s        (0.545 s before)
+stats: runs: written 94561, merges 6308
+stats: heap: pushes 500000, pops 500000, comparisons 2942155, moves 2485900
+real 12.19          (0.06 s before; 10 s of it in the system, making files)
 ```
 
-(Use a smaller file in the lesson: 2 minutes of a reader's time.)
+(The lesson uses 10000 lines, -S 64K: 8628 runs, 578 merges.)
 
 ### 02.06 Binary search in a sorted file
 
