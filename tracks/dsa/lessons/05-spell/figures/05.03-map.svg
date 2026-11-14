@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 358" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 338" fill="none">
 <title>Where 05.03 fits: Edit distance, and &quot;did you mean&quot;</title>
 <defs><marker id="map0503-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0503-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0503-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
-<path class="af" d="M346.6 14 Q346.6 6 354.6 6 L383.4 6 Q391.4 6 391.4 14 L391.4 252 C391.4 262.0 608.0 262.0 608.0 272 L608.0 318 Q608.0 326 600.0 326 L138.0 326 Q130.0 326 130.0 318 L130.0 272 C130.0 262.0 346.6 262.0 346.6 252 Z"/>
+<path class="af" d="M346.6 14 Q346.6 6 354.6 6 L383.4 6 Q391.4 6 391.4 14 L391.4 232 C391.4 242.0 608.0 242.0 608.0 252 L608.0 298 Q608.0 306 600.0 306 L138.0 306 Q130.0 306 130.0 298 L130.0 252 C130.0 242.0 346.6 242.0 346.6 232 Z"/>
 <text class="tm" x="14" y="20" font-size="10.5">module</text>
 <text class="tm" x="14" y="55" font-size="12">tools</text>
 <rect class="s f" x="114" y="30" width="42.73" height="40" rx="6" stroke-width="1.5"/>
@@ -44,19 +44,39 @@
 <text class="tm" x="14" y="182" font-size="11">from other tools</text>
 <text class="t" x="14" y="104.5" font-size="13">array</text>
 <line class="s" x1="188.59" y1="100" x2="223.32" y2="100" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="234.32" y1="100" x2="270.05" y2="100" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="281.05" y1="100" x2="316.77" y2="100" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="327.77" y1="100" x2="363.5" y2="100" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="374.5" y1="100" x2="410.23" y2="100" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="421.23" y1="100" x2="456.95" y2="100" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="467.95" y1="100" x2="550.41" y2="100" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="561.41" y1="100" x2="597.14" y2="100" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
 <circle class="s t" cx="182.09" cy="100" r="5.5" stroke-width="1.5"/>
 <circle class="s f" cx="228.82" cy="100" r="4.5" stroke-width="1.5"/>
+<circle class="s f" cx="275.55" cy="100" r="4.5" stroke-width="1.5"/>
+<circle class="s f" cx="322.27" cy="100" r="4.5" stroke-width="1.5"/>
+<circle class="s f" cx="369" cy="100" r="4.5" stroke-width="1.5"/>
+<circle class="m f" cx="415.73" cy="100" r="4.5" stroke-width="1.5"/>
+<circle class="m f" cx="462.45" cy="100" r="4.5" stroke-width="1.5"/>
+<circle class="m f" cx="555.91" cy="100" r="4.5" stroke-width="1.5"/>
+<circle class="m f" cx="602.64" cy="100" r="4.5" stroke-width="1.5"/>
 <text class="t" x="14" y="124.5" font-size="13">hash table</text>
-<line class="m" x1="188.59" y1="120" x2="456.95" y2="120" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
-<line class="m" x1="467.95" y1="120" x2="550.41" y2="120" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
-<line class="m" x1="561.41" y1="120" x2="597.14" y2="120" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="188.59" y1="120" x2="316.77" y2="120" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="327.77" y1="120" x2="363.5" y2="120" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="374.5" y1="120" x2="410.23" y2="120" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="421.23" y1="120" x2="456.95" y2="120" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="467.95" y1="120" x2="597.14" y2="120" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
 <circle class="s t" cx="182.09" cy="120" r="5.5" stroke-width="1.5"/>
+<circle class="s f" cx="322.27" cy="120" r="4.5" stroke-width="1.5"/>
+<circle class="s f" cx="369" cy="120" r="4.5" stroke-width="1.5"/>
+<circle class="m f" cx="415.73" cy="120" r="4.5" stroke-width="1.5"/>
 <circle class="m f" cx="462.45" cy="120" r="4.5" stroke-width="1.5"/>
-<circle class="m f" cx="555.91" cy="120" r="4.5" stroke-width="1.5"/>
 <circle class="m f" cx="602.64" cy="120" r="4.5" stroke-width="1.5"/>
 <text class="t" x="14" y="144.5" font-size="13">sorting</text>
-<line class="m" x1="235.32" y1="140" x2="597.14" y2="140" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="235.32" y1="140" x2="363.5" y2="140" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="374.5" y1="140" x2="597.14" y2="140" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
 <circle class="s t" cx="228.82" cy="140" r="5.5" stroke-width="1.5"/>
+<circle class="s f" cx="369" cy="140" r="4.5" stroke-width="1.5"/>
 <circle class="m f" cx="602.64" cy="140" r="4.5" stroke-width="1.5"/>
 <text class="t" x="14" y="164.5" font-size="13">heap</text>
 <line class="s" x1="187.59" y1="160" x2="222.32" y2="160" stroke-width="1.5" stroke-linecap="round"/>
@@ -68,35 +88,31 @@
 <circle class="m f" cx="509.18" cy="160" r="4.5" stroke-width="1.5"/>
 <circle class="m f" cx="555.91" cy="160" r="4.5" stroke-width="1.5"/>
 <circle class="m f" cx="602.64" cy="160" r="4.5" stroke-width="1.5"/>
-<text class="ta" x="14" y="202.5" font-size="13" font-weight="600">edit distance</text>
-<line class="m" x1="375.5" y1="198" x2="410.23" y2="198" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
-<circle class="a fa" cx="369" cy="198" r="5.5" stroke-width="1.5"/>
-<circle class="m f" cx="415.73" cy="198" r="4.5" stroke-width="1.5"/>
-<text class="tm" x="14" y="222.5" font-size="13">diff</text>
-<line class="m" x1="422.23" y1="218" x2="597.14" y2="218" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
-<circle class="m tm" cx="415.73" cy="218" r="5.5" stroke-width="1.5"/>
+<text class="tm" x="14" y="202.5" font-size="13">diff</text>
+<line class="m" x1="422.23" y1="198" x2="597.14" y2="198" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="m tm" cx="415.73" cy="198" r="5.5" stroke-width="1.5"/>
+<circle class="m f" cx="602.64" cy="198" r="4.5" stroke-width="1.5"/>
+<text class="tm" x="14" y="222.5" font-size="13">deflate</text>
+<line class="m" x1="562.41" y1="218" x2="597.14" y2="218" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="m tm" cx="555.91" cy="218" r="5.5" stroke-width="1.5"/>
 <circle class="m f" cx="602.64" cy="218" r="4.5" stroke-width="1.5"/>
-<text class="tm" x="14" y="242.5" font-size="13">deflate</text>
-<line class="m" x1="562.41" y1="238" x2="597.14" y2="238" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
-<circle class="m tm" cx="555.91" cy="238" r="5.5" stroke-width="1.5"/>
-<circle class="m f" cx="602.64" cy="238" r="4.5" stroke-width="1.5"/>
-<rect class="s f" x="136" y="278" width="150" height="42" rx="8" stroke-width="1.5"/>
-<text class="tm mono" x="211" y="294" font-size="10.5" text-anchor="middle">05.01</text>
-<text class="t" x="211" y="311" font-size="14" font-weight="600" text-anchor="middle">trie</text>
-<rect class="s f" x="294" y="278" width="150" height="42" rx="8" stroke-width="1.5"/>
-<text class="tm mono" x="369" y="294" font-size="10.5" text-anchor="middle">05.02</text>
-<text class="t" x="369" y="311" font-size="14" font-weight="600" text-anchor="middle">Bloom filter</text>
-<rect class="a af" x="452" y="278" width="150" height="42" rx="8" stroke-width="1.5"/>
-<text class="ta mono" x="527" y="294" font-size="10.5" text-anchor="middle">05.03</text>
-<text class="ta" x="527" y="311" font-size="14" font-weight="700" text-anchor="middle">edit distance</text>
-<rect class="a af" x="14" y="334" width="20" height="15" rx="4" stroke-width="1.5"/>
-<text class="ta" x="41" y="346" font-size="13" font-weight="600">05.03: this lesson</text>
-<rect class="s f" x="191.36" y="334" width="20" height="15" rx="4" stroke-width="1.5"/>
-<text class="t" x="218.36" y="346" font-size="13">built earlier</text>
-<rect class="m f" x="333.62" y="334" width="20" height="15" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
-<text class="tm" x="360.62" y="346" font-size="13">still to come</text>
-<circle class="s t" cx="486.88" cy="341.5" r="5" stroke-width="1.5"/>
-<text class="tm" x="496.88" y="346" font-size="12">built</text>
-<circle class="s f" cx="547.78" cy="341.5" r="4" stroke-width="1.5"/>
-<text class="tm" x="557.28" y="346" font-size="12">used again</text>
+<rect class="s f" x="136" y="258" width="150" height="42" rx="8" stroke-width="1.5"/>
+<text class="tm mono" x="211" y="274" font-size="10.5" text-anchor="middle">05.01</text>
+<text class="t" x="211" y="291" font-size="14" font-weight="600" text-anchor="middle">trie</text>
+<rect class="s f" x="294" y="258" width="150" height="42" rx="8" stroke-width="1.5"/>
+<text class="tm mono" x="369" y="274" font-size="10.5" text-anchor="middle">05.02</text>
+<text class="t" x="369" y="291" font-size="14" font-weight="600" text-anchor="middle">Bloom filter</text>
+<rect class="a af" x="452" y="258" width="150" height="42" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="527" y="274" font-size="10.5" text-anchor="middle">05.03</text>
+<text class="ta" x="527" y="291" font-size="14" font-weight="700" text-anchor="middle">edit distance</text>
+<rect class="a af" x="14" y="314" width="20" height="15" rx="4" stroke-width="1.5"/>
+<text class="ta" x="41" y="326" font-size="13" font-weight="600">05.03: this lesson</text>
+<rect class="s f" x="191.36" y="314" width="20" height="15" rx="4" stroke-width="1.5"/>
+<text class="t" x="218.36" y="326" font-size="13">built earlier</text>
+<rect class="m f" x="333.62" y="314" width="20" height="15" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="360.62" y="326" font-size="13">still to come</text>
+<circle class="s t" cx="486.88" cy="321.5" r="5" stroke-width="1.5"/>
+<text class="tm" x="496.88" y="326" font-size="12">built</text>
+<circle class="s f" cx="547.78" cy="321.5" r="4" stroke-width="1.5"/>
+<text class="tm" x="557.28" y="326" font-size="12">used again</text>
 </svg>
