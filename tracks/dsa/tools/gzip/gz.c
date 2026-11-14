@@ -62,7 +62,7 @@ void write_all(const char *path, const void *p, size_t n)
     FILE *f = fopen(path, "wb");
     if (f == NULL)
         die("%s: %s", path, strerror(errno));
-    int bad = fwrite(p, 1, n, f) != n;
+    int bad = n > 0 && fwrite(p, 1, n, f) != n;      /* p may be NULL when n is 0 */
     if (fclose(f) != 0)
         bad = 1;
     if (bad) {
@@ -179,8 +179,8 @@ const char *gz_unpack(const unsigned char *in, size_t n, Array *out)
         pos += used;
         if (n - pos < 8)
             return "the file ends before the trailer (the CRC-32 and the size)";
-        uint32_t crc = crc32(0, (unsigned char *)out->data + start, out->len - start);
         uint32_t size = (uint32_t)(out->len - start);
+        uint32_t crc = out->len > start ? crc32(0, (unsigned char *)out->data + start, out->len - start) : 0;
         if (crc != le32(in + pos)) {
             snprintf(message, sizeof message, "the data's CRC-32 is %08x, but the trailer says %08x",
                      (unsigned)crc, (unsigned)le32(in + pos));

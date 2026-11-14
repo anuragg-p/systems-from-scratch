@@ -65,7 +65,7 @@ static void gunzip_one(const char *path)
         write_all(target, out.data, out.len);
         if (!keep && unlink(path) != 0)
             die("%s: %s", path, strerror(errno));
-    } else if (!test) {
+    } else if (!test && out.len > 0) {
         fwrite(out.data, 1, out.len, stdout);
     }
     free(target);
