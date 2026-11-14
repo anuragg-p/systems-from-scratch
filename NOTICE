@@ -206,6 +206,48 @@ Licence    Open Data Commons Open Database License 1.0 (ODbL),
            tools/route/tiny.map is made up, and is the course's own.
 
 
+research - AI research, from a first experiment to your own result
+(tracks/research)
+------------------------------------------------------------------
+
+Upstream   None. The engine (engine/) is written from scratch in numpy and
+           takes no code from PyTorch (https://github.com/pytorch/pytorch,
+           BSD-3-Clause). It uses PyTorch's names and argument order
+           (Tensor, nn.Module, nn.Linear, F.cross_entropy, optim.AdamW, ...)
+           so that one script runs on either by changing one import line,
+           and it is checked against PyTorch: the internal tests compare
+           its values and gradients with PyTorch's, and run every
+           experiment on PyTorch as well. PyTorch is used by the internal
+           tests only; the project itself needs only numpy.
+Format     safetensors (https://github.com/huggingface/safetensors,
+           Apache-2.0): lab/safetensors.py writes and reads checkpoints in
+           that file format (a header length, a JSON header, the raw
+           numbers), with the names of the library's numpy functions
+           (save_file, load_file). The format only: no code of the library
+           is in the track. The internal tests use the library to open
+           what the track writes, and the other way round.
+Ours       All of the code (engine/, lab/, data/, experiments/), the
+           lessons, and the internal checks (tracks/research/track.py and
+           tests/). Lessons that run a paper's claim again name the paper
+           and link to it; no text or figure of a paper is copied, and
+           every curve is drawn from the track's own runs.
+
+Data       MNIST, the handwritten digits of Yann LeCun, Corinna Cortes and
+           Christopher J. C. Burges: the four original .gz files,
+           11,594,722 bytes. Not in this repository, and never downloaded
+           by a build, a test or a lesson: the learner fetches them once,
+           with python3 -m data.fetch mnist (tracks/research/data/fetch.py),
+           from the mirror torchvision uses
+           (https://ossci-datasets.s3.amazonaws.com/mnist/), into a cache
+           outside the project, and a file is kept only if its size and
+           SHA-256 match the ones pinned in fetch.py.
+Licence    As read at the source on 2026-11-14: MNIST's own page states no
+           licence and no longer serves the files; Keras gives CC BY-SA
+           3.0, Hugging Face MIT. Nothing of it is redistributed here.
+Generated  The two groups of points (data/points.py) are made from a seed
+           when a script runs; none is stored.
+
+
 Planned tracks (outlines/)
 --------------------------
 
