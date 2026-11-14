@@ -79,7 +79,7 @@ static void object_path(const unsigned char name[20], char path[64])
 
 void object_name(int type, const void *data, size_t n, unsigned char name[20])
 {
-    // @build 10.01 the name: the SHA-1 of a header ("blob 6" and a NUL) and the bytes
+    // @build 10.01 the name: the SHA-1 of a header (blob 6 and a NUL) and the bytes
     char head[32];
     int hlen = snprintf(head, sizeof head, "%s %zu", type_name(type), n) + 1;   /* the NUL too */
     Sha1 s;

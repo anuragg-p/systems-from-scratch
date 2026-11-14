@@ -472,7 +472,7 @@ static void paint(Commit *a, Commit *b, Array *results)
             f |= STALE;
         }
         if (git_tracing())
-            trace("merge-base: pop %s %lld, reached by %s%s%s", short_hex(c->oid), c->time,
+            trace("merge-base: pop %s %lld, reached by %s%s%s%s", short_hex(c->oid), c->time,
                   (f & P1) ? "1" : "", (f & (P1 | P2)) == (P1 | P2) ? " and " : "", (f & P2) ? "2" : "",
                   (f & STALE) ? ", stale" : "");
         for (size_t i = 0; i < c->parents.len; i++) {

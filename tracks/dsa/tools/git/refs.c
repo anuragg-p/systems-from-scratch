@@ -49,7 +49,7 @@ static int packed_ref(const char *ref, unsigned char name[20])
 
 int ref_read(const char *ref, unsigned char name[20])
 {
-    // @build 10.03 read a ref: a name, or "ref: " and another ref to read
+    // @build 10.03 read a ref: a name, or a link to another ref to read
     char path[PATH_MAX];
     for (int depth = 0; depth < 5; depth++) {
         snprintf(path, sizeof path, ".git/%s", ref);

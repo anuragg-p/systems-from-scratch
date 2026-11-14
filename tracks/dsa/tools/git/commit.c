@@ -81,8 +81,8 @@ Commit *commit_read(const unsigned char name[20])
         if (nl == NULL)
             die("commit %s is damaged: its header has no end", hex);
         size_t n = (size_t)(nl - p);
-        if (n == 47 && memcmp(p, "parent ", 7) == 0) {
-            if (have_author || sha1_unhex(p + 7, array_push(&c->parents)) != 0)
+        if (n >= 7 && memcmp(p, "parent ", 7) == 0) {
+            if (n != 47 || have_author || sha1_unhex(p + 7, array_push(&c->parents)) != 0)
                 die("commit %s is damaged: a parent line", hex);
         } else if (n > 7 && memcmp(p, "author ", 7) == 0) {
             c->author = p + 7;

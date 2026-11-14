@@ -55,7 +55,7 @@ void make_dirs(const char *path);
  * library's steps too (inflate, deflate, Myers). */
 int  git_tracing(void);
 void trace_setup(void);
-void trace(const char *fmt, ...);
+void trace(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 
 /* ------------------------------------------------------------ object.c */
 
