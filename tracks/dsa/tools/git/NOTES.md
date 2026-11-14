@@ -887,9 +887,10 @@ hash-object -w and the real git's cat-file; from 10.02 write-tree equal to
 the real git's; from 10.03 log equal, status clean; fsck --strict at every
 lesson.
 
-Whole runs on the Mac: `./learn test dsa 10` about 9 s (1.9, 2.3, 2.6, 2.2;
-most of it starting the real git, some 400 times); on Linux 1.8 s.
-check-skeleton dsa 10 about 3 s; check-timeline dsa 10 about 20 s.
+Whole runs on the Mac (loaded by other jobs): `./learn test dsa 10` about 10
+s (1.8, 2.8, 2.9, 2.4; most of it starting processes, the real git some 400
+times); on Linux 1.8 s. check-skeleton dsa 10 16 s, check-timeline dsa 10
+36 s (most of both is building the project four times).
 
 ## For the lessons: running it
 
