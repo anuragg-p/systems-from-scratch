@@ -1,0 +1,372 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 376" fill="none">
+<title>look she on a sorted file of 24 lines: each probe halves the part of the file the first match can be in</title>
+<defs><marker id="f0206a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0206a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0206a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<g class="step"><title>The file: 24 words, sorted, 125 bytes. The first line that begins with "she" could be anywhere: lo = 0, hi = 125, the whole file.</title>
+<text class="tm mono" x="100" y="24" font-size="10" text-anchor="end">byte</text>
+<text class="tm mono" x="150" y="24" font-size="10">line</text>
+<text class="tm mono" x="100" y="50.5" font-size="10" text-anchor="end">0</text>
+<text class="t mono" x="150" y="50.5" font-size="11">always</text>
+<text class="tm mono" x="100" y="64.1" font-size="10" text-anchor="end">7</text>
+<text class="t mono" x="150" y="64.1" font-size="11">and</text>
+<text class="tm mono" x="100" y="77.7" font-size="10" text-anchor="end">11</text>
+<text class="t mono" x="150" y="77.7" font-size="11">any</text>
+<text class="tm mono" x="100" y="91.3" font-size="10" text-anchor="end">15</text>
+<text class="t mono" x="150" y="91.3" font-size="11">eclipses</text>
+<text class="tm mono" x="100" y="104.9" font-size="10" text-anchor="end">24</text>
+<text class="t mono" x="150" y="104.9" font-size="11">eyes</text>
+<text class="tm mono" x="100" y="118.5" font-size="10" text-anchor="end">29</text>
+<text class="t mono" x="150" y="118.5" font-size="11">have</text>
+<text class="tm mono" x="100" y="132.1" font-size="10" text-anchor="end">34</text>
+<text class="t mono" x="150" y="132.1" font-size="11">heard</text>
+<text class="tm mono" x="100" y="145.7" font-size="10" text-anchor="end">40</text>
+<text class="t mono" x="150" y="145.7" font-size="11">her</text>
+<text class="tm mono" x="100" y="159.3" font-size="10" text-anchor="end">44</text>
+<text class="t mono" x="150" y="159.3" font-size="11">him</text>
+<text class="tm mono" x="100" y="172.9" font-size="10" text-anchor="end">48</text>
+<text class="t mono" x="150" y="172.9" font-size="11">his</text>
+<text class="tm mono" x="100" y="186.5" font-size="10" text-anchor="end">52</text>
+<text class="t mono" x="150" y="186.5" font-size="11">holmes</text>
+<text class="tm mono" x="100" y="200.1" font-size="10" text-anchor="end">59</text>
+<text class="t mono" x="150" y="200.1" font-size="11">i</text>
+<text class="tm mono" x="100" y="213.7" font-size="10" text-anchor="end">61</text>
+<text class="t mono" x="150" y="213.7" font-size="11">in</text>
+<text class="tm mono" x="100" y="227.3" font-size="10" text-anchor="end">64</text>
+<text class="t mono" x="150" y="227.3" font-size="11">is</text>
+<text class="tm mono" x="100" y="240.9" font-size="10" text-anchor="end">67</text>
+<text class="t mono" x="150" y="240.9" font-size="11">mention</text>
+<text class="tm mono" x="100" y="254.5" font-size="10" text-anchor="end">75</text>
+<text class="t mono" x="150" y="254.5" font-size="11">name</text>
+<text class="tm mono" x="100" y="268.1" font-size="10" text-anchor="end">80</text>
+<text class="t mono" x="150" y="268.1" font-size="11">other</text>
+<text class="tm mono" x="100" y="281.7" font-size="10" text-anchor="end">86</text>
+<text class="t mono" x="150" y="281.7" font-size="11">seldom</text>
+<text class="tm mono" x="100" y="295.3" font-size="10" text-anchor="end">93</text>
+<text class="t mono" x="150" y="295.3" font-size="11">she</text>
+<text class="tm mono" x="100" y="308.9" font-size="10" text-anchor="end">97</text>
+<text class="t mono" x="150" y="308.9" font-size="11">sherlock</text>
+<text class="tm mono" x="100" y="322.5" font-size="10" text-anchor="end">106</text>
+<text class="t mono" x="150" y="322.5" font-size="11">the</text>
+<text class="tm mono" x="100" y="336.1" font-size="10" text-anchor="end">110</text>
+<text class="t mono" x="150" y="336.1" font-size="11">to</text>
+<text class="tm mono" x="100" y="349.7" font-size="10" text-anchor="end">113</text>
+<text class="t mono" x="150" y="349.7" font-size="11">under</text>
+<text class="tm mono" x="100" y="363.3" font-size="10" text-anchor="end">119</text>
+<text class="t mono" x="150" y="363.3" font-size="11">woman</text>
+<rect class="a" x="140" y="40" width="112" height="326.4" rx="4" stroke-width="1.5"/>
+<line class="a" x1="126" y1="40" x2="136" y2="40" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="122" y="44" font-size="10.5" font-weight="600" text-anchor="end">lo</text>
+<line class="a" x1="126" y1="366.4" x2="136" y2="366.4" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="122" y="370.4" font-size="10.5" font-weight="600" text-anchor="end">hi</text>
+<text class="t" x="390" y="64" font-size="11.5">look she: where is the first line</text>
+<text class="t" x="390" y="84" font-size="11.5">not smaller than she?</text>
+<text class="tm" x="390" y="104" font-size="11.5">every line before lo is smaller;</text>
+<text class="tm" x="390" y="124" font-size="11.5">the line at hi, if any, is not</text>
+</g>
+<g class="step"><title>Probe 1: the middle byte, 62, is inside a line: the probe is the next line, at 64: "is", which is smaller, so the match is after it: lo = 67.</title>
+<text class="tm mono" x="100" y="24" font-size="10" text-anchor="end">byte</text>
+<text class="tm mono" x="150" y="24" font-size="10">line</text>
+<text class="tm mono" x="100" y="50.5" font-size="10" text-anchor="end">0</text>
+<text class="tm mono" x="150" y="50.5" font-size="11">always</text>
+<text class="tm mono" x="100" y="64.1" font-size="10" text-anchor="end">7</text>
+<text class="tm mono" x="150" y="64.1" font-size="11">and</text>
+<text class="tm mono" x="100" y="77.7" font-size="10" text-anchor="end">11</text>
+<text class="tm mono" x="150" y="77.7" font-size="11">any</text>
+<text class="tm mono" x="100" y="91.3" font-size="10" text-anchor="end">15</text>
+<text class="tm mono" x="150" y="91.3" font-size="11">eclipses</text>
+<text class="tm mono" x="100" y="104.9" font-size="10" text-anchor="end">24</text>
+<text class="tm mono" x="150" y="104.9" font-size="11">eyes</text>
+<text class="tm mono" x="100" y="118.5" font-size="10" text-anchor="end">29</text>
+<text class="tm mono" x="150" y="118.5" font-size="11">have</text>
+<text class="tm mono" x="100" y="132.1" font-size="10" text-anchor="end">34</text>
+<text class="tm mono" x="150" y="132.1" font-size="11">heard</text>
+<text class="tm mono" x="100" y="145.7" font-size="10" text-anchor="end">40</text>
+<text class="tm mono" x="150" y="145.7" font-size="11">her</text>
+<text class="tm mono" x="100" y="159.3" font-size="10" text-anchor="end">44</text>
+<text class="tm mono" x="150" y="159.3" font-size="11">him</text>
+<text class="tm mono" x="100" y="172.9" font-size="10" text-anchor="end">48</text>
+<text class="tm mono" x="150" y="172.9" font-size="11">his</text>
+<text class="tm mono" x="100" y="186.5" font-size="10" text-anchor="end">52</text>
+<text class="tm mono" x="150" y="186.5" font-size="11">holmes</text>
+<text class="tm mono" x="100" y="200.1" font-size="10" text-anchor="end">59</text>
+<text class="tm mono" x="150" y="200.1" font-size="11">i</text>
+<text class="tm mono" x="100" y="213.7" font-size="10" text-anchor="end">61</text>
+<text class="tm mono" x="150" y="213.7" font-size="11">in</text>
+<text class="tm mono" x="100" y="227.3" font-size="10" text-anchor="end">64</text>
+<text class="ta mono" x="150" y="227.3" font-size="11" font-weight="600">is</text>
+<text class="tm mono" x="100" y="240.9" font-size="10" text-anchor="end">67</text>
+<text class="t mono" x="150" y="240.9" font-size="11">mention</text>
+<text class="tm mono" x="100" y="254.5" font-size="10" text-anchor="end">75</text>
+<text class="t mono" x="150" y="254.5" font-size="11">name</text>
+<text class="tm mono" x="100" y="268.1" font-size="10" text-anchor="end">80</text>
+<text class="t mono" x="150" y="268.1" font-size="11">other</text>
+<text class="tm mono" x="100" y="281.7" font-size="10" text-anchor="end">86</text>
+<text class="t mono" x="150" y="281.7" font-size="11">seldom</text>
+<text class="tm mono" x="100" y="295.3" font-size="10" text-anchor="end">93</text>
+<text class="t mono" x="150" y="295.3" font-size="11">she</text>
+<text class="tm mono" x="100" y="308.9" font-size="10" text-anchor="end">97</text>
+<text class="t mono" x="150" y="308.9" font-size="11">sherlock</text>
+<text class="tm mono" x="100" y="322.5" font-size="10" text-anchor="end">106</text>
+<text class="t mono" x="150" y="322.5" font-size="11">the</text>
+<text class="tm mono" x="100" y="336.1" font-size="10" text-anchor="end">110</text>
+<text class="t mono" x="150" y="336.1" font-size="11">to</text>
+<text class="tm mono" x="100" y="349.7" font-size="10" text-anchor="end">113</text>
+<text class="t mono" x="150" y="349.7" font-size="11">under</text>
+<text class="tm mono" x="100" y="363.3" font-size="10" text-anchor="end">119</text>
+<text class="t mono" x="150" y="363.3" font-size="11">woman</text>
+<rect class="a" x="140" y="230.4" width="112" height="136" rx="4" stroke-width="1.5"/>
+<line class="a" x1="126" y1="230.4" x2="136" y2="230.4" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="122" y="234.4" font-size="10.5" font-weight="600" text-anchor="end">lo</text>
+<line class="a" x1="126" y1="366.4" x2="136" y2="366.4" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="122" y="370.4" font-size="10.5" font-weight="600" text-anchor="end">hi</text>
+<line class="m" x1="278" y1="207.73" x2="258" y2="207.73" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0206a-am)"/>
+<text class="tm" x="282" y="211.73" font-size="10">middle byte 62</text>
+<text class="t" x="390" y="64" font-size="11.5">probe 1: byte 62 -&gt; line at 64</text>
+<text class="ta" x="390" y="84" font-size="11.5">is: smaller</text>
+<text class="t" x="390" y="104" font-size="11.5">lo = 67, hi = 125</text>
+<text class="tm" x="390" y="124" font-size="11.5">1 lines compared so far</text>
+</g>
+<g class="step"><title>Probe 2: the middle byte, 96, is inside a line: the probe is the next line, at 97: "sherlock", which is a match, so the first match is at it or before: hi = 97.</title>
+<text class="tm mono" x="100" y="24" font-size="10" text-anchor="end">byte</text>
+<text class="tm mono" x="150" y="24" font-size="10">line</text>
+<text class="tm mono" x="100" y="50.5" font-size="10" text-anchor="end">0</text>
+<text class="tm mono" x="150" y="50.5" font-size="11">always</text>
+<text class="tm mono" x="100" y="64.1" font-size="10" text-anchor="end">7</text>
+<text class="tm mono" x="150" y="64.1" font-size="11">and</text>
+<text class="tm mono" x="100" y="77.7" font-size="10" text-anchor="end">11</text>
+<text class="tm mono" x="150" y="77.7" font-size="11">any</text>
+<text class="tm mono" x="100" y="91.3" font-size="10" text-anchor="end">15</text>
+<text class="tm mono" x="150" y="91.3" font-size="11">eclipses</text>
+<text class="tm mono" x="100" y="104.9" font-size="10" text-anchor="end">24</text>
+<text class="tm mono" x="150" y="104.9" font-size="11">eyes</text>
+<text class="tm mono" x="100" y="118.5" font-size="10" text-anchor="end">29</text>
+<text class="tm mono" x="150" y="118.5" font-size="11">have</text>
+<text class="tm mono" x="100" y="132.1" font-size="10" text-anchor="end">34</text>
+<text class="tm mono" x="150" y="132.1" font-size="11">heard</text>
+<text class="tm mono" x="100" y="145.7" font-size="10" text-anchor="end">40</text>
+<text class="tm mono" x="150" y="145.7" font-size="11">her</text>
+<text class="tm mono" x="100" y="159.3" font-size="10" text-anchor="end">44</text>
+<text class="tm mono" x="150" y="159.3" font-size="11">him</text>
+<text class="tm mono" x="100" y="172.9" font-size="10" text-anchor="end">48</text>
+<text class="tm mono" x="150" y="172.9" font-size="11">his</text>
+<text class="tm mono" x="100" y="186.5" font-size="10" text-anchor="end">52</text>
+<text class="tm mono" x="150" y="186.5" font-size="11">holmes</text>
+<text class="tm mono" x="100" y="200.1" font-size="10" text-anchor="end">59</text>
+<text class="tm mono" x="150" y="200.1" font-size="11">i</text>
+<text class="tm mono" x="100" y="213.7" font-size="10" text-anchor="end">61</text>
+<text class="tm mono" x="150" y="213.7" font-size="11">in</text>
+<text class="tm mono" x="100" y="227.3" font-size="10" text-anchor="end">64</text>
+<text class="tm mono" x="150" y="227.3" font-size="11">is</text>
+<text class="tm mono" x="100" y="240.9" font-size="10" text-anchor="end">67</text>
+<text class="t mono" x="150" y="240.9" font-size="11">mention</text>
+<text class="tm mono" x="100" y="254.5" font-size="10" text-anchor="end">75</text>
+<text class="t mono" x="150" y="254.5" font-size="11">name</text>
+<text class="tm mono" x="100" y="268.1" font-size="10" text-anchor="end">80</text>
+<text class="t mono" x="150" y="268.1" font-size="11">other</text>
+<text class="tm mono" x="100" y="281.7" font-size="10" text-anchor="end">86</text>
+<text class="t mono" x="150" y="281.7" font-size="11">seldom</text>
+<text class="tm mono" x="100" y="295.3" font-size="10" text-anchor="end">93</text>
+<text class="t mono" x="150" y="295.3" font-size="11">she</text>
+<text class="tm mono" x="100" y="308.9" font-size="10" text-anchor="end">97</text>
+<text class="ta mono" x="150" y="308.9" font-size="11" font-weight="600">sherlock</text>
+<text class="tm mono" x="100" y="322.5" font-size="10" text-anchor="end">106</text>
+<text class="tm mono" x="150" y="322.5" font-size="11">the</text>
+<text class="tm mono" x="100" y="336.1" font-size="10" text-anchor="end">110</text>
+<text class="tm mono" x="150" y="336.1" font-size="11">to</text>
+<text class="tm mono" x="100" y="349.7" font-size="10" text-anchor="end">113</text>
+<text class="tm mono" x="150" y="349.7" font-size="11">under</text>
+<text class="tm mono" x="100" y="363.3" font-size="10" text-anchor="end">119</text>
+<text class="tm mono" x="150" y="363.3" font-size="11">woman</text>
+<rect class="a" x="140" y="230.4" width="112" height="68" rx="4" stroke-width="1.5"/>
+<line class="a" x1="126" y1="230.4" x2="136" y2="230.4" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="122" y="234.4" font-size="10.5" font-weight="600" text-anchor="end">lo</text>
+<line class="a" x1="126" y1="298.4" x2="136" y2="298.4" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="122" y="302.4" font-size="10.5" font-weight="600" text-anchor="end">hi</text>
+<line class="m" x1="278" y1="295" x2="258" y2="295" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0206a-am)"/>
+<text class="tm" x="282" y="299" font-size="10">middle byte 96</text>
+<text class="t" x="390" y="64" font-size="11.5">probe 2: byte 96 -&gt; line at 97</text>
+<text class="ta" x="390" y="84" font-size="11.5">sherlock: a match</text>
+<text class="t" x="390" y="104" font-size="11.5">lo = 67, hi = 97</text>
+<text class="tm" x="390" y="124" font-size="11.5">2 lines compared so far</text>
+</g>
+<g class="step"><title>Probe 3: the middle byte, 82, is inside a line: the probe is the next line, at 86: "seldom", which is smaller, so the match is after it: lo = 93.</title>
+<text class="tm mono" x="100" y="24" font-size="10" text-anchor="end">byte</text>
+<text class="tm mono" x="150" y="24" font-size="10">line</text>
+<text class="tm mono" x="100" y="50.5" font-size="10" text-anchor="end">0</text>
+<text class="tm mono" x="150" y="50.5" font-size="11">always</text>
+<text class="tm mono" x="100" y="64.1" font-size="10" text-anchor="end">7</text>
+<text class="tm mono" x="150" y="64.1" font-size="11">and</text>
+<text class="tm mono" x="100" y="77.7" font-size="10" text-anchor="end">11</text>
+<text class="tm mono" x="150" y="77.7" font-size="11">any</text>
+<text class="tm mono" x="100" y="91.3" font-size="10" text-anchor="end">15</text>
+<text class="tm mono" x="150" y="91.3" font-size="11">eclipses</text>
+<text class="tm mono" x="100" y="104.9" font-size="10" text-anchor="end">24</text>
+<text class="tm mono" x="150" y="104.9" font-size="11">eyes</text>
+<text class="tm mono" x="100" y="118.5" font-size="10" text-anchor="end">29</text>
+<text class="tm mono" x="150" y="118.5" font-size="11">have</text>
+<text class="tm mono" x="100" y="132.1" font-size="10" text-anchor="end">34</text>
+<text class="tm mono" x="150" y="132.1" font-size="11">heard</text>
+<text class="tm mono" x="100" y="145.7" font-size="10" text-anchor="end">40</text>
+<text class="tm mono" x="150" y="145.7" font-size="11">her</text>
+<text class="tm mono" x="100" y="159.3" font-size="10" text-anchor="end">44</text>
+<text class="tm mono" x="150" y="159.3" font-size="11">him</text>
+<text class="tm mono" x="100" y="172.9" font-size="10" text-anchor="end">48</text>
+<text class="tm mono" x="150" y="172.9" font-size="11">his</text>
+<text class="tm mono" x="100" y="186.5" font-size="10" text-anchor="end">52</text>
+<text class="tm mono" x="150" y="186.5" font-size="11">holmes</text>
+<text class="tm mono" x="100" y="200.1" font-size="10" text-anchor="end">59</text>
+<text class="tm mono" x="150" y="200.1" font-size="11">i</text>
+<text class="tm mono" x="100" y="213.7" font-size="10" text-anchor="end">61</text>
+<text class="tm mono" x="150" y="213.7" font-size="11">in</text>
+<text class="tm mono" x="100" y="227.3" font-size="10" text-anchor="end">64</text>
+<text class="tm mono" x="150" y="227.3" font-size="11">is</text>
+<text class="tm mono" x="100" y="240.9" font-size="10" text-anchor="end">67</text>
+<text class="tm mono" x="150" y="240.9" font-size="11">mention</text>
+<text class="tm mono" x="100" y="254.5" font-size="10" text-anchor="end">75</text>
+<text class="tm mono" x="150" y="254.5" font-size="11">name</text>
+<text class="tm mono" x="100" y="268.1" font-size="10" text-anchor="end">80</text>
+<text class="tm mono" x="150" y="268.1" font-size="11">other</text>
+<text class="tm mono" x="100" y="281.7" font-size="10" text-anchor="end">86</text>
+<text class="ta mono" x="150" y="281.7" font-size="11" font-weight="600">seldom</text>
+<text class="tm mono" x="100" y="295.3" font-size="10" text-anchor="end">93</text>
+<text class="t mono" x="150" y="295.3" font-size="11">she</text>
+<text class="tm mono" x="100" y="308.9" font-size="10" text-anchor="end">97</text>
+<text class="tm mono" x="150" y="308.9" font-size="11">sherlock</text>
+<text class="tm mono" x="100" y="322.5" font-size="10" text-anchor="end">106</text>
+<text class="tm mono" x="150" y="322.5" font-size="11">the</text>
+<text class="tm mono" x="100" y="336.1" font-size="10" text-anchor="end">110</text>
+<text class="tm mono" x="150" y="336.1" font-size="11">to</text>
+<text class="tm mono" x="100" y="349.7" font-size="10" text-anchor="end">113</text>
+<text class="tm mono" x="150" y="349.7" font-size="11">under</text>
+<text class="tm mono" x="100" y="363.3" font-size="10" text-anchor="end">119</text>
+<text class="tm mono" x="150" y="363.3" font-size="11">woman</text>
+<rect class="a" x="140" y="284.8" width="112" height="13.6" rx="4" stroke-width="1.5"/>
+<line class="a" x1="126" y1="284.8" x2="136" y2="284.8" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="122" y="288.8" font-size="10.5" font-weight="600" text-anchor="end">lo</text>
+<line class="a" x1="126" y1="298.4" x2="136" y2="298.4" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="122" y="302.4" font-size="10.5" font-weight="600" text-anchor="end">hi</text>
+<line class="m" x1="278" y1="262.13" x2="258" y2="262.13" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0206a-am)"/>
+<text class="tm" x="282" y="266.13" font-size="10">middle byte 82</text>
+<text class="t" x="390" y="64" font-size="11.5">probe 3: byte 82 -&gt; line at 86</text>
+<text class="ta" x="390" y="84" font-size="11.5">seldom: smaller</text>
+<text class="t" x="390" y="104" font-size="11.5">lo = 93, hi = 97</text>
+<text class="tm" x="390" y="124" font-size="11.5">3 lines compared so far</text>
+</g>
+<g class="step"><title>Probe 4: no line starts after the middle byte, 95, before hi: the probe is the line at lo, 93: "she", which is a match, so the first match is at it or before: hi = 93.</title>
+<text class="tm mono" x="100" y="24" font-size="10" text-anchor="end">byte</text>
+<text class="tm mono" x="150" y="24" font-size="10">line</text>
+<text class="tm mono" x="100" y="50.5" font-size="10" text-anchor="end">0</text>
+<text class="tm mono" x="150" y="50.5" font-size="11">always</text>
+<text class="tm mono" x="100" y="64.1" font-size="10" text-anchor="end">7</text>
+<text class="tm mono" x="150" y="64.1" font-size="11">and</text>
+<text class="tm mono" x="100" y="77.7" font-size="10" text-anchor="end">11</text>
+<text class="tm mono" x="150" y="77.7" font-size="11">any</text>
+<text class="tm mono" x="100" y="91.3" font-size="10" text-anchor="end">15</text>
+<text class="tm mono" x="150" y="91.3" font-size="11">eclipses</text>
+<text class="tm mono" x="100" y="104.9" font-size="10" text-anchor="end">24</text>
+<text class="tm mono" x="150" y="104.9" font-size="11">eyes</text>
+<text class="tm mono" x="100" y="118.5" font-size="10" text-anchor="end">29</text>
+<text class="tm mono" x="150" y="118.5" font-size="11">have</text>
+<text class="tm mono" x="100" y="132.1" font-size="10" text-anchor="end">34</text>
+<text class="tm mono" x="150" y="132.1" font-size="11">heard</text>
+<text class="tm mono" x="100" y="145.7" font-size="10" text-anchor="end">40</text>
+<text class="tm mono" x="150" y="145.7" font-size="11">her</text>
+<text class="tm mono" x="100" y="159.3" font-size="10" text-anchor="end">44</text>
+<text class="tm mono" x="150" y="159.3" font-size="11">him</text>
+<text class="tm mono" x="100" y="172.9" font-size="10" text-anchor="end">48</text>
+<text class="tm mono" x="150" y="172.9" font-size="11">his</text>
+<text class="tm mono" x="100" y="186.5" font-size="10" text-anchor="end">52</text>
+<text class="tm mono" x="150" y="186.5" font-size="11">holmes</text>
+<text class="tm mono" x="100" y="200.1" font-size="10" text-anchor="end">59</text>
+<text class="tm mono" x="150" y="200.1" font-size="11">i</text>
+<text class="tm mono" x="100" y="213.7" font-size="10" text-anchor="end">61</text>
+<text class="tm mono" x="150" y="213.7" font-size="11">in</text>
+<text class="tm mono" x="100" y="227.3" font-size="10" text-anchor="end">64</text>
+<text class="tm mono" x="150" y="227.3" font-size="11">is</text>
+<text class="tm mono" x="100" y="240.9" font-size="10" text-anchor="end">67</text>
+<text class="tm mono" x="150" y="240.9" font-size="11">mention</text>
+<text class="tm mono" x="100" y="254.5" font-size="10" text-anchor="end">75</text>
+<text class="tm mono" x="150" y="254.5" font-size="11">name</text>
+<text class="tm mono" x="100" y="268.1" font-size="10" text-anchor="end">80</text>
+<text class="tm mono" x="150" y="268.1" font-size="11">other</text>
+<text class="tm mono" x="100" y="281.7" font-size="10" text-anchor="end">86</text>
+<text class="tm mono" x="150" y="281.7" font-size="11">seldom</text>
+<text class="tm mono" x="100" y="295.3" font-size="10" text-anchor="end">93</text>
+<text class="ta mono" x="150" y="295.3" font-size="11" font-weight="600">she</text>
+<text class="tm mono" x="100" y="308.9" font-size="10" text-anchor="end">97</text>
+<text class="tm mono" x="150" y="308.9" font-size="11">sherlock</text>
+<text class="tm mono" x="100" y="322.5" font-size="10" text-anchor="end">106</text>
+<text class="tm mono" x="150" y="322.5" font-size="11">the</text>
+<text class="tm mono" x="100" y="336.1" font-size="10" text-anchor="end">110</text>
+<text class="tm mono" x="150" y="336.1" font-size="11">to</text>
+<text class="tm mono" x="100" y="349.7" font-size="10" text-anchor="end">113</text>
+<text class="tm mono" x="150" y="349.7" font-size="11">under</text>
+<text class="tm mono" x="100" y="363.3" font-size="10" text-anchor="end">119</text>
+<text class="tm mono" x="150" y="363.3" font-size="11">woman</text>
+<line class="a" x1="278" y1="284.8" x2="258" y2="284.8" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0206a-aa)"/>
+<text class="ta mono" x="282" y="288.8" font-size="10.5" font-weight="600">lo = hi = 93</text>
+<line class="m" x1="278" y1="291.6" x2="258" y2="291.6" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0206a-am)"/>
+<text class="tm" x="282" y="295.6" font-size="10">middle byte 95</text>
+<text class="t" x="390" y="64" font-size="11.5">probe 4: byte 95 -&gt; line at 93</text>
+<text class="ta" x="390" y="84" font-size="11.5">she: a match</text>
+<text class="t" x="390" y="104" font-size="11.5">lo = 93, hi = 93</text>
+<text class="tm" x="390" y="124" font-size="11.5">4 lines compared so far</text>
+</g>
+<g class="step"><title>lo = hi = 93: the search is over after 4 probes. From there look prints every line that begins with "she": "she", "sherlock"; the next line, "the", does not.</title>
+<text class="tm mono" x="100" y="24" font-size="10" text-anchor="end">byte</text>
+<text class="tm mono" x="150" y="24" font-size="10">line</text>
+<text class="tm mono" x="100" y="50.5" font-size="10" text-anchor="end">0</text>
+<text class="tm mono" x="150" y="50.5" font-size="11">always</text>
+<text class="tm mono" x="100" y="64.1" font-size="10" text-anchor="end">7</text>
+<text class="tm mono" x="150" y="64.1" font-size="11">and</text>
+<text class="tm mono" x="100" y="77.7" font-size="10" text-anchor="end">11</text>
+<text class="tm mono" x="150" y="77.7" font-size="11">any</text>
+<text class="tm mono" x="100" y="91.3" font-size="10" text-anchor="end">15</text>
+<text class="tm mono" x="150" y="91.3" font-size="11">eclipses</text>
+<text class="tm mono" x="100" y="104.9" font-size="10" text-anchor="end">24</text>
+<text class="tm mono" x="150" y="104.9" font-size="11">eyes</text>
+<text class="tm mono" x="100" y="118.5" font-size="10" text-anchor="end">29</text>
+<text class="tm mono" x="150" y="118.5" font-size="11">have</text>
+<text class="tm mono" x="100" y="132.1" font-size="10" text-anchor="end">34</text>
+<text class="tm mono" x="150" y="132.1" font-size="11">heard</text>
+<text class="tm mono" x="100" y="145.7" font-size="10" text-anchor="end">40</text>
+<text class="tm mono" x="150" y="145.7" font-size="11">her</text>
+<text class="tm mono" x="100" y="159.3" font-size="10" text-anchor="end">44</text>
+<text class="tm mono" x="150" y="159.3" font-size="11">him</text>
+<text class="tm mono" x="100" y="172.9" font-size="10" text-anchor="end">48</text>
+<text class="tm mono" x="150" y="172.9" font-size="11">his</text>
+<text class="tm mono" x="100" y="186.5" font-size="10" text-anchor="end">52</text>
+<text class="tm mono" x="150" y="186.5" font-size="11">holmes</text>
+<text class="tm mono" x="100" y="200.1" font-size="10" text-anchor="end">59</text>
+<text class="tm mono" x="150" y="200.1" font-size="11">i</text>
+<text class="tm mono" x="100" y="213.7" font-size="10" text-anchor="end">61</text>
+<text class="tm mono" x="150" y="213.7" font-size="11">in</text>
+<text class="tm mono" x="100" y="227.3" font-size="10" text-anchor="end">64</text>
+<text class="tm mono" x="150" y="227.3" font-size="11">is</text>
+<text class="tm mono" x="100" y="240.9" font-size="10" text-anchor="end">67</text>
+<text class="tm mono" x="150" y="240.9" font-size="11">mention</text>
+<text class="tm mono" x="100" y="254.5" font-size="10" text-anchor="end">75</text>
+<text class="tm mono" x="150" y="254.5" font-size="11">name</text>
+<text class="tm mono" x="100" y="268.1" font-size="10" text-anchor="end">80</text>
+<text class="tm mono" x="150" y="268.1" font-size="11">other</text>
+<text class="tm mono" x="100" y="281.7" font-size="10" text-anchor="end">86</text>
+<text class="tm mono" x="150" y="281.7" font-size="11">seldom</text>
+<text class="tm mono" x="100" y="295.3" font-size="10" text-anchor="end">93</text>
+<text class="ta mono" x="150" y="295.3" font-size="11" font-weight="600">she</text>
+<text class="tm mono" x="100" y="308.9" font-size="10" text-anchor="end">97</text>
+<text class="ta mono" x="150" y="308.9" font-size="11" font-weight="600">sherlock</text>
+<text class="tm mono" x="100" y="322.5" font-size="10" text-anchor="end">106</text>
+<text class="tm mono" x="150" y="322.5" font-size="11">the</text>
+<text class="tm mono" x="100" y="336.1" font-size="10" text-anchor="end">110</text>
+<text class="tm mono" x="150" y="336.1" font-size="11">to</text>
+<text class="tm mono" x="100" y="349.7" font-size="10" text-anchor="end">113</text>
+<text class="tm mono" x="150" y="349.7" font-size="11">under</text>
+<text class="tm mono" x="100" y="363.3" font-size="10" text-anchor="end">119</text>
+<text class="tm mono" x="150" y="363.3" font-size="11">woman</text>
+<line class="a" x1="278" y1="284.8" x2="258" y2="284.8" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0206a-aa)"/>
+<text class="ta mono" x="282" y="288.8" font-size="10.5" font-weight="600">lo = hi = 93</text>
+<text class="t" x="390" y="64" font-size="11.5">4 probes for 24 lines</text>
+<text class="t" x="390" y="84" font-size="11.5">printed:</text>
+<text class="ta" x="390" y="104" font-size="11.5">she</text>
+<text class="ta" x="390" y="124" font-size="11.5">sherlock</text>
+</g>
+</svg>
