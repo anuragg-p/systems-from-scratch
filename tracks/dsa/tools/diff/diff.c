@@ -114,33 +114,36 @@ static void print_header(const char *mark, const char *path)
     // @end
 }
 
-/* The value of --name=value, which must be one of names. */
-static const char *pick(const char *name, const char *value, const char *const *names)
+typedef void (*Algo)(DiffScript *s, DiffText *a, DiffText *b);
+
+/* What --algo picks from; the default is the last. */
+static const struct {
+    const char *name;
+    Algo        run;
+} algos[] = {
+    {"table", diff_table},
+    {"myers", diff_myers},   // @from 06.03
+};
+
+#define NALGOS (sizeof algos / sizeof algos[0])
+
+/* The algorithm --algo=name names. */
+static Algo pick(const char *name)
 {
     char have[200] = "";
-    for (int i = 0; names[i]; i++) {
-        if (strcmp(value, names[i]) == 0)
-            return names[i];
-        strcat(strcat(have, i ? ", " : ""), names[i]);
+    for (size_t i = 0; i < NALGOS; i++) {
+        if (strcmp(name, algos[i].name) == 0)
+            return algos[i].run;
+        strcat(strcat(have, i ? ", " : ""), algos[i].name);
     }
-    die("no %s '%s' (have: %s)", name, value, have);
+    die("no --algo '%s' (have: %s)", name, have);
 }
-
-// @from 06.03
-static const char *const algos[] = {"table", "myers", NULL};
-// @else
-// static const char *const algos[] = {"table", NULL};
-// @end
 
 int main(int argc, char **argv)
 {
     progname = "diff";
     ds_stats_at_exit(print_stats);
-    // @from 06.03
-    const char *algo = "myers";
-    // @else
-    // const char *algo = "table";
-    // @end
+    Algo algo = algos[NALGOS - 1].run;
     // @from 06.02
     long context = 3;
     int brief = 0;
@@ -149,7 +152,7 @@ int main(int argc, char **argv)
     for (i = 1; i < argc; i++) {
         const char *arg = argv[i];
         if (strncmp(arg, "--algo=", 7) == 0) {
-            algo = pick("--algo", arg + 7, algos);
+            algo = pick(arg + 7);
             continue;
         }
         // @from 06.02
@@ -188,14 +191,7 @@ int main(int argc, char **argv)
     char *data2 = slurp(path2, &size2);
     diff_text(&a, data1, size1);
     diff_text(&b, data2, size2);
-    // @from 06.03
-    if (strcmp(algo, "myers") == 0)
-        diff_myers(&script, &a, &b);
-    else
-        diff_table(&script, &a, &b);
-    // @else
-    // diff_table(&script, &a, &b);
-    // @end
+    algo(&script, &a, &b);
 
     if (script.ndel + script.nins == 0)
         return 0;

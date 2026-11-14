@@ -258,6 +258,14 @@ static int fits(const Hunk *h, const DiffText *f, size_t at)
     return 1;
 }
 
+/* Where the header says the hunk's old lines start, from 0. With no old
+ * lines, the header names the line they come after, so that is where the
+ * new ones go. (A header that puts lines at line 0 means line 1.) */
+static size_t stated(const Hunk *h)
+{
+    return h->na > 0 && h->a > 0 ? h->a - 1 : h->a;
+}
+
 /* Where a hunk applies, into *at: the line its header says, moved by
  * shift, as far as the hunk before it moved; or else the nearest place to
  * that where its old lines are, one line on, one back, two on, two back,
@@ -266,7 +274,7 @@ static int fits(const Hunk *h, const DiffText *f, size_t at)
 static int find(const Hunk *h, const DiffText *f, size_t from, long shift, size_t *at)
 {
     // @build 06.04 find where a hunk applies: at its line, or the nearest place to it
-    long want = (long)(h->na ? h->a - 1 : h->a) + shift;
+    long want = (long)stated(h) + shift;
     long lo = (long)from, hi = (long)f->lines.len - (long)h->na;   /* the first and last places */
     for (long d = 0; want + d <= hi || want - d >= lo; d++) {
         if (want + d >= lo && want + d <= hi && fits(h, f, (size_t)(want + d))) {
@@ -304,7 +312,7 @@ static size_t apply(const FilePatch *fp, const DiffText *f, Array *out, const ch
     long shift = 0;
     for (size_t k = 0; k < fp->hunks.len; k++) {
         const Hunk *h = array_at(&fp->hunks, k);
-        size_t at, stated = h->na ? h->a - 1 : h->a;
+        size_t at;
         st.hunks++;
         if (!find(h, f, done, shift, &at)) {
             fprintf(stderr, "patch: %s: hunk #%zu (line %zu of the patch) does not apply: "
@@ -312,7 +320,7 @@ static size_t apply(const FilePatch *fp, const DiffText *f, Array *out, const ch
             failed++;
             continue;
         }
-        shift = (long)at - (long)stated;
+        shift = (long)at - (long)stated(h);
         if (shift != 0 && !quiet) {
             printf("Hunk #%zu succeeded at %zu (offset %ld line%s).\n", k + 1, at + 1, shift,
                    shift == 1 || shift == -1 ? "" : "s");
