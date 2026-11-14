@@ -524,7 +524,7 @@ After: 1500 lines of the book against a sed-edited copy, counts against the
 system's diff -d; from 06.02 the system's patch on ours; from 06.04 ours on
 the system's.
 
-Whole runs: `./learn test dsa 06` about 7 s on the Mac, most of it
-starting processes; under a second on Linux, where starting one takes
-about 1 ms (300 runs of diff in 0.284 s). check-skeleton dsa 06 about 3 s,
-check-timeline dsa 06 about 15 s.
+Whole runs on the Mac: `./learn test dsa 06` 5.7 s, most of it starting
+processes (under a second on Linux, where starting one takes about 1 ms:
+300 runs of diff in 0.284 s); check-skeleton dsa 06 6.7 s; check-timeline
+dsa 06 13.9 s.
