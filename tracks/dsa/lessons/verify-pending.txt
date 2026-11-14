@@ -1,11 +1,6 @@
 # Lessons ./learn verify does not hold to their annotations yet: one id per line.
 # Annotate a lesson (README.md, "Verifying a lesson"), make ./learn verify dsa <id> pass,
 # then delete its line here. ./learn check runs the static checks on every lesson not listed.
-00.01
-00.02
-01.01
-01.02
-01.03
 02.01
 02.02
 02.03
