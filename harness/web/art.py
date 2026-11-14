@@ -14,6 +14,20 @@
 
 Files are optional. Each is sanitized (see sanitize) and inlined, so currentColor and the theme
 variables work in dark mode. Anything missing, oversized or unparseable renders as nothing.
+
+Stepped figures. An inline figure can show a process (a sort, a heap fixing itself, a search
+spreading over a graph) as frames the reader steps through. It is still one .svg file, referenced
+the same way. Each direct child of the root <svg> that is a <g class="step"> is one frame, in
+document order; every other top-level element is the base, drawn first, under every frame. A step
+group may start with a <title>: that text is the step's own caption line (what just happened). The
+page holds every frame, one under another, each a whole diagram (the base, then that step) with
+"Step k of n" and its caption: what a reader without scripts and a printout get. app.js turns that
+into one frame at a time with Back and Next. Each frame is sanitized with ids of its own, so a
+marker in the base's <defs> resolves in every frame. A file with fewer than two step groups is an
+ordinary figure. A stepped figure may have MAX_STEPS frames, and MAX_STEPPED bytes of markup over
+all of them (the page carries the base once per frame); past either the page shows its last frame
+as an ordinary still figure, and ./learn check reports it (figure_problems). art/steps.py helps a
+figure generator write the step groups.
 """
 
 import os
@@ -23,6 +37,8 @@ import xml.etree.ElementTree as ET
 from harness.web.markdown import FIGURE as FIGURE_LINE
 
 MAX_SVG = 200 * 1024
+MAX_STEPS = 40                  # frames a stepped figure may have
+MAX_STEPPED = 1024 * 1024       # bytes of markup all its frames may come to together
 
 TAGS = {"svg", "g", "path", "rect", "circle", "ellipse", "line", "polyline", "polygon", "text", "tspan",
         "defs", "marker", "title", "desc"}
@@ -56,18 +72,25 @@ def _esc(text):
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
 
 
+def _parse(source):
+    """The root element of the SVG text `source`, or None if it is too big, declares a DOCTYPE or
+    an ENTITY, or does not parse."""
+    if not isinstance(source, str) or len(source) > MAX_SVG or re.search(r"<!(DOCTYPE|ENTITY)", source, re.I):
+        return None
+    try:
+        return ET.fromstring(source)
+    except ET.ParseError:
+        return None
+
+
 def sanitize(source, prefix="art"):
     """Return safe inline SVG markup for `source`, or "" if it is not an acceptable SVG.
 
     Only allowlisted elements and attributes survive; script, foreignObject, style, on* handlers
-    and any href are dropped, and url() may only point at an id inside the same file."""
-    if not isinstance(source, str) or len(source) > MAX_SVG or re.search(r"<!(DOCTYPE|ENTITY)", source, re.I):
-        return ""
-    try:
-        root = ET.fromstring(source)
-    except ET.ParseError:
-        return ""
-    if _local(root.tag) != "svg":
+    and any href are dropped, and url() may only point at an id inside the same file. `source` may
+    also be an already parsed <svg> element (a frame of a stepped figure)."""
+    root = source if ET.iselement(source) else _parse(source)
+    if root is None or _local(root.tag) != "svg":
         return ""
 
     def render(el, top):
@@ -207,9 +230,86 @@ def figure_path(doc, src):
 
 
 def doc_figure(doc, src):
-    """Sanitized markup for an inline figure of the lesson doc `doc`, or "" if refused or missing."""
+    """Sanitized markup for an inline figure of the lesson doc `doc`, or "" if refused or missing.
+    A stepped figure is a list [(frame markup, step caption)] instead (see the module doc); one
+    past the limits is the markup of its last frame, an ordinary figure."""
     path = figure_path(doc, src)
-    return _load(path) if path else ""
+    if not path:
+        return ""
+    frames = _load_steps(path)
+    if frames is None:
+        return _load(path)
+    return frames[-1][0] if steps_over(frames) else frames
+
+
+# ---------------------------------------------------------------- stepped figures
+
+_steps_cache = {}
+
+
+def _is_step(el):
+    return _local(el.tag) == "g" and "step" in (el.get("class") or "").split()
+
+
+def split_steps(source, prefix="art"):
+    """[(markup, caption)] for the stepped figure `source`, one per step group in document order:
+    the base (every other top-level element, in its order) with that step drawn on top, sanitized
+    with ids of its own (prefix-1-..., prefix-2-...), so every frame's url(#...) finds its own copy.
+    caption is the text of the step's leading <title> ("" without one), which leaves the frame.
+    None when source is not a stepped figure: fewer than two step groups, or not a usable SVG."""
+    root = _parse(source)
+    if root is None or _local(root.tag) != "svg":
+        return None
+    steps = [el for el in root if _is_step(el)]
+    if len(steps) < 2:
+        return None
+    base = [el for el in root if not _is_step(el)]
+    frames = []
+    for k, step in enumerate(steps, 1):
+        kids = list(step)
+        caption = ""
+        if kids and _local(kids[0].tag) == "title":
+            caption = " ".join("".join(kids[0].itertext()).split())
+            kids = kids[1:]
+        group = ET.Element(step.tag, step.attrib)
+        group.extend(kids)
+        frame = ET.Element(root.tag, root.attrib)
+        frame.extend(base + [group])
+        markup = sanitize(frame, f"{prefix}-{k}")
+        if not markup:
+            return None
+        frames.append((markup, caption))
+    return frames
+
+
+def steps_over(frames):
+    """Why a stepped figure is past the limits ("has 41 steps, more than 40"), or "" when it is not."""
+    if len(frames) > MAX_STEPS:
+        return f"has {len(frames)} steps, more than {MAX_STEPS}"
+    size = sum(len(markup) for markup, _ in frames)
+    if size > MAX_STEPPED:
+        return f"comes to {size // 1024} KB over its {len(frames)} frames, more than {MAX_STEPPED // 1024} KB"
+    return ""
+
+
+def _load_steps(path):
+    """split_steps for one file, cached by mtime; None when it is not a stepped figure. A file that
+    is one takes the next art<N> prefix; any other file leaves the numbering as it was."""
+    try:
+        st = os.stat(path)
+        if not os.path.isfile(path) or os.path.islink(path) or st.st_size > MAX_SVG:
+            return None
+        key = (path, st.st_mtime_ns, st.st_size)
+        if key not in _steps_cache:
+            with open(path, encoding="utf-8", errors="replace") as f:
+                text = f.read()
+            n = _counter[0] + 1
+            _steps_cache[key] = split_steps(text, prefix=f"art{n}")
+            if _steps_cache[key] is not None:
+                _counter[0] = n
+        return _steps_cache[key]
+    except OSError:
+        return None
 
 
 def figure_refs(text):
@@ -242,4 +342,7 @@ def figure_problems(doc):
             out.append((n, f"figure {src} does not exist"))
         elif not _load(path):
             out.append((n, f"figure {src} is not a usable SVG (too big, unparseable, or no viewBox)"))
+        elif steps_over(_load_steps(path) or []):
+            over = steps_over(_load_steps(path))
+            out.append((n, f"figure {src} {over}: the page shows only its last step, as a still figure"))
     return out

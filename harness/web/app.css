@@ -614,3 +614,27 @@ a.lib-title .ic { color: var(--fg3); margin-left: 4px; vertical-align: -1px; }
 .facts dd a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: var(--border-strong); }
 .facts dd a:hover { text-decoration-color: currentColor; }
 @media (max-width: 900px) { .credit-facts { grid-template-columns: minmax(0, 1fr); } .site-foot { margin-top: 64px; } }
+
+/* stepped figures (harness/web/art.py): every frame one under another, each a whole diagram with
+   "Step k of n" over its caption - the page without scripts, and in print. With app.js (.is-live)
+   the frames share one grid cell and only the current one is visible, so the cell keeps the height
+   of the tallest frame and nothing moves as the reader steps; quiet Back and Next sit under it */
+.art.fig .steps-list { list-style: none; margin: 0; padding: 0; }
+.steps .steps-frame { margin: 0; }
+.steps .steps-frame + .steps-frame { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--divider); }
+.steps .steps-cap { margin: 12px auto 0; max-width: 56ch; font: 400 14px/1.5 var(--sans); color: var(--fg2); text-align: center; text-wrap: balance; }
+.steps-k { display: block; font: 500 12px/1.5 var(--mono); color: var(--fg3); font-variant-numeric: tabular-nums; }
+.steps-bar { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; }
+.btn.steps-btn { height: 32px; padding: 0 12px; font-size: 13px; gap: 4px; }
+.steps-bar .ic { width: 14px; height: 14px; }              /* the controls sit inside .art: keep its */
+.steps-bar .ic path { stroke: currentColor; }               /* figure rules off their icons */
+.steps-bar .steps-now { margin: 0 4px; font: 500 12.5px/1 var(--mono); color: var(--fg3); text-align: center; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.steps-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media screen {
+  .steps.is-live .steps-list { display: grid; }
+  .steps.is-live .steps-frame { grid-area: 1 / 1; visibility: hidden; margin: 0; padding: 0; border: 0; }
+  .steps.is-live .steps-frame.on { visibility: visible; }
+  .steps.is-live .steps-k { display: none; }
+}
+@media print { .steps-bar { display: none; } .steps .steps-frame { break-inside: avoid; } }
+@media (max-width: 640px) { .btn.steps-btn { height: 40px; padding: 0 16px; } }

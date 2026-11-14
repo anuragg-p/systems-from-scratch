@@ -198,4 +198,61 @@
       }
     });
   }
+
+  // Stepped figures (harness/web/art.py): the page holds every frame, one under another, which is
+  // what a reader without scripts and a printout get. Here the frames share one place and Back and
+  // Next step through them, one at a time, with no wrap-around; Left and Right do the same while
+  // the figure has focus. The swap is instant, and the hidden frames keep their place in the
+  // layout, so the figure is as tall as its tallest frame and nothing under it moves.
+  var chev = function (d) {
+    return '<svg class="ic" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="' + d +
+      '" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  };
+  document.querySelectorAll("figure.steps").forEach(function (fig) {
+    var list = fig.querySelector(".steps-list");
+    var frames = list ? list.querySelectorAll(".steps-frame") : [];
+    if (frames.length < 2) return;
+    var n = frames.length, k = 0;
+    var bar = document.createElement("div");
+    bar.className = "steps-bar";
+    bar.innerHTML = '<button class="btn steps-btn" type="button" data-go="-1">' + chev("M10 3L5 8l5 5") + "<span>Back</span></button>" +
+      '<p class="steps-now" aria-live="polite" aria-atomic="true"></p>' +
+      '<button class="btn steps-btn" type="button" data-go="1"><span>Next</span>' + chev("M6 3l5 5-5 5") + "</button>";
+    var back = bar.querySelector('[data-go="-1"]'), next = bar.querySelector('[data-go="1"]'), now = bar.querySelector(".steps-now");
+    now.style.minWidth = ("Step " + n + " of " + n).length + "ch";   // the buttons stay put as k grows a digit
+    function show(i) {
+      k = Math.max(0, Math.min(n - 1, i));
+      frames.forEach(function (f, j) { f.classList.toggle("on", j === k); });
+      var count = document.createElement("span"), text = frames[k].querySelector(".steps-t");
+      count.textContent = "Step " + (k + 1) + " of " + n;
+      now.textContent = "";
+      now.appendChild(count);
+      if (text) {   // read out with the count; the frame shows it already
+        var say = document.createElement("span");
+        say.className = "steps-sr";
+        say.textContent = ": " + text.textContent;
+        now.appendChild(say);
+      }
+      // a disabled button loses focus: hand it to the figure, where the arrow keys still work
+      var lost = (document.activeElement === back && k === 0) || (document.activeElement === next && k === n - 1);
+      back.disabled = k === 0;
+      next.disabled = k === n - 1;
+      if (lost) fig.focus();
+    }
+    show(0);
+    list.parentNode.insertBefore(bar, list.nextSibling);
+    list.setAttribute("aria-hidden", "true");   // the live line under it says the same
+    fig.setAttribute("tabindex", "-1");
+    fig.classList.add("is-live");
+    bar.addEventListener("click", function (ev) {
+      var b = ev.target.closest ? ev.target.closest("[data-go]") : null;
+      if (b && !b.disabled) show(k + Number(b.getAttribute("data-go")));
+    });
+    fig.addEventListener("keydown", function (ev) {
+      if (ev.altKey || ev.ctrlKey || ev.metaKey || ev.shiftKey) return;
+      if (ev.key !== "ArrowLeft" && ev.key !== "ArrowRight") return;
+      ev.preventDefault();
+      show(k + (ev.key === "ArrowRight" ? 1 : -1));
+    });
+  });
 })();

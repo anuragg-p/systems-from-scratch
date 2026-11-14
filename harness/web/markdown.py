@@ -14,7 +14,9 @@ rendered as plain text.
 
 A line of its own of the form ![Caption](path) is a figure. figure(path) returns
 safe markup for it (inline SVG) or "" to refuse it; a refused figure, or any
-figure when no figure callback is given, renders nothing, caption included.
+figure when no figure callback is given, renders nothing, caption included. For a
+stepped figure (harness/web/art.py) it returns a list [(safe svg, step caption
+as plain text)], rendered as every frame in order, each under "Step k of n".
 
 HTML comments (<!-- ... -->) render as nothing at all, on lines of their own or inside a
 line, over one line or several; in fenced code and in `code spans` they are text like any
@@ -172,7 +174,20 @@ def _figure(m, rl, figure):
         return ""
     caption = m.group(1).strip()
     cap = f"<figcaption>{inline(caption, rl)}</figcaption>" if caption else ""
+    if isinstance(svg, list):
+        return _stepped(svg, cap)
     return f'<figure class="art fig">{svg}{cap}</figure>'
+
+
+def _stepped(frames, cap):
+    """<figure> for a stepped figure, frames [(svg markup, step caption)]: every frame, one under
+    another, each with "Step k of n" and its caption as text. That is the page without scripts and
+    in print; app.js shows one frame at a time, with Back and Next."""
+    n = len(frames)
+    items = "".join(f'<li class="steps-frame">{svg}<p class="steps-cap"><span class="steps-k">Step {k} of {n}</span>'
+                    + (f' <span class="steps-t">{html.escape(text)}</span>' if text else "") + "</p></li>"
+                    for k, (svg, text) in enumerate(frames, 1))
+    return f'<figure class="art fig steps"><ol class="steps-list">{items}</ol>{cap}</figure>'
 
 
 def _is_table(lines, i):

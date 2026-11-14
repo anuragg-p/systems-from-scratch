@@ -93,7 +93,11 @@ replays the block under it (README.md, "Verifying a lesson"). Every code block m
 from the project at this lesson, or carry one. -->
 
 Figures go on a line of their own, `![Caption](figures/NN.LL-name.svg)`,
-with the file in the figures/ folder beside the lesson. This is a lesson,
+with the file in the figures/ folder beside the lesson. Only where the idea
+is a process (a sort, a heap fixing itself), one figure per lesson may be
+stepped: each top-level `<g class="step">` is a frame the reader steps
+through, its first `<title>` the step's caption, and the frames come from a
+real run of the reference code (art/steps.py writes them). This is a lesson,
 not an exercise: never tell the reader to write or fill in the code, and
 never mention stubs, solutions, workspaces or tests. Never refer to code
 from a later lesson as if the reader already has it. (Delete this paragraph

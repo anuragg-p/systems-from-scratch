@@ -73,7 +73,7 @@ that opens with the structure and then looks for a use is wrong.
   the architecture map and at least one diagram in every lesson). The
   outline's module art moves over to the track's modules.
 
-- Stepped figures (proposed to the owner, not yet agreed): where the idea
+- Stepped figures (agreed by the owner, 2026-11-14): where the idea
   is a process (a sort, a heap sift, a table being filled, a search
   spreading over a graph), the lesson's diagram is a short series of
   frames the reader steps through, forward and back, with no autoplay.

@@ -175,10 +175,23 @@ track's `timeline_boot` steps and, where a run leaves files behind, its
 calls something a later lesson brings, the earlier project has an ordinary
 error in its place, such as db's `WHERE is not supported`, never a crash.
 
+A lesson's figures are SVG files in the `figures/` folder beside it, each on a
+line of its own as `![Caption](figures/NN.LL-name.svg)` (the rules are in
+`harness/web/art.py`). A **stepped figure** shows a process as frames the
+reader steps through with Back and Next: each top-level `<g class="step">` in
+the file is one frame, drawn over the rest of the file, and a `<title>` first
+in it is that step's caption. Without scripts, and in print, the page shows
+every frame one under another. Use one only where the idea is a process, at
+most one per lesson, with frames made from a real run of the reference code
+(`art/steps.py` writes the step groups from a figure generator). At most 40
+frames (and 1 MB of them in all): past that the page shows the last frame as a
+still figure and `./learn check` reports it.
+
 ## Verifying a lesson
 
 `./learn verify` holds each lesson to what the project at that lesson really
-does. A lesson is read top to bottom in one terminal, as a reader follows it:
+does. A lesson is read top to bottom in the reader's terminal (and a second
+one where the page says "from another terminal"), as a reader follows it:
 every transcript is typed again and its output compared, every "change this
 line" is made, every quoted line of code is looked up in the project as it
 stands at that lesson. It is an author's tool: no page, lesson or learner
