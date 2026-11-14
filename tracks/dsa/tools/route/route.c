@@ -472,7 +472,7 @@ static void print_route(const RoadGraph *g, const int *path, int n)
     long total = 0;
     for (int k = 1; k < n; k++)
         total += road_between(g, path[k - 1], path[k]);
-    printf("from %d to %d: %ld metres, %d junctions\n", path[0], path[n - 1], total, n);
+    printf("from %d to %d: %ld metres, %d junction%s\n", path[0], path[n - 1], total, n, n == 1 ? "" : "s");
     printf("  metres  junction       x       y\n");
     long so_far = 0;
     for (int k = 0; k < n; k++) {

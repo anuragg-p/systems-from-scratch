@@ -41,12 +41,12 @@ HIDDEN = ["tools/route/NOTES.md"]
 UPSTREAM = [
     {"name": "OpenStreetMap",
      "url": "https://www.openstreetmap.org/copyright",
-     "licence": "ODbL-1.0",
+     "licence": "Open Database License (ODbL) 1.0",
      "copyright": "OpenStreetMap contributors",
      "owes": "No code. The road map route searches, tools/route/london.map, is made from "
              "OpenStreetMap data and is under the Open Database License, not MIT; "
              "tools/route/NOTICE.txt says where it came from and how it was made.",
-     "licence_file": "tools/route/NOTICE.txt",
+     "also": [("The Open Database License 1.0", "https://opendatacommons.org/licenses/odbl/1-0/")],
      "chip": "map data from OpenStreetMap",
      "derived": False},
 ]
@@ -146,7 +146,7 @@ class Route:
     pass
 
 
-HEAD = re.compile(r"^from (\d+) to (\d+): (\d+) metres, (\d+) junctions$")
+HEAD = re.compile(r"^from (\d+) to (\d+): (\d+) metres, (\d+) junctions?$")
 NONE = re.compile(r"^from (\d+) to (\d+): no route: no road joins them$")
 
 
