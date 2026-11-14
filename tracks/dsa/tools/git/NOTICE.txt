@@ -1,0 +1,56 @@
+For the dsa section of the top-level NOTICE: module 10, git (tools/git/,
+lib/sha1sum.c, lib/zframe.c).
+
+Formats    git's repository formats, as git documents them:
+           - loose objects, trees and commits: Pro Git, 2nd edition, by
+             Scott Chacon and Ben Straub, chapter 10.2 "Git Internals -
+             Git Objects", https://git-scm.com/book/en/v2/Git-Internals-Git-Objects
+             (CC BY-NC-SA 3.0; fetched 2026-11-14, read, nothing copied);
+           - the index, version 2, and its TREE extension: gitformat-index(5),
+             https://git-scm.com/docs/gitformat-index (fetched 2026-11-14);
+           - fsck's message ids (treeNotSorted, zeroPaddedFilemode) and
+             git-mktree(1), which say that a tree's entries have one order
+             without saying what it is. The order (a directory's name
+             compared as if it ended in '/') was found by running the real
+             git (mktree, write-tree and fsck --strict) on test repositories,
+             and is checked by the tests against the real git.
+SHA-1      FIPS PUB 180-4, "Secure Hash Standard (SHS)", NIST, August 2015,
+           https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf
+           (fetched 2026-11-14, 833315 bytes, SHA-256 0455b406d89648d20cbde37
+           5561e19c245b9815e894164c2670772e3d54deb82): sections 4.1.1, 4.2.1,
+           5.1.1, 5.3.1 and 6.1.2. A U.S. government work. RFC 3174, "US
+           Secure Hash Algorithm 1 (SHA1)", D. Eastlake and P. Jones,
+           September 2001, https://www.rfc-editor.org/rfc/rfc3174 (fetched
+           the same day, 35525 bytes, SHA-256 aa0ca4ef21609e64897980488c55551
+           09266c29cd814fe97680c916566d29332) was read for its description
+           only; its sample C code was not used.
+zlib       RFC 1950, "ZLIB Compressed Data Format Specification version
+           3.3", P. Deutsch and J-L. Gailly, May 1996,
+           https://www.rfc-editor.org/rfc/rfc1950 (fetched 2026-11-14, 20502
+           bytes, SHA-256 8f0475a5c984657bf26277f73df9456c9b97f175084f0c1748f
+           1eb1f0b9b10b9): section 2.2, the header and Adler-32. Copyright
+           (c) 1996 L. Peter Deutsch and Jean-Loup Gailly; "Permission is
+           granted to copy and distribute this document for any purpose and
+           without charge ... provided that the copyright notice and this
+           notice are preserved". Its sample code (section 9) was not used.
+Taken      No code. git is GPL-2.0 (https://github.com/git/git); none of its
+           code, or of any other implementation of git, SHA-1 or zlib, was
+           read or used. What comes from the documents as it stands is what
+           the formats are made of: the object header ("type size", a NUL),
+           the 40-digit names and the objects/xx/ layout, the tree entry
+           ("mode name", a NUL, 20 bytes) and the five modes, the commit's
+           header lines, the index's fields, flags, padding and TREE
+           extension, refs and HEAD; SHA-1's constants, functions, padding
+           and initial hash value; zlib's CMF/FLG bytes and Adler-32's
+           modulus 65521. DEFLATE itself is module 09's (lib/deflate.c,
+           lib/inflate.c) and the diff is module 06's (lib/diff.c,
+           lib/myers.c).
+Ours       All of the code, the lessons and the internal checks, including
+           the merge-base walk, the log walk, the cached-tree invalidation
+           and the diff's tree walk, written from the descriptions above.
+Checked    Internal tests only: the real git (Apple Git 2.50.1 on macOS,
+           git 2.47.3 on Debian; https://git-scm.com, GPL-2.0) runs fsck
+           --strict, log, cat-file, ls-files, ls-tree, write-tree, status,
+           merge-base and apply on the repositories ours writes, and writes
+           repositories ours reads. Python's hashlib and zlib check SHA-1 and
+           the zlib streams.

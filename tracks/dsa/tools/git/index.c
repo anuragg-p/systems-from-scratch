@@ -327,10 +327,11 @@ static void walk(const char *dir, Array *out)
         if (lstat(path, &sb) != 0)
             die("%s: %s", path, strerror(errno));
         if (S_ISDIR(sb.st_mode)) {
-            char sub[4096];
-            snprintf(sub, sizeof sub, "%s/.git", path);
+            char *sub = xmalloc(len + 5);
+            snprintf(sub, len + 5, "%s/.git", path);
             if (access(sub, F_OK) == 0)
                 die("%s is a repository of its own (a submodule), which this git does not add", path);
+            free(sub);
             walk(path, out);
             free(path);
         } else if (S_ISREG(sb.st_mode) || S_ISLNK(sb.st_mode)) {

@@ -128,7 +128,7 @@ int object_write(int type, const void *data, size_t n, unsigned char name[20])
         *(char *)array_push(&raw) = ((const char *)data)[i];
     zframe_pack((const unsigned char *)raw.data, raw.len, &loose, &z);
 
-    char dir[64], tmp[64];
+    char dir[16], tmp[48];
     memcpy(dir, path, 15);
     dir[15] = '\0';
     if (mkdir(dir, 0777) != 0 && errno != EEXIST)

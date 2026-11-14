@@ -92,7 +92,7 @@ static int cmd_init(int argc, char **argv)
         else
             die("usage: git init [-q] [-b BRANCH] [DIR]");
     }
-    if (*branch == '\0' || branch[0] == '-' || strstr(branch, "..") || strcspn(branch, " ~^:?*[\\") != strlen(branch))
+    if (*branch == '\0' || strlen(branch) > 200 || branch[0] == '-' || strstr(branch, "..") || strcspn(branch, " ~^:?*[\\") != strlen(branch))
         die("'%s' is not a name a branch can have", branch);
     repo_init(dir, branch, quiet);
     return 0;
@@ -522,7 +522,7 @@ static int cmd_branch(int argc, char **argv)
     }
     if (argc > 3 || argv[1][0] == '-')
         die("usage: git branch [NAME [START]]");
-    if (!branch_name_ok(argv[1]) || strchr(argv[1], '/') != NULL)
+    if (!branch_name_ok(argv[1]) || strchr(argv[1], '/') != NULL || strlen(argv[1]) > 200)
         die("'%s' is not a name a branch can have here", argv[1]);
     repo_must_write("branch");
     char ref[300];

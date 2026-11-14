@@ -52,7 +52,8 @@ int ref_read(const char *ref, unsigned char name[20])
     // @build 10.03 read a ref: a name, or a link to another ref to read
     char path[PATH_MAX];
     for (int depth = 0; depth < 5; depth++) {
-        snprintf(path, sizeof path, ".git/%s", ref);
+        if (snprintf(path, sizeof path, ".git/%s", ref) >= (int)sizeof path)
+            die("%.40s...: a ref name too long", ref);
         size_t n;
         char *text = read_file(path, &n);
         if (text == NULL)
@@ -113,7 +114,8 @@ void ref_write(const char *ref, const unsigned char name[20])
     // @build 10.03 point a ref at a commit: a new file, renamed over the old one
     char path[PATH_MAX], hex[42];
     repo_must_write("moving a ref");
-    snprintf(path, sizeof path, ".git/%s", ref);
+    if (snprintf(path, sizeof path, ".git/%s", ref) >= (int)sizeof path)
+        die("%.40s...: a ref name too long", ref);
     char *slash = strrchr(path, '/');
     *slash = '\0';
     make_dirs(path);
