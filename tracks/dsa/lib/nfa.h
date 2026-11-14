@@ -65,7 +65,8 @@ void nfa_free(Nfa *m);
 /* Is the machine's pattern found anywhere in the line s[0..n)? */
 int nfa_match(Nfa *m, const char *s, size_t n);
 
-/* For dfa.c: an empty list, room for every state; and state id onto list
+/* The lists, for nfa_match and for anything else that runs the machine: a
+ * new one with room for every state; emptying one; and state id onto list
  * l, with every state it leads to without reading a byte (^ only if bol,
  * $ only if eol), each once. */
 void nfa_list_init(const Nfa *m, StateList *l);

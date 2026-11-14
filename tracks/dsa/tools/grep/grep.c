@@ -43,7 +43,7 @@
 
 #include "ds.h"
 #include "strsearch.h"
-#include "re.h"    // @from 04.02
+#include "re.h"       // @from 04.02
 #include "nfa.h"      // @from 04.03
 #include "dfa.h"      // @from 04.04
 

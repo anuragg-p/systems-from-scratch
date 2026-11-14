@@ -1,6 +1,9 @@
-# grep: the lines of a text that match a pattern (module 04), and the
-# structures it brings to lib/: a fixed-string search, then a regular
-# expression's tree, its NFA, and a DFA built from the NFA as it runs.
+# grep: the lines of a text that match a pattern (module 04), and what it
+# brings to lib/:
+#   strsearch.c   finding a fixed string
+#   re.c          a regular expression as a tree, and backtracking      @from 04.02
+#   nfa.c         the expression as a machine                           @from 04.03
+#   dfa.c         the machine's sets of states, made states as it runs  @from 04.04
 
 TOOLS += bin/grep
 
