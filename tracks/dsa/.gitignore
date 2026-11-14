@@ -1,0 +1,5 @@
+# What make builds: objects in build/, the tools in bin/.
+build/
+bin/
+.test-logs/
+__pycache__/

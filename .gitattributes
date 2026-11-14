@@ -1,0 +1,2 @@
+# Agents working in parallel each add their own lesson ids to this list.
+tracks/*/lessons/verify-pending.txt merge=union

@@ -549,6 +549,31 @@ Track `db` - kind: database - 27 lessons - on the site: `./learn serve`, then /t
 - 07.02 [Where the time goes](tracks/db/lessons/07-fast/07.02-where-the-time-goes.md) - lab
 - 07.03 [One more optimisation, measured](tracks/db/lessons/07-fast/07.03-one-more-optimisation-measured.md) - with code
 
+### Data structures and algorithms, by building the tools that use them
+
+Track `dsa` - kind: algorithms - 11 lessons - on the site: `./learn serve`, then /t/dsa
+
+
+**Module 00 - The workbench**
+
+- 00.01 [One job, done slow and done fast](tracks/dsa/lessons/00-workbench/00.01-one-job-done-slow-and-done-fast.md) - lab
+- 00.02 [Measuring growth](tracks/dsa/lessons/00-workbench/00.02-measuring-growth.md) - lab
+
+**Module 01 - Counting words: freq**
+
+- 01.01 [A growable array](tracks/dsa/lessons/01-freq/01.01-a-growable-array.md) - with code
+- 01.02 [A hash table](tracks/dsa/lessons/01-freq/01.02-a-hash-table.md) - with code
+- 01.03 [Hash functions, collisions and resizing](tracks/dsa/lessons/01-freq/01.03-hash-functions-collisions-and-resizing.md) - with code
+
+**Module 02 - Putting things in order: sort**
+
+- 02.01 [Insertion sort, and where it stops being enough](tracks/dsa/lessons/02-sort/02.01-insertion-sort-and-where-it-stops-being-enough.md) - with code
+- 02.02 [Merge sort](tracks/dsa/lessons/02-sort/02.02-merge-sort.md) - with code
+- 02.03 [Quicksort, and the input that breaks it](tracks/dsa/lessons/02-sort/02.03-quicksort-and-the-input-that-breaks-it.md) - with code
+- 02.04 [A heap, and the top ten without sorting everything](tracks/dsa/lessons/02-sort/02.04-a-heap-and-the-top-ten-without-sorting-everything.md) - with code
+- 02.05 [Sorting a file bigger than memory](tracks/dsa/lessons/02-sort/02.05-sorting-a-file-bigger-than-memory.md) - with code
+- 02.06 [Binary search in a sorted file](tracks/dsa/lessons/02-sort/02.06-binary-search-in-a-sorted-file.md) - with code
+
 ### A text editor in C, from scratch
 
 Track `kilo` - kind: editor - 16 lessons - on the site: `./learn serve`, then /t/kilo
@@ -567,14 +592,14 @@ Track `kilo` - kind: editor - 16 lessons - on the site: `./learn serve`, then /t
 
 **Module 02 - The screen**
 
-- 02.01 [One frame, one write](tracks/kilo/lessons/02-screen/02.01-one-frame-one-write.md) - with code
+- 02.01 [One frame, one write](tracks/kilo/lessons/02-screen/02.01-one-frame-one-write.md) - with code, decision boundary
 
 **Module 03 - A text viewer**
 
-- 03.01 [Rows: opening a file](tracks/kilo/lessons/03-viewer/03.01-rows-opening-a-file.md) - with code
-- 03.02 [Moving the cursor, and scrolling](tracks/kilo/lessons/03-viewer/03.02-moving-the-cursor-and-scrolling.md) - with code
-- 03.03 [Tabs](tracks/kilo/lessons/03-viewer/03.03-tabs.md) - with code
-- 03.04 [The status bar and messages](tracks/kilo/lessons/03-viewer/03.04-the-status-bar-and-messages.md) - with code
+- 03.01 [Rows: opening a file](tracks/kilo/lessons/03-viewer/03.01-rows-opening-a-file.md) - with code, decision boundary
+- 03.02 [Moving the cursor, and scrolling](tracks/kilo/lessons/03-viewer/03.02-moving-the-cursor-and-scrolling.md) - with code, decision boundary
+- 03.03 [Tabs](tracks/kilo/lessons/03-viewer/03.03-tabs.md) - with code, decision boundary
+- 03.04 [The status bar and messages](tracks/kilo/lessons/03-viewer/03.04-the-status-bar-and-messages.md) - with code, decision boundary
 
 **Module 04 - A text editor**
 

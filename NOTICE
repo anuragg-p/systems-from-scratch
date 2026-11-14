@@ -87,6 +87,46 @@ Ours       The lessons, the order the code is built in and its markers,
            and the internal checks (tracks/kilo/track.py and tests/).
 
 
+dsa - Data structures and algorithms (tracks/dsa)
+-------------------------------------------------
+
+Upstream   None. The tools are written from the documented behaviour of
+           the ones they copy and checked against the machine's own: GNU
+           coreutils on Linux (https://www.gnu.org/software/coreutils/,
+           GPL-3.0-or-later) and the FreeBSD utilities macOS ships
+           (https://github.com/freebsd/freebsd-src, BSD licences). No
+           code from either is in the track.
+Ours       All of the code (lib/, tools/, bench/, data/gen.py, the
+           Makefile and the tool.mk files), the lessons and the internal
+           checks (tracks/dsa/track.py and tests/).
+
+Data       data/book.txt: The Adventures of Sherlock Holmes, by Arthur
+           Conan Doyle (first published 1892; he died in 1930). In the
+           public domain in the United States, and wherever copyright
+           lasts the author's life and 70 years or less; elsewhere, check
+           the law where you are.
+Source     Project Gutenberg eBook #1661 (released 1999-03-01, updated
+           2023-10-10), https://www.gutenberg.org/ebooks/1661, as plain
+           text: https://www.gutenberg.org/cache/epub/1661/pg1661.txt,
+           607606 bytes, SHA-256 922e2a12ccb43a4c9544c260b2166c6a
+           d2097aeb5957faeee113f173bb857cd0, fetched 2026-11-14.
+Licence    The book is public domain. Project Gutenberg's licence (its
+           section 1.C) claims no right to stop anyone in the United
+           States copying or adapting a public-domain work "as long as all
+           references to Project Gutenberg are removed", and its trademark
+           terms apply only to copies that keep the name. So the file is
+           the book alone: the text between the eBook's START and END
+           lines, which names Project Gutenberg nowhere, without the
+           header, footer and licence around it. Changed: LF line
+           endings, and its 6826 non-ASCII characters written in ASCII
+           (curly quotes as straight ones, the em dash as --, the pound
+           sign as L, accented letters without their accents, ae and oe
+           for the ligatures, 1/2 for the half). 562404 bytes, SHA-256
+           8d42be2e0715fc0c857e4565e9c59a386ed0dad2c6ae37a2650b3b298109958a.
+Generated  Every larger input is made by data/gen.py, with a fixed seed,
+           from the book's words and words it makes up; none is stored.
+
+
 Planned tracks (outlines/)
 --------------------------
 

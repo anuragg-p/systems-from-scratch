@@ -4,8 +4,11 @@ Status: plan (direction set by Fable; implementation by Opus agents).
 Started 2026-11-14, once kilo's code and lessons were in (its clean-up
 pass still running), on the owner's word: "after this start building the
 data structures and algorithm part".
-The outline is outlines/data-structures-and-algorithms.md: its modules and
-lesson titles are the list to build. This file holds the decisions.
+The outline is now plans/dsa-outline.md (moved out of outlines/ when
+tracks/dsa took the id over): its modules and lesson titles are the list
+to build. Its module art stays in outlines/data-structures-and-algorithms/
+until every module has copied its cover and icon. This file holds the
+decisions.
 
 ## What the learner ends with
 
@@ -26,9 +29,11 @@ that opens with the structure and then looks for a use is wrong.
 
 - Language: C11, libc only. Nothing is built in, so the learner writes the
   array, the table, the heap and the sort that every tool then uses.
-- Layout: `lib/` (the structures, one .c each, one `ds.h`), `tools/<name>/`
-  (one tool each), `data/` (inputs), `bench/` (the growth harness). One
-  Makefile; each tool is `bin/<name>`. A tool uses lib/ from the lesson
+- Layout: `lib/` (the structures, one .c each; `ds.h` for what step 1
+  built, and one header per structure added after it, so agents working
+  in parallel never edit the same header), `tools/<name>/` (one tool
+  each, with its own `tool.mk`), `data/` (inputs), `bench/` (the growth
+  harness). One Makefile; each tool is `bin/<name>`. A tool uses lib/ from the lesson
   that built the piece, never before.
 - Ours, not derived: no code is taken from the tools we copy. They are
   written to the documented formats (RFC 1951 and 1952, the unified diff
@@ -60,8 +65,9 @@ that opens with the structure and then looks for a use is wrong.
   - grep: fixed strings and -E (literals, classes, . * + ? | groups,
     anchors), -n -c -v -i.
   - diff: unified output; patch applies unified diffs.
-  - make: rules, prerequisites, recipes, simple variables, .PHONY, -j;
-    enough to build this track with it.
+  - make: rules, prerequisites, recipes, variables (`=`, `+=`, `$(VAR)`
+    in prerequisites and recipes), `include` with a glob, .PHONY, -j:
+    what this track's own Makefile uses, so it can build the track.
   - gzip: inflate of all three block types; deflate with fixed and
     dynamic codes.
   - git: init, add, commit, log, diff, merge-base, on loose objects and a
@@ -95,7 +101,28 @@ that opens with the structure and then looks for a use is wrong.
    06 diff, 07 make, 08 route, 09 gzip. Then 10 git, alone, because it
    uses 06's diff and 09's deflate.
    Each step is done when `./learn test dsa`, `check-skeleton`,
-   `check-timeline`, `check` and `selftest` pass.
+   `check-timeline` and `selftest` pass; `./learn check` passes only once
+   the module's lessons are written (a template page has no figures yet).
+   "The same output as the system's tool" means the same bytes where the
+   tool's output is fixed (sort, grep, gzip -d) and the same content where
+   BSD and GNU format it differently (uniq -c pads counts differently).
 3. Lessons, module READMEs and art, in parallel by module, from the
    finished code and `tracks/dsa/NOTES.md`.
 4. Review: full internal run, every lesson read on the site.
+
+## Step 1 as built (skeleton, lib, modules 00 to 02; see tracks/dsa/NOTES.md)
+
+- Tools: `paste` (module 00: joining lines, slow by rescanning, fast by
+  remembering the end), `freq`, `sort`, and `look` for 02.06 (binary
+  search in a sorted file, checked against the system's look).
+- The slow version of everything stays runnable by a flag, and a feature
+  whose lesson is ahead gives an ordinary error with exit status 2.
+- A tool is added with files only: `tools/<name>/` with its `tool.mk`,
+  `tests/tools/<name>.py` (fixtures and timeline steps, which track.py
+  loads), its lessons, and a header of its own for any new structure.
+- Data: `data/book.txt`, The Adventures of Sherlock Holmes with every
+  Project Gutenberg reference removed, as their licence asks; larger
+  inputs are generated with a fixed seed.
+- Passes on macOS and on Linux (Debian in Docker, GNU tools).
+- Parallel agents work in git worktrees, one each, and commit on their
+  own branch; nothing is merged to master unchecked.
