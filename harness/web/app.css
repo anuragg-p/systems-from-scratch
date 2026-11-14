@@ -71,9 +71,18 @@ h1, h2, h3, p { margin: 0; }
 .topbar-in { height: 100%; display: flex; align-items: center; gap: 12px; padding: 0 20px; max-width: 1440px; margin: 0 auto; }
 body.home .topbar-in { max-width: 1200px; gap: 24px; }
 .brand { font: 800 18px/1 var(--sans); letter-spacing: -.035em; white-space: nowrap; color: var(--fg1); }
-.nav-links { display: flex; gap: 4px; }
-.nav-link { padding: 6px 10px; border-radius: 8px; color: var(--fg2); font-size: 14px; font-weight: 500; }
+/* every track is in the bar: when they do not all fit, the row shrinks and scrolls sideways, no scrollbar,
+   fading at the cut edge. The padding keeps focus rings unclipped and the fades over empty space while
+   everything fits; the left one sits in the gap after the brand (margin-left), so links never move. */
+.nav-links { display: flex; gap: 4px; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
+  padding: 4px 24px; margin-left: -24px; scroll-padding-inline: 24px;
+  -webkit-mask-image: linear-gradient(to right, transparent 12px, #000 24px, #000 calc(100% - 20px), transparent);
+  mask-image: linear-gradient(to right, transparent 12px, #000 24px, #000 calc(100% - 20px), transparent); }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-link { flex: none; white-space: nowrap; padding: 6px 10px; border-radius: 8px; color: var(--fg2); font-size: 14px; font-weight: 500; }
+.nav-link.is-soon { color: var(--fg3); }
 .nav-link:hover { color: var(--fg1); background: var(--hover); }
+body.home .topbar-in > .btn { flex: none; }   /* the scrolling nav gives way, never the theme button */
 .bar-div { width: 1px; height: 20px; background: var(--divider); margin: 0 4px; }
 .track-pill { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 10px; border-radius: 8px; color: var(--fg1);
   font-size: 14px; font-weight: 600; max-width: 300px; }

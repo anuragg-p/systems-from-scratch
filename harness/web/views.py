@@ -216,8 +216,9 @@ def page(title, body, track=None, lesson=None, home=False, bottom="", outline=No
     """The shared shell. home=True is the landing layout (top bar only).
     outline is a track that is only an outline: its overview, with a sidebar of module anchors."""
     if home:
-        ids = [t.id for t in tracks()] + [o.id for o in outlines()]
-        links = "".join(f'<a class="nav-link" href="/t/{esc(i)}">{esc(i)}</a>' for i in ids[:4])
+        # every track, built ones first, then the outlines (quieter); the CSS scrolls the row when it does not fit
+        ids = [(t.id, "") for t in tracks()] + [(o.id, " is-soon") for o in outlines()]
+        links = "".join(f'<a class="nav-link{soon}" href="/t/{esc(i)}">{esc(i)}</a>' for i, soon in ids)
         left = f'<a class="brand" href="/">{esc(SITE)}</a><nav class="nav-links" aria-label="Tracks">{links}</nav>'
         side, cls = "", "home"
     else:
