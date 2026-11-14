@@ -52,6 +52,20 @@ def test(t):
         t.check(g["search visits"] == 3 * n + 1 and g["search edges"] == 4 * n and g["walk visits"] == 0,
                 f"{n} diamonds: the search should enter {3 * n + 1} nodes and follow {4 * n} edges: {g}")
 
+    # the path is an array, not the C stack: a chain 100000 deep is searched, and a cycle that
+    # long is found
+    n = 100000
+    chain = "".join(f"t{i}: t{i + 1}\n" for i in range(n))
+    d = fx.case(t, "chain", chain + f"t{n}:\n\ttouch bottom\n")
+    r = fx.ours(t, d, ["-n"], env={"DS_STATS": "1"})
+    g = T.stats(r.err)["depgraph"]
+    t.check(r.out == "touch bottom\n" and g["search visits"] == n + 1 and g["search edges"] == n,
+            f"a chain {n} deep: {r.out!r} {g}")
+    d = fx.case(t, "long-cycle", chain + f"t{n}: t0\n")
+    r = fx.ours(t, d, ["-n"], check=False)
+    t.check(r.rc == 2 and r.err.startswith("make: dependency cycle: t0 -> t1 -> ")
+            and r.err.endswith(f" -> t{n} -> t0\n") and r.err.count(" -> ") == n + 1, f"a cycle {n + 1} long")
+
     # entered and left in nested order, each node once; met again once it is done
     r = fx.ours(t, t.tmp, ["-n", "-f", f"{ex}/diamond.mk"], env={"DS_TRACE": "1"})
     path, entered = [], []

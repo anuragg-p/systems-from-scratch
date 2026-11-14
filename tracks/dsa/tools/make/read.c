@@ -473,6 +473,9 @@ static void makefile_line(Graph *g, char *line, int tab, Rule **rule, const char
  * that names it, if any. */
 static void read_file(Graph *g, const char *path, const char *from, long from_line)
 {
+    static int depth;           /* makefiles being read, one including the next */
+    if (depth == 100)
+        die("%s:%ld: includes nested 100 deep: does a makefile include itself?", from, from_line);
     FILE *f = fopen(path, "rb");
     if (f == NULL) {
         if (from != NULL)
@@ -486,6 +489,7 @@ static void read_file(Graph *g, const char *path, const char *from, long from_li
         *(char *)array_push(&text) = (char)c;
     fclose(f);
     const char *file = xstrndup(path, strlen(path));   /* kept: recipes point at it */
+    depth++;
     const char *t = text.data;
     size_t size = text.len, p = 0;
     long lineno = 0;
@@ -551,6 +555,7 @@ static void read_file(Graph *g, const char *path, const char *from, long from_li
     }
     array_free(&line);
     array_free(&text);
+    depth--;
 }
 
 void read_makefile(Graph *g, const char *path)

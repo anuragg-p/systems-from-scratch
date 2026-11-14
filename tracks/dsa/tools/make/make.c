@@ -674,9 +674,13 @@ int main(int argc, char **argv)
     // @end
     for (size_t k = 0; k < goals.len; k++) {
         long before = commands;
-        if (graph_walk(&g, goal[k], make_node, NULL) < 0)
+        int r = graph_walk(&g, goal[k], make_node, NULL);
+        if (r == -1)
             stop("a cycle in what '%s' needs: the walk went deeper than the %zu targets there are",
                  name(goal[k]), graph_len(&g));
+        if (r == -2)
+            stop("what '%s' needs goes more than %d levels deep: too deep for the walk",
+                 name(goal[k]), WALK_DEEPEST);
         if (commands == before)
             nothing_done(goal[k]);
     }

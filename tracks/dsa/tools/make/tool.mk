@@ -2,7 +2,7 @@
 
 TOOLS += bin/make
 
-# Its structures: the dependency graph, and the queue of ready work.
+# The structures it adds to lib/.
 LIB += build/lib/depgraph.o
 LIB += build/lib/readyq.o   # @from 07.04
 

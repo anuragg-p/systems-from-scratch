@@ -8,11 +8,11 @@
  *   graph_search   depth-first search: each node once, and any cycle      @from 07.02
  *
  * DS_STATS=1 prints "stats: depgraph: nodes N, edges E, walk visits W,
- * walk edges X, search visits V, search edges F": the nodes and edges
- * added; how many times the walk came to a node, and the edges it went
- * along to get there; and the same for the search.
- * DS_TRACE=1 prints each step of a walk or a search on stderr, one line
- * each, as "trace: EVENT DEPTH NAME":
+ * walk edges X": the nodes and edges added, how many times the walk came
+ * to a node, and the edges it went along to get there;
+ * then "search visits V, search edges F", the same for the search.      @from 07.02
+ * DS_TRACE=1 prints each step on stderr, one line each, as "trace: EVENT
+ * DEPTH NAME":
  *   walk    the walk came to the node, DEPTH edges below where it started
  *   enter   the search came to a new node: it is open (on the path)       @from 07.02
  *   leave   the search has finished everything the node needs: done      @from 07.02
@@ -56,9 +56,11 @@ size_t graph_len(const Graph *g);
 /* The obvious walk from root: walk each node it needs, in order, then
  * call visit(g, node, from, ctx), from being the node the walk came from
  * (-1 for root). Nothing is remembered between paths, so a node that can
- * be reached by k paths is walked, and visited, k times. Returns 0, or -1
- * if the walk went deeper than there are nodes, which only a cycle can
- * make it do. */
+ * be reached by k paths is walked, and visited, k times. Returns 0; -1 if
+ * the walk went deeper than there are nodes, which only a cycle can make
+ * it do; -2 if it went WALK_DEEPEST levels down, deeper than it is safe to
+ * recurse. */
+#define WALK_DEEPEST 10000
 typedef void (*Visit)(Graph *g, long node, long from, void *ctx);
 int graph_walk(Graph *g, long root, Visit visit, void *ctx);
 

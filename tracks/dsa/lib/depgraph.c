@@ -21,19 +21,25 @@
 #include "depgraph.h"
 
 static struct {
-    long nodes, edges, walk_visits, walk_edges, search_visits, search_edges;
+    long nodes, edges, walk_visits, walk_edges;
+    long search_visits, search_edges;      // @from 07.02
 } st;
 
 static void print_stats(void)
 {
+    // @from 07.02
     ds_stats_print("depgraph", "nodes %ld, edges %ld, walk visits %ld, walk edges %ld, "
                    "search visits %ld, search edges %ld", st.nodes, st.edges, st.walk_visits,
                    st.walk_edges, st.search_visits, st.search_edges);
+    // @else
+    // ds_stats_print("depgraph", "nodes %ld, edges %ld, walk visits %ld, walk edges %ld",
+    //                st.nodes, st.edges, st.walk_visits, st.walk_edges);
+    // @end
 }
 
 static int tracing = -1;
 
-/* DS_TRACE=1: one line on stderr for each step of a walk or a search. */
+/* DS_TRACE=1: one line on stderr for each step. */
 static void trace(const char *event, long depth, const Node *n)
 {
     if (tracing < 0) {
@@ -107,7 +113,9 @@ size_t graph_len(const Graph *g)
 
 /* Walk node n, which the walk reached from node from at depth edges below
  * the root: everything it needs first, then n itself. A path longer than
- * there are nodes must pass some node twice: the graph has a cycle. */
+ * there are nodes must pass some node twice: the graph has a cycle. Each
+ * level is a call on the C stack, which has room for some tens of
+ * thousands of them: the walk stops at WALK_DEEPEST, before it runs out. */
 static int walk(Graph *g, long n, long from, long depth, Visit visit, void *ctx)
 {
     // @build 07.01 the walk: everything a node needs, then the node
@@ -116,10 +124,13 @@ static int walk(Graph *g, long n, long from, long depth, Visit visit, void *ctx)
     trace("walk", depth, node);
     if (depth >= (long)g->nodes.len)
         return -1;
+    if (depth >= WALK_DEEPEST)
+        return -2;
     for (size_t i = 0; i < node->needs.len; i++) {
         st.walk_edges++;
-        if (walk(g, *(long *)array_at(&node->needs, i), n, depth + 1, visit, ctx) < 0)
-            return -1;
+        int r = walk(g, *(long *)array_at(&node->needs, i), n, depth + 1, visit, ctx);
+        if (r < 0)
+            return r;
     }
     visit(g, n, from, ctx);
     return 0;

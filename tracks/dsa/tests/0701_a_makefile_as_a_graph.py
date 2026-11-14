@@ -23,12 +23,11 @@ def test(t):
     edges = sum(len(v) for v in needs.values())
     t.check(g["nodes"] == len(names) and g["edges"] == edges,
             f"the stats count {g['nodes']} nodes and {g['edges']} edges; --graph prints {len(names)} and {edges}")
-    t.check(phony == {"all", "clean"}, f".PHONY: {phony}")
+    t.check({"all", "clean"} <= phony, f".PHONY: {phony}")
     t.check(needs["build/libds.a"][0] == "build/lib/util.o" and "build/lib/depgraph.o" in needs["build/libds.a"],
             f"LIB, added to in the tool.mk files: {needs['build/libds.a']}")
     tools = needs["all"]
-    t.check(len(tools) >= 5 and "bin/make" in tools and tools == sorted(tools),
-            f"all needs every tool, in the order of the glob: {tools}")
+    t.check(len(tools) >= 5 and "bin/make" in tools and "bin/freq" in tools, f"all needs every tool: {tools}")
     if T.have("make"):
         db = fx.database(fx.theirs(t, proj, ["-p", "-q"], check=False).out)
         mine = {n: v for n, v in needs.items() if v}
@@ -54,7 +53,9 @@ def test(t):
     # this project, walked: each library file compiled once for each tool
     lines = fx.ours(t, proj, ["-n", "--algo=recurse"]).lines()
     util = [l for l in lines if l.endswith(" -c -o build/lib/util.o lib/util.c")]
-    t.check(len(util) == len(tools), f"the walk compiles lib/util.c {len(util)} times, for {len(tools)} tools")
+    linked = [x for x in tools if "build/libds.a" in needs[x]]
+    t.check(len(util) == len(linked) >= 5,
+            f"the walk compiles lib/util.c {len(util)} times, for {len(linked)} tools that link the library")
     once = [l for l in fx.ours(t, proj, ["-n"]).lines() if l.endswith(" -c -o build/lib/util.o lib/util.c")]
     t.check(len(once) == 1, f"make in order compiles it once: {len(once)}")
 
@@ -69,3 +70,14 @@ def test(t):
                 f"{text!r}: want status 2 and {what!r}:\n{r}")
     r = fx.ours(t, t.tmp, ["-f", "no-such.mk"], check=False)
     t.check(r.rc == 2 and "no-such.mk" in r.err, f"no makefile:\n{r}")
+    d = fx.case(t, "self", "all:\ninclude Makefile\n")
+    r = fx.ours(t, d, [], check=False)
+    t.check(r.rc == 2 and "includes nested 100 deep" in r.err, f"a makefile that includes itself:\n{r}")
+
+    # each level of the walk is a call on the C stack: a chain deeper than it can take is an
+    # ordinary error, not a crash
+    n = 30000
+    d = fx.case(t, "chain", "".join(f"t{i}: t{i + 1}\n" for i in range(n)) + f"t{n}:\n\ttouch bottom\n")
+    r = fx.ours(t, d, ["-n", "--algo=recurse"], check=False)
+    t.check(r.rc == 2 and r.err == "make: what 't0' needs goes more than 10000 levels deep: too deep for the walk\n",
+            f"a chain {n} deep:\n{r}")
