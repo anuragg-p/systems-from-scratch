@@ -1,0 +1,852 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>The edit-distance table for kitten and sitting, filled a row at a time: the answer is 3</title>
+<defs><marker id="f0503a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0503a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0503a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="202" y="20" font-size="11" text-anchor="middle">a = kitten: a column for each letter</text>
+<text class="tm" x="30" y="168.0" font-size="11" text-anchor="middle" transform="rotate(-90 30 168.0)">b = sitting: a row for each letter</text>
+<text class="tm mono" x="94" y="46" font-size="12" text-anchor="middle">-</text>
+<text class="t mono" x="130" y="46" font-size="13" font-weight="600" text-anchor="middle">k</text>
+<text class="t mono" x="166" y="46" font-size="13" font-weight="600" text-anchor="middle">i</text>
+<text class="t mono" x="202" y="46" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<text class="t mono" x="238" y="46" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<text class="t mono" x="274" y="46" font-size="13" font-weight="600" text-anchor="middle">e</text>
+<text class="t mono" x="310" y="46" font-size="13" font-weight="600" text-anchor="middle">n</text>
+<text class="tm mono" x="62" y="74" font-size="12" text-anchor="middle">-</text>
+<text class="t mono" x="62" y="102" font-size="13" font-weight="600" text-anchor="middle">s</text>
+<text class="t mono" x="62" y="130" font-size="13" font-weight="600" text-anchor="middle">i</text>
+<text class="t mono" x="62" y="158" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<text class="t mono" x="62" y="186" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<text class="t mono" x="62" y="214" font-size="13" font-weight="600" text-anchor="middle">i</text>
+<text class="t mono" x="62" y="242" font-size="13" font-weight="600" text-anchor="middle">n</text>
+<text class="t mono" x="62" y="270" font-size="13" font-weight="600" text-anchor="middle">g</text>
+<rect class="m f" x="76" y="56" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="112" y="56" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="148" y="56" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="184" y="56" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="220" y="56" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="256" y="56" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="292" y="56" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="76" y="84" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="112" y="84" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="148" y="84" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="184" y="84" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="220" y="84" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="256" y="84" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="292" y="84" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="76" y="112" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="112" y="112" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="148" y="112" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="184" y="112" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="220" y="112" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="256" y="112" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="292" y="112" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="76" y="140" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="112" y="140" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="148" y="140" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="184" y="140" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="220" y="140" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="256" y="140" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="292" y="140" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="76" y="168" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="112" y="168" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="148" y="168" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="184" y="168" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="220" y="168" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="256" y="168" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="292" y="168" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="76" y="196" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="112" y="196" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="148" y="196" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="184" y="196" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="220" y="196" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="256" y="196" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="292" y="196" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="76" y="224" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="112" y="224" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="148" y="224" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="184" y="224" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="220" y="224" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="256" y="224" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="292" y="224" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="76" y="252" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="112" y="252" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="148" y="252" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="184" y="252" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="220" y="252" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="256" y="252" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m f" x="292" y="252" width="33" height="25" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<g class="step"><title>Row 0, before any letter of sitting: from nothing to the first j letters of kitten is j insertions: 0 1 2 3 4 5 6.</title>
+<rect class="a f" x="76" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="92.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">0</text>
+<rect class="a f" x="112" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="128.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="a f" x="148" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="164.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="184" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="200.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="220" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="236.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a f" x="256" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="272.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="a f" x="292" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="308.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<text class="t" x="372" y="40" font-size="14" font-weight="700">row 0</text>
+<text class="tm" x="372" y="64" font-size="11.5">j letters from nothing: j insertions</text>
+<text class="t mono" x="372" y="82" font-size="12">0 1 2 3 4 5 6</text>
+<text class="tm" x="372" y="232" font-size="11">rows filled: 1 of 8</text>
+<text class="tm" x="372" y="250" font-size="11">rows kept in memory: 2</text>
+</g>
+<g class="step"><title>Row 1, for the letter s of sitting: it starts at 1 (1 deletion), and each other cell is the cheapest of three, from the row above and the cell to its left: 1 1 2 3 4 5 6.</title>
+<rect class="s f" x="76" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">0</text>
+<rect class="s f" x="112" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="a f" x="76" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="92.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="a f" x="112" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="128.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="a f" x="148" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="164.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="184" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="200.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="220" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="236.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a f" x="256" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="272.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="a f" x="292" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="308.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<text class="t" x="372" y="40" font-size="14" font-weight="700">row 1: b&#x27;s letter s</text>
+<rect class="a fa" x="112" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="128.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="m" x="109" y="53" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="73" y="81" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="a" x="73" y="53" width="39" height="31" rx="5" stroke-width="1.5"/>
+<text class="tm" x="372" y="64" font-size="11.5">the cell for s and k:</text>
+<text class="t" x="372" y="88" font-size="12">above, plus 1</text>
+<text class="t mono" x="586" y="88" font-size="12.5" font-weight="600" text-anchor="end">2</text>
+<text class="t" x="372" y="108" font-size="12">left, plus 1</text>
+<text class="t mono" x="586" y="108" font-size="12.5" font-weight="600" text-anchor="end">2</text>
+<text class="ta" x="372" y="128" font-size="12">diagonal, plus 1 (k vs s)</text>
+<text class="ta mono" x="586" y="128" font-size="12.5" font-weight="600" text-anchor="end">1</text>
+<line class="m" x1="372" y1="146" x2="586" y2="146" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="372" y="164" font-size="12" font-weight="600">the smallest</text>
+<text class="ta mono" x="586" y="164" font-size="12.5" font-weight="700" text-anchor="end">1</text>
+<text class="tm" x="372" y="232" font-size="11">rows filled: 2 of 8</text>
+<text class="tm" x="372" y="250" font-size="11">rows kept in memory: 2</text>
+</g>
+<g class="step"><title>Row 2, for the letter i of sitting: it starts at 2 (2 deletions), and each other cell is the cheapest of three, from the row above and the cell to its left: 2 2 1 2 3 4 5.</title>
+<rect class="s f" x="76" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">0</text>
+<rect class="s f" x="112" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="112" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="a f" x="76" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="92.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="112" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="128.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="148" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="164.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="a f" x="184" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="200.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="220" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="236.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="256" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="272.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a f" x="292" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="308.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<text class="t" x="372" y="40" font-size="14" font-weight="700">row 2: b&#x27;s letter i</text>
+<rect class="a fa" x="148" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="164.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="m" x="145" y="81" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="109" y="109" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="a" x="109" y="81" width="39" height="31" rx="5" stroke-width="1.5"/>
+<text class="tm" x="372" y="64" font-size="11.5">the cell for si and ki:</text>
+<text class="t" x="372" y="88" font-size="12">above, plus 1</text>
+<text class="t mono" x="586" y="88" font-size="12.5" font-weight="600" text-anchor="end">3</text>
+<text class="t" x="372" y="108" font-size="12">left, plus 1</text>
+<text class="t mono" x="586" y="108" font-size="12.5" font-weight="600" text-anchor="end">3</text>
+<text class="ta" x="372" y="128" font-size="12">diagonal, plus 0 (i = i)</text>
+<text class="ta mono" x="586" y="128" font-size="12.5" font-weight="600" text-anchor="end">1</text>
+<line class="m" x1="372" y1="146" x2="586" y2="146" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="372" y="164" font-size="12" font-weight="600">the smallest</text>
+<text class="ta mono" x="586" y="164" font-size="12.5" font-weight="700" text-anchor="end">1</text>
+<text class="tm" x="372" y="232" font-size="11">rows filled: 3 of 8</text>
+<text class="tm" x="372" y="250" font-size="11">rows kept in memory: 2</text>
+</g>
+<g class="step"><title>Row 3, for the letter t of sitting: it starts at 3 (3 deletions), and each other cell is the cheapest of three, from the row above and the cell to its left: 3 3 2 1 2 3 4.</title>
+<rect class="s f" x="76" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">0</text>
+<rect class="s f" x="112" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="112" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="112" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="148" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="184" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="220" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="256" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="292" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="a f" x="76" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="92.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="112" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="128.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="148" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="164.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="184" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="200.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="a f" x="220" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="236.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="256" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="272.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="292" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="308.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<text class="t" x="372" y="40" font-size="14" font-weight="700">row 3: b&#x27;s letter t</text>
+<rect class="a fa" x="184" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="200.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="m" x="181" y="109" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="145" y="137" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="a" x="145" y="109" width="39" height="31" rx="5" stroke-width="1.5"/>
+<text class="tm" x="372" y="64" font-size="11.5">the cell for sit and kit:</text>
+<text class="t" x="372" y="88" font-size="12">above, plus 1</text>
+<text class="t mono" x="586" y="88" font-size="12.5" font-weight="600" text-anchor="end">3</text>
+<text class="t" x="372" y="108" font-size="12">left, plus 1</text>
+<text class="t mono" x="586" y="108" font-size="12.5" font-weight="600" text-anchor="end">3</text>
+<text class="ta" x="372" y="128" font-size="12">diagonal, plus 0 (t = t)</text>
+<text class="ta mono" x="586" y="128" font-size="12.5" font-weight="600" text-anchor="end">1</text>
+<line class="m" x1="372" y1="146" x2="586" y2="146" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="372" y="164" font-size="12" font-weight="600">the smallest</text>
+<text class="ta mono" x="586" y="164" font-size="12.5" font-weight="700" text-anchor="end">1</text>
+<text class="tm" x="372" y="232" font-size="11">rows filled: 4 of 8</text>
+<text class="tm" x="372" y="250" font-size="11">rows kept in memory: 2</text>
+</g>
+<g class="step"><title>Row 4, for the letter t of sitting: it starts at 4 (4 deletions), and each other cell is the cheapest of three, from the row above and the cell to its left: 4 4 3 2 1 2 3.</title>
+<rect class="s f" x="76" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">0</text>
+<rect class="s f" x="112" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="112" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="112" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="148" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="184" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="220" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="256" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="292" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="76" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="112" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="148" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="220" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="256" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="292" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a f" x="76" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="92.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a f" x="112" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="128.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a f" x="148" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="164.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="184" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="200.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="220" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="236.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="a f" x="256" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="272.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="292" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="308.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<text class="t" x="372" y="40" font-size="14" font-weight="700">row 4: b&#x27;s letter t</text>
+<rect class="a fa" x="220" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="236.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="m" x="217" y="137" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="181" y="165" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="a" x="181" y="137" width="39" height="31" rx="5" stroke-width="1.5"/>
+<text class="tm" x="372" y="64" font-size="11.5">the cell for sitt and kitt:</text>
+<text class="t" x="372" y="88" font-size="12">above, plus 1</text>
+<text class="t mono" x="586" y="88" font-size="12.5" font-weight="600" text-anchor="end">3</text>
+<text class="t" x="372" y="108" font-size="12">left, plus 1</text>
+<text class="t mono" x="586" y="108" font-size="12.5" font-weight="600" text-anchor="end">3</text>
+<text class="ta" x="372" y="128" font-size="12">diagonal, plus 0 (t = t)</text>
+<text class="ta mono" x="586" y="128" font-size="12.5" font-weight="600" text-anchor="end">1</text>
+<line class="m" x1="372" y1="146" x2="586" y2="146" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="372" y="164" font-size="12" font-weight="600">the smallest</text>
+<text class="ta mono" x="586" y="164" font-size="12.5" font-weight="700" text-anchor="end">1</text>
+<text class="tm" x="372" y="232" font-size="11">rows filled: 5 of 8</text>
+<text class="tm" x="372" y="250" font-size="11">rows kept in memory: 2</text>
+</g>
+<g class="step"><title>Row 5, for the letter i of sitting: it starts at 5 (5 deletions), and each other cell is the cheapest of three, from the row above and the cell to its left: 5 5 4 3 2 2 3.</title>
+<rect class="s f" x="76" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">0</text>
+<rect class="s f" x="112" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="112" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="112" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="148" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="184" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="220" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="256" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="292" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="76" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="112" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="148" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="220" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="256" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="292" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="76" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="112" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="148" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="184" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="220" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="256" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="292" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="76" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="92.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="a f" x="112" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="128.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="a f" x="148" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="164.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a f" x="184" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="200.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="220" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="236.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="256" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="272.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="292" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="308.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<text class="t" x="372" y="40" font-size="14" font-weight="700">row 5: b&#x27;s letter i</text>
+<rect class="a fa" x="256" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="272.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="m" x="253" y="165" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="217" y="193" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="a" x="217" y="165" width="39" height="31" rx="5" stroke-width="1.5"/>
+<text class="tm" x="372" y="64" font-size="11.5">the cell for sitti and kitte:</text>
+<text class="t" x="372" y="88" font-size="12">above, plus 1</text>
+<text class="t mono" x="586" y="88" font-size="12.5" font-weight="600" text-anchor="end">3</text>
+<text class="t" x="372" y="108" font-size="12">left, plus 1</text>
+<text class="t mono" x="586" y="108" font-size="12.5" font-weight="600" text-anchor="end">3</text>
+<text class="ta" x="372" y="128" font-size="12">diagonal, plus 1 (e vs i)</text>
+<text class="ta mono" x="586" y="128" font-size="12.5" font-weight="600" text-anchor="end">2</text>
+<line class="m" x1="372" y1="146" x2="586" y2="146" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="372" y="164" font-size="12" font-weight="600">the smallest</text>
+<text class="ta mono" x="586" y="164" font-size="12.5" font-weight="700" text-anchor="end">2</text>
+<text class="tm" x="372" y="232" font-size="11">rows filled: 6 of 8</text>
+<text class="tm" x="372" y="250" font-size="11">rows kept in memory: 2</text>
+</g>
+<g class="step"><title>Row 6, for the letter n of sitting: it starts at 6 (6 deletions), and each other cell is the cheapest of three, from the row above and the cell to its left: 6 6 5 4 3 3 2.</title>
+<rect class="s f" x="76" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">0</text>
+<rect class="s f" x="112" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="112" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="112" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="148" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="184" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="220" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="256" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="292" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="76" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="112" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="148" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="220" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="256" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="292" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="76" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="112" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="148" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="184" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="220" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="256" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="292" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="76" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="112" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="148" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="184" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="256" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="292" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="76" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="92.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="a f" x="112" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="128.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="a f" x="148" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="164.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="a f" x="184" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="200.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a f" x="220" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="236.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="256" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="272.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a f" x="292" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="308.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<text class="t" x="372" y="40" font-size="14" font-weight="700">row 6: b&#x27;s letter n</text>
+<rect class="a fa" x="292" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="308.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="m" x="289" y="193" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="253" y="221" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="a" x="253" y="193" width="39" height="31" rx="5" stroke-width="1.5"/>
+<text class="tm" x="372" y="64" font-size="11.5">the cell for sittin and kitten:</text>
+<text class="t" x="372" y="88" font-size="12">above, plus 1</text>
+<text class="t mono" x="586" y="88" font-size="12.5" font-weight="600" text-anchor="end">4</text>
+<text class="t" x="372" y="108" font-size="12">left, plus 1</text>
+<text class="t mono" x="586" y="108" font-size="12.5" font-weight="600" text-anchor="end">4</text>
+<text class="ta" x="372" y="128" font-size="12">diagonal, plus 0 (n = n)</text>
+<text class="ta mono" x="586" y="128" font-size="12.5" font-weight="600" text-anchor="end">2</text>
+<line class="m" x1="372" y1="146" x2="586" y2="146" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="372" y="164" font-size="12" font-weight="600">the smallest</text>
+<text class="ta mono" x="586" y="164" font-size="12.5" font-weight="700" text-anchor="end">2</text>
+<text class="tm" x="372" y="232" font-size="11">rows filled: 7 of 8</text>
+<text class="tm" x="372" y="250" font-size="11">rows kept in memory: 2</text>
+</g>
+<g class="step"><title>Row 7, for the letter g of sitting: it starts at 7 (7 deletions), and each other cell is the cheapest of three, from the row above and the cell to its left: 7 7 6 5 4 4 3.</title>
+<rect class="s f" x="76" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">0</text>
+<rect class="s f" x="112" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="112" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="112" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="148" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="184" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="220" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="256" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="292" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="76" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="112" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="148" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="220" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="256" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="292" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="76" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="112" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="148" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="184" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="220" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="256" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="292" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="76" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="112" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="148" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="184" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="256" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="292" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="76" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="112" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="148" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="184" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="220" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="256" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="292" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a f" x="76" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="92.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">7</text>
+<rect class="a f" x="112" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="128.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">7</text>
+<rect class="a f" x="148" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="164.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="a f" x="184" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="200.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="a f" x="220" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="236.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a f" x="256" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="272.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a f" x="292" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="308.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<text class="t" x="372" y="40" font-size="14" font-weight="700">row 7: b&#x27;s letter g</text>
+<rect class="a fa" x="292" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="308.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a" x="289" y="221" width="39" height="31" rx="5" stroke-width="1.5"/>
+<rect class="m" x="253" y="249" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="253" y="221" width="39" height="31" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="372" y="64" font-size="11.5">the cell for sitting and kitten:</text>
+<text class="ta" x="372" y="88" font-size="12">above, plus 1</text>
+<text class="ta mono" x="586" y="88" font-size="12.5" font-weight="600" text-anchor="end">3</text>
+<text class="t" x="372" y="108" font-size="12">left, plus 1</text>
+<text class="t mono" x="586" y="108" font-size="12.5" font-weight="600" text-anchor="end">5</text>
+<text class="t" x="372" y="128" font-size="12">diagonal, plus 1 (n vs g)</text>
+<text class="t mono" x="586" y="128" font-size="12.5" font-weight="600" text-anchor="end">4</text>
+<line class="m" x1="372" y1="146" x2="586" y2="146" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="372" y="164" font-size="12" font-weight="600">the smallest</text>
+<text class="ta mono" x="586" y="164" font-size="12.5" font-weight="700" text-anchor="end">3</text>
+<text class="tm" x="372" y="232" font-size="11">rows filled: 8 of 8</text>
+<text class="tm" x="372" y="250" font-size="11">rows kept in memory: 2</text>
+</g>
+<g class="step"><title>The last cell is the distance: 3. Back from it, the cheapest way: k to s, e to i, and a g on the end.</title>
+<rect class="a af" x="76" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="92.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">0</text>
+<rect class="s f" x="112" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="56" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="73" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="a af" x="112" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="128.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="148" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="184" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="292" y="84" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="101" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="76" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="112" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a af" x="148" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="164.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="184" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="220" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="256" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="292" y="112" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="129" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="76" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="112" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="148" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a af" x="184" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="200.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="220" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="256" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="292" y="140" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="157" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="76" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="112" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="148" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="184" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a af" x="220" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="236.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="256" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="292" y="168" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="185" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="76" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="112" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="148" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="184" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="220" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="a af" x="256" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="272.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="292" y="196" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="308.5" y="213" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="76" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="112" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="148" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="184" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="220" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="s f" x="256" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<rect class="a af" x="292" y="224" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="308.5" y="241" font-size="12.5" font-weight="600" text-anchor="middle">2</text>
+<rect class="s f" x="76" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">7</text>
+<rect class="s f" x="112" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="128.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">7</text>
+<rect class="s f" x="148" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="164.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">6</text>
+<rect class="s f" x="184" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="200.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">5</text>
+<rect class="s f" x="220" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="236.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="s f" x="256" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a fa" x="292" y="252" width="33" height="25" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="308.5" y="269" font-size="12.5" font-weight="600" text-anchor="middle">3</text>
+<text class="t" x="372" y="40" font-size="14" font-weight="700">the answer</text>
+<text class="ta mono" x="372" y="64" font-size="12.5" font-weight="600">distance(kitten, sitting) = 3</text>
+<text class="t" x="372" y="92" font-size="12">k to s: replace</text>
+<text class="t" x="372" y="112" font-size="12">e to i: replace</text>
+<text class="t" x="372" y="132" font-size="12">g on the end: insert</text>
+<text class="tm" x="372" y="164" font-size="11">each step of the path is one edit,</text>
+<text class="tm" x="372" y="180" font-size="11">or a letter kept (diagonal, +0)</text>
+<text class="tm" x="372" y="232" font-size="11">rows filled: 8 of 8</text>
+<text class="tm" x="372" y="250" font-size="11">rows kept in memory: 2</text>
+</g>
+<text class="tm" x="24" y="316" font-size="11">Each cell: the distance between the first i letters of b and the first j letters of a.</text>
+</svg>

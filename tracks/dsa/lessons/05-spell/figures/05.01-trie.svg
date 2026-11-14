@@ -1,0 +1,476 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 372" fill="none">
+<title>A trie built from car cart cat dog by spell, then a word checked and a prefix completed</title>
+<defs><marker id="f0501a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0501a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0501a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="322" y1="20" x2="322" y2="330" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="32" cy="356" r="8" stroke-width="1.5"/>
+<text class="tm" x="46" y="360" font-size="11">a node, numbered in the order made</text>
+<circle class="s f" cx="262" cy="356" r="8" stroke-width="1.5"/>
+<circle class="s" cx="262" cy="356" r="11" stroke-width="1.5"/>
+<text class="tm" x="280" y="360" font-size="11">a word ends here</text>
+<circle class="a fa" cx="408" cy="356" r="8" stroke-width="1.5"/>
+<text class="tm" x="422" y="360" font-size="11">where this step ends</text>
+<g class="step"><title>Adding "car": the root has no child for c, so node 1 is made.</title>
+<line class="a" x1="184.07" y1="70.75" x2="130.93" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="146.5" y="96" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<circle class="a f" cx="195" cy="62" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="66" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<circle class="a fa" cx="120" cy="122" r="14" stroke-width="1.5"/>
+<text class="f mono" x="120" y="126" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<text class="tm" x="340" y="40" font-size="11.5">reading the dictionary</text>
+<text class="t mono" x="340" y="64" font-size="15" font-weight="700">add &quot;car&quot;</text>
+<rect class="a fa" x="340" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="350.5" y="98" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<rect class="m f" x="364" y="80" width="21" height="26" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="374.5" y="98" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<rect class="m f" x="388" y="80" width="21" height="26" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="398.5" y="98" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<text class="tm" x="340" y="136" font-size="11">DS_TRACE=1 printed</text>
+<text class="t mono" x="340" y="156" font-size="11.5">add &quot;car&quot;: c -&gt; 1 new</text>
+</g>
+<g class="step"><title>Adding "car": the root has no child for a, so node 2 is made.</title>
+<line class="a" x1="184.07" y1="70.75" x2="130.93" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="146.5" y="96" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<line class="a" x1="120" y1="136" x2="120" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="131" y="156" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<circle class="a f" cx="195" cy="62" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="66" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<circle class="a f" cx="120" cy="122" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="126" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<circle class="a fa" cx="120" cy="182" r="14" stroke-width="1.5"/>
+<text class="f mono" x="120" y="186" font-size="11" font-weight="600" text-anchor="middle">2</text>
+<text class="tm" x="340" y="40" font-size="11.5">reading the dictionary</text>
+<text class="t mono" x="340" y="64" font-size="15" font-weight="700">add &quot;car&quot;</text>
+<rect class="a af" x="340" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="350.5" y="98" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<rect class="a fa" x="364" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="374.5" y="98" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<rect class="m f" x="388" y="80" width="21" height="26" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="398.5" y="98" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<text class="tm" x="340" y="136" font-size="11">DS_TRACE=1 printed</text>
+<text class="t mono" x="340" y="156" font-size="11.5">add &quot;car&quot;: a -&gt; 2 new</text>
+</g>
+<g class="step"><title>Adding "car": the root has no child for r, so node 3 is made; "car" ends here, so node 3 is marked as a word.</title>
+<line class="a" x1="184.07" y1="70.75" x2="130.93" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="146.5" y="96" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<line class="a" x1="120" y1="136" x2="120" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="131" y="156" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<line class="a" x1="111.04" y1="192.76" x2="81.52" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="84" y="216" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<circle class="a f" cx="195" cy="62" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="66" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<circle class="a f" cx="120" cy="122" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="126" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<circle class="a f" cx="120" cy="182" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="186" font-size="11" font-weight="600" text-anchor="middle">2</text>
+<circle class="a" cx="70.0" cy="242" r="18" stroke-width="1.5"/>
+<circle class="a fa" cx="70" cy="242" r="14" stroke-width="1.5"/>
+<text class="f mono" x="70" y="246" font-size="11" font-weight="600" text-anchor="middle">3</text>
+<text class="tm" x="340" y="40" font-size="11.5">reading the dictionary</text>
+<text class="t mono" x="340" y="64" font-size="15" font-weight="700">add &quot;car&quot;</text>
+<rect class="a af" x="340" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="350.5" y="98" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<rect class="a af" x="364" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="374.5" y="98" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<rect class="a fa" x="388" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="398.5" y="98" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<text class="tm" x="340" y="136" font-size="11">DS_TRACE=1 printed</text>
+<text class="t mono" x="340" y="156" font-size="11.5">add &quot;car&quot;: r -&gt; 3 new, a word</text>
+</g>
+<g class="step"><title>Adding "cart": "car" is there already (nodes 1, 2, 3); node 4 is made, and node 4 is marked as a word.</title>
+<line class="a" x1="184.07" y1="70.75" x2="130.93" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="146.5" y="96" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<line class="a" x1="120" y1="136" x2="120" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="131" y="156" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<line class="a" x1="111.04" y1="192.76" x2="81.52" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="84" y="216" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<line class="a" x1="70" y1="256" x2="70" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="81" y="276" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<circle class="a f" cx="195" cy="62" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="66" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<circle class="a f" cx="120" cy="122" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="126" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<circle class="a f" cx="120" cy="182" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="186" font-size="11" font-weight="600" text-anchor="middle">2</text>
+<circle class="a" cx="70.0" cy="242" r="18" stroke-width="1.5"/>
+<circle class="a f" cx="70" cy="242" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="70" y="246" font-size="11" font-weight="600" text-anchor="middle">3</text>
+<circle class="a" cx="70" cy="302" r="18" stroke-width="1.5"/>
+<circle class="a fa" cx="70" cy="302" r="14" stroke-width="1.5"/>
+<text class="f mono" x="70" y="306" font-size="11" font-weight="600" text-anchor="middle">4</text>
+<text class="tm" x="340" y="40" font-size="11.5">reading the dictionary</text>
+<text class="t mono" x="340" y="64" font-size="15" font-weight="700">add &quot;cart&quot;</text>
+<rect class="a af" x="340" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="350.5" y="98" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<rect class="a af" x="364" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="374.5" y="98" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<rect class="a af" x="388" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="398.5" y="98" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<rect class="a fa" x="412" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="422.5" y="98" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<text class="tm" x="340" y="136" font-size="11">DS_TRACE=1 printed</text>
+<text class="t mono" x="340" y="156" font-size="11.5">add &quot;cart&quot;: c -&gt; 1</text>
+<text class="t mono" x="340" y="173" font-size="11.5">add &quot;cart&quot;: a -&gt; 2</text>
+<text class="t mono" x="340" y="190" font-size="11.5">add &quot;cart&quot;: r -&gt; 3</text>
+<text class="t mono" x="340" y="207" font-size="11.5">add &quot;cart&quot;: t -&gt; 4 new, a word</text>
+</g>
+<g class="step"><title>Adding "cat": "ca" is there already (nodes 1, 2); node 5 is made, and node 5 is marked as a word.</title>
+<line class="a" x1="184.07" y1="70.75" x2="130.93" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="146.5" y="96" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<line class="a" x1="120" y1="136" x2="120" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="131" y="156" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<line class="s" x1="111.04" y1="192.76" x2="81.52" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="84" y="216" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<line class="s" x1="70" y1="256" x2="70" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="81" y="276" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="a" x1="128.96" y1="192.76" x2="158.48" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="156" y="216" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<circle class="a f" cx="195" cy="62" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="66" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<circle class="a f" cx="120" cy="122" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="126" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<circle class="a f" cx="120" cy="182" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="186" font-size="11" font-weight="600" text-anchor="middle">2</text>
+<circle class="s" cx="70.0" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="70" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="70" y="246" font-size="11" font-weight="600" text-anchor="middle">3</text>
+<circle class="s" cx="70" cy="302" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="70" cy="302" r="14" stroke-width="1.5"/>
+<text class="t mono" x="70" y="306" font-size="11" font-weight="600" text-anchor="middle">4</text>
+<circle class="a" cx="170" cy="242" r="18" stroke-width="1.5"/>
+<circle class="a fa" cx="170" cy="242" r="14" stroke-width="1.5"/>
+<text class="f mono" x="170" y="246" font-size="11" font-weight="600" text-anchor="middle">5</text>
+<text class="tm" x="340" y="40" font-size="11.5">reading the dictionary</text>
+<text class="t mono" x="340" y="64" font-size="15" font-weight="700">add &quot;cat&quot;</text>
+<rect class="a af" x="340" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="350.5" y="98" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<rect class="a af" x="364" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="374.5" y="98" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<rect class="a fa" x="388" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="398.5" y="98" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<text class="tm" x="340" y="136" font-size="11">DS_TRACE=1 printed</text>
+<text class="t mono" x="340" y="156" font-size="11.5">add &quot;cat&quot;: c -&gt; 1</text>
+<text class="t mono" x="340" y="173" font-size="11.5">add &quot;cat&quot;: a -&gt; 2</text>
+<text class="t mono" x="340" y="190" font-size="11.5">add &quot;cat&quot;: t -&gt; 5 new, a word</text>
+</g>
+<g class="step"><title>Adding "dog": nothing is shared; nodes 6, 7, 8 are made, and node 8 is marked as a word.</title>
+<line class="s" x1="184.07" y1="70.75" x2="130.93" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="146.5" y="96" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<line class="s" x1="120" y1="136" x2="120" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="131" y="156" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<line class="s" x1="111.04" y1="192.76" x2="81.52" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="84" y="216" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<line class="s" x1="70" y1="256" x2="70" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="81" y="276" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="128.96" y1="192.76" x2="158.48" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="156" y="216" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="a" x1="205.93" y1="70.75" x2="259.07" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="243.5" y="96" font-size="13" font-weight="600" text-anchor="middle">d</text>
+<line class="a" x1="270" y1="136" x2="270" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="281" y="156" font-size="13" font-weight="600" text-anchor="middle">o</text>
+<line class="a" x1="270" y1="196" x2="270" y2="224" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="281" y="216" font-size="13" font-weight="600" text-anchor="middle">g</text>
+<circle class="a f" cx="195" cy="62" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="66" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<circle class="s f" cx="120" cy="122" r="14" stroke-width="1.5"/>
+<text class="t mono" x="120" y="126" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<circle class="s f" cx="120" cy="182" r="14" stroke-width="1.5"/>
+<text class="t mono" x="120" y="186" font-size="11" font-weight="600" text-anchor="middle">2</text>
+<circle class="s" cx="70.0" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="70" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="70" y="246" font-size="11" font-weight="600" text-anchor="middle">3</text>
+<circle class="s" cx="70" cy="302" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="70" cy="302" r="14" stroke-width="1.5"/>
+<text class="t mono" x="70" y="306" font-size="11" font-weight="600" text-anchor="middle">4</text>
+<circle class="s" cx="170" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="170" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="170" y="246" font-size="11" font-weight="600" text-anchor="middle">5</text>
+<circle class="a af" cx="270" cy="122" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="270" y="126" font-size="11" font-weight="600" text-anchor="middle">6</text>
+<circle class="a af" cx="270" cy="182" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="270" y="186" font-size="11" font-weight="600" text-anchor="middle">7</text>
+<circle class="a" cx="270" cy="242" r="18" stroke-width="1.5"/>
+<circle class="a fa" cx="270" cy="242" r="14" stroke-width="1.5"/>
+<text class="f mono" x="270" y="246" font-size="11" font-weight="600" text-anchor="middle">8</text>
+<text class="tm" x="340" y="40" font-size="11.5">reading the dictionary</text>
+<text class="t mono" x="340" y="64" font-size="15" font-weight="700">add &quot;dog&quot;</text>
+<rect class="a af" x="340" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="350.5" y="98" font-size="13" font-weight="600" text-anchor="middle">d</text>
+<rect class="a af" x="364" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="374.5" y="98" font-size="13" font-weight="600" text-anchor="middle">o</text>
+<rect class="a fa" x="388" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="398.5" y="98" font-size="13" font-weight="600" text-anchor="middle">g</text>
+<text class="tm" x="340" y="136" font-size="11">DS_TRACE=1 printed</text>
+<text class="t mono" x="340" y="156" font-size="11.5">add &quot;dog&quot;: d -&gt; 6 new</text>
+<text class="t mono" x="340" y="173" font-size="11.5">add &quot;dog&quot;: o -&gt; 7 new</text>
+<text class="t mono" x="340" y="190" font-size="11.5">add &quot;dog&quot;: g -&gt; 8 new, a word</text>
+</g>
+<g class="step"><title>Checking the text "cab": c and a lead to node 2, which has no child for b: "cab" is no word, and spell prints it.</title>
+<line class="a" x1="184.07" y1="70.75" x2="130.93" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="146.5" y="96" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<line class="a" x1="120" y1="136" x2="120" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="131" y="156" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<line class="s" x1="111.04" y1="192.76" x2="81.52" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="84" y="216" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<line class="s" x1="70" y1="256" x2="70" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="81" y="276" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="128.96" y1="192.76" x2="158.48" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="156" y="216" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="205.93" y1="70.75" x2="259.07" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="243.5" y="96" font-size="13" font-weight="600" text-anchor="middle">d</text>
+<line class="s" x1="270" y1="136" x2="270" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="281" y="156" font-size="13" font-weight="600" text-anchor="middle">o</text>
+<line class="s" x1="270" y1="196" x2="270" y2="224" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="281" y="216" font-size="13" font-weight="600" text-anchor="middle">g</text>
+<circle class="a f" cx="195" cy="62" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="66" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<circle class="a f" cx="120" cy="122" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="126" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<circle class="a fa" cx="120" cy="182" r="14" stroke-width="1.5"/>
+<text class="f mono" x="120" y="186" font-size="11" font-weight="600" text-anchor="middle">2</text>
+<circle class="s" cx="70.0" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="70" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="70" y="246" font-size="11" font-weight="600" text-anchor="middle">3</text>
+<circle class="s" cx="70" cy="302" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="70" cy="302" r="14" stroke-width="1.5"/>
+<text class="t mono" x="70" y="306" font-size="11" font-weight="600" text-anchor="middle">4</text>
+<circle class="s" cx="170" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="170" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="170" y="246" font-size="11" font-weight="600" text-anchor="middle">5</text>
+<circle class="s f" cx="270" cy="122" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="126" font-size="11" font-weight="600" text-anchor="middle">6</text>
+<circle class="s f" cx="270" cy="182" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="186" font-size="11" font-weight="600" text-anchor="middle">7</text>
+<circle class="s" cx="270" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="270" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="246" font-size="11" font-weight="600" text-anchor="middle">8</text>
+<line class="a" x1="120" y1="198" x2="120" y2="220" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="ta mono" x="120" y="236" font-size="12" font-weight="600" text-anchor="middle">b: none</text>
+<text class="tm" x="340" y="40" font-size="11.5">checking the text</text>
+<text class="t mono" x="340" y="64" font-size="15" font-weight="700">has &quot;cab&quot;</text>
+<rect class="a af" x="340" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="350.5" y="98" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<rect class="a af" x="364" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="374.5" y="98" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<rect class="a f" x="388" y="80" width="21" height="26" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="ta mono" x="398.5" y="98" font-size="13" font-weight="600" text-anchor="middle">b</text>
+<text class="tm" x="340" y="136" font-size="11">DS_TRACE=1 printed</text>
+<text class="t mono" x="340" y="156" font-size="11.5">has &quot;cab&quot;: c -&gt; 1</text>
+<text class="t mono" x="340" y="173" font-size="11.5">has &quot;cab&quot;: a -&gt; 2</text>
+<text class="t mono" x="340" y="190" font-size="11.5">has &quot;cab&quot;: b -&gt; none</text>
+<text class="t mono" x="340" y="207" font-size="11.5">has &quot;cab&quot;: no</text>
+<text class="tm" x="340" y="248" font-size="11">spell printed</text>
+<text class="ta mono" x="340" y="270" font-size="13" font-weight="600">cab</text>
+</g>
+<g class="step"><title>-p ca: the walk down the prefix ends at node 2. Every word that starts with "ca" is below it, and nothing else is.</title>
+<line class="a" x1="184.07" y1="70.75" x2="130.93" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="146.5" y="96" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<line class="a" x1="120" y1="136" x2="120" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="131" y="156" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<line class="s" x1="111.04" y1="192.76" x2="81.52" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="84" y="216" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<line class="s" x1="70" y1="256" x2="70" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="81" y="276" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="128.96" y1="192.76" x2="158.48" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="156" y="216" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="205.93" y1="70.75" x2="259.07" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="243.5" y="96" font-size="13" font-weight="600" text-anchor="middle">d</text>
+<line class="s" x1="270" y1="136" x2="270" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="281" y="156" font-size="13" font-weight="600" text-anchor="middle">o</text>
+<line class="s" x1="270" y1="196" x2="270" y2="224" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="281" y="216" font-size="13" font-weight="600" text-anchor="middle">g</text>
+<circle class="a f" cx="195" cy="62" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="66" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<circle class="a f" cx="120" cy="122" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="126" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<circle class="a fa" cx="120" cy="182" r="14" stroke-width="1.5"/>
+<text class="f mono" x="120" y="186" font-size="11" font-weight="600" text-anchor="middle">2</text>
+<circle class="s" cx="70.0" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="70" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="70" y="246" font-size="11" font-weight="600" text-anchor="middle">3</text>
+<circle class="s" cx="70" cy="302" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="70" cy="302" r="14" stroke-width="1.5"/>
+<text class="t mono" x="70" y="306" font-size="11" font-weight="600" text-anchor="middle">4</text>
+<circle class="s" cx="170" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="170" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="170" y="246" font-size="11" font-weight="600" text-anchor="middle">5</text>
+<circle class="s f" cx="270" cy="122" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="126" font-size="11" font-weight="600" text-anchor="middle">6</text>
+<circle class="s f" cx="270" cy="182" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="186" font-size="11" font-weight="600" text-anchor="middle">7</text>
+<circle class="s" cx="270" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="270" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="246" font-size="11" font-weight="600" text-anchor="middle">8</text>
+<text class="tm" x="340" y="40" font-size="11.5">completing -p ca</text>
+<text class="t mono" x="340" y="64" font-size="15" font-weight="700">find &quot;ca&quot;</text>
+<rect class="a af" x="340" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="350.5" y="98" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<rect class="a af" x="364" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="374.5" y="98" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<text class="tm" x="340" y="136" font-size="11">DS_TRACE=1 printed</text>
+<text class="t mono" x="340" y="156" font-size="11.5">find &quot;ca&quot;: c -&gt; 1</text>
+<text class="t mono" x="340" y="173" font-size="11.5">find &quot;ca&quot;: a -&gt; 2</text>
+<text class="tm" x="340" y="248" font-size="11">spell printed</text>
+<text class="tm" x="340" y="270" font-size="12">nothing yet</text>
+</g>
+<g class="step"><title>Below node 2, children are taken from a to z: node 3 is "car", a word, printed in its turn.</title>
+<line class="a" x1="184.07" y1="70.75" x2="130.93" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="146.5" y="96" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<line class="a" x1="120" y1="136" x2="120" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="131" y="156" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<line class="a" x1="111.04" y1="192.76" x2="81.52" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="84" y="216" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<line class="s" x1="70" y1="256" x2="70" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="81" y="276" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="128.96" y1="192.76" x2="158.48" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="156" y="216" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="205.93" y1="70.75" x2="259.07" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="243.5" y="96" font-size="13" font-weight="600" text-anchor="middle">d</text>
+<line class="s" x1="270" y1="136" x2="270" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="281" y="156" font-size="13" font-weight="600" text-anchor="middle">o</text>
+<line class="s" x1="270" y1="196" x2="270" y2="224" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="281" y="216" font-size="13" font-weight="600" text-anchor="middle">g</text>
+<circle class="a f" cx="195" cy="62" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="66" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<circle class="a f" cx="120" cy="122" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="126" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<circle class="a f" cx="120" cy="182" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="186" font-size="11" font-weight="600" text-anchor="middle">2</text>
+<circle class="a" cx="70.0" cy="242" r="18" stroke-width="1.5"/>
+<circle class="a fa" cx="70" cy="242" r="14" stroke-width="1.5"/>
+<text class="f mono" x="70" y="246" font-size="11" font-weight="600" text-anchor="middle">3</text>
+<circle class="s" cx="70" cy="302" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="70" cy="302" r="14" stroke-width="1.5"/>
+<text class="t mono" x="70" y="306" font-size="11" font-weight="600" text-anchor="middle">4</text>
+<circle class="s" cx="170" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="170" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="170" y="246" font-size="11" font-weight="600" text-anchor="middle">5</text>
+<circle class="s f" cx="270" cy="122" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="126" font-size="11" font-weight="600" text-anchor="middle">6</text>
+<circle class="s f" cx="270" cy="182" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="186" font-size="11" font-weight="600" text-anchor="middle">7</text>
+<circle class="s" cx="270" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="270" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="246" font-size="11" font-weight="600" text-anchor="middle">8</text>
+<text class="tm" x="340" y="40" font-size="11.5">completing -p ca</text>
+<text class="t mono" x="340" y="64" font-size="15" font-weight="700">each &quot;car&quot;</text>
+<rect class="a af" x="340" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="350.5" y="98" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<rect class="a af" x="364" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="374.5" y="98" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<rect class="a af" x="388" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="398.5" y="98" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<text class="tm" x="340" y="136" font-size="11">DS_TRACE=1 printed</text>
+<text class="t mono" x="340" y="156" font-size="11.5">each &quot;car&quot; -&gt; 3, a word</text>
+<text class="tm" x="340" y="248" font-size="11">spell printed</text>
+<text class="ta mono" x="340" y="270" font-size="13" font-weight="600">car</text>
+</g>
+<g class="step"><title>Below node 2, children are taken from a to z: node 4 is "cart", a word, printed in its turn.</title>
+<line class="a" x1="184.07" y1="70.75" x2="130.93" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="146.5" y="96" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<line class="a" x1="120" y1="136" x2="120" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="131" y="156" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<line class="a" x1="111.04" y1="192.76" x2="81.52" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="84" y="216" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<line class="a" x1="70" y1="256" x2="70" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="81" y="276" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="128.96" y1="192.76" x2="158.48" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="156" y="216" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="205.93" y1="70.75" x2="259.07" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="243.5" y="96" font-size="13" font-weight="600" text-anchor="middle">d</text>
+<line class="s" x1="270" y1="136" x2="270" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="281" y="156" font-size="13" font-weight="600" text-anchor="middle">o</text>
+<line class="s" x1="270" y1="196" x2="270" y2="224" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="281" y="216" font-size="13" font-weight="600" text-anchor="middle">g</text>
+<circle class="a f" cx="195" cy="62" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="66" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<circle class="a f" cx="120" cy="122" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="126" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<circle class="a f" cx="120" cy="182" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="186" font-size="11" font-weight="600" text-anchor="middle">2</text>
+<circle class="a" cx="70.0" cy="242" r="18" stroke-width="1.5"/>
+<circle class="a f" cx="70" cy="242" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="70" y="246" font-size="11" font-weight="600" text-anchor="middle">3</text>
+<circle class="a" cx="70" cy="302" r="18" stroke-width="1.5"/>
+<circle class="a fa" cx="70" cy="302" r="14" stroke-width="1.5"/>
+<text class="f mono" x="70" y="306" font-size="11" font-weight="600" text-anchor="middle">4</text>
+<circle class="s" cx="170" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="170" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="170" y="246" font-size="11" font-weight="600" text-anchor="middle">5</text>
+<circle class="s f" cx="270" cy="122" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="126" font-size="11" font-weight="600" text-anchor="middle">6</text>
+<circle class="s f" cx="270" cy="182" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="186" font-size="11" font-weight="600" text-anchor="middle">7</text>
+<circle class="s" cx="270" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="270" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="246" font-size="11" font-weight="600" text-anchor="middle">8</text>
+<text class="tm" x="340" y="40" font-size="11.5">completing -p ca</text>
+<text class="t mono" x="340" y="64" font-size="15" font-weight="700">each &quot;cart&quot;</text>
+<rect class="a af" x="340" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="350.5" y="98" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<rect class="a af" x="364" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="374.5" y="98" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<rect class="a af" x="388" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="398.5" y="98" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<rect class="a af" x="412" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="422.5" y="98" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<text class="tm" x="340" y="136" font-size="11">DS_TRACE=1 printed</text>
+<text class="t mono" x="340" y="156" font-size="11.5">each &quot;cart&quot; -&gt; 4, a word</text>
+<text class="tm" x="340" y="248" font-size="11">spell printed</text>
+<text class="ta mono" x="340" y="270" font-size="13" font-weight="600">car</text>
+<text class="ta mono" x="404" y="270" font-size="13" font-weight="600">cart</text>
+</g>
+<g class="step"><title>Below node 2, children are taken from a to z: node 5 is "cat", a word, printed in its turn.</title>
+<line class="a" x1="184.07" y1="70.75" x2="130.93" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="146.5" y="96" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<line class="a" x1="120" y1="136" x2="120" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="131" y="156" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<line class="s" x1="111.04" y1="192.76" x2="81.52" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="84" y="216" font-size="13" font-weight="600" text-anchor="middle">r</text>
+<line class="s" x1="70" y1="256" x2="70" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="81" y="276" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="a" x1="128.96" y1="192.76" x2="158.48" y2="228.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="156" y="216" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<line class="s" x1="205.93" y1="70.75" x2="259.07" y2="113.25" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="243.5" y="96" font-size="13" font-weight="600" text-anchor="middle">d</text>
+<line class="s" x1="270" y1="136" x2="270" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="281" y="156" font-size="13" font-weight="600" text-anchor="middle">o</text>
+<line class="s" x1="270" y1="196" x2="270" y2="224" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="281" y="216" font-size="13" font-weight="600" text-anchor="middle">g</text>
+<circle class="a f" cx="195" cy="62" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="66" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<circle class="a f" cx="120" cy="122" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="126" font-size="11" font-weight="600" text-anchor="middle">1</text>
+<circle class="a f" cx="120" cy="182" r="14" stroke-width="1.5"/>
+<text class="ta mono" x="120" y="186" font-size="11" font-weight="600" text-anchor="middle">2</text>
+<circle class="s" cx="70.0" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="70" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="70" y="246" font-size="11" font-weight="600" text-anchor="middle">3</text>
+<circle class="s" cx="70" cy="302" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="70" cy="302" r="14" stroke-width="1.5"/>
+<text class="t mono" x="70" y="306" font-size="11" font-weight="600" text-anchor="middle">4</text>
+<circle class="a" cx="170" cy="242" r="18" stroke-width="1.5"/>
+<circle class="a fa" cx="170" cy="242" r="14" stroke-width="1.5"/>
+<text class="f mono" x="170" y="246" font-size="11" font-weight="600" text-anchor="middle">5</text>
+<circle class="s f" cx="270" cy="122" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="126" font-size="11" font-weight="600" text-anchor="middle">6</text>
+<circle class="s f" cx="270" cy="182" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="186" font-size="11" font-weight="600" text-anchor="middle">7</text>
+<circle class="s" cx="270" cy="242" r="18" stroke-width="1.5"/>
+<circle class="s f" cx="270" cy="242" r="14" stroke-width="1.5"/>
+<text class="t mono" x="270" y="246" font-size="11" font-weight="600" text-anchor="middle">8</text>
+<text class="tm" x="340" y="40" font-size="11.5">completing -p ca</text>
+<text class="t mono" x="340" y="64" font-size="15" font-weight="700">each &quot;cat&quot;</text>
+<rect class="a af" x="340" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="350.5" y="98" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<rect class="a af" x="364" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="374.5" y="98" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<rect class="a af" x="388" y="80" width="21" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="398.5" y="98" font-size="13" font-weight="600" text-anchor="middle">t</text>
+<text class="tm" x="340" y="136" font-size="11">DS_TRACE=1 printed</text>
+<text class="t mono" x="340" y="156" font-size="11.5">each &quot;cat&quot; -&gt; 5, a word</text>
+<text class="tm" x="340" y="248" font-size="11">spell printed</text>
+<text class="ta mono" x="340" y="270" font-size="13" font-weight="600">car</text>
+<text class="ta mono" x="404" y="270" font-size="13" font-weight="600">cart</text>
+<text class="ta mono" x="468" y="270" font-size="13" font-weight="600">cat</text>
+</g>
+</svg>
