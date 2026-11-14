@@ -1,0 +1,487 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 372" fill="none">
+<title>A 29-byte gzip file from the system&#x27;s gzip, read by bin/gunzip a field at a time</title>
+<defs><marker id="f0902a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="22.75" y="22" font-size="11">the file, byte by byte (hex)</text>
+<path class="m" d="M22.75 58 L22.75 64 L225.25 64 L225.25 58" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm" x="124" y="80" font-size="11" text-anchor="middle">header</text>
+<path class="m" d="M227.75 58 L227.75 64 L450.75 64 L450.75 58" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm" x="339.25" y="80" font-size="11" text-anchor="middle">DEFLATE data</text>
+<path class="m" d="M453.25 58 L453.25 64 L614.75 64 L614.75 58" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm" x="534" y="80" font-size="11" text-anchor="middle">trailer</text>
+<text class="tm" x="47" y="98" font-size="11">the DEFLATE data, bit by bit in the order read: each byte from its lowest bit up</text>
+<text class="tm mono" x="48" y="115" font-size="9.5">cb</text>
+<text class="tm mono" x="184" y="115" font-size="9.5">48</text>
+<text class="tm mono" x="320" y="115" font-size="9.5">cd</text>
+<text class="tm mono" x="456" y="115" font-size="9.5">c9</text>
+<text class="tm mono" x="48" y="177" font-size="9.5">c9</text>
+<text class="tm mono" x="184" y="177" font-size="9.5">57</text>
+<text class="tm mono" x="320" y="177" font-size="9.5">c8</text>
+<text class="tm mono" x="456" y="177" font-size="9.5">40</text>
+<text class="tm mono" x="48" y="239" font-size="9.5">90</text>
+<text class="tm mono" x="184" y="239" font-size="9.5">5c</text>
+<text class="tm mono" x="320" y="239" font-size="9.5">00</text>
+<text class="tm" x="24" y="337" font-size="11">output so far</text>
+<g class="step"><title>The header, 10 bytes: 1f 8b says gzip, 08 says DEFLATE, flags 00 (no name, no comment), the time 0 (none given), 02 (the slowest level), 03 (Unix). The DEFLATE data starts at byte 10.</title>
+<rect class="a fa" x="22.75" y="34" width="202.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="28.6 34.9 49.1 55.4 69.7 75.8 90.2 96.3 110.7 116.8 131.2 137.3 151.7 157.8 172.2 178.3 192.7 198.8 213.2 219.3" y="49" font-size="10" font-weight="600" text-anchor="middle">1f8b0800000000000203</text>
+<rect class="m f" x="227.75" y="34" width="223" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="233.7 239.8 254.2 260.4 274.6 280.9 295.1 301.4 315.6 321.9 336.1 342.4 356.6 362.9 377.1 383.4 397.6 403.9 418.1 424.4 438.6 444.9" y="49" font-size="10" font-weight="600" text-anchor="middle">cb48cdc9c957c840905c00</text>
+<rect class="m f" x="453.25" y="34" width="161.5" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="459.1 465.4 479.6 485.9 500.1 506.4 520.6 526.9 541.1 547.4 561.6 567.9 582.1 588.4 602.6 608.9" y="49" font-size="10" font-weight="600" text-anchor="middle">3b7c8adf12000000</text>
+<rect class="m f" x="47" y="120" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">11010011</text>
+<rect class="m f" x="183" y="120" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">00010010</text>
+<rect class="m f" x="319" y="120" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10110011</text>
+<rect class="m f" x="455" y="120" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="m f" x="47" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="m f" x="183" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">11101010</text>
+<rect class="m f" x="319" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00010011</text>
+<rect class="m f" x="455" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00000010</text>
+<rect class="m f" x="47" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00001001</text>
+<rect class="m f" x="183" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00111010</text>
+<rect class="m f" x="319" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00000000</text>
+<text class="tm" x="110" y="337" font-size="11.5">nothing yet</text>
+</g>
+<g class="step"><title>The block's first 3 bits, read from the lowest bit of byte cb: 1, the last block; then 1, 0, which is the number 1, lowest bit first: a block in the fixed codes.</title>
+<rect class="s f" x="22.75" y="34" width="202.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="28.6 34.9 49.1 55.4 69.7 75.8 90.2 96.3 110.7 116.8 131.2 137.3 151.7 157.8 172.2 178.3 192.7 198.8 213.2 219.3" y="49" font-size="10" font-weight="600" text-anchor="middle">1f8b0800000000000203</text>
+<rect class="a fa" x="227.75" y="34" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="233.7 239.8" y="49" font-size="10" font-weight="600" text-anchor="middle">cb</text>
+<rect class="m f" x="248.25" y="34" width="202.5" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="254.2 260.4 274.6 280.9 295.1 301.4 315.6 321.9 336.1 342.4 356.6 362.9 377.1 383.4 397.6 403.9 418.1 424.4 438.6 444.9" y="49" font-size="10" font-weight="600" text-anchor="middle">48cdc9c957c840905c00</text>
+<rect class="m f" x="453.25" y="34" width="161.5" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="459.1 465.4 479.6 485.9 500.1 506.4 520.6 526.9 541.1 547.4 561.6 567.9 582.1 588.4 602.6 608.9" y="49" font-size="10" font-weight="600" text-anchor="middle">3b7c8adf12000000</text>
+<rect class="a fa" x="47" y="120" width="51" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="55.5 72.5 89.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">110</text>
+<rect class="m f" x="98" y="120" width="85" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="106.5 123.5 140.5 157.5 174.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10011</text>
+<rect class="m f" x="183" y="120" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">00010010</text>
+<rect class="m f" x="319" y="120" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10110011</text>
+<rect class="m f" x="455" y="120" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="m f" x="47" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="m f" x="183" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">11101010</text>
+<rect class="m f" x="319" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00010011</text>
+<rect class="m f" x="455" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00000010</text>
+<rect class="m f" x="47" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00001001</text>
+<rect class="m f" x="183" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00111010</text>
+<rect class="m f" x="319" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00000000</text>
+<path class="a" d="M48 142 L48 148 L97 148 L97 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="72.5" y="162" font-size="10.5" font-weight="600" text-anchor="middle">3 bits</text>
+<text class="tm" x="110" y="337" font-size="11.5">nothing yet</text>
+</g>
+<g class="step"><title>The next bits, 10011000, are the fixed code of 104, 'h': a literal byte. A code is read a bit at a time until the bits so far are a code (8 here).</title>
+<rect class="s f" x="22.75" y="34" width="202.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="28.6 34.9 49.1 55.4 69.7 75.8 90.2 96.3 110.7 116.8 131.2 137.3 151.7 157.8 172.2 178.3 192.7 198.8 213.2 219.3" y="49" font-size="10" font-weight="600" text-anchor="middle">1f8b0800000000000203</text>
+<rect class="a fa" x="227.75" y="34" width="38.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="233.7 239.8 254.2 260.4" y="49" font-size="10" font-weight="600" text-anchor="middle">cb48</text>
+<rect class="m f" x="268.75" y="34" width="182" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="274.6 280.9 295.1 301.4 315.6 321.9 336.1 342.4 356.6 362.9 377.1 383.4 397.6 403.9 418.1 424.4 438.6 444.9" y="49" font-size="10" font-weight="600" text-anchor="middle">cdc9c957c840905c00</text>
+<rect class="m f" x="453.25" y="34" width="161.5" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="459.1 465.4 479.6 485.9 500.1 506.4 520.6 526.9 541.1 547.4 561.6 567.9 582.1 588.4 602.6 608.9" y="49" font-size="10" font-weight="600" text-anchor="middle">3b7c8adf12000000</text>
+<rect class="s f" x="47" y="120" width="51" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">110</text>
+<rect class="a fa" x="98" y="120" width="85" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="106.5 123.5 140.5 157.5 174.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10011</text>
+<rect class="a fa" x="183" y="120" width="51" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="191.5 208.5 225.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">000</text>
+<rect class="m f" x="234" y="120" width="85" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="242.5 259.5 276.5 293.5 310.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10010</text>
+<rect class="m f" x="319" y="120" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10110011</text>
+<rect class="m f" x="455" y="120" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="m f" x="47" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="m f" x="183" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">11101010</text>
+<rect class="m f" x="319" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00010011</text>
+<rect class="m f" x="455" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00000010</text>
+<rect class="m f" x="47" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00001001</text>
+<rect class="m f" x="183" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00111010</text>
+<rect class="m f" x="319" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00000000</text>
+<path class="m" d="M48 142 L48 148 L97 148 L97 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="72.5" y="162" font-size="10.5" text-anchor="middle">3 bits</text>
+<path class="a" d="M99 142 L99 148 L233 148 L233 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="166" y="162" font-size="10.5" font-weight="600" text-anchor="middle">h</text>
+<rect class="a af" x="110" y="320" width="20" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="120.0" y="337" font-size="12" font-weight="600" text-anchor="middle">h</text>
+</g>
+<g class="step"><title>The next bits, 10010101, are the fixed code of 101, 'e': a literal byte. A code is read a bit at a time until the bits so far are a code (8 here).</title>
+<rect class="s f" x="22.75" y="34" width="202.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="28.6 34.9 49.1 55.4 69.7 75.8 90.2 96.3 110.7 116.8 131.2 137.3 151.7 157.8 172.2 178.3 192.7 198.8 213.2 219.3" y="49" font-size="10" font-weight="600" text-anchor="middle">1f8b0800000000000203</text>
+<rect class="s f" x="227.75" y="34" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.7 239.8" y="49" font-size="10" font-weight="600" text-anchor="middle">cb</text>
+<rect class="a fa" x="248.25" y="34" width="38.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="254.2 260.4 274.6 280.9" y="49" font-size="10" font-weight="600" text-anchor="middle">48cd</text>
+<rect class="m f" x="289.25" y="34" width="161.5" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="295.1 301.4 315.6 321.9 336.1 342.4 356.6 362.9 377.1 383.4 397.6 403.9 418.1 424.4 438.6 444.9" y="49" font-size="10" font-weight="600" text-anchor="middle">c9c957c840905c00</text>
+<rect class="m f" x="453.25" y="34" width="161.5" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="459.1 465.4 479.6 485.9 500.1 506.4 520.6 526.9 541.1 547.4 561.6 567.9 582.1 588.4 602.6 608.9" y="49" font-size="10" font-weight="600" text-anchor="middle">3b7c8adf12000000</text>
+<rect class="s f" x="47" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">11010011</text>
+<rect class="s f" x="183" y="120" width="51" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">000</text>
+<rect class="a fa" x="234" y="120" width="85" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="242.5 259.5 276.5 293.5 310.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10010</text>
+<rect class="a fa" x="319" y="120" width="51" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="327.5 344.5 361.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">101</text>
+<rect class="m f" x="370" y="120" width="85" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="378.5 395.5 412.5 429.5 446.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10011</text>
+<rect class="m f" x="455" y="120" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="m f" x="47" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="m f" x="183" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">11101010</text>
+<rect class="m f" x="319" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00010011</text>
+<rect class="m f" x="455" y="182" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00000010</text>
+<rect class="m f" x="47" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00001001</text>
+<rect class="m f" x="183" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00111010</text>
+<rect class="m f" x="319" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00000000</text>
+<path class="m" d="M48 142 L48 148 L97 148 L97 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="72.5" y="162" font-size="10.5" text-anchor="middle">3 bits</text>
+<path class="m" d="M99 142 L99 148 L233 148 L233 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="166" y="162" font-size="10.5" text-anchor="middle">h</text>
+<path class="a" d="M235 142 L235 148 L369 148 L369 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="302" y="162" font-size="10.5" font-weight="600" text-anchor="middle">e</text>
+<rect class="s f" x="110" y="320" width="20" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="120.0" y="337" font-size="12" font-weight="600" text-anchor="middle">h</text>
+<rect class="a af" x="132" y="320" width="20" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="142.0" y="337" font-size="12" font-weight="600" text-anchor="middle">e</text>
+</g>
+<g class="step"><title>5 more literals, 8 bits each: 'l' 'l' 'o' 'space' 'h'. 7 bytes out so far.</title>
+<rect class="s f" x="22.75" y="34" width="202.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="28.6 34.9 49.1 55.4 69.7 75.8 90.2 96.3 110.7 116.8 131.2 137.3 151.7 157.8 172.2 178.3 192.7 198.8 213.2 219.3" y="49" font-size="10" font-weight="600" text-anchor="middle">1f8b0800000000000203</text>
+<rect class="s f" x="227.75" y="34" width="38.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.7 239.8 254.2 260.4" y="49" font-size="10" font-weight="600" text-anchor="middle">cb48</text>
+<rect class="a fa" x="268.75" y="34" width="120.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="274.6 280.9 295.1 301.4 315.6 321.9 336.1 342.4 356.6 362.9 377.1 383.4" y="49" font-size="10" font-weight="600" text-anchor="middle">cdc9c957c840</text>
+<rect class="m f" x="391.75" y="34" width="59" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="397.6 403.9 418.1 424.4 438.6 444.9" y="49" font-size="10" font-weight="600" text-anchor="middle">905c00</text>
+<rect class="m f" x="453.25" y="34" width="161.5" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="459.1 465.4 479.6 485.9 500.1 506.4 520.6 526.9 541.1 547.4 561.6 567.9 582.1 588.4 602.6 608.9" y="49" font-size="10" font-weight="600" text-anchor="middle">3b7c8adf12000000</text>
+<rect class="s f" x="47" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">11010011</text>
+<rect class="s f" x="183" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">00010010</text>
+<rect class="s f" x="319" y="120" width="51" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="327.5 344.5 361.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">101</text>
+<rect class="a fa" x="370" y="120" width="85" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="378.5 395.5 412.5 429.5 446.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10011</text>
+<rect class="a fa" x="455" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="a fa" x="47" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="a fa" x="183" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">11101010</text>
+<rect class="a fa" x="319" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00010011</text>
+<rect class="a fa" x="455" y="182" width="51" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="463.5 480.5 497.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">000</text>
+<rect class="m f" x="506" y="182" width="85" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="514.5 531.5 548.5 565.5 582.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00010</text>
+<rect class="m f" x="47" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00001001</text>
+<rect class="m f" x="183" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00111010</text>
+<rect class="m f" x="319" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00000000</text>
+<path class="m" d="M48 142 L48 148 L97 148 L97 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="72.5" y="162" font-size="10.5" text-anchor="middle">3 bits</text>
+<path class="m" d="M99 142 L99 148 L233 148 L233 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="166" y="162" font-size="10.5" text-anchor="middle">h</text>
+<path class="m" d="M235 142 L235 148 L369 148 L369 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="302" y="162" font-size="10.5" text-anchor="middle">e</text>
+<path class="a" d="M371 142 L371 148 L505 148 L505 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="438" y="162" font-size="10.5" font-weight="600" text-anchor="middle">l</text>
+<path class="a" d="M507 142 L507 148 L590 148 L590 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="548.5" y="162" font-size="10.5" font-weight="600" text-anchor="middle">l</text>
+<path class="a" d="M99 204 L99 210 L233 210 L233 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="166" y="224" font-size="10.5" font-weight="600" text-anchor="middle">o</text>
+<path class="a" d="M235 204 L235 210 L369 210 L369 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="302" y="224" font-size="10.5" font-weight="600" text-anchor="middle">space</text>
+<path class="a" d="M371 204 L371 210 L505 210 L505 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="438" y="224" font-size="10.5" font-weight="600" text-anchor="middle">h</text>
+<rect class="s f" x="110" y="320" width="42" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="120.0 142.0" y="337" font-size="12" font-weight="600" text-anchor="middle">he</text>
+<rect class="a af" x="154" y="320" width="108" height="24" rx="3" stroke-width="1.5"/>
+<line class="a" x1="226" y1="337" x2="234" y2="337" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="164.0 186.0 208.0 252.0" y="337" font-size="12" font-weight="600" text-anchor="middle">lloh</text>
+</g>
+<g class="step"><title>0001000 is symbol 264: a match of length 10. Then a distance: code 4 (00100) and 1 extra bit, 6 back. 10 bytes from 6 back: the copy overlaps the bytes it writes, so it goes a byte at a time.</title>
+<rect class="s f" x="22.75" y="34" width="202.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="28.6 34.9 49.1 55.4 69.7 75.8 90.2 96.3 110.7 116.8 131.2 137.3 151.7 157.8 172.2 178.3 192.7 198.8 213.2 219.3" y="49" font-size="10" font-weight="600" text-anchor="middle">1f8b0800000000000203</text>
+<rect class="s f" x="227.75" y="34" width="141" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.7 239.8 254.2 260.4 274.6 280.9 295.1 301.4 315.6 321.9 336.1 342.4 356.6 362.9" y="49" font-size="10" font-weight="600" text-anchor="middle">cb48cdc9c957c8</text>
+<rect class="a fa" x="371.25" y="34" width="38.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="377.1 383.4 397.6 403.9" y="49" font-size="10" font-weight="600" text-anchor="middle">4090</text>
+<rect class="m f" x="412.25" y="34" width="38.5" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="418.1 424.4 438.6 444.9" y="49" font-size="10" font-weight="600" text-anchor="middle">5c00</text>
+<rect class="m f" x="453.25" y="34" width="161.5" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="459.1 465.4 479.6 485.9 500.1 506.4 520.6 526.9 541.1 547.4 561.6 567.9 582.1 588.4 602.6 608.9" y="49" font-size="10" font-weight="600" text-anchor="middle">3b7c8adf12000000</text>
+<rect class="s f" x="47" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">11010011</text>
+<rect class="s f" x="183" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">00010010</text>
+<rect class="s f" x="319" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10110011</text>
+<rect class="s f" x="455" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="s f" x="47" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="s f" x="183" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">11101010</text>
+<rect class="s f" x="319" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00010011</text>
+<rect class="s f" x="455" y="182" width="51" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="463.5 480.5 497.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">000</text>
+<rect class="a fa" x="506" y="182" width="85" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="514.5 531.5 548.5 565.5 582.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00010</text>
+<rect class="a fa" x="47" y="244" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00001001</text>
+<rect class="m f" x="183" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00111010</text>
+<rect class="m f" x="319" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00000000</text>
+<path class="m" d="M48 142 L48 148 L97 148 L97 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="72.5" y="162" font-size="10.5" text-anchor="middle">3 bits</text>
+<path class="m" d="M99 142 L99 148 L233 148 L233 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="166" y="162" font-size="10.5" text-anchor="middle">h</text>
+<path class="m" d="M235 142 L235 148 L369 148 L369 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="302" y="162" font-size="10.5" text-anchor="middle">e</text>
+<path class="m" d="M371 142 L371 148 L505 148 L505 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="438" y="162" font-size="10.5" text-anchor="middle">l</text>
+<path class="m" d="M507 142 L507 148 L590 148 L590 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="548.5" y="162" font-size="10.5" text-anchor="middle">l</text>
+<path class="m" d="M99 204 L99 210 L233 210 L233 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="166" y="224" font-size="10.5" text-anchor="middle">o</text>
+<path class="m" d="M235 204 L235 210 L369 210 L369 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="302" y="224" font-size="10.5" text-anchor="middle">space</text>
+<path class="m" d="M371 204 L371 210 L505 210 L505 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="438" y="224" font-size="10.5" text-anchor="middle">h</text>
+<path class="a" d="M507 204 L507 210 L590 210 L590 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="548.5" y="224" font-size="10.5" font-weight="600" text-anchor="middle">len 10</text>
+<path class="a" d="M82 266 L82 272 L182 272 L182 266" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="132" y="286" font-size="10.5" font-weight="600" text-anchor="middle">dist 6</text>
+<rect class="s f" x="110" y="320" width="152" height="24" rx="3" stroke-width="1.5"/>
+<line class="m" x1="226" y1="337" x2="234" y2="337" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="120.0 142.0 164.0 186.0 208.0 252.0" y="337" font-size="12" font-weight="600" text-anchor="middle">helloh</text>
+<rect class="a af" x="264" y="320" width="218" height="24" rx="3" stroke-width="1.5"/>
+<line class="a" x1="358" y1="337" x2="366" y2="337" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="274.0 296.0 318.0 340.0 384.0 406.0 428.0 450.0 472.0" y="337" font-size="12" font-weight="600" text-anchor="middle">ellohello</text>
+<text class="t" x="24" y="306" font-size="11.5">match: length 10, distance 6</text>
+</g>
+<g class="step"><title>The next bits, 00111010, are the fixed code of 10, '\n': a literal byte. A code is read a bit at a time until the bits so far are a code (8 here).</title>
+<rect class="s f" x="22.75" y="34" width="202.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="28.6 34.9 49.1 55.4 69.7 75.8 90.2 96.3 110.7 116.8 131.2 137.3 151.7 157.8 172.2 178.3 192.7 198.8 213.2 219.3" y="49" font-size="10" font-weight="600" text-anchor="middle">1f8b0800000000000203</text>
+<rect class="s f" x="227.75" y="34" width="182" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.7 239.8 254.2 260.4 274.6 280.9 295.1 301.4 315.6 321.9 336.1 342.4 356.6 362.9 377.1 383.4 397.6 403.9" y="49" font-size="10" font-weight="600" text-anchor="middle">cb48cdc9c957c84090</text>
+<rect class="a fa" x="412.25" y="34" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="418.1 424.4" y="49" font-size="10" font-weight="600" text-anchor="middle">5c</text>
+<rect class="m f" x="432.75" y="34" width="18" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="438.6 444.9" y="49" font-size="10" font-weight="600" text-anchor="middle">00</text>
+<rect class="m f" x="453.25" y="34" width="161.5" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="459.1 465.4 479.6 485.9 500.1 506.4 520.6 526.9 541.1 547.4 561.6 567.9 582.1 588.4 602.6 608.9" y="49" font-size="10" font-weight="600" text-anchor="middle">3b7c8adf12000000</text>
+<rect class="s f" x="47" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">11010011</text>
+<rect class="s f" x="183" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">00010010</text>
+<rect class="s f" x="319" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10110011</text>
+<rect class="s f" x="455" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="s f" x="47" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="s f" x="183" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">11101010</text>
+<rect class="s f" x="319" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00010011</text>
+<rect class="s f" x="455" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00000010</text>
+<rect class="s f" x="47" y="244" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00001001</text>
+<rect class="a fa" x="183" y="244" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00111010</text>
+<rect class="m f" x="319" y="244" width="136" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00000000</text>
+<path class="m" d="M48 142 L48 148 L97 148 L97 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="72.5" y="162" font-size="10.5" text-anchor="middle">3 bits</text>
+<path class="m" d="M99 142 L99 148 L233 148 L233 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="166" y="162" font-size="10.5" text-anchor="middle">h</text>
+<path class="m" d="M235 142 L235 148 L369 148 L369 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="302" y="162" font-size="10.5" text-anchor="middle">e</text>
+<path class="m" d="M371 142 L371 148 L505 148 L505 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="438" y="162" font-size="10.5" text-anchor="middle">l</text>
+<path class="m" d="M507 142 L507 148 L590 148 L590 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="548.5" y="162" font-size="10.5" text-anchor="middle">l</text>
+<path class="m" d="M99 204 L99 210 L233 210 L233 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="166" y="224" font-size="10.5" text-anchor="middle">o</text>
+<path class="m" d="M235 204 L235 210 L369 210 L369 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="302" y="224" font-size="10.5" text-anchor="middle">space</text>
+<path class="m" d="M371 204 L371 210 L505 210 L505 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="438" y="224" font-size="10.5" text-anchor="middle">h</text>
+<path class="m" d="M507 204 L507 210 L590 210 L590 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="548.5" y="224" font-size="10.5" text-anchor="middle">len 10</text>
+<path class="m" d="M82 266 L82 272 L182 272 L182 266" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="132" y="286" font-size="10.5" text-anchor="middle">dist 6</text>
+<path class="a" d="M184 266 L184 272 L318 272 L318 266" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="251" y="286" font-size="10.5" font-weight="600" text-anchor="middle">\n</text>
+<rect class="s f" x="110" y="320" width="372" height="24" rx="3" stroke-width="1.5"/>
+<line class="m" x1="226" y1="337" x2="234" y2="337" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="358" y1="337" x2="366" y2="337" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="120.0 142.0 164.0 186.0 208.0 252.0 274.0 296.0 318.0 340.0 384.0 406.0 428.0 450.0 472.0" y="337" font-size="12" font-weight="600" text-anchor="middle">hellohellohello</text>
+<rect class="a af" x="484" y="320" width="20" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="490.5 497.5" y="337" font-size="12" font-weight="600" text-anchor="middle">\n</text>
+</g>
+<g class="step"><title>0000000 is symbol 256, the end of the block, and the block was the last: 87 bits. The rest of the byte is padding.</title>
+<rect class="s f" x="22.75" y="34" width="202.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="28.6 34.9 49.1 55.4 69.7 75.8 90.2 96.3 110.7 116.8 131.2 137.3 151.7 157.8 172.2 178.3 192.7 198.8 213.2 219.3" y="49" font-size="10" font-weight="600" text-anchor="middle">1f8b0800000000000203</text>
+<rect class="s f" x="227.75" y="34" width="202.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.7 239.8 254.2 260.4 274.6 280.9 295.1 301.4 315.6 321.9 336.1 342.4 356.6 362.9 377.1 383.4 397.6 403.9 418.1 424.4" y="49" font-size="10" font-weight="600" text-anchor="middle">cb48cdc9c957c840905c</text>
+<rect class="a fa" x="432.75" y="34" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="438.6 444.9" y="49" font-size="10" font-weight="600" text-anchor="middle">00</text>
+<rect class="m f" x="453.25" y="34" width="161.5" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="459.1 465.4 479.6 485.9 500.1 506.4 520.6 526.9 541.1 547.4 561.6 567.9 582.1 588.4 602.6 608.9" y="49" font-size="10" font-weight="600" text-anchor="middle">3b7c8adf12000000</text>
+<rect class="s f" x="47" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">11010011</text>
+<rect class="s f" x="183" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">00010010</text>
+<rect class="s f" x="319" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10110011</text>
+<rect class="s f" x="455" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="s f" x="47" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="s f" x="183" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">11101010</text>
+<rect class="s f" x="319" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00010011</text>
+<rect class="s f" x="455" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00000010</text>
+<rect class="s f" x="47" y="244" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00001001</text>
+<rect class="s f" x="183" y="244" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00111010</text>
+<rect class="a fa" x="319" y="244" width="119" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">0000000</text>
+<rect class="m f" x="438" y="244" width="17" height="22" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="446.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">0</text>
+<path class="m" d="M48 142 L48 148 L97 148 L97 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="72.5" y="162" font-size="10.5" text-anchor="middle">3 bits</text>
+<path class="m" d="M99 142 L99 148 L233 148 L233 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="166" y="162" font-size="10.5" text-anchor="middle">h</text>
+<path class="m" d="M235 142 L235 148 L369 148 L369 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="302" y="162" font-size="10.5" text-anchor="middle">e</text>
+<path class="m" d="M371 142 L371 148 L505 148 L505 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="438" y="162" font-size="10.5" text-anchor="middle">l</text>
+<path class="m" d="M507 142 L507 148 L590 148 L590 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="548.5" y="162" font-size="10.5" text-anchor="middle">l</text>
+<path class="m" d="M99 204 L99 210 L233 210 L233 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="166" y="224" font-size="10.5" text-anchor="middle">o</text>
+<path class="m" d="M235 204 L235 210 L369 210 L369 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="302" y="224" font-size="10.5" text-anchor="middle">space</text>
+<path class="m" d="M371 204 L371 210 L505 210 L505 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="438" y="224" font-size="10.5" text-anchor="middle">h</text>
+<path class="m" d="M507 204 L507 210 L590 210 L590 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="548.5" y="224" font-size="10.5" text-anchor="middle">len 10</text>
+<path class="m" d="M82 266 L82 272 L182 272 L182 266" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="132" y="286" font-size="10.5" text-anchor="middle">dist 6</text>
+<path class="m" d="M184 266 L184 272 L318 272 L318 266" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="251" y="286" font-size="10.5" text-anchor="middle">\n</text>
+<path class="a" d="M320 266 L320 272 L437 272 L437 266" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="378.5" y="286" font-size="10.5" font-weight="600" text-anchor="middle">end</text>
+<rect class="s f" x="110" y="320" width="394" height="24" rx="3" stroke-width="1.5"/>
+<line class="m" x1="226" y1="337" x2="234" y2="337" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="358" y1="337" x2="366" y2="337" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="120.0 142.0 164.0 186.0 208.0 252.0 274.0 296.0 318.0 340.0 384.0 406.0 428.0 450.0 472.0 490.5 497.5" y="337" font-size="12" font-weight="600" text-anchor="middle">hellohellohello\n</text>
+</g>
+<g class="step"><title>The trailer: the CRC-32 of the 18 bytes, df8a7c3b, and their number, 18, each lowest byte first. gunzip works both out from what it wrote; they agree, so it writes the output.</title>
+<rect class="s f" x="22.75" y="34" width="202.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="28.6 34.9 49.1 55.4 69.7 75.8 90.2 96.3 110.7 116.8 131.2 137.3 151.7 157.8 172.2 178.3 192.7 198.8 213.2 219.3" y="49" font-size="10" font-weight="600" text-anchor="middle">1f8b0800000000000203</text>
+<rect class="s f" x="227.75" y="34" width="223" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.7 239.8 254.2 260.4 274.6 280.9 295.1 301.4 315.6 321.9 336.1 342.4 356.6 362.9 377.1 383.4 397.6 403.9 418.1 424.4 438.6 444.9" y="49" font-size="10" font-weight="600" text-anchor="middle">cb48cdc9c957c840905c00</text>
+<rect class="a fa" x="453.25" y="34" width="161.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="459.1 465.4 479.6 485.9 500.1 506.4 520.6 526.9 541.1 547.4 561.6 567.9 582.1 588.4 602.6 608.9" y="49" font-size="10" font-weight="600" text-anchor="middle">3b7c8adf12000000</text>
+<rect class="s f" x="47" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">11010011</text>
+<rect class="s f" x="183" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">00010010</text>
+<rect class="s f" x="319" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10110011</text>
+<rect class="s f" x="455" y="120" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="135.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="s f" x="47" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">10010011</text>
+<rect class="s f" x="183" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">11101010</text>
+<rect class="s f" x="319" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00010011</text>
+<rect class="s f" x="455" y="182" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="463.5 480.5 497.5 514.5 531.5 548.5 565.5 582.5" y="197.5" font-size="11" font-weight="600" text-anchor="middle">00000010</text>
+<rect class="s f" x="47" y="244" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="55.5 72.5 89.5 106.5 123.5 140.5 157.5 174.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00001001</text>
+<rect class="s f" x="183" y="244" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="191.5 208.5 225.5 242.5 259.5 276.5 293.5 310.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00111010</text>
+<rect class="s f" x="319" y="244" width="136" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="327.5 344.5 361.5 378.5 395.5 412.5 429.5 446.5" y="259.5" font-size="11" font-weight="600" text-anchor="middle">00000000</text>
+<path class="m" d="M48 142 L48 148 L97 148 L97 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="72.5" y="162" font-size="10.5" text-anchor="middle">3 bits</text>
+<path class="m" d="M99 142 L99 148 L233 148 L233 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="166" y="162" font-size="10.5" text-anchor="middle">h</text>
+<path class="m" d="M235 142 L235 148 L369 148 L369 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="302" y="162" font-size="10.5" text-anchor="middle">e</text>
+<path class="m" d="M371 142 L371 148 L505 148 L505 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="438" y="162" font-size="10.5" text-anchor="middle">l</text>
+<path class="m" d="M507 142 L507 148 L590 148 L590 142" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="548.5" y="162" font-size="10.5" text-anchor="middle">l</text>
+<path class="m" d="M99 204 L99 210 L233 210 L233 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="166" y="224" font-size="10.5" text-anchor="middle">o</text>
+<path class="m" d="M235 204 L235 210 L369 210 L369 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="302" y="224" font-size="10.5" text-anchor="middle">space</text>
+<path class="m" d="M371 204 L371 210 L505 210 L505 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="438" y="224" font-size="10.5" text-anchor="middle">h</text>
+<path class="m" d="M507 204 L507 210 L590 210 L590 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="548.5" y="224" font-size="10.5" text-anchor="middle">len 10</text>
+<path class="m" d="M82 266 L82 272 L182 272 L182 266" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="132" y="286" font-size="10.5" text-anchor="middle">dist 6</text>
+<path class="m" d="M184 266 L184 272 L318 272 L318 266" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="251" y="286" font-size="10.5" text-anchor="middle">\n</text>
+<path class="m" d="M320 266 L320 272 L437 272 L437 266" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="378.5" y="286" font-size="10.5" text-anchor="middle">end</text>
+<rect class="s f" x="110" y="320" width="394" height="24" rx="3" stroke-width="1.5"/>
+<line class="m" x1="226" y1="337" x2="234" y2="337" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="358" y1="337" x2="366" y2="337" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="120.0 142.0 164.0 186.0 208.0 252.0 274.0 296.0 318.0 340.0 384.0 406.0 428.0 450.0 472.0 490.5 497.5" y="337" font-size="12" font-weight="600" text-anchor="middle">hellohellohello\n</text>
+<text class="t" x="24" y="306" font-size="11.5">CRC-32 df8a7c3b, size 18: both match</text>
+</g>
+</svg>
