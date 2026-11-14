@@ -101,6 +101,16 @@ not line by line); for -E, I is an offset in the line. State lists show only
 states that read a byte, the match state, and a `$` waiting for the end:
 splits are followed, never kept.
 
+The order of trace and output depends on where stdout goes. On a terminal
+stdout is written a line at a time, so each selected line shows right after
+its own trace lines; through a pipe (`2>&1 | grep -v ...`, as several
+examples here) stdout is buffered, written when its buffer fills or grep
+ends, so on small inputs every trace line comes first and the selected
+lines after them all. The stats lines come last
+either way. For `printf 'xabb\nab\n' | DS_TRACE=1 bin/grep -E --algo=nfa ab`
+a terminal shows `xabb` after line 1's trace, a pipe shows it after line
+2's. A transcript must say which it was.
+
 ## Checked against the system's grep, and where BSD and GNU differ
 
 tests/tools/grep.py holds the table: 36 fixed strings (on the book and on
@@ -313,7 +323,12 @@ line 57 "observation in following out those clues, and ..."       7914161342 ste
 line 58 "mysteries which had been abandoned as hopeless by ..."   killed after 6 minutes of CPU
 ```
 
-(Line numbers as `sed -n 41p data/book.txt` counts them.) The cost is
+(Line numbers as `sed -n 41p data/book.txt` counts them.) On the whole book
+it never gets to lines 57 and 58: it prints the matching lines up to 40,
+spends 3.2 s on line 41, and then stalls at line 43, "be more disturbing
+than a strong emotion in a nature such as his.", 52 letters in 13 words
+before its full stop: 2^39 ways, about 7 to 8 hours at the rate below
+(lesson 04.03 says "about eight hours"). The cost is
 predictable: the letters before the first punctuation can be split into
 pieces in 2^(letters - words) ways, and the backtracker takes about 14.5
 steps a way, at about 300 million steps a second: line 41 has 34 letters in

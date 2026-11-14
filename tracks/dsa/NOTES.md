@@ -527,12 +527,13 @@ quick, first pivot, 20000 dict words:    comparisons 2932763   (all different, i
 quick, first pivot, 20000 same lines:    comparisons 19999
 ```
 
-(Not n(n-1)/2 = 199990000, as quick-first takes: the three-way split's
-swaps send each line above the pivot to the far end, which reverses that
-part, so the next pass's first line is its largest, and the pass after
-that sees it in order again. Sorted input stops being the worst case;
-some other order is. That is the argument for the random pivot: no fixed
-input is the worst case.)
+(Not n(n-1)/2 = 199990000, as quick-first takes: the three-way split
+swaps each line above the pivot with the one at the far end of the range,
+so after a pass the range is no longer in order. It is not reversed
+either: on 0..9 with 0 as the pivot, the first pass leaves 0, 2, 3, ..., 9,
+1, as lesson 02.03 says. Sorted input stops being the worst case; some
+other order is. That is the argument for the random pivot: no fixed input
+is the worst case.)
 
 ### 02.04 A heap, and the top ten without sorting everything
 
