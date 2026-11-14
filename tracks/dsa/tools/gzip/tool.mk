@@ -1,9 +1,15 @@
 # gzip and gunzip: making files smaller with DEFLATE (module 09).
 #
-# What git reuses goes into the library: Huffman codes (lib/huffman.c),
-# raw inflate (lib/inflate.c), LZ77 (lib/lz77.c) and raw deflate
-# (lib/deflate.c). The gzip file format (tools/gzip/gz.c) and the two
-# programs stay here.
+# @from 10.01
+# What git reuses goes into the library:
+# @else
+# # The structures go into the library:
+# @end
+#   lib/huffman.c   Huffman codes
+#   lib/inflate.c   raw inflate                                      @from 09.02
+#   lib/lz77.c      LZ77                                             @from 09.03
+#   lib/deflate.c   raw deflate                                      @from 09.04
+# The gzip file format (tools/gzip/gz.c) and the two programs stay here.   @from 09.02
 
 TOOLS += bin/gzip
 TOOLS += bin/gunzip                       # @from 09.02

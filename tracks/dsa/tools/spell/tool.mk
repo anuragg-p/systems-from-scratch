@@ -1,6 +1,15 @@
 # spell: the words of a text that are not in the dictionary (module 05).
+# @from 05.02
+# @from 05.03
 # It brings three structures to lib/: a trie, a Bloom filter and the edit
 # distance, each in its own file with its own header.
+# @else
+# # It brings two structures to lib/: a trie and a Bloom filter, each in its
+# # own file with its own header.
+# @end
+# @else
+# # It brings a structure to lib/: a trie, in its own file with its own header.
+# @end
 
 TOOLS += bin/spell
 

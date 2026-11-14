@@ -194,10 +194,16 @@ def timeline_steps(k):
     steps += [T.sh_step("printf 'colour\\ncolor\\ncolr\\n' | bin/grep -E 'colou?r'", "colour\ncolor\n"),
               T.sh_step("printf 'one\\n' | bin/grep 'o(n|x)e'", "one\n"),
               T.sh_step("bin/grep -E 'a{2}' < /dev/null", "grep: intervals such as {2,3} are not supported\n", 2)]
+    # the backtracker's depth limit names the NFA only once there is one
+    deep = "printf '%30000s\\n' '' | tr ' ' a | bin/grep -E --algo=backtrack 'a*b'"
+    said = ("grep: the backtracking matcher is 10000 calls deep, on a line of 30000 bytes: "
+            "more than its stack can hold")
     if k < (4, 3):
-        return steps + [T.sh_step("bin/grep -E --algo=nfa x < /dev/null",
+        return steps + [T.sh_step(deep, said + "\n", 2),
+                        T.sh_step("bin/grep -E --algo=nfa x < /dev/null",
                                   "grep: no --algo 'nfa' for a regular expression (have: backtrack)\n", 2)]
-    steps.append(T.sh_step("printf 'aab\\n' | bin/grep -E --algo=nfa '(a|b)*b'", "aab\n"))
+    steps += [T.sh_step(deep, said + " (--algo=nfa needs no stack)\n", 2),
+              T.sh_step("printf 'aab\\n' | bin/grep -E --algo=nfa '(a|b)*b'", "aab\n")]
     if k < (4, 4):
         return steps + [T.sh_step("bin/grep -E --algo=dfa x < /dev/null",
                                   "grep: no --algo 'dfa' for a regular expression (have: backtrack, nfa)\n", 2),

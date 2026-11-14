@@ -1,7 +1,11 @@
 """Inputs for edit's --replay, made by data/gen.py: each kind is two files, a script of edits and
 the text it edits, and bench/grow.py puts both paths after the command, in that order:
 
+# @from 03.02
     python3 bench/grow.py --input typing bin/edit --algo=array --replay
+# @else
+#     python3 bench/grow.py --input typing bin/edit --replay
+# @end
 
   typing     [lines] a text of n lines (data/gen.py's lines), and a script that goes to its
              second line and types n/8 keys there: words, spaces, a newline now and then, and

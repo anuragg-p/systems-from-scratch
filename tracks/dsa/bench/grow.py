@@ -24,7 +24,7 @@ n squared, and ten times the input takes a hundred times as long.
   --json FILE    write the rows to FILE as well
 
 COMMAND runs in this directory, with LC_ALL=C, its output thrown away:
-bin/sort is this project's sort, sort the system's. An exit status of 0
+bin/paste is this project's paste, paste the system's. An exit status of 0
 or 1 is fine (look, grep and diff say 1 for "none" or "different"); 2 or
 more, or a crash, stops the run. The times include starting the program,
 so runs of a few milliseconds say little: a ratio is shown only when both

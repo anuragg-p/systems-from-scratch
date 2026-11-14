@@ -238,7 +238,9 @@ is not repeated, or `(a*)*` would go round for ever. It tries each start in
 the line in turn. Its depth is limited to 10000 calls: past that, an
 ordinary error, not a stack overflow (`a*b` on 30000 a's prints `grep: the
 backtracking matcher is 10000 calls deep, on a line of 30000 bytes: more
-than its stack can hold (--algo=nfa needs no stack)`, status 2).
+than its stack can hold`, status 2; from 04.03 on, with `--algo=backtrack`,
+the message ends `(--algo=nfa needs no stack)`, an `@from 04.03` block in
+bt(); the timeline checks both).
 
 ```
 $ printf 'colour\ncolor\ncolr\n' | bin/grep -E 'colou?r'
@@ -334,9 +336,9 @@ Break it (no guard against a loop that matched nothing): in go_on, delete
 
 ```
 $ printf 'aaab\naaac\n' | bin/grep -E '(a*)*b'
-grep: the backtracking matcher is 10000 calls deep, on a line of 4 bytes: more than its stack can hold (--algo=nfa needs no stack)
+grep: the backtracking matcher is 10000 calls deep, on a line of 4 bytes: more than its stack can hold
 $ printf 'xy\n' | bin/grep -E '(a|)*y'
-grep: the backtracking matcher is 10000 calls deep, on a line of 2 bytes: more than its stack can hold (--algo=nfa needs no stack)
+grep: the backtracking matcher is 10000 calls deep, on a line of 2 bytes: more than its stack can hold
 $ printf 'colour\n' | bin/grep -E 'colou?r'
 colour
 ```
@@ -543,5 +545,6 @@ small grammar (`a b c . [..] [^..] ^ $`, sequences, `|`, `( )* + ?`), with
 and without -i, and 04.04 with --cache=1. Times on the Mac: 1.6, 4.3, 2.0
 and 2.0 s; on Linux 0.8, 1.7, 0.7 and 0.5 s. check-timeline types, at each
 lesson, what grep can do then and the error for what comes next (`-E` at
-04.01, `--algo=nfa` at 04.02, `--algo=dfa` and `--cache` at 04.03), and
-compares -F and each engine so far with the system's grep on the book.
+04.01, `--algo=nfa` at 04.02, `--algo=dfa` and `--cache` at 04.03), the
+backtracker's depth error word for word (naming --algo=nfa only from 04.03),
+and compares -F and each engine so far with the system's grep on the book.

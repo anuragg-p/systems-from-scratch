@@ -1,7 +1,12 @@
 /*
+// @from 06.02
  * diff.h - two texts compared line by line: the shortest edit script that
  * turns the first into the second, and that script printed as the hunks
  * of a unified diff.
+// @else
+//  * diff.h - two texts compared line by line: the shortest edit script that
+//  * turns the first into the second.
+// @end
  *
  *   diff.c    a text as lines, numbered so that equal lines have equal
  *             numbers; the longest common subsequence, as a table
@@ -9,8 +14,13 @@
  *             the unified format                                        @from 06.02
  *   myers.c   a script as short, from Myers' search of the edit graph   @from 06.03
  *
+// @from 10.04
  * tools/diff is one front end to it; git's diff is another. The whole of
  * it, for two texts in memory:
+// @else
+//  * tools/diff is the front end to it. The whole of it, for two texts in
+//  * memory:
+// @end
  *
  *     DiffText a, b;
  *     diff_text(&a, data, size);             the lines, pointing into data

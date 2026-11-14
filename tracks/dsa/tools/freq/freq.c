@@ -82,7 +82,11 @@ static void add_word(const char *w, size_t len)
     x->count = 1;
 }
 
+// @from 01.02
 /* --algo=list: count a word by looking at every word seen so far. */
+// @else
+// /* Count a word by looking at every word seen so far. */
+// @end
 static void count_list(const char *w, size_t len)
 {
     // @build 01.01 count a word: look at every word so far
@@ -112,9 +116,15 @@ static void count_table(const char *w, size_t len)
     // @end
 }
 
+// @from 02.04
 /* Which of two words ranks higher: more than 0 when a does. The higher
  * count wins; on equal counts, the word that is bigger byte by byte, as
  * "sort -rn" orders lines with equal numbers. A Cmp, so a heap can use it. */
+// @else
+// /* Which of two words ranks higher: more than 0 when a does. The higher
+//  * count wins; on equal counts, the word that is bigger byte by byte, as
+//  * "sort -rn" orders lines with equal numbers. */
+// @end
 static int rank(const void *a, const void *b, void *ctx)
 {
     const Word *x = a, *y = b;
@@ -128,8 +138,13 @@ static int rank(const void *a, const void *b, void *ctx)
     return x->len < y->len ? -1 : x->len > y->len;
 }
 
+// @from 02.04
 /* --top=select: the n best words into best[0..n), best first: n passes over
  * all the words, each taking the best one not taken yet. */
+// @else
+// /* The n best words into best[0..n), best first: n passes over all the
+//  * words, each taking the best one not taken yet. */
+// @end
 static void top_select(size_t n, Word **best)
 {
     // @build 01.01 the top n: n passes, each taking the best word left
