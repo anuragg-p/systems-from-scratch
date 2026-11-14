@@ -103,6 +103,13 @@ Upstream   None. The tools are written from the documented behaviour of
            code from any of them is in the track. lib/myers.c is written
            from the paper: Eugene W. Myers, "An O(ND) Difference Algorithm
            and Its Variations", Algorithmica 1 (1986), 251-266.
+           grep is held to GNU grep (https://www.gnu.org/software/grep/,
+           GPL-3.0-or-later) and to the BSD grep macOS ships
+           (BSD-2-Clause); no code from either is in the track. It is
+           written from POSIX's definition of extended regular
+           expressions and the published algorithms: Horspool's search
+           (1980), Thompson's construction (1968), and a DFA built as it
+           runs, as Russ Cox describes RE2's.
 Ours       All of the code (lib/, tools/, bench/, data/gen.py, the
            Makefile and the tool.mk files), the lessons and the internal
            checks (tracks/dsa/track.py and tests/).
