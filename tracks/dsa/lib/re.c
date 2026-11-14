@@ -357,8 +357,8 @@ static int bt(const Re *re, const Next *k, size_t i)
     if (++calls > bst.deepest) {
         bst.deepest = calls;
         if (calls > MAX_DEPTH)
-            die("the backtracking matcher is %d calls deep on a line of %zu bytes: "
-                "too long a line for it (--algo=nfa reads any line)", MAX_DEPTH, tlen);
+            die("the backtracking matcher is %d calls deep, on a line of %zu bytes: "
+                "more than its stack can hold (--algo=nfa needs no stack)", MAX_DEPTH, tlen);
     }
     switch (re->op) {
     case RE_CHAR:

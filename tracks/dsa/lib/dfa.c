@@ -14,9 +14,11 @@
  * states: (a|b)*a(a|b)(a|b)...(a|b), with k (a|b) after the a, needs 2^k
  * of them. Built as the text needs them, there are never more than the
  * bytes read; and when even that is too many, the cache is emptied and
- * the building starts again, so memory stays bounded. A text that needs
- * a new state at every byte runs at about the NFA's speed, never worse
- * than a little slower.
+ * the building starts again, so memory stays bounded. The price is time:
+ * a text that needs a new state at most bytes pays for the NFA's step
+ * and for building a state besides, several times what the NFA alone
+ * costs. RE2 counts how often its cache fills, and goes back to running
+ * the NFA when it fills too often; this DFA does not.
  */
 #include <ctype.h>
 #include <stdlib.h>

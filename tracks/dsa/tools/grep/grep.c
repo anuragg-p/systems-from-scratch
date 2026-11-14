@@ -39,6 +39,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #include "ds.h"
 #include "strsearch.h"
@@ -180,10 +181,14 @@ static void use_regex(const char *pattern, size_t len, const char *algo)
 }
 // @end
 
-/* The whole of f, in one block of memory. */
+/* The whole of f, in one block of memory: as big as the file and one byte
+ * more (to see that it has ended), or for a pipe, doubled as it fills. */
 static char *read_all(FILE *f, const char *name, size_t *len)
 {
     size_t cap = 1 << 16, n = 0;
+    struct stat sb;
+    if (fstat(fileno(f), &sb) == 0 && S_ISREG(sb.st_mode) && sb.st_size > 0)
+        cap = (size_t)sb.st_size + 1;
     char *buf = xmalloc(cap);
     for (;;) {
         n += fread(buf + n, 1, cap - n, f);

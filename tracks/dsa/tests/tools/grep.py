@@ -41,6 +41,15 @@ FILES_FROM = {
     "lib/dfa.h": "04.04",
 }
 HIDDEN = ["tools/grep/NOTES.md", "tools/grep/NOTICE.txt"]
+# GNU grep is not part of coreutils, which track.py names: the Linux grep ours is held to.
+UPSTREAM = [
+    {"name": "GNU grep",
+     "url": "https://www.gnu.org/software/grep/",
+     "licence": "GPL-3.0-or-later",
+     "owes": "No code. Our grep prints the same lines as theirs, the Linux one, with -F and -E, on the "
+             "book and on the track's own source; so it does as macOS's BSD grep.",
+     "derived": False},
+]
 
 FIXED = ["Holmes", "Sherlock Holmes", "the", "e", "said he", "zzzz", "Mr. ", "", "a.b", "watson", "I",
          "(", "[", "*", "\\", "--", "?", "Holmes's", "^", "$", "WATSON", "Baker Street", "it was", ".\"",
