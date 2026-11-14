@@ -1,0 +1,546 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>The table for a = ABCABBA and b = CBABAC, filled a row at a time from the bottom: each cell is the length of the longest common subsequence of a from line i and b from line j</title>
+<defs><marker id="f0601a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0601a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0601a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="22" font-size="11.5">DS_TRACE=1 bin/diff a.txt b.txt</text>
+<text class="tm mono" x="616" y="22" font-size="10.5" text-anchor="end">a.txt: A B C A B B A, b.txt: C B A B A C</text>
+<text class="tm" x="193" y="48" font-size="10.5" text-anchor="middle">b, line j</text>
+<text class="tm" x="24" y="84" font-size="10.5">a, line i</text>
+<text class="tm mono" x="91" y="68" font-size="10" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="84" font-size="12.5" font-weight="700" text-anchor="middle">C</text>
+<text class="tm mono" x="125" y="68" font-size="10" text-anchor="middle">1</text>
+<text class="t mono" x="125" y="84" font-size="12.5" font-weight="700" text-anchor="middle">B</text>
+<text class="tm mono" x="159" y="68" font-size="10" text-anchor="middle">2</text>
+<text class="t mono" x="159" y="84" font-size="12.5" font-weight="700" text-anchor="middle">A</text>
+<text class="tm mono" x="193" y="68" font-size="10" text-anchor="middle">3</text>
+<text class="t mono" x="193" y="84" font-size="12.5" font-weight="700" text-anchor="middle">B</text>
+<text class="tm mono" x="227" y="68" font-size="10" text-anchor="middle">4</text>
+<text class="t mono" x="227" y="84" font-size="12.5" font-weight="700" text-anchor="middle">A</text>
+<text class="tm mono" x="261" y="68" font-size="10" text-anchor="middle">5</text>
+<text class="t mono" x="261" y="84" font-size="12.5" font-weight="700" text-anchor="middle">C</text>
+<text class="tm mono" x="295" y="68" font-size="10" text-anchor="middle">6</text>
+<text class="tm mono" x="295" y="84" font-size="10" text-anchor="middle">end</text>
+<text class="tm mono" x="42" y="109.5" font-size="10" text-anchor="end">0</text>
+<text class="t mono" x="62" y="109.5" font-size="12.5" font-weight="700" text-anchor="end">A</text>
+<text class="tm mono" x="42" y="135.5" font-size="10" text-anchor="end">1</text>
+<text class="t mono" x="62" y="135.5" font-size="12.5" font-weight="700" text-anchor="end">B</text>
+<text class="tm mono" x="42" y="161.5" font-size="10" text-anchor="end">2</text>
+<text class="t mono" x="62" y="161.5" font-size="12.5" font-weight="700" text-anchor="end">C</text>
+<text class="tm mono" x="42" y="187.5" font-size="10" text-anchor="end">3</text>
+<text class="t mono" x="62" y="187.5" font-size="12.5" font-weight="700" text-anchor="end">A</text>
+<text class="tm mono" x="42" y="213.5" font-size="10" text-anchor="end">4</text>
+<text class="t mono" x="62" y="213.5" font-size="12.5" font-weight="700" text-anchor="end">B</text>
+<text class="tm mono" x="42" y="239.5" font-size="10" text-anchor="end">5</text>
+<text class="t mono" x="62" y="239.5" font-size="12.5" font-weight="700" text-anchor="end">B</text>
+<text class="tm mono" x="42" y="265.5" font-size="10" text-anchor="end">6</text>
+<text class="t mono" x="62" y="265.5" font-size="12.5" font-weight="700" text-anchor="end">A</text>
+<text class="tm mono" x="42" y="291.5" font-size="10" text-anchor="end">7</text>
+<text class="tm mono" x="62" y="291.5" font-size="10" text-anchor="end">end</text>
+<text class="t" x="356" y="48" font-size="11">L[i][j], when a[i] and b[j] are equal:</text>
+<text class="ta mono" x="364" y="66" font-size="11.5" font-weight="600">L[i+1][j+1] + 1</text>
+<text class="t" x="356" y="86" font-size="11">otherwise, the larger of below and right:</text>
+<text class="t mono" x="364" y="104" font-size="11.5" font-weight="600">max(L[i+1][j], L[i][j+1])</text>
+<rect class="af" x="356" y="122" width="16" height="13" rx="2"/>
+<line class="a" x1="369" y1="132" x2="363" y2="126" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="380" y="133" font-size="10.5">the two lines are equal here</text>
+<g class="step"><title>Row 7 first: no line of a is left there, so nothing is in common with any end of b, and every cell is 0. Column 6, the end of b, is 0 in every row for the same reason.</title>
+<rect class="fs" x="75.5" y="275.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="91" y="291.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="fs" x="109.5" y="275.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="125" y="291.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="fs" x="143.5" y="275.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="159" y="291.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="fs" x="177.5" y="275.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="193" y="291.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="fs" x="211.5" y="275.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="227" y="291.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="fs" x="245.5" y="275.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="261" y="291.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="fs" x="279.5" y="275.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="295" y="291.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="a" x="74" y="274" width="238" height="26" rx="0" stroke-width="1.5"/>
+<text class="tm" x="356" y="176" font-size="10.5">the program prints, filling row 7:</text>
+<text class="ta mono" x="356" y="194" font-size="10.5" font-weight="600">trace: lcs: row 7: 0 0 0 0 0 0 0</text>
+<text class="tm" x="356" y="226" font-size="10.5">rows 6 to 0 are still to fill</text>
+</g>
+<g class="step"><title>Row 6, a's line "A": equal to b's lines 2 and 4, which take 1 more than the cell to their lower right; every other cell takes the larger of the cells below and to its right.</title>
+<rect class="fs" x="75.5" y="249.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="91" y="265.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="fs" x="109.5" y="249.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="125" y="265.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="af" x="143.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="271" x2="167" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="265.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="fs" x="177.5" y="249.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="193" y="265.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="af" x="211.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="271" x2="235" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="265.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="fs" x="245.5" y="249.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="261" y="265.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="fs" x="279.5" y="249.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="295" y="265.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="125" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="159" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="193" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="227" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="261" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="291.5" font-size="12" text-anchor="middle">0</text>
+<rect class="a" x="74" y="248" width="238" height="26" rx="0" stroke-width="1.5"/>
+<text class="tm" x="356" y="176" font-size="10.5">the program prints, filling row 6:</text>
+<text class="ta mono" x="356" y="194" font-size="10.5" font-weight="600">trace: lcs: row 6: 1 1 1= 1 1= 0 0</text>
+<text class="t mono" x="356" y="226" font-size="10.5">L[6][0]: A is not C: max(0, 1) = 1</text>
+<rect class="a fa" x="76" y="250" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="91" y="265.5" font-size="12.5" font-weight="700" text-anchor="middle">1</text>
+<text class="t mono" x="356" y="246" font-size="10.5">L[6][2]: A = A: L[7][3] + 1 = 0 + 1 = 1</text>
+<rect class="a fa" x="144" y="250" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="159" y="265.5" font-size="12.5" font-weight="700" text-anchor="middle">1</text>
+</g>
+<g class="step"><title>Row 5, a's line "B": equal to b's lines 1 and 3, which take 1 more than the cell to their lower right; every other cell takes the larger of the cells below and to its right.</title>
+<rect class="fs" x="75.5" y="223.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="91" y="239.5" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="af" x="109.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="245" x2="133" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="239.5" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="fs" x="143.5" y="223.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="159" y="239.5" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="af" x="177.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="245" x2="201" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="239.5" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="fs" x="211.5" y="223.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="227" y="239.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="fs" x="245.5" y="223.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="261" y="239.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="fs" x="279.5" y="223.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="295" y="239.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="125" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="143.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="271" x2="167" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="193" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="211.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="271" x2="235" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="125" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="159" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="193" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="227" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="261" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="291.5" font-size="12" text-anchor="middle">0</text>
+<rect class="a" x="74" y="222" width="238" height="26" rx="0" stroke-width="1.5"/>
+<text class="tm" x="356" y="176" font-size="10.5">the program prints, filling row 5:</text>
+<text class="ta mono" x="356" y="194" font-size="10.5" font-weight="600">trace: lcs: row 5: 2 2= 2 2= 1 0 0</text>
+<text class="t mono" x="356" y="226" font-size="10.5">L[5][0]: B is not C: max(1, 2) = 2</text>
+<rect class="a fa" x="76" y="224" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="91" y="239.5" font-size="12.5" font-weight="700" text-anchor="middle">2</text>
+<text class="t mono" x="356" y="246" font-size="10.5">L[5][1]: B = B: L[6][2] + 1 = 1 + 1 = 2</text>
+<rect class="a fa" x="110" y="224" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="125" y="239.5" font-size="12.5" font-weight="700" text-anchor="middle">2</text>
+</g>
+<g class="step"><title>Row 4, a's line "B": equal to b's lines 1 and 3, which take 1 more than the cell to their lower right; every other cell takes the larger of the cells below and to its right.</title>
+<rect class="fs" x="75.5" y="197.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="91" y="213.5" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<rect class="af" x="109.5" y="197.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="219" x2="133" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="213.5" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<rect class="fs" x="143.5" y="197.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="159" y="213.5" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="af" x="177.5" y="197.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="219" x2="201" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="213.5" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="fs" x="211.5" y="197.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="227" y="213.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="fs" x="245.5" y="197.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="261" y="213.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="fs" x="279.5" y="197.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="295" y="213.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="239.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="109.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="245" x2="133" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="239.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="159" y="239.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="177.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="245" x2="201" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="239.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="239.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="239.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="239.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="125" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="143.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="271" x2="167" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="193" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="211.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="271" x2="235" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="125" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="159" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="193" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="227" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="261" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="291.5" font-size="12" text-anchor="middle">0</text>
+<rect class="a" x="74" y="196" width="238" height="26" rx="0" stroke-width="1.5"/>
+<text class="tm" x="356" y="176" font-size="10.5">the program prints, filling row 4:</text>
+<text class="ta mono" x="356" y="194" font-size="10.5" font-weight="600">trace: lcs: row 4: 3 3= 2 2= 1 0 0</text>
+<text class="t mono" x="356" y="226" font-size="10.5">L[4][0]: B is not C: max(2, 3) = 3</text>
+<rect class="a fa" x="76" y="198" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="91" y="213.5" font-size="12.5" font-weight="700" text-anchor="middle">3</text>
+<text class="t mono" x="356" y="246" font-size="10.5">L[4][1]: B = B: L[5][2] + 1 = 2 + 1 = 3</text>
+<rect class="a fa" x="110" y="198" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="125" y="213.5" font-size="12.5" font-weight="700" text-anchor="middle">3</text>
+</g>
+<g class="step"><title>Row 3, a's line "A": equal to b's lines 2 and 4, which take 1 more than the cell to their lower right; every other cell takes the larger of the cells below and to its right.</title>
+<rect class="fs" x="75.5" y="171.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="91" y="187.5" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<rect class="fs" x="109.5" y="171.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="125" y="187.5" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<rect class="af" x="143.5" y="171.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="193" x2="167" y2="187" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="187.5" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<rect class="fs" x="177.5" y="171.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="193" y="187.5" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="af" x="211.5" y="171.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="193" x2="235" y2="187" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="187.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="fs" x="245.5" y="171.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="261" y="187.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="fs" x="279.5" y="171.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="295" y="187.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="213.5" font-size="12" text-anchor="middle">3</text>
+<rect class="af" x="109.5" y="197.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="219" x2="133" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="213.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="159" y="213.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="177.5" y="197.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="219" x2="201" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="213.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="213.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="213.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="213.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="239.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="109.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="245" x2="133" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="239.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="159" y="239.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="177.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="245" x2="201" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="239.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="239.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="239.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="239.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="125" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="143.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="271" x2="167" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="193" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="211.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="271" x2="235" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="125" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="159" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="193" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="227" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="261" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="291.5" font-size="12" text-anchor="middle">0</text>
+<rect class="a" x="74" y="170" width="238" height="26" rx="0" stroke-width="1.5"/>
+<text class="tm" x="356" y="176" font-size="10.5">the program prints, filling row 3:</text>
+<text class="ta mono" x="356" y="194" font-size="10.5" font-weight="600">trace: lcs: row 3: 3 3 3= 2 1= 0 0</text>
+<text class="t mono" x="356" y="226" font-size="10.5">L[3][0]: A is not C: max(3, 3) = 3</text>
+<rect class="a fa" x="76" y="172" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="91" y="187.5" font-size="12.5" font-weight="700" text-anchor="middle">3</text>
+<text class="t mono" x="356" y="246" font-size="10.5">L[3][2]: A = A: L[4][3] + 1 = 2 + 1 = 3</text>
+<rect class="a fa" x="144" y="172" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="159" y="187.5" font-size="12.5" font-weight="700" text-anchor="middle">3</text>
+</g>
+<g class="step"><title>Row 2, a's line "C": equal to b's lines 0 and 5, which take 1 more than the cell to their lower right; every other cell takes the larger of the cells below and to its right.</title>
+<rect class="af" x="75.5" y="145.5" width="31" height="23" rx="2"/>
+<line class="a" x1="105" y1="167" x2="99" y2="161" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="91" y="161.5" font-size="12" font-weight="700" text-anchor="middle">4</text>
+<rect class="fs" x="109.5" y="145.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="125" y="161.5" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<rect class="fs" x="143.5" y="145.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="159" y="161.5" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<rect class="fs" x="177.5" y="145.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="193" y="161.5" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="fs" x="211.5" y="145.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="227" y="161.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="af" x="245.5" y="145.5" width="31" height="23" rx="2"/>
+<line class="a" x1="275" y1="167" x2="269" y2="161" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="261" y="161.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="fs" x="279.5" y="145.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="295" y="161.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="187.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="125" y="187.5" font-size="12" text-anchor="middle">3</text>
+<rect class="af" x="143.5" y="171.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="193" x2="167" y2="187" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="187.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="193" y="187.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="211.5" y="171.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="193" x2="235" y2="187" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="187.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="187.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="187.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="213.5" font-size="12" text-anchor="middle">3</text>
+<rect class="af" x="109.5" y="197.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="219" x2="133" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="213.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="159" y="213.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="177.5" y="197.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="219" x2="201" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="213.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="213.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="213.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="213.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="239.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="109.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="245" x2="133" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="239.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="159" y="239.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="177.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="245" x2="201" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="239.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="239.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="239.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="239.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="125" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="143.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="271" x2="167" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="193" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="211.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="271" x2="235" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="125" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="159" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="193" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="227" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="261" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="291.5" font-size="12" text-anchor="middle">0</text>
+<rect class="a" x="74" y="144" width="238" height="26" rx="0" stroke-width="1.5"/>
+<text class="tm" x="356" y="176" font-size="10.5">the program prints, filling row 2:</text>
+<text class="ta mono" x="356" y="194" font-size="10.5" font-weight="600">trace: lcs: row 2: 4= 3 3 2 1 1= 0</text>
+<text class="t mono" x="356" y="226" font-size="10.5">L[2][0]: C = C: L[3][1] + 1 = 3 + 1 = 4</text>
+<rect class="a fa" x="76" y="146" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="91" y="161.5" font-size="12.5" font-weight="700" text-anchor="middle">4</text>
+<text class="t mono" x="356" y="246" font-size="10.5">L[2][1]: C is not B: max(3, 3) = 3</text>
+<rect class="a fa" x="110" y="146" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="125" y="161.5" font-size="12.5" font-weight="700" text-anchor="middle">3</text>
+</g>
+<g class="step"><title>Row 1, a's line "B": equal to b's lines 1 and 3, which take 1 more than the cell to their lower right; every other cell takes the larger of the cells below and to its right.</title>
+<rect class="fs" x="75.5" y="119.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="91" y="135.5" font-size="12" font-weight="700" text-anchor="middle">4</text>
+<rect class="af" x="109.5" y="119.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="141" x2="133" y2="135" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="135.5" font-size="12" font-weight="700" text-anchor="middle">4</text>
+<rect class="fs" x="143.5" y="119.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="159" y="135.5" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<rect class="af" x="177.5" y="119.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="141" x2="201" y2="135" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="135.5" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="fs" x="211.5" y="119.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="227" y="135.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="fs" x="245.5" y="119.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="261" y="135.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="fs" x="279.5" y="119.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="295" y="135.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<rect class="af" x="75.5" y="145.5" width="31" height="23" rx="2"/>
+<line class="a" x1="105" y1="167" x2="99" y2="161" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="91" y="161.5" font-size="12" text-anchor="middle">4</text>
+<text class="t mono" x="125" y="161.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="159" y="161.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="193" y="161.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="161.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="245.5" y="145.5" width="31" height="23" rx="2"/>
+<line class="a" x1="275" y1="167" x2="269" y2="161" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="261" y="161.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="295" y="161.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="187.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="125" y="187.5" font-size="12" text-anchor="middle">3</text>
+<rect class="af" x="143.5" y="171.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="193" x2="167" y2="187" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="187.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="193" y="187.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="211.5" y="171.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="193" x2="235" y2="187" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="187.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="187.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="187.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="213.5" font-size="12" text-anchor="middle">3</text>
+<rect class="af" x="109.5" y="197.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="219" x2="133" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="213.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="159" y="213.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="177.5" y="197.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="219" x2="201" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="213.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="213.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="213.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="213.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="239.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="109.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="245" x2="133" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="239.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="159" y="239.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="177.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="245" x2="201" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="239.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="239.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="239.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="239.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="125" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="143.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="271" x2="167" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="193" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="211.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="271" x2="235" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="125" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="159" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="193" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="227" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="261" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="291.5" font-size="12" text-anchor="middle">0</text>
+<rect class="a" x="74" y="118" width="238" height="26" rx="0" stroke-width="1.5"/>
+<text class="tm" x="356" y="176" font-size="10.5">the program prints, filling row 1:</text>
+<text class="ta mono" x="356" y="194" font-size="10.5" font-weight="600">trace: lcs: row 1: 4 4= 3 2= 1 1 0</text>
+<text class="t mono" x="356" y="226" font-size="10.5">L[1][0]: B is not C: max(4, 4) = 4</text>
+<rect class="a fa" x="76" y="120" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="91" y="135.5" font-size="12.5" font-weight="700" text-anchor="middle">4</text>
+<text class="t mono" x="356" y="246" font-size="10.5">L[1][1]: B = B: L[2][2] + 1 = 3 + 1 = 4</text>
+<rect class="a fa" x="110" y="120" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="125" y="135.5" font-size="12.5" font-weight="700" text-anchor="middle">4</text>
+</g>
+<g class="step"><title>Row 0 last. L[0][0] = 4: a and b have 4 lines in common, so diff deletes 7 - 4 = 3 of a's lines and inserts 6 - 4 = 2.</title>
+<rect class="fs" x="75.5" y="93.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="91" y="109.5" font-size="12" font-weight="700" text-anchor="middle">4</text>
+<rect class="fs" x="109.5" y="93.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="125" y="109.5" font-size="12" font-weight="700" text-anchor="middle">4</text>
+<rect class="af" x="143.5" y="93.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="115" x2="167" y2="109" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="109.5" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<rect class="fs" x="177.5" y="93.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="193" y="109.5" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="af" x="211.5" y="93.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="115" x2="235" y2="109" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="109.5" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="fs" x="245.5" y="93.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="261" y="109.5" font-size="12" font-weight="700" text-anchor="middle">1</text>
+<rect class="fs" x="279.5" y="93.5" width="31" height="23" rx="2"/>
+<text class="t mono" x="295" y="109.5" font-size="12" font-weight="700" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="135.5" font-size="12" text-anchor="middle">4</text>
+<rect class="af" x="109.5" y="119.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="141" x2="133" y2="135" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="135.5" font-size="12" text-anchor="middle">4</text>
+<text class="t mono" x="159" y="135.5" font-size="12" text-anchor="middle">3</text>
+<rect class="af" x="177.5" y="119.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="141" x2="201" y2="135" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="135.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="135.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="135.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="295" y="135.5" font-size="12" text-anchor="middle">0</text>
+<rect class="af" x="75.5" y="145.5" width="31" height="23" rx="2"/>
+<line class="a" x1="105" y1="167" x2="99" y2="161" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="91" y="161.5" font-size="12" text-anchor="middle">4</text>
+<text class="t mono" x="125" y="161.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="159" y="161.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="193" y="161.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="161.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="245.5" y="145.5" width="31" height="23" rx="2"/>
+<line class="a" x1="275" y1="167" x2="269" y2="161" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="261" y="161.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="295" y="161.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="187.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="125" y="187.5" font-size="12" text-anchor="middle">3</text>
+<rect class="af" x="143.5" y="171.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="193" x2="167" y2="187" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="187.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="193" y="187.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="211.5" y="171.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="193" x2="235" y2="187" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="187.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="187.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="187.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="213.5" font-size="12" text-anchor="middle">3</text>
+<rect class="af" x="109.5" y="197.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="219" x2="133" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="213.5" font-size="12" text-anchor="middle">3</text>
+<text class="t mono" x="159" y="213.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="177.5" y="197.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="219" x2="201" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="213.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="213.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="213.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="213.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="239.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="109.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="139" y1="245" x2="133" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="125" y="239.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="159" y="239.5" font-size="12" text-anchor="middle">2</text>
+<rect class="af" x="177.5" y="223.5" width="31" height="23" rx="2"/>
+<line class="a" x1="207" y1="245" x2="201" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="193" y="239.5" font-size="12" text-anchor="middle">2</text>
+<text class="t mono" x="227" y="239.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="239.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="239.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="125" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="143.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="173" y1="271" x2="167" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="159" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="193" y="265.5" font-size="12" text-anchor="middle">1</text>
+<rect class="af" x="211.5" y="249.5" width="31" height="23" rx="2"/>
+<line class="a" x1="241" y1="271" x2="235" y2="265" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="227" y="265.5" font-size="12" text-anchor="middle">1</text>
+<text class="t mono" x="261" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="265.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="91" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="125" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="159" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="193" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="227" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="261" y="291.5" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="295" y="291.5" font-size="12" text-anchor="middle">0</text>
+<rect class="a" x="74" y="92" width="238" height="26" rx="0" stroke-width="1.5"/>
+<rect class="a fa" x="76" y="94" width="30" height="22" rx="3" stroke-width="1.5"/>
+<text class="f mono" x="91" y="109.5" font-size="12.5" font-weight="700" text-anchor="middle">4</text>
+<text class="tm" x="356" y="176" font-size="10.5">the program prints, filling row 0:</text>
+<text class="ta mono" x="356" y="194" font-size="10.5" font-weight="600">trace: lcs: row 0: 4 4 3= 2 2= 1 0</text>
+<text class="t mono" x="356" y="226" font-size="10.5">L[0][0] = 4: all of a against all of b</text>
+<text class="tm" x="356" y="246" font-size="10.5">56 cells of 4 bytes: stats: lcs: cells 56, bytes 224</text>
+</g>
+<line class="m" x1="108" y1="92" x2="108" y2="300" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="142" y1="92" x2="142" y2="300" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="176" y1="92" x2="176" y2="300" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="210" y1="92" x2="210" y2="300" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="244" y1="92" x2="244" y2="300" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="278" y1="92" x2="278" y2="300" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="74" y1="118" x2="312" y2="118" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="74" y1="144" x2="312" y2="144" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="74" y1="170" x2="312" y2="170" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="74" y1="196" x2="312" y2="196" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="74" y1="222" x2="312" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="74" y1="248" x2="312" y2="248" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="74" y1="274" x2="312" y2="274" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s" x="74" y="92" width="238" height="208" rx="0" stroke-width="1.5"/>
+</svg>
