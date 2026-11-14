@@ -14,9 +14,9 @@ times diff on pairs that double in length.
              the same size however long the files are
   revised    the same with an edit every 32 lines: the difference grows
              with the files
-  unrelated  the stretch, and another stretch from half the book away:
-             in common only what any two pages share, blank lines and a
-             few short ones
+  unrelated  the stretch, and another stretch from half the book away
+             with every line written backwards: in common only the blank
+             lines, however long the files are
 """
 
 import os
@@ -70,11 +70,12 @@ def revised(n, rng):
 
 def unrelated(n, rng):
     start = rng.below(len(book_lines()))
-    return [join(stretch(n, start)), join(stretch(n, start + len(book_lines()) // 2))]
+    other = stretch(n, start + len(book_lines()) // 2)
+    return [join(stretch(n, start)), join(l[::-1] for l in other)]
 
 
 KINDS = {
     "versions": (versions, "lines", "two files: lines of the book, and a copy with 16 small edits"),
     "revised": (revised, "lines", "two files: lines of the book, and a copy with an edit every 32 lines"),
-    "unrelated": (unrelated, "lines", "two files: lines of the book, and other lines of it"),
+    "unrelated": (unrelated, "lines", "two files: lines of the book, and others written backwards"),
 }

@@ -13,20 +13,23 @@
  * it, for two texts in memory:
  *
  *     DiffText a, b;
- *     diff_text(&a, data, size);           the lines, pointing into data
+ *     diff_text(&a, data, size);             the lines, pointing into data
  *     diff_text(&b, data2, size2);
  *     DiffScript s;
- *     diff_table(&s, &a, &b);              the edit script
- *     diff_myers(&s, &a, &b);              the same length of script, quicker  @from 06.03
- *     if (s.ndel + s.nins > 0)             the texts differ
- *         diff_unified(stdout, &a, &b, &s, 3);   its hunks, 3 lines of context  @from 06.02
- *     diff_script_free(&s);                                                    @from 06.02
+ *     diff_table(&s, &a, &b);                lines to delete and insert: s.ndel, s.nins
+ *                                            and the script itself: s.edits         @from 06.02
+ *     diff_myers(&s, &a, &b);                or this: as few, and quicker           @from 06.03
+ *     diff_unified(stdout, &a, &b, &s, 3);   the script as hunks, 3 lines of context  @from 06.02
+ *     diff_script_free(&s);                                                         @from 06.02
  *     diff_text_free(&a);
  *     diff_text_free(&b);
  *
- * DS_STATS=1: diff_table prints "stats: lcs: ..." and diff_myers "stats:
- * myers: ..." (each file says what they count). DS_TRACE=1: each prints
- * its steps on stderr, for texts of TRACE_LINES lines or fewer.
+ * The texts are the same when s.ndel + s.nins is 0.
+ *
+ * DS_STATS=1: diff_table prints "stats: lcs: ...", as diff.c says.
+ * diff_myers prints "stats: myers: ...", as myers.c says.                   @from 06.03
+ * DS_TRACE=1: each algorithm prints its steps on stderr, for texts of
+ * TRACE_LINES lines or fewer.
  */
 #ifndef DIFF_H
 #define DIFF_H
@@ -79,15 +82,24 @@ void   diff_text_free(DiffText *t);
 void diff_number(DiffText *a, DiffText *b);
 
 /* The script that turns a into b, from a table of (lines of a + 1) x
- * (lines of b + 1) cells. A table over TABLE_MAX_BYTES is an error. */
+ * (lines of b + 1) cells. */
 void diff_table(DiffScript *s, DiffText *a, DiffText *b);
-#define TABLE_MAX_BYTES ((size_t)4 << 30)
 
 // @from 06.03
 /* The same length of script, by Myers' O(ND) search: its work grows with
  * the size of the script, not with the size of the texts. */
 void diff_myers(DiffScript *s, DiffText *a, DiffText *b);
 // @end
+
+/* The most memory the table may take: past it, diff_table stops with an
+ * error rather than run the machine out of memory. 4 GB is the table of
+ * two files of 32768 lines.
+ * Myers' kept points are held to it too.                                @from 06.03
+ * To try more: make clean; make EXTRA_CFLAGS=-DDIFF_MAX_BYTES=8589934592
+ */
+#ifndef DIFF_MAX_BYTES
+#define DIFF_MAX_BYTES ((size_t)4 << 30)
+#endif
 
 // @from 06.02
 /* Print the script's changes as the hunks of a unified diff, each with up

@@ -33,8 +33,8 @@
  *
  * DS_STATS=1 prints, as well as the lines of the structures it uses,
  * "stats: diff: lines A and B, common C, deleted D, inserted I": the
- * lines of each file, and the lines kept, deleted and inserted;
- * then ", hunks H": the hunks printed.                                     @from 06.02
+ * lines of each file, and the lines kept, deleted and inserted.
+ * At the end of it, ", hunks H": the hunks printed.                       @from 06.02
  * DS_TRACE=1 prints the steps of the algorithm on stderr, for files of
  * up to 200 lines (lib/diff.h).
  */

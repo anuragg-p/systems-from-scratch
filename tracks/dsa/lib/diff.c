@@ -21,7 +21,7 @@
  * answers for the whole texts. It has (n+1) x (m+1) cells of four bytes
  * for texts of n and m lines: its time and its memory both grow with the
  * product of the two lengths.
- *
+ *                                                                         @from 06.02
  * A walk from L[0][0] to the far corner reads the script off the          @from 06.02
  * table; its changes, with a few unchanged lines around each, are the     @from 06.02
  * hunks of a unified diff.                                                @from 06.02
@@ -102,14 +102,14 @@ void diff_number(DiffText *a, DiffText *b)
     // @end
 }
 
-/* A table of rows x cols cells, refused when it would be too big to be
- * worth waiting for. */
+/* A table of rows x cols cells, refused when it would take more than
+ * DIFF_MAX_BYTES. */
 static uint32_t *new_table(size_t rows, size_t cols)
 {
     double mb = (double)rows * (double)cols * sizeof(uint32_t) / (1 << 20);
-    if (mb > (double)(TABLE_MAX_BYTES >> 20))
+    if (mb > (double)(DIFF_MAX_BYTES >> 20))
         die("%zu and %zu lines: the table would take %.0f MB, more than the %zu MB it may",
-            rows - 1, cols - 1, mb, (size_t)(TABLE_MAX_BYTES >> 20));
+            rows - 1, cols - 1, mb, (size_t)(DIFF_MAX_BYTES >> 20));
     st.bytes += (long)(rows * cols * sizeof(uint32_t));
     return xmalloc(rows * cols * sizeof(uint32_t));
 }
@@ -349,7 +349,7 @@ static int next_hunk(const DiffScript *s, size_t i, size_t context, Hunk *h)
  * order the script has them in. */
 static void print_hunk(FILE *out, const DiffText *a, const DiffText *b, const DiffScript *s, const Hunk *h)
 {
-    // @build 06.02 print a hunk: "@@ -a,n +b,m @@", then its lines
+    // @build 06.02 print a hunk: its header, then its lines
     const DiffEdit *e = (const DiffEdit *)s->edits.data;
     size_t na = 0, nb = 0;
     for (size_t k = h->first; k < h->last; k++) {

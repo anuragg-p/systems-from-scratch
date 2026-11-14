@@ -1,6 +1,8 @@
-# diff: comparing two files line by line (module 06). The engine is in lib/:
-# lib/diff.c (the table) and lib/myers.c (Myers' search), behind lib/diff.h,
-# for git's diff to use as well; tools/diff/diff.c is the command.
+# diff: comparing two files line by line (module 06). tools/diff/diff.c is
+# the command; the engine, which git's diff uses as well, is in lib/, behind
+# lib/diff.h:
+#   lib/diff.c    the table
+#   lib/myers.c   Myers' search   @from 06.03
 
 TOOLS += bin/diff
 LIB += build/lib/diff.o

@@ -313,9 +313,11 @@ static size_t apply(const FilePatch *fp, const DiffText *f, Array *out, const ch
             continue;
         }
         shift = (long)at - (long)stated;
-        if (shift != 0 && !quiet)
+        if (shift != 0 && !quiet) {
             printf("Hunk #%zu succeeded at %zu (offset %ld line%s).\n", k + 1, at + 1, shift,
                    shift == 1 || shift == -1 ? "" : "s");
+            fflush(stdout);
+        }
         for (; done < at; done++)
             put(out, fl[done].s, fl[done].len);
         const HunkLine *hl = (const HunkLine *)h->lines.data;
@@ -409,8 +411,10 @@ static size_t patch_file(const FilePatch *fp, const char *name, const char *out_
         fprintf(stderr, "patch: %s: the patch makes this file, and it is there already\n", name);
         return fp->hunks.len;
     }
-    if (!quiet)
+    if (!quiet) {
         printf("patching file %s\n", name);
+        fflush(stdout);              /* before any error about it, on stderr */
+    }
     st.files++;
     DiffText f;
     diff_text(&f, data ? data : "", size);

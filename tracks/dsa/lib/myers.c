@@ -58,6 +58,17 @@ static int32_t at(const Array *v, long d, long k)
     return ((const int32_t *)v->data)[d * (d + 1) / 2 + (k + d) / 2];
 }
 
+/* Keep round d's point on the next diagonal, x. The kept points may take
+ * no more memory than the table may (DIFF_MAX_BYTES): two files with
+ * nothing in common take D x D / 2 of them. */
+static void keep(Array *v, long x)
+{
+    if ((v->len + 1) * sizeof(int32_t) > DIFF_MAX_BYTES)
+        die("the files are so different that the search would keep more than %zu MB of points",
+            (size_t)(DIFF_MAX_BYTES >> 20));
+    *(int32_t *)array_push(v) = (int32_t)x;
+}
+
 /* Whether round d reached diagonal k by a step down from k+1 (an
  * insertion), rather than right from k-1 (a deletion): down when k is
  * the lowest diagonal, or when k+1's point is further on; right on a tie,
@@ -91,7 +102,7 @@ static long search(const DiffText *a, const DiffText *b, Array *v)
                 x++, y++;
                 st.cells++;
             }
-            *(int32_t *)array_push(v) = (int32_t)x;
+            keep(v, x);
             if (x >= n && y >= m)
                 return d;
         }
