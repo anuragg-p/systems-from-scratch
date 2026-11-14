@@ -341,7 +341,7 @@ static void set_len(Node *n, size_t pos, size_t len)
 static void cut(PTree *p, size_t pos)
 {
     // @build 03.05 cut the piece pos is inside in two
-    size_t off;
+    size_t off = 0;
     if (pos >= p->text.len)
         return;
     Node *n = find(p->root, pos, &off);
@@ -392,7 +392,7 @@ static void ptree_erase(Text *t, size_t pos, size_t n)
     long visited = st.visited;
     cut(p, pos);
     cut(p, pos + n);
-    size_t left = n, off;
+    size_t left = n, off = 0;
     while (left > 0) {
         Node *x = find(p->root, pos, &off);
         left -= x->span.len;

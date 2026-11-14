@@ -1,0 +1,32 @@
+What the top-level NOTICE should say for module 03 of the dsa track, in its
+dsa section (it says "Upstream None" for the track now; this is the one
+exception, as plans/dsa.md says). Suggested text, in NOTICE's own layout:
+
+Upstream   For module 03 only (tools/edit): kilo, by Salvatore Sanfilippo
+           (antirez), https://github.com/antirez/kilo (master, commit
+           323d93b29bd89a2cb446de90c4ed4fea1764176e), by way of this
+           course's kilo track (tracks/kilo).
+Licence    BSD-2-Clause. Copyright (c) 2016, Salvatore Sanfilippo
+           <antirez at gmail dot com>. The full text is in
+           tracks/dsa/tools/edit/LICENSE, which comes with the project's
+           files from lesson 03.01 on; edit.c keeps the notice in its
+           header.
+Taken      tools/edit/edit.c: the kilo track's finished kilo.c (raw mode,
+           reading keys, drawing the screen, moving the cursor, search,
+           saving, the quit warning), with its rows replaced by the text
+           interface of lib/text.h, saving by writing a new file and
+           renaming it over the old one, undo and redo keys, and a replay
+           mode with no terminal. The changes are listed in
+           tools/edit/NOTES.md.
+Ours       The structures that hold the text (lib/text.c, flat.c, gap.c,
+           undo.c, pieces.c, ptree.c and their headers), the replay mode,
+           tools/edit/gen.py and the internal checks
+           (tests/tools/edit.py, tests/03*.py).
+
+And in "Ours" of the dsa section, "All of the code" would then read "All
+of the code but tools/edit/edit.c".
+
+tests/tools/edit.py names kilo in UPSTREAM with "derived": False and
+licence_file tools/edit/LICENSE, so /credits prints the licence whole. It
+is not "derived": True because the site marks every lesson of a track
+"Code derived from ..." when it is, and only module 03 is.
