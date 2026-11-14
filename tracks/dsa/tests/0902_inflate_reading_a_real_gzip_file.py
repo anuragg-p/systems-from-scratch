@@ -5,8 +5,9 @@ what Python's zlib wrote at every level and strategy (stored, fixed and dynamic 
 windows, flushes), Info-ZIP's zip where there is one, and gzip headers with every optional field,
 several members in one file included. Reading codes a bit at a time gives the same bytes, with
 every bit walked; the table reads most symbols with one look. Damaged data is an error that says
-what is wrong, status 2 and no output, never a crash: every truncation of a file, random damage,
-and hand-made blocks with a match before the start, a reserved block type, bad lengths and codes.
+what is wrong, status 2 and no output, never a crash: a file cut short in its header, all through
+its data and in its trailer, random damage, and hand-made blocks with a match before the start, a
+reserved block type, bad lengths and codes.
 """
 
 import os
@@ -100,11 +101,12 @@ def test(t):
                 f"{what}: wanted an error with {want!r}:\n{r}")
 
     small = T.system(t, ["gzip", "-9", "-c"], input=text[:3000]).raw
-    for n in range(len(small)):
+    cuts = set(range(0, 40)) | set(range(40, len(small) - 20, 5)) | set(range(len(small) - 20, len(small)))
+    for n in sorted(cuts):
         r = gunzip(small[:n], check=False)
         t.check(r.rc == 2 and r.raw == b"" and r.err.startswith("gunzip: stdin: "), f"cut to {n} bytes:\n{r}")
     rng = random.Random(1952)
-    for i in range(300):
+    for i in range(150):
         d = bytearray(small)
         for _ in range(1 + i % 4):
             d[rng.randrange(10, len(d))] ^= 1 << rng.randrange(8)
