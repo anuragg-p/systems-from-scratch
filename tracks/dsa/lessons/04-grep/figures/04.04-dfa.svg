@@ -1,0 +1,280 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 318" fill="none">
+<title>The DFA for a?a?a?aaa built while it reads aabaaa and then aaa: each set of NFA states becomes a state the first time it comes, and is reused after</title>
+<defs><marker id="f0404a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0404a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0404a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="22" font-size="11">printf &#x27;aabaaa\naaa\n&#x27; | DS_TRACE=1 bin/grep -E --algo=dfa &#x27;a?a?a?aaa&#x27;</text>
+<text class="tm" x="24" y="46" font-size="10.5">each DFA state is a set of the NFA&#x27;s states (04.03), and keeps where each byte took it</text>
+<g class="step"><title>Line aabaaa: before the first byte the NFA's start states, {1 3 5 6}, are a set never seen: it is built as D0, with every transition unknown.</title>
+<circle class="a fa" cx="104" cy="98" r="22" stroke-width="1.5"/>
+<text class="f mono" x="104" y="103" font-size="13" font-weight="700" text-anchor="middle">D0</text>
+<text class="ta mono" x="104" y="66" font-size="10.5" font-weight="600" text-anchor="middle">{1 3 5 6}</text>
+<circle class="m f" cx="238" cy="98" r="22" stroke-width="1.5"/>
+<circle class="m f" cx="372" cy="98" r="22" stroke-width="1.5"/>
+<circle class="m f" cx="506" cy="98" r="22" stroke-width="1.5"/>
+<line class="s" x1="48" y1="98" x2="79" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="tm" x="46" y="92" font-size="9.5">start</text>
+<text class="tm" x="94" y="212" font-size="10" text-anchor="end">line 1</text>
+<rect class="s f" x="104" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="114.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="128" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="138.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="152" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="162.5" y="212" font-size="13" font-weight="700" text-anchor="middle">b</text>
+<rect class="s f" x="176" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="186.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="200" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="210.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="224" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="234.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<text class="ta mono" x="104" y="252" font-size="12" font-weight="700">hits 0, misses 0, states built 1</text>
+<text class="t" x="104" y="274" font-size="11">built: a new set of NFA states, a new state</text>
+<text class="tm" x="104" y="296" font-size="10.5">D0 to D3 are found by their sets in the hash table of 01.02</text>
+</g>
+<g class="step"><title>"a" at 0: D0 has no transition on it yet: worked out from the NFA, it leads to a new set, built as D1, and kept in D0's table.</title>
+<line class="a" x1="128" y1="98" x2="212" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-aa)"/>
+<text class="ta mono" x="171" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<circle class="s f" cx="104" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="104" y="103" font-size="13" font-weight="700" text-anchor="middle">D0</text>
+<text class="tm mono" x="104" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6}</text>
+<circle class="a fa" cx="238" cy="98" r="22" stroke-width="1.5"/>
+<text class="f mono" x="238" y="103" font-size="13" font-weight="700" text-anchor="middle">D1</text>
+<text class="ta mono" x="238" y="66" font-size="10.5" font-weight="600" text-anchor="middle">{1 3 5 6 7}</text>
+<circle class="m f" cx="372" cy="98" r="22" stroke-width="1.5"/>
+<circle class="m f" cx="506" cy="98" r="22" stroke-width="1.5"/>
+<line class="s" x1="48" y1="98" x2="79" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="tm" x="46" y="92" font-size="9.5">start</text>
+<text class="tm" x="94" y="212" font-size="10" text-anchor="end">line 1</text>
+<rect class="a fa" x="104" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="114.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="128" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="138.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="152" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="162.5" y="212" font-size="13" font-weight="700" text-anchor="middle">b</text>
+<rect class="s f" x="176" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="186.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="200" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="210.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="224" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="234.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<text class="ta mono" x="104" y="252" font-size="12" font-weight="700">hits 0, misses 1, states built 2</text>
+<text class="t" x="104" y="274" font-size="11">built: a new set of NFA states, a new state</text>
+<text class="tm" x="104" y="296" font-size="10.5">D0 to D3 are found by their sets in the hash table of 01.02</text>
+</g>
+<g class="step"><title>"a" at 1: D1 has no transition on it yet: worked out from the NFA, it leads to a new set, built as D2, and kept in D1's table.</title>
+<line class="s" x1="128" y1="98" x2="212" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="171" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<line class="a" x1="262" y1="98" x2="346" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-aa)"/>
+<text class="ta mono" x="305" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<circle class="s f" cx="104" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="104" y="103" font-size="13" font-weight="700" text-anchor="middle">D0</text>
+<text class="tm mono" x="104" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6}</text>
+<circle class="s f" cx="238" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="238" y="103" font-size="13" font-weight="700" text-anchor="middle">D1</text>
+<text class="tm mono" x="238" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7}</text>
+<circle class="a fa" cx="372" cy="98" r="22" stroke-width="1.5"/>
+<text class="f mono" x="372" y="103" font-size="13" font-weight="700" text-anchor="middle">D2</text>
+<text class="ta mono" x="372" y="66" font-size="10.5" font-weight="600" text-anchor="middle">{1 3 5 6 7 8}</text>
+<circle class="m f" cx="506" cy="98" r="22" stroke-width="1.5"/>
+<line class="s" x1="48" y1="98" x2="79" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="tm" x="46" y="92" font-size="9.5">start</text>
+<text class="tm" x="94" y="212" font-size="10" text-anchor="end">line 1</text>
+<rect class="s fs" x="104" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="114.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="a fa" x="128" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="138.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="152" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="162.5" y="212" font-size="13" font-weight="700" text-anchor="middle">b</text>
+<rect class="s f" x="176" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="186.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="200" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="210.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="224" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="234.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<text class="ta mono" x="104" y="252" font-size="12" font-weight="700">hits 0, misses 2, states built 3</text>
+<text class="t" x="104" y="274" font-size="11">built: a new set of NFA states, a new state</text>
+<text class="tm" x="104" y="296" font-size="10.5">D0 to D3 are found by their sets in the hash table of 01.02</text>
+</g>
+<g class="step"><title>"b" at 2: worked out from the NFA, it leads to {1 3 5 6}: the hash table has that set already, as D0. No new state.</title>
+<line class="s" x1="128" y1="98" x2="212" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="171" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<line class="s" x1="262" y1="98" x2="346" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="305" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<path class="a" d="M372 120 C 372 156, 104 156, 104 123" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0404a-aa)"/>
+<text class="ta mono" x="238" y="160" font-size="12" font-weight="700" text-anchor="middle">b</text>
+<circle class="a fa" cx="104" cy="98" r="22" stroke-width="1.5"/>
+<text class="f mono" x="104" y="103" font-size="13" font-weight="700" text-anchor="middle">D0</text>
+<text class="tm mono" x="104" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6}</text>
+<circle class="s f" cx="238" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="238" y="103" font-size="13" font-weight="700" text-anchor="middle">D1</text>
+<text class="tm mono" x="238" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7}</text>
+<circle class="s f" cx="372" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="372" y="103" font-size="13" font-weight="700" text-anchor="middle">D2</text>
+<text class="tm mono" x="372" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7 8}</text>
+<circle class="m f" cx="506" cy="98" r="22" stroke-width="1.5"/>
+<line class="s" x1="48" y1="98" x2="79" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="tm" x="46" y="92" font-size="9.5">start</text>
+<text class="tm" x="94" y="212" font-size="10" text-anchor="end">line 1</text>
+<rect class="s fs" x="104" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="114.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s fs" x="128" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="138.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="a fa" x="152" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="162.5" y="212" font-size="13" font-weight="700" text-anchor="middle">b</text>
+<rect class="s f" x="176" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="186.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="200" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="210.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="224" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="234.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<text class="ta mono" x="104" y="252" font-size="12" font-weight="700">hits 0, misses 3, states built 3</text>
+<text class="t" x="104" y="274" font-size="11">found: worked out from the NFA, the set already a state</text>
+<text class="tm" x="104" y="296" font-size="10.5">D0 to D3 are found by their sets in the hash table of 01.02</text>
+</g>
+<g class="step"><title>"a" at 3: D0 has been through "a" before: one lookup, D1. A hit: no NFA work.</title>
+<line class="a" x1="128" y1="98" x2="212" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-aa)"/>
+<text class="ta mono" x="171" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<line class="s" x1="262" y1="98" x2="346" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="305" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<path class="s" d="M372 120 C 372 156, 104 156, 104 123" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="238" y="160" font-size="12" font-weight="700" text-anchor="middle">b</text>
+<circle class="s f" cx="104" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="104" y="103" font-size="13" font-weight="700" text-anchor="middle">D0</text>
+<text class="tm mono" x="104" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6}</text>
+<circle class="a fa" cx="238" cy="98" r="22" stroke-width="1.5"/>
+<text class="f mono" x="238" y="103" font-size="13" font-weight="700" text-anchor="middle">D1</text>
+<text class="tm mono" x="238" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7}</text>
+<circle class="s f" cx="372" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="372" y="103" font-size="13" font-weight="700" text-anchor="middle">D2</text>
+<text class="tm mono" x="372" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7 8}</text>
+<circle class="m f" cx="506" cy="98" r="22" stroke-width="1.5"/>
+<line class="s" x1="48" y1="98" x2="79" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="tm" x="46" y="92" font-size="9.5">start</text>
+<text class="tm" x="94" y="212" font-size="10" text-anchor="end">line 1</text>
+<rect class="s fs" x="104" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="114.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s fs" x="128" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="138.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s fs" x="152" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="162.5" y="212" font-size="13" font-weight="700" text-anchor="middle">b</text>
+<rect class="a fa" x="176" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="186.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="200" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="210.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="224" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="234.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<text class="ta mono" x="104" y="252" font-size="12" font-weight="700">hits 1, misses 3, states built 3</text>
+<text class="t" x="104" y="274" font-size="11">hit: the state&#x27;s table had it</text>
+<text class="tm" x="104" y="296" font-size="10.5">D0 to D3 are found by their sets in the hash table of 01.02</text>
+</g>
+<g class="step"><title>"a" at 4: D1 has been through "a" before: one lookup, D2. A hit: no NFA work.</title>
+<line class="s" x1="128" y1="98" x2="212" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="171" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<line class="a" x1="262" y1="98" x2="346" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-aa)"/>
+<text class="ta mono" x="305" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<path class="s" d="M372 120 C 372 156, 104 156, 104 123" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="238" y="160" font-size="12" font-weight="700" text-anchor="middle">b</text>
+<circle class="s f" cx="104" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="104" y="103" font-size="13" font-weight="700" text-anchor="middle">D0</text>
+<text class="tm mono" x="104" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6}</text>
+<circle class="s f" cx="238" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="238" y="103" font-size="13" font-weight="700" text-anchor="middle">D1</text>
+<text class="tm mono" x="238" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7}</text>
+<circle class="a fa" cx="372" cy="98" r="22" stroke-width="1.5"/>
+<text class="f mono" x="372" y="103" font-size="13" font-weight="700" text-anchor="middle">D2</text>
+<text class="tm mono" x="372" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7 8}</text>
+<circle class="m f" cx="506" cy="98" r="22" stroke-width="1.5"/>
+<line class="s" x1="48" y1="98" x2="79" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="tm" x="46" y="92" font-size="9.5">start</text>
+<text class="tm" x="94" y="212" font-size="10" text-anchor="end">line 1</text>
+<rect class="s fs" x="104" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="114.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s fs" x="128" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="138.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s fs" x="152" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="162.5" y="212" font-size="13" font-weight="700" text-anchor="middle">b</text>
+<rect class="s fs" x="176" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="186.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="a fa" x="200" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="210.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s f" x="224" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="234.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<text class="ta mono" x="104" y="252" font-size="12" font-weight="700">hits 2, misses 3, states built 3</text>
+<text class="t" x="104" y="274" font-size="11">hit: the state&#x27;s table had it</text>
+<text class="tm" x="104" y="296" font-size="10.5">D0 to D3 are found by their sets in the hash table of 01.02</text>
+</g>
+<g class="step"><title>"a" at 5: D2 has no transition on it yet: worked out from the NFA, it leads to a new set, built as D3, which holds the match state.</title>
+<line class="s" x1="128" y1="98" x2="212" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="171" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<line class="s" x1="262" y1="98" x2="346" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="305" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<path class="s" d="M372 120 C 372 156, 104 156, 104 123" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="238" y="160" font-size="12" font-weight="700" text-anchor="middle">b</text>
+<line class="a" x1="396" y1="98" x2="480" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-aa)"/>
+<text class="ta mono" x="439" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<circle class="s f" cx="104" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="104" y="103" font-size="13" font-weight="700" text-anchor="middle">D0</text>
+<text class="tm mono" x="104" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6}</text>
+<circle class="s f" cx="238" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="238" y="103" font-size="13" font-weight="700" text-anchor="middle">D1</text>
+<text class="tm mono" x="238" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7}</text>
+<circle class="s f" cx="372" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="372" y="103" font-size="13" font-weight="700" text-anchor="middle">D2</text>
+<text class="tm mono" x="372" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7 8}</text>
+<circle class="a af" cx="506" cy="98" r="23" stroke-width="1.5"/>
+<circle class="a fa" cx="506" cy="98" r="18" stroke-width="1.5"/>
+<text class="f mono" x="506" y="103" font-size="13" font-weight="700" text-anchor="middle">D3</text>
+<text class="ta mono" x="506" y="66" font-size="10.5" font-weight="600" text-anchor="middle">{1 3 5 6 7 8 9}</text>
+<line class="s" x1="48" y1="98" x2="79" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="tm" x="46" y="92" font-size="9.5">start</text>
+<text class="tm" x="94" y="212" font-size="10" text-anchor="end">line 1</text>
+<rect class="s fs" x="104" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="114.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s fs" x="128" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="138.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s fs" x="152" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="162.5" y="212" font-size="13" font-weight="700" text-anchor="middle">b</text>
+<rect class="s fs" x="176" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="186.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s fs" x="200" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="210.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="a fa" x="224" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="234.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<text class="ta mono" x="104" y="252" font-size="12" font-weight="700">hits 2, misses 4, states built 4</text>
+<text class="t" x="104" y="274" font-size="11">built: a new set of NFA states, a new state</text>
+<text class="tm" x="104" y="296" font-size="10.5">D0 to D3 are found by their sets in the hash table of 01.02</text>
+</g>
+<g class="step"><title>The next line, aaa: start in D0, and every byte is a hit, one lookup in the state's table. The NFA does no work at all; D3 matches.</title>
+<line class="s" x1="128" y1="98" x2="212" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="171" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<line class="s" x1="262" y1="98" x2="346" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="305" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<path class="s" d="M372 120 C 372 156, 104 156, 104 123" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0404a-ah)"/>
+<text class="t mono" x="238" y="160" font-size="12" font-weight="700" text-anchor="middle">b</text>
+<line class="a" x1="396" y1="98" x2="480" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-aa)"/>
+<text class="ta mono" x="439" y="91" font-size="12" font-weight="700" text-anchor="middle">a</text>
+<circle class="s f" cx="104" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="104" y="103" font-size="13" font-weight="700" text-anchor="middle">D0</text>
+<text class="tm mono" x="104" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6}</text>
+<circle class="s f" cx="238" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="238" y="103" font-size="13" font-weight="700" text-anchor="middle">D1</text>
+<text class="tm mono" x="238" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7}</text>
+<circle class="s f" cx="372" cy="98" r="22" stroke-width="1.5"/>
+<text class="t mono" x="372" y="103" font-size="13" font-weight="700" text-anchor="middle">D2</text>
+<text class="tm mono" x="372" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7 8}</text>
+<circle class="a af" cx="506" cy="98" r="23" stroke-width="1.5"/>
+<circle class="a fa" cx="506" cy="98" r="18" stroke-width="1.5"/>
+<text class="f mono" x="506" y="103" font-size="13" font-weight="700" text-anchor="middle">D3</text>
+<text class="tm mono" x="506" y="66" font-size="10.5" text-anchor="middle">{1 3 5 6 7 8 9}</text>
+<line class="s" x1="48" y1="98" x2="79" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0404a-ah)"/>
+<text class="tm" x="46" y="92" font-size="9.5">start</text>
+<text class="tm" x="94" y="212" font-size="10" text-anchor="end">next line</text>
+<rect class="s fs" x="104" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="114.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="s fs" x="128" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="138.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<rect class="a fa" x="152" y="196" width="21" height="24" rx="4" stroke-width="1.5"/>
+<text class="f mono" x="162.5" y="212" font-size="13" font-weight="700" text-anchor="middle">a</text>
+<text class="ta mono" x="104" y="252" font-size="12" font-weight="700">hits 5, misses 4, states built 4</text>
+<text class="t" x="104" y="274" font-size="11">hit: the state&#x27;s table had it</text>
+<text class="tm" x="104" y="296" font-size="10.5">D0 to D3 are found by their sets in the hash table of 01.02</text>
+</g>
+</svg>
