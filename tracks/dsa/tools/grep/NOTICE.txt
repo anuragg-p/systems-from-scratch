@@ -1,0 +1,15 @@
+What the top-level NOTICE should say of grep, in the dsa section:
+
+grep (tools/grep/, lib/strsearch.c, lib/re.c, lib/nfa.c, lib/dfa.c)
+
+Upstream   None. Written from POSIX's definition of extended regular
+           expressions and from the published algorithms: Horspool's
+           search (1980), Thompson's construction (1968), and a DFA
+           built as it runs, as Russ Cox describes RE2's. Checked
+           against the machine's grep: GNU grep 3.11 on Linux
+           (https://www.gnu.org/software/grep/, GPL-3.0-or-later; not
+           part of GNU coreutils, which the dsa section names) and
+           macOS's BSD grep 2.6.0-FreeBSD (BSD-2-Clause). No code from
+           any of them is in the track.
+Data       None new: grep runs on data/book.txt and on the track's own
+           source; tools/grep/gen.py (ours) makes the rest.
