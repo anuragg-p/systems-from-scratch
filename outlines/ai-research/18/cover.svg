@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Learning from reward: an agent acts, the environment answers with a reward, and PPO clips how far one update may move the policy</title>
+<defs><marker id="r18-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="r18-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s fs" x="98" y="36" width="170" height="34" rx="8" stroke-width="1.5"/>
+<text class="t" x="183.0" y="56.9" font-size="11" font-weight="700" text-anchor="middle">agent: a policy network</text>
+<rect class="s f" x="98" y="132" width="170" height="96" rx="8" stroke-width="1.5"/>
+<text class="t" x="110" y="150" font-size="11" font-weight="700">environment</text>
+<line class="m" x1="118" y1="210" x2="248" y2="210" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s fs" x="165.0" y="194" width="36" height="16" rx="3" stroke-width="1.5"/>
+<circle class="s f" cx="173.0" cy="214" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="193.0" cy="214" r="3.5" stroke-width="1.5"/>
+<line class="a" x1="183.0" y1="194" x2="197.0" y2="137.7" stroke-width="4" stroke-linecap="round"/>
+<path class="s" d="M274 53 H 292 V 172 H 272" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r18-ah)"/>
+<text class="tm" x="298" y="104" font-size="10.5">action:</text>
+<text class="t mono" x="298" y="119" font-size="10.5">push left</text>
+<text class="t mono" x="298" y="133" font-size="10.5">or right</text>
+<path class="s" d="M92 172 H 74 V 53 H 92" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r18-ah)"/>
+<text class="tm" x="68" y="108" font-size="10.5" text-anchor="end">state,</text>
+<text class="tm" x="68" y="123" font-size="10.5" text-anchor="end">reward</text>
+<text class="tm" x="24" y="248" font-size="10.5">state: cart position and speed, pole angle and spin</text>
+<text class="ta" x="24" y="263" font-size="10.5" font-weight="600">reward: +1 for every step the pole stays up</text>
+<text class="t" x="384" y="30" font-size="11.5" font-weight="700">PPO&#x27;s objective, one action</text>
+<text class="t mono" x="384" y="50" font-size="10.5">L = min(r A, clip(r, 1-e, 1+e) A)</text>
+<text class="tm mono" x="384" y="65" font-size="10.5">r = pi_new(a|s) / pi_old(a|s)</text>
+<line class="m" x1="390" y1="139.0" x2="494" y2="139.0" stroke-width="1.5" stroke-linecap="round"/>
+<path class="a" d="M390.0 127.2 L391.7 126.7 L393.3 126.1 L395.0 125.5 L396.7 124.9 L398.3 124.3 L400.0 123.7 L401.7 123.1 L403.3 122.5 L405.0 122.0 L406.7 121.4 L408.3 120.8 L410.0 120.2 L411.7 119.6 L413.3 119.0 L415.0 118.4 L416.7 117.9 L418.3 117.3 L420.0 116.7 L421.7 116.1 L423.3 115.5 L425.0 114.9 L426.7 114.3 L428.3 113.7 L430.0 113.2 L431.7 112.6 L433.3 112.0 L435.0 111.4 L436.7 110.8 L438.3 110.2 L440.0 109.6 L441.7 109.0 L443.3 108.5 L445.0 107.9 L446.7 107.3 L448.3 106.7 L450.0 106.1 L451.7 105.5 L453.3 104.9 L455.0 104.3 L456.7 103.8 L458.3 103.8 L460.0 103.8 L461.7 103.8 L463.3 103.8 L465.0 103.8 L466.7 103.8 L468.3 103.8 L470.0 103.8 L471.7 103.8 L473.3 103.8 L475.0 103.8 L476.7 103.8 L478.3 103.8 L480.0 103.8 L481.7 103.8 L483.3 103.8 L485.0 103.8 L486.7 103.8 L488.3 103.8 L490.0 103.8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="423.3333333333333" y1="88" x2="423.3333333333333" y2="190" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="423.3333333333333" y="208" font-size="9.5" text-anchor="middle">0.8</text>
+<line class="m" x1="456.66666666666663" y1="88" x2="456.66666666666663" y2="190" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="456.66666666666663" y="208" font-size="9.5" text-anchor="middle">1.2</text>
+<circle class="a fa" cx="440.0" cy="109.6" r="3" stroke-width="1.5"/>
+<text class="tm mono" x="494" y="153.0" font-size="10" text-anchor="end">r</text>
+<text class="t mono" x="440.0" y="78" font-size="10.5" font-weight="600" text-anchor="middle">A &gt; 0</text>
+<line class="m" x1="510" y1="139.0" x2="614" y2="139.0" stroke-width="1.5" stroke-linecap="round"/>
+<path class="a" d="M510.0 162.5 L511.7 162.5 L513.3 162.5 L515.0 162.5 L516.7 162.5 L518.3 162.5 L520.0 162.5 L521.7 162.5 L523.3 162.5 L525.0 162.5 L526.7 162.5 L528.3 162.5 L530.0 162.5 L531.7 162.5 L533.3 162.5 L535.0 162.5 L536.7 162.5 L538.3 162.5 L540.0 162.5 L541.7 162.5 L543.3 162.5 L545.0 163.1 L546.7 163.7 L548.3 164.3 L550.0 164.8 L551.7 165.4 L553.3 166.0 L555.0 166.6 L556.7 167.2 L558.3 167.8 L560.0 168.4 L561.7 169.0 L563.3 169.6 L565.0 170.1 L566.7 170.7 L568.3 171.3 L570.0 171.9 L571.7 172.5 L573.3 173.1 L575.0 173.7 L576.7 174.2 L578.3 174.8 L580.0 175.4 L581.7 176.0 L583.3 176.6 L585.0 177.2 L586.7 177.8 L588.3 178.4 L590.0 178.9 L591.7 179.5 L593.3 180.1 L595.0 180.7 L596.7 181.3 L598.3 181.9 L600.0 182.5 L601.7 183.1 L603.3 183.7 L605.0 184.2 L606.7 184.8 L608.3 185.4 L610.0 186.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="543.3333333333334" y1="88" x2="543.3333333333334" y2="190" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="543.3333333333334" y="208" font-size="9.5" text-anchor="middle">0.8</text>
+<line class="m" x1="576.6666666666666" y1="88" x2="576.6666666666666" y2="190" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="576.6666666666666" y="208" font-size="9.5" text-anchor="middle">1.2</text>
+<circle class="a fa" cx="560.0" cy="168.4" r="3" stroke-width="1.5"/>
+<text class="tm mono" x="614" y="153.0" font-size="10" text-anchor="end">r</text>
+<text class="t mono" x="560.0" y="78" font-size="10.5" font-weight="600" text-anchor="middle">A &lt; 0</text>
+<text class="tm" x="384" y="228" font-size="10.5">e = 0.2; the dot: r = 1, the old policy</text>
+<text class="tm" x="384" y="243" font-size="10.5">A &gt; 0: flat past 1+e; A &lt; 0: flat below 1-e.</text>
+<text class="tm" x="384" y="258" font-size="10.5">No gain from moving the policy further.</text>
+<text class="tm" x="24" y="288" font-size="10.5">Three agents on one environment: Q-learning, a policy gradient, then PPO. A: the advantage of the action.</text>
+</svg>
