@@ -361,8 +361,20 @@ never mention it.
 
 ## 00 The workbench (labs, no regions)
 
-`./learn run kilo -- file.txt` runs the finished editor (files in
-`build/at/kilo/finished/`); without a file, it edits `learn.txt` there.
+The workbench describes the editor as the core leaves it, the project at
+05.02: its runs are `./learn run kilo --at 05.02 -- file.txt` (files in
+`build/at/kilo/05.02/`; without a file, it edits `learn.txt` there), and
+its quotes, patches and facts are `at=05.02`. So no extension changes a
+workbench lesson. `./learn run kilo` with no `--at` runs the finished
+project, every extension in it (`build/at/kilo/finished/`); 00.01 says so
+in one sentence where it first runs the editor. xv6's 00.02 does the same
+with the last lesson of its core, 07.03.
+
+Measured at 05.02 (macOS): kilo.c is 1068 lines and 30 functions (a line
+at the left margin ending in ") {"; the `fact`s check both); one key on a
+24x80 screen of kilo.c itself is a 1324-byte frame; on 10x44, the frame
+after "!" typed at the end of "world" in hello.txt ("Hello", "world") is
+192 bytes; the first screen of "ab\n" on 6x20 is the 108 bytes below.
 
 ### 00.01 How a terminal editor works
 
@@ -724,13 +736,15 @@ the 16 core lessons written with `./learn files` before the module existed
 and after, compared with `diff -r`: identical).
 
 The finished project (`build/at/kilo/finished/`, every lesson of every
-path) does include it, and the workbench runs that one. For a file with no
-syntax it draws the same bytes as before (departure 29), so 00.02's 108
-bytes still hold; but two numbers in 00.01 are about the finished kilo.c
-and changed with this module: 1472 lines and 35 functions (were 1068 and
-30, with departure 33 in; the lesson's `fact` checks the lines), and 1542 bytes a key on a 24x80
-screen of kilo.c itself (were 1324: its first rows are a comment, now
-cyan). 00.01 says the new numbers. Module 07 will change them again.
+path) does include it. The workbench lessons do not run that one but the
+core's, at 05.02 ("00 The workbench" above), so nothing in them changes
+with this module, or with module 07. For a file with no syntax the
+finished editor draws the same bytes as the core all the same (departure
+29). At first 00.01 stated the finished file's numbers, and they changed
+with this module (1472 lines, 35 functions, 1542 bytes a key on kilo.c,
+its first rows a comment, now cyan, against the core's 1068, 30 and
+1324): that was the wrong dependency, and why the workbench now stays at
+05.02.
 
 ### How the screens below were captured
 

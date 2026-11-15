@@ -67,7 +67,9 @@ list.
 Each extension stands on the finished core and is independent of the
 other: at an extension's lesson the site shows the core plus that
 extension only. So neither may need the other's code, though both are in
-the tree.
+the tree. No core lesson may change when one is added: the workbench
+(00.01, 00.02) runs and measures the core at 05.02, not the finished
+project.
 
 06 Syntax highlighting: upstream's own, cut out of the core in step 1 and
    restored here, in kilo.c, under upstream's names. Real bugs in it are
