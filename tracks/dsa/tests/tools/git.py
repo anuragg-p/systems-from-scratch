@@ -52,7 +52,7 @@ UPSTREAM = [
      "derived": False},
     {"name": "SHA-1 (FIPS 180-4) and the zlib format (RFC 1950)",
      "url": "https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf",
-     "licence": "FIPS 180-4: a U.S. government publication; RFC 1950: free to copy with its notice kept",
+     "licence": "Free to copy with the notice kept (RFC 1950's own licence); FIPS 180-4 is a U.S. government work",
      "owes": "No code. lib/sha1sum.c is written from FIPS 180-4 and lib/zframe.c from RFC 1950.",
      "derived": False,
      "also": [("RFC 1950: ZLIB Compressed Data Format Specification", "https://www.rfc-editor.org/rfc/rfc1950"),

@@ -126,3 +126,45 @@ that opens with the structure and then looks for a use is wrong.
 - Passes on macOS and on Linux (Debian in Docker, GNU tools).
 - Parallel agents work in git worktrees, one each, and commit on their
   own branch; nothing is merged to master unchecked.
+
+## As built (2026-11-15)
+
+- 11 modules, 43 lessons, thirteen programs: paste, freq, sort, look,
+  edit, grep, spell, diff, patch, make, route, gzip, gunzip, git. 43
+  internal tests; every lesson passes ./learn verify.
+- Each tool's notes for lesson writers are in tools/<name>/NOTES.md, and
+  what it owes to others in tools/<name>/NOTICE.txt (folded into NOTICE).
+- Checked against the system's tools on macOS and Linux: sort, look,
+  grep -E and -F, diff and patch both ways, make (GNU 3.81 and 4.4.1)
+  on this track's own Makefile, gzip and gunzip both ways, and the real
+  git both ways (fsck --strict, log, status, apply). spell and route have
+  no system tool: they are checked against plain models in the tests.
+- Where the plan did not fit, and what was done instead:
+  - Some slow versions never become unusable on real input (the plain
+    string scan, the scanning Dijkstra on one city, the bit-at-a-time
+    decoder, the window scan past 32 KB). The lessons say so and show the
+    failure on generated input, or in counts instead of on the clock.
+  - Huffman (09.01) and git objects (10.01) have no honest slow version.
+  - Module 05's trie costs fifty times the word list in memory; the
+    Bloom filter is the memory win, and saves memory, not disk reads.
+  - diff does not call spell's edit distance; it fills its own table.
+    gzip's hash table is its own, not module 01's.
+- Data: data/book.txt (public domain), tools/spell/words.txt (12dicts,
+  public domain, acknowledged), tools/route/london.map (OpenStreetMap,
+  ODbL 1.0: NOT under the repository's MIT licence).
+- module 03's editor is this course's kilo track with its text behind
+  lib/text.h (BSD-2-Clause, licence beside it).
+- git never walks up to a parent repository and writes only to
+  repositories its own init made; every test and lesson uses a fresh
+  temporary directory and a made-up identity.
+- Site changes made for this track: stepped figures, the top bar listing
+  every track, a Copy page button, data files shown by their head, links
+  between lessons.
+- Lessons were written module by module as each tool's code landed, in
+  git worktrees, one per agent. The covers and the map were drawn from
+  the outline first and redrawn from the finished code at the end
+  (art/dsa/covers.py and archmap.py check themselves against the real
+  programs).
+- Not done: syntax highlighting and a language server for kilo (planned
+  extensions); a linear-space Myers; lazy matching in deflate; packs,
+  checkout and merge in git; -e -w -x -o -r in grep.

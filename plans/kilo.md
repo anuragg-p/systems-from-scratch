@@ -62,12 +62,39 @@ The list is the direction. Where upstream's code does not divide this way
 the code, and say so in NOTES.md. Do not restructure the code to fit the
 list.
 
-## Extensions (later, only when asked; each `optional: true`)
+## Extensions (started 2026-11-15 on the owner's word; each `optional: true`)
 
-06 Syntax highlighting: upstream's own, restored as a module.
-07 A language server client: ours. Start a server, speak JSON-RPC over
-   its pipes, show diagnostics, go to definition. Checked against a real
-   server (clangd).
+Each extension stands on the finished core and is independent of the
+other: at an extension's lesson the site shows the core plus that
+extension only. So neither may need the other's code, though both are in
+the tree.
+
+06 Syntax highlighting: upstream's own, cut out of the core in step 1 and
+   restored here, in kilo.c, under upstream's names. Real bugs in it are
+   fixed the way the core's were (the original quoted, a test).
+   06.01 A colour for every character
+   06.02 Numbers and strings
+   06.03 Comments, on one line and across many
+   06.04 Keywords, and a syntax chosen by the file's name
+   06.05 Showing the match
+07 A language server client: ours, in files of its own (kilo.c takes
+   only the calls into it), C99 and POSIX. Checked against a real server,
+   clangd, and against a small scripted server in the tests for what must
+   be exact and for hostile input (a damaged frame, a server that dies
+   mid-message: never a crash, a hang, or a lost file). With no server
+   the editor works as before and says so in one line.
+   07.01 Starting a server: fork, exec and two pipes
+   07.02 Messages: Content-Length and JSON-RPC
+   07.03 Reading JSON: just enough of a parser
+   07.04 Keys and the server at once: poll()
+   07.05 Telling the server what you see: initialize, didOpen, didChange
+   07.06 Diagnostics: errors as you type
+   07.07 Go to definition
+
+The lists are the direction; fit them to the code, as the core's were.
+Order: 06's code; then 06's lessons and 07's code side by side (they
+share kilo.c, so the code is built one extension at a time); then 07's
+lessons; then a read of both. Art for everything, as in the core.
 
 The `dsa` outline's module 03 (gap buffer, piece table, balanced tree)
 builds on this track: it starts from this track's finished core and
