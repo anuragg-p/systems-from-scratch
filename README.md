@@ -667,7 +667,7 @@ Track `dsa` - kind: algorithms - 43 lessons - on the site: `./learn serve`, then
 
 ### A text editor in C, from scratch
 
-Track `kilo` - kind: editor - 16 lessons - on the site: `./learn serve`, then /t/kilo
+Track `kilo` - kind: editor - 16 lessons, +1 optional module - on the site: `./learn serve`, then /t/kilo
 
 
 **Module 00 - The workbench**
@@ -703,6 +703,67 @@ Track `kilo` - kind: editor - 16 lessons - on the site: `./learn serve`, then /t
 
 - 05.01 [Find as you type](tracks/kilo/lessons/05-search/05.01-find-as-you-type.md) - with code
 - 05.02 [Next match, previous match, and going back](tracks/kilo/lessons/05-search/05.02-next-match-previous-match-and-going-back.md) - with code
+
+**Extensions** - optional modules, each independent of the others, each built on the finished core
+
+
+**Module 06 - Syntax highlighting** (optional)
+
+- 06.01 [A colour for every character](tracks/kilo/lessons/06-highlighting/06.01-a-colour-for-every-character.md) - with code
+- 06.02 [Numbers and strings](tracks/kilo/lessons/06-highlighting/06.02-numbers-and-strings.md) - with code
+- 06.03 [Comments, on one line and across many](tracks/kilo/lessons/06-highlighting/06.03-comments-on-one-line-and-across-many.md) - with code
+- 06.04 [Keywords](tracks/kilo/lessons/06-highlighting/06.04-keywords.md) - with code
+- 06.05 [Showing the match](tracks/kilo/lessons/06-highlighting/06.05-showing-the-match.md) - with code
+
+### AI research, from a first experiment to your own result
+
+Track `research` - kind: research - 27 lessons - on the site: `./learn serve`, then /t/research
+
+
+**Module 00 - The workbench**
+
+- 00.01 [One experiment, end to end](tracks/research/lessons/00-workbench/00.01-one-experiment-end-to-end.md) - with code, decision boundary
+- 00.02 [The same run twice: seeds, configs and logs](tracks/research/lessons/00-workbench/00.02-the-same-run-twice-seeds-configs-and-logs.md) - with code, decision boundary
+- 00.03 [Five seeds: how far a number moves by chance](tracks/research/lessons/00-workbench/00.03-five-seeds-how-far-a-number-moves-by-chance.md) - with code, decision boundary
+
+**Module 01 - Backpropagation: an autograd engine**
+
+- 01.01 [A derivative by nudging](tracks/research/lessons/01-backprop/01.01-a-derivative-by-nudging.md) - with code
+- 01.02 [A graph of values, and the chain rule backwards](tracks/research/lessons/01-backprop/01.02-a-graph-of-values-and-the-chain-rule-backwards.md) - with code
+- 01.03 [A neuron, a layer, a network](tracks/research/lessons/01-backprop/01.03-a-neuron-a-layer-a-network.md) - with code
+- 01.04 [Training it: a loss that goes down](tracks/research/lessons/01-backprop/01.04-training-it-a-loss-that-goes-down.md) - with code
+
+**Module 02 - Tensors: a small PyTorch**
+
+- 02.01 [The scalar engine is a thousand times too slow](tracks/research/lessons/02-tensors/02.01-the-scalar-engine-is-a-thousand-times-too-slow.md) - with code
+- 02.02 [Broadcasting, and its backward](tracks/research/lessons/02-tensors/02.02-broadcasting-and-its-backward.md) - with code
+- 02.03 [Matrix multiply, sums and indexing](tracks/research/lessons/02-tensors/02.03-matrix-multiply-sums-and-indexing.md) - with code
+- 02.04 [Softmax and cross-entropy without overflow](tracks/research/lessons/02-tensors/02.04-softmax-and-cross-entropy-without-overflow.md) - with code
+- 02.05 [Modules, parameters, and a checkpoint file](tracks/research/lessons/02-tensors/02.05-modules-parameters-and-a-checkpoint-file.md) - with code
+
+**Module 03 - Optimisers: from the plain step to AdamW**
+
+- 03.01 [MNIST in batches, and a learning rate that is too big](tracks/research/lessons/03-optimisers/03.01-mnist-in-batches-and-a-learning-rate-that-is-too-big.md) - with code
+- 03.02 [Momentum: the zigzag in a narrow valley](tracks/research/lessons/03-optimisers/03.02-momentum-the-zigzag-in-a-narrow-valley.md) - with code
+- 03.03 [Adam: a step size for each parameter](tracks/research/lessons/03-optimisers/03.03-adam-a-step-size-for-each-parameter.md) - with code
+- 03.04 [AdamW: weight decay is not L2](tracks/research/lessons/03-optimisers/03.04-adamw-weight-decay-is-not-l2.md) - with code
+- 03.05 [Learning-rate schedules: warmup and cosine decay](tracks/research/lessons/03-optimisers/03.05-learning-rate-schedules-warmup-and-cosine-decay.md) - with code
+
+**Module 04 - Deep networks that train**
+
+- 04.01 [Twenty layers that learn nothing: looking at activations and gradients](tracks/research/lessons/04-deep-networks/04.01-twenty-layers-that-learn-nothing-looking-at-activations-and-gradients.md) - with code
+- 04.02 [Initialisation: keeping the signal the same size](tracks/research/lessons/04-deep-networks/04.02-initialisation-keeping-the-signal-the-same-size.md) - with code
+- 04.03 [Batch normalisation](tracks/research/lessons/04-deep-networks/04.03-batch-normalisation.md) - with code, decision boundary
+- 04.04 [Layer normalisation, and what the batch had to do with it](tracks/research/lessons/04-deep-networks/04.04-layer-normalisation-and-what-the-batch-had-to-do-with-it.md) - with code
+- 04.05 [Residual connections: a path the gradient keeps](tracks/research/lessons/04-deep-networks/04.05-residual-connections-a-path-the-gradient-keeps.md) - with code
+- 04.06 [Five bugs that do not crash: a debugging checklist](tracks/research/lessons/04-deep-networks/04.06-five-bugs-that-do-not-crash-a-debugging-checklist.md) - with code
+
+**Module 05 - Generalisation**
+
+- 05.01 [Train, validation and test: a network that memorises random labels](tracks/research/lessons/05-generalisation/05.01-train-validation-and-test-a-network-that-memorises-random-labels.md) - with code
+- 05.02 [Weight decay and dropout](tracks/research/lessons/05-generalisation/05.02-weight-decay-and-dropout.md) - with code
+- 05.03 [More data for free: augmentation](tracks/research/lessons/05-generalisation/05.03-more-data-for-free-augmentation.md) - with code
+- 05.04 [Double descent: when a bigger model overfits less](tracks/research/lessons/05-generalisation/05.04-double-descent-when-a-bigger-model-overfits-less.md) - with code
 
 ### A Unix kernel for RISC-V, from scratch
 
