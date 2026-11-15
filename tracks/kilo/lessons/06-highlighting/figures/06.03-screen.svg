@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 404" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 424" fill="none">
 <title>countdown.c at 06.03: comments cyan, and for each row whether it ends inside a /* */ comment, which the row below starts from</title>
 <defs><marker id="f0603a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0603a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0603a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
 <text class="tm" x="24" y="22" font-size="11">kilo at 06.03, countdown.c on a terminal 16 rows by 56 columns</text>
 <rect class="s fs" x="45" y="54" width="428.4" height="288" rx="6" stroke-width="1.5"/>
-<rect class="a" x="51.5" y="59.5" width="8.4" height="14.5" rx="1" stroke-width="1.5"/>
+<rect class="s" x="51.5" y="59.5" width="8.4" height="14.5" rx="1" stroke-width="1.5"/>
 <text class="mono" x="52" y="70.6" font-size="12.33"><tspan fill="#13899a">/*</tspan></text>
 <text class="mono" x="74.2" y="70.6" font-size="12.33"><tspan fill="#13899a">countdown.c:</tspan></text>
 <text class="mono" x="170.4" y="70.6" font-size="12.33"><tspan fill="#13899a">3,</tspan></text>
@@ -107,10 +107,10 @@
 <text class="tm mono" x="496.4" y="263.1" font-size="11">no</text>
 <text class="tm mono" x="496.4" y="280.6" font-size="10">(hl_oc)</text>
 <text class="mono" x="24" y="364" font-size="11"><tspan fill="#13899a">cyan</tspan></text>
-<text class="tm" x="54.4" y="364" font-size="10.5">(ESC [36m): a comment, // to the end of the row or /* to */</text>
-<text class="mono" x="402.93" y="364" font-size="11"><tspan fill="#e03e3e">red</tspan></text>
-<text class="tm" x="426.73" y="364" font-size="10.5">(ESC [31m): a number</text>
-<text class="mono" x="554.13" y="364" font-size="11"><tspan fill="#c43fb0">magenta</tspan></text>
-<text class="tm" x="604.33" y="364" font-size="10.5">(ESC [35m): a string</text>
-<text class="tm" x="24" y="384" font-size="10.5">Row 2 is empty, yet it ends inside the comment: it started inside one, and nothing on it closed it.</text>
+<text class="tm" x="54.4" y="364" font-size="10.5">(ESC [36m): a comment, // to the end of the row, or /* to */</text>
+<text class="mono" x="24" y="384" font-size="11"><tspan fill="#e03e3e">red</tspan></text>
+<text class="tm" x="47.8" y="384" font-size="10.5">(ESC [31m): a number</text>
+<text class="mono" x="185.2" y="384" font-size="11"><tspan fill="#c43fb0">magenta</tspan></text>
+<text class="tm" x="235.4" y="384" font-size="10.5">(ESC [35m): a string</text>
+<text class="tm" x="24" y="404" font-size="10.5">Row 2 is empty, yet it ends inside the comment: it started inside one, and nothing on it closed it.</text>
 </svg>

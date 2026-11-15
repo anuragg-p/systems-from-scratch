@@ -90,7 +90,7 @@
 <text class="tm mono" x="64" y="176" font-size="10" text-anchor="end">0..7</text>
 <text class="t mono" x="76" y="176" font-size="11" font-weight="600">#include</text>
 <text class="tm" x="226" y="176" font-size="10.5">class 0: the byte itself, in the default colour</text>
-<text class="tm mono" x="64" y="198" font-size="10" text-anchor="end">8..8</text>
+<text class="tm mono" x="64" y="198" font-size="10" text-anchor="end">8</text>
 <text class="ta mono" x="76" y="198" font-size="11" font-weight="600">ESC[7m A ESC[0m</text>
 <text class="tm" x="226" y="198" font-size="10.5">class 1: reverse video, A for the byte 1, then all back to normal</text>
 <text class="tm mono" x="64" y="220" font-size="10" text-anchor="end">9..18</text>

@@ -1,10 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 470" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 434" fill="none">
 <title>Ctrl-F order, then Down, then Escape, at 06.05: the match is blue while it is the match, and its row gets its own colours back as soon as it is not</title>
 <defs><marker id="f0605a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0605a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0605a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
 <text class="tm" x="24" y="22" font-size="11">kilo at 06.05, countdown.c on a terminal 16 rows by 56 columns; the top of the screen and the message line</text>
 <text class="t" x="43" y="50" font-size="12" font-weight="600">Ctrl-F, then order</text>
 <rect class="s fs" x="43" y="58" width="372.4" height="74" rx="6" stroke-width="1.5"/>
-<rect class="a" x="132.7" y="63.5" width="7.4" height="13.5" rx="1" stroke-width="1.5"/>
 <text class="mono" x="101.2" y="73.88" font-size="10.67"><tspan fill="#2f8a3c">char</tspan></text>
 <text class="mono" x="133.2" y="73.88" font-size="10.67"><tspan fill="#3a76d6">order</tspan></text>
 <text class="t mono" x="165.2" y="73.88" font-size="10.67">[</text>
@@ -46,13 +45,11 @@
 <text class="tm mono" x="36" y="123.38" font-size="9.5" text-anchor="end">10</text>
 <text class="t mono" x="50" y="146" font-size="10">Search: order (Use ESC/Arrows/Enter)</text>
 <text class="tm" x="430.4" y="68" font-size="10.5">Row 7&#x27;s classes are copied to</text>
-<text class="tm" x="430.4" y="82" font-size="10.5">saved_hl first. Then the 5 of</text>
-<text class="tm" x="430.4" y="96" font-size="10.5">order, after a tab, are made</text>
-<text class="tm" x="430.4" y="110" font-size="10.5">class 8: blue over green and</text>
-<text class="tm" x="430.4" y="124" font-size="10.5">default.</text>
+<text class="tm" x="430.4" y="82" font-size="10.5">saved_hl first. Then the 5</text>
+<text class="tm" x="430.4" y="96" font-size="10.5">classes of order, after a tab,</text>
+<text class="tm" x="430.4" y="110" font-size="10.5">are made class 8: blue.</text>
 <text class="t" x="43" y="174" font-size="12" font-weight="600">Down: the next match</text>
 <rect class="s fs" x="43" y="182" width="372.4" height="57.5" rx="6" stroke-width="1.5"/>
-<rect class="a" x="132.7" y="187.5" width="7.4" height="13.5" rx="1" stroke-width="1.5"/>
 <text class="t mono" x="101.2" y="197.88" font-size="10.67">puts(</text>
 <text class="mono" x="133.2" y="197.88" font-size="10.67"><tspan fill="#3a76d6">order</tspan></text>
 <text class="t mono" x="165.2" y="197.88" font-size="10.67">);</text>
@@ -119,10 +116,14 @@
 <text class="tm" x="430.4" y="327.5" font-size="10.5">where it was. Nothing is blue.</text>
 <text class="mono" x="24" y="401.5" font-size="10.5"><tspan fill="#3a76d6">blue</tspan></text>
 <text class="tm" x="53.2" y="401.5" font-size="10">(ESC [34m): the match, class 8</text>
-<text class="mono" x="227.2" y="401.5" font-size="10.5"><tspan fill="#2f8a3c">green</tspan></text>
-<text class="tm" x="262.7" y="401.5" font-size="10">(ESC [32m): a type</text>
-<text class="mono" x="371.9" y="401.5" font-size="10.5"><tspan fill="#c43fb0">magenta</tspan></text>
-<text class="tm" x="420" y="401.5" font-size="10">(ESC [35m): a string</text>
-<text class="mono" x="540" y="401.5" font-size="10.5"><tspan fill="#e03e3e">red</tspan></text>
-<text class="tm" x="562.9" y="401.5" font-size="10">(ESC [31m): a number</text>
+<text class="mono" x="235.2" y="401.5" font-size="10.5"><tspan fill="#9a7400">yellow</tspan></text>
+<text class="tm" x="277" y="401.5" font-size="10">(ESC [33m): a keyword</text>
+<text class="mono" x="410.4" y="401.5" font-size="10.5"><tspan fill="#2f8a3c">green</tspan></text>
+<text class="tm" x="445.9" y="401.5" font-size="10">(ESC [32m): a type</text>
+<text class="mono" x="24" y="419.5" font-size="10.5"><tspan fill="#13899a">cyan</tspan></text>
+<text class="tm" x="53.2" y="419.5" font-size="10">(ESC [36m): a comment</text>
+<text class="mono" x="186.6" y="419.5" font-size="10.5"><tspan fill="#c43fb0">magenta</tspan></text>
+<text class="tm" x="234.7" y="419.5" font-size="10">(ESC [35m): a string</text>
+<text class="mono" x="362.7" y="419.5" font-size="10.5"><tspan fill="#e03e3e">red</tspan></text>
+<text class="tm" x="385.6" y="419.5" font-size="10">(ESC [31m): a number</text>
 </svg>

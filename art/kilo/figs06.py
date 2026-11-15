@@ -320,7 +320,7 @@ def screen(f, x, y, shot, cw, rh, rows=None, cursor=True, numbers=True, first=No
         base = y + k * rh + rh * 0.72
         if cursor and shot.cursor[0] == r:
             c = shot.cursor[1]
-            f.rect(x + c * cw - 0.5, y + k * rh + 1.5, cw + 1, rh - 3, "a", 1)
+            f.rect(x + c * cw - 0.5, y + k * rh + 1.5, cw + 1, rh - 3, "s", 1)
         draw_row(f, x, base, shot.lines[r], shot.colors[r], cw, rh)
         if numbers:
             f.text(x - 14, base, str((first or 1) + r), "tm", 9.5, "end", mono=True)
@@ -367,7 +367,7 @@ def two_files0601():
     assert t.lines[3] == "#include <stdio.h>" and t.cursor == (3, 9) and set(t.colors[3]) == {"."}
     assert t.lines[:14] == core_c.lines[:14]
     f = Fig("f0601a", "The same keys in countdown.c and countdown.txt at 06.01: in the C file the byte "
-            "Ctrl-A typed is drawn as a reverse-video A; in the text file it goes to the terminal as it is", 382)
+            "Ctrl-A typed is drawn as a reverse-video A; in the text file it goes to the terminal as it is", 414)
     f.text(24, 22, "kilo at 06.01 on a terminal 16 rows by 56 columns, after Down 3 times, Right 8 times and Ctrl-A",
            "tm", 11)
     cw, rh = 7.0, 17
@@ -375,7 +375,7 @@ def two_files0601():
     for y, shot, title, bytes_, note in (
             (64, c, "countdown.c: a language kilo knows", "#include ESC[7m A ESC[0m <stdio.h>",
              "the byte 1 is class 1, HL_NONPRINT: drawn as A ('@' + 1) in reverse video, one cell"),
-            (234, t, "countdown.txt: no language, so no classes but 0", "#include \\x01 <stdio.h>",
+            (250, t, "countdown.txt: no language, so no classes but 0", "#include \\x01 <stdio.h>",
              "the byte 1 goes to the terminal, which draws nothing for it: the cursor, which counts it, "
              "is drawn on the < instead of the space")):
         f.text(x - 7, y - 14, title, "t", 12, weight=600)
@@ -384,7 +384,7 @@ def two_files0601():
         by = y + 6 * rh + 22
         f.text(x - 7, by, "row 4 as the frame sends it:", "tm", 10.5)
         f.text(x + 160, by, bytes_, "ta", 11, mono=True, weight=600)
-        notes(f, x - 7, by + 18, note, 96)
+        notes(f, x - 7, by + 18, note, 88)
     return f
 
 
@@ -424,7 +424,7 @@ def hl0601():
              (9, 19, " <stdio.h>", "class 0 again: the bytes themselves")]
     for k, (a, b, sent, what) in enumerate(parts):
         yy = ry + 26 + k * 22
-        f.text(x0 - 12, yy, f"{a}..{b - 1}", "tm", 10, "end", mono=True)
+        f.text(x0 - 12, yy, f"{a}..{b - 1}" if b - a > 1 else str(a), "tm", 10, "end", mono=True)
         f.text(x0, yy, sent, "ta" if b - a == 1 else "t", 11, mono=True, weight=600)
         f.text(x0 + 150, yy, what, "tm", 10.5)
     sy = ry + 26 + 3 * 22 + 6
@@ -550,7 +550,7 @@ def scan0602():
                               f'text-anchor="middle"><tspan fill="{TERM[code][2]}">{cls}</tspan></text>')
             ps, ins = g["ps"], g["ins"]
             f.text(40, 194, f"prev_sep = {ps}", "ta", 13, weight=700, mono=True)
-            f.text(200, 194, "a word may start next" if ps else "inside a word, or a string", "tm", 10.5)
+            f.text(200, 194, "a word may start next" if ps else "no word may start next", "tm", 10.5)
             f.text(40, 218, f"in_string = {repr(ins) if ins else 0}", "ta", 13, weight=700, mono=True)
             f.text(200, 218, "inside a string that a \" closes" if ins else "not inside a string", "tm", 10.5)
             # the row as the screen will draw it, so far: each character under its box
@@ -565,7 +565,8 @@ def scan0602():
                     else:
                         f.add(f'<text class="mono" x="{fmt(cx)}" y="262" font-size="13" text-anchor="middle">'
                               f'<tspan fill="{TERM[code][2]}">{esc(ch)}</tspan></text>')
-    f.text(24, 290, "class 0 normal, 6 string (magenta), 7 number (red)", "tm", 10.5)
+    f.text(24, 290, "class 0: normal", "tm", 10.5)
+    legend(f, 130, 290, [("m", "class 6, a string"), ("r", "class 7, a number")], size=10.5)
     return f
 
 
@@ -616,7 +617,7 @@ def screen0603():
     model = model_screen(COUNTDOWN, "06.03")
     assert [ends[k] for k in range(12)] == [m[2] for m in model]
     f = Fig("f0603a", "countdown.c at 06.03: comments cyan, and for each row whether it ends inside a /* */ "
-            "comment, which the row below starts from", 404)
+            "comment, which the row below starts from", 424)
     f.text(24, 22, "kilo at 06.03, countdown.c on a terminal 16 rows by 56 columns", "tm", 11)
     cw, rh = 7.4, 17.5
     x, y = 52, 58
@@ -630,9 +631,9 @@ def screen0603():
         f.text(cx, base, "yes" if yes else "no", "ta" if yes else "tm", 11, weight=700 if yes else None, mono=True)
     f.text(cx, y + 12 * rh + rh * 0.72, "(hl_oc)", "tm", 10, mono=True)
     ly = y + ROWS * rh + 26
-    legend(f, 24, ly, [("c", "a comment, // to the end of the row or /* to */"), ("r", "a number"),
-                       ("m", "a string")], step=14)
-    f.text(24, ly + 20, "Row 2 is empty, yet it ends inside the comment: it started inside one, and nothing on it "
+    legend(f, 24, ly, [("c", "a comment, // to the end of the row, or /* to */")])
+    legend(f, 24, ly + 20, [("r", "a number"), ("m", "a string")], step=24)
+    f.text(24, ly + 40, "Row 2 is empty, yet it ends inside the comment: it started inside one, and nothing on it "
            "closed it.", "tm", 10.5)
     return f
 
@@ -658,11 +659,12 @@ def carry0603():
     f = Fig("f0603b", "/ and then * typed at the start of row 4 of countdown.c at 06.03: the rows scanned again, "
             "one after another, until a row ends the way it did before", 336)
     f.text(24, 22, "hl of each row as the scan leaves it; the screen is drawn once, after the key", "tm", 11)
-    cw, rh = 6.6, 19
+    cw, rh = 6.4, 19
     x, y = 58, 66
-    cx1, cx2 = 452, 540
+    cx1, cx2 = 432, 508
     f.text(cx1, y - 14, "starts", "t", 10.5, weight=600)
-    f.text(cx2, y - 14, "ends inside a comment", "t", 10.5, weight=600)
+    f.text(cx2, y - 28, "ends inside", "t", 10.5, weight=600)
+    f.text(cx2, y - 14, "a comment?", "t", 10.5, weight=600)
 
     def frame(rows_text, rows_colors, ends, scanned, current, starts=None, was=None):
         f.rect(x - 7, y - 4, 53 * cw + 14, 12 * rh + 8, "s fs", 6)
@@ -741,22 +743,23 @@ def words0604():
     shot = capture("06.04")[0]
     check_model("06.04", shot)
     f = Fig("f0604b", "Three places in rows 7 and 8 where a word may start, and how each is tried against the "
-            "keyword list", 330)
+            "keyword list", 362)
     f.text(24, 22, "at a word start (prev_sep is 1) each word of C_HL_keywords is tried in turn; the first that "
            "fits wins", "tm", 11)
     r7, r8 = render_of(COUNTDOWN.split("\n")[6]), render_of(COUNTDOWN.split("\n")[7])
     cases = [(r7, 8, "char", "char|", "g",
-              "\"char|\": the | marks a type. c h a r match, and the space after them is a separator",
-              "HL_KEYWORD2, green"),
+              "the | marks a type: c h a r match, and the space after them is a separator",
+              "a type, HL_KEYWORD2: green"),
              (r7, 13, "or", "or", None,
-              "\"or\" (a C++ keyword) matches o r, but d comes next: no separator, so no keyword. Nothing "
-              "else in the list fits",
-              "normal; and d e r are inside a word now, so no keyword can start there"),
+              "a C++ keyword: o r match, but a d comes next, which is no separator. No other word "
+              "of the list fits either",
+              "normal; and d e r are inside a word, where no keyword is tried"),
              (r8, 8, "for", "for", "y",
-              "\"for\": f o r match, and the space after them is a separator",
-              "HL_KEYWORD1, yellow")]
+              "f o r match, and the space after them is a separator",
+              "a keyword, HL_KEYWORD1: yellow")]
     cw = 13
     y = 56
+    tx = 236
     for row, at, word, entry, code, why, result in cases:
         hl, _ = scan(row, 0, "06.04")
         x0 = 40
@@ -772,15 +775,18 @@ def words0604():
                 ctext(f, x0 + k * cw + 1.5, y + 24, ch, letter if letter != "#" else ".", 11)
         nx = x0 + len(word) * cw + (cw - 2) / 2
         f.text(nx, y + 44, "next", "tm", 9.5, "middle")
-        f.text(x0 + 13 * cw + 14, y + 24, f"tried: \"{entry}\"", "t", 11, weight=600, mono=True)
-        notes(f, x0 + 13 * cw + 14, y + 42, why, 58, "tm", 10.5, 14)
+        f.text(tx, y + 24, f"tried: \"{entry}\"", "t", 11, weight=600, mono=True)
+        lines = wrap(why, 64)
+        notes(f, tx, y + 42, why, 64, "tm", 10.5, 14)
+        ry = y + 42 + len(lines) * 14 + 4
         if code:
-            ctext(f, x0, y + 64, "-> " + result, code, 11)
+            f.text(tx, ry, "->", "t", 11, mono=True)
+            ctext(f, tx + 22, ry, result, code, 11)
             assert shot.colors[6 if row is r7 else 7][at:at + len(word)] == code * len(word)
         else:
-            f.text(x0, y + 64, "-> " + result, "t", 10.5)
+            f.text(tx, ry, "-> " + result, "t", 10.5)
             assert shot.colors[6][at:at + 5] == "....."
-        y += 88
+        y += 106
     return f
 
 
@@ -793,7 +799,7 @@ def match0605():
     assert "b" not in "".join(c.colors) and c.lines[6].startswith("        char order")
     assert b.lines[0].count("order") == 2 and b.colors[0].count("b") == 5
     f = Fig("f0605a", "Ctrl-F order, then Down, then Escape, at 06.05: the match is blue while it is the match, "
-            "and its row gets its own colours back as soon as it is not", 470)
+            "and its row gets its own colours back as soon as it is not", 434)
     f.text(24, 22, "kilo at 06.05, countdown.c on a terminal 16 rows by 56 columns; the top of the screen and "
            "the message line", "tm", 11)
     cw, rh = 6.4, 16.5
@@ -801,8 +807,8 @@ def match0605():
     nx = x + COLS * cw + 22
     y = 62
     panels = [(a, "Ctrl-F, then order", range(4), 7,
-               "Row 7's classes are copied to saved_hl first. Then the 5 of order, after a tab, are "
-               "made class 8: blue over green and default."),
+               "Row 7's classes are copied to saved_hl first. Then the 5 classes of order, after a "
+               "tab, are made class 8: blue."),
               (b, "Down: the next match", range(3), 10,
                "Row 7 gets its saved classes back. Row 10's are saved, and its first order is blue; "
                "the one in the comment is not."),
@@ -811,13 +817,13 @@ def match0605():
                "blue.")]
     for shot, title, rows, first, note in panels:
         f.text(x - 7, y - 12, title, "t", 12, weight=600)
-        h = screen(f, x, y, shot, cw, rh, rows=rows, first=first)
+        h = screen(f, x, y, shot, cw, rh, rows=rows, first=first, cursor=False)
         msg = shot.lines[ROWS - 1] or "(the message line is empty)"
         f.text(x, y + h + 18, msg, "tm" if not shot.lines[ROWS - 1] else "t", 10, mono=bool(shot.lines[ROWS - 1]))
         notes(f, nx, y + 6, note, 30, "tm", 10.5, 14)
         y += h + 58
-    legend(f, 24, y - 16, [("b", "the match, class 8"), ("g", "a type"), ("m", "a string"), ("r", "a number")],
-           size=10.5, step=12)
+    legend(f, 24, y - 16, [("b", "the match, class 8"), ("y", "a keyword"), ("g", "a type")], size=10.5, step=20)
+    legend(f, 24, y + 2, [("c", "a comment"), ("m", "a string"), ("r", "a number")], size=10.5, step=20)
     return f
 
 

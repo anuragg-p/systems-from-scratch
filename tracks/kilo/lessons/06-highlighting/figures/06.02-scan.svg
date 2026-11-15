@@ -160,7 +160,7 @@
 <text class="tm mono" x="607" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="tm mono" x="623" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="ta mono" x="40" y="194" font-size="13" font-weight="700">prev_sep = 0</text>
-<text class="tm" x="200" y="194" font-size="10.5">inside a word, or a string</text>
+<text class="tm" x="200" y="194" font-size="10.5">no word may start next</text>
 <text class="ta mono" x="40" y="218" font-size="13" font-weight="700">in_string = 0</text>
 <text class="tm" x="200" y="218" font-size="10.5">not inside a string</text>
 <text class="tm" x="32" y="262" font-size="10" text-anchor="end">drawn</text>
@@ -258,7 +258,7 @@
 <text class="tm mono" x="607" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="tm mono" x="623" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="ta mono" x="40" y="194" font-size="13" font-weight="700">prev_sep = 0</text>
-<text class="tm" x="200" y="194" font-size="10.5">inside a word, or a string</text>
+<text class="tm" x="200" y="194" font-size="10.5">no word may start next</text>
 <text class="ta mono" x="40" y="218" font-size="13" font-weight="700">in_string = 0</text>
 <text class="tm" x="200" y="218" font-size="10.5">not inside a string</text>
 <text class="tm" x="32" y="262" font-size="10" text-anchor="end">drawn</text>
@@ -367,7 +367,7 @@
 <text class="tm mono" x="607" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="tm mono" x="623" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="ta mono" x="40" y="194" font-size="13" font-weight="700">prev_sep = 0</text>
-<text class="tm" x="200" y="194" font-size="10.5">inside a word, or a string</text>
+<text class="tm" x="200" y="194" font-size="10.5">no word may start next</text>
 <text class="ta mono" x="40" y="218" font-size="13" font-weight="700">in_string = 0</text>
 <text class="tm" x="200" y="218" font-size="10.5">not inside a string</text>
 <text class="tm" x="32" y="262" font-size="10" text-anchor="end">drawn</text>
@@ -423,7 +423,7 @@
 <text class="tm mono" x="607" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="tm mono" x="623" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="ta mono" x="40" y="194" font-size="13" font-weight="700">prev_sep = 0</text>
-<text class="tm" x="200" y="194" font-size="10.5">inside a word, or a string</text>
+<text class="tm" x="200" y="194" font-size="10.5">no word may start next</text>
 <text class="ta mono" x="40" y="218" font-size="13" font-weight="700">in_string = 0</text>
 <text class="tm" x="200" y="218" font-size="10.5">not inside a string</text>
 <text class="tm" x="32" y="262" font-size="10" text-anchor="end">drawn</text>
@@ -539,7 +539,7 @@
 <text class="tm mono" x="607" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="tm mono" x="623" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="ta mono" x="40" y="194" font-size="13" font-weight="700">prev_sep = 0</text>
-<text class="tm" x="200" y="194" font-size="10.5">inside a word, or a string</text>
+<text class="tm" x="200" y="194" font-size="10.5">no word may start next</text>
 <text class="ta mono" x="40" y="218" font-size="13" font-weight="700">in_string = &#x27;&quot;&#x27;</text>
 <text class="tm" x="200" y="218" font-size="10.5">inside a string that a &quot; closes</text>
 <text class="tm" x="32" y="262" font-size="10" text-anchor="end">drawn</text>
@@ -599,7 +599,7 @@
 <text class="tm mono" x="607" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="tm mono" x="623" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="ta mono" x="40" y="194" font-size="13" font-weight="700">prev_sep = 0</text>
-<text class="tm" x="200" y="194" font-size="10.5">inside a word, or a string</text>
+<text class="tm" x="200" y="194" font-size="10.5">no word may start next</text>
 <text class="ta mono" x="40" y="218" font-size="13" font-weight="700">in_string = &#x27;&quot;&#x27;</text>
 <text class="tm" x="200" y="218" font-size="10.5">inside a string that a &quot; closes</text>
 <text class="tm" x="32" y="262" font-size="10" text-anchor="end">drawn</text>
@@ -667,7 +667,7 @@
 <text class="mono" x="607" y="111" font-size="11" font-weight="700" text-anchor="middle"><tspan fill="#c43fb0">6</tspan></text>
 <text class="tm mono" x="623" y="111" font-size="10" text-anchor="middle">-</text>
 <text class="ta mono" x="40" y="194" font-size="13" font-weight="700">prev_sep = 0</text>
-<text class="tm" x="200" y="194" font-size="10.5">inside a word, or a string</text>
+<text class="tm" x="200" y="194" font-size="10.5">no word may start next</text>
 <text class="ta mono" x="40" y="218" font-size="13" font-weight="700">in_string = 0</text>
 <text class="tm" x="200" y="218" font-size="10.5">not inside a string</text>
 <text class="tm" x="32" y="262" font-size="10" text-anchor="end">drawn</text>
@@ -766,5 +766,9 @@
 <text class="mono" x="607" y="262" font-size="13" text-anchor="middle"><tspan fill="#c43fb0">&quot;</tspan></text>
 <text class="t mono" x="623" y="262" font-size="13" text-anchor="middle">;</text>
 </g>
-<text class="tm" x="24" y="290" font-size="10.5">class 0 normal, 6 string (magenta), 7 number (red)</text>
+<text class="tm" x="24" y="290" font-size="10.5">class 0: normal</text>
+<text class="mono" x="130" y="290" font-size="10.5"><tspan fill="#c43fb0">magenta</tspan></text>
+<text class="tm" x="178.1" y="290" font-size="10">(ESC [35m): class 6, a string</text>
+<text class="mono" x="356.7" y="290" font-size="10.5"><tspan fill="#e03e3e">red</tspan></text>
+<text class="tm" x="379.6" y="290" font-size="10">(ESC [31m): class 7, a number</text>
 </svg>
