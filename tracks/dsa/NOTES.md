@@ -110,9 +110,12 @@ lib/*.c, data/gen.py, bench/grow.py, another tool's files, or NOTICE beyond
 your own lines. freq is the worked example.
 
 1. Lessons and tests: `./learn new dsa 04.01 "<title from the outline>"`
-   for each lesson (module dir: rename `04-module` to `04-grep` after the
-   first, set its README title to the outline's module title, copy the
-   outline's `04/cover.svg` and `icon.svg` into it). Add your ids to
+   for each lesson (the outline is `plans/dsa-outline.md`; module dir:
+   rename `04-module` to `04-grep` after the first, set its README title to
+   the outline's module title). The module's `cover.svg` and `icon.svg` are
+   not copied from anywhere: `art/dsa/covers.py` draws them from the
+   finished code (a `coverNN()`, a `checkNN()` and the icon's paths in its
+   `MODULES`) and writes them into the module's directory. Add your ids to
    `lessons/verify-pending.txt` (your own lines, in id order).
 2. `tools/<name>/<name>.c` with `@build NN.LL` regions (comment lines after
    `@build` say what the region does; regions are function bodies). Main
