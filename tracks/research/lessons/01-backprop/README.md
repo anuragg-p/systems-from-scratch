@@ -1,0 +1,8 @@
+---
+id: 01
+title: Backpropagation: an autograd engine
+---
+
+# Module 01 - Backpropagation: an autograd engine
+
+Module 00 fitted a curve by moving its weights against a derivative worked out by hand; this module makes the computer work out the derivatives, and builds the first piece of the engine the rest of the track trains with. It starts with the check that every derivative in the track is held to, the nudge: move an input a little each way and watch the output, which needs no formula and is good to about ten digits, as long as the nudge is neither too big nor too small. Then a Value, one number that remembers how it was made, so that arithmetic on Values builds a graph and one pass backwards over it applies the chain rule at every node and gives the derivative of the result with respect to every input at once: backpropagation, the procedure Rumelhart, Hinton and Williams published in 1986, here for any formula written with these Values. A neuron, a layer and a network are then just arithmetic on Values, started from random weights so that their units can differ. The module ends by training that network on two groups of points that no straight line separates: a model with no hidden layer stalls at nine points in ten, the network gets all but a few right, which is the 1986 paper's claim about hidden units run again on a laptop. It stands on module 00's runner, which records every run, its seed and its log, and reports each result over several seeds. After this module the track can train a network end to end and check every gradient it uses; module 02 makes the same engine work on whole arrays at once, because one number at a time is far too slow.
