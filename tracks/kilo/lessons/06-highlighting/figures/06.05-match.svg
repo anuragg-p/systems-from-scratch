@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 470" fill="none">
+<title>Ctrl-F order, then Down, then Escape, at 06.05: the match is blue while it is the match, and its row gets its own colours back as soon as it is not</title>
+<defs><marker id="f0605a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0605a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0605a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 06.05, countdown.c on a terminal 16 rows by 56 columns; the top of the screen and the message line</text>
+<text class="t" x="43" y="50" font-size="12" font-weight="600">Ctrl-F, then order</text>
+<rect class="s fs" x="43" y="58" width="372.4" height="74" rx="6" stroke-width="1.5"/>
+<rect class="a" x="132.7" y="63.5" width="7.4" height="13.5" rx="1" stroke-width="1.5"/>
+<text class="mono" x="101.2" y="73.88" font-size="10.67"><tspan fill="#2f8a3c">char</tspan></text>
+<text class="mono" x="133.2" y="73.88" font-size="10.67"><tspan fill="#3a76d6">order</tspan></text>
+<text class="t mono" x="165.2" y="73.88" font-size="10.67">[</text>
+<text class="mono" x="171.6" y="73.88" font-size="10.67"><tspan fill="#e03e3e">10</tspan></text>
+<text class="t mono" x="184.4" y="73.88" font-size="10.67">]</text>
+<text class="t mono" x="197.2" y="73.88" font-size="10.67">=</text>
+<text class="mono" x="210" y="73.88" font-size="10.67"><tspan fill="#c43fb0">&quot;lift</tspan></text>
+<text class="mono" x="248.4" y="73.88" font-size="10.67"><tspan fill="#c43fb0">off!&quot;</tspan></text>
+<text class="t mono" x="280.4" y="73.88" font-size="10.67">;</text>
+<text class="tm mono" x="36" y="73.88" font-size="9.5" text-anchor="end">7</text>
+<text class="mono" x="101.2" y="90.38" font-size="10.67"><tspan fill="#9a7400">for</tspan></text>
+<text class="t mono" x="126.8" y="90.38" font-size="10.67">(</text>
+<text class="mono" x="133.2" y="90.38" font-size="10.67"><tspan fill="#2f8a3c">int</tspan></text>
+<text class="t mono" x="158.8" y="90.38" font-size="10.67">i</text>
+<text class="t mono" x="171.6" y="90.38" font-size="10.67">=</text>
+<text class="mono" x="184.4" y="90.38" font-size="10.67"><tspan fill="#e03e3e">3</tspan></text>
+<text class="t mono" x="190.8" y="90.38" font-size="10.67">;</text>
+<text class="t mono" x="203.6" y="90.38" font-size="10.67">i</text>
+<text class="t mono" x="216.4" y="90.38" font-size="10.67">&gt;</text>
+<text class="mono" x="229.2" y="90.38" font-size="10.67"><tspan fill="#e03e3e">0</tspan></text>
+<text class="t mono" x="235.6" y="90.38" font-size="10.67">;</text>
+<text class="t mono" x="248.4" y="90.38" font-size="10.67">i--)</text>
+<text class="tm mono" x="36" y="90.38" font-size="9.5" text-anchor="end">8</text>
+<text class="t mono" x="152.4" y="106.88" font-size="10.67">printf(</text>
+<text class="mono" x="197.2" y="106.88" font-size="10.67"><tspan fill="#c43fb0">&quot;%d\n&quot;</tspan></text>
+<text class="t mono" x="235.6" y="106.88" font-size="10.67">,</text>
+<text class="t mono" x="248.4" y="106.88" font-size="10.67">i);</text>
+<text class="mono" x="306" y="106.88" font-size="10.67"><tspan fill="#13899a">//</tspan></text>
+<text class="mono" x="325.2" y="106.88" font-size="10.67"><tspan fill="#13899a">one</tspan></text>
+<text class="mono" x="350.8" y="106.88" font-size="10.67"><tspan fill="#13899a">a</tspan></text>
+<text class="mono" x="363.6" y="106.88" font-size="10.67"><tspan fill="#13899a">line</tspan></text>
+<text class="tm mono" x="36" y="106.88" font-size="9.5" text-anchor="end">9</text>
+<text class="t mono" x="101.2" y="123.38" font-size="10.67">puts(order);</text>
+<text class="mono" x="203.6" y="123.38" font-size="10.67"><tspan fill="#13899a">/*</tspan></text>
+<text class="mono" x="222.8" y="123.38" font-size="10.67"><tspan fill="#13899a">then</tspan></text>
+<text class="mono" x="254.8" y="123.38" font-size="10.67"><tspan fill="#13899a">the</tspan></text>
+<text class="mono" x="280.4" y="123.38" font-size="10.67"><tspan fill="#13899a">order</tspan></text>
+<text class="mono" x="318.8" y="123.38" font-size="10.67"><tspan fill="#13899a">*/</tspan></text>
+<text class="tm mono" x="36" y="123.38" font-size="9.5" text-anchor="end">10</text>
+<text class="t mono" x="50" y="146" font-size="10">Search: order (Use ESC/Arrows/Enter)</text>
+<text class="tm" x="430.4" y="68" font-size="10.5">Row 7&#x27;s classes are copied to</text>
+<text class="tm" x="430.4" y="82" font-size="10.5">saved_hl first. Then the 5 of</text>
+<text class="tm" x="430.4" y="96" font-size="10.5">order, after a tab, are made</text>
+<text class="tm" x="430.4" y="110" font-size="10.5">class 8: blue over green and</text>
+<text class="tm" x="430.4" y="124" font-size="10.5">default.</text>
+<text class="t" x="43" y="174" font-size="12" font-weight="600">Down: the next match</text>
+<rect class="s fs" x="43" y="182" width="372.4" height="57.5" rx="6" stroke-width="1.5"/>
+<rect class="a" x="132.7" y="187.5" width="7.4" height="13.5" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="101.2" y="197.88" font-size="10.67">puts(</text>
+<text class="mono" x="133.2" y="197.88" font-size="10.67"><tspan fill="#3a76d6">order</tspan></text>
+<text class="t mono" x="165.2" y="197.88" font-size="10.67">);</text>
+<text class="mono" x="203.6" y="197.88" font-size="10.67"><tspan fill="#13899a">/*</tspan></text>
+<text class="mono" x="222.8" y="197.88" font-size="10.67"><tspan fill="#13899a">then</tspan></text>
+<text class="mono" x="254.8" y="197.88" font-size="10.67"><tspan fill="#13899a">the</tspan></text>
+<text class="mono" x="280.4" y="197.88" font-size="10.67"><tspan fill="#13899a">order</tspan></text>
+<text class="mono" x="318.8" y="197.88" font-size="10.67"><tspan fill="#13899a">*/</tspan></text>
+<text class="tm mono" x="36" y="197.88" font-size="9.5" text-anchor="end">10</text>
+<text class="mono" x="101.2" y="214.38" font-size="10.67"><tspan fill="#9a7400">return</tspan></text>
+<text class="mono" x="146" y="214.38" font-size="10.67"><tspan fill="#e03e3e">0</tspan></text>
+<text class="t mono" x="152.4" y="214.38" font-size="10.67">;</text>
+<text class="tm mono" x="36" y="214.38" font-size="9.5" text-anchor="end">11</text>
+<text class="t mono" x="50" y="230.88" font-size="10.67">}</text>
+<text class="tm mono" x="36" y="230.88" font-size="9.5" text-anchor="end">12</text>
+<text class="t mono" x="50" y="253.5" font-size="10">Search: order (Use ESC/Arrows/Enter)</text>
+<text class="tm" x="430.4" y="192" font-size="10.5">Row 7 gets its saved classes</text>
+<text class="tm" x="430.4" y="206" font-size="10.5">back. Row 10&#x27;s are saved, and</text>
+<text class="tm" x="430.4" y="220" font-size="10.5">its first order is blue; the</text>
+<text class="tm" x="430.4" y="234" font-size="10.5">one in the comment is not.</text>
+<text class="t" x="43" y="281.5" font-size="12" font-weight="600">Escape: the search ends</text>
+<rect class="s fs" x="43" y="289.5" width="372.4" height="74" rx="6" stroke-width="1.5"/>
+<text class="mono" x="101.2" y="305.38" font-size="10.67"><tspan fill="#2f8a3c">char</tspan></text>
+<text class="t mono" x="133.2" y="305.38" font-size="10.67">order[</text>
+<text class="mono" x="171.6" y="305.38" font-size="10.67"><tspan fill="#e03e3e">10</tspan></text>
+<text class="t mono" x="184.4" y="305.38" font-size="10.67">]</text>
+<text class="t mono" x="197.2" y="305.38" font-size="10.67">=</text>
+<text class="mono" x="210" y="305.38" font-size="10.67"><tspan fill="#c43fb0">&quot;lift</tspan></text>
+<text class="mono" x="248.4" y="305.38" font-size="10.67"><tspan fill="#c43fb0">off!&quot;</tspan></text>
+<text class="t mono" x="280.4" y="305.38" font-size="10.67">;</text>
+<text class="tm mono" x="36" y="305.38" font-size="9.5" text-anchor="end">7</text>
+<text class="mono" x="101.2" y="321.88" font-size="10.67"><tspan fill="#9a7400">for</tspan></text>
+<text class="t mono" x="126.8" y="321.88" font-size="10.67">(</text>
+<text class="mono" x="133.2" y="321.88" font-size="10.67"><tspan fill="#2f8a3c">int</tspan></text>
+<text class="t mono" x="158.8" y="321.88" font-size="10.67">i</text>
+<text class="t mono" x="171.6" y="321.88" font-size="10.67">=</text>
+<text class="mono" x="184.4" y="321.88" font-size="10.67"><tspan fill="#e03e3e">3</tspan></text>
+<text class="t mono" x="190.8" y="321.88" font-size="10.67">;</text>
+<text class="t mono" x="203.6" y="321.88" font-size="10.67">i</text>
+<text class="t mono" x="216.4" y="321.88" font-size="10.67">&gt;</text>
+<text class="mono" x="229.2" y="321.88" font-size="10.67"><tspan fill="#e03e3e">0</tspan></text>
+<text class="t mono" x="235.6" y="321.88" font-size="10.67">;</text>
+<text class="t mono" x="248.4" y="321.88" font-size="10.67">i--)</text>
+<text class="tm mono" x="36" y="321.88" font-size="9.5" text-anchor="end">8</text>
+<text class="t mono" x="152.4" y="338.38" font-size="10.67">printf(</text>
+<text class="mono" x="197.2" y="338.38" font-size="10.67"><tspan fill="#c43fb0">&quot;%d\n&quot;</tspan></text>
+<text class="t mono" x="235.6" y="338.38" font-size="10.67">,</text>
+<text class="t mono" x="248.4" y="338.38" font-size="10.67">i);</text>
+<text class="mono" x="306" y="338.38" font-size="10.67"><tspan fill="#13899a">//</tspan></text>
+<text class="mono" x="325.2" y="338.38" font-size="10.67"><tspan fill="#13899a">one</tspan></text>
+<text class="mono" x="350.8" y="338.38" font-size="10.67"><tspan fill="#13899a">a</tspan></text>
+<text class="mono" x="363.6" y="338.38" font-size="10.67"><tspan fill="#13899a">line</tspan></text>
+<text class="tm mono" x="36" y="338.38" font-size="9.5" text-anchor="end">9</text>
+<text class="t mono" x="101.2" y="354.88" font-size="10.67">puts(order);</text>
+<text class="mono" x="203.6" y="354.88" font-size="10.67"><tspan fill="#13899a">/*</tspan></text>
+<text class="mono" x="222.8" y="354.88" font-size="10.67"><tspan fill="#13899a">then</tspan></text>
+<text class="mono" x="254.8" y="354.88" font-size="10.67"><tspan fill="#13899a">the</tspan></text>
+<text class="mono" x="280.4" y="354.88" font-size="10.67"><tspan fill="#13899a">order</tspan></text>
+<text class="mono" x="318.8" y="354.88" font-size="10.67"><tspan fill="#13899a">*/</tspan></text>
+<text class="tm mono" x="36" y="354.88" font-size="9.5" text-anchor="end">10</text>
+<text class="tm" x="50" y="377.5" font-size="10">(the message line is empty)</text>
+<text class="tm" x="430.4" y="299.5" font-size="10.5">Row 10 gets its classes back,</text>
+<text class="tm" x="430.4" y="313.5" font-size="10.5">and the view goes back to</text>
+<text class="tm" x="430.4" y="327.5" font-size="10.5">where it was. Nothing is blue.</text>
+<text class="mono" x="24" y="401.5" font-size="10.5"><tspan fill="#3a76d6">blue</tspan></text>
+<text class="tm" x="53.2" y="401.5" font-size="10">(ESC [34m): the match, class 8</text>
+<text class="mono" x="227.2" y="401.5" font-size="10.5"><tspan fill="#2f8a3c">green</tspan></text>
+<text class="tm" x="262.7" y="401.5" font-size="10">(ESC [32m): a type</text>
+<text class="mono" x="371.9" y="401.5" font-size="10.5"><tspan fill="#c43fb0">magenta</tspan></text>
+<text class="tm" x="420" y="401.5" font-size="10">(ESC [35m): a string</text>
+<text class="mono" x="540" y="401.5" font-size="10.5"><tspan fill="#e03e3e">red</tspan></text>
+<text class="tm" x="562.9" y="401.5" font-size="10">(ESC [31m): a number</text>
+</svg>

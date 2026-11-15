@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 382" fill="none">
+<title>The same keys in countdown.c and countdown.txt at 06.01: in the C file the byte Ctrl-A typed is drawn as a reverse-video A; in the text file it goes to the terminal as it is</title>
+<defs><marker id="f0601a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0601a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0601a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 06.01 on a terminal 16 rows by 56 columns, after Down 3 times, Right 8 times and Ctrl-A</text>
+<text class="t" x="45" y="50" font-size="12" font-weight="600">countdown.c: a language kilo knows</text>
+<text class="tm" x="451" y="50" font-size="10" text-anchor="end">rows 1 to 6 of 16</text>
+<rect class="s fs" x="45" y="60" width="406" height="110" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="52" y="76.24" font-size="11.67">/*</text>
+<text class="t mono" x="73" y="76.24" font-size="11.67">countdown.c:</text>
+<text class="t mono" x="164" y="76.24" font-size="11.67">3,</text>
+<text class="t mono" x="185" y="76.24" font-size="11.67">2,</text>
+<text class="t mono" x="206" y="76.24" font-size="11.67">1,</text>
+<text class="tm mono" x="38" y="76.24" font-size="9.5" text-anchor="end">1</text>
+<text class="tm mono" x="38" y="93.24" font-size="9.5" text-anchor="end">2</text>
+<text class="t mono" x="73" y="110.24" font-size="11.67">and</text>
+<text class="t mono" x="101" y="110.24" font-size="11.67">lift</text>
+<text class="t mono" x="136" y="110.24" font-size="11.67">off.</text>
+<text class="t mono" x="171" y="110.24" font-size="11.67">*/</text>
+<text class="tm mono" x="38" y="110.24" font-size="9.5" text-anchor="end">3</text>
+<rect class="a" x="114.5" y="116.5" width="8" height="14" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="52" y="127.24" font-size="11.67">#include</text>
+<rect class="t" x="108" y="115" width="7" height="15" rx="0"/>
+<text class="f mono" x="108" y="127.24" font-size="11.67">A</text>
+<text class="t mono" x="122" y="127.24" font-size="11.67">&lt;stdio.h&gt;</text>
+<text class="tm mono" x="38" y="127.24" font-size="9.5" text-anchor="end">4</text>
+<text class="tm mono" x="38" y="144.24" font-size="9.5" text-anchor="end">5</text>
+<text class="t mono" x="52" y="161.24" font-size="11.67">int</text>
+<text class="t mono" x="80" y="161.24" font-size="11.67">main(void)</text>
+<text class="t mono" x="157" y="161.24" font-size="11.67">{</text>
+<text class="tm mono" x="38" y="161.24" font-size="9.5" text-anchor="end">6</text>
+<text class="tm" x="45" y="188" font-size="10.5">row 4 as the frame sends it:</text>
+<text class="ta mono" x="212" y="188" font-size="11" font-weight="600">#include ESC[7m A ESC[0m &lt;stdio.h&gt;</text>
+<text class="tm" x="45" y="206" font-size="10.5">the byte 1 is class 1, HL_NONPRINT: drawn as A (&#x27;@&#x27; + 1) in reverse video, one cell</text>
+<text class="t" x="45" y="220" font-size="12" font-weight="600">countdown.txt: no language, so no classes but 0</text>
+<text class="tm" x="451" y="220" font-size="10" text-anchor="end">rows 1 to 6 of 16</text>
+<rect class="s fs" x="45" y="230" width="406" height="110" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="52" y="246.24" font-size="11.67">/*</text>
+<text class="t mono" x="73" y="246.24" font-size="11.67">countdown.c:</text>
+<text class="t mono" x="164" y="246.24" font-size="11.67">3,</text>
+<text class="t mono" x="185" y="246.24" font-size="11.67">2,</text>
+<text class="t mono" x="206" y="246.24" font-size="11.67">1,</text>
+<text class="tm mono" x="38" y="246.24" font-size="9.5" text-anchor="end">1</text>
+<text class="tm mono" x="38" y="263.24" font-size="9.5" text-anchor="end">2</text>
+<text class="t mono" x="73" y="280.24" font-size="11.67">and</text>
+<text class="t mono" x="101" y="280.24" font-size="11.67">lift</text>
+<text class="t mono" x="136" y="280.24" font-size="11.67">off.</text>
+<text class="t mono" x="171" y="280.24" font-size="11.67">*/</text>
+<text class="tm mono" x="38" y="280.24" font-size="9.5" text-anchor="end">3</text>
+<rect class="a" x="114.5" y="286.5" width="8" height="14" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="52" y="297.24" font-size="11.67">#include</text>
+<text class="t mono" x="115" y="297.24" font-size="11.67">&lt;stdio.h&gt;</text>
+<text class="tm mono" x="38" y="297.24" font-size="9.5" text-anchor="end">4</text>
+<text class="tm mono" x="38" y="314.24" font-size="9.5" text-anchor="end">5</text>
+<text class="t mono" x="52" y="331.24" font-size="11.67">int</text>
+<text class="t mono" x="80" y="331.24" font-size="11.67">main(void)</text>
+<text class="t mono" x="157" y="331.24" font-size="11.67">{</text>
+<text class="tm mono" x="38" y="331.24" font-size="9.5" text-anchor="end">6</text>
+<text class="tm" x="45" y="358" font-size="10.5">row 4 as the frame sends it:</text>
+<text class="ta mono" x="212" y="358" font-size="11" font-weight="600">#include \x01 &lt;stdio.h&gt;</text>
+<text class="tm" x="45" y="376" font-size="10.5">the byte 1 goes to the terminal, which draws nothing for it: the cursor, which counts it, is</text>
+<text class="tm" x="45" y="390" font-size="10.5">drawn on the &lt; instead of the space</text>
+</svg>
