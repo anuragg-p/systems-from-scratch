@@ -22,20 +22,46 @@ the size the cover names (the reference kilo.c, or the project at 02.01 for 02):
       writes 14 bytes.
   05  NOTES.md's C file on 10 x 44, Ctrl-F then r, e, t: "r" puts row 3 on top (4/6),
       "re" and "ret" row 4 (5/6), cursor at screen column 8 after the tab.
+  06  (an extension) the finished kilo.c on n.c, "int n = 42; /* was\\n   41 */ char c;\\n",
+      on 6 x 40: the first frame's bytes for its two rows, exactly the ones drawn, and the
+      colour of every cell (track.py's Editor.colors()); hl and hl_oc printed by kilo.c's
+      own editorUpdateSyntax (kilo.c built with its main renamed, a 20-line driver that
+      inserts the two rows and prints them): 555000007700333333 and hl_oc 1, then
+      0003333305555000 and hl_oc 0. The second row alone is 0007700005555000: "41" a
+      number, "*/" plain.
 
 Text in these SVGs is placed a run of non-spaces at a time, at its column: SVG
 collapses runs of spaces, and a screen's columns must line up.
+
+Terminal colours. The .art classes follow the page's theme and have none, so a cover that
+shows a terminal's colours sets them with fill="#rrggbb" on a <tspan> (the one element
+app.css gives no fill of its own: on a <text> or a shape, its rules win over the
+attribute). TERM_COLOURS holds one value per colour, each at least 3.9:1 against both
+the light page and the dark one (#ffffff, #fafafa; #0e0e10, #131315), and a cover never
+shows a colour without its name or its class beside it.
 """
 import os
+import re
 
 import figart
+from archmap import sane
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 TRACK = os.path.join(ROOT, "tracks", "kilo")
 LESSONS = os.path.join(TRACK, "lessons")
 MODULES = {"00": "00-workbench", "01": "01-terminal", "02": "02-screen", "03": "03-viewer",
-           "04": "04-editor", "05": "05-search"}
+           "04": "04-editor", "05": "05-search", "06": "06-highlighting"}
 SW = 'stroke-width="1.5"'
+
+# ESC [ n m -> (name, fill): the colours kilo's editorSyntaxToColor() returns.
+TERM_COLOURS = {
+    31: ("red", "#e03e3e"),        # HL_NUMBER
+    32: ("green", "#2f8a3c"),      # HL_KEYWORD2, the types
+    33: ("yellow", "#9a7400"),     # HL_KEYWORD1
+    34: ("blue", "#3a76d6"),       # HL_MATCH
+    35: ("magenta", "#c43fb0"),    # HL_STRING
+    36: ("cyan", "#13899a"),       # HL_COMMENT, HL_MLCOMMENT
+}
 
 
 def n(v):
@@ -70,6 +96,35 @@ class Art(figart.Art):
                 self.text(x + col * cw, y, word, cls, size, weight=weight, mono=True)
             col += len(word) + 1
         return x + len(s) * cw
+
+    def tmono(self, x, y, s, code, size=12, weight=None, anchor="start"):
+        """As mono(), in the terminal colour ESC [ code m (TERM_COLOURS); code None: the
+        page's own text colour. Returns the x just past the last column."""
+        if code is None:
+            if anchor != "start":
+                self.text(x, y, s, "t", size, anchor, weight, mono=True)
+                return x
+            return self.mono(x, y, s, "t", size, weight)
+        c = cw(size)
+        col = 0
+        wt = f' font-weight="{weight}"' if weight else ""
+        a = f' text-anchor="{anchor}"' if anchor != "start" else ""
+        for word in s.split(" "):
+            if word:
+                self.add(f'<text class="t mono" x="{n(x + col * c)}" y="{n(y)}" font-size="{n(size)}"{wt}{a}>'
+                         f'<tspan fill="{TERM_COLOURS[code][1]}">{figart.esc(word)}</tspan></text>')
+            col += len(word) + 1
+        return x + len(s) * c
+
+    def spaces(self, x, y, count, size):
+        """count spaces drawn where they are, from x, each a small open box on the baseline:
+        bytes a reader must see. Returns the x just past them."""
+        c = cw(size)
+        for i in range(count):
+            x0 = x + i * c + c * 0.18
+            self.add(f'<path class="m" d="M{n(x0)} {n(y - 2.5)} L{n(x0)} {n(y)} L{n(x0 + c * 0.64)} {n(y)} '
+                     f'L{n(x0 + c * 0.64)} {n(y - 2.5)}" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>')
+        return x + count * c
 
 
 def cw(size):
@@ -368,6 +423,112 @@ def search():
     return a
 
 
+# ------------------------------------------------------------------ 06 syntax highlighting (an extension)
+
+# n.c's two rows as the finished kilo.c holds them: render, hl, hl_oc; and the bytes the
+# first frame (6 x 40) writes for each, its "\r\n" included. See the module doc.
+N_C = [("int n = 42; /* was", "555000007700333333", 1,
+        b"\x1b[32mint\x1b[39m n = \x1b[31m42\x1b[39m; \x1b[36m/* was\x1b[39m\x1b[0K\r\n"),
+       ("   41 */ char c;", "0003333305555000", 0,
+        b"   \x1b[36m41 */\x1b[39m \x1b[32mchar\x1b[39m c;\x1b[0K\r\n")]
+# The classes n.c uses: hl -> (name, ESC [ n m), as kilo.c's HL_* and editorSyntaxToColor().
+HL = {0: ("HL_NORMAL", 39), 3: ("HL_MLCOMMENT", 36), 5: ("HL_KEYWORD2", 32), 7: ("HL_NUMBER", 31)}
+
+
+def frame_tokens(data):
+    """The bytes of a row as (text, colour code or None) and ("ESC[..", "esc") runs,
+    checking that each character goes out in its class's colour."""
+    out, colour, i = [], None, 0
+    s = data.decode("ascii")
+    while i < len(s):
+        if s[i] == "\x1b":
+            j = s.index("m" if s[i:i + 4] != "\x1b[0K" else "K", i) + 1
+            code = s[i + 2:j - 1]
+            if code.isdigit():
+                colour = None if int(code) == 39 else int(code)
+            out.append(("ESC" + s[i + 1:j], "esc"))
+            i = j
+        elif s[i:i + 2] == "\r\n":
+            out.append(("\\r\\n", "crlf"))
+            i += 2
+        else:
+            j = i
+            while j < len(s) and s[j] not in "\x1b\r":
+                j += 1
+            out.append((s[i:j], colour))
+            i = j
+    return out
+
+
+def highlighting():
+    a = Art("k06", "Two rows of C: each character's class in hl beside render, the colour of each class, and the "
+                   "escape codes the rows go to the terminal with")
+    size, csize, pitch, cellw = 10.5, 13, 24, 22
+    x0 = 116
+    a.text(24, 20, "n.c as kilo holds it: under each character of a row's render, its class in hl", "tm", 11)
+    tops = [32, 86]
+    # each row's render, a cell per character in its colour, and its hl under it
+    for r, ((render, hl, oc, data), top) in enumerate(zip(N_C, tops)):
+        assert len(render) == len(hl)
+        a.text(24, top + 17, f"row {r}", "t", 12, weight=600)
+        a.text(x0 - 8, top + 17, "render", "tm", size, "end", mono=True)
+        a.text(x0 - 8, top + 40, "hl", "tm", size, "end", mono=True)
+        for i, (ch, k) in enumerate(zip(render, hl)):
+            x = x0 + i * pitch
+            code = HL[int(k)][1]
+            code = None if code == 39 else code
+            a.box(x, top, cellw, 24, "m af" if k == "3" else "m f", rx=3)     # the comment, over both rows
+            if ch == " ":
+                a.spaces(x + (cellw - cw(csize)) / 2, top + 17, 1, csize)
+            else:
+                a.tmono(x + cellw / 2, top + 17, ch, code, csize, 600, "middle")
+            if k == "0":
+                a.text(x + cellw / 2, top + 40, k, "tm", 11.5, "middle", mono=True)
+            else:
+                a.tmono(x + cellw / 2, top + 40, k, code, 11.5, 600, "middle")
+        a.text(x0 + 18 * pitch + 10, top + 40, f"hl_oc {oc}", "ta" if oc else "tm", 11, weight=600 if oc else None,
+               mono=True)
+
+    # the bytes each row goes out as
+    a.text(24, 152, "what kilo writes for them: a colour code only where the colour changes", "tm", 11)
+    for r, ((render, hl, oc, data), y) in enumerate(zip(N_C, (172, 192))):
+        x = 24
+        toks = frame_tokens(data)
+        # check: every character of render in its class's colour
+        drawn = [(ch, c) for t, c in toks if c not in ("esc", "crlf") for ch in t]
+        assert "".join(ch for ch, _ in drawn) == render
+        assert all(c == (None if HL[int(k)][1] == 39 else HL[int(k)][1]) for (_, c), k in zip(drawn, hl))
+        for t, c in toks:
+            if c == "esc":
+                x = a.mono(x, y, t, "ta", size) + 4
+            elif c == "crlf":
+                x = a.mono(x, y, t, "tm", size) + 4
+            else:
+                for run in re.findall(r" +|[^ ]+", t):
+                    x = a.spaces(x, y, len(run), size) if run[0] == " " else a.tmono(x, y, run, c, size)
+                x += 4
+
+    # the classes, their colours
+    a.text(24, 222, "editorSyntaxToColor(): each class's colour, the n of ESC[n m", "tm", 11)
+    for j, (k, (name, code)) in enumerate(sorted(HL.items())):
+        x = 24 + j * 150
+        if code == 39:
+            a.text(x, 243, str(k), "tm", 13, weight=700, mono=True)
+        else:
+            a.tmono(x, 243, str(k), code, 13, 700)
+        a.text(x + 14, 242, name, "t", size, mono=True)
+        x2 = a.mono(x + 14, 259, f"ESC[{code}m", "ta", size) + 6
+        if code == 39:
+            a.text(x2, 259, "the default", "tm", 11)
+        else:
+            a.add(f'<text class="t" x="{n(x2)}" y="259" font-size="11" font-weight="600">'
+                  f'<tspan fill="{TERM_COLOURS[code][1]}">{TERM_COLOURS[code][0]}</tspan></text>')
+
+    a.text(24, 288, "Row 0 ends inside the comment (hl_oc 1), so row 1 begins in it: its 41 is 3 3, comment, not 7 7.",
+           "tm", 11.5)
+    return a
+
+
 # ------------------------------------------------------------------ icons and the track's own art
 
 ICONS = {
@@ -378,6 +539,8 @@ ICONS = {
     "03": '<path d="M2 10s3-5.5 8-5.5 8 5.5 8 5.5-3 5.5-8 5.5S2 10 2 10z"/><circle cx="10" cy="10" r="2.5"/>',
     "04": '<path d="M12.5 4.5l3 3L7 16H4v-3z"/><path d="M10.5 6.5l3 3"/>',
     "05": '<circle cx="8.5" cy="8.5" r="5"/><path d="M12.25 12.25L17 17"/>',
+    # a character over a bar of its colour: the text-colour mark
+    "06": '<path d="M5.5 13.5L10 3.25l4.5 10.25M7.1 10h5.8"/><path d="M3.5 17h13" stroke-width="2.5"/>',
 }
 TRACK_ICON = '<rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M5.5 7h9M5.5 12h3.5"/><path d="M11.5 10.5v3"/>'
 
@@ -426,7 +589,8 @@ def card():
     return "\n".join(out)
 
 
-COVERS = {"00": workbench, "01": terminal, "02": screen, "03": viewer, "04": editor, "05": search}
+COVERS = {"00": workbench, "01": terminal, "02": screen, "03": viewer, "04": editor, "05": search,
+          "06": highlighting}
 
 
 def main():
@@ -434,11 +598,13 @@ def main():
         d = os.path.join(LESSONS, MODULES[mid])
         for name, s in (("cover.svg", fn().svg()), ("icon.svg", icon_svg(ICONS[mid]))):
             s.encode("ascii")
+            sane(s, os.path.join(MODULES[mid], name))
             with open(os.path.join(d, name), "w") as f:
                 f.write(s)
             print(os.path.join(d, name))
     for name, s in (("art.svg", card()), ("icon.svg", icon_svg(TRACK_ICON))):
         s.encode("ascii")
+        sane(s, name)
         with open(os.path.join(TRACK, name), "w") as f:
             f.write(s)
         print(os.path.join(TRACK, name))
