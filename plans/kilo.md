@@ -92,9 +92,10 @@ the tree.
    07.07 Go to definition
 
 The lists are the direction; fit them to the code, as the core's were.
-Order (the owner, 2026-11-15: "first finish highlighting"): 06 whole,
-its code, then its lessons and art, then a read of it; only then 07, its
-code, lessons and read. Art for everything, as in the core.
+Order (the owner, 2026-11-15: "first finish highlighting", then "stop
+after completing highlighting"): 06 whole, its code, then its lessons and
+art, then a read of it. 07 is NOT started: it waits for the owner's word.
+Art for everything, as in the core.
 
 The `dsa` outline's module 03 (gap buffer, piece table, balanced tree)
 builds on this track: it starts from this track's finished core and
