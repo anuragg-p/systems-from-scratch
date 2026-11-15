@@ -101,6 +101,16 @@ not line by line); for -E, I is an offset in the line. State lists show only
 states that read a byte, the match state, and a `$` waiting for the end:
 splits are followed, never kept.
 
+The order of trace and output depends on where stdout goes. On a terminal
+stdout is written a line at a time, so each selected line shows right after
+its own trace lines; through a pipe (`2>&1 | grep -v ...`, as several
+examples here) stdout is buffered, written when its buffer fills or grep
+ends, so on small inputs every trace line comes first and the selected
+lines after them all. The stats lines come last
+either way. For `printf 'xabb\nab\n' | DS_TRACE=1 bin/grep -E --algo=nfa ab`
+a terminal shows `xabb` after line 1's trace, a pipe shows it after line
+2's. A transcript must say which it was.
+
 ## Checked against the system's grep, and where BSD and GNU differ
 
 tests/tools/grep.py holds the table: 36 fixed strings (on the book and on
@@ -238,7 +248,9 @@ is not repeated, or `(a*)*` would go round for ever. It tries each start in
 the line in turn. Its depth is limited to 10000 calls: past that, an
 ordinary error, not a stack overflow (`a*b` on 30000 a's prints `grep: the
 backtracking matcher is 10000 calls deep, on a line of 30000 bytes: more
-than its stack can hold (--algo=nfa needs no stack)`, status 2).
+than its stack can hold`, status 2; from 04.03 on, with `--algo=backtrack`,
+the message ends `(--algo=nfa needs no stack)`, an `@from 04.03` block in
+bt(); the timeline checks both).
 
 ```
 $ printf 'colour\ncolor\ncolr\n' | bin/grep -E 'colou?r'
@@ -311,7 +323,12 @@ line 57 "observation in following out those clues, and ..."       7914161342 ste
 line 58 "mysteries which had been abandoned as hopeless by ..."   killed after 6 minutes of CPU
 ```
 
-(Line numbers as `sed -n 41p data/book.txt` counts them.) The cost is
+(Line numbers as `sed -n 41p data/book.txt` counts them.) On the whole book
+it never gets to lines 57 and 58: it prints the matching lines up to 40,
+spends 3.2 s on line 41, and then stalls at line 43, "be more disturbing
+than a strong emotion in a nature such as his.", 52 letters in 13 words
+before its full stop: 2^39 ways, about 7 to 8 hours at the rate below
+(lesson 04.03 says "about eight hours"). The cost is
 predictable: the letters before the first punctuation can be split into
 pieces in 2^(letters - words) ways, and the backtracker takes about 14.5
 steps a way, at about 300 million steps a second: line 41 has 34 letters in
@@ -334,9 +351,9 @@ Break it (no guard against a loop that matched nothing): in go_on, delete
 
 ```
 $ printf 'aaab\naaac\n' | bin/grep -E '(a*)*b'
-grep: the backtracking matcher is 10000 calls deep, on a line of 4 bytes: more than its stack can hold (--algo=nfa needs no stack)
+grep: the backtracking matcher is 10000 calls deep, on a line of 4 bytes: more than its stack can hold
 $ printf 'xy\n' | bin/grep -E '(a|)*y'
-grep: the backtracking matcher is 10000 calls deep, on a line of 2 bytes: more than its stack can hold (--algo=nfa needs no stack)
+grep: the backtracking matcher is 10000 calls deep, on a line of 2 bytes: more than its stack can hold
 $ printf 'colour\n' | bin/grep -E 'colou?r'
 colour
 ```
@@ -543,5 +560,6 @@ small grammar (`a b c . [..] [^..] ^ $`, sequences, `|`, `( )* + ?`), with
 and without -i, and 04.04 with --cache=1. Times on the Mac: 1.6, 4.3, 2.0
 and 2.0 s; on Linux 0.8, 1.7, 0.7 and 0.5 s. check-timeline types, at each
 lesson, what grep can do then and the error for what comes next (`-E` at
-04.01, `--algo=nfa` at 04.02, `--algo=dfa` and `--cache` at 04.03), and
-compares -F and each engine so far with the system's grep on the book.
+04.01, `--algo=nfa` at 04.02, `--algo=dfa` and `--cache` at 04.03), the
+backtracker's depth error word for word (naming --algo=nfa only from 04.03),
+and compares -F and each engine so far with the system's grep on the book.

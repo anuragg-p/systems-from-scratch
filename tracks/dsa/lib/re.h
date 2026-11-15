@@ -74,7 +74,15 @@ static inline int re_has(const unsigned char *set, unsigned char c)
 /* Is re found anywhere in the line s[0..n) (with no newline in it)? */
 int re_backtrack(const Re *re, const char *s, size_t n);
 
+// @from 04.03
+// @from 04.04
 /* DS_TRACE is set (for nfa.c and dfa.c too). */
+// @else
+// /* DS_TRACE is set (for nfa.c too). */
+// @end
+// @else
+// /* DS_TRACE is set. */
+// @end
 int re_tracing(void);
 
 #endif

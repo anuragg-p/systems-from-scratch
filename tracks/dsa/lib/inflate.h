@@ -10,12 +10,14 @@
  * dynamic blocks D, symbols N, table lookups T, bits walked W": the blocks
  * of each kind read, the Huffman-coded symbols decoded, how many of those
  * were looked up in a table, and how many bits were read one at a time.
- * DS_TRACE=1 prints each block and each literal and match as it is read:
+ * DS_TRACE=1 prints each block and each literal and match as it is read;
+ * for abracadabra in a dynamic block:
  *
- *   trace: inflate: block 1: dynamic (last), header 160 bits, 10 literal/length codes (longest 4 bits), 2 distance codes (longest 1 bits)
+ *   trace: inflate: block 1: dynamic (last), header 130 bits, 259 literal/length codes (longest 3 bits), 6 distance codes (longest 1 bits)
  *   trace: inflate: 0: literal "a"
+ *   ...
  *   trace: inflate: 7: match distance 7 length 4 "abra"
- *   trace: inflate: end of block 1: 210 bits, 11 bytes
+ *   trace: inflate: end of block 1: 159 bits, 11 bytes
  *
  * where 0 and 7 are where in the output the bytes go. A stored block says
  * "stored", a block in the fixed codes "fixed".

@@ -258,9 +258,15 @@ static void print_graph(void)
 
 /* ------------------------------------------------------------ building */
 
+// @from 07.03
 /* --algo=recurse: what the walk does at each node it comes to, after
  * everything the node needs: a target with a recipe has it run, every
  * time the walk comes to it; a file with no rule must be there. */
+// @else
+// /* What the walk does at each node it comes to, after everything the
+//  * node needs: a target with a recipe has it run, every time the walk
+//  * comes to it; a file with no rule must be there. */
+// @end
 static void make_node(Graph *graph, long n, long from, void *ctx)
 {
     // @build 07.01 at each node the walk comes to: run its recipe

@@ -210,7 +210,7 @@ Measured, the cost of a key at line 2 against the file's size (the book
 repeated; 100 keys, the run with 0 keys taken off):
 
 ```
-10 MB    0.16 ms a key
+10 MB    0.18-0.19 ms a key   (0.16 in a first run; lesson 03.01 says about 0.2)
 100 MB   1.9 ms a key
 1 GB     19 ms a key     (the editor on a terminal: 0.10 s for the first key, the
                           grow; then 0.018-0.022 s a key)
@@ -382,8 +382,8 @@ $ python3 bench/grow.py --limit 2 --start 8000 --input typing bin/edit --algo=pi
 
 and on edits all over (`--input scattered`): 0.617 s at 512000 lines, 2.803
 s at 1024000 (ratios 6.1, 4.5). At 1024000 lines: 31994 pieces, 622785224
-pieces walked, 3.66 s (about 6 ns a piece: the pieces are in no order in
-memory). On 64000 lines: 2001 pieces, 2459137 walked. Corrections typed in
+pieces walked, 2.9 to 3.5 s over several runs (3.66 s once; about 5 ns a
+piece: the pieces are in no order in memory). On 64000 lines: 2001 pieces, 2459137 walked. Corrections typed in
 one place (`type ab / back 1`, repeated): 10000 of them replay in 0.25 s
 and a key after them costs 3.8 us; 100000 replay in 25.3 s, 46 us a key
 (the walk follows pieces made in order, so here it is under half a ns a
@@ -428,7 +428,7 @@ end, for an erase) in two, then adds a node or removes the nodes between.
 scattered, 64000 lines:   pieces 2001, nodes visited 125113, rotations 1985, height 13
                           (the list: pieces walked 2459137)
 scattered, 1024000 lines: pieces 31994, nodes visited 2842400, rotations 29002, height 18;
-                          0.018 s (list 3.66 s, gap 2.15 s, array 16.42 s)
+                          0.018 s (list 2.9-3.5 s, gap 2.15 s, array 16.42 s)
 typing, 256000 lines:     pieces 647, nodes visited 560565, height 10 (list: 10418651 walked)
 100000 corrections:       0.092 s, 0.5 us a key after them (list: 25.3 s, 46 us)
 ```
@@ -438,15 +438,24 @@ words), ratio 2.1, about n; `--input typing`: 0.036 s at 4096000 lines, too
 quick to time.
 
 Break it (a tree that never rotates): `balance()` keeps only `update(n);`
-and `return n;`. Pieces added at both ends in turn (`goto end / type one /
-goto 0 / type >`, 2000 times each of three words), and scattered edits of
-512000 lines:
+and `return n;`. Pieces added at both ends in turn, the lesson's script on
+a 12-byte file:
+
+```
+$ printf 'the cat sat\n' > cat.txt
+$ python3 -c "import sys; sys.stdout.write('goto end\ntype ab\ngoto 0\ntype >\n' * 6000)" > ends.txt
+$ DS_STATS=1 bin/edit --replay ends.txt cat.txt 2>&1 | grep tree
+```
+
+and scattered edits of 512000 lines:
 
 ```
                  balanced                                   never rotated
-both ends        height 14, nodes visited 859272, 0.0067 s   height 6001, nodes visited 204086000, 1.088 s
+both ends        height 14, nodes visited 454880, 0.00 s     height 6001, nodes visited 108030000, 0.58 s
 scattered        height 17, nodes visited 1314874, 0.0095 s  height 48, nodes visited 2421026, 0.0111 s
 ```
+
+(both ends: 12001 pieces either way, and 11974 rotations when balanced.)
 
 The text is the same bytes either way (cmp says so): an unbalanced tree is
 still a correct one. Edits at random places keep it shallow by luck; edits

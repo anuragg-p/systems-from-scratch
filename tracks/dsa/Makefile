@@ -1,7 +1,12 @@
 # dsa - data structures and algorithms, by building the tools that use them.
 #
+# @from 01.01
 #   make              build every tool: bin/paste, bin/freq, ...
 #   make bin/freq     build one of them
+# @else
+# #   make              build every tool: bin/paste
+# #   make bin/paste    build one of them
+# @end
 #   make clean        remove what make built
 #
 # Plain C11 and libc. The library in lib/ is compiled into build/lib/ and

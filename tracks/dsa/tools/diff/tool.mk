@@ -1,5 +1,9 @@
 # diff: comparing two files line by line (module 06). tools/diff/diff.c is
+# @from 10.04
 # the command; the engine, which git's diff uses as well, is in lib/, behind
+# @else
+# # the command; the engine, which other tools can use too, is in lib/, behind
+# @end
 # lib/diff.h:
 #   lib/diff.c    the table
 #   lib/myers.c   Myers' search   @from 06.03

@@ -8,9 +8,9 @@
  * dynamic blocks D, bits out B": the blocks written of each kind, and the
  * bits they took.
  * DS_TRACE=1 prints each block as it is written, with what each form of
- * it would have cost and which was taken:
+ * it would have cost and which was taken; for abracadabra:
  *
- *   trace: deflate: block 1 (last): 11 bytes, 8 tokens: stored 128 bits, fixed 74 bits, dynamic 102 bits: fixed
+ *   trace: deflate: block 1 (last): 11 bytes, 8 tokens: stored 128 bits, fixed 79 bits, dynamic 159 bits: fixed
  */
 #ifndef DEFLATE_H
 #define DEFLATE_H

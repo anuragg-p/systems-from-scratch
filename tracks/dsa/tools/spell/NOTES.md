@@ -420,9 +420,11 @@ speling:
 teh: eh tea tech ted tee
 ```
 
-On the book, 435 of the 615 lines lose their suggestions; cells filled
-486209 instead of 32263386: fast, and wrong. --near=scan is right, which
-is the point of keeping it.
+On the book, 434 of the 615 lines change (line by line, or `comm -23`
+against the right output; macOS's diff between the two files reports 435,
+since its diff is not always the shortest), and 573 have no suggestion at
+all where 153 had none; cells filled 486209 instead of 32263386: fast, and
+wrong. --near=scan is right, which is the point of keeping it.
 
 Break it (no insertions): in edit_next_row, `int best = del < ins ? del :
 ins;` becomes `int best = del;` (the compiler warns that ins is unused).

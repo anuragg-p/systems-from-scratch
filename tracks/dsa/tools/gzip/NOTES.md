@@ -318,9 +318,11 @@ $ gzip -6 -c data/book.txt | DS_STATS=1 bin/gunzip -t --algo=bits
 stats: inflate: stored blocks 0, fixed blocks 0, dynamic blocks 8, symbols 198811, table lookups 0, bits walked 873719
 ```
 
-198811 symbols for 562404 bytes. A bit at a time: 873719 steps, 4.4 a
-symbol; with the table: 198811 looks and 28997 bits walked for the few codes
-over 9 bits, 30 times fewer steps. The time, though, hardly moves, and that
+198811 symbols for 562404 bytes. A bit at a time: 873719 bits walked, 4.4
+a symbol; with the table: 198811 looks and 28997 bits walked for the few
+codes over 9 bits, 30 times fewer bits walked. Counting each look as a step
+too, 227808 steps against 873719: about a quarter of the steps, not a
+thirtieth. The time, though, hardly moves, and that
 is worth saying honestly: writing the bytes out (an array_push for each)
 costs more than reading the codes.
 
@@ -375,13 +377,17 @@ trace: inflate: 7: match distance 6 length 10 "llo hllo h"
 trace: inflate: 17: literal "\n"
 trace: inflate: end of block 1: 87 bits, 18 bytes
 gunzip: stdin: the data's CRC-32 is a8e6f8ce, but the trailer says df8a7c3b
-$ bin/gunzip -t book.txt.gz
-gunzip: book.txt.gz: the data's CRC-32 is fbf17e11, but the trailer says f8c846cb
 ```
 
 DEFLATE itself has no check: the wrong bytes inflate without a single error,
 the right length, and only the trailer's CRC-32 catches it. That is what the
 trailer is for (and why gunzip writes nothing until it has checked).
+
+Keep this break-it to the tiny file, whose one match is 6 back. A match of
+distance 1 (the book's gzip -6 stream has 15, runs of spaces and newlines)
+then copies `out->data[out->len]`, the byte one past what has been written:
+memory the Array holds but nothing has filled, so what comes out is
+undefined, not merely wrong. (An earlier draft ran it on the book too.)
 
 ## 09.03 LZ77: finding repeats with a hash table
 
@@ -512,10 +518,34 @@ code-length code (7 bits at most), sending its lengths in the RFC's order
 block is 16384 tokens at most (as zlib's default); the last is marked final
 and the stream padded to a byte.
 
-Why complete codes: the RFC allows a code with patterns left over (it says so
-for a lone distance code), and our inflate reads one, but the system's do
-not. Tried with a hand-made block whose literal/length code is a 1 bit, 256
-2 bits, the pattern 11 unused: ours prints "a"; Apple's gunzip says "data
+Why complete codes (`at_least_two`): no reader we know of needs what it
+does. RFC 1951 3.2.7 allows a lone distance code of one bit ("a single code
+length of one, with one unused code") and no distance codes at all ("one
+distance code of zero bits"), and nowhere asks for complete codes. zlib's
+inftrees.c refuses an incomplete code unless it is a literal/length or
+distance code whose only code is 1 bit long (`left > 0 && (type == CODES ||
+max != 1)`), and takes a code with no lengths at all; the code-length code
+must be complete. Huffman's tree on two or more symbols is complete, so the
+only incomplete codes plan_dynamic could write without at_least_two are the
+ones zlib excepts: a lone symbol, which huff_lengths gives 1 bit (the
+literal/length code of an empty block, only the end of block; a distance
+code with one distance code used), and a distance code with none (no
+matches). The code-length code always has two symbols or more (it codes 258
+lengths or more, the end of block's is not 0, and four equal lengths in a
+row become a 16, three zeros a 17 or 18), so at_least_two never adds one
+there. Tried with at_least_two switched off (a scratch copy, not kept): 49
+inputs (nothing, one byte, abracadabra, 1000 a's, "ab" 10000 times, 100 KB
+of noise, 5000 digits, the book, 40 short ones of 1 to 4 byte values), each
+with --blocks=dynamic and the default, 98 files, 32 of them with a code it
+would have changed (22 distance codes of one symbol, 10 of none, 2 empty
+blocks' literal/length codes): Apple's gunzip (zlib), Python's zlib 1.2.12
+and 1.3.1, GNU gzip 1.13 and our gunzip read every one back. It is kept for
+what it buys, every code written complete, at a bit or two in a rare
+header; its comment says so.
+
+What the readers do refuse is a different incomplete code, one Huffman
+never makes: a hand-made block whose literal/length code is a 1 bit, 256 2
+bits, the pattern 11 unused: ours prints "a"; Apple's gunzip says "data
 stream error", Python's zlib "invalid literal/lengths set", GNU gzip 1.13
 "invalid compressed data--format violated". The same block with 257 given
 the spare pattern, all four read it.
@@ -527,7 +557,8 @@ rare symbols closer to the common, so the tree is less lopsided; once every
 count is 1 it is balanced (9 bits for 288 symbols), so it ends. It is not
 optimal (package-merge is), but it is rare and cheap: on the test's
 Fibonacci input (18 byte values with counts 1, 2, 3, 5, ... 4181, 10944
-bytes, which with the end-of-block's 1 make a tree 17 deep), one halving
+bytes: the letters alone make a tree 17 deep, and with the end of block's 1
+the block's tree is 18 deep, as the trace's joins show), one halving
 gives a code of 10 bits at most, and the block's data costs 28643 bits
 against 28634 for the unlimited (unwritable) code: 9 bits more. On ordinary
 text it never happens: the book in 7 blocks, rebuilds 0.
@@ -614,7 +645,7 @@ gunzip: b.gz: code lengths that run past the 304 the block says
 
 Break it (no 15-bit limit: in `plan_dynamic`, `huff_lengths_limited(lc, 286,
 HUFF_MAX_BITS, h->lit.len);` becomes `huff_lengths(lc, 286, h->lit.len);`,
-on the Fibonacci text, which needs 17 bits):
+on the Fibonacci text, whose block code needs 18 bits):
 
 ```
 $ bin/gzip -c --algo=none fib.txt > fib2.gz
