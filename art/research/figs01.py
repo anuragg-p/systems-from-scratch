@@ -168,12 +168,14 @@ def rule(n, v, name, after):
     """The chain rule at node n (its _backward just ran), with the numbers: one line per input."""
     a = v._prev
     g = sig(v.grad, 4)
+    N = f"({n})" if "*" in n else n                   # (x1*w1).grad, not x1*w1.grad
     if v._op == "+":
-        return [f"{name[id(p)]}.grad += {n}.grad = {sig(after[name[id(p)]], 4)}" for p in a]
+        return [f"{name[id(p)]}.grad += {N}.grad = {sig(after[name[id(p)]], 4)}" for p in a]
     if v._op == "*":
         p, q = a
-        return [f"{name[id(p)]}.grad += {name[id(q)]} x {n}.grad = {sig(q.data, 4)} x {g} = {sig(after[name[id(p)]], 4)}",
-                f"{name[id(q)]}.grad += {name[id(p)]} x {n}.grad = {sig(p.data, 4)} x {g} = {sig(after[name[id(q)]], 4)}"]
+        g6 = sig(v.grad, 6)                           # six places, so that the product checks by hand
+        return [f"{name[id(p)]}.grad += {name[id(q)]} x {N}.grad = {sig(q.data, 6)} x {g6} = {sig(after[name[id(p)]], 6)}",
+                f"{name[id(q)]}.grad += {name[id(p)]} x {N}.grad = {sig(p.data, 6)} x {g6} = {sig(after[name[id(q)]], 6)}"]
     if v._op == "tanh":
         p = a[0]
         return [f"{name[id(p)]}.grad += (1 - {n}^2) x {n}.grad = (1 - {sig(v.data, 4)}^2) x {g} = "
@@ -224,7 +226,7 @@ def backward0102():
             cap = (f"The + that made {n} passes {n}.grad back unchanged, to {ins[0]} and to {ins[1]}: "
                    f"{sig(v.grad, 4)} each.")
         else:
-            cap = (f"The * that made {n}: each input gets {n}.grad times the other input's value: "
+            cap = (f"The * that made {n}: each input gets ({n}).grad times the other input's value: "
                    f"{ins[0]}.grad = {sig(after[ins[0]], 4)}, {ins[1]}.grad = {sig(after[ins[1]], 4)}.")
         if k == len(frames) - 1:
             cap += " Every Value now holds d o / d itself, all from one pass."
@@ -237,34 +239,30 @@ def backward0102():
 
 
 def twice0102():
-    """A Value used twice: b = a * a, and the two shares of a's gradient."""
+    """A Value used twice: b = a * a. The two lines of __mul__'s _backward each add a share to
+    a.grad, because self and other are the same Value; the run gives their sum."""
     track_code()
     from engine.value import Value
     a = Value(3.0)
     b = a * a
-    shares = []
-    orig = b._backward
-
-    def wrapped():
-        g0 = a.grad
-        orig()
-        shares.append(a.grad - g0)
-    b._backward = wrapped
     b.backward()
-    f = Fig("twice0102", "A Value used twice gets a share of the gradient from each use, and the shares add", 170)
-    spec = {"a": ("value", 92, 86, "a", a.data, a.grad), "op": ("op", 290, 86, "*", None, None),
-            "b": ("value", 470, 86, "b = a * a", b.data, b.grad)}
-    f.add('<path class="s" d="M140 76 C 200 50, 240 60, 274 78" stroke-width="1.5" stroke-linecap="round" '
-          f'fill="none" marker-end="url(#twice0102-ah)"/>')
-    f.add('<path class="s" d="M140 96 C 200 122, 240 112, 274 94" stroke-width="1.5" stroke-linecap="round" '
-          f'fill="none" marker-end="url(#twice0102-ah)"/>')
+    share = a.data * b.grad                           # other.data * out.grad, and self.data * out.grad
+    same("01.02 a * a: the two shares add up to a.grad", 2 * share, a.grad)
+    same("01.02 a * a: d/da of a^2 is 2a", a.grad, 2 * a.data)
+    f = Fig("twice0102", "A Value used twice gets a share of the gradient from each use, and the shares add", 206)
+    spec = {"a": ("value", 112, 70, "a", a.data, a.grad), "op": ("op", 300, 70, "*", None, None),
+            "b": ("value", 500, 70, "b = a * a", b.data, b.grad)}
+    for d in ("M160 60 C 210 34, 250 42, 284 62", "M160 80 C 210 106, 250 98, 284 78"):
+        f.path(d, "s", arrow=True)
     figart.graph(f, spec, [("op", "b")], value_w=128)
-    # the shares: one line per use of a in the product
-    f.text(92, 140, f"as self:  a.grad += other.data x b.grad = {sig(a.data)} x {sig(b.grad)}", "ta", 11.5, mono=True)
-    f.text(92, 158, f"as other: a.grad += self.data x b.grad = {sig(a.data)} x {sig(b.grad)}", "ta", 11.5, mono=True)
-    f.text(470, 140, f"a.grad = {' + '.join(sig(s) for s in shares)} = {sig(a.grad)}", "ta", 12, "middle", 600, True)
-    f.text(470, 158, f"(d/da of a^2 is 2a = {sig(2 * a.data)})", "tm", 11, "middle")
-    same("01.02 a * a", (len(shares), a.grad), (1, 2 * a.data))
+    f.text(214, 28, "a, as self", "tm", 10.5, "middle")
+    f.text(214, 124, "a, as other", "tm", 10.5, "middle")
+    x = 24
+    f.text(x, 152, f"self.grad  += other.data x out.grad:  a.grad += {sig(a.data)} x {sig(b.grad)} = {sig(share)}",
+           "ta", 11.5, mono=True)
+    f.text(x, 170, f"other.grad += self.data x out.grad:   a.grad += {sig(a.data)} x {sig(b.grad)}, "
+                   f"now {sig(a.grad)}", "ta", 11.5, mono=True)
+    f.text(x, 190, f"a.grad = {sig(a.grad)}: the derivative of a^2 is 2a = {sig(2 * a.data)}", "t", 11.5, weight=600)
     return f
 
 
