@@ -109,11 +109,25 @@ def strip_comments(text):
 # ---------------------------------------------------------------- inline
 
 def inline(text, resolve_link=None):
+    """Code spans, then links, are set aside as placeholders (NUL, a number, NUL) so the patterns
+    after them cannot read inside: a link's text and URL see a code span as one opaque token, and
+    emphasis sees neither. NUL is taken out of the text first, so every NUL is one of ours, and
+    every match here starts and ends at a markup character, never inside a placeholder.
+
+    An entry is finished markup when it is kept: keep() fills in the placeholders in what it
+    stores (a link's text holds the code spans set aside before it), so no entry ever holds one.
+    The one fill at the end therefore leaves none behind, whatever nests in what."""
     text = html.escape(text.replace("\0", ""), quote=True)
     stash = []
 
+    def fill(s):
+        parts = s.split("\0")                 # every NUL is a placeholder's: text, number, text, ...
+        if len(parts) % 2 == 0:
+            raise ValueError("unpaired placeholder")
+        return "".join(stash[int(p)] if k % 2 else p for k, p in enumerate(parts))
+
     def keep(markup):
-        stash.append(markup)
+        stash.append(fill(markup))
         return f"\0{len(stash) - 1}\0"
 
     text = re.sub(r"(`+)(.+?)\1", lambda m: keep(f"<code>{m.group(2).strip()}</code>"), text)
@@ -121,16 +135,17 @@ def inline(text, resolve_link=None):
     def link(m):
         label, href = m.group(1), html.unescape(m.group(2))
         if resolve_link:
-            href = resolve_link(href) or href
+            href = (resolve_link(href) or href).replace("\0", "")     # NULs stay ours alone
         if BAD_SCHEME.match(href) and not re.match(r"^(https?|mailto):", href, re.I):
             return emphasis(label)
         if not SAFE_SCHEME.match(href) or OTHER_HOST.match(href):
             return emphasis(label)
         return keep(f'<a href="{html.escape(href, quote=True)}">{emphasis(label)}</a>')
 
-    text = re.sub(r"\[([^\]\n]+)\]\(([^)\s]+)(?:\s+&quot;[^)]*?&quot;)?\)", link, text)
-    text = emphasis(text)
-    return re.sub(r"\0(\d+)\0", lambda m: stash[int(m.group(1))], text)
+    # A URL never holds a placeholder: a code span there binds first, as in CommonMark, and
+    # [x](/a`b`c) is text, not a link.
+    text = re.sub(r"\[([^\]\n]+)\]\(([^)\s\0]+)(?:\s+&quot;[^)]*?&quot;)?\)", link, text)
+    return fill(emphasis(text))
 
 
 def emphasis(text):
