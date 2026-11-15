@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" fill="none">
+<title>Each script against each check, 3 seeds: a check that fires is lit</title>
+<defs><marker id="checks0406-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="checks0406-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="checks0406-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="214" y="28" font-size="11.5" font-weight="600" text-anchor="middle">1. starting</text>
+<text class="t" x="214" y="43" font-size="11.5" font-weight="600" text-anchor="middle">loss</text>
+<text class="t" x="306" y="28" font-size="11.5" font-weight="600" text-anchor="middle">2. one</text>
+<text class="t" x="306" y="43" font-size="11.5" font-weight="600" text-anchor="middle">batch</text>
+<text class="t" x="398" y="28" font-size="11.5" font-weight="600" text-anchor="middle">3. fresh</text>
+<text class="t" x="398" y="43" font-size="11.5" font-weight="600" text-anchor="middle">gradients</text>
+<text class="t" x="490" y="28" font-size="11.5" font-weight="600" text-anchor="middle">4. beats</text>
+<text class="t" x="490" y="43" font-size="11.5" font-weight="600" text-anchor="middle">chance</text>
+<text class="t" x="582" y="28" font-size="11.5" font-weight="600" text-anchor="middle">5. same</text>
+<text class="t" x="582" y="43" font-size="11.5" font-weight="600" text-anchor="middle">answers</text>
+<text class="t" x="156" y="73" font-size="12" font-weight="700" text-anchor="end">the correct script</text>
+<rect class="m f" x="171" y="57" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="214" y="73" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="263" y="57" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="306" y="73" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="355" y="57" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="398" y="73" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="447" y="57" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="490" y="73" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="539" y="57" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="582" y="73" font-size="11.5" text-anchor="middle">ok</text>
+<text class="t mono" x="156" y="103" font-size="12" text-anchor="end">no zero_grad</text>
+<rect class="m f" x="171" y="87" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="214" y="103" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="263" y="87" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="306" y="103" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="a af" x="355" y="87" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="398" y="103" font-size="11.5" font-weight="700" text-anchor="middle">fails 3/3</text>
+<rect class="m f" x="447" y="87" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="490" y="103" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="539" y="87" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="582" y="103" font-size="11.5" text-anchor="middle">ok</text>
+<text class="t mono" x="156" y="133" font-size="12" text-anchor="end">softmax twice</text>
+<rect class="m f" x="171" y="117" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="214" y="133" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="a af" x="263" y="117" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="306" y="133" font-size="11.5" font-weight="700" text-anchor="middle">fails 3/3</text>
+<rect class="m f" x="355" y="117" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="398" y="133" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="447" y="117" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="490" y="133" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="539" y="117" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="582" y="133" font-size="11.5" text-anchor="middle">ok</text>
+<text class="t mono" x="156" y="163" font-size="12" text-anchor="end">labels shuffled</text>
+<rect class="m f" x="171" y="147" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="214" y="163" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="263" y="147" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="306" y="163" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="355" y="147" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="398" y="163" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="a af" x="447" y="147" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="490" y="163" font-size="11.5" font-weight="700" text-anchor="middle">fails 3/3</text>
+<rect class="m f" x="539" y="147" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="582" y="163" font-size="11.5" text-anchor="middle">ok</text>
+<text class="t mono" x="156" y="193" font-size="12" text-anchor="end">pixels 0-255</text>
+<rect class="a af" x="171" y="177" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="214" y="193" font-size="11.5" font-weight="700" text-anchor="middle">fails 3/3</text>
+<rect class="m f" x="263" y="177" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="306" y="193" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="355" y="177" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="398" y="193" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="447" y="177" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="490" y="193" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="539" y="177" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="582" y="193" font-size="11.5" text-anchor="middle">ok</text>
+<text class="t mono" x="156" y="223" font-size="12" text-anchor="end">eval in train mode</text>
+<rect class="m f" x="171" y="207" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="214" y="223" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="263" y="207" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="306" y="223" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="355" y="207" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="398" y="223" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="m f" x="447" y="207" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="490" y="223" font-size="11.5" text-anchor="middle">ok</text>
+<rect class="a af" x="539" y="207" width="86" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="582" y="223" font-size="11.5" font-weight="700" text-anchor="middle">fails 3/3</text>
+<text class="tm" x="168" y="256" font-size="11.5">Each bug fires exactly one check, and each check catches exactly one bug.</text>
+</svg>

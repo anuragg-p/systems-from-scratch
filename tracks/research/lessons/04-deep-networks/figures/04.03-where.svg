@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 270" fill="none">
+<title>Batch norm between a linear layer and its activation: each feature normalised over the examples of the batch</title>
+<defs><marker id="where0403-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="where0403-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="where0403-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="14" y="22" width="92" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="60" y="43.14" font-size="11.5" text-anchor="middle">Linear</text>
+<line class="s" x1="106" y1="39" x2="118" y2="39" stroke-width="1.5" stroke-linecap="round" marker-end="url(#where0403-ah)"/>
+<rect class="a af" x="120" y="22" width="118" height="34" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="179" y="43.14" font-size="11.5" text-anchor="middle">BatchNorm1d</text>
+<line class="s" x1="238" y1="39" x2="250" y2="39" stroke-width="1.5" stroke-linecap="round" marker-end="url(#where0403-ah)"/>
+<rect class="s f" x="252" y="22" width="92" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="298" y="43.14" font-size="11.5" text-anchor="middle">Sigmoid</text>
+<line class="s" x1="344" y1="39" x2="356" y2="39" stroke-width="1.5" stroke-linecap="round" marker-end="url(#where0403-ah)"/>
+<rect class="s f" x="358" y="22" width="92" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="404" y="43.14" font-size="11.5" text-anchor="middle">Linear</text>
+<line class="s" x1="450" y1="39" x2="462" y2="39" stroke-width="1.5" stroke-linecap="round" marker-end="url(#where0403-ah)"/>
+<text class="tm mono" x="468" y="43" font-size="13">...</text>
+<rect class="s f" x="74" y="104" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="108" y="104" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="142" y="104" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="176" y="104" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="210" y="104" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="244" y="104" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="278" y="104" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="74" y="124" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="108" y="124" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="142" y="124" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="176" y="124" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="210" y="124" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="244" y="124" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="278" y="124" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="74" y="144" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="108" y="144" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="142" y="144" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="176" y="144" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="210" y="144" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="244" y="144" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="278" y="144" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="74" y="164" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="108" y="164" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="142" y="164" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="176" y="164" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="210" y="164" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="244" y="164" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="278" y="164" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="74" y="184" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="108" y="184" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="142" y="184" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="176" y="184" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="210" y="184" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="244" y="184" width="34" height="20" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="278" y="184" width="34" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm" x="66" y="158" font-size="11" text-anchor="end">60 examples</text>
+<text class="tm" x="180" y="96" font-size="11">100 features, one column each</text>
+<line class="a" x1="159" y1="208" x2="159" y2="226" stroke-width="1.5" stroke-linecap="round" marker-end="url(#where0403-aa)"/>
+<text class="ta" x="159" y="242" font-size="11.5" font-weight="600" text-anchor="middle">mean and sd of this column</text>
+<text class="ta" x="159" y="257" font-size="11.5" text-anchor="middle">over the 60 examples</text>
+<path class="m" d="M159.0 60 L159.0 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<text class="tm" x="380" y="124" font-size="11.5">for every number h in the column:</text>
+<text class="ta mono" x="380" y="148" font-size="13" font-weight="600">(h - mean) / sd</text>
+<text class="t mono" x="380" y="168" font-size="13">   * weight + bias</text>
+<text class="tm" x="380" y="194" font-size="11.5">weight and bias are learned,</text>
+<text class="tm" x="380" y="210" font-size="11.5">one pair per feature</text>
+</svg>
