@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Double descent: test error falls, peaks where the model has just enough parameters to fit every training point, then falls again</title>
+<defs><marker id="r05-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="r05-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="40" y1="222" x2="372" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="40" y1="222" x2="40" y2="42" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="40" y="34" font-size="10.5">error</text>
+<text class="tm" x="372" y="240" font-size="10.5" text-anchor="end">model size: features p, log scale</text>
+<line class="m" x1="246.82120407340534" y1="42" x2="246.82120407340534" y2="222" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="252.82120407340534" y="198" font-size="10">p = n: just enough</text>
+<text class="tm" x="252.82120407340534" y="211" font-size="10">to fit every point</text>
+<path class="a" d="M40.0 91.7 L78.9 100.8 L101.6 104.4 L117.7 113.0 L130.2 113.9 L140.5 108.3 L149.1 115.1 L156.6 118.1 L169.1 127.9 L179.3 135.2 L188.0 131.8 L195.4 139.9 L205.1 143.0 L215.8 127.2 L224.8 130.1 L230.7 119.1 L234.3 93.1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M254.7 61.5 L257.0 57.5 L259.3 119.5 L261.5 126.6 L270.5 141.7 L279.8 153.9 L289.1 163.1 L298.2 172.9 L307.5 173.4 L316.7 179.1 L325.9 178.9 L335.1 179.1 L344.4 180.2 L353.5 182.7 L362.7 183.7 L372.0 182.9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="a" x1="234.3104081696379" y1="93.1295401705045" x2="238.3104081696379" y2="48" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r05-aa)"/>
+<line class="a" x1="250.65711564634432" y1="48" x2="254.65711564634432" y2="61.52701866646302" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="230.82120407340534" y="50" font-size="10" text-anchor="end">the peak runs</text>
+<text class="ta" x="230.82120407340534" y="63" font-size="10" text-anchor="end">off the top</text>
+<path class="s" d="M40.0 98.4 L78.9 110.5 L101.6 120.2 L117.7 128.5 L130.2 135.4 L140.5 147.5 L149.1 159.4 L156.6 162.3 L169.1 167.3 L179.3 177.9 L188.0 182.6 L195.4 193.9 L205.1 205.7 L215.8 207.6 L224.8 214.4 L230.7 215.7 L234.3 216.8 L237.7 218.7 L240.9 219.5 L242.5 220.0 L243.9 220.3 L246.8 222.0 L249.6 222.0 L252.2 222.0 L254.7 222.0 L257.0 222.0 L259.3 222.0 L261.5 222.0 L270.5 222.0 L279.8 222.0 L289.1 222.0 L298.2 222.0 L307.5 222.0 L316.7 222.0 L325.9 222.0 L335.1 222.0 L344.4 222.0 L353.5 222.0 L362.7 222.0 L372.0 222.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="78.86208163392757" y="91.83320662522036" font-size="11" font-weight="700">test</text>
+<text class="t" x="101.59494208973958" y="138.15989440726034" font-size="11" font-weight="700">train</text>
+<text class="ta" x="370.0" y="174.94729102977252" font-size="11" font-weight="700" text-anchor="end">test</text>
+<text class="t" x="404" y="40" font-size="11.5" font-weight="700">random labels</text>
+<text class="tm" x="404" y="56" font-size="10.5">the same network learns labels</text>
+<text class="tm" x="404" y="70" font-size="10.5">drawn at random: perfect on train,</text>
+<text class="tm" x="404" y="84" font-size="10.5">chance on test (Zhang et al. 2016)</text>
+<text class="t" x="404" y="116" font-size="11.5" font-weight="700">what narrows the gap</text>
+<text class="tm" x="404" y="132" font-size="10.5">weight decay, dropout, and more</text>
+<text class="tm" x="404" y="146" font-size="10.5">data, some of it made by</text>
+<text class="tm" x="404" y="160" font-size="10.5">augmenting what you have</text>
+<text class="t" x="404" y="192" font-size="11.5" font-weight="700">so</text>
+<text class="tm" x="404" y="208" font-size="10.5">train error says nothing about</text>
+<text class="tm" x="404" y="222" font-size="10.5">test error: only held-out data</text>
+<text class="tm" x="404" y="236" font-size="10.5">can tell them apart</text>
+<text class="tm" x="24" y="270" font-size="11">Computed here: least squares on p random ReLU features of 10 inputs, n = 40 noisy training points,</text>
+<text class="tm" x="24" y="286" font-size="11">median of 11 seeds. Past p = n it takes the smallest-norm fit that passes through every point.</text>
+</svg>
