@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 290" fill="none">
+<title>Training cost after one pass over seeds: plain and residual, 8 and 32 layers</title>
+<defs><marker id="depth0405-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="depth0405-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="depth0405-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="32.9" y="253.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="38.9" y1="156.7" x2="628" y2="156.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="32.9" y="160.17" font-size="10.5" text-anchor="end">0.5</text>
+<line class="m" x1="38.9" y1="63.3" x2="628" y2="63.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="32.9" y="66.83" font-size="10.5" text-anchor="end">1</text>
+<rect class="m" x="38.9" y="26" width="589.1" height="224" rx="0" stroke-width="1.5"/>
+<text class="tm" x="32.9" y="18" font-size="11.5">training cost after one pass</text>
+<text class="t" x="112.54" y="265" font-size="11" text-anchor="middle">plain 8</text>
+<text class="tm" x="112.54" y="279" font-size="11" text-anchor="middle">gradient at layer 1: 0.011</text>
+<line class="s" x1="112.54" y1="219.43" x2="112.54" y2="218.58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="106.54" y1="219.43" x2="118.54" y2="219.43" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="106.54" y1="218.58" x2="118.54" y2="218.58" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="112.54" cy="218.58" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="112.54" cy="218.63" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="112.54" cy="219.43" r="2.5" stroke-width="1.5"/>
+<line class="s" x1="98.54" y1="218.88" x2="126.54" y2="218.88" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="130.54" y="222.38" font-size="10.5">0.167</text>
+<text class="t" x="259.81" y="265" font-size="11" text-anchor="middle">plain 32</text>
+<text class="tm" x="259.81" y="279" font-size="11" text-anchor="middle">gradient at layer 1: 0.9</text>
+<line class="s" x1="259.81" y1="60.11" x2="259.81" y2="49.73" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="253.81" y1="60.11" x2="265.81" y2="60.11" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="253.81" y1="49.73" x2="265.81" y2="49.73" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="259.81" cy="49.73" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="259.81" cy="52.98" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="259.81" cy="60.11" r="2.5" stroke-width="1.5"/>
+<line class="s" x1="245.81" y1="54.27" x2="273.81" y2="54.27" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="277.81" y="57.77" font-size="10.5">1.05</text>
+<text class="ta" x="407.09" y="265" font-size="11" font-weight="600" text-anchor="middle">residual 8</text>
+<text class="tm" x="407.09" y="279" font-size="11" text-anchor="middle">gradient at layer 1: 0.017</text>
+<line class="a" x1="407.09" y1="224.52" x2="407.09" y2="224.25" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="401.09" y1="224.52" x2="413.09" y2="224.52" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="401.09" y1="224.25" x2="413.09" y2="224.25" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="407.09" cy="224.52" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="407.09" cy="224.33" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="407.09" cy="224.25" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="393.09" y1="224.37" x2="421.09" y2="224.37" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="425.09" y="227.87" font-size="10.5">0.137</text>
+<text class="ta" x="554.36" y="265" font-size="11" font-weight="600" text-anchor="middle">residual 32</text>
+<text class="tm" x="554.36" y="279" font-size="11" text-anchor="middle">gradient at layer 1: 0.067</text>
+<line class="a" x1="554.36" y1="223.41" x2="554.36" y2="221.51" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="548.36" y1="223.41" x2="560.36" y2="223.41" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="548.36" y1="221.51" x2="560.36" y2="221.51" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="554.36" cy="222.51" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="554.36" cy="223.41" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="554.36" cy="221.51" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="540.36" y1="222.48" x2="568.36" y2="222.48" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="572.36" y="225.98" font-size="10.5">0.147</text>
+</svg>
