@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 362" fill="none">
+<title>Three places in rows 7 and 8 where a word may start, and how each is tried against the keyword list</title>
+<defs><marker id="f0604b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0604b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0604b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">at a word start (prev_sep is 1) each word of C_HL_keywords is tried in turn; the first that fits wins</text>
+<text class="tm" x="24" y="56" font-size="10.5">row 7, column 8:</text>
+<rect class="a af" x="40" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="41.5" y="80" font-size="11"><tspan fill="#2f8a3c">c</tspan></text>
+<rect class="a af" x="53" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="54.5" y="80" font-size="11"><tspan fill="#2f8a3c">h</tspan></text>
+<rect class="a af" x="66" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="67.5" y="80" font-size="11"><tspan fill="#2f8a3c">a</tspan></text>
+<rect class="a af" x="79" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="80.5" y="80" font-size="11"><tspan fill="#2f8a3c">r</tspan></text>
+<rect class="s f" x="92" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="105" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="106.5" y="80" font-size="11">o</text>
+<rect class="m f" x="118" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="119.5" y="80" font-size="11">r</text>
+<rect class="m f" x="131" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="132.5" y="80" font-size="11">d</text>
+<rect class="m f" x="144" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="145.5" y="80" font-size="11">e</text>
+<rect class="m f" x="157" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="158.5" y="80" font-size="11">r</text>
+<rect class="m f" x="170" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="171.5" y="80" font-size="11">[</text>
+<rect class="m f" x="183" y="66" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="184.5" y="80" font-size="11"><tspan fill="#e03e3e">1</tspan></text>
+<text class="tm" x="97.5" y="100" font-size="9.5" text-anchor="middle">next</text>
+<text class="t mono" x="236" y="80" font-size="11" font-weight="600">tried: &quot;char|&quot;</text>
+<text class="tm" x="236" y="98" font-size="10.5">the | marks a type: c h a r match, and the space after them is a</text>
+<text class="tm" x="236" y="112" font-size="10.5">separator</text>
+<text class="t mono" x="236" y="130" font-size="11">-&gt;</text>
+<text class="mono" x="258" y="130" font-size="11"><tspan fill="#2f8a3c">a type, HL_KEYWORD2: green</tspan></text>
+<text class="tm" x="24" y="162" font-size="10.5">row 7, column 13:</text>
+<rect class="a af" x="40" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="41.5" y="186" font-size="11">o</text>
+<rect class="a af" x="53" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="54.5" y="186" font-size="11">r</text>
+<rect class="s f" x="66" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="67.5" y="186" font-size="11">d</text>
+<rect class="m f" x="79" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="80.5" y="186" font-size="11">e</text>
+<rect class="m f" x="92" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="93.5" y="186" font-size="11">r</text>
+<rect class="m f" x="105" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="106.5" y="186" font-size="11">[</text>
+<rect class="m f" x="118" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="119.5" y="186" font-size="11"><tspan fill="#e03e3e">1</tspan></text>
+<rect class="m f" x="131" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="132.5" y="186" font-size="11"><tspan fill="#e03e3e">0</tspan></text>
+<rect class="m f" x="144" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="145.5" y="186" font-size="11">]</text>
+<rect class="m f" x="157" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="170" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="171.5" y="186" font-size="11">=</text>
+<rect class="m f" x="183" y="172" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="tm" x="71.5" y="206" font-size="9.5" text-anchor="middle">next</text>
+<text class="t mono" x="236" y="186" font-size="11" font-weight="600">tried: &quot;or&quot;</text>
+<text class="tm" x="236" y="204" font-size="10.5">a C++ keyword: o r match, but a d comes next, which is no</text>
+<text class="tm" x="236" y="218" font-size="10.5">separator. No other word of the list fits either</text>
+<text class="t" x="236" y="236" font-size="10.5">-&gt; normal; and d e r are inside a word, where no keyword is tried</text>
+<text class="tm" x="24" y="268" font-size="10.5">row 8, column 8:</text>
+<rect class="a af" x="40" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="41.5" y="292" font-size="11"><tspan fill="#9a7400">f</tspan></text>
+<rect class="a af" x="53" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="54.5" y="292" font-size="11"><tspan fill="#9a7400">o</tspan></text>
+<rect class="a af" x="66" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="67.5" y="292" font-size="11"><tspan fill="#9a7400">r</tspan></text>
+<rect class="s f" x="79" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="92" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="93.5" y="292" font-size="11">(</text>
+<rect class="m f" x="105" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="106.5" y="292" font-size="11"><tspan fill="#2f8a3c">i</tspan></text>
+<rect class="m f" x="118" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="119.5" y="292" font-size="11"><tspan fill="#2f8a3c">n</tspan></text>
+<rect class="m f" x="131" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="mono" x="132.5" y="292" font-size="11"><tspan fill="#2f8a3c">t</tspan></text>
+<rect class="m f" x="144" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="157" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="158.5" y="292" font-size="11">i</text>
+<rect class="m f" x="170" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="183" y="278" width="11" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="184.5" y="292" font-size="11">=</text>
+<text class="tm" x="84.5" y="312" font-size="9.5" text-anchor="middle">next</text>
+<text class="t mono" x="236" y="292" font-size="11" font-weight="600">tried: &quot;for&quot;</text>
+<text class="tm" x="236" y="310" font-size="10.5">f o r match, and the space after them is a separator</text>
+<text class="t mono" x="236" y="328" font-size="11">-&gt;</text>
+<text class="mono" x="258" y="328" font-size="11"><tspan fill="#9a7400">a keyword, HL_KEYWORD1: yellow</tspan></text>
+</svg>
