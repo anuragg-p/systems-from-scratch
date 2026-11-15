@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>A result that holds up survives four attacks: a baseline tuned as hard, the spread over seeds, a cheat the evaluation must catch, and a prediction made before the run</title>
+<defs><marker id="r13-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="r13-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="196" font-size="12" font-weight="700">a fair baseline</text>
+<text class="tm" x="24" y="213" font-size="10.5">tune the baseline&#x27;s</text>
+<text class="tm" x="24" y="227" font-size="10.5">learning rate as hard</text>
+<text class="tm" x="24" y="241" font-size="10.5">as your own method&#x27;s</text>
+<text class="t" x="178" y="196" font-size="12" font-weight="700">error bars</text>
+<text class="tm" x="178" y="213" font-size="10.5">is the gap bigger</text>
+<text class="tm" x="178" y="227" font-size="10.5">than the spread</text>
+<text class="tm" x="178" y="241" font-size="10.5">between seeds?</text>
+<text class="t" x="332" y="196" font-size="12" font-weight="700">an evaluation</text>
+<text class="tm" x="332" y="213" font-size="10.5">a cheat that should</text>
+<text class="tm" x="332" y="227" font-size="10.5">fail, such as the most</text>
+<text class="tm" x="332" y="241" font-size="10.5">common answer, must</text>
+<text class="t" x="486" y="196" font-size="12" font-weight="700">predict, then run</text>
+<text class="tm" x="486" y="213" font-size="10.5">fit loss against size</text>
+<text class="tm" x="486" y="227" font-size="10.5">on small models, then</text>
+<text class="tm" x="486" y="241" font-size="10.5">train a bigger one</text>
+<text class="tm" x="332" y="255" font-size="10.5">score near chance</text>
+<line class="m" x1="24" y1="166" x2="156" y2="166" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="24" y1="166" x2="24" y2="40" stroke-width="1.5" stroke-linecap="round"/>
+<path class="s" d="M30.0 102.2 L32.0 105.3 L34.0 108.3 L36.0 111.2 L38.0 113.9 L40.0 116.5 L42.0 118.9 L44.0 121.2 L46.0 123.3 L48.0 125.3 L50.0 127.1 L52.0 128.8 L54.0 130.3 L56.0 131.6 L58.0 132.9 L60.0 133.9 L62.0 134.8 L64.0 135.6 L66.0 136.2 L68.0 136.7 L70.0 137.0 L72.0 137.2 L74.0 137.2 L76.0 137.1 L78.0 136.8 L80.0 136.3 L82.0 135.7 L84.0 135.0 L86.0 134.1 L88.0 133.1 L90.0 131.9 L92.0 130.6 L94.0 129.1 L96.0 127.4 L98.0 125.7 L100.0 123.7 L102.0 121.6 L104.0 119.4 L106.0 117.0 L108.0 114.5 L110.0 111.8 L112.0 108.9 L114.0 105.9 L116.0 102.8 L118.0 99.5 L120.0 96.1 L122.0 92.5 L124.0 88.7 L126.0 84.9 L128.0 80.8 L130.0 76.6 L132.0 72.3 L134.0 67.8 L136.0 63.1 L138.0 58.4 L140.0 54.0 L142.0 54.0 L144.0 54.0 L146.0 54.0 L148.0 54.0 L150.0 54.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M30.0 54.0 L32.0 54.0 L34.0 54.0 L36.0 54.0 L38.0 54.0 L40.0 54.0 L42.0 58.6 L44.0 63.6 L46.0 68.4 L48.0 73.1 L50.0 77.6 L52.0 82.0 L54.0 86.2 L56.0 90.3 L58.0 94.2 L60.0 98.0 L62.0 101.6 L64.0 105.1 L66.0 108.4 L68.0 111.6 L70.0 114.6 L72.0 117.5 L74.0 120.2 L76.0 122.7 L78.0 125.2 L80.0 127.4 L82.0 129.5 L84.0 131.5 L86.0 133.3 L88.0 135.0 L90.0 136.5 L92.0 137.9 L94.0 139.1 L96.0 140.2 L98.0 141.1 L100.0 141.9 L102.0 142.5 L104.0 142.9 L106.0 143.2 L108.0 143.4 L110.0 143.4 L112.0 143.3 L114.0 143.0 L116.0 142.6 L118.0 142.0 L120.0 141.2 L122.0 140.4 L124.0 139.3 L126.0 138.1 L128.0 136.8 L130.0 135.3 L132.0 133.7 L134.0 131.9 L136.0 130.0 L138.0 127.9 L140.0 125.6 L142.0 123.2 L144.0 120.7 L146.0 118.0 L148.0 115.2 L150.0 112.2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="109.2" y1="42" x2="109.2" y2="166" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="s f" cx="109.2" cy="112.9" r="3" stroke-width="1.5"/>
+<circle class="s fs" cx="73.2" cy="137.2" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="109.2" cy="143.4" r="3" stroke-width="1.5"/>
+<text class="tm" x="28" y="36" font-size="10">loss</text>
+<text class="tm" x="156" y="178" font-size="9.5" text-anchor="end">learning rate</text>
+<text class="t" x="73.19999999999999" y="153.2" font-size="9.5" text-anchor="middle">baseline</text>
+<text class="ta" x="116.2" y="157.44" font-size="9.5">yours</text>
+<line class="m" x1="178" y1="166" x2="310" y2="166" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="178" y1="166" x2="178" y2="40" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="200" cy="124.0" r="2.6" stroke-width="1.5"/>
+<circle class="s f" cx="205" cy="111.0" r="2.6" stroke-width="1.5"/>
+<circle class="s f" cx="210" cy="104.0" r="2.6" stroke-width="1.5"/>
+<circle class="s f" cx="215" cy="116.0" r="2.6" stroke-width="1.5"/>
+<circle class="s f" cx="220" cy="98.0" r="2.6" stroke-width="1.5"/>
+<line class="s" x1="230" y1="120.73903348450926" x2="230" y2="100.46096651549074" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="226" y1="120.73903348450926" x2="234" y2="120.73903348450926" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="226" y1="100.46096651549074" x2="234" y2="100.46096651549074" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s fs" cx="230" cy="110.6" r="3.2" stroke-width="1.5"/>
+<text class="t" x="214" y="178" font-size="9.5" text-anchor="middle">baseline</text>
+<circle class="a af" cx="260" cy="112.0" r="2.6" stroke-width="1.5"/>
+<circle class="a af" cx="265" cy="96.0" r="2.6" stroke-width="1.5"/>
+<circle class="a af" cx="270" cy="106.0" r="2.6" stroke-width="1.5"/>
+<circle class="a af" cx="275" cy="84.0" r="2.6" stroke-width="1.5"/>
+<circle class="a af" cx="280" cy="101.0" r="2.6" stroke-width="1.5"/>
+<line class="a" x1="290" y1="110.4395488626163" x2="290" y2="89.16045113738369" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="286" y1="110.4395488626163" x2="294" y2="110.4395488626163" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="286" y1="89.16045113738369" x2="294" y2="89.16045113738369" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="290" cy="99.8" r="3.2" stroke-width="1.5"/>
+<text class="ta" x="274" y="178" font-size="9.5" text-anchor="middle">yours</text>
+<text class="tm" x="182" y="36" font-size="10">score, 5 seeds</text>
+<line class="m" x1="332" y1="166" x2="464" y2="166" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="332" y1="166" x2="332" y2="40" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a af" x="354" y="80.2" width="34" height="85.8" rx="2" stroke-width="1.5"/>
+<text class="ta" x="371" y="178" font-size="9.5" text-anchor="middle">yours</text>
+<rect class="m fs" x="410" y="148.4" width="34" height="17.6" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="427" y="178" font-size="9.5" text-anchor="middle">cheat</text>
+<line class="m" x1="332" y1="148.4" x2="464" y2="148.4" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="464" y="143.4" font-size="9.5" text-anchor="end">chance</text>
+<text class="tm" x="336" y="36" font-size="10">score</text>
+<line class="m" x1="486" y1="166" x2="618" y2="166" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="486" y1="166" x2="486" y2="40" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s fs" cx="501.0" cy="59.6" r="3" stroke-width="1.5"/>
+<circle class="s fs" cx="519.5" cy="74.6" r="3" stroke-width="1.5"/>
+<circle class="s fs" cx="538.1" cy="89.6" r="3" stroke-width="1.5"/>
+<circle class="s fs" cx="556.6" cy="104.5" r="3" stroke-width="1.5"/>
+<line class="s" x1="494.0" y1="54.0" x2="604.2" y2="142.92000000000002" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="s f" cx="598.4" cy="138.2" r="4.5" stroke-width="1.5"/>
+<circle class="a fa" cx="598.4" cy="141.2" r="3" stroke-width="1.5"/>
+<text class="ta" x="588.4" y="144.24" font-size="9.5" text-anchor="end">predicted, then run</text>
+<text class="tm" x="490" y="36" font-size="10">loss, log</text>
+<text class="tm" x="618" y="178" font-size="9.5" text-anchor="end">parameters, log</text>
+<text class="tm" x="24" y="288" font-size="10.5">Schematics, no measured numbers. A power law L = (N_c / N)^alpha is a straight line on log-log axes.</text>
+</svg>

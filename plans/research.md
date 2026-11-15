@@ -1,0 +1,233 @@
+# Plan: track `research` - AI research, from a first experiment to your own result
+
+Status: building (direction set by Fable; implementation by Opus agents).
+Modules 00 to 05 have their code; their lessons are landing module by
+module. The outline is now plans/research-outline.md (moved out of
+outlines/ on 2026-11-15, when tracks/research took the id over): its
+modules and lesson titles are the list to build. Its module art stays in
+outlines/ai-research/ until every module has copied its cover and icon.
+This file holds the decisions.
+
+Decided by the owner, 2026-11-14:
+- One track, a core and a shelf: the core runs from a first gradient to a
+  result of the learner's own; optional modules after it each take one
+  field's founding papers. The shelf can grow without touching the core.
+- Own engine first, then PyTorch: the learner writes autograd and tensors
+  in numpy under PyTorch's names, proves them against PyTorch, and from
+  the first model that needs scale runs the same scripts on PyTorch.
+- Laptop only: nothing in the track needs a rented GPU.
+- "Plan with Fable, execute with Opus."
+
+## What the learner ends with
+
+An engine they wrote that gives PyTorch's gradients; a GPT that loads the
+published GPT-2 weights and gives the reference's logits; the central
+idea of more than twenty papers written into their own code and tested;
+one published figure reproduced (grokking); one small result of their
+own, written up, with a repository anyone can rerun.
+
+## The shape of every lesson that has a paper
+
+Train the obvious thing. Watch it fail: it does not learn, learns too
+slowly, forgets, or memorises. Bring in the paper's idea as a change to
+code the learner already has. Run the paper's own experiment at laptop
+size. Say what held and what did not. A lesson that opens with the paper
+and then looks for a use is wrong (the same rule as dsa's tools).
+
+## Decisions
+
+- Language: Python 3, numpy. PyTorch from lesson 06.02 on (the CPU build
+  is enough; an Apple or CUDA GPU is used when present, never needed).
+  The learner's code imports nothing else: no torchvision, transformers,
+  datasets, tiktoken or matplotlib. Internal tests may use tiktoken and
+  transformers as the reference, the way db's tests use sqlite3.
+- The engine (modules 01 to 05) implements only what the lessons use,
+  under PyTorch's names and argument order. A script names its engine in
+  one line (`import engine as torch`, later `import torch`); a test runs
+  every engine-era script on both and compares.
+- Held to the real thing, four ways: gradients against PyTorch (1e-6, in
+  float64); token ids against tiktoken; logits against the reference
+  implementation on the published weights (GPT-2 small, then one current
+  open model); and each paper's claim against our own run.
+- Time: every "Run it" finishes in under 60 seconds on a laptop CPU. A
+  long run is marked on the page with its measured CPU time, at most one
+  per module and at most 60 minutes; it ships with its recorded config,
+  log and curve, and the page's own Run it is a short version of it that
+  `./learn verify` replays.
+- Numbers: same seed, same machine, same digits (00.02 shows it; a test
+  holds it). Across machines the last digits can differ, so pages print
+  three or four significant digits, verify uses `vary` only where a
+  number really differs, and tests assert tolerances and thresholds over
+  fixed seeds, never exact floats.
+- Every reported result is several seeds, from module 00 on. One run is
+  never called a result.
+- Paper rule: a lesson that implements a paper names it, states the one
+  claim it tests in the paper's own terms (its figure or table), runs
+  that experiment at laptop size, shows our number beside the paper's and
+  says what held. We never print a number we did not run and never call a
+  laptop-size run a reproduction of the full-size result. Paper figures
+  are never copied: ours are drawn from our runs.
+- Theory rule: code first, theory second, as everywhere on the site. A
+  lesson with a formula derives it once on the page in plain steps, and a
+  run checks it in numbers (the nudge from 01.01, or PyTorch), held by a
+  `fact` annotation. Maths arrives where it is first needed (the chain
+  rule in 01, matrices in 02, logarithms and probability in 02.04 and
+  07.01); there is no maths module.
+- Curves: the runner draws its own SVG line plots from a run's log, so a
+  lesson's curve figure comes from a real run, as stepped figures do.
+- Data and weights: small inputs ship with the track (Tiny Shakespeare,
+  generated points, modular arithmetic). The rest is fetched once, by an
+  explicit command, with pinned checksums, into a cache outside the
+  project: MNIST (first used 03.01), CIFAR-10 (06.03), GPT-2 small
+  (09.03), a TinyStories subset (09.04), one current open model (10.04),
+  CLIP (19.04). No build, test or lesson downloads on its own; a missing
+  download is "missing" to verify, as a missing QEMU is. This departs
+  from dsa's "never downloaded", for size. Each licence is read, not
+  assumed, and recorded in NOTICE.
+- Terms as read at the source on 2026-11-14 (none of these is
+  redistributed; the learner fetches each):
+  - MNIST, 11.6 MB: the original page states no licence and no longer
+    serves the files (Keras says CC BY-SA 3.0, Hugging Face says MIT).
+    Fetched from the mirror torchvision uses.
+  - CIFAR-10, 170 MB: no licence; the page asks only that the tech
+    report is cited.
+  - Tiny Shakespeare, 1.1 MB, from karpathy/char-rnn: public-domain
+    text. The one input small and free enough to ship.
+  - TinyStories: CDLA-Sharing-1.0; the training file is 1.9 GB, so the
+    track fetches a subset.
+  - GPT-2 small: `model.safetensors`, 548 MB; the model card says MIT,
+    the repo Modified MIT.
+  - SmolLM2-135M: Apache-2.0, 269 MB, confirmed to use RMSNorm, rotary
+    positions, a SwiGLU MLP and grouped-query attention (9 heads on 3
+    key/value heads).
+  - CLIP ViT-B/32: 354 MB; the code is MIT, the weights have no licence
+    of their own, and the model card puts any deployed use out of scope.
+    Loading it in a lesson is research use; say so on the page.
+- Layout: `engine/` (the learner's library), `lab/` (the runner: config,
+  seed, log, plot), `data/`, `experiments/<name>.py` (one script per
+  lesson; a recorded long run sits beside its script) and, from module
+  06, `models/` (resnet, gpt). One file per lesson, so agents in
+  parallel never edit the same file.
+- Tests are internal, three kinds: differential (engine against PyTorch,
+  tokenizer against tiktoken, logits against the reference); learning
+  (each experiment's short run reaches a threshold on fixed seeds, and
+  fails with the lesson's code cut out); reproduction (the shape of each
+  recorded long run, rerun only on demand).
+- Scripts, not notebooks. No cloud, no distributed training, no serving
+  (the inference track), no prompt engineering or API calls.
+- Art is not optional: track card and icon, cover and icon per module,
+  the architecture map and at least one diagram in every lesson.
+
+## The paper map (core)
+
+Lesson, paper, and the claim we run again at laptop size. Modules 00 to
+05 are built: what held is stated as found (numbers in
+tracks/research/NOTES.md). The rest is still the plan.
+
+Built, as found:
+- 03.03 Adam: on MNIST the paper's comparison is a tie at laptop size
+  (logistic regression, as the paper's own figure shows; the multilayer
+  network, nothing beyond noise). The lesson's failure-then-fix is
+  therefore Adam's stated property, not the race: rescale the gradient
+  and plain descent needs a new rate while Adam takes the same steps.
+- 03.04 AdamW: with SGD an L2 term and weight decay are the same step;
+  with Adam they are not, and weights that get no gradient show it
+  exactly. The paper's "wider good region" did not show at this size.
+- 03.05 Cosine decay and warmup: both held.
+- 04.02 Glorot, He: held at the paper's 30 layers.
+- 04.03 Batch normalisation: reaches 90% in half the steps on the
+  paper's own network, and trains at a rate that diverges without it.
+  It is not faster at a rate that already works.
+- 04.05 Residual: the deeper plain network trains far worse (held).
+  With shortcuts the deeper one trains about as well, not better.
+- 05.01 Rethinking generalisation: fits random labels (held).
+- 05.02 Dropout: lower test error (held, on 2000 images).
+- 05.04 Double descent: held strongly, on the random-features model the
+  paper cites, not on a network trained by gradient descent.
+
+Still the plan:
+- 06.04 ResNet on CIFAR-10: plain against residual, with convolutions.
+- 07.02 Neural language model: beats the count-based model in perplexity.
+- 07.04 Attention (Bahdanau): quality no longer falls with length.
+- 08 Transformer; 08.05 nucleus sampling against plain and top-k.
+- 09.01 BPE; 09.03 GPT-2: the published weights, the reference's logits.
+- 09.04 TinyStories: a model of a few million parameters tells a story.
+- 10.01 to 10.03 RMSNorm, RoPE, SwiGLU: each against the piece it
+  replaced, same parameters, several seeds; 10.05 is the table.
+- 11.03 FlashAttention, 11.04 mixed precision: the same numbers, sooner.
+- 12.02 LoRA: close to full fine-tuning with a small fraction of weights.
+- 13.04 Scaling laws: loss as a power law in size, used to predict.
+- 14 Grokking: the paper's figure, and what weight decay does to it.
+
+## The shelf
+
+A module goes on the shelf when it has a paper with a claim, a failure
+to start from, a laptop-size experiment that tests the claim, and a real
+thing to check against. In the outline now: looking inside, images from
+noise, learning from reward, seeing with transformers, preferences,
+phenomena. Considered and left off until wanted: embeddings and
+retrieval (word2vec to RAG), agents and tool use, speech, graph
+networks, RL fine-tuning of language models, distributed training.
+
+## Spikes, before the lesson list of a module is fixed
+
+Each is run by an agent and its numbers go in tracks/research/NOTES.md.
+Where a spike fails, the lesson changes; the claim is never stretched.
+
+1. Engine speed: an MNIST epoch on the numpy engine, well under 60 s.
+2. 05.04: double descent visible from a sweep of under 30 minutes.
+3. 06.04: which depth and width show plain against residual in under 60
+   minutes on CPU.
+4. 09.04: the model size and step count that give whole stories in under
+   60 minutes on CPU.
+5. 10.04: the candidate (SmolLM2-135M) loads and matches its reference.
+6. 11: which optimisations give a repeatable gain on a laptop CPU and on
+   an Apple GPU. The module's lesson list follows the measurements.
+7. 12.02: LoRA on GPT-2 small inside the time budget.
+8. 14: grokking in under 30 minutes on CPU with the paper's set-up.
+9. Everything on macOS arm64 and on Linux x86 (Docker).
+
+## Harness work (each its own piece, not while another session edits it)
+
+- Outlines: a module's `Optional: yes` shows it under "Extensions" on the
+  outline page and its sidebar, as a built track's extensions are shown;
+  template and tests updated. The outline already carries the field.
+- `./learn fetch <track> [name]`: pinned downloads into a cache, and
+  verify's "missing".
+- A Python track: pinned numpy and PyTorch versions for verify, `@build`
+  regions in .py files, check-skeleton and check-timeline for scripts.
+- Curve figures drawn from recorded logs.
+
+## Build order for the agents
+
+Lessons are written module by module, as soon as a group of modules has
+working code (agreed by the owner, 2026-11-14), not after the whole
+track's code is finished. Each code step below is followed at once by
+its lessons, module READMEs and lesson art, in parallel by module, from
+the finished code and NOTES.md.
+
+0. Outline art for the 22 modules (the covers moved from the old outline
+   to 00, 01, 04, 13, 14, 15 and 16 are redrawn or checked against the new
+   text), into a generator of its own, `art/outlines/research_art.py`.
+   The spikes and the harness work, in parallel.
+1. Skeleton, `engine/`, `lab/` and modules 00 to 05, by one agent. Then
+   their lessons.
+2. Module 06 alone: it sets the PyTorch-era skeleton every later module
+   uses (devices, data loading, `models/`). Then its lessons.
+3. Modules 07, 08, 09 in order by one agent; then 10, 11, 12, 13 and 14
+   in parallel, each in its own files. 15 has lessons and no code. Each
+   module's lessons follow its code.
+4. The shelf, one agent per module, in parallel, after the core, each
+   with its lessons.
+5. Review: full internal run, `./learn verify`, every lesson read on the
+   site. Do not export or publish the site while the track is half built.
+
+## Open, for the owner
+
+- Size: the core came out at 16 modules and 70 lessons (the shelf adds 6
+  and 26). Each module is a finish line of its own. If that is too long,
+  10 (today's architecture) and 11 (fast) are the two that could move to
+  the shelf without breaking anything after them.
+- The inference outline builds a tokenizer and a GPT-2 forward pass too.
+  Proposed: when that track is planned, it starts from this track's
+  finished GPT, as dsa's `edit` starts from kilo.

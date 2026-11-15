@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Fine-tuning: keep the pretrained weights frozen and train a little beside them, a new head or a LoRA update W + B A of low rank</title>
+<defs><marker id="r12-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="r12-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="30" font-size="11.5" font-weight="700">GPT-2, pretrained</text>
+<rect class="a af" x="40" y="44" width="150" height="24" rx="5" stroke-width="1.5"/>
+<text class="ta" x="115.0" y="59.7" font-size="10.5" font-weight="700" text-anchor="middle">new head: classes</text>
+<line class="s" x1="115.0" y1="84" x2="115.0" y2="70" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r12-ah)"/>
+<rect class="s fs" x="40" y="86" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="86" width="14" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="40" y="98" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="98" width="14" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="40" y="110" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="110" width="14" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="40" y="122" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="122" width="14" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="40" y="134" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="134" width="14" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="40" y="146" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="146" width="14" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="40" y="158" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="158" width="14" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="40" y="170" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="170" width="14" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="40" y="182" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="182" width="14" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="40" y="194" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="194" width="14" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="40" y="206" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="206" width="14" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="40" y="218" width="150" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="194" y="218" width="14" height="9" rx="2" stroke-width="1.5"/>
+<text class="tm" x="115.0" y="248" font-size="10.5" text-anchor="middle">12 blocks, frozen</text>
+<text class="ta" x="216" y="140" font-size="10.5" font-weight="600">LoRA</text>
+<text class="ta" x="216" y="154" font-size="10.5">adapters</text>
+<text class="ta" x="115.0" y="264" font-size="10.5" font-weight="600" text-anchor="middle">only the accent trains</text>
+<text class="t" x="330" y="30" font-size="11.5" font-weight="700">LoRA, one weight matrix</text>
+<text class="t mono" x="406" y="248" font-size="12" text-anchor="middle">x</text>
+<path class="s" d="M406 236 V 226 H 370 V 212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r12-ah)"/>
+<path class="s" d="M406 226 H 456 V 212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r12-ah)"/>
+<rect class="s fs" x="330" y="104" width="80" height="106" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="370" y="146" font-size="14" font-weight="700" text-anchor="middle">W</text>
+<text class="tm" x="370" y="164" font-size="10.5" text-anchor="middle">frozen</text>
+<text class="tm mono" x="370" y="180" font-size="9.5" text-anchor="middle">768 x 768</text>
+<rect class="a af" x="430" y="182" width="52" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="456" y="195" font-size="12" font-weight="700" text-anchor="middle">A</text>
+<text class="ta mono" x="456" y="206" font-size="8" text-anchor="middle">8 x 768</text>
+<line class="a" x1="456" y1="182" x2="456" y2="154" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r12-aa)"/>
+<rect class="a af" x="430" y="124" width="52" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="456" y="137" font-size="12" font-weight="700" text-anchor="middle">B</text>
+<text class="ta mono" x="456" y="148" font-size="8" text-anchor="middle">768 x 8</text>
+<path class="s" d="M370 104 V 76 H 395" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r12-ah)"/>
+<path class="a" d="M456 124 V 76 H 417" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r12-aa)"/>
+<circle class="s f" cx="406" cy="76" r="9" stroke-width="1.5"/>
+<path class="s" d="M401.5 76 H 410.5 M406 71.5 V 80.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="s" x1="406" y1="67" x2="406" y2="46" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r12-ah)"/>
+<text class="t mono" x="416" y="54" font-size="12">h</text>
+<text class="t mono" x="498" y="64" font-size="11" font-weight="600">h = W x + B A x</text>
+<text class="tm" x="498" y="84" font-size="10.5">B starts at zero, so at</text>
+<text class="tm" x="498" y="98" font-size="10.5">step 0 it is the model</text>
+<text class="tm" x="498" y="112" font-size="10.5">you started from</text>
+<text class="t mono" x="498" y="140" font-size="10.5">W: 589,824 frozen</text>
+<text class="ta mono" x="498" y="156" font-size="10.5" font-weight="600">A, B: 12,288</text>
+<text class="ta" x="498" y="172" font-size="10.5">trained, 2.1% of W</text>
+<text class="tm" x="498" y="196" font-size="10.5">rank r = 8 here</text>
+<text class="tm" x="24" y="288" font-size="11">Evaluate before and after: on the new task, and on what the model could already do.</text>
+</svg>

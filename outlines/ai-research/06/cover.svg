@@ -1,32 +1,169 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
-<title>An induction head: two attention heads that together continue repeated text</title>
+<title>A convolution uses the same few weights at every position; a residual block adds its input back, so a deeper network is no longer worse</title>
 <defs><marker id="r06-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="r06-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
-<rect class="s f" x="110" y="196" width="76" height="30" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="148" y="216" font-size="12.5" text-anchor="middle">the</text>
-<rect class="s f" x="202" y="196" width="76" height="30" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="240" y="216" font-size="12.5" font-weight="600" text-anchor="middle">cat</text>
-<rect class="s f" x="294" y="196" width="76" height="30" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="332" y="216" font-size="12.5" text-anchor="middle">sat</text>
-<rect class="s f" x="386" y="196" width="76" height="30" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="424" y="216" font-size="12.5" text-anchor="middle">.</text>
-<rect class="s f" x="478" y="196" width="76" height="30" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="516" y="216" font-size="12.5" font-weight="600" text-anchor="middle">the</text>
-<rect class="a af" x="574" y="196" width="42" height="30" rx="8" stroke-width="1.5"/>
-<text class="ta mono" x="595" y="216" font-size="12" font-weight="700" text-anchor="middle">cat</text>
-<text class="ta" x="595" y="188" font-size="10.5" text-anchor="middle">next</text>
-<path class="s" d="M148 196 C 148 170, 232 170, 232 194" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r06-ah)"/>
-<path class="m" d="M240 196 C 240 170, 324 170, 324 194" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path class="m" d="M332 196 C 332 170, 416 170, 416 194" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path class="m" d="M424 196 C 424 170, 508 170, 508 194" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<text class="t" x="24" y="160" font-size="12" font-weight="700">layer 0</text>
-<text class="tm" x="24" y="176" font-size="10.5">previous token</text>
-<path class="a" d="M246 196 C 246 70, 516 70, 516 194" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r06-aa)"/>
-<path class="a" d="M554 211 H 572" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r06-aa)"/>
-<text class="t" x="24" y="84" font-size="12" font-weight="700">layer 1</text>
-<text class="tm" x="24" y="100" font-size="10.5">induction head</text>
-<text class="ta" x="381.0" y="42" font-size="10.5" text-anchor="middle">the second &#x27;the&#x27; attends to &#x27;cat&#x27;,</text>
-<text class="ta" x="381.0" y="57" font-size="10.5" text-anchor="middle">the token that followed &#x27;the&#x27; before,</text>
-<text class="ta" x="381.0" y="72" font-size="10.5" text-anchor="middle">and copies it to the output</text>
-<text class="tm" x="240" y="244" font-size="10.5" text-anchor="middle">&#x27;cat&#x27; now also holds: the token before me was &#x27;the&#x27;</text>
-<text class="tm" x="24" y="284" font-size="10.5">Pattern: [A][B] ... [A] -&gt; predict [B]. Found in small attention-only models (Elhage et al. 2021).</text>
+<text class="tm" x="24" y="30" font-size="10.5">image, 6 x 6</text>
+<rect class="s f" x="24" y="52" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="34.0" y="65.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="44" y="52" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="54.0" y="65.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="64" y="52" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="74.0" y="65.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s fs" x="84" y="52" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="94.0" y="65.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="104" y="52" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="114.0" y="65.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="124" y="52" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="134.0" y="65.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s f" x="24" y="72" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="34.0" y="85.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="44" y="72" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="54.0" y="85.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="64" y="72" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="74.0" y="85.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s fs" x="84" y="72" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="94.0" y="85.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="104" y="72" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="114.0" y="85.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="124" y="72" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="134.0" y="85.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s f" x="24" y="92" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="34.0" y="105.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="44" y="92" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="54.0" y="105.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="64" y="92" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="74.0" y="105.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s fs" x="84" y="92" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="94.0" y="105.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="104" y="92" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="114.0" y="105.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="124" y="92" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="134.0" y="105.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s f" x="24" y="112" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="34.0" y="125.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="44" y="112" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="54.0" y="125.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="64" y="112" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="74.0" y="125.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s fs" x="84" y="112" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="94.0" y="125.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="104" y="112" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="114.0" y="125.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="124" y="112" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="134.0" y="125.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s f" x="24" y="132" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="34.0" y="145.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="44" y="132" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="54.0" y="145.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="64" y="132" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="74.0" y="145.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s fs" x="84" y="132" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="94.0" y="145.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="104" y="132" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="114.0" y="145.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="124" y="132" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="134.0" y="145.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s f" x="24" y="152" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="34.0" y="165.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="44" y="152" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="54.0" y="165.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="64" y="152" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="74.0" y="165.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s fs" x="84" y="152" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="94.0" y="165.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="104" y="152" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="114.0" y="165.5" font-size="10" text-anchor="middle">1</text>
+<rect class="s fs" x="124" y="152" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="134.0" y="165.5" font-size="10" text-anchor="middle">1</text>
+<rect class="a" x="44" y="72" width="60" height="60" stroke-width="2.5"/>
+<text class="ta" x="186" y="30" font-size="10.5" font-weight="600">kernel: 9 weights</text>
+<rect class="a af" x="186" y="52" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="196.0" y="65.5" font-size="10" font-weight="600" text-anchor="middle">-1</text>
+<rect class="a af" x="206" y="52" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="216.0" y="65.5" font-size="10" font-weight="600" text-anchor="middle">0</text>
+<rect class="a af" x="226" y="52" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="236.0" y="65.5" font-size="10" font-weight="600" text-anchor="middle">1</text>
+<rect class="a af" x="186" y="72" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="196.0" y="85.5" font-size="10" font-weight="600" text-anchor="middle">-1</text>
+<rect class="a af" x="206" y="72" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="216.0" y="85.5" font-size="10" font-weight="600" text-anchor="middle">0</text>
+<rect class="a af" x="226" y="72" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="236.0" y="85.5" font-size="10" font-weight="600" text-anchor="middle">1</text>
+<rect class="a af" x="186" y="92" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="196.0" y="105.5" font-size="10" font-weight="600" text-anchor="middle">-1</text>
+<rect class="a af" x="206" y="92" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="216.0" y="105.5" font-size="10" font-weight="600" text-anchor="middle">0</text>
+<rect class="a af" x="226" y="92" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="236.0" y="105.5" font-size="10" font-weight="600" text-anchor="middle">1</text>
+<text class="tm" x="186" y="132" font-size="10.5">output, 4 x 4</text>
+<rect class="s f" x="186" y="140" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="196.0" y="153.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="206" y="140" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="216.0" y="153.5" font-size="10" text-anchor="middle">3</text>
+<rect class="s f" x="226" y="140" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="236.0" y="153.5" font-size="10" text-anchor="middle">3</text>
+<rect class="s f" x="246" y="140" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="256.0" y="153.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="186" y="160" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="196.0" y="173.5" font-size="10" text-anchor="middle">0</text>
+<rect class="a af" x="206" y="160" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="216.0" y="173.5" font-size="10" font-weight="700" text-anchor="middle">3</text>
+<rect class="s f" x="226" y="160" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="236.0" y="173.5" font-size="10" text-anchor="middle">3</text>
+<rect class="s f" x="246" y="160" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="256.0" y="173.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="186" y="180" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="196.0" y="193.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="206" y="180" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="216.0" y="193.5" font-size="10" text-anchor="middle">3</text>
+<rect class="s f" x="226" y="180" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="236.0" y="193.5" font-size="10" text-anchor="middle">3</text>
+<rect class="s f" x="246" y="180" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="256.0" y="193.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="186" y="200" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="196.0" y="213.5" font-size="10" text-anchor="middle">0</text>
+<rect class="s f" x="206" y="200" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="216.0" y="213.5" font-size="10" text-anchor="middle">3</text>
+<rect class="s f" x="226" y="200" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="236.0" y="213.5" font-size="10" text-anchor="middle">3</text>
+<rect class="s f" x="246" y="200" width="20" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="256.0" y="213.5" font-size="10" text-anchor="middle">0</text>
+<text class="tm" x="24" y="196" font-size="10.5">the outlined window times the</text>
+<text class="tm" x="24" y="211" font-size="10.5">kernel, added up: the outlined</text>
+<text class="tm" x="24" y="226" font-size="10.5">output, 3; then slide one step</text>
+<text class="t" x="24" y="248" font-size="10.5">a dense layer, 36 in, 16 out: 576 weights;</text>
+<text class="ta" x="24" y="263" font-size="10.5" font-weight="600">this convolution: 9, shared by all 16</text>
+<text class="t" x="392" y="30" font-size="12" font-weight="700" text-anchor="middle">plain block</text>
+<text class="t mono" x="392" y="238" font-size="12" text-anchor="middle">x</text>
+<line class="s" x1="392" y1="226" x2="392" y2="208" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r06-ah)"/>
+<rect class="s f" x="334.0" y="184" width="116" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="392" y="199" font-size="10.5" text-anchor="middle">3x3 conv, BN, ReLU</text>
+<line class="s" x1="392" y1="184" x2="392" y2="164" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r06-ah)"/>
+<rect class="s f" x="334.0" y="140" width="116" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="392" y="155" font-size="10.5" text-anchor="middle">3x3 conv, BN</text>
+<line class="s" x1="392" y1="140" x2="392" y2="94" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r06-ah)"/>
+<rect class="s f" x="362.0" y="70" width="60" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="392" y="85" font-size="10.5" text-anchor="middle">ReLU</text>
+<line class="s" x1="392" y1="70" x2="392" y2="52" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r06-ah)"/>
+<text class="t mono" x="392" y="46" font-size="12" text-anchor="middle">y</text>
+<text class="t" x="528" y="30" font-size="12" font-weight="700" text-anchor="middle">residual block</text>
+<text class="t mono" x="528" y="238" font-size="12" text-anchor="middle">x</text>
+<line class="s" x1="528" y1="226" x2="528" y2="208" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r06-ah)"/>
+<rect class="s f" x="470.0" y="184" width="116" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="528" y="199" font-size="10.5" text-anchor="middle">3x3 conv, BN, ReLU</text>
+<line class="s" x1="528" y1="184" x2="528" y2="164" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r06-ah)"/>
+<rect class="s f" x="470.0" y="140" width="116" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="528" y="155" font-size="10.5" text-anchor="middle">3x3 conv, BN</text>
+<line class="s" x1="528" y1="140" x2="528" y2="124" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r06-ah)"/>
+<circle class="s f" cx="528" cy="114" r="9" stroke-width="1.5"/>
+<path class="s" d="M523.5 114 H 532.5 M528 109.5 V 118.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="s" x1="528" y1="105" x2="528" y2="94" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r06-ah)"/>
+<path class="a" d="M528 218 H 602 V 114 H 539" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r06-aa)"/>
+<text class="ta mono" x="608" y="170" font-size="11" font-weight="600">x</text>
+<rect class="s f" x="498.0" y="70" width="60" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="528" y="85" font-size="10.5" text-anchor="middle">ReLU</text>
+<line class="s" x1="528" y1="70" x2="528" y2="52" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r06-ah)"/>
+<text class="t mono" x="528" y="46" font-size="12" text-anchor="middle">y</text>
+<text class="tm mono" x="392" y="262" font-size="10.5" text-anchor="middle">y = relu(F(x))</text>
+<text class="ta mono" x="528" y="262" font-size="10.5" text-anchor="middle">y = relu(F(x) + x)</text>
+<text class="tm" x="24" y="288" font-size="10.5">He et al. 2015, CIFAR-10: a plain 56-layer network trains worse than a plain 20-layer one; with shortcuts, 56 layers beat 20.</text>
 </svg>
