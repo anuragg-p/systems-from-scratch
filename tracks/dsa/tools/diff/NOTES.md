@@ -496,9 +496,11 @@ patching file moved.txt
   from the system's in which lines are kept (the tests compare text only
   on pairs whose LCS is the only one: there both systems and ours print the
   same bytes, at -U 0, 1, 3, 5).
-- patch's chatter: GNU and ours print `patching file x`; Apple's prints
-  more (`Hmm...  Looks like a unified diff to me...`) without -s. Tests
-  run the system's patch with -s -f.
+- patch's chatter: GNU, Apple's (patch 2.0-12u11-Apple) and ours all
+  print just `patching file x` without -s, also with a line of text before
+  the diff; Apple's prints more (`Hmm...  Looks like a unified diff to
+  me...` and the text before the diff) only with --verbose. Tests run the
+  system's patch with -s -f.
 - Debian has no `patch` by default: the fixtures fall back to a strict
   Python applier (`reference_patch`), and the tests passed that way too.
 

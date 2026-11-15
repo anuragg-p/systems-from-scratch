@@ -530,9 +530,15 @@ static void afterErase(size_t pos, const char *s, size_t n) {
     E.dirty++;
 }
 
+// @from 03.03
 /* Every change the editor makes to the text: insert n bytes at pos, or
  * erase n from pos. typed: it was typed (a key that inserts, or
  * Backspace), so undo can count it with the keys typed before it. */
+// @else
+// /* Every change the editor makes to the text: insert n bytes at pos, or
+//  * erase n from pos. typed: it was typed (a key that inserts, or
+//  * Backspace). */
+// @end
 static void editorInsertText(size_t pos, const char *s, size_t n, int typed) {
     text_insert(E.text, pos, s, n);
     stat_inserts++;

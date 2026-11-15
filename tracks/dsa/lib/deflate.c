@@ -122,8 +122,19 @@ static int dist_code(unsigned dist)
 }
 
 /* Give a code at least two symbols, so that every pattern of bits is a
- * code (some readers refuse a code with a pattern left over): a symbol
- * alone, or none, gets company that is never used. */
+ * code: a symbol alone, or none, gets company that is never used. No
+ * reader we know of needs it. Huffman's code for two symbols or more uses
+ * every pattern, so all this changes is a lone symbol's 1-bit code (the
+ * literal/length code of an empty block; a distance code with one
+ * distance code used) and a distance code with none. RFC 1951 (3.2.7)
+ * allows both for distances; zlib (inftrees.c) refuses an incomplete
+ * literal/length or distance code only when it is not a lone 1-bit one,
+ * and takes one with no codes; zlib, GNU gzip 1.13 and ours read all
+ * three back. The code-length code, which zlib wants complete, always has
+ * two symbols or more here: it says 258 lengths or more, not all 0 (the
+ * end of block's is not), and lengths that differ take two symbols, while
+ * one length said 258 times is that length and then 16s. What it buys is
+ * that every code written is complete, for a bit or two in a rare header. */
 static void at_least_two(long *counts, int n)
 {
     int used = 0;

@@ -56,9 +56,14 @@ static void print_stats(void)
     ds_stats_print("grep", "bytes %ld, lines selected %ld", bytes, selected);
 }
 
+// @from 04.02
 /* Where the next line that matches starts, looking from at (the start of
  * a line) in buf[0..end); end if there is none. next_fixed for -F,
  * next_regex for a regular expression. */
+// @else
+// /* Where the next line that matches starts, looking from at (the start of
+//  * a line) in buf[0..end); end if there is none: next_fixed. */
+// @end
 static size_t (*next_match)(const char *buf, size_t at, size_t end);
 
 static Search search;

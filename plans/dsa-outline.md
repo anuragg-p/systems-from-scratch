@@ -60,7 +60,7 @@ Format: `templates/outline.md`.
 
 - Goal: See how the structure that holds the text decides whether a keystroke costs the same in a ten-line file as in a ten-million-line one.
 - You build: `edit`, a terminal text editor you can really use, with its text moved off an array, first onto a gap buffer, then onto a piece table kept in a balanced tree, with undo and redo.
-- Value: Sequences, stacks, linked lists and balanced trees in one program; the piece table is what holds the text in Visual Studio Code.
+- Value: Sequences, stacks, linked lists and balanced trees in one program; the structure of 03.05, a piece table with its pieces in a balanced tree, is what holds the text in Visual Studio Code, whose piece tree keeps them in a red-black tree.
 - Lessons:
   - 03.01 An editor, and its text in one array
   - 03.02 The gap buffer

@@ -11,6 +11,19 @@ make` (GNU make 3.81 compares whole seconds: an edit within a second of a
 build is not seen). Times are the fastest of three runs. None of this file
 is shown to learners (HIDDEN in tests/tools/make.py).
 
+Most figures on the track's own project were first measured on a branch
+with only paste, freq, sort, look and make in the tree; they have been
+measured again on the project as it stands at the lesson named (ten
+programs from 07.01: paste, freq, sort, look, edit, grep, spell, diff,
+patch, make). Where a figure is still the five-program one, it says so.
+
+On macOS, time nothing right after a build: the first run of a freshly
+linked program waits before it starts (0.4 to 0.6 s for a do-nothing
+program here, up to about a second under load; the runs after it, 3 ms),
+so a timing of bin/make, or of anything make has just linked, taken right
+after the build is mostly that wait. Take the best of three, or run the
+program once first.
+
 ## The files
 
 ```
@@ -167,32 +180,39 @@ touch app
 stats: depgraph: nodes 4, edges 4, walk visits 5, walk edges 4     (with DS_STATS=1)
 ```
 
-The track's own Makefile as a graph (the 5 tools of this branch: paste,
-freq, sort, look, make; more once the other modules are in): 38 nodes, 56
-edges; `--graph` prints 39 lines (the last is `.PHONY: all clean`), and
-for every target with prerequisites they are the same, in the same order,
-as in `make -p -q`'s database (the test checks it). The first lines:
+The track's own Makefile as a graph, at 07.01 (ten programs): 94 nodes,
+162 edges, as the lesson shows; `--graph` prints 95 lines (the last is
+`.PHONY: all clean`), and for every target with prerequisites they are the
+same, in the same order, as in `make -p -q`'s database (the test checks
+it). The finished project (route, gzip, gunzip and git as well): 148
+nodes, 334 edges, 149 lines. (On the five-program branch: 38 nodes, 56
+edges, 39 lines.) The first lines at 07.01:
 
 ```
-all: bin/freq bin/look bin/make bin/paste bin/sort
+all: bin/diff bin/edit bin/freq bin/grep bin/look bin/make bin/paste bin/patch bin/sort bin/spell
 build/lib/util.o: lib/util.c lib/ds.h
 lib/util.c:
 lib/ds.h:
 ```
 
 On this project the walk compiles each library file once per tool that
-links the library: `bin/make -n --algo=recurse` prints 102 commands
-against 38, `mkdir -p build/lib` 35 times (7 objects, 5 tools), and the
-compile of lib/util.c 5 times. Measured (a clean build, `make clean` before
-each):
+links the library: at 07.03, in a clean directory, `bin/make -n
+--algo=recurse` prints 482 commands against 86 (the system's make -n
+prints the same 86), `mkdir -p build/lib` 210 times (21 objects, 10
+programs), and the compile of lib/util.c 10 times. Measured at 07.03 (a
+clean build, `make clean` before each; bin/make a copy outside the tree,
+run before, so the first-run wait above is not in it; the Mac loaded, load
+average 6 to 8):
 
 ```
-system make -s                     0.854 s
-bin/make -s (in order, 07.03)      0.946 s
-bin/make -s --algo=recurse         2.268 s      every tool adds a whole library build
+system make -s                     2.176 s
+bin/make -s (in order, 07.03)      2.429 s
+bin/make -s --algo=recurse        12.668 s      every program adds a whole library build
 bin/make -s, nothing to do         0.003 s
-bin/make -s --algo=recurse, again  2.270 s      it makes everything, every time
+bin/make -s --algo=recurse, again 13.474 s      it makes everything, every time
 ```
+
+(On the five-program branch: 0.854, 0.946, 2.268, 0.003 and 2.270 s.)
 
 A cycle at 07.01: the walk cannot tell, until it goes deeper than there
 are nodes (a path that long must pass a node twice):
@@ -328,17 +348,20 @@ trace: check build/lib/util.o: up to date
 ...
 trace: check build/lib/heap.o: lib/heap.c is newer
 trace: run build/lib/heap.o
+...
 trace: check build/lib/depgraph.o: up to date
+...
 trace: check build/libds.a: build/lib/heap.o was made
 trace: run build/libds.a
-trace: check bin/freq: build/libds.a was made
+trace: check bin/diff: build/libds.a was made
 ...
 trace: check all: phony
-stats: make: recipes run 7, commands 14, files checked 33, most at once 0
+stats: make: recipes run 12, commands 24, files checked 92, most at once 0
 ```
 
-(that run was at 07.03, where the project has no readyq yet: 35 nodes, 34
-of them needed by all; clean is the other.)
+(that run was at 07.03, where the project has no readyq yet: 94 nodes, 93
+of them needed by all; clean is the other. The recipes: heap.o, the
+archive and the ten links.)
 
 Same as the system's make: `-n` on this project prints the system's
 commands to the byte (the trailing blanks of LIB included), a real build
@@ -380,7 +403,7 @@ real runs (every recipe is sh -c 'touch NAME'), in an empty directory
 Each level doubles the walk; 73 targets take it 6 s to print and 12 levels
 (37 targets) a minute to build. The system's make on d24: 0.01 s (3.81 and
 4.4.1); ours in order on 1000 diamonds (3001 targets): 0.00 s, GNU make
-3.81 0.08 s. On this project the walk is the 2.27 s against 0.95 s above.
+3.81 0.08 s. On this project the walk is the 12.7 s against 2.4 s above.
 
 What the walk leaves behind (worth a paragraph): it makes common.h, then
 liba from it, then common.h again, then libb and app. liba is now older
@@ -405,9 +428,10 @@ touch app
 common.h and liba the same time; the test makes the recipes sleep 0.05 s.)
 
 Break it (forget "made in this run": delete the `if (u->remade)` check in
-out_of_date). After `touch lib/heap.c`, -n now lists only the compile of
-heap.o (2 lines: mkdir and cc) and none of the 7 recipes a real build runs,
-the archive and the five links; the real build is still right, because by
+out_of_date). After `touch lib/heap.c` (at 07.03, on a clean build), -n
+now lists only the compile of heap.o (2 lines: mkdir and cc) and none of
+the 12 recipes a real build runs, the archive and the ten links; the real
+build is still right, because by
 then heap.o's time really has changed. And a phony prerequisite no longer
 makes its target: with `out: gen` and `.PHONY: gen`, an existing out is
 left alone, where GNU make remakes it every time:
@@ -466,15 +490,18 @@ examples/slow.mk (four targets, each `sleep 1; touch NAME`):
   bin/make -s           4.04 s
   bin/make -s -j 4      1.01 s       most at once 4; readyq pushes 5 (all and the four)
   bin/make -j 2         2.02 s
-this project, clean builds:
-  bin/make -s -j 1      0.940 s
-  bin/make -s -j 2      0.489 s
-  bin/make -s -j 4      0.286 s
-  bin/make -s -j 8      0.214 s      system make -s -j 8: 0.195 s
+this project at 07.04, clean builds (load average 6 to 8):
+  bin/make -s -j 1      2.616 s      system make -s: 2.151 s
+  bin/make -s -j 2      1.363 s
+  bin/make -s -j 4      0.699 s
+  bin/make -s -j 8      0.425 s      system make -s -j 8: 0.381 s
 ```
 
-The -j 4 build is the same bytes as the system's make's serial build, and
-each of the 37 targets goes through the queue once.
+(On the five-program branch: 0.940, 0.489, 0.286 and 0.214 s, the
+system's -j 8 0.195 s, 37 targets.) The -j 4 build is the same bytes as
+the system's make's serial build, and each of the 96 targets (97 nodes at
+07.04, readyq's three among them; clean is not built) goes through the
+queue once: readyq pushes 96, pops 96.
 
 What the tests hold it to, without a clock: the trace never shows `start
 X` before `finish` of everything X needs; recipes that log `begin X` and
@@ -492,13 +519,18 @@ added grouped targets (`&:`) for it.
 
 Break it (queue a target as soon as any one of its prerequisites is
 finished: in finished(), push on every decrement instead of at 0). On this
-project with -j 8, links start before the archive is made:
+project with -j 8, links start before the archive is made. One run at
+07.04 (`if (--dep->waiting == 0) {` made `>= 0`; the messages and counts
+differ from run to run, and on the five-program branch were pushes 96,
+pops 59, longest 38):
 
 ```
+ranlib: warning: file not found 'build/libds.a'
 clang: error: no such file or directory: 'build/libds.a'
-make: *** [bin/look] Error 1
+clang: error: no such file or directory: 'build/libds.a'
+make: *** [bin/diff] Error 1
 make: *** Waiting for unfinished jobs....
-stats: readyq: pushes 96, pops 59, longest 38
+stats: readyq: pushes 208, pops 174, longest 114
 ```
 
 and on diamond.mk, `-n -j 2` prints `touch app` twice.

@@ -6,7 +6,8 @@ every block forced stored, fixed or dynamic. Each block takes the smallest of th
 book in dynamic blocks, noise stored. The book comes out within 5% of the system's gzip -6 and
 -9. A text whose byte counts grow as the Fibonacci numbers needs codes longer than 15 bits; its
 codes are limited to 15 (the tree built again from flattened counts) and it still reads back.
-gzip FILE makes FILE.gz and removes FILE, as the system's does.
+The example traces in lib/deflate.h and lib/inflate.h are what the programs print. gzip FILE makes
+FILE.gz and removes FILE, as the system's does.
 """
 
 import os
@@ -65,8 +66,9 @@ def test(t):
         theirs = len(T.system(t, ["gzip", f"-{level}", "-c", book]).raw)
         t.check(ours < 1.05 * theirs, f"gzip -{level} on the book: {ours} bytes, the system's {theirs}")
 
-    # Fibonacci counts, 1, 2, 3, 5, ... for 18 byte values: with the end of block's 1 as well, a tree
-    # 17 deep, too deep for DEFLATE; the code is cut to 15 bits at most, and still reads back
+    # Fibonacci counts, 1, 2, 3, 5, ... for 18 byte values: a tree 17 deep for the letters alone, and
+    # with the end of block's 1 as well, 18 deep, too deep for DEFLATE; the code is cut to 15 bits at
+    # most, and still reads back
     fib = [1, 2]
     while len(fib) < 18:
         fib.append(fib[-1] + fib[-2])
@@ -83,6 +85,23 @@ def test(t):
     back = T.run(t, "gunzip", ["-c"], input=r.raw, env={"DS_TRACE": "1"})
     longest = [int(n) for n in re.findall(r"literal/length codes \(longest (\d+) bits\)", back.err)]
     t.check(len(longest) == 1 and longest[0] <= 15, f"the literal/length code read back: {longest}")
+
+    # the example traces in lib/deflate.h's and lib/inflate.h's comments are what the programs
+    # print for abracadabra (a fixed block by choice; a dynamic one when forced)
+    abra = T.write(t, "abra.txt", b"abracadabra")
+    heads = {}
+    for name in ("deflate.h", "inflate.h"):
+        with open(os.path.join(T._root(t), "lib", name)) as f:
+            heads[name] = f.read()
+    said = [l for l in T.run(t, "gzip", ["-c", abra], env={"DS_TRACE": "1"}).err.splitlines()
+            if l.startswith("trace: deflate: ")]
+    t.check(len(said) == 1 and f" *   {said[0]}\n" in heads["deflate.h"],
+            f"lib/deflate.h's example trace is not what gzip prints for abracadabra: {said}")
+    dyn = T.run(t, "gzip", ["-c", "--blocks=dynamic", abra]).raw
+    said = [l for l in T.run(t, "gunzip", ["-c"], input=dyn, env={"DS_TRACE": "1"}).err.splitlines()
+            if l.startswith(("trace: inflate: block", "trace: inflate: end")) or " match " in l]
+    t.check(len(said) == 3 and all(f" *   {l}\n" in heads["inflate.h"] for l in said),
+            f"lib/inflate.h's example trace is not what gunzip prints for a dynamic abracadabra: {said}")
 
     # the files: x becomes x.gz, x goes; -k keeps it; x.gz there already, or a .gz, is an error
     path = T.write(t, "story.txt", text[:5000])
