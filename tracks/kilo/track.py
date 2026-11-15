@@ -7,19 +7,24 @@ escape codes turned into a grid of text by Screen, below) or the file it saved.
 
 Fixtures the lesson tests use:
 
-    edit(t, text=None, name="f.txt", rows=24, cols=80, winsize=None, ctty=True, timeout=20)
+    edit(t, text=None, name="f.txt", rows=24, cols=80, winsize=None, ctty=True, timeout=20,
+         asan=False)
                         write text to name in the test's scratch directory (None: leave
                         the file as it is, or missing), start ./kilo name on a terminal
                         of rows x cols, and wait for its first screen (at most timeout
-                        seconds); an Editor
+                        seconds); an Editor. asan=True: kilo built with AddressSanitizer
+                        where the compiler can (asan_build), so a memory error stops it
     Editor              ed.keys(*parts) types each part and waits for the screen to settle
                         ed.lines, ed.line(n), ed.cursor (row, col from 0), ed.status,
                         ed.message, ed.reverse(n): what the screen shows
+                        ed.colors(n), ed.color(n, text), ed.painted(n): the colour of each
+                        character (Screen.colors), for the syntax highlighting (module 06)
                         ed.raw: every byte kilo wrote; ed.screen: the Screen
                         ed.resize(rows, cols), ed.termios(), ed.quit(), ed.saved()
     UP DOWN LEFT RIGHT HOME END DEL PAGE_UP PAGE_DOWN ESC ENTER BACKSPACE TAB, ctrl("q")
                         what those keys send
     lines_of(n)         text of n numbered lines, "line 1\\n" to "line n\\n"
+    paint(text, codes)  a row with its colours written in: "[g:int] x = [r:10];"
 
 With ctty=True (the default) the terminal is the editor's controlling terminal, as in a
 real one: Ctrl-C would be SIGINT if raw mode left ISIG on, and a resize sends SIGWINCH.
@@ -32,7 +37,7 @@ out it fails at the stub: "kilo: NN.LL: <what> not written yet", exit status 3.
 check-timeline runs the project at each lesson on a pseudo-terminal too: timeline_run()
 starts this file as a program ("relay", at the end) that holds the terminal and a Screen,
 and takes commands on its standard input: keys to type, "screen" to print what the
-screen shows, "size R C" to resize it.
+screen shows, "colors" its colours, "size R C" to resize it.
 """
 
 import os
@@ -62,8 +67,8 @@ UPSTREAM = {
     "url": "https://github.com/antirez/kilo",
     "licence": "BSD-2-Clause",
     "copyright": "Copyright (c) 2016, Salvatore Sanfilippo <antirez at gmail dot com>",
-    "owes": "The editor taught here is antirez's kilo, without its syntax highlighting, "
-            "with this course's lessons and a few fixes.",
+    "owes": "The editor taught here is antirez's kilo, its syntax highlighting as an optional "
+            "module, with this course's lessons and a few fixes.",
     "derived": True,
     "licence_file": "LICENSE",
     "chip": "based on kilo",
@@ -110,19 +115,24 @@ def run_argv(root, args=()):
 #
 # What a terminal does with the bytes kilo writes, as much of it as kilo uses: printable
 # characters, "\r", "\n", backspace and tab, and the escape sequences ESC [ row ; col H
-# (move), A B C D (move by), K and J (erase), m (reverse video on and off), ? 25 l / h
+# (move), A B C D (move by), K and J (erase), m (reverse video on and off, and the
+# foreground colour: 30 to 37, 39 for the default, 0 for everything off), ? 25 l / h
 # (hide and show the cursor) and 6 n (report where the cursor is: answered in replies).
 
 CSI = re.compile(rb"\x1b\[([0-9;?]*)([ -/]*)([@-~])")
 CSI_CUT = re.compile(rb"\x1b(\[[0-9;?]*[ -/]*)?")
+# A cell's colour as one letter: ESC [ 30 m to ESC [ 37 m. See Screen.colors().
+COLOURS = {30: "k", 31: "r", 32: "g", 33: "y", 34: "b", 35: "m", 36: "c", 37: "w"}
 
 
 class Screen:
     """A terminal screen of rows x cols, fed with what the program writes to it.
 
     lines()     the text of each row, trailing spaces dropped
+    colors()    the colour of each character of lines(), one letter per cell (see there)
     cursor      (row, col) of the cursor, counting from 0
     rev[r][c]   whether that cell was written in reverse video
+    fg[r][c]    the foreground colour it was written in: 30 to 37, or None for the default
     frames      how many times the cursor has been shown again (ESC [ ? 25 h): kilo shows
                 it once at the end of every screen it draws
     replies     what the terminal sends back (answers to ESC [ 6 n), not yet sent
@@ -132,8 +142,10 @@ class Screen:
         self.rows, self.cols = rows, cols
         self.grid = [[" "] * cols for _ in range(rows)]
         self.rev = [[False] * cols for _ in range(rows)]
+        self.fg = [[None] * cols for _ in range(rows)]
         self.y = self.x = 0
         self.reverse = False
+        self.colour = None
         self.cursor_shown = True
         self.frames = 0
         self.replies = []
@@ -142,10 +154,11 @@ class Screen:
     def resize(self, rows, cols):
         grid = [[" "] * cols for _ in range(rows)]
         rev = [[False] * cols for _ in range(rows)]
+        fg = [[None] * cols for _ in range(rows)]
         for r in range(min(rows, self.rows)):
             for c in range(min(cols, self.cols)):
-                grid[r][c], rev[r][c] = self.grid[r][c], self.rev[r][c]
-        self.rows, self.cols, self.grid, self.rev = rows, cols, grid, rev
+                grid[r][c], rev[r][c], fg[r][c] = self.grid[r][c], self.rev[r][c], self.fg[r][c]
+        self.rows, self.cols, self.grid, self.rev, self.fg = rows, cols, grid, rev, fg
         self.y, self.x = min(self.y, rows - 1), min(self.x, cols - 1)
 
     @property
@@ -155,12 +168,29 @@ class Screen:
     def lines(self):
         return ["".join(row).rstrip() for row in self.grid]
 
+    def colors(self):
+        """For each row, a letter per character of lines(): "." in the default colour, else
+        k r g y b m c w for ESC [ 30 m to 37 m (black, red, green, yellow, blue, magenta, cyan,
+        white); in reverse video, "#" for the default colour, else the letter in capitals."""
+        out = []
+        for r, text in enumerate(self.lines()):
+            codes = []
+            for c in range(len(text)):
+                code = COLOURS.get(self.fg[r][c], ".")
+                if self.rev[r][c]:
+                    code = "#" if code == "." else code.upper()
+                codes.append(code)
+            out.append("".join(codes))
+        return out
+
     def _linefeed(self):
         if self.y == self.rows - 1:
             self.grid.pop(0)
             self.rev.pop(0)
+            self.fg.pop(0)
             self.grid.append([" "] * self.cols)
             self.rev.append([False] * self.cols)
+            self.fg.append([None] * self.cols)
         else:
             self.y += 1
 
@@ -170,12 +200,14 @@ class Screen:
             self._linefeed()
         self.grid[self.y][self.x] = ch
         self.rev[self.y][self.x] = self.reverse
+        self.fg[self.y][self.x] = self.colour
         self.x += 1
 
     def _erase(self, row, start, end):
         for c in range(max(0, start), min(self.cols, end)):
             self.grid[row][c] = " "
             self.rev[row][c] = False
+            self.fg[row][c] = None
 
     def _csi(self, params, final):
         private = params.startswith("?")
@@ -218,10 +250,16 @@ class Screen:
                     self._erase(r, 0, self.cols)
         elif final == "m":
             for a in args or [0]:
-                if a == 0 or a == 27:
+                if a == 0:
+                    self.reverse, self.colour = False, None
+                elif a == 27:
                     self.reverse = False
                 elif a == 7:
                     self.reverse = True
+                elif 30 <= a <= 37:
+                    self.colour = a
+                elif a == 39:
+                    self.colour = None
         elif final in "hl" and private and 25 in args:
             self.cursor_shown = final == "h"
             if final == "h":
@@ -263,6 +301,13 @@ class Screen:
         r, c = self.cursor
         return "[screen]\n" + "".join(l + "\n" for l in self.lines()) + f"[cursor {r + 1},{c + 1}]\n"
 
+    def dump_colors(self):
+        """Every row with its colours (colors()), each run of one colour other than the
+        default in brackets after its letter, "[g:int] x = [r:10];" (paint()): what the relay
+        prints for "colors"."""
+        return "[colors]\n" + "".join(paint(l, c) + "\n" for l, c in zip(self.lines(), self.colors())) \
+            + "[end]\n"
+
 
 # ---------------------------------------------------------------- keys
 
@@ -292,13 +337,14 @@ CTTY = ("import fcntl, os, sys, termios\n"
 class Editor:
     """./kilo on a pseudo-terminal, with a Screen showing what it drew."""
 
-    def __init__(self, t, args, rows=24, cols=80, winsize=None, ctty=True, cwd=None, timeout=20):
+    def __init__(self, t, args, rows=24, cols=80, winsize=None, ctty=True, cwd=None, timeout=20,
+                 exe=None, env=None):
         self.t = t
         self.ctty = ctty
         self.screen = Screen(rows, cols)
-        exe = os.path.join(t.root, "kilo")
+        exe = exe or os.path.join(t.root, "kilo")
         argv = ([sys.executable, "-c", CTTY] if ctty else []) + [exe] + list(args)
-        self.s = t.spawn(argv, name="kilo", cwd=cwd or t.tmp, pty=True,
+        self.s = t.spawn(argv, name="kilo", cwd=cwd or t.tmp, pty=True, env=env,
                          size=(rows, cols) if winsize is None else winsize)
         self.fed = 0
         self.last = time.monotonic()
@@ -379,6 +425,23 @@ class Editor:
         """Is every cell of row n in reverse video?"""
         return all(self.screen.rev[n])
 
+    def colors(self, n):
+        """The colour of each character of row n, one letter each (Screen.colors)."""
+        return self.screen.colors()[n]
+
+    def color(self, n, text, start=0):
+        """The colours of the first `text` in row n at or after column start (Screen.colors);
+        Fail if row n does not hold it."""
+        at = self.line(n).find(text, start)
+        if at < 0:
+            raise Fail(f"row {n} does not hold {text!r}: {self.line(n)!r}")
+        return self.colors(n)[at:at + len(text)]
+
+    def painted(self, n):
+        """Row n with each run of one colour other than the default in brackets, after its
+        letter: "[g:int] x = [r:10];". For messages and notes."""
+        return paint(self.line(n), self.colors(n))
+
     # ------------------------------------------------------------ the terminal
 
     def termios(self):
@@ -409,14 +472,52 @@ class Editor:
             return f.read()
 
 
-def edit(t, text=None, name="f.txt", rows=24, cols=80, **kw):
-    """./kilo name in the test's scratch directory, with text written there first."""
+def paint(text, codes):
+    """text with each run of one colour (codes: Screen.colors) other than "." in brackets,
+    after its letter: paint("int x", "ggg..") is "[g:int] x"."""
+    out, i = [], 0
+    while i < len(text):
+        j = i
+        while j < len(text) and codes[j] == codes[i]:
+            j += 1
+        out.append(text[i:j] if codes[i] == "." else f"[{codes[i]}:{text[i:j]}]")
+        i = j
+    return "".join(out)
+
+
+def asan_build(t):
+    """kilo.c of the tree under test built with AddressSanitizer, into the test's scratch
+    directory (once per test): a memory error then stops kilo with a report and status 1,
+    where the plain build would go on, often showing nothing. None where the compiler cannot
+    build that (gcc on musl, for one)."""
+    if not hasattr(t, "_kilo_asan"):
+        exe = os.path.join(t.tmp, "kilo-asan")
+        try:
+            r = subprocess.run([os.environ.get("CC", "cc"), "-std=c99", "-g", "-fsanitize=address",
+                                "-fno-omit-frame-pointer", "-o", exe, "kilo.c"],
+                               cwd=t.root, capture_output=True, timeout=300)
+            t._kilo_asan = exe if r.returncode == 0 else None
+        except (OSError, subprocess.TimeoutExpired):
+            t._kilo_asan = None
+    return t._kilo_asan
+
+
+def edit(t, text=None, name="f.txt", rows=24, cols=80, asan=False, **kw):
+    """./kilo name in the test's scratch directory, with text written there first (name may
+    be in a folder, which is made then). asan=True: the AddressSanitizer build (asan_build)
+    where there is one, else the plain one; ed.asan says which ran."""
     path = os.path.join(t.tmp, name)
     if text is not None:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w", encoding="latin-1", newline="") as f:
             f.write(text)
-    ed = Editor(t, [name], rows, cols, cwd=t.tmp, **kw)
+    exe = asan_build(t) if asan else None
+    if exe:
+        # Leaks are no error here: kilo frees nothing on the way out, as the original does.
+        kw.setdefault("env", dict(os.environ, ASAN_OPTIONS="detect_leaks=0"))
+    ed = Editor(t, [name], rows, cols, cwd=t.tmp, exe=exe, **kw)
     ed.path = path
+    ed.asan = bool(exe)
     return ed
 
 
@@ -427,16 +528,42 @@ def edit(t, text=None, name="f.txt", rows=24, cols=80, **kw):
 # file of 40 lines (TIMELINE_TEXT) that timeline_run() writes. timeline_boot() types what
 # that lesson can do and checks the screen; keys whose lesson is still ahead must change
 # nothing. timeline_after() then checks the file: untouched until 04.04, saved after.
+#
+# A project with the syntax highlighting of module 06 in it (an extension) is run on a
+# small C file instead (TIMELINE_C_FILE), and its colours are checked too ("colors").
 
 TIMELINE_FILE = "learn.txt"
 TIMELINE_TEXT = "kilo at a lesson\n\tafter a tab\n" + "".join(f"line {i}\n" for i in range(3, 41))
 TIMELINE_FAIL = [r"\[kilo exited", r"not written yet", r"\[relay: "]
+TIMELINE_C_FILE = "learn.c"
+TIMELINE_C_TEXT = ("/* kilo at a lesson\n"
+                   "\n"
+                   "   still a comment */ int n = 7;\n"
+                   "int main(void) {\n"
+                   "\tchar *s = \"a string\";  // a comment\n"
+                   "\treturn 42;\n"
+                   "}\n"
+                   "x\x01y\n")
+
+
+def highlights(root):
+    """Does the project at root have module 06's syntax highlighting in it?"""
+    try:
+        with open(os.path.join(root, "kilo.c"), errors="replace") as f:
+            return "editorSelectSyntaxHighlight" in f.read()
+    except OSError:
+        return False
 
 
 def timeline_run(root):
     with open(os.path.join(root, TIMELINE_FILE), "w") as f:
         f.write(TIMELINE_TEXT)
-    return [sys.executable, os.path.abspath(__file__), "relay", "24", "80", "--", "./kilo", TIMELINE_FILE]
+    name = TIMELINE_FILE
+    if highlights(root):
+        with open(os.path.join(root, TIMELINE_C_FILE), "w") as f:
+            f.write(TIMELINE_C_TEXT)
+        name = TIMELINE_C_FILE
+    return [sys.executable, os.path.abspath(__file__), "relay", "24", "80", "--", "./kilo", name]
 
 
 def _screen(rows, want, cursor=None):
@@ -471,6 +598,8 @@ def timeline_boot(lesson_id):
     lesson: what that lesson's code can do, and nothing for keys whose lesson is ahead."""
     from harness.core import lesson_key
     k = lesson_key(lesson_id)
+    if lesson_id.startswith("06."):
+        return _highlight_steps(k)
     if k < (1, 1):
         return []
     S = "screen"
@@ -576,9 +705,74 @@ def _bar(lines=40, at=None, modified=False):
                       rf"{at if at is not None else r'\d+'}/{lines}")
 
 
+def _colors(rows, want):
+    """A regex for the relay's dump of a screen's colours (Screen.dump_colors), `rows` high:
+    want as for _screen(), each row written as paint() writes it."""
+    parts = []
+    for i in range(rows):
+        w = want.get(i, want.get(i - rows))
+        if w is None:
+            parts.append(r".*\n")
+        elif isinstance(w, re.Pattern):
+            parts.append(w.pattern + r"\n")
+        else:
+            parts.append(re.escape(w) + r"\n")
+    return r"\[colors\]\n" + "".join(parts) + r"\[end\]"
+
+
+def _highlight_steps(k):
+    """Steps for the project at a lesson of module 06, on TIMELINE_C_FILE: each lesson's
+    colours on the first screen, and what the others leave plain. From 06.03, // typed in
+    front of the comment's opening ends the comment for the rows below it, and two
+    Backspaces bring it back; at 06.05 a search colours its match until Escape."""
+    S, C = "screen", "colors"
+    lines = TIMELINE_C_TEXT.replace("\t", " " * 8).replace("\x01", "A").split("\n")
+    text = {i: lines[i] for i in range(8)} | {i: "~" for i in range(8, 22)}
+    text[23] = "HELP: Ctrl-S = save | Ctrl-Q = quit | Ctrl-F = find"
+    bar = re.compile(r"learn\.c - 8 lines +1/8")
+    # Each row as Screen.dump_colors shows it at this lesson: nothing is coloured until the
+    # lesson that brings its class; non-printable characters are in reverse from 06.01.
+    n7 = "[r:7]" if k >= (6, 2) else "7"
+    n42 = "[r:42]" if k >= (6, 2) else "42"
+    string = '[m:"a string"]' if k >= (6, 2) else '"a string"'
+    kw = (lambda w, c: f"[{c}:{w}]") if k >= (6, 4) else (lambda w, c: w)
+    if k >= (6, 3):
+        paint0, paint2, line_comment = "[c:/* kilo at a lesson]", "   [c:still a comment */]", "[c:// a comment]"
+    else:
+        paint0, paint2, line_comment = "/* kilo at a lesson", "   still a comment */", "// a comment"
+    painted = {0: paint0, 1: "", 2: f"{paint2} {kw('int', 'g')} n = {n7};",
+               3: f"{kw('int', 'g')} main({kw('void', 'g')}) {{",
+               4: f"        {kw('char', 'g')} *s = {string};  {line_comment}",
+               5: f"        {kw('return', 'y')} {n42};", 6: "}", 7: "x[#:A]y",
+               22: re.compile(r"\[#:learn\.c - 8 lines +1/8\]"), 23: text[23]}
+    steps = [(S, _screen(24, text | {22: bar}, cursor=(1, 1))), (C, _colors(24, painted))]
+    if k >= (6, 3):
+        # // in front of the comment's opening: row 0 is a // comment now, and the rows that
+        # were inside the other comment are plain. Two Backspaces: as before.
+        modified = re.compile(r"\[#:learn\.c - 8 lines \(modified\) +1/8\]")
+        commented = painted | {0: "[c:///* kilo at a lesson]",
+                               2: f"   still a comment */ {kw('int', 'g')} n = {n7};", 22: modified}
+        steps += [("keys //", SENT), (C, _colors(24, commented)),
+                  ("keys {bs}{bs}", SENT), (C, _colors(24, painted | {22: modified}))]
+    if k >= (6, 5):
+        # The search colours its match blue, over the number's red; Escape puts it back.
+        found = {0: f"        {kw('return', 'y')} [b:42];", 1: "}", 2: "x[#:A]y", 3: "~",
+                 23: "Search: 42 (Use ESC/Arrows/Enter)"}
+        steps += [("keys {ctrl-f}42", SENT), (C, _colors(24, found)),
+                  ("keys {esc}", SENT), (C, _colors(24, {5: painted[5], 23: ""}))]
+    return steps
+
+
 def timeline_after(root, lesson_id):
-    """The file the run worked on: untouched until 04.04, saved with the edits after."""
+    """The file the run worked on: untouched until 04.04, saved with the edits after; at
+    module 06, the C file, untouched (nothing there saves)."""
     from harness.core import lesson_key
+    if lesson_id.startswith("06."):
+        with open(os.path.join(root, TIMELINE_C_FILE), encoding="latin-1", newline="") as f:
+            got = f.read()
+        if got != TIMELINE_C_TEXT:
+            raise Fail(f"{TIMELINE_C_FILE} changed, with no save: {got[:80]!r}")
+        return f"{TIMELINE_C_FILE} untouched"
     with open(os.path.join(root, TIMELINE_FILE)) as f:
         got = f.read()
     if lesson_key(lesson_id) < (4, 4):
@@ -601,6 +795,8 @@ def timeline_after(root, lesson_id):
 #                   home end pgup pgdn, or ctrl-x. Prints "[sent]".
 #   screen          wait until the program has been quiet for a moment, then print the
 #                   screen (Screen.dump: "[screen]", its rows, "[cursor R,C]").
+#   colors          the same wait, then the rows with their colours (Screen.dump_colors:
+#                   "[colors]", each row as paint() writes it, "[end]").
 #   size R C        resize the terminal and send the program SIGWINCH. Prints "[size R C]".
 #
 # When the program exits it prints the screen as it was left and "[kilo exited with status N]",
@@ -705,13 +901,13 @@ def relay(args):
                     pump(0.35 if c == "\x1b" else 0.02)
                 state["last"] = time.monotonic()     # "screen" waits for quiet from here on
                 say("[sent]\n")
-            elif cmd == "screen":
+            elif cmd in ("screen", "colors"):
                 deadline = time.monotonic() + 5
                 while time.monotonic() < deadline and (time.monotonic() - state["last"] < 0.4 or screen.rest):
                     pump(0.05)
                     if p.poll() is not None:
                         return finish()
-                say(screen.dump())
+                say(screen.dump() if cmd == "screen" else screen.dump_colors())
             elif cmd.startswith("size "):
                 r_, c_ = (int(x) for x in cmd.split()[1:3])
                 screen.resize(r_, c_)

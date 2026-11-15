@@ -78,10 +78,12 @@ Licence    BSD-2-Clause. Copyright (c) 2016, Salvatore Sanfilippo
            tracks/kilo/LICENSE, which comes with the project's files at
            every lesson; kilo.c keeps the notice in its header.
 Taken      kilo.c: the editor, with kilo's functions and their structure,
-           without its syntax highlighting, re-commented as lesson notes
-           and cut into lessons. A handful of fixes to its behaviour are
-           marked where they are made, in comments that name the original
-           code. The Makefile is kilo's, with a comment and "rm -f".
+           re-commented as lesson notes and cut into lessons. The core
+           leaves out its syntax highlighting; module 06, an optional
+           extension, puts it back. The fixes to its behaviour (most of
+           them in the highlighting) are marked where they are made, in
+           comments that name the original code. The Makefile is kilo's,
+           with a comment and "rm -f".
 Ours       The lessons, the order the code is built in and its markers,
            what the project shows before its screen exists (01.01-01.03),
            and the internal checks (tracks/kilo/track.py and tests/).
@@ -141,7 +143,8 @@ Licence    BSD-2-Clause. Copyright (c) 2016, Salvatore Sanfilippo
            tracks/dsa/tools/edit/LICENSE, which comes with the project's
            files from lesson 03.01 on; edit.c keeps the notice in its
            header.
-Taken      tools/edit/edit.c: the kilo track's finished kilo.c (raw mode,
+Taken      tools/edit/edit.c: the kilo track's kilo.c as its core leaves it,
+           without the track's extensions (raw mode,
            reading keys, drawing the screen, moving the cursor, search,
            saving), with its rows replaced by the text interface of
            lib/text.h, undo and redo keys, and a replay mode with no

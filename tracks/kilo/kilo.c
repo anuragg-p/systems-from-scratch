@@ -5,9 +5,15 @@
  *
  * This file is derived from kilo.c by Salvatore Sanfilippo,
  * https://github.com/antirez/kilo (commit 323d93b). It keeps his functions
- * and their structure. The syntax highlighting is left out, the comments
- * are rewritten as notes for the reader, and the few places where the code
+// @from 06.01
+ * and their structure, his syntax highlighting with them. The comments are
+ * rewritten as notes for the reader, and the few places where the code
  * itself differs from his say so in a comment. His notice follows.
+// @else
+//  * and their structure. The syntax highlighting is left out, the comments
+//  * are rewritten as notes for the reader, and the few places where the code
+//  * itself differs from his say so in a comment. His notice follows.
+// @end
  *
  * -----------------------------------------------------------------------
  *
@@ -65,6 +71,47 @@
 #include <fcntl.h>      // @from 04.04
 #include <signal.h>     // @from 02.01
 
+// @from 06.01
+/* What each character of a row is, for its colour: its highlight class.
+ * A row keeps one per character of render, in hl. */
+#define HL_NORMAL 0
+#define HL_NONPRINT 1
+// @end
+#define HL_COMMENT 2    // a // comment, to the end of the row @from 06.03
+#define HL_MLCOMMENT 3  // a /* */ comment, over as many rows as it takes @from 06.03
+#define HL_KEYWORD1 4   // a keyword: if, return, ... @from 06.04
+#define HL_KEYWORD2 5   // a type: int, char, ... @from 06.04
+#define HL_STRING 6     // @from 06.02
+#define HL_NUMBER 7     // @from 06.02
+#define HL_MATCH 8      // the search's match @from 06.05
+// @from 06.01
+
+// @end
+// @from 06.02
+/* What a syntax asks to be highlighted (editorSyntax.flags). Nothing reads
+ * these: strings and numbers are highlighted in every syntax. */
+#define HL_HIGHLIGHT_STRINGS (1<<0)
+#define HL_HIGHLIGHT_NUMBERS (1<<1)
+
+// @end
+// @from 06.01
+/* A language kilo can highlight: the files written in it, and the words and
+ * comment marks it has. */
+struct editorSyntax {
+    char **filematch;   // file name endings (".c"), or parts of a name
+    char **keywords;    // its keywords; one ending in '|' is a type @from 06.04
+    // @from 06.03
+    /* The original kilo has singleline_comment_start[2]: room for the two
+     * characters of "//" in HLDB but not for the '\0' after them, which
+     * new compilers warn about. */
+    char singleline_comment_start[3];
+    char multiline_comment_start[3];
+    char multiline_comment_end[3];
+    // @end
+    int flags;          // HL_HIGHLIGHT_STRINGS, HL_HIGHLIGHT_NUMBERS @from 06.02
+};
+
+// @end
 // @from 03.01
 // @from 03.03
 /* One line of the file. chars is the line as it is in the file, without
@@ -76,10 +123,13 @@
 //  * its newline, and ends in a '\0' that size does not count. */
 // @end
 typedef struct erow {
+    int idx;            // where the row is in E.row: its neighbours are idx-1, idx+1 @from 06.03
     int size;           // bytes in chars
     int rsize;          // bytes in render @from 03.03
     char *chars;        // the line as the file has it
     char *render;       // the line as the screen shows it @from 03.03
+    unsigned char *hl;  // a highlight class (HL_*) for each byte of render @from 06.01
+    int hl_oc;          // does the row end inside a /* */ comment? @from 06.03
 } erow;
 
 // @end
@@ -103,6 +153,7 @@ struct editorConfig {
     char *filename;     // the file being edited @from 03.01
     char statusmsg[80];         // the message under the status bar @from 03.04
     time_t statusmsg_time;      // when it was set: it shows for 5 seconds @from 03.04
+    struct editorSyntax *syntax;    // the file's language, or NULL: no colours @from 06.01
 };
 
 static struct editorConfig E;
@@ -142,6 +193,56 @@ enum KEY_ACTION{
 
 void editorSetStatusMessage(const char *fmt, ...);  // @from 03.04
 
+// @from 06.01
+/* =========================== Syntax highlights DB ========================= */
+
+/* The languages kilo knows, one struct editorSyntax each in HLDB. A file is
+ * highlighted in the first whose filematch fits its name: a pattern that
+ * starts with a dot must end the name (".c"), any other may be anywhere in
+ * it. To add a language, write its lists and add a stanza to HLDB. */
+
+/* C / C++ */
+char *C_HL_extensions[] = {".c",".h",".cpp",".hpp",".cc",NULL};
+// @end
+// @from 06.04
+/* The words highlighted as keywords, and, ending in '|', as types. */
+char *C_HL_keywords[] = {
+	/* C Keywords */
+	"auto","break","case","continue","default","do","else","enum",
+	"extern","for","goto","if","register","return","sizeof","static",
+	"struct","switch","typedef","union","volatile","while","NULL",
+
+	/* C++ Keywords */
+	"alignas","alignof","and","and_eq","asm","bitand","bitor","class",
+	/* The original kilo has "deltype" here, a typo for decltype. */
+	"compl","constexpr","const_cast","decltype","delete","dynamic_cast",
+	"explicit","export","false","friend","inline","mutable","namespace",
+	"new","noexcept","not","not_eq","nullptr","operator","or","or_eq",
+	"private","protected","public","reinterpret_cast","static_assert",
+	"static_cast","template","this","thread_local","throw","true","try",
+	"typeid","typename","virtual","xor","xor_eq",
+
+	/* C types */
+        "int|","long|","double|","float|","char|","unsigned|","signed|",
+        "void|","short|","auto|","const|","bool|",NULL
+};
+// @end
+// @from 06.01
+
+/* The database itself: each stanza in the order of struct editorSyntax. */
+struct editorSyntax HLDB[] = {
+    {
+        /* C / C++ */
+        C_HL_extensions,
+        C_HL_keywords,                  // @from 06.04
+        "//","/*","*/",                 // @from 06.03
+        HL_HIGHLIGHT_STRINGS | HL_HIGHLIGHT_NUMBERS     // @from 06.02
+    }
+};
+
+#define HLDB_ENTRIES (sizeof(HLDB)/sizeof(HLDB[0]))
+
+// @end
 /* ======================= Low level terminal handling ====================== */
 
 /* The terminal's settings as they were before raw mode, to put back at exit. */
@@ -360,6 +461,300 @@ failed:
     // @end
 }
 
+// @from 06.01
+/* ====================== Syntax highlight color scheme  ==================== */
+
+// @end
+/* Does a word end at c? White space, the '\0' at the end of the row, and
+ * the characters , . ( ) + - / * = ~ % [ ] ; are separators. A number or a
+ * keyword starts only after one. */
+int is_separator(int c) {
+    // @build 06.02 where a word ends
+    // True for '\0', for white space (isspace()), and for any of the
+    // characters , . ( ) + - / * = ~ % [ ] ;
+    return c == '\0' || isspace(c) || strchr(",.()+-/*=~%[];",c) != NULL;
+    // @end
+}
+
+/* Does the row end inside a multi-line comment, so that the row after it
+ * starts inside one? */
+int editorRowHasOpenComment(erow *row) {
+    // @build 06.03 does the row end inside a comment
+    // Return the row's hl_oc: editorUpdateSyntax() keeps there whether the
+    // row ended inside a comment.
+    /* The original kilo works it out from the row's last character:
+     *     if (row->hl && row->rsize && row->hl[row->rsize-1] == HL_MLCOMMENT &&
+     *         (row->rsize < 2 || (row->render[row->rsize-2] != '*' ||
+     *                             row->render[row->rsize-1] != '/'))) return 1;
+     *     return 0;
+     * An empty row, or one of spaces, has no character in the comment's
+     * colour, so a blank line inside a comment ended it; and a row that
+     * ends in an opening mark with a slash after it (slash, star, slash)
+     * looked closed. */
+    return row->hl_oc;
+    // @end
+}
+
+// @from 06.01
+// @from 06.03
+/* Set row->hl: the highlight class of every character of render, read left
+ * to right in the language of E.syntax. A change to whether the row ends
+ * inside a comment changes the row below too, so that one is done next, and
+ * so on down while it keeps changing. */
+// @else
+// /* Set row->hl: the highlight class of every character of render, read left
+//  * to right in the language of E.syntax. */
+// @end
+// @end
+void editorUpdateSyntax(erow *row) {
+nextrow:                            // @from 06.03
+    // @build 06.01 a class for every character
+    // Make hl as long as render and fill it with HL_NORMAL. With no syntax
+    // (a file kilo has no language for), that is all.
+    row->hl = realloc(row->hl,row->rsize);
+    memset(row->hl,HL_NORMAL,row->rsize);
+
+    if (E.syntax == NULL) return; /* No syntax, everything is HL_NORMAL. */
+    // @end
+
+    // @from 06.02
+    // @from 06.03
+    int i, prev_sep, in_string, in_comment;
+    // @else
+    // int i, prev_sep, in_string;
+    // @end
+    // @else
+    // int i;
+    // @end
+    char *p;
+    char **keywords = E.syntax->keywords;               // @from 06.04
+    char *scs = E.syntax->singleline_comment_start;     // @from 06.03
+    char *mcs = E.syntax->multiline_comment_start;      // @from 06.03
+    char *mce = E.syntax->multiline_comment_end;        // @from 06.03
+
+    /* p walks render, i is where it is. Spaces at the start are left
+     * normal. */
+    p = row->render;
+    i = 0;
+    while(*p && isspace(*p)) {
+        p++;
+        i++;
+    }
+    // @from 06.02
+    prev_sep = 1;       /* a word may start at p */
+    in_string = 0;      /* the quote that opened the string p is in, or 0 */
+    // @end
+    in_comment = 0;     /* is p inside a multi-line comment? */ // @from 06.03
+
+    // @from 06.03
+    /* A row below one that ends inside a comment starts inside it. */
+    if (row->idx > 0 && editorRowHasOpenComment(&E.row[row->idx-1]))
+        in_comment = 1;
+
+    // @end
+    while(*p) {
+        // @build 06.03 comments
+        // A // after a separator, outside a multi-line comment: the rest of
+        // the row is HL_COMMENT, and the scan stops. Inside a multi-line
+        // comment: HL_MLCOMMENT, up to and including its */. Outside one
+        // and outside a string, a /* opens one.
+        /* The original kilo has no !in_comment here: inside a multi-line
+         * comment, a row starting with // was taken for a // comment, and
+         * the multi-line one ended there. */
+        if (prev_sep && !in_comment && *p == scs[0] && *(p+1) == scs[1]) {
+            /* The original kilo marks row->size-i bytes, counting chars
+             * where hl follows render: after a tab, too few, and when the
+             * tabs make i larger than size, a negative count that memset()
+             * takes for an enormous one: kilo crashes. */
+            memset(row->hl+i,HL_COMMENT,row->rsize-i);
+            /* The original kilo returns here, so the row's comment state
+             * (at the end of this function) was never kept: // typed in
+             * front of a comment's opening left the rows below it in the
+             * comment's colour. */
+            break;
+        }
+
+        if (in_comment) {
+            row->hl[i] = HL_MLCOMMENT;
+            if (*p == mce[0] && *(p+1) == mce[1]) {
+                row->hl[i+1] = HL_MLCOMMENT;
+                p += 2; i += 2;
+                in_comment = 0;
+                prev_sep = 1;
+                continue;
+            } else {
+                prev_sep = 0;
+                p++; i++;
+                continue;
+            }
+        } else if (!in_string && *p == mcs[0] && *(p+1) == mcs[1]) {
+            /* The original kilo has no !in_string: the two characters that
+             * open a comment, inside a string, opened one, and everything
+             * after them to the end of the file was comment. */
+            row->hl[i] = HL_MLCOMMENT;
+            row->hl[i+1] = HL_MLCOMMENT;
+            p += 2; i += 2;
+            in_comment = 1;
+            prev_sep = 0;
+            continue;
+        }
+        // @end
+
+        // @build 06.02 strings
+        // A " or ' opens a string, and the same quote closes it; all of it
+        // is HL_STRING. A backslash in a string takes the character after
+        // it along, so \" does not close it.
+        if (in_string) {
+            row->hl[i] = HL_STRING;
+            /* The original kilo tests only *p == '\\': a backslash last in
+             * the row wrote hl[rsize], one past the end of hl, and the scan
+             * went on past the '\0' that ends render. */
+            if (*p == '\\' && *(p+1)) {
+                row->hl[i+1] = HL_STRING;
+                p += 2; i += 2;
+                prev_sep = 0;
+                continue;
+            }
+            if (*p == in_string) in_string = 0;
+            p++; i++;
+            continue;
+        } else {
+            if (*p == '"' || *p == '\'') {
+                in_string = *p;
+                row->hl[i] = HL_STRING;
+                p++; i++;
+                prev_sep = 0;
+                continue;
+            }
+        }
+        // @end
+
+        // @build 06.01 non-printable characters
+        // A character isprint() says no to is HL_NONPRINT.
+        if (!isprint(*p)) {
+            row->hl[i] = HL_NONPRINT;
+            p++; i++;
+            prev_sep = 0;   // @from 06.02
+            continue;
+        }
+        // @end
+
+        // @build 06.02 numbers
+        // A digit after a separator starts a number; a digit or a '.'
+        // right after a number goes on with it. All HL_NUMBER.
+        if ((isdigit(*p) && (prev_sep || row->hl[i-1] == HL_NUMBER)) ||
+            (*p == '.' && i >0 && row->hl[i-1] == HL_NUMBER)) {
+            row->hl[i] = HL_NUMBER;
+            p++; i++;
+            prev_sep = 0;
+            continue;
+        }
+        // @end
+
+        // @build 06.04 keywords
+        // After a separator, try each keyword: one that is here, with a
+        // separator after it, is HL_KEYWORD1, or HL_KEYWORD2 if it ends in
+        // '|' (the '|' is not part of the word).
+        if (prev_sep) {
+            int j;
+            for (j = 0; keywords[j]; j++) {
+                int klen = strlen(keywords[j]);
+                int kw2 = keywords[j][klen-1] == '|';
+                if (kw2) klen--;
+
+                /* The original kilo has memcmp(p,keywords[j],klen), which
+                 * may read all klen bytes, past the end of render;
+                 * strncmp() stops at its '\0'. */
+                if (!strncmp(p,keywords[j],klen) &&
+                    is_separator(*(p+klen)))
+                {
+                    memset(row->hl+i,kw2 ? HL_KEYWORD2 : HL_KEYWORD1,klen);
+                    p += klen;
+                    i += klen;
+                    break;
+                }
+            }
+            if (keywords[j] != NULL) {
+                prev_sep = 0;
+                continue;
+            }
+        }
+        // @end
+
+        /* Anything else stays normal. */
+        prev_sep = is_separator(*p);    /* may a word start after it? */ // @from 06.02
+        p++; i++;
+    }
+
+    // @build 06.03 the comment goes on to the next row
+    // Keep in row->hl_oc whether the row ended inside a comment. If that
+    // changed, the next row (if there is one) starts differently now:
+    // highlight it the same way, from the top of this function.
+    /* The original kilo has int oc = editorRowHasOpenComment(row); (see
+     * there why this is the scan's own in_comment now), and then
+     *     if (row->hl_oc != oc && row->idx+1 < E.numrows)
+     *         editorUpdateSyntax(&E.row[row->idx+1]);
+     *     row->hl_oc = oc;
+     * a call one level deeper for every row the change reaches: a comment
+     * opened at the top of a file of 100000 lines overflowed the stack. */
+    int oc = in_comment;
+    if (row->hl_oc != oc && row->idx+1 < E.numrows) {
+        row->hl_oc = oc;
+        row = &E.row[row->idx+1];
+        goto nextrow;
+    }
+    row->hl_oc = oc;
+    // @end
+}
+
+/* The colour of a highlight class, as the number in ESC [ n m that sets
+ * the text colour. */
+int editorSyntaxToColor(int hl) {
+    // @build 06.01 the colour of a class
+    // A switch on hl: each class's colour, and for any other, 37 (white).
+    switch(hl) {
+    case HL_COMMENT:                // @from 06.03
+    case HL_MLCOMMENT: return 36;   // cyan @from 06.03
+    case HL_KEYWORD1: return 33;    // yellow @from 06.04
+    case HL_KEYWORD2: return 32;    // green @from 06.04
+    case HL_STRING: return 35;      // magenta @from 06.02
+    case HL_NUMBER: return 31;      // red @from 06.02
+    case HL_MATCH: return 34;       // blue @from 06.05
+    default: return 37;             /* white */
+    }
+    // @end
+}
+
+/* Choose the file's language by its name: E.syntax is the first in HLDB
+ * that fits, or stays NULL. */
+void editorSelectSyntaxHighlight(char *filename) {
+    // @build 06.01 a syntax chosen by the file's name
+    // For each syntax in HLDB, each of its filematch patterns: if the
+    // pattern is in filename, and either does not start with '.' or ends
+    // filename there, set E.syntax to that syntax and return.
+    for (unsigned int j = 0; j < HLDB_ENTRIES; j++) {
+        struct editorSyntax *s = HLDB+j;
+        unsigned int i = 0;
+        while(s->filematch[i]) {
+            int patlen = strlen(s->filematch[i]);
+            /* The original kilo looks only where the pattern is first,
+             * if ((p = strstr(filename,s->filematch[i])) != NULL): in
+             * "my.cool.c" or ".config/x.c" that is not the end, and the
+             * file had no colours. */
+            char *p = filename;
+            while ((p = strstr(p,s->filematch[i])) != NULL) {
+                if (s->filematch[i][0] != '.' || p[patlen] == '\0') {
+                    E.syntax = s;
+                    return;
+                }
+                p++;
+            }
+            i++;
+        }
+    }
+    // @end
+}
+
 // @from 03.01
 /* ======================= Editor rows implementation ======================= */
 
@@ -402,6 +797,11 @@ void editorUpdateRow(erow *row) {
     }
     row->rsize = idx;
     row->render[idx] = '\0';
+    // @from 06.01
+
+    /* A new render needs its colours worked out again. */
+    editorUpdateSyntax(row);
+    // @end
     // @end
 }
 
@@ -416,14 +816,27 @@ void editorInsertRow(int at, char *s, size_t len) {
     E.row = realloc(E.row,sizeof(erow)*(E.numrows+1));
     if (at != E.numrows) {
         memmove(E.row+at+1,E.row+at,sizeof(E.row[0])*(E.numrows-at));
+        for (int j = at+1; j <= E.numrows; j++) E.row[j].idx++; // @from 06.03
     }
     E.row[at].size = len;
     E.row[at].chars = malloc(len+1);
     memcpy(E.row[at].chars,s,len+1);
+    E.row[at].hl = NULL;            // @from 06.01
+    E.row[at].hl_oc = 0;            // @from 06.03
     E.row[at].render = NULL;        // @from 03.03
     E.row[at].rsize = 0;            // @from 03.03
-    editorUpdateRow(E.row+at);      // @from 03.03
+    E.row[at].idx = at;             // @from 06.03
+    // @from 06.03
+    /* The original kilo counts the row after editorUpdateRow(). Until
+     * then the rows below it end one early, and a comment the new row
+     * opens or closes never reached the last row of the file. */
     E.numrows++;
+    // @end
+    editorUpdateRow(E.row+at);      // @from 03.03
+    // @from 06.03
+    // @else
+    // E.numrows++;
+    // @end
     E.dirty++;                      // @from 04.01
     // @end
 }
@@ -434,6 +847,7 @@ void editorFreeRow(erow *row) {
     // Free the row's render and chars.
     free(row->render);
     free(row->chars);
+    free(row->hl);                  // @from 06.01
     // @end
 }
 
@@ -448,8 +862,19 @@ void editorDelRow(int at) {
     row = E.row+at;
     editorFreeRow(row);
     memmove(E.row+at,E.row+at+1,sizeof(E.row[0])*(E.numrows-at-1));
+    // @from 06.03
+    /* The original kilo has idx++ here: each row that moved up claimed a
+     * place further down, so its "row above" was the wrong row, or past
+     * the end of E.row. */
+    for (int j = at; j < E.numrows-1; j++) E.row[j].idx--;
+    // @end
     E.numrows--;
     E.dirty++;
+    // @from 06.03
+    /* Not in the original kilo: the row now at at has another row above
+     * it, which may end inside a comment where the deleted one did not. */
+    if (at < E.numrows) editorUpdateSyntax(E.row+at);
+    // @end
     // @end
 }
 
@@ -846,16 +1271,71 @@ void editorRefreshScreen(void) {
         // @else
         // int len = r->size - E.coloff;
         // @end
+        int current_color = -1;     // the colour set now; -1: the default @from 06.01
         if (len > 0) {
             if (len > E.screencols) len = E.screencols;
-            /* The original kilo writes a byte at a time here, to switch
-             * colours for the syntax highlighting. */
+            // @from 06.01
+            /* A byte at a time, each in the colour of its class. A colour
+             * is sent only where it changes: ESC [ n m to set it, ESC [ 39 m
+             * for the default. A non-printable character is drawn as a
+             * letter (Ctrl-A as A) or '?', in reverse video. */
+            char *c = r->render+E.coloff;
+            unsigned char *hl = r->hl+E.coloff;
+            int j;
+            for (j = 0; j < len; j++) {
+                if (hl[j] == HL_NONPRINT) {
+                    char sym;
+                    abAppend(&ab,"\x1b[7m",4);
+                    /* The original kilo tests c[j] <= 26. char is signed: a
+                     * byte above 127 is negative, passes, and '@'+c[j] sent
+                     * the terminal another control or high byte, not '?'. */
+                    if ((unsigned char)c[j] <= 26)
+                        sym = '@'+c[j];
+                    else
+                        sym = '?';
+                    abAppend(&ab,&sym,1);
+                    abAppend(&ab,"\x1b[0m",4);
+                    /* Not in the original kilo: ESC [ 0 m has put the
+                     * default colour back, and a run after this one in the
+                     * colour before it was drawn without its colour. */
+                    current_color = -1;
+                } else if (hl[j] == HL_NORMAL) {
+                    if (current_color != -1) {
+                        abAppend(&ab,"\x1b[39m",5);
+                        current_color = -1;
+                    }
+                    abAppend(&ab,c+j,1);
+                } else {
+                    int color = editorSyntaxToColor(hl[j]);
+                    if (color != current_color) {
+                        char buf[16];
+                        int clen = snprintf(buf,sizeof(buf),"\x1b[%dm",color);
+                        current_color = color;
+                        abAppend(&ab,buf,clen);
+                    }
+                    abAppend(&ab,c+j,1);
+                }
+            }
+            // @else
+            // /* The original kilo writes a byte at a time here, to switch
+            //  * colours for the syntax highlighting. */
+            // @end
             // @from 03.03
-            abAppend(&ab,r->render+E.coloff,len);
+            // @from 06.01
+            // @else
+            // abAppend(&ab,r->render+E.coloff,len);
+            // @end
             // @else
             // abAppend(&ab,r->chars+E.coloff,len);
             // @end
         }
+        // @from 06.01
+        /* The original kilo sends ESC [ 39 m after every row, coloured or
+         * not. Here it goes only after a colour, so that a row with none,
+         * and every row of a file with no syntax, is the same bytes as in
+         * the editor without highlighting (00.02 shows those bytes). */
+        if (current_color != -1) abAppend(&ab,"\x1b[39m",5);
+        // @end
         abAppend(&ab,"\x1b[0K",4);
         abAppend(&ab,"\r\n",2);
         // @end
@@ -969,6 +1449,30 @@ void editorFind(int fd) {
     int last_match = -1; /* Last line where a match was found. -1 for none. */
     int find_next = 0; /* if 1 search next, if -1 search prev. */
 
+    // @from 06.05
+    /* The match is shown by colouring it HL_MATCH in its row's hl. The
+     * colours it replaced are kept here, with the row they came from, to
+     * put back when the search moves on or ends. */
+    int saved_hl_line = -1;  /* No saved HL */
+    char *saved_hl = NULL;
+
+    // @end
+    // @build 06.05 put the colours back
+    // @stub #define FIND_RESTORE_HL kiloTodo("06.05", "put the colours back")
+    // A macro, so it can change saved_hl: if colours are saved, copy them
+    // back into the hl of row saved_hl_line, free them, and note that none
+    // are saved.
+    /* The original kilo has these lines at the left margin, as a #define
+     * usually is; here they are indented with the code around them. */
+    #define FIND_RESTORE_HL do { \
+        if (saved_hl) { \
+            memcpy(E.row[saved_hl_line].hl,saved_hl, E.row[saved_hl_line].rsize); \
+            free(saved_hl); \
+            saved_hl = NULL; \
+        } \
+    } while (0)
+
+    // @end
     // @from 05.02
     /* Where the cursor and the view were, for Escape to go back to. */
     int saved_cx = E.cx, saved_cy = E.cy;
@@ -997,6 +1501,7 @@ void editorFind(int fd) {
                 E.coloff = saved_coloff; E.rowoff = saved_rowoff;
             }
             // @end
+            FIND_RESTORE_HL;                // @from 06.05
             editorSetStatusMessage("");
             return;
         // @from 05.02
@@ -1042,8 +1547,31 @@ void editorFind(int fd) {
             }
             find_next = 0;
 
+            // @from 06.05
+            /* The last match's row gets its own colours back. */
+            FIND_RESTORE_HL;
+
+            // @end
             if (match) {
+                erow *row = &E.row[current];        // @from 06.05
                 last_match = current;
+                // @from 06.05
+                /* Keep the row's colours, and colour the match. */
+                if (row->hl) {
+                    saved_hl_line = current;
+                    saved_hl = malloc(row->rsize);
+                    memcpy(saved_hl,row->hl,row->rsize);
+                    /* Not in the original kilo, which colours from
+                     * match_offset: there it is a place in render, here in
+                     * chars (see above), and hl follows render. Count the
+                     * columns the tabs before the match take, as
+                     * editorUpdateRow() does. */
+                    int j, rx = 0;
+                    for (j = 0; j < match_offset; j++)
+                        rx += row->chars[j] == TAB ? 8 - rx%8 : 1;
+                    memset(row->hl+rx,HL_MATCH,qlen);
+                }
+                // @end
                 E.cy = 0;
                 E.cx = match_offset;
                 E.rowoff = current;
@@ -1324,6 +1852,7 @@ void initEditor(void) {
     E.row = NULL;                   // @from 03.01
     E.dirty = 0;                    // @from 04.01
     E.filename = NULL;              // @from 03.01
+    E.syntax = NULL;                // @from 06.01
     updateWindowSize();
     signal(SIGWINCH, handleSigWinCh); // @from 02.01
     // @end
@@ -1347,6 +1876,7 @@ int main(int argc, char **argv) {
     // printf("This window has %d rows and %d columns.\r\n",E.screenrows,E.screencols);
     // @end
     // @end
+    editorSelectSyntaxHighlight(argv[1]);  // @from 06.01
     // @from 03.01
     editorOpen(argv[1]);
     // @else

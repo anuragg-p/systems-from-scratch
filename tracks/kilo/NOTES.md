@@ -5,7 +5,8 @@ site shows it at a lesson (`./learn files kilo --at NN.LL`), on an Apple
 M-series Mac (macOS, Darwin 25.6, Apple clang 21), and every "break it"
 was run as the change it describes. Screens are what the tests' terminal
 emulator (Screen in track.py) made of kilo's bytes, rows with trailing
-spaces dropped, `[cursor R,C]` counting from 1. The same tests, the
+spaces dropped, `[cursor R,C]` counting from 1; in module 06, each run of
+one colour is written `[c:text]` (see "06 Syntax highlighting"). The same tests, the
 skeleton check and the timeline check also pass on Linux (Alpine, gcc and
 musl, aarch64, in Docker), and every lesson's project builds there with
 no warnings. Function names are given instead of line numbers.
@@ -34,8 +35,12 @@ and `idx` fields of erow (`idx` is used only by the highlighter), `E.syntax`,
 `nonprint` counter in `editorUpdateRow`, and `#include <sys/time.h>`
 (nothing uses it).
 
-Note for whoever restores highlighting as the 06 extension: the original
-`editorDelRow` renumbers `idx` with `idx++` where it means `idx--`.
+Module 06, an extension (`optional: true`), puts the highlighting back,
+upstream's own code under upstream's names, in the same kilo.c: it arrives
+only at its own lessons, and the project at every core lesson is byte for
+byte what it was without it. See "06 Syntax highlighting" below. The
+finished kilo.c (`./learn files kilo`, every lesson of every path) is 1461
+lines; at 05.02 it is still 1057.
 
 ## Every departure from upstream, and why
 
@@ -124,6 +129,130 @@ checked by putting the original line back and running it.
     kilo.c` built with `-Wall -W -pedantic -std=c99`), with a comment on
     top, `rm -f` in clean (the original `rm kilo` fails when there is no
     binary) and a `.PHONY` line.
+
+### In module 06, the syntax highlighting
+
+Each was reproduced on upstream's own kilo.c (built as it is, and with
+`-fsanitize=address`) before it was fixed, and each fix was checked by
+putting the original line back in our kilo.c and running the module's
+tests: every one then fails (the test named in brackets), and passes
+again with the fix. Screens in the colour notation of "06 Syntax
+highlighting"; upstream's own tab stops show in its screens.
+
+13. **A // comment after a tab** (`editorUpdateSyntax`, 06.03). The
+    original marks `row->size-i` bytes, counting `chars` where `hl` and `i`
+    follow `render`: after a tab too few, and when the tabs make `i` larger
+    than `size`, a negative count that `memset()` takes as a huge one.
+    Upstream, a C file with the row "\t// x" kills kilo as it opens it
+    (status -5 on macOS; ASan: the memset); "a\t// comment text" shows
+    `a      [c:// comment] text`. Ours: `row->rsize-i`. (0603: kilo exits.)
+14. **// typed in front of a comment's opening** (`editorUpdateSyntax`,
+    06.03). The original `return`s from the // case, before the end of the
+    function where the row's comment state is kept and passed on: on
+    "/* a", "b", "*/ int x;", typing // at the start of the first row leaves
+    `[c:b]` and `[c:*/] [g:int] x;` in the comment's colour. Ours: `break`.
+    (0603: "// in front".)
+15. **// inside a multi-line comment** (06.03). The original takes // after
+    a separator for a // comment wherever it is: in a multi-line comment, a
+    row starting with // ended that comment (upstream: "/*", "// old",
+    "int y = 2;", "*/" shows `[g:int] y = [r:2];` and a plain `*/`), and a
+    */ later on such a row was never seen. Ours: `!in_comment` in the test.
+    (0603: row 7, "// old */ z = 3;".)
+16. **A comment's opening inside a string** (06.03). The original has no
+    `!in_string` before it: `char *open = "/*";` shows
+    `[g:char] *open = [m:"][c:/*";]` and every row after it, to the end of
+    the file, is comment. (0603: row 9.)
+17. **Whether a row ends inside a comment** (`editorRowHasOpenComment`,
+    06.03). The original works it out from the row's last character: in
+    the comment's colour and not the end of a */. An empty row, or one of
+    spaces (left normal), has none, so a blank line inside a comment ended
+    it: "/* start", "", "   end */" shows the third row plain. And
+    "a = 1; /*/" (opened, then a slash) looks closed: the row after it is
+    plain. Ours: the scan's own `in_comment` at the end of the row is kept
+    in `hl_oc`, and `editorRowHasOpenComment` returns `hl_oc`. (0603:
+    rows 5 and 11.)
+18. **A comment opened at the top of a long file** (06.03). The original
+    passes a change on with `editorUpdateSyntax(&E.row[row->idx+1])` at the
+    end of `editorUpdateSyntax`: one call deeper for every row it reaches.
+    Upstream, "/" then "*" typed at the top of 100000 rows of "int x;":
+    SIGSEGV (status -11), the stack overflowed; 50000 rows were fine. Ours:
+    `row = &E.row[row->idx+1]; goto nextrow;` back to a label at the top,
+    with `hl_oc` set first. (0603: the 100000-row file; kilo exits -11.)
+19. **`idx` after a row is deleted** (`editorDelRow`, 06.03). The original
+    renumbers with `idx++` where it means `idx--`: each row after the
+    deleted one claims a place two further down, and its "row above" is
+    another row, or past the end of `E.row`. Upstream, "x", "/* a",
+    "b */", "c = 1;": Backspace at the start of row 2, then x typed on
+    "b */": `bx */` plain. On "a" "b" "c" "d", two joins and a key typed:
+    ASan, heap-buffer-overflow READ of size 8 in `editorRowHasOpenComment`.
+    (0603: "joined", and under ASan "two joins".)
+20. **The row below a deleted row** (`editorDelRow`, 06.03; not in the
+    original). After a delete the next row has a new row above it, which
+    may end inside a comment where the deleted one did not; nothing
+    highlighted it again. Upstream, "a = 1; // note", "/* b", "c = 2;",
+    "*/": Backspace at the start of row 2 joins "/* b" into the // comment,
+    and `[c:c = 2;]`, `[c:*/]` stay. Ours: `editorUpdateSyntax(E.row+at)`
+    after the delete. (0603: "joined onto //".)
+21. **A row inserted above the last** (`editorInsertRow`, 06.03). The
+    original counts the new row (`E.numrows++`) after `editorUpdateRow()`,
+    so while the new row is highlighted the rows end one early and a change
+    it passes on stops before the last row. Upstream, "x = 1; // a /* b",
+    "c;", "d;", Enter before the "/*": `[c:c;]` but `d;` plain. Ours: the
+    count first (an `@else` keeps the core's order before 06.03). (0603:
+    "split before the opening".)
+22. **A backslash last in a string** (`editorUpdateSyntax`, 06.02). The
+    original takes the character after a backslash along without looking:
+    at the end of a row it writes `hl[rsize]`, one past `hl`, and the scan
+    goes on past the '\0' that ends `render`. Upstream, `char *s = "one \`
+    (a C line continuation): nothing shows, but ASan stops it,
+    heap-buffer-overflow WRITE of size 1 in `editorUpdateSyntax`. Ours:
+    `*p == '\\' && *(p+1)`. (0602, under ASan; on a compiler without ASan
+    this one does not show.)
+23. **Keywords read past the row** (06.04). The original compares with
+    `memcmp(p,keywords[j],klen)`, which may read all `klen` bytes, past the
+    end of `render` near the end of a row: ASan (whose memcmp checks the
+    whole length, its default) stops upstream on the first C row shorter
+    than a keyword after a separator, READ of size 16 from
+    `editorUpdateSyntax`. Ours: `strncmp`, which stops at the '\0'. (0604,
+    under ASan.)
+24. **A byte above 127 drawn as a letter** (`editorRefreshScreen`, 06.01).
+    The original tests `c[j] <= 26`; char is signed, so a high byte passes
+    and `'@'+c[j]` sends the terminal another control or high byte instead
+    of '?'. Upstream, "int caf\xc3\xa9 = 1;" sends 0x03 and 0xe9: the
+    emulator shows `caf[#:\xe9]` (one cell for two bytes, the rest of the row
+    one column left; a real terminal shows worse). Ours: `(unsigned char)`.
+    (0601: row 1.)
+25. **The colour after a non-printable character** (06.01). The original
+    ends one with ESC [ 0 m, which puts the default colour back, but keeps
+    its own idea of the colour set: on `x = "a"` Ctrl-A `"b";` the second
+    string is drawn uncoloured, `[m:"a"][M:A]"b";`. Ours: `current_color =
+    -1` after it. (0602: row 5.)
+26. **The file's name** (`editorSelectSyntaxHighlight`, 06.01). The
+    original looks only where the pattern is first: in "my.cool.c" or
+    ".config/t.c" the first ".c" is not the end, and the file had no
+    colours (checked upstream). Ours: every place it is. (0601: the names.)
+27. **"deltype"** in `C_HL_keywords` is a typo for decltype. (0604: row 4.)
+28. **The match after a tab** (`editorFind`, 06.05). Not a bug upstream,
+    which searches `render`: ours searches `chars` (departure 7), so the
+    match's column is a place in `chars`, and `hl` follows `render`. The
+    colour goes where the screen shows the match: the tabs before it are
+    counted as `editorUpdateRow` counts them. With `match_offset`, on
+    "\tchar *s = "beta";" the cells of ` *s ` turn blue. (0605: "after a
+    tab".)
+29. **ESC [ 39 m only after a colour** (`editorRefreshScreen`, 06.01). The
+    original sends it at the end of every row. Ours only when the row left
+    a colour set, so a file with no syntax, and any row with no colour, is
+    the same bytes as without highlighting: the first screen 00.02 shows
+    and its test holds byte for byte stay true of the finished editor.
+    (0002 fails with the original line.)
+30. **`singleline_comment_start[3]`**, not `[2]`: room for the '\0' of the
+    "//" HLDB puts there. Apple clang 21 warns about the original
+    (`-Wunterminated-string-initialization`, part of `-W`).
+31. **`FIND_RESTORE_HL` indented** with the code around it; the original
+    has the `#define` and its `} while (0)` at the left margin, inside
+    `editorFind`. Only a layout change: the site reads a "}" at the left
+    margin as the end of a function.
+32. **Left out**: `struct hlcolor`, which nothing in the original uses.
 
 What the project shows at a lesson (the `@else` parts), not in the
 finished file:
@@ -541,6 +670,298 @@ Limit kept from the original: `isprint(c)` is called on key codes above
 255 (Home, End and the like) in the search prompt, which C leaves
 undefined; on macOS it returns 0 for all of 1000 to 1008 (checked).
 
+## 06 Syntax highlighting (an extension)
+
+Module 06 (`lessons/06-highlighting/`, `optional: true`) is upstream's
+highlighting: the `HL_*` classes, `struct editorSyntax`, `HLDB` with its C
+stanza, `is_separator`, `editorRowHasOpenComment`, `editorUpdateSyntax`,
+`editorSyntaxToColor`, `editorSelectSyntaxHighlight`, the `idx`, `hl` and
+`hl_oc` fields of erow, `E.syntax`, the drawing a byte at a time in its
+colour, and the coloured match in `editorFind`; upstream's names, its order
+in the file, and its code but for departures 13 to 32. At a lesson of the
+module the project is the whole core plus the module's lessons so far
+(`./learn files kilo --at 06.03`); at every core lesson, and at any lesson
+of another extension, none of it is there (checked: the project at each of
+the 16 core lessons written with `./learn files` before the module existed
+and after, compared with `diff -r`: identical).
+
+The finished project (`build/at/kilo/finished/`, every lesson of every
+path) does include it, and the workbench runs that one. For a file with no
+syntax it draws the same bytes as before (departure 29), so 00.02's 108
+bytes still hold; but two numbers in 00.01 are about the finished kilo.c
+and changed with this module: 1461 lines and 35 functions (were 1057 and
+30; the lesson's `fact` checks the lines), and 1542 bytes a key on a 24x80
+screen of kilo.c itself (were 1324: its first rows are a comment, now
+cyan). 00.01 says the new numbers. Module 07 will change them again.
+
+### How the screens below were captured
+
+With a scratch driver around track.py's own `Editor` and `Screen`: the
+project at the lesson (`./learn files kilo --at 06.LL`, built with make)
+run on a 10x44 pseudo-terminal on this `hello.c` (a tab before printf and
+return), keys typed, then each row printed with `Editor.painted()`, which
+is what the relay's `colors` prints too:
+
+```
+#include <stdio.h>
+
+/* Say hello
+   and go. */
+int main(void) {
+	printf("hello %d\n", 42);  // once
+	return 0;
+}
+```
+
+In a painted row, text in the default colour is as it is, and a run in a
+colour is `[x:text]`: r red (ESC [ 31 m), g green (32), y yellow (33),
+b blue (34), m magenta (35), c cyan (36); `#` is reverse video in the
+default colour, a capital letter reverse video in that colour. Leading
+white space is left in the default colour (the scan skips it), so a
+comment's indentation shows uncoloured.
+
+### The lessons, and how they divide the code
+
+Five lessons, the plan's but for one move: the syntax database and the
+choice by file name come with 06.01, not 06.04. Upstream's
+`editorUpdateSyntax` begins `if (E.syntax == NULL) return;` and every
+rule after that reads its comment marks or keywords from `E.syntax`: with
+no syntax chosen there is not one colour to show, so the choice has to
+come first. 06.04 is "Keywords" alone. HLDB's stanza and struct
+editorSyntax grow a field per lesson (the comment marks with 06.03, the
+keywords with 06.04, the flags with 06.02), each line of the initializer
+marked with its lesson.
+
+| lesson | regions (function: title) |
+|---|---|
+| 06.01 | editorUpdateSyntax: a class for every character, non-printable characters; editorSyntaxToColor: the colour of a class; editorSelectSyntaxHighlight: a syntax chosen by the file's name |
+| 06.02 | is_separator: where a word ends; editorUpdateSyntax: strings, numbers |
+| 06.03 | editorRowHasOpenComment: does the row end inside a comment; editorUpdateSyntax: comments, the comment goes on to the next row |
+| 06.04 | editorUpdateSyntax: keywords |
+| 06.05 | editorFind: put the colours back (the `FIND_RESTORE_HL` macro; its stub is `#define FIND_RESTORE_HL kiloTodo(...)`) |
+
+Not in regions, arriving with `@from`: the `HL_*` defines (each with its
+lesson), `HL_HIGHLIGHT_*` (06.02), struct editorSyntax and its fields,
+`C_HL_extensions`, `HLDB` and `HLDB_ENTRIES` (06.01), `C_HL_keywords`
+(06.04), the erow fields (`hl` 06.01, `idx` and `hl_oc` 06.03),
+`E.syntax`, the declarations and the loop of `editorUpdateSyntax` around
+its regions, the cases of `editorSyntaxToColor` (each with its class), and
+these hooks in core code, each small and marked:
+
+- `editorUpdateRow` ends by calling `editorUpdateSyntax(row)` (06.01).
+- `editorInsertRow`: `hl = NULL` (06.01); `idx`, `hl_oc`, the renumbering
+  of the rows below, and the count before the update (06.03, departure 21).
+- `editorFreeRow` frees `hl` (06.01); `editorDelRow` renumbers `idx` and
+  highlights the row that moved up (06.03, departures 19 and 20).
+- `editorRefreshScreen`: a row is drawn a byte at a time in its colour
+  (06.01), inside the core's 03.01 region "draw a row of the file", whose
+  one `abAppend` it replaces through an `@else`.
+- `editorFind`: the saved colours, `FIND_RESTORE_HL` before each new match
+  and on Escape and Enter, and the match coloured in its row (06.05),
+  inside the 05.01 region "search the rows".
+- `initEditor` sets `E.syntax = NULL`; `main` calls
+  `editorSelectSyntaxHighlight(argv[1])` before `editorOpen` (06.01).
+- The header comment of kilo.c says the highlighting is in, from 06.01
+  (an `@else` keeps the core's sentence).
+
+Nothing else in kilo depends on any of it: take module 06 away and the
+core is as it was (module 07 never sees it either: its lessons are the
+core plus its own).
+
+### 06.01 A colour for every character
+
+`hl` beside `render`, one class per byte of render, made in
+`editorUpdateSyntax` (all `HL_NORMAL`, and done, when the file has no
+syntax), freed with the row. `editorSelectSyntaxHighlight` picks the
+syntax from the name once, before the file is read: ".c", ".h", ".cpp",
+".hpp", ".cc" at the end of the name. The scan at this lesson only marks
+what `isprint()` says no to as `HL_NONPRINT`; drawn, that is a letter
+(Ctrl-A as A, `'@'+c`) for 1 to 26 and '?' for anything else, in reverse
+video, one cell per byte, so the cursor stays on its character.
+`editorSyntaxToColor` is a switch with only its default (37) at this
+lesson; each class adds its case.
+
+The screen of hello.c at 06.01 is the core's, text and bytes: nothing is
+coloured yet (294 bytes for the first screen at 10x44, at 05.02 and at
+06.01, for hello.c and for the same text as hello.txt). Ctrl-A typed
+between x and y on "ab": in a.c `x[#:A]yab` (cursor 1,4), in a.txt `xyab`
+(the terminal draws nothing for the byte 1; cursor 1,4 still, past an
+invisible character). A file holding ESC [ H red shows `[#:?][Hred` in a
+.c file; in a .txt file the ESC goes to the terminal as it is, as in the
+core.
+
+Break it (verified at 06.01): fill `hl` with `HL_NONPRINT` instead of
+`HL_NORMAL`: every row of hello.c is reverse-video question marks,
+`[#:??????????????????]`, the blank row blank. Delete `if (E.syntax ==
+NULL) return;`: at 06.01 a .txt file is scanned too and Ctrl-A shows as
+`x[#:A]yab` there (and at 06.02 the same: strings and numbers read nothing
+from the syntax); from 06.03 on, where the comment marks are read from
+`E.syntax`, the same deletion kills kilo on any .txt file with SIGSEGV
+(checked at 06.02, 06.03 and 06.04).
+
+### 06.02 Numbers and strings
+
+`is_separator`: white space, '\0' and `, . ( ) + - / * = ~ % [ ] ;`.
+`prev_sep` says whether a word may start at p. A digit after a separator,
+or a digit or '.' right after a number, is `HL_NUMBER`; a quote opens a
+string to the same quote, a backslash taking the next character along
+(not past the end of the row: departure 22). `HL_HIGHLIGHT_STRINGS` and
+`HL_HIGHLIGHT_NUMBERS` are set in HLDB's flags but nothing reads them, in
+upstream as here: strings and numbers are coloured in every syntax.
+
+hello.c at 06.02:
+
+```
+    |#include <stdio.h>
+    |
+    |/* Say hello
+    |   and go. */
+    |int main(void) {
+    |        printf([m:"hello %d\n"], [r:42]);  // once
+    |        return [r:0];
+    |}
+```
+
+(The comment and the keywords are plain until 06.03 and 06.04.) More, from
+the 0602 test: `x = [r:12.5] + y3 - [r:7];`, `s = [m:"say \"hi\""] +
+[m:'q'];`, an unterminated `t = [m:"no end]` with `after = [r:1];` plain
+on the row below, `w = ([r:8])+[[r:9]];`.
+
+Break it (verified at 06.02): drop `|| row->hl[i-1] == HL_NUMBER` from the
+number test: only a number's first digit is red, `[r:4]2`, `[r:3.]14`,
+`[r:1]000` (the '.' still goes on from the 3). Delete the backslash case
+in the string: `s = "say \"hi\" now";` shows `s = [m:"say \"]hi\[m:" now"];`,
+the escaped quote ending the string.
+
+### 06.03 Comments, on one line and across many
+
+// after a separator, outside a multi-line comment, makes the rest of the
+row `HL_COMMENT` and ends the scan; /* opens `HL_MLCOMMENT` up to and
+including its */, outside a string. Whether the row ends inside one is
+the scan's `in_comment` at the end, kept in `hl_oc`;
+`editorRowHasOpenComment` returns it, and the next row starts from its
+row above's. When it changes, the next row is highlighted again, and so on
+down while it keeps changing, as a loop (departure 18). Rows find their
+neighbours by `idx`, kept right through inserts and deletes.
+
+hello.c at 06.03:
+
+```
+    |#include <stdio.h>
+    |
+    |[c:/* Say hello]
+    |   [c:and go. */]
+    |int main(void) {
+    |        printf([m:"hello %d\n"], [r:42]);  [c:// once]
+    |        return [r:0];
+    |}
+```
+
+From the 0603 test: `        [c:// x]` (a tab, then a short comment: the
+row that crashes upstream), a blank row inside a comment and
+`   [c:end */] y = [r:2];` after it, `[c:// old */] z = [r:3];` inside a
+comment (the */ closes it), `s = [m:"/*"];`.
+
+Break it (verified at 06.03): delete the block that goes on to the next
+row (`if (row->hl_oc != oc ...) { ... goto nextrow; }`; the build warns
+`unused label 'nextrow'`): on "int x = 1;", "int y = 2;", "*/ int z;",
+typing /* at the top colours only that row, `[c:/*int x = 1;]`,
+`int y = [r:2];`, `*/ int z;`; a row below changes only when it is itself
+edited (x typed on row 2: `[c:inxt y = 2;]`). As it is:
+`[c:int y = 2;]`, `[c:*/] int z;`. Make `editorRowHasOpenComment` return
+0: a comment ends with its first row, `[c:/* Say hello]` then
+`   and go. */` plain.
+
+A long file: 100000 rows of "x;", /* typed at the top, every row below
+highlighted again: the screen comes back in well under a tenth of a
+second (macOS, M-series; upstream overflows its stack here, departure 18).
+
+### 06.04 Keywords
+
+After a separator, each word of `C_HL_keywords` that is here with a
+separator after it: `HL_KEYWORD1` (yellow), or `HL_KEYWORD2` (green) for
+the ones ending in '|', the types. hello.c at 06.04:
+
+```
+    |#include <stdio.h>
+    |
+    |[c:/* Say hello]
+    |   [c:and go. */]
+    |[g:int] main([g:void]) {
+    |        printf([m:"hello %d\n"], [r:42]);  [c:// once]
+    |        [y:return] [r:0];
+    |}
+```
+
+384 bytes for that first screen (294 without colours): `ESC [ 36 m` before
+the comment, `ESC [ 39 m` after it, and so on, once per run. From the 0604
+test: `integer = iffy + intx;` plain, `[y:decltype](x) y = [y:NULL];`,
+`static_cast<int>(c)` plain ('<' is no separator), "x = s" with "witch"
+typed: `x = [y:switch]`, then y: `x = switchy`.
+
+Break it (verified at 06.04): drop `is_separator(*(p+klen))`: the start of
+a longer word is coloured, `[g:int]eger = [g:int]erval + [y:if]fy;`,
+`[y:return]ed = [r:1];`.
+
+### 06.05 Showing the match
+
+A match is coloured `HL_MATCH` (blue) in its row's `hl`; the colours it
+covers are saved first (`saved_hl`, `saved_hl_line`) and `FIND_RESTORE_HL`
+puts them back before the next match is coloured and when the search ends,
+by Escape or Enter. It works in a file with no syntax too: `hl` is there,
+all normal. Ctrl-F hello on hello.c at 06.05:
+
+```
+    |[c:/* Say ][b:hello]
+    |   [c:and go. */]
+    |[g:int] main([g:void]) {
+    |        printf([m:"hello %d\n"], [r:42]);  [c:// once]
+    |        [y:return] [r:0];
+    |}
+    |~
+    |~
+    |hello.c - 8 lines                        3/8
+    |Search: hello (Use ESC/Arrows/Enter)
+```
+
+(the status bar is `[#:...]`, reverse video). Escape: the first screen of
+06.04 again. Only the first match in a row is coloured.
+
+Break it (verified at 06.05): delete `FIND_RESTORE_HL;` from the
+Escape/Enter case: Ctrl-F 42, Escape, and `[b:42]` stays blue after the
+search (`printf([m:"hello %d\n"], [b:42]);`) until the row is edited, and
+a second search, Ctrl-F return Enter, leaves `[b:return]` blue as well.
+Delete the one before the next match is coloured: Ctrl-F hello, Down,
+Escape leaves
+`#include <stdio.[b:h]>` (the match of "h", the first key typed) and
+`[c:/* Say ][b:hello]` blue, and the saved colours of each are lost
+(nothing frees them).
+
+### Kept from the original
+
+- Only a file with a syntax is highlighted, non-printable characters
+  included: in a .txt file control bytes go to the terminal as in the
+  core. And inside a string or a comment they go as they are too (the
+  string and comment cases come before the non-printable one).
+- The white space at the start of a row is skipped and left in the
+  default colour: a form feed or vertical tab there goes to the terminal.
+- The separators are only white space and `, . ( ) + - / * = ~ % [ ] ;`:
+  in `i<10`, `{0}`, `x?1:2` the number is plain, `static_cast<int>` is no
+  keyword, and `"a"// b` is no comment (after a string `prev_sep` is 0).
+- Numbers: `0x1F` colours only the 0; `3.14.15` is one number; `.5` only
+  its 5.
+- A string does not go on past the end of its row (a backslash-newline in
+  C does).
+- A '\0' in a row ends the scan; the rest of the row stays normal.
+- The reverse-video letter of a non-printable character takes the colour
+  of the run before it (`[m:"a"][M:A]` in departure 25's example).
+- `isprint()`, `isspace()`, `isdigit()` get a plain `char`, negative for a
+  byte above 127, which C leaves undefined: macOS (checked for every value
+  from -128 to -1), glibc and musl all say no, so such a byte is
+  `HL_NONPRINT` outside strings and comments.
+- `realloc(row->hl,0)` for an empty row may give NULL (glibc frees); the
+  search checks `row->hl`, as upstream does.
+
 ## Other behaviour of the original, kept
 
 - kilo does not clear the screen on exit: the shell prompt appears where
@@ -583,3 +1004,38 @@ status bar, typing, Enter, Backspace, the quit warning, saving and search
 at the later lessons, and that keys whose lesson is ahead change nothing.
 After the run, learn.txt must be untouched before 04.04 and saved with
 the edits from 04.04 on.
+
+For module 06, `Screen` also keeps each cell's foreground colour (ESC [
+30 m to 37 m, 39 m for the default, 0 m resetting it with reverse video),
+`Screen.colors()` gives a letter per character, and the tests read
+`ed.colors(n)`, `ed.color(n, text)` and `ed.painted(n)` (the `[c:text]`
+notation above). `edit(..., asan=True)` runs kilo built with
+`-fsanitize=address` into the test's scratch directory, where the compiler
+can (Apple clang; gcc with libasan, as in Debian): a memory error then
+stops kilo with a report, which is how departures 19, 22 and 23 show in
+the tests. Where it cannot (gcc on musl), the plain build runs and those
+checks see only what the screen shows. The 0603 test also opens a C file
+of 100000 rows (about a second).
+
+From 06.01 the timeline runs the project on `learn.c` (TIMELINE_C_TEXT: a
+comment over three rows with a blank one, a string, a // comment,
+numbers, keywords and a Ctrl-A) instead of learn.txt, when its kilo.c has
+`editorSelectSyntaxHighlight` in it, and checks the relay's `colors` dump:
+each lesson's classes coloured and the later ones still plain; from 06.03,
+// typed in front of the comment's opening ends it for the rows below and
+two Backspaces bring it back; at 06.05, Ctrl-F 42 colours the match blue
+over the number's red and Escape puts the red back. learn.c must be
+untouched after the run (nothing there saves).
+
+On Linux with glibc (Debian trixie, gcc 14, aarch64, in Docker) the 02.01
+test and the timeline at 02.01 and 03.04 fail, as they did before module
+06 (checked on the commit before it): kilo exits with status 1 on the
+resize. The cause is in the core, not in module 06: kilo.c defines
+`_POSIX_C_SOURCE` on Linux and builds with `-std=c99`, and with those
+glibc's `signal()` installs the handler without SA_RESTART and with
+SA_RESETHAND (checked with a 10-line program in the same container;
+`-std=gnu99` gives SA_RESTART). The SIGWINCH then interrupts the `read()`
+in `editorReadKey`, which returns -1, and kilo exits; a second resize
+would not even be caught. musl (Alpine, where these notes were first
+checked) always restarts. Everything else, module 06 included (with
+ASan), passes there.
