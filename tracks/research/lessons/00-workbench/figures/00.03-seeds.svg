@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The same fit with five seeds: five training curves, and five test losses</title>
+<defs><marker id="seeds0003-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="seeds0003-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="seeds0003-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="45.2" y1="240.1" x2="363.98" y2="240.1" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="243.63" font-size="10.5" text-anchor="end">0.01</text>
+<line class="m" x1="45.2" y1="203.3" x2="363.98" y2="203.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="206.75" font-size="10.5" text-anchor="end">0.02</text>
+<line class="m" x1="45.2" y1="154.5" x2="363.98" y2="154.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="158" font-size="10.5" text-anchor="end">0.05</text>
+<line class="m" x1="45.2" y1="117.6" x2="363.98" y2="117.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="121.13" font-size="10.5" text-anchor="end">0.1</text>
+<line class="m" x1="45.2" y1="80.7" x2="363.98" y2="80.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="84.25" font-size="10.5" text-anchor="end">0.2</text>
+<text class="tm mono" x="39.2" y="35.5" font-size="10.5" text-anchor="end">0.5</text>
+<line class="m" x1="45.2" y1="252" x2="45.2" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="45.2" y="268" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="124.9" y1="252" x2="124.9" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="124.9" y="268" font-size="10.5" text-anchor="middle">500</text>
+<line class="m" x1="204.59" y1="252" x2="204.59" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="204.59" y="268" font-size="10.5" text-anchor="middle">1000</text>
+<line class="m" x1="284.29" y1="252" x2="284.29" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="284.29" y="268" font-size="10.5" text-anchor="middle">1500</text>
+<line class="m" x1="363.98" y1="252" x2="363.98" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="363.98" y="268" font-size="10.5" text-anchor="middle">2000</text>
+<rect class="m" x="45.2" y="32" width="318.78" height="220" rx="0" stroke-width="1.5"/>
+<text class="tm" x="204.59" y="284" font-size="11.5" text-anchor="middle">step</text>
+<text class="tm" x="39.2" y="24" font-size="11.5">training loss</text>
+<polyline class="s" points="61.1,136.3 77.1,152.4 93.0,153.8 109.0,153.9 124.9,153.9 140.8,153.9 156.8,153.9 172.7,153.9 188.7,153.9 204.6,153.9 220.5,153.9 236.5,153.9 252.4,153.9 268.3,153.9 284.3,153.9 300.2,153.9 316.2,153.9 332.1,153.9 348.0,153.9 364.0,153.9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="s" points="61.1,148.9 77.1,160.9 93.0,161.6 109.0,161.6 124.9,161.6 140.8,161.6 156.8,161.6 172.7,161.6 188.7,161.6 204.6,161.6 220.5,161.6 236.5,161.6 252.4,161.6 268.3,161.6 284.3,161.6 300.2,161.6 316.2,161.6 332.1,161.6 348.0,161.6 364.0,161.6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="s" points="61.1,136.4 77.1,154.1 93.0,156.2 109.0,156.4 124.9,156.4 140.8,156.4 156.8,156.4 172.7,156.4 188.7,156.4 204.6,156.4 220.5,156.4 236.5,156.4 252.4,156.4 268.3,156.4 284.3,156.4 300.2,156.4 316.2,156.4 332.1,156.4 348.0,156.4 364.0,156.4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="s" points="45.2,35.9 61.1,141.9 77.1,163.6 93.0,167.5 109.0,168.0 124.9,168.1 140.8,168.1 156.8,168.1 172.7,168.1 188.7,168.1 204.6,168.1 220.5,168.1 236.5,168.1 252.4,168.1 268.3,168.1 284.3,168.1 300.2,168.1 316.2,168.1 332.1,168.1 348.0,168.1 364.0,168.1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="45.2,45.6 61.1,203.3 77.1,234.8 93.0,237.7 109.0,237.9 124.9,237.9 140.8,237.9 156.8,237.9 172.7,237.9 188.7,237.9 204.6,237.9 220.5,237.9 236.5,237.9 252.4,237.9 268.3,237.9 284.3,237.9 300.2,237.9 316.2,237.9 332.1,237.9 348.0,237.9 364.0,237.9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="369.98" y="157.37" font-size="10.5">seed 1</text>
+<text class="t" x="369.98" y="169.37" font-size="10.5">seed 3</text>
+<text class="t" x="369.98" y="181.37" font-size="10.5">seed 2</text>
+<text class="t" x="369.98" y="193.37" font-size="10.5">seed 4</text>
+<text class="ta" x="369.98" y="241.45" font-size="10.5">seed 0</text>
+<text class="tm mono" x="494" y="253.5" font-size="10.5" text-anchor="end">0.04</text>
+<line class="m" x1="500" y1="177.3" x2="620" y2="177.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="494" y="180.83" font-size="10.5" text-anchor="end">0.05</text>
+<line class="m" x1="500" y1="104.7" x2="620" y2="104.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="494" y="108.17" font-size="10.5" text-anchor="end">0.06</text>
+<text class="tm mono" x="494" y="35.5" font-size="10.5" text-anchor="end">0.07</text>
+<text class="tm" x="494" y="18" font-size="11.5">test loss</text>
+<line class="m" x1="500" y1="32" x2="500" y2="250" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a af" x="526" y="98.26" width="20" height="97.06" rx="2" stroke-width="1.5"/>
+<line class="a" x1="520" y1="146.79" x2="552" y2="146.79" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="536" cy="71.79" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="558" y="75.79" font-size="10.5">seed 1  0.0645</text>
+<circle class="s f" cx="536" cy="138" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="558" y="142" font-size="10.5">seed 3  0.0554</text>
+<circle class="s f" cx="536" cy="146.22" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="558" y="155" font-size="10.5">seed 4  0.0543</text>
+<circle class="a fa" cx="536" cy="180.03" r="3.5" stroke-width="1.5"/>
+<text class="ta mono" x="558" y="184.03" font-size="10.5">seed 0  0.0496</text>
+<circle class="s f" cx="536" cy="197.9" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="558" y="201.9" font-size="10.5">seed 2  0.0472</text>
+<text class="ta mono" x="568" y="272" font-size="11" font-weight="600" text-anchor="middle">mean 0.0542</text>
+<text class="tm mono" x="568" y="288" font-size="10.5" text-anchor="middle">band: +- sd 0.00668</text>
+</svg>
