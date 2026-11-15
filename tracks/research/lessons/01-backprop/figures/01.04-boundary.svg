@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 276" fill="none">
+<title>Seed 0&#x27;s fifty training points and where each model, trained, puts the line between the groups</title>
+<defs><marker id="boundary0104-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="boundary0104-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="boundary0104-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="m" x="8" y="40" width="296" height="196" rx="0" stroke-width="1.5"/>
+<text class="t" x="8" y="18" font-size="12" font-weight="600">no hidden layer: MLP(2, [1])</text>
+<text class="tm" x="8" y="33" font-size="10.5">44 of 50 training points on the right side</text>
+<path class="a" d="M11.9 202.8L8.0 204.2 M13.8 202.1L11.9 202.8 M13.8 202.1L15.8 201.3 M19.7 199.9L15.8 201.3 M23.6 198.5L19.7 199.9 M24.1 198.3L23.6 198.5 M24.1 198.3L27.5 197.1 M31.4 195.6L27.5 197.1 M34.3 194.5L31.4 195.6 M34.3 194.5L35.3 194.2 M39.2 192.8L35.3 194.2 M43.1 191.3L39.2 192.8 M44.6 190.8L43.1 191.3 M44.6 190.8L46.9 189.9 M50.8 188.5L46.9 189.9 M54.7 187.1L50.8 188.5 M54.9 187.0L54.7 187.1 M54.9 187.0L58.6 185.6 M62.5 184.2L58.6 185.6 M65.2 183.2L62.5 184.2 M65.2 183.2L66.4 182.8 M70.3 181.3L66.4 182.8 M74.2 179.9L70.3 181.3 M75.4 179.5L74.2 179.9 M75.4 179.5L78.1 178.5 M82.0 177.0L78.1 178.5 M85.7 175.7L82.0 177.0 M85.7 175.7L85.9 175.6 M89.8 174.2L85.9 175.6 M93.7 172.8L89.8 174.2 M96.0 171.9L93.7 172.8 M96.0 171.9L97.6 171.3 M101.5 169.9L97.6 171.3 M105.4 168.5L101.5 169.9 M106.2 168.2L105.4 168.5 M106.2 168.2L109.3 167.0 M113.2 165.6L109.3 167.0 M116.5 164.4L113.2 165.6 M116.5 164.4L117.1 164.2 M120.9 162.8L117.1 164.2 M124.8 161.3L120.9 162.8 M126.8 160.6L124.8 161.3 M126.8 160.6L128.7 159.9 M132.6 158.5L128.7 159.9 M136.5 157.0L132.6 158.5 M137.1 156.8L136.5 157.0 M137.1 156.8L140.4 155.6 M144.3 154.2L140.4 155.6 M147.3 153.1L144.3 154.2 M147.3 153.1L148.2 152.8 M152.1 151.3L148.2 152.8 M156.0 149.9L152.1 151.3 M157.6 149.3L156.0 149.9 M157.6 149.3L159.9 148.5 M163.8 147.0L159.9 148.5 M167.7 145.6L163.8 147.0 M167.9 145.5L167.7 145.6 M167.9 145.5L171.6 144.2 M175.5 142.8L171.6 144.2 M178.2 141.8L175.5 142.8 M178.2 141.8L179.4 141.3 M183.3 139.9L179.4 141.3 M187.2 138.5L183.3 139.9 M188.4 138.0L187.2 138.5 M188.4 138.0L191.1 137.0 M194.9 135.6L191.1 137.0 M198.7 134.2L194.9 135.6 M198.7 134.2L198.8 134.2 M202.7 132.8L198.8 134.2 M206.6 131.3L202.7 132.8 M209.0 130.5L206.6 131.3 M209.0 130.5L210.5 129.9 M214.4 128.5L210.5 129.9 M218.3 127.0L214.4 128.5 M219.3 126.7L218.3 127.0 M219.3 126.7L222.2 125.6 M226.1 124.2L222.2 125.6 M229.5 122.9L226.1 124.2 M229.5 122.9L230.0 122.7 M233.9 121.3L230.0 122.7 M237.8 119.9L233.9 121.3 M239.8 119.2L237.8 119.9 M239.8 119.2L241.7 118.5 M245.6 117.0L241.7 118.5 M249.5 115.6L245.6 117.0 M250.1 115.4L249.5 115.6 M250.1 115.4L253.4 114.2 M257.3 112.7L253.4 114.2 M260.3 111.6L257.3 112.7 M260.3 111.6L261.2 111.3 M265.1 109.9L261.2 111.3 M268.9 108.5L265.1 109.9 M270.6 107.8L268.9 108.5 M270.6 107.8L272.8 107.0 M276.7 105.6L272.8 107.0 M280.6 104.2L276.7 105.6 M280.9 104.1L280.6 104.2 M280.9 104.1L284.5 102.7 M288.4 101.3L284.5 102.7 M291.2 100.3L288.4 101.3 M291.2 100.3L292.3 99.9 M296.2 98.5L292.3 99.9 M300.1 97.0L296.2 98.5 M301.4 96.5L300.1 97.0 M301.4 96.5L304.0 95.6" stroke-width="2" stroke-linecap="round"/>
+<circle class="s f" cx="68.19" cy="105.94" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="104.94" cy="143.41" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="79.22" cy="88.03" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="198.19" cy="151.46" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="189.36" cy="145.63" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="202.76" cy="164.62" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="83.56" cy="97.56" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="192.4" cy="142.05" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="138.95" cy="169.38" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="192.07" cy="208.99" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="38.67" cy="149.03" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="45.71" cy="161.96" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="184.27" cy="147.96" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="65.99" cy="88.92" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="96.98" cy="81.12" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="279.5" cy="137.11" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="129.37" cy="159.68" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="129.91" cy="74.71" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="167.72" cy="192.24" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="255.95" cy="175.31" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="270.91" cy="145.2" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="207.72" cy="189.29" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="271.56" cy="131.68" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="87.34" cy="101.21" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="78.98" cy="100.69" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="185.71" cy="137.47" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="156.39" cy="176.84" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="167.42" cy="89.91" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="256.06" cy="152.61" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="118.74" cy="75.98" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="150.51" cy="184.72" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="157.35" cy="178.94" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="42.96" cy="123.87" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="232.27" cy="181.18" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="52.24" cy="114.24" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="267.14" cy="154.37" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="204.18" cy="194.39" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="226.83" cy="195.44" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="171.03" cy="185.87" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="43.3" cy="137.43" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="168.57" cy="99.15" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="61.04" cy="137.92" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="217.58" cy="187.17" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="212.88" cy="187.13" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="260.09" cy="136.48" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="167.9" cy="180.07" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="184.85" cy="125.87" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="156.87" cy="198.67" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="104.99" cy="93.16" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="233.89" cy="184.65" r="3.2" stroke-width="1.5"/>
+<rect class="m" x="336" y="40" width="296" height="196" rx="0" stroke-width="1.5"/>
+<text class="ta" x="336" y="18" font-size="12" font-weight="600">two hidden layers: MLP(2, [8, 8, 1])</text>
+<text class="tm" x="336" y="33" font-size="10.5">50 of 50 training points on the right side</text>
+<path class="a" d="M339.9 181.0L336.0 181.9 M343.8 180.2L339.9 181.0 M346.9 179.5L343.8 180.2 M346.9 179.5L347.7 179.3 M351.6 178.4L347.7 179.3 M355.5 177.5L351.6 178.4 M359.4 176.7L355.5 177.5 M363.3 175.8L359.4 176.7 M363.6 175.7L363.3 175.8 M363.6 175.7L367.2 174.8 M371.1 173.7L367.2 174.8 M374.9 172.7L371.1 173.7 M377.7 171.9L374.9 172.7 M515.2 172.8L511.7 171.9 M519.1 173.6L515.2 172.8 M522.9 174.3L519.1 173.6 M526.8 174.6L522.9 174.3 M530.7 175.0L526.8 174.6 M534.6 175.2L530.7 175.0 M538.5 174.3L534.6 175.2 M541.8 171.9L538.5 174.3 M377.7 171.9L378.8 171.6 M382.7 170.5L378.8 171.6 M386.6 169.2L382.7 170.5 M389.1 168.2L386.6 169.2 M503.5 169.2L501.3 168.2 M507.4 170.7L503.5 169.2 M511.3 171.8L507.4 170.7 M511.7 171.9L511.3 171.8 M541.8 171.9L542.4 171.4 M546.2 168.2L542.4 171.4 M389.1 168.2L390.5 167.4 M394.4 165.3L390.5 167.4 M396.1 164.4L394.4 165.3 M495.7 164.9L494.7 164.4 M499.6 167.2L495.7 164.9 M501.3 168.2L499.6 167.2 M546.2 168.2L546.3 168.1 M550.2 164.7L546.3 168.1 M550.6 164.4L550.2 164.7 M396.1 164.4L398.3 162.9 M401.7 160.6L398.3 162.9 M491.8 162.4L489.1 160.6 M494.7 164.4L491.8 162.4 M550.6 164.4L554.1 160.8 M554.3 160.6L554.1 160.8 M401.7 160.6L402.2 160.1 M405.8 156.8L402.2 160.1 M487.9 159.3L485.5 156.8 M489.1 160.6L487.9 159.3 M554.3 160.6L555.8 156.8 M405.8 156.8L406.1 156.6 M410.0 153.1L406.1 156.6 M484.0 155.3L481.8 153.1 M485.5 156.8L484.0 155.3 M555.8 156.8L557.2 153.1 M410.0 153.1L410.0 153.0 M413.9 149.5L410.0 153.0 M414.1 149.3L413.9 149.5 M480.1 151.4L478.0 149.3 M481.8 153.1L480.1 151.4 M557.2 153.1L558.0 151.1 M558.7 149.3L558.0 151.1 M414.1 149.3L417.8 146.0 M418.2 145.5L417.8 146.0 M476.2 147.6L474.2 145.5 M478.0 149.3L476.2 147.6 M558.7 149.3L560.2 145.5 M418.2 145.5L421.7 142.4 M422.4 141.8L421.7 142.4 M472.3 143.7L470.4 141.8 M474.2 145.5L472.3 143.7 M560.2 145.5L561.7 141.8 M422.4 141.8L425.6 138.9 M426.5 138.0L425.6 138.9 M468.4 139.8L466.6 138.0 M470.4 141.8L468.4 139.8 M561.7 141.8L561.9 141.1 M563.1 138.0L561.9 141.1 M426.5 138.0L429.5 135.3 M430.7 134.2L429.5 135.3 M464.5 135.9L462.9 134.2 M466.6 138.0L464.5 135.9 M563.1 138.0L564.6 134.2 M430.7 134.2L433.4 131.8 M434.8 130.5L433.4 131.8 M460.6 131.6L459.5 130.5 M462.9 134.2L460.6 131.6 M564.6 134.2L565.8 131.2 M566.1 130.5L565.8 131.2 M434.8 130.5L437.3 128.2 M439.2 126.7L437.3 128.2 M456.7 126.9L456.3 126.7 M459.5 130.5L456.7 126.9 M566.1 130.5L567.5 126.7 M439.2 126.7L441.2 125.0 M444.7 122.9L441.2 125.0 M448.9 123.7L446.0 122.9 M452.8 125.0L448.9 123.7 M456.3 126.7L452.8 125.0 M567.5 126.7L569.0 122.9 M444.7 122.9L445.1 122.7 M446.0 122.9L445.1 122.7 M569.0 122.9L569.7 121.2 M570.5 119.2L569.7 121.2 M570.5 119.2L571.9 115.4 M571.9 115.4L573.4 111.6 M573.4 111.6L573.6 111.2 M574.9 107.8L573.6 111.2 M574.9 107.8L576.3 104.1 M576.3 104.1L577.5 100.6 M577.6 100.3L577.5 100.6 M577.6 100.3L578.9 96.5 M578.9 96.5L580.2 92.8 M580.2 92.8L581.4 89.4 M581.5 89.0L581.4 89.4 M581.5 89.0L582.0 85.2 M582.0 85.2L582.2 81.5 M582.2 81.5L582.4 77.7 M582.4 77.7L582.5 73.9 M582.5 73.9L582.7 70.2 M582.7 70.2L582.9 66.4 M582.9 66.4L583.0 62.6 M583.0 62.6L583.2 58.8 M583.2 58.8L583.4 55.1 M583.4 55.1L583.4 51.3 M583.4 51.3L583.2 47.5 M583.2 47.5L583.0 43.8 M583.0 43.8L582.3 40.0" stroke-width="2" stroke-linecap="round"/>
+<circle class="s f" cx="396.19" cy="105.94" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="432.94" cy="143.41" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="407.22" cy="88.03" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="526.19" cy="151.46" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="517.36" cy="145.63" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="530.76" cy="164.62" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="411.56" cy="97.56" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="520.4" cy="142.05" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="466.95" cy="169.38" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="520.07" cy="208.99" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="366.67" cy="149.03" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="373.71" cy="161.96" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="512.27" cy="147.96" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="393.99" cy="88.92" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="424.98" cy="81.12" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="607.5" cy="137.11" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="457.37" cy="159.68" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="457.91" cy="74.71" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="495.72" cy="192.24" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="583.95" cy="175.31" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="598.91" cy="145.2" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="535.72" cy="189.29" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="599.56" cy="131.68" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="415.34" cy="101.21" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="406.98" cy="100.69" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="513.71" cy="137.47" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="484.39" cy="176.84" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="495.42" cy="89.91" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="584.06" cy="152.61" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="446.74" cy="75.98" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="478.51" cy="184.72" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="485.35" cy="178.94" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="370.96" cy="123.87" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="560.27" cy="181.18" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="380.24" cy="114.24" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="595.14" cy="154.37" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="532.18" cy="194.39" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="554.83" cy="195.44" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="499.03" cy="185.87" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="371.3" cy="137.43" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="496.57" cy="99.15" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="389.04" cy="137.92" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="545.58" cy="187.17" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="540.88" cy="187.13" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="588.09" cy="136.48" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="495.9" cy="180.07" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="512.85" cy="125.87" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="484.87" cy="198.67" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="432.99" cy="93.16" r="3.2" stroke-width="1.5"/>
+<circle class="s fa" cx="561.89" cy="184.65" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="14" cy="258" r="3.2" stroke-width="1.5"/>
+<text class="t" x="24" y="262" font-size="11">group 0</text>
+<circle class="s fa" cx="90" cy="258" r="3.2" stroke-width="1.5"/>
+<text class="t" x="100" y="262" font-size="11">group 1</text>
+<line class="a" x1="170" y1="258" x2="192" y2="258" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="198" y="262" font-size="11">score = 0: above it on one side, below on the other</text>
+</svg>

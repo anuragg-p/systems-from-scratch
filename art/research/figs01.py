@@ -409,7 +409,7 @@ def boundary0104():
              re.search(r"^seed 0: .*accuracy \S+ -> (\S+),", r.out, re.M).group(1))
         panels.append((x, y, model, acc, title))
     f = Fig("boundary0104", "Seed 0's fifty training points and where each model, trained, puts the line "
-                            "between the groups", 300)
+                            "between the groups", 276)
     xlim, ylim = (-1.4, 2.4), (-1.0, 1.6)
     w, h = 296, 196
     for k, (x, y, model, acc, title) in enumerate(panels):
@@ -443,8 +443,9 @@ def loss0104():
     for r, label, style, dash in ((line, "no hidden layer", "s", "5 4"), (deep, "two hidden layers of 8", "a", False)):
         xs, mean, lo, hi = figart.over_seeds(figart.seed_dirs(r.runs), "loss")
         series.append(figart.Series(label + " (3 seeds)", xs, mean, style, dash, lo, hi))
-    figart.plot(f, (8, 8, 624, 286), series, xlabel="step", ylabel="hinge loss on the 50 training points (log scale)",
-                logy=True, legend="top")
+    ax = figart.plot(f, (8, 8, 624, 286), series, xlabel="step",
+                     ylabel="hinge loss on the 50 training points (log scale)", logy=True, legend=None)
+    figart.legend(f, ax.x + 14, ax.y + ax.h - 30, [(s.label, s.style, s.dash) for s in series])
     return f
 
 
