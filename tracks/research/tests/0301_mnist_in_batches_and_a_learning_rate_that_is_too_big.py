@@ -3,7 +3,7 @@
 MNIST is read from its IDX files with the right shapes, labels and scale; batches cover the data
 once each pass, in a new order; SGD's steps on a real network and real batches are PyTorch's
 (1e-6, float64); and one pass at a good rate gets more than 93% of the test set right on either
-engine, while a rate of 2 leaves the network guessing.
+engine, while a rate of 2 leaves the network guessing, most of its hidden units dead.
 """
 
 
@@ -13,9 +13,10 @@ def test(t):
     T.inside(t, __file__)
     ours = T.experiment(t, "mnist_lr", "lrs=[0.1, 2.0]", "seeds=2")
     for s in T.summaries(ours, "lr0.1"):
-        t.check(s["test_accuracy"] > 0.93, f"lr 0.1, one pass: {s}")
+        t.check(s["test_accuracy"] > 0.93 and s["dead_units"] < 10, f"lr 0.1, one pass: {s}")
     for s in T.summaries(ours, "lr2"):
         t.check(s["train_loss"] > 1.5 and s["test_accuracy"] < 0.5, f"lr 2 should leave the network guessing: {s}")
+        t.check(s["dead_units"] > 50, f"lr 2 should leave most of the 100 hidden units dead: {s}")
     theirs = T.on_torch(t, "mnist_lr", "lrs=[0.1]", "seeds=1")
     a, b = T.summaries(ours, "lr0.1")[0], T.summaries(theirs, "lr0.1")[0]
     t.check(b["test_accuracy"] > 0.93 and abs(a["test_accuracy"] - b["test_accuracy"]) < 0.015,
