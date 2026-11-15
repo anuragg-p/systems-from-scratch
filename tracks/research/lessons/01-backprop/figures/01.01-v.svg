@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>How far the nudge lands from the derivative 4.75, against the size of the nudge h</title>
+<defs><marker id="v0101-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="v0101-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="v0101-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="51.5" y1="265.5" x2="622" y2="265.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="45.5" y="269.02" font-size="10.5" text-anchor="end">1e-10</text>
+<line class="m" x1="51.5" y1="220.6" x2="622" y2="220.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="45.5" y="224.06" font-size="10.5" text-anchor="end">1e-8</text>
+<line class="m" x1="51.5" y1="175.6" x2="622" y2="175.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="45.5" y="179.1" font-size="10.5" text-anchor="end">1e-6</text>
+<line class="m" x1="51.5" y1="130.6" x2="622" y2="130.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="45.5" y="134.14" font-size="10.5" text-anchor="end">1e-4</text>
+<line class="m" x1="51.5" y1="85.7" x2="622" y2="85.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="45.5" y="89.18" font-size="10.5" text-anchor="end">0.01</text>
+<line class="m" x1="51.5" y1="40.7" x2="622" y2="40.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="45.5" y="44.23" font-size="10.5" text-anchor="end">1</text>
+<line class="m" x1="51.5" y1="288" x2="51.5" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="51.5" y="304" font-size="10.5" text-anchor="middle">1e-13</text>
+<line class="m" x1="99.04" y1="288" x2="99.04" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="99.04" y="304" font-size="10.5" text-anchor="middle">1e-12</text>
+<line class="m" x1="146.58" y1="288" x2="146.58" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="146.58" y="304" font-size="10.5" text-anchor="middle">1e-11</text>
+<line class="m" x1="194.12" y1="288" x2="194.12" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="194.12" y="304" font-size="10.5" text-anchor="middle">1e-10</text>
+<line class="m" x1="241.67" y1="288" x2="241.67" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="241.67" y="304" font-size="10.5" text-anchor="middle">1e-9</text>
+<line class="m" x1="289.21" y1="288" x2="289.21" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="289.21" y="304" font-size="10.5" text-anchor="middle">1e-8</text>
+<line class="m" x1="336.75" y1="288" x2="336.75" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="336.75" y="304" font-size="10.5" text-anchor="middle">1e-7</text>
+<line class="m" x1="384.29" y1="288" x2="384.29" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="384.29" y="304" font-size="10.5" text-anchor="middle">1e-6</text>
+<line class="m" x1="431.83" y1="288" x2="431.83" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="431.83" y="304" font-size="10.5" text-anchor="middle">1e-5</text>
+<line class="m" x1="479.38" y1="288" x2="479.38" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="479.38" y="304" font-size="10.5" text-anchor="middle">1e-4</text>
+<line class="m" x1="526.92" y1="288" x2="526.92" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="526.92" y="304" font-size="10.5" text-anchor="middle">0.001</text>
+<line class="m" x1="574.46" y1="288" x2="574.46" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="574.46" y="304" font-size="10.5" text-anchor="middle">0.01</text>
+<line class="m" x1="622" y1="288" x2="622" y2="292" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="622" y="304" font-size="10.5" text-anchor="middle">0.1</text>
+<rect class="m" x="51.5" y="30" width="570.5" height="258" rx="0" stroke-width="1.5"/>
+<text class="tm" x="336.75" y="320" font-size="11.5" text-anchor="middle">the nudge h (log scale)</text>
+<text class="tm" x="45.5" y="22" font-size="11.5">how far the estimate is from 4.75 (log scale)</text>
+<polyline class="s" points="51.5,98.5 99.0,116.6 146.6,145.2 194.1,184.7 241.7,184.7 289.2,207.6 336.8,183.4 384.3,160.9 431.8,138.4 479.4,116.0 526.9,93.5 574.5,71.0 622.0,48.3" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 4"/>
+<polyline class="a" points="51.5,98.5 99.0,116.6 146.6,145.2 194.1,184.7 241.7,184.7 289.2,210.2 336.8,235.3 384.3,250.9 431.8,262.9 479.4,220.6 526.9,175.6 574.5,130.6 622.0,85.7" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="568.46" y="59.2" font-size="11" text-anchor="end">one-sided</text>
+<text class="ta" x="582.46" y="134.64" font-size="11" font-weight="600">central</text>
+<line class="a" x1="431.83" y1="30" x2="431.83" y2="288" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="ta" x="436.83" y="282" font-size="10.5">closest: h = 1e-5</text>
+<line class="m" x1="384.29" y1="30" x2="384.29" y2="288" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="379.29" y="44" font-size="10.5" text-anchor="end">derivative()&#x27;s default, 1e-6</text>
+<text class="tm" x="146.58" y="243.04" font-size="10.5" text-anchor="middle">too small: the digits of</text>
+<text class="tm" x="146.58" y="257.04" font-size="10.5" text-anchor="middle">f(x+h) - f(x-h) cancel</text>
+<text class="tm" x="526.92" y="243.04" font-size="10.5" text-anchor="middle">too big: a chord,</text>
+<text class="tm" x="526.92" y="257.04" font-size="10.5" text-anchor="middle">not the tangent</text>
+</svg>
