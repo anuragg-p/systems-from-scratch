@@ -128,6 +128,14 @@ def run_argv(root, args=()):
     return [sys.executable, "-B", "-m", f"experiments.{name}"] + list(args[1:])
 
 
+# Without a prompt, seconds of quiet that mean "done". An experiment prints nothing while a seed
+# trains: the longest quiet stretch of a run on any page is about 19 s on the machine in NOTES.md
+# (03.03's adam, with three other runs going), and no Run it may take over 60 s (plans/research.md,
+# Decisions: Time), so no stretch can either. Every run ends at the shell's prompt, which ends the
+# wait at once, so the long settle costs nothing when a run finishes.
+VERIFY_SETTLE = 60.0
+
+
 def verify_tools():
     """What replaying a lesson needs: python3 with numpy. (MNIST, from 03.01 on, is a download, not a
     tool: see NOTES.md.)"""
