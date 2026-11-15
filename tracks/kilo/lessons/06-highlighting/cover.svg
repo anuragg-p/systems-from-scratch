@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Two rows of C: each character&#x27;s class in hl beside render, the colour of each class, and the escape codes the rows go to the terminal with</title>
+<defs><marker id="k06-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="k06-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">n.c as kilo holds it: under each character of a row&#x27;s render, its class in hl</text>
+<text class="t" x="24" y="49" font-size="12" font-weight="600">row 0</text>
+<text class="tm mono" x="108" y="49" font-size="10.5" text-anchor="end">render</text>
+<text class="tm mono" x="108" y="72" font-size="10.5" text-anchor="end">hl</text>
+<rect class="m f" x="116" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="127" y="49" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">i</tspan></text>
+<text class="t mono" x="127" y="72" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">5</tspan></text>
+<rect class="m f" x="140" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="151" y="49" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">n</tspan></text>
+<text class="t mono" x="151" y="72" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">5</tspan></text>
+<rect class="m f" x="164" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="175" y="49" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">t</tspan></text>
+<text class="t mono" x="175" y="72" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">5</tspan></text>
+<rect class="m f" x="188" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<path class="m" d="M196.5 46.5 L196.5 49 L201.5 49 L201.5 46.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="199" y="72" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m f" x="212" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="223" y="49" font-size="13" font-weight="600" text-anchor="middle">n</text>
+<text class="tm mono" x="223" y="72" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m f" x="236" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<path class="m" d="M244.5 46.5 L244.5 49 L249.5 49 L249.5 46.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="247" y="72" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m f" x="260" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="271" y="49" font-size="13" font-weight="600" text-anchor="middle">=</text>
+<text class="tm mono" x="271" y="72" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m f" x="284" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<path class="m" d="M292.5 46.5 L292.5 49 L297.5 49 L297.5 46.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="295" y="72" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m f" x="308" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="319" y="49" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#e03e3e">4</tspan></text>
+<text class="t mono" x="319" y="72" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#e03e3e">7</tspan></text>
+<rect class="m f" x="332" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="343" y="49" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#e03e3e">2</tspan></text>
+<text class="t mono" x="343" y="72" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#e03e3e">7</tspan></text>
+<rect class="m f" x="356" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="367" y="49" font-size="13" font-weight="600" text-anchor="middle">;</text>
+<text class="tm mono" x="367" y="72" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m f" x="380" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<path class="m" d="M388.5 46.5 L388.5 49 L393.5 49 L393.5 46.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="391" y="72" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m af" x="404" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="415" y="49" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#13899a">/</tspan></text>
+<text class="t mono" x="415" y="72" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#13899a">3</tspan></text>
+<rect class="m af" x="428" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="439" y="49" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#13899a">*</tspan></text>
+<text class="t mono" x="439" y="72" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#13899a">3</tspan></text>
+<rect class="m af" x="452" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<path class="m" d="M460.5 46.5 L460.5 49 L465.5 49 L465.5 46.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="463" y="72" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#13899a">3</tspan></text>
+<rect class="m af" x="476" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="487" y="49" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#13899a">w</tspan></text>
+<text class="t mono" x="487" y="72" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#13899a">3</tspan></text>
+<rect class="m af" x="500" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="511" y="49" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#13899a">a</tspan></text>
+<text class="t mono" x="511" y="72" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#13899a">3</tspan></text>
+<rect class="m af" x="524" y="32" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="535" y="49" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#13899a">s</tspan></text>
+<text class="t mono" x="535" y="72" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#13899a">3</tspan></text>
+<text class="ta mono" x="558" y="72" font-size="11" font-weight="600">hl_oc 1</text>
+<text class="t" x="24" y="103" font-size="12" font-weight="600">row 1</text>
+<text class="tm mono" x="108" y="103" font-size="10.5" text-anchor="end">render</text>
+<text class="tm mono" x="108" y="126" font-size="10.5" text-anchor="end">hl</text>
+<rect class="m f" x="116" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<path class="m" d="M124.5 100.5 L124.5 103 L129.5 103 L129.5 100.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="127" y="126" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m f" x="140" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<path class="m" d="M148.5 100.5 L148.5 103 L153.5 103 L153.5 100.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="151" y="126" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m f" x="164" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<path class="m" d="M172.5 100.5 L172.5 103 L177.5 103 L177.5 100.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="175" y="126" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m af" x="188" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="199" y="103" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#13899a">4</tspan></text>
+<text class="t mono" x="199" y="126" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#13899a">3</tspan></text>
+<rect class="m af" x="212" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="223" y="103" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#13899a">1</tspan></text>
+<text class="t mono" x="223" y="126" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#13899a">3</tspan></text>
+<rect class="m af" x="236" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<path class="m" d="M244.5 100.5 L244.5 103 L249.5 103 L249.5 100.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="247" y="126" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#13899a">3</tspan></text>
+<rect class="m af" x="260" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="271" y="103" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#13899a">*</tspan></text>
+<text class="t mono" x="271" y="126" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#13899a">3</tspan></text>
+<rect class="m af" x="284" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="295" y="103" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#13899a">/</tspan></text>
+<text class="t mono" x="295" y="126" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#13899a">3</tspan></text>
+<rect class="m f" x="308" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<path class="m" d="M316.5 100.5 L316.5 103 L321.5 103 L321.5 100.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="319" y="126" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m f" x="332" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="343" y="103" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">c</tspan></text>
+<text class="t mono" x="343" y="126" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">5</tspan></text>
+<rect class="m f" x="356" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="367" y="103" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">h</tspan></text>
+<text class="t mono" x="367" y="126" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">5</tspan></text>
+<rect class="m f" x="380" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="391" y="103" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">a</tspan></text>
+<text class="t mono" x="391" y="126" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">5</tspan></text>
+<rect class="m f" x="404" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="415" y="103" font-size="13" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">r</tspan></text>
+<text class="t mono" x="415" y="126" font-size="11.5" font-weight="600" text-anchor="middle"><tspan fill="#2f8a3c">5</tspan></text>
+<rect class="m f" x="428" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<path class="m" d="M436.5 100.5 L436.5 103 L441.5 103 L441.5 100.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="439" y="126" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m f" x="452" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="463" y="103" font-size="13" font-weight="600" text-anchor="middle">c</text>
+<text class="tm mono" x="463" y="126" font-size="11.5" text-anchor="middle">0</text>
+<rect class="m f" x="476" y="86" width="22" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="487" y="103" font-size="13" font-weight="600" text-anchor="middle">;</text>
+<text class="tm mono" x="487" y="126" font-size="11.5" text-anchor="middle">0</text>
+<text class="tm mono" x="558" y="126" font-size="11">hl_oc 0</text>
+<text class="tm" x="24" y="152" font-size="11">what kilo writes for them: a colour code only where the colour changes</text>
+<text class="ta mono" x="24" y="172" font-size="10.5">ESC[32m</text>
+<text class="t mono" x="72.1" y="172" font-size="10.5"><tspan fill="#2f8a3c">int</tspan></text>
+<text class="ta mono" x="95" y="172" font-size="10.5">ESC[39m</text>
+<path class="m" d="M144.23 169.5 L144.23 172 L148.27 172 L148.27 169.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="149.4" y="172" font-size="10.5">n</text>
+<path class="m" d="M156.83 169.5 L156.83 172 L160.87 172 L160.87 169.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="162" y="172" font-size="10.5">=</text>
+<path class="m" d="M169.43 169.5 L169.43 172 L173.47 172 L173.47 169.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="178.6" y="172" font-size="10.5">ESC[31m</text>
+<text class="t mono" x="226.7" y="172" font-size="10.5"><tspan fill="#e03e3e">42</tspan></text>
+<text class="ta mono" x="243.3" y="172" font-size="10.5">ESC[39m</text>
+<text class="t mono" x="291.4" y="172" font-size="10.5">;</text>
+<path class="m" d="M298.83 169.5 L298.83 172 L302.87 172 L302.87 169.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="308" y="172" font-size="10.5">ESC[36m</text>
+<text class="t mono" x="356.1" y="172" font-size="10.5"><tspan fill="#13899a">/*</tspan></text>
+<path class="m" d="M369.83 169.5 L369.83 172 L373.87 172 L373.87 169.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="375" y="172" font-size="10.5"><tspan fill="#13899a">was</tspan></text>
+<text class="ta mono" x="397.9" y="172" font-size="10.5">ESC[39m</text>
+<text class="ta mono" x="446" y="172" font-size="10.5">ESC[0K</text>
+<text class="tm mono" x="487.8" y="172" font-size="10.5">\r\n</text>
+<path class="m" d="M25.13 189.5 L25.13 192 L29.17 192 L29.17 189.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M31.43 189.5 L31.43 192 L35.47 192 L35.47 189.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M37.73 189.5 L37.73 192 L41.77 192 L41.77 189.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="46.9" y="192" font-size="10.5">ESC[36m</text>
+<text class="t mono" x="95" y="192" font-size="10.5"><tspan fill="#13899a">41</tspan></text>
+<path class="m" d="M108.73 189.5 L108.73 192 L112.77 192 L112.77 189.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="113.9" y="192" font-size="10.5"><tspan fill="#13899a">*/</tspan></text>
+<text class="ta mono" x="130.5" y="192" font-size="10.5">ESC[39m</text>
+<path class="m" d="M179.73 189.5 L179.73 192 L183.77 192 L183.77 189.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="188.9" y="192" font-size="10.5">ESC[32m</text>
+<text class="t mono" x="237" y="192" font-size="10.5"><tspan fill="#2f8a3c">char</tspan></text>
+<text class="ta mono" x="266.2" y="192" font-size="10.5">ESC[39m</text>
+<path class="m" d="M315.43 189.5 L315.43 192 L319.47 192 L319.47 189.5" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="320.6" y="192" font-size="10.5">c;</text>
+<text class="ta mono" x="337.2" y="192" font-size="10.5">ESC[0K</text>
+<text class="tm mono" x="379" y="192" font-size="10.5">\r\n</text>
+<text class="tm" x="24" y="222" font-size="11">editorSyntaxToColor(): each class&#x27;s colour, the n of ESC[n m</text>
+<text class="tm mono" x="24" y="243" font-size="13" font-weight="700">0</text>
+<text class="t mono" x="38" y="242" font-size="10.5">HL_NORMAL</text>
+<text class="ta mono" x="38" y="259" font-size="10.5">ESC[39m</text>
+<text class="tm" x="88.1" y="259" font-size="11">the default</text>
+<text class="t mono" x="174" y="243" font-size="13" font-weight="700"><tspan fill="#13899a">3</tspan></text>
+<text class="t mono" x="188" y="242" font-size="10.5">HL_MLCOMMENT</text>
+<text class="ta mono" x="188" y="259" font-size="10.5">ESC[36m</text>
+<text class="t" x="238.1" y="259" font-size="11" font-weight="600"><tspan fill="#13899a">cyan</tspan></text>
+<text class="t mono" x="324" y="243" font-size="13" font-weight="700"><tspan fill="#2f8a3c">5</tspan></text>
+<text class="t mono" x="338" y="242" font-size="10.5">HL_KEYWORD2</text>
+<text class="ta mono" x="338" y="259" font-size="10.5">ESC[32m</text>
+<text class="t" x="388.1" y="259" font-size="11" font-weight="600"><tspan fill="#2f8a3c">green</tspan></text>
+<text class="t mono" x="474" y="243" font-size="13" font-weight="700"><tspan fill="#e03e3e">7</tspan></text>
+<text class="t mono" x="488" y="242" font-size="10.5">HL_NUMBER</text>
+<text class="ta mono" x="488" y="259" font-size="10.5">ESC[31m</text>
+<text class="t" x="538.1" y="259" font-size="11" font-weight="600"><tspan fill="#e03e3e">red</tspan></text>
+<text class="tm" x="24" y="288" font-size="11.5">Row 0 ends inside the comment (hl_oc 1), so row 1 begins in it: its 41 is 3 3, comment, not 7 7.</text>
+</svg>
