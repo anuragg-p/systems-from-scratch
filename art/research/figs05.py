@@ -9,6 +9,7 @@ settings the lesson's page runs, so the figure and the page agree:
          the three sets from the run's config.json and from MNIST itself
   05.02  python3 -m experiments.regularise        (3 seeds): validation and test error per seed;
          the dropout masks from F.dropout of the project at 05.02, after torch.manual_seed(0)
+         (the page's own run checks the expected value over a million numbers)
   05.03  python3 -m experiments.augment           (3 seeds): training and test error per seed;
          the shifted digit from data.augment.shift of the project at 05.03, on MNIST's first
          training image, with np.random.default_rng(0)
@@ -153,9 +154,7 @@ F = torch.nn.functional
 torch.manual_seed(0)
 x = torch.ones(1, 10)
 rows = [F.dropout(x, 0.5), F.dropout(x, 0.5), F.dropout(x, 0.2), F.dropout(x, 0.5, training=False)]
-big = F.dropout(torch.ones(1000, 1000), 0.5)
-print(json.dumps({"rows": [r.data[0].tolist() for r in rows], "big": float(big.mean().item()),
-                  "kept": float((big.data != 0).mean())}))
+print(json.dumps({"rows": [r.data[0].tolist() for r in rows]}))
 """
 
 
@@ -163,7 +162,7 @@ def dropout0502():
     d = in_project("05.02", DROP_CODE)
     rows = d["rows"]
     f = Fig("dropout0502", "F.dropout on a row of ten ones: in training each number is dropped with probability p "
-                           "and the rest are scaled by 1 / (1 - p); in eval mode it changes nothing", 330)
+                           "and the rest are scaled by 1 / (1 - p); in eval mode it changes nothing", 290)
     cell = (34, 24)
     x0 = 20
     specs = [("x", [1.0] * 10, None, "the input: ten ones"),
@@ -188,8 +187,6 @@ def dropout0502():
         else:
             f.text(tx, y + 16, f"mean of the row: {sig(mean, 3)}", "tm", 11)
         y += 58
-    f.text(x0, y - 4, f"Over a million ones, dropout(x, 0.5) keeps {d['kept']:.4f} of them, and their mean is "
-                      f"{d['big']:.4f}: the expected value is 1.", "t", 11.5)
     return f
 
 
@@ -277,7 +274,7 @@ def errors0503():
                           "and shifted anew every pass, three seeds each", 270)
     for i, (key, title) in enumerate((("test_error", "test error (%)"), ("train_error", "training error (%)"))):
         groups = [(name, seeds_of(r.runs, label, key), style) for label, name, style in ways]
-        chart(f, (10 + 315 * i, 8, 305, 256), groups, ylabel=title, ylim=(0, None) if i else None)
+        chart(f, (10 + 315 * i, 8, 305, 256), groups, ylabel=title, ylim=(-0.1, None) if i else None)
     return f
 
 
