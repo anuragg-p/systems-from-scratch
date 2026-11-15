@@ -291,18 +291,33 @@ def network0103():
     f = Fig("network0103", f"MLP(2, {sizes}) with seed 0 at the point {tuple(point)}: its weights, and the units "
                            f"whose relu is off there", 300)
     box = (8, 34, 430, 230)
-    xs = figart.network(f, box, full, max_units=5, here=(1, 2),
+    xs = figart.network(f, box, full, max_units=5, here=tuple(range(len(full))),
                         names=["the point", "layer 1", "layer 2", "output"])
-    # mark the units that are off: a dashed ring, and the units' x, y as network() places them
+    # where network() put each unit (its own arithmetic, for this box and five units at most)
     bh = box[3] - (16 + 14)
-    for li, flags in enumerate(off):
-        k = full[li + 1]
+    r = max(3.0, min(9.0, box[2] / len(full) * 0.22, bh / (5 * 2.6)))
+
+    def unit(col, j):
         gap = bh / 5
-        y0 = box[1] + bh / 2 - gap * (k - 1) / 2
+        return xs[col], box[1] + bh / 2 - gap * (full[col] - 1) / 2 + gap * j
+
+    # the connections whose weight got no gradient, drawn over in the muted colour
+    dead = 0
+    for li, layer in enumerate(model.layers):
+        for j, neuron in enumerate(layer.neurons):
+            for k, w in enumerate(neuron.w):
+                if w.grad == 0:
+                    (x1, y1), (x2, y2) = unit(li, k), unit(li + 1, j)
+                    f.line(x1 + r, y1, x2 - r, y2, "m")
+                    dead += 1
+            dead += neuron.b.grad == 0
+    same("01.03 seed 0 weights with no gradient, counted on the drawing", dead, zero)
+    # the units that are off: a dashed ring with the 0 they give
+    for li, flags in enumerate(off):
         for j, is_off in enumerate(flags):
             if is_off:
-                cx, cy = xs[li + 1], y0 + gap * j
-                f.add(f'<circle class="m f" cx="{cx:.1f}" cy="{cy:.1f}" r="9" stroke-width="1.5" stroke-dasharray="3 3"/>')
+                cx, cy = unit(li + 1, j)
+                f.add(f'<circle class="m f" cx="{cx:.1f}" cy="{cy:.1f}" r="{r:.1f}" stroke-width="1.5" stroke-dasharray="3 3"/>')
                 f.text(cx, cy + 3.5, "0", "tm", 10, "middle", mono=True)
     for i in range(len(full) - 1):
         nin, nout = full[i], full[i + 1]
@@ -324,9 +339,10 @@ def network0103():
     f.text(x0, 192, f"{' + '.join(str(full[i + 1] * (full[i] + 1)) for i in range(len(full) - 1))} = {total}",
            "ta", 13, weight=700, mono=True)
     f.text(x0, 210, "weights in all", "tm", 10.5)
-    f.text(x0, 240, f"{zero} of them get no gradient", "t", 11.5, weight=600)
-    f.text(x0, 256, "here: they sit behind a unit", "tm", 10.5)
-    f.text(x0, 270, "that is off", "tm", 10.5)
+    f.text(x0, 238, f"{zero} of them get no gradient", "t", 11.5, weight=600)
+    f.line(x0, 252, x0 + 22, 252, "m")
+    f.text(x0 + 28, 256, "into a unit that is off,", "tm", 10.5)
+    f.text(x0 + 28, 270, "or reading the 0 it gives", "tm", 10.5)
     return f
 
 
