@@ -251,22 +251,36 @@ MNIST, one pass: plain lr 0.05 `0.269`, momentum 0.9 at 0.05 `0.130`,
 plain at its best rate 0.5 `0.156`. No randomness in the valley: PyTorch
 takes the same number of steps.
 
-**03.03 Adam (paper: Kingma and Ba, figures 1 and 2).** Changed from the
-plan's claim, which did not hold beyond noise. adam: pixels on the paper's
-0..1 scale, batches of 128, 3 passes, each optimiser at the best rate of a
-grid (Adam 3e-4, 1e-3, 3e-3; SGD with Nesterov momentum 0.9 at 0.01, 0.03,
-0.1), 3 seeds, the cost on the whole training set after each pass.
-Logistic regression: after pass 1 Nesterov is lower (0.2968 against
-0.3091, t = -11.8), after passes 2 and 3 Adam is lower within noise
-(t = +1.8, +1.2): about the same, which is what the paper's figure 1 says
-for this model. Network 784-256-256-10 (the paper's has 1000 units and
-dropout): Adam lower after pass 1 (0.0966 against 0.1060, t = +1.3) and 2
-(t = +0.6), Nesterov lower after pass 3 (0.0444 against 0.0510, t = -1.3):
-none of it beyond noise. So "Adam's cost falls fastest on the multilayer
-network" did not show at this size; say that. With standardised inputs
-(`standardise=True`) tuned Nesterov ends clearly lower (spike: 0.0403
-against 0.0497 after 3 passes, 2 seeds). Adam is the less seed-stable one
-here (sd 0.0085 against 0.0019).
+**03.03 Adam (paper: Kingma and Ba, section 2.1, figures 1 and 2).** Changed
+from the plan's claim, which did not hold beyond noise: the race is a tie at
+this size, so the lesson's failure-then-fix is part 1, the property the paper
+states in section 2.1 (the step is invariant to rescaling of the gradient).
+1. The valley of 03.02, (w0^2 + s w1^2) / 2 from (-4, 1), in float64, steps
+   to a loss below 1e-4 (at most 5000): momentum 0.8 at lr 0.03, 0.01,
+   0.003, 0.001 takes 52, 84, 354, 1108 at s = 50 and diverges at s = 5000;
+   at 0.0003 it takes 3742 at both. Adam at lr 0.1: 109 at s = 50, 111 at
+   s = 5000. First step at s = 5000: momentum (0.0003) moves w0 by 0.0012
+   and w1 by 1.5, Adam (0.1) each by 0.1 (with the bias correction m_hat /
+   sqrt(v_hat) = g / |g| at step 1). The loss times 1000, s = 50: momentum at
+   0.03 diverges, at 3e-05 takes the same 52 steps; Adam at 0.1 the same 109
+   steps, every weight within 7.8e-9 of its path on the loss itself (eps is
+   the whole difference). PyTorch prints part 1 digit for digit (the test
+   compares it). Part 1 adds under half a second; `models=[]` runs it alone.
+2. The race: pixels on the paper's 0..1 scale, batches of 128, 3 passes,
+   each optimiser at the best rate of a grid (Adam 3e-4, 1e-3, 3e-3; SGD
+   with Nesterov momentum 0.9 at 0.01, 0.03, 0.1), 3 seeds, the cost on the
+   whole training set after each pass. Logistic regression: after pass 1
+   Nesterov is lower (0.2968 against 0.3091, t = -11.8), after passes 2 and
+   3 Adam is lower within noise (t = +1.8, +1.2): about the same, which is
+   what the paper's figure 1 says for this model. Network 784-256-256-10
+   (the paper's has 1000 units and dropout): Adam lower after pass 1
+   (0.0966 against 0.1060, t = +1.3) and 2 (t = +0.6), Nesterov lower after
+   pass 3 (0.0444 against 0.0510, t = -1.3): none of it beyond noise. So
+   "Adam's cost falls fastest on the multilayer network" did not show at
+   this size; say that. With standardised inputs (`standardise=True`) tuned
+   Nesterov ends clearly lower (spike: 0.0403 against 0.0497 after 3
+   passes, 2 seeds). Adam is the less seed-stable one here (sd 0.0085
+   against 0.0019). These numbers are unchanged by part 1.
 
 **03.04 AdamW (paper: Loshchilov and Hutter).** Changed: three parts.
 1. SGD: an L2 term and weight decay give the same step (difference 2.8e-17);
