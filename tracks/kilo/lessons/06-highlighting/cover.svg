@@ -149,7 +149,7 @@
 <text class="t mono" x="320.6" y="192" font-size="10.5">c;</text>
 <text class="ta mono" x="337.2" y="192" font-size="10.5">ESC[0K</text>
 <text class="tm mono" x="379" y="192" font-size="10.5">\r\n</text>
-<text class="tm" x="24" y="222" font-size="11">editorSyntaxToColor(): each class&#x27;s colour, the n of ESC[n m</text>
+<text class="tm" x="24" y="222" font-size="11">each class&#x27;s colour, the n of ESC[n m: the frame&#x27;s own 39 for 0, editorSyntaxToColor() for the rest</text>
 <text class="tm mono" x="24" y="243" font-size="13" font-weight="700">0</text>
 <text class="t mono" x="38" y="242" font-size="10.5">HL_NORMAL</text>
 <text class="ta mono" x="38" y="259" font-size="10.5">ESC[39m</text>
