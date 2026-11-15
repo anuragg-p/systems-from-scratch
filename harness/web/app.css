@@ -607,6 +607,8 @@ a.lib-title .ic { color: var(--fg3); margin-left: 4px; vertical-align: -1px; }
 .up-name .ic { color: var(--fg3); }
 .up-lic { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 999px; font: 500 12px/1 var(--sans);
   color: var(--fg2); box-shadow: inset 0 0 0 1px var(--border); white-space: nowrap; }
+/* a licence too long for the line (a phone) wraps; a short one is the same 22px pill as above */
+.up-lic { white-space: normal; height: auto; min-height: 22px; padding-block: 4px; border-radius: 11px; }
 .up-owes { margin-top: 6px; color: var(--fg2); font-size: 15px; line-height: 1.55; text-wrap: pretty; }
 .up-more, .sf-link { color: var(--fg3); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;
   text-decoration-color: var(--border-strong); white-space: nowrap; }
