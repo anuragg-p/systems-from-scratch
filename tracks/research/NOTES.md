@@ -43,9 +43,10 @@ tests/                  NNLL_*.py one per lesson; support.py, helpers for the Py
 ```
 
 Run everything from the project's top: `python3 -m experiments.<name>
-[key=value ...]`. `./learn run research --at 03.01 -- mnist_lr lrs=[0.1]` does
-the same in `build/at/research/03.01/`; with nothing after `--`, a shell
-there. A setting the script does not have is exit status 2 and one line
+[key=value ...]`. `./learn run research --at 03.01 -- mnist_lr "lrs=[0.1]"`
+does the same in `build/at/research/03.01/`; with nothing after `--`, a
+shell there. Quote a setting with brackets: unquoted, zsh reads `[...]` as
+a file pattern and stops with `no matches found`. A setting the script does not have is exit status 2 and one line
 listing the settings (`curve: no setting 'lrr' (settings: n_train=20, ...)`).
 Runs go to `runs/<name>/[<label>/]seed<k>/` (config.json, log.jsonl,
 summary.json, and SVG plots in `runs/<name>/`); `out=DIR` moves them.
@@ -178,7 +179,12 @@ setting, the label and the seed.
 
 **00.03 Five seeds.** curve over 5 seeds: test loss `0.0542 +- 0.00668 (min
 0.0472, max 0.0645, 5 seeds)`: one run's test loss can be 0.047 or 0.065 by
-the seed alone, a 37% swing. Plots `runs/curve/train_loss.svg`.
+the seed alone, a 37% swing. Plots `runs/curve/train_loss.svg`. Over 50
+seeds (`seeds=50`) it is `0.0576 +- 0.0132 (min 0.0408, max 0.124, 50
+seeds)`: twice the sd five seeds show, and a worst seed (30, its training
+points stopping short of both ends) nearly twice theirs. Five seeds can
+miss the tail, so the three-seed comparisons of modules 03 to 05 may
+understate their spread too: treat a t near 3 there as suggestive.
 
 **01.01 A derivative by nudging.** f(x) = x^3 - 2x at 1.5 (4.75 exactly):
 central error 1.0e-2 at h = 0.1, falling as h^2 to 1.3e-10 at h = 1e-5,
@@ -203,8 +209,9 @@ fresh points `0.975 +- 0.015`. 15 s: the scalar engine is slow, which is
 02.01's point. (At lr 0.2 and 60 steps it reached only 0.947 and 0.892.)
 
 **02.01 The scalar engine is a thousand times too slow.** speed: tanh(x y +
-x) and its gradients for 20,000 pairs: scalar Values 166 ms, one tensor
-0.13 to 0.18 ms: 940 to 1340 times faster across our runs (timing: vary);
+x) and its gradients for 20,000 pairs: scalar Values 158 to 190 ms, one
+tensor 0.12 to 0.18 ms: 916 to 1674 times faster across our runs with
+nothing else running, down to 795 with another run going (timing: vary);
 gradients equal to 1.3e-15. Sums do not exist yet at 02.01 (they are
 02.03's), so the experiment uses `out.backward(torch.ones_like(out))`.
 
@@ -217,8 +224,8 @@ compares them.
 
 **02.03 Matrix multiply, sums and indexing.** groups_tensors: the two
 groups with the network as matrices (2-16-16-1), 200 points, 1000 steps, 3
-seeds: training accuracy 1.0, fresh points `0.998 +- 0.0015`, 0.14 ms a
-step (01.04's scalar step on 50 points: about 60 ms). Starting weights come
+seeds: training accuracy 1.0, fresh points `0.998 +- 0.0015`, 0.14 to 0.16
+ms a step across our runs (01.04's scalar step on 50 points: about 60 ms). Starting weights come
 from numpy, so PyTorch gives the same numbers.
 
 **02.04 Softmax and cross-entropy.** softmax: scores [100, 99, 0] and
@@ -242,9 +249,16 @@ pass, batches of 128, SGD, 3 seeds. Last-50-step loss / test accuracy:
 lr 0.01 `0.428` / `0.894`; 0.1 `0.205` / `0.946`; 0.5 `0.156` / `0.954`;
 2.0 `2.16` / `0.212`. At 2.0 it does not go to nan: within 3 steps the
 batch loss jumps to about 194 (2.36, 3.36, 49.3, 194.4), the jump kills
-most hidden units (alive units 100 -> 95 -> 64 -> 40 -> ... -> 1 by step
-100), and the loss sits near log(10). The log has every step (every=1) so
-the jump shows on the curve.
+most hidden units, and the loss sits near log(10). Two measures of the
+units left, both right (seed 0): units that fire for at least one digit of
+the step's own batch of 128 go 100 -> 95 -> 64 -> 40 -> ... -> 1 by step
+100 (3 at the end); units that fire for at least one of the 10,000 test
+digits, the lesson's measure (`dead_units` is 100 minus it), go 100 -> 98
+-> 71 -> 52 -> ... -> 14 by step 100 and 12 at the end (6 to 12 over the
+three seeds; 23 still fire for some training digit). A unit silent on one
+batch can still fire for rarer digits, so the batch count is the lower;
+quote the lesson's. The log has every step (every=1) so the jump shows on
+the curve.
 
 **03.02 Momentum.** momentum: valley (w0^2 + 50 w1^2)/2 from (-4, 1), lr
 0.03: plain descent needs 186 steps to a loss below 1e-4, momentum 0.8
@@ -267,7 +281,7 @@ states in section 2.1 (the step is invariant to rescaling of the gradient).
    0.03 diverges, at 3e-05 takes the same 52 steps; Adam at 0.1 the same 109
    steps, every weight within 7.8e-9 of its path on the loss itself (eps is
    the whole difference). PyTorch prints part 1 digit for digit (the test
-   compares it). Part 1 adds under half a second; `models=[]` runs it alone.
+   compares it). Part 1 adds under half a second; `"models=[]"` runs it alone.
 2. The race: pixels on the paper's 0..1 scale, batches of 128, 3 passes,
    each optimiser at the best rate of a grid (Adam 3e-4, 1e-3, 3e-3; SGD
    with Nesterov momentum 0.9 at 0.01, 0.03, 0.1), 3 seeds, the cost on the
@@ -327,7 +341,9 @@ same (the test runs it): the "obvious thing" here is PyTorch's default.
 relu, one pass, 3 seeds. nn.Linear's start: `2.3` (nothing); Glorot: `2.25
 +- 0.084 (min 2.15)`: stalls, one seed moves a little; He: `0.805 +- 0.153`.
 Spread at layer 29: 1.8e-8, 1.7e-5, 0.285. The paper's 30-layer claim holds.
-At 20 layers Glorot trains slowly (spike: 0.60 to 0.74 against He's 0.30).
+At 20 layers (`init depth=20 "inits=['glorot','he']"`) Glorot trains, slowly
+and unevenly: `0.886 +- 0.381 (min 0.598, max 1.32)` against He's `0.298 +-
+0.00491`. (An earlier spike's "0.60 to 0.74" did not reproduce.)
 
 **04.03 Batch normalisation (Ioffe and Szegedy).** batchnorm, two parts.
 1. Their figure 1(a) at laptop size: 3 hidden layers of 100 sigmoid units,
@@ -370,7 +386,7 @@ broken copies, 3 seeds: the correct one passes all; each bug fails exactly
 its own check in 3 of 3 seeds and no other. What each check saw: no
 zero_grad: the second backward's gradient is 2.00 times the first's;
 softmax before cross_entropy: one batch only gets from 2.306 to 1.462 (the
-floor is 1 - log(e + 9) = 1.44); labels shuffled apart from the images:
+floor is log(e + 9) - 1 = 1.461); labels shuffled apart from the images:
 held-out accuracy 0.108; pixels 0-255: starting loss 12.8 against log(10)
 2.303; scored without model.eval(): 2376 of 5000 predictions change with
 the order (batches sorted by digit). Same table on PyTorch.
@@ -388,7 +404,9 @@ the epoch it got there, which the test checks.
 regularise: 2000 digits, 512-512, AdamW 1e-3, 50 passes, 3 seeds, test
 error %: neither 8.11, weight decay (0.5) 7.74 (t = -4.4), dropout (0.2 on
 the pixels, 0.5 after each hidden layer, as the paper places it) 6.93
-(t = -10.7), both 7.09. Validation in the same order. The paper's MNIST
+(t = -10.7), both 7.09. On validation neither (7.4) and weight decay (7.14)
+come in the same order, but dropout and both swap and tie within noise:
+both 6.47 +- 0.139, dropout 6.49 +- 0.232. The paper's MNIST
 numbers are for 60,000 images (1.60% to 1.25%); ours are not a
 reproduction of those.
 
@@ -408,6 +426,10 @@ random, 3 seeds. Test error: p = 200 27.0% (the first minimum), 800 48.7%,
 950 71.5%, 1000 88.3% (test mse 1285: the peak, at p = n), 1050 71.6%, 2000
 30.3%, 10000 17.4%, below the first minimum. Holds, strongly. It is not a
 network trained by gradient descent on the page; say so. Five seconds.
+The paper sees double descent "most strongly in settings with label
+noise"; here the peak does not need it: with `noise=0` it is 86.8% against
+88.3%, and only the error either side of it falls (p = 200 24.2%, 10000
+12.0%). The docstring and 05.04 say so.
 
 ## Tests
 

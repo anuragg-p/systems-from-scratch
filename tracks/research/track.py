@@ -106,7 +106,7 @@ def experiments_in(root):
 
 
 def run_argv(root, args=()):
-    """./learn run research --at 03.01 -- mnist_lr lrs=[0.1] runs python3 -m experiments.mnist_lr
+    """./learn run research --at 03.01 -- mnist_lr "lrs=[0.1]" runs python3 -m experiments.mnist_lr
     with those settings in the project's directory (experiments/mnist_lr.py and experiments.mnist_lr
     work too); with nothing after --, a shell there."""
     names = experiments_in(root)
