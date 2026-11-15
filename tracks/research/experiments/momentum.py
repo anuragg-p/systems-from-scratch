@@ -11,6 +11,7 @@ Then MNIST, one pass, a few seeds: plain SGD at 0.05, momentum 0.9 at the
 same rate, and plain SGD at 0.5, the best rate of 03.01.
 
     python3 -m experiments.momentum          (needs MNIST: python3 -m data.fetch mnist)
+    python3 -m experiments.momentum runs=[]  the valley alone
 """
 
 import math
@@ -53,6 +54,8 @@ def main():
         print(f"valley, lr {cfg.lr}, momentum {mu}: {steps} steps to a loss below {cfg.threshold:g}")
         paths.append(lab.Line(f"momentum {mu}", [p[0] for p in path], [p[1] for p in path], i))
     print(f"paths in {lab.lines(f'{cfg.out}/{cfg.name}/valley.svg', paths, xlabel='w0', ylabel='w1')}")
+    if not cfg.runs:
+        return
     x, y = mnist.load("train")
     curves = []
     for i, (lr, mu) in enumerate(cfg.runs):

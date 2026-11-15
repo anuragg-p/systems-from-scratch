@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The Adam paper&#x27;s comparison at laptop size: training cost after each pass, each optimiser at the best rate of its grid, 3 seeds (the band is min to max)</title>
+<defs><marker id="race0303-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="race0303-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="race0303-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="8" y="16" font-size="12" font-weight="700">logistic regression</text>
+<line class="m" x1="45.2" y1="234.7" x2="233.96" y2="234.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="238.19" font-size="10.5" text-anchor="end">0.27</text>
+<line class="m" x1="45.2" y1="191.3" x2="233.96" y2="191.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="194.75" font-size="10.5" text-anchor="end">0.28</text>
+<line class="m" x1="45.2" y1="147.8" x2="233.96" y2="147.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="151.32" font-size="10.5" text-anchor="end">0.29</text>
+<line class="m" x1="45.2" y1="104.4" x2="233.96" y2="104.4" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="107.88" font-size="10.5" text-anchor="end">0.3</text>
+<line class="m" x1="45.2" y1="60.9" x2="233.96" y2="60.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="64.44" font-size="10.5" text-anchor="end">0.31</text>
+<line class="m" x1="45.2" y1="258" x2="45.2" y2="262" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="45.2" y="274" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="139.58" y1="258" x2="139.58" y2="262" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="139.58" y="274" font-size="10.5" text-anchor="middle">2</text>
+<line class="m" x1="233.96" y1="258" x2="233.96" y2="262" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="233.96" y="274" font-size="10.5" text-anchor="middle">3</text>
+<rect class="m" x="45.2" y="50" width="188.76" height="208" rx="0" stroke-width="1.5"/>
+<text class="tm" x="139.58" y="290" font-size="11.5" text-anchor="middle">passes over the data</text>
+<text class="tm" x="39.2" y="42" font-size="11.5">training cost</text>
+<polygon class="fs" points="45.2,122.3 139.6,197.4 234.0,238.6 234.0,224.4 139.6,132.9 45.2,113.6" fill-opacity="0.75"/>
+<polyline class="m" points="45.2,122.3 139.6,197.4 234.0,238.6" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="m" points="45.2,113.6 139.6,132.9 234.0,224.4" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon class="af" points="45.2,72.1 139.6,198.4 234.0,248.5 234.0,227.3 139.6,184.4 45.2,59.5"/>
+<polyline class="s" points="45.2,118.2 139.6,156.3 234.0,231.6" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="45.2,64.9 139.6,193.2 234.0,241.4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="239.96" y="235.12" font-size="10.5">Nesterov 0.1</text>
+<text class="ta" x="239.96" y="247.12" font-size="10.5">Adam 0.003</text>
+<text class="t" x="328" y="16" font-size="12" font-weight="700">network 784-256-256-10</text>
+<line class="m" x1="365.2" y1="254.9" x2="553.96" y2="254.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="359.2" y="258.37" font-size="10.5" text-anchor="end">0.04</text>
+<line class="m" x1="365.2" y1="204.4" x2="553.96" y2="204.4" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="359.2" y="207.88" font-size="10.5" text-anchor="end">0.06</text>
+<line class="m" x1="365.2" y1="153.9" x2="553.96" y2="153.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="359.2" y="157.39" font-size="10.5" text-anchor="end">0.08</text>
+<line class="m" x1="365.2" y1="103.4" x2="553.96" y2="103.4" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="359.2" y="106.9" font-size="10.5" text-anchor="end">0.1</text>
+<line class="m" x1="365.2" y1="52.9" x2="553.96" y2="52.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="359.2" y="56.41" font-size="10.5" text-anchor="end">0.12</text>
+<line class="m" x1="365.2" y1="258" x2="365.2" y2="262" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="365.2" y="274" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="459.58" y1="258" x2="459.58" y2="262" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="459.58" y="274" font-size="10.5" text-anchor="middle">2</text>
+<line class="m" x1="553.96" y1="258" x2="553.96" y2="262" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="553.96" y="274" font-size="10.5" text-anchor="middle">3</text>
+<rect class="m" x="365.2" y="50" width="188.76" height="208" rx="0" stroke-width="1.5"/>
+<text class="tm" x="459.58" y="290" font-size="11.5" text-anchor="middle">passes over the data</text>
+<text class="tm" x="359.2" y="42" font-size="11.5">training cost</text>
+<polygon class="fs" points="365.2,114.3 459.6,201.5 554.0,248.5 554.0,239.0 459.6,194.0 365.2,59.5" fill-opacity="0.75"/>
+<polyline class="m" points="365.2,114.3 459.6,201.5 554.0,248.5" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="m" points="365.2,59.5 459.6,194.0 554.0,239.0" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon class="af" points="365.2,125.8 459.6,213.1 554.0,248.5 554.0,205.6 459.6,192.9 365.2,98.6"/>
+<polyline class="s" points="365.2,88.1 459.6,197.1 554.0,243.7" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="365.2,112.0 459.6,200.9 554.0,227.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="559.96" y="230.73" font-size="10.5">Adam 0.003</text>
+<text class="t" x="559.96" y="247.24" font-size="10.5">Nesterov 0.1</text>
+</svg>
