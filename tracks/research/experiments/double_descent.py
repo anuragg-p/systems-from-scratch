@@ -59,7 +59,7 @@ def one_seed(cfg, seed, x, y, xt, yt):
         pred = at @ b
         out.append(dict(width=p, train_mse=float(((a @ b - targets) ** 2).sum(1).mean()),
                         test_mse=float(((pred - test_targets) ** 2).sum(1).mean()),
-                        test_error=float(np.mean(pred.argmax(1) != yt))))
+                        test_error=float(np.mean(pred.argmax(1) != yt)), weights=float(np.sqrt((b ** 2).sum()))))
     return out
 
 
@@ -76,10 +76,12 @@ def main():
         run.finish(peak_width=max(rows, key=lambda r: r["test_error"])["width"])
         results.append(rows)
     print(f"{cfg.n_train} training digits, {cfg.noise:.0%} of labels random; mean of {cfg.seeds} seeds")
-    print(f"{'features p':>10s} {'training error (mse)':>21s} {'test error (mse)':>17s} {'test error':>11s}")
+    print(f"{'features p':>10s} {'training error (mse)':>21s} {'test error (mse)':>17s} {'test error':>11s} "
+          f"{'size of weights':>16s}")
     for k, p in enumerate(cfg.widths):
         mean = lambda key: lab.mean([rows[k][key] for rows in results])
-        print(f"{p:10d} {mean('train_mse'):21.3f} {mean('test_mse'):17.3f} {100 * mean('test_error'):10.1f}%")
+        print(f"{p:10d} {mean('train_mse'):21.3f} {mean('test_mse'):17.3f} {100 * mean('test_error'):10.1f}% "
+              f"{mean('weights'):16.1f}")
     errors = [lab.mean([rows[k]["test_error"] for rows in results]) for k in range(len(cfg.widths))]
     peak = int(np.argmax(errors))
     before = min(errors[:peak]) if peak else float("nan")
