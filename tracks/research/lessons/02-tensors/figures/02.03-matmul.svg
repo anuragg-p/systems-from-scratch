@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 372" fill="none">
+<title>x @ w, and its backward: two more matrix products, each giving a gradient the shape of its own tensor</title>
+<defs><marker id="matmul0203-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="matmul0203-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="matmul0203-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="14" y="26" font-size="12" font-weight="700">forward</text>
+<text class="tm mono" x="14" y="42" font-size="10.5">out = x @ w</text>
+<rect class="s f" x="200" y="18" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="215" y="31.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="s f" x="230" y="18" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="245" y="31.78" font-size="10.5" text-anchor="middle">2</text>
+<rect class="s f" x="200" y="38" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="215" y="51.78" font-size="10.5" text-anchor="middle">3</text>
+<rect class="s f" x="230" y="38" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="245" y="51.78" font-size="10.5" text-anchor="middle">4</text>
+<rect class="s f" x="200" y="58" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="215" y="71.78" font-size="10.5" text-anchor="middle">5</text>
+<rect class="s f" x="230" y="58" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="245" y="71.78" font-size="10.5" text-anchor="middle">6</text>
+<text class="t mono" x="230" y="93" font-size="10.5" text-anchor="middle">x (3, 2)</text>
+<text class="t mono" x="280" y="53" font-size="14" text-anchor="middle">@</text>
+<rect class="s f" x="300" y="18" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="315" y="31.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="s f" x="330" y="18" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="345" y="31.78" font-size="10.5" text-anchor="middle">0</text>
+<rect class="s f" x="360" y="18" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="375" y="31.78" font-size="10.5" text-anchor="middle">-1</text>
+<rect class="s f" x="300" y="38" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="315" y="51.78" font-size="10.5" text-anchor="middle">2</text>
+<rect class="s f" x="330" y="38" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="345" y="51.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="s f" x="360" y="38" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="375" y="51.78" font-size="10.5" text-anchor="middle">0</text>
+<text class="t mono" x="345" y="73" font-size="10.5" text-anchor="middle">w (2, 3)</text>
+<text class="t mono" x="410" y="43" font-size="14" text-anchor="middle">=</text>
+<rect class="s f" x="430" y="18" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="445" y="31.78" font-size="10.5" text-anchor="middle">5</text>
+<rect class="s f" x="460" y="18" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="475" y="31.78" font-size="10.5" text-anchor="middle">2</text>
+<rect class="s f" x="490" y="18" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="505" y="31.78" font-size="10.5" text-anchor="middle">-1</text>
+<rect class="s f" x="430" y="38" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="445" y="51.78" font-size="10.5" text-anchor="middle">11</text>
+<rect class="s f" x="460" y="38" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="475" y="51.78" font-size="10.5" text-anchor="middle">4</text>
+<rect class="s f" x="490" y="38" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="505" y="51.78" font-size="10.5" text-anchor="middle">-3</text>
+<rect class="s f" x="430" y="58" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="445" y="71.78" font-size="10.5" text-anchor="middle">17</text>
+<rect class="s f" x="460" y="58" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="475" y="71.78" font-size="10.5" text-anchor="middle">6</text>
+<rect class="s f" x="490" y="58" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="505" y="71.78" font-size="10.5" text-anchor="middle">-5</text>
+<text class="t mono" x="475" y="93" font-size="10.5" text-anchor="middle">out (3, 3)</text>
+<text class="ta" x="14" y="142" font-size="12" font-weight="700">gradient of w</text>
+<text class="tm mono" x="14" y="158" font-size="10.5">w.grad = x.T @ out.grad</text>
+<rect class="s f" x="200" y="134" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="215" y="147.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="s f" x="230" y="134" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="245" y="147.78" font-size="10.5" text-anchor="middle">3</text>
+<rect class="s f" x="260" y="134" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="275" y="147.78" font-size="10.5" text-anchor="middle">5</text>
+<rect class="s f" x="200" y="154" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="215" y="167.78" font-size="10.5" text-anchor="middle">2</text>
+<rect class="s f" x="230" y="154" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="245" y="167.78" font-size="10.5" text-anchor="middle">4</text>
+<rect class="s f" x="260" y="154" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="275" y="167.78" font-size="10.5" text-anchor="middle">6</text>
+<text class="t mono" x="245" y="189" font-size="10.5" text-anchor="middle">x.T (2, 3)</text>
+<text class="t mono" x="310" y="159" font-size="14" text-anchor="middle">@</text>
+<rect class="m f" x="330" y="134" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="345" y="147.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="360" y="134" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="375" y="147.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="390" y="134" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="405" y="147.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="330" y="154" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="345" y="167.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="360" y="154" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="375" y="167.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="390" y="154" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="405" y="167.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="330" y="174" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="345" y="187.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="360" y="174" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="375" y="187.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="390" y="174" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="405" y="187.78" font-size="10.5" text-anchor="middle">1</text>
+<text class="tm mono" x="375" y="209" font-size="10.5" text-anchor="middle">out.grad (3, 3)</text>
+<text class="t mono" x="440" y="169" font-size="14" text-anchor="middle">=</text>
+<rect class="a af" x="460" y="134" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="475" y="147.78" font-size="10.5" text-anchor="middle">9</text>
+<rect class="a af" x="490" y="134" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="505" y="147.78" font-size="10.5" text-anchor="middle">9</text>
+<rect class="a af" x="520" y="134" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="535" y="147.78" font-size="10.5" text-anchor="middle">9</text>
+<rect class="a af" x="460" y="154" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="475" y="167.78" font-size="10.5" text-anchor="middle">12</text>
+<rect class="a af" x="490" y="154" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="505" y="167.78" font-size="10.5" text-anchor="middle">12</text>
+<rect class="a af" x="520" y="154" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="535" y="167.78" font-size="10.5" text-anchor="middle">12</text>
+<text class="ta mono" x="505" y="189" font-size="10.5" text-anchor="middle">w.grad (2, 3)</text>
+<text class="ta" x="14" y="258" font-size="12" font-weight="700">gradient of x</text>
+<text class="tm mono" x="14" y="274" font-size="10.5">x.grad = out.grad @ w.T</text>
+<rect class="m f" x="200" y="250" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="215" y="263.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="230" y="250" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="245" y="263.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="260" y="250" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="275" y="263.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="200" y="270" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="215" y="283.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="230" y="270" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="245" y="283.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="260" y="270" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="275" y="283.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="200" y="290" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="215" y="303.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="230" y="290" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="245" y="303.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m f" x="260" y="290" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="275" y="303.78" font-size="10.5" text-anchor="middle">1</text>
+<text class="tm mono" x="245" y="325" font-size="10.5" text-anchor="middle">out.grad (3, 3)</text>
+<text class="t mono" x="310" y="285" font-size="14" text-anchor="middle">@</text>
+<rect class="s f" x="330" y="250" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="345" y="263.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="s f" x="360" y="250" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="375" y="263.78" font-size="10.5" text-anchor="middle">2</text>
+<rect class="s f" x="330" y="270" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="345" y="283.78" font-size="10.5" text-anchor="middle">0</text>
+<rect class="s f" x="360" y="270" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="375" y="283.78" font-size="10.5" text-anchor="middle">1</text>
+<rect class="s f" x="330" y="290" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="345" y="303.78" font-size="10.5" text-anchor="middle">-1</text>
+<rect class="s f" x="360" y="290" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="375" y="303.78" font-size="10.5" text-anchor="middle">0</text>
+<text class="t mono" x="360" y="325" font-size="10.5" text-anchor="middle">w.T (3, 2)</text>
+<text class="t mono" x="410" y="285" font-size="14" text-anchor="middle">=</text>
+<rect class="a af" x="430" y="250" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="445" y="263.78" font-size="10.5" text-anchor="middle">0</text>
+<rect class="a af" x="460" y="250" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="475" y="263.78" font-size="10.5" text-anchor="middle">3</text>
+<rect class="a af" x="430" y="270" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="445" y="283.78" font-size="10.5" text-anchor="middle">0</text>
+<rect class="a af" x="460" y="270" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="475" y="283.78" font-size="10.5" text-anchor="middle">3</text>
+<rect class="a af" x="430" y="290" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="445" y="303.78" font-size="10.5" text-anchor="middle">0</text>
+<rect class="a af" x="460" y="290" width="30" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="475" y="303.78" font-size="10.5" text-anchor="middle">3</text>
+<text class="ta mono" x="460" y="325" font-size="10.5" text-anchor="middle">x.grad (3, 2)</text>
+<text class="tm" x="14" y="362" font-size="10.5">with out.grad all ones, each number of w.grad adds up a column of x (1 + 3 + 5 = 9), each of x.grad a row of w (1 + 0 + -1 = 0)</text>
+</svg>
