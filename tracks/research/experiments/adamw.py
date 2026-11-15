@@ -121,7 +121,8 @@ def part2(cfg):
 def part3(cfg):
     x, y = mnist.load("train", cfg.n_grid)
     xt, yt = mnist.load("test")
-    print(f"3. test error (%), {cfg.n_grid} training images, {cfg.epochs} passes, mean of {cfg.seeds} seeds")
+    seeds = f"mean of {cfg.seeds} seeds" if cfg.seeds != 1 else "1 seed"
+    print(f"3. test error (%), {cfg.n_grid} training images, {cfg.epochs} passes, {seeds}")
     for name, cls, wds in (("Adam + L2", torch.optim.Adam, cfg.adam_wds),
                            ("AdamW", torch.optim.AdamW, cfg.adamw_wds)):
         grid = {}

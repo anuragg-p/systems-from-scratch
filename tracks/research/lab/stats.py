@@ -35,11 +35,13 @@ def sd(xs):
 # One line for a result over seeds: "0.0432 +- 0.0051 (min 0.0371, max
 # 0.0502, 5 seeds)", the mean and standard deviation, then the smallest and
 # largest, to `digits` significant digits. The page prints three or four:
-# the last digits of a float differ from machine to machine.
+# the last digits of a float differ from machine to machine. One seed has
+# no spread to show, only its number: "0.0496 (1 seed)".
 def spread(xs, digits=3):
     g = f".{digits}g"
-    return (f"{mean(xs):{g}} +- {sd(xs):{g}} (min {min(xs):{g}}, max {max(xs):{g}}, "
-            f"{len(xs)} seed{'s' if len(xs) != 1 else ''})")
+    if len(xs) == 1:
+        return f"{xs[0]:{g}} (1 seed)"
+    return f"{mean(xs):{g}} +- {sd(xs):{g}} (min {min(xs):{g}}, max {max(xs):{g}}, {len(xs)} seeds)"
 # @end
 
 

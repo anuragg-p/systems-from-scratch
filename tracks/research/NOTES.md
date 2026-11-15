@@ -69,7 +69,9 @@ summary.json, and SVG plots in `runs/<name>/`); `out=DIR` moves them.
   same machine, same engine: the same digits (00.02's test holds it).
 - **Every result is several seeds**, printed as `lab.spread`: `0.0542 +-
   0.00668 (min 0.0472, max 0.0645, 5 seeds)`, mean +- sample sd, 3
-  significant digits. Comparisons print Welch's t.
+  significant digits. One seed (`seeds=1`, as a Break it may run) has no
+  spread and prints its number alone: `0.897 (1 seed)`. Comparisons print
+  Welch's t (infinite with one seed a side: read the numbers instead).
 - **Printed numbers that differ between machines or runs**: the times in
   speed and groups_tensors (`... ms`, `... times faster`), and the last
   digits of everything. Paths printed are relative to the project unless
