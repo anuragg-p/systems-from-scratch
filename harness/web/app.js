@@ -261,4 +261,74 @@
       show(k + (ev.key === "ArrowRight" ? 1 : -1));
     });
   });
+
+  // Progress, kept in this browser only (localStorage "progress"; nothing is sent anywhere, and
+  // clearing the site's data forgets it): the lessons read to the end, and the last lesson opened
+  // in each track. A read lesson gets a quiet dot wherever it is linked (the sidebar, the
+  // overview's cards); the overview and the home page offer one link back to the last lesson.
+  // A reader with no progress sees nothing new.
+  var LESSON = /\/t\/([^\/?#]+)\/(\d\d\.\d\d)\/?(?:index\.html)?$/;
+  function loadProgress() {
+    var p = {};
+    try { p = JSON.parse(localStorage.getItem("progress") || "{}") || {}; } catch (e) {}
+    p.read = p.read || {};
+    p.last = p.last || {};
+    return p;
+  }
+  function saveProgress(p) {
+    try { localStorage.setItem("progress", JSON.stringify(p)); } catch (e) {}
+  }
+  function markLinks(p) {
+    document.querySelectorAll(".side-lesson[href], .grid-card.unit[href]").forEach(function (a) {
+      var m = a.pathname.match(LESSON);
+      if (!m || !p.read[m[1] + "/" + m[2]] || a.classList.contains("is-read")) return;
+      a.classList.add("is-read");
+      var sr = document.createElement("span");
+      sr.className = "read-sr";
+      sr.textContent = " (read)";
+      a.appendChild(sr);
+    });
+  }
+  function resumeLink(entry) {
+    var a = document.createElement("a");
+    a.className = "link-under resume";
+    a.href = entry.href;
+    a.innerHTML = "<span></span>";
+    a.firstChild.textContent = "Continue: " + entry.id + " " + entry.title;
+    a.title = entry.id + " " + entry.title;   // the whole title, where the link is cut short
+    return a;
+  }
+  var progress = loadProgress();
+  var here = location.pathname.match(LESSON), lessonTitle = document.querySelector(".lesson-head h1");
+  if (here && lessonTitle) {
+    var pill = document.querySelector(".track-pill > span:not(.mod-ic)");   // the name, not the icon's box
+    progress.last[here[1]] = { id: here[2], title: lessonTitle.textContent, href: location.pathname,
+                               track: pill ? pill.textContent : here[1] };
+    progress.lastTrack = here[1];
+    saveProgress(progress);
+    // read to the end: the foot of the page has come into view
+    var foot = document.querySelector(".site-foot");
+    if (foot && "IntersectionObserver" in window) {
+      var watch = new IntersectionObserver(function (seen) {
+        if (!seen.some(function (e) { return e.isIntersecting; })) return;
+        watch.disconnect();
+        progress = loadProgress();   // another tab may have added to it
+        progress.read[here[1] + "/" + here[2]] = 1;
+        saveProgress(progress);
+        markLinks(progress);
+      });
+      watch.observe(foot);
+    }
+  }
+  markLinks(progress);
+  var overview = location.pathname.match(/\/t\/([^\/?#]+)\/?(?:index\.html)?$/), strip = document.querySelector(".strip-card");
+  if (overview && strip && progress.last[overview[1]]) {
+    strip.insertBefore(resumeLink(progress.last[overview[1]]), strip.querySelector(".strip-text").nextSibling);
+  }
+  var cta = document.querySelector("body.home .hero-cta"), latest = progress.last[progress.lastTrack];
+  if (cta && latest) {
+    var back = resumeLink(latest);
+    back.firstChild.textContent = "Continue " + progress.lastTrack + ": " + latest.id + " " + latest.title;
+    cta.appendChild(back);
+  }
 })();
