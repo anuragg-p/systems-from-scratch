@@ -32,6 +32,24 @@ def test(t):
     frames = ed.raw.split(b"\x1b[?25l")[1:]
     t.check(len(set(frames)) == 1, "every screen of the same state should be the same bytes")
 
+    # Resize after resize while kilo waits for a key: each is drawn, and kilo goes on
+    # waiting. This part fails only on Linux with glibc, with the original kilo's
+    # signal(SIGWINCH, handleSigWinCh) put back: in a C99 build with _POSIX_C_SOURCE that
+    # is the System V signal(), so the first resize makes the read() in editorReadKey()
+    # fail with EINTR and kilo exits with status 1 (and with that read() retried, the
+    # second is not drawn: the handler was reset after the first). On macOS and on musl
+    # signal() keeps the handler and restarts the read(), and it passes there either way.
+    ed = tr.edit(t, tr.lines_of(5), name="resize.txt")
+    for n, (rows, cols) in enumerate([(30, 100), (20, 60), (24, 80)], 1):
+        try:
+            ed.resize(rows, cols)
+        except tr.Fail as e:
+            raise tr.Fail(f"resize {n} of 3, to {rows} x {cols}, with kilo waiting for a key: {e}")
+        t.check(len(ed.status) == cols and ed.status.endswith("1/5") and ed.reverse(rows - 2),
+                f"resize {n}: the status bar should fill row {rows - 2} of {cols} columns: {ed.status!r}")
+    ed.keys(tr.DOWN, "x")
+    t.check(ed.line(1) == "xline 2", f"after the resizes kilo still takes keys: {ed.line(1)!r}")
+
     # A window that grows, and one that shrinks under the cursor.
     ed = tr.edit(t, tr.lines_of(30))
     ed.resize(30, 100)

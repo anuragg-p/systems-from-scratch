@@ -9,14 +9,17 @@ spaces dropped, `[cursor R,C]` counting from 1; in module 06, each run of
 one colour is written `[c:text]` (see "06 Syntax highlighting"). The same tests, the
 skeleton check and the timeline check also pass on Linux (Alpine, gcc and
 musl, aarch64, in Docker), and every lesson's project builds there with
-no warnings. Function names are given instead of line numbers.
+no warnings. On Linux with glibc (Debian trixie, gcc 14, aarch64, in
+Docker) they failed until departure 33, and pass there since, with every
+project built without warnings. Function names are given instead of line
+numbers.
 
 ## The upstream, and what this track does with it
 
 antirez/kilo, master at 323d93b29bd89a2cb446de90c4ed4fea1764176e, one file
 of 1308 lines, BSD-2-Clause. `tracks/kilo/LICENSE` is its LICENSE, byte
-for byte; kilo.c keeps antirez's notice in its header. The finished kilo.c
-here is 1057 lines with the notes (`./learn files kilo --at 05.02`).
+for byte; kilo.c keeps antirez's notice in its header. The finished core's
+kilo.c here is 1068 lines with the notes (`./learn files kilo --at 05.02`).
 
 Kept: every function of the editor, with its name and its code, in the
 original order. The original formatting is kept where the code is the
@@ -39,8 +42,8 @@ Module 06, an extension (`optional: true`), puts the highlighting back,
 upstream's own code under upstream's names, in the same kilo.c: it arrives
 only at its own lessons, and the project at every core lesson is byte for
 byte what it was without it. See "06 Syntax highlighting" below. The
-finished kilo.c (`./learn files kilo`, every lesson of every path) is 1461
-lines; at 05.02 it is still 1057.
+finished kilo.c (`./learn files kilo`, every lesson of every path) is 1472
+lines; at 05.02 it is 1068, as without the module.
 
 ## Every departure from upstream, and why
 
@@ -254,6 +257,40 @@ highlighting"; upstream's own tab stops show in its screens.
     margin as the end of a function.
 32. **Left out**: `struct hlcolor`, which nothing in the original uses.
 
+### Found later, in the core
+
+33. **The resize handler, installed with `sigaction()`** (`initEditor`,
+    02.01). The original has `signal(SIGWINCH, handleSigWinCh);`, and what
+    `signal()` installs is up to the C library. macOS and musl give it BSD's
+    meaning: the handler stays, SIGWINCH is held back while it runs, and a
+    `read()` it interrupts is restarted. glibc does that only with
+    `_DEFAULT_SOURCE` on, and `-std=c99` turns it off, as does an explicit
+    `_POSIX_C_SOURCE` (kilo has both on Linux); then `signal()` is System
+    V's: `SA_RESETHAND` and `SA_NODEFER`, no `SA_RESTART` (checked in Debian
+    trixie, glibc 2.41, with a small program that asks `sigaction()` what
+    `signal()` installed, under each set of options). Original, on glibc:
+    the first resize interrupts the `read()` in `editorReadKey`, which fails
+    with EINTR (a build that prints errno there: `errno 4 (Interrupted
+    system call)`), and `if (nread == -1) exit(1);` ends kilo with status 1,
+    the terminal put back. With only that `read()` retried on EINTR, kilo
+    lives through the first resize, but the handler is back to the default
+    (SIGWINCH gone from SigCgt in /proc) and the second resize is not drawn.
+    Ours: `sigaction()` with `SA_RESTART`, an empty mask and no other flag,
+    which is what `signal()` already means on macOS and musl, so nothing
+    changes there. `SA_RESTART` is right for this handler because it draws
+    the frame itself: once it returns, all that is left is to wait for the
+    key, which is what the restarted `read()` does. Not taken: a retry on
+    EINTR alone (the handler is still reset, and every `read()` and
+    `write()` would need one), or `_DEFAULT_SOURCE` (glibc only, and the
+    meaning still left to the C library). What the handler calls is as in
+    the original: `read()`, `write()` and `time()` are async-signal-safe;
+    `realloc()`, `free()` and `snprintf()` (the frame), `ioctl()`, and
+    `perror()` and `exit()` (a size that cannot be read) are not on POSIX's
+    list (see "Other behaviour of the original, kept"). (0201: "resize 1 of
+    3", kilo exits; with only the retry, "resize 2 of 3", no new screen.
+    Only on glibc: on macOS and musl the test passes with the original line
+    too, and it runs there all the same.)
+
 What the project shows at a lesson (the `@else` parts), not in the
 finished file:
 
@@ -324,8 +361,20 @@ never mention it.
 
 ## 00 The workbench (labs, no regions)
 
-`./learn run kilo -- file.txt` runs the finished editor (files in
-`build/at/kilo/finished/`); without a file, it edits `learn.txt` there.
+The workbench describes the editor as the core leaves it, the project at
+05.02: its runs are `./learn run kilo --at 05.02 -- file.txt` (files in
+`build/at/kilo/05.02/`; without a file, it edits `learn.txt` there), and
+its quotes, patches and facts are `at=05.02`. So no extension changes a
+workbench lesson. `./learn run kilo` with no `--at` runs the finished
+project, every extension in it (`build/at/kilo/finished/`); 00.01 says so
+in one sentence where it first runs the editor. xv6's 00.02 does the same
+with the last lesson of its core, 07.03.
+
+Measured at 05.02 (macOS): kilo.c is 1068 lines and 30 functions (a line
+at the left margin ending in ") {"; the `fact`s check both); one key on a
+24x80 screen of kilo.c itself is a 1324-byte frame; on 10x44, the frame
+after "!" typed at the end of "world" in hello.txt ("Hello", "world") is
+192 bytes; the first screen of "ab\n" on 6x20 is the 108 bytes below.
 
 ### 00.01 How a terminal editor works
 
@@ -479,7 +528,8 @@ On "hello world", six Backspaces at its end: the text is "hello", the
 screen still says `hello world`.
 
 Resize: the handler measures again and draws at once. 24x80 resized to
-30x100 shows 28 rows of text and a 100-column status bar.
+30x100 shows 28 rows of text and a 100-column status bar. `initEditor`
+installs it with `sigaction()` and `SA_RESTART` (departure 33).
 
 A window narrower than the welcome (below 33 columns, and at 02.01 with
 any file): departure 10. On 10x30 at 02.01 the welcome row is the whole
@@ -686,13 +736,15 @@ the 16 core lessons written with `./learn files` before the module existed
 and after, compared with `diff -r`: identical).
 
 The finished project (`build/at/kilo/finished/`, every lesson of every
-path) does include it, and the workbench runs that one. For a file with no
-syntax it draws the same bytes as before (departure 29), so 00.02's 108
-bytes still hold; but two numbers in 00.01 are about the finished kilo.c
-and changed with this module: 1461 lines and 35 functions (were 1057 and
-30; the lesson's `fact` checks the lines), and 1542 bytes a key on a 24x80
-screen of kilo.c itself (were 1324: its first rows are a comment, now
-cyan). 00.01 says the new numbers. Module 07 will change them again.
+path) does include it. The workbench lessons do not run that one but the
+core's, at 05.02 ("00 The workbench" above), so nothing in them changes
+with this module, or with module 07. For a file with no syntax the
+finished editor draws the same bytes as the core all the same (departure
+29). At first 00.01 stated the finished file's numbers, and they changed
+with this module (1472 lines, 35 functions, 1542 bytes a key on kilo.c,
+its first rows a comment, now cyan, against the core's 1068, 30 and
+1324): that was the wrong dependency, and why the workbench now stays at
+05.02.
 
 ### How the screens below were captured
 
@@ -969,8 +1021,11 @@ Escape leaves
 - If standard input is not a terminal, `enableRawMode` fails and main
   ignores it; `editorReadKey` then spins on end of file.
 - The SIGWINCH handler draws the screen from inside the signal handler
-  (malloc and write in a handler); a resize in the middle of a frame is
-  not guarded against.
+  (realloc, free and write in a handler; departure 33 says which calls are
+  safe there). A second resize waits while the handler runs, but a resize
+  while the main loop is in the middle of a frame, or of any realloc, is
+  not guarded against. Making it safe would mean a flag set in the handler
+  and the drawing done from the loop: a change of structure, not of a line.
 - Page Down on a file shorter than the screen puts the cursor on the
   bottom line, below the end of the file; typing there adds empty rows.
 - After an escape sequence kilo does not know (Insert, `ESC [ 2 ~`; F1,
@@ -1028,14 +1083,11 @@ over the number's red and Escape puts the red back. learn.c must be
 untouched after the run (nothing there saves).
 
 On Linux with glibc (Debian trixie, gcc 14, aarch64, in Docker) the 02.01
-test and the timeline at 02.01 and 03.04 fail, as they did before module
-06 (checked on the commit before it): kilo exits with status 1 on the
-resize. The cause is in the core, not in module 06: kilo.c defines
-`_POSIX_C_SOURCE` on Linux and builds with `-std=c99`, and with those
-glibc's `signal()` installs the handler without SA_RESTART and with
-SA_RESETHAND (checked with a 10-line program in the same container;
-`-std=gnu99` gives SA_RESTART). The SIGWINCH then interrupts the `read()`
-in `editorReadKey`, which returns -1, and kilo exits; a second resize
-would not even be caught. musl (Alpine, where these notes were first
-checked) always restarts. Everything else, module 06 included (with
-ASan), passes there.
+test and the timeline at 02.01 and 03.04 failed, before module 06 and
+with it: kilo exited with status 1 on the first resize. The cause was in
+the core (departure 33), not in module 06. Since that fix the tests (21),
+the skeleton check and the timeline check all pass there, module 06
+included (with ASan), and every lesson's project builds without
+warnings. To run them in a container, copy the tree in without the
+host's `tracks/kilo/kilo`: a macOS binary newer than kilo.c is kept by
+make, and every test then fails at once.

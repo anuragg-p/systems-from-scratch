@@ -67,7 +67,9 @@ list.
 Each extension stands on the finished core and is independent of the
 other: at an extension's lesson the site shows the core plus that
 extension only. So neither may need the other's code, though both are in
-the tree.
+the tree. No core lesson may change when one is added: the workbench
+(00.01, 00.02) runs and measures the core at 05.02, not the finished
+project.
 
 06 Syntax highlighting: upstream's own, cut out of the core in step 1 and
    restored here, in kilo.c, under upstream's names. Real bugs in it are
@@ -135,6 +137,12 @@ teaches only the buffer (plans/dsa.md).
   screen emulator in track.py. check-timeline runs programs on pipes, so
   track.py carries a small relay that holds the pseudo-terminal. No
   harness change was made.
+- "All pass" was true on macOS and on Linux with musl (Alpine), not on
+  Linux in general. On glibc (Debian, found while module 06 was added)
+  the 02.01 test and the timeline at 02.01 and 03.04 failed: kilo exited
+  on the first resize, because there `signal()` in a C99 build is System
+  V's. Fixed in the core at 02.01 with `sigaction()` and `SA_RESTART`,
+  departure 33 in NOTES.md; since then everything passes on glibc too.
 - All 16 lessons pass ./learn verify and are off the pending list. The
   transcript checker cannot show a full-screen program, so the editor's
   own screens are declared as skipped, each with how it was checked.

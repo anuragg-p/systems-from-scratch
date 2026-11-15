@@ -1854,7 +1854,20 @@ void initEditor(void) {
     E.filename = NULL;              // @from 03.01
     E.syntax = NULL;                // @from 06.01
     updateWindowSize();
-    signal(SIGWINCH, handleSigWinCh); // @from 02.01
+    // @from 02.01
+    /* The original kilo installs the handler with
+     *     signal(SIGWINCH, handleSigWinCh);
+     * On Linux with glibc, in a C99 build that asks for POSIX, as this one
+     * does, that is the old System V signal(): the read() a resize
+     * interrupts fails, and kilo exits; and after one resize the handler is
+     * gone. sigaction() asks for the same thing on every system: the
+     * handler stays, and the read() it interrupts carries on (SA_RESTART). */
+    struct sigaction sa;
+    sa.sa_handler = handleSigWinCh;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = SA_RESTART;
+    sigaction(SIGWINCH,&sa,NULL);
+    // @end
     // @end
 }
 
