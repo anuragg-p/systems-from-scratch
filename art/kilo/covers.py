@@ -431,8 +431,25 @@ N_C = [("int n = 42; /* was", "555000007700333333", 1,
         b"\x1b[32mint\x1b[39m n = \x1b[31m42\x1b[39m; \x1b[36m/* was\x1b[39m\x1b[0K\r\n"),
        ("   41 */ char c;", "0003333305555000", 0,
         b"   \x1b[36m41 */\x1b[39m \x1b[32mchar\x1b[39m c;\x1b[0K\r\n")]
-# The classes n.c uses: hl -> (name, ESC [ n m), as kilo.c's HL_* and editorSyntaxToColor().
+# The classes n.c uses: hl -> (name, ESC [ n m), as kilo.c's HL_* and editorSyntaxToColor(); for
+# HL_NORMAL, the 39 the frame sends itself (it never calls editorSyntaxToColor() for class 0, which
+# would return 37: see colour_source()).
 HL = {0: ("HL_NORMAL", 39), 3: ("HL_MLCOMMENT", 36), 5: ("HL_KEYWORD2", 32), 7: ("HL_NUMBER", 31)}
+
+
+def colour_source():
+    """Check what the legend says against kilo.c: editorSyntaxToColor() has no case for HL_NORMAL
+    (its default is 37), and the frame sends ESC [ 39 m itself for a class 0 byte."""
+    with open(os.path.join(TRACK, "kilo.c")) as f:
+        src = f.read()
+    fn = src[src.index("int editorSyntaxToColor(int hl) {"):]
+    fn = fn[:fn.index("\n}\n")]
+    assert "HL_NORMAL" not in fn and "default: return 37;" in fn
+    for name, code in HL.values():
+        assert name == "HL_NORMAL" or re.search(rf"case {name}: return {code};", fn), name
+    frame = src[src.index("} else if (hl[j] == HL_NORMAL) {"):]
+    frame = frame[:frame.index("} else {")]
+    assert 'abAppend(&ab,"\\x1b[39m",5);' in frame and "editorSyntaxToColor" not in frame
 
 
 def frame_tokens(data):
@@ -509,7 +526,9 @@ def highlighting():
                 x += 4
 
     # the classes, their colours
-    a.text(24, 222, "editorSyntaxToColor(): each class's colour, the n of ESC[n m", "tm", 11)
+    colour_source()
+    a.text(24, 222, "each class's colour, the n of ESC[n m: the frame's own 39 for 0, editorSyntaxToColor() for "
+                    "the rest", "tm", 11)
     for j, (k, (name, code)) in enumerate(sorted(HL.items())):
         x = 24 + j * 150
         if code == 39:

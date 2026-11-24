@@ -106,7 +106,7 @@ def experiments_in(root):
 
 
 def run_argv(root, args=()):
-    """./learn run research --at 03.01 -- mnist_lr lrs=[0.1] runs python3 -m experiments.mnist_lr
+    """./learn run research --at 03.01 -- mnist_lr "lrs=[0.1]" runs python3 -m experiments.mnist_lr
     with those settings in the project's directory (experiments/mnist_lr.py and experiments.mnist_lr
     work too); with nothing after --, a shell there."""
     names = experiments_in(root)
@@ -126,6 +126,14 @@ def run_argv(root, args=()):
         msg = f"no experiment {args[0]} at this lesson; the experiments here: {', '.join(names) or 'none'}"
         return [sys.executable, "-c", "import sys; sys.exit(sys.argv[1])", msg]
     return [sys.executable, "-B", "-m", f"experiments.{name}"] + list(args[1:])
+
+
+# Without a prompt, seconds of quiet that mean "done". An experiment prints nothing while a seed
+# trains: the longest quiet stretch of a run on any page is about 19 s on the machine in NOTES.md
+# (03.03's adam, with three other runs going), and no Run it may take over 60 s (plans/research.md,
+# Decisions: Time), so no stretch can either. Every run ends at the shell's prompt, which ends the
+# wait at once, so the long settle costs nothing when a run finishes.
+VERIFY_SETTLE = 60.0
 
 
 def verify_tools():

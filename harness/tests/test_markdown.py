@@ -1,10 +1,11 @@
 """Tests for lists in the markdown renderer: loose lists, and the paragraphs and code blocks an
-item holds."""
+item holds; and for inline spans nested in one another (code in a link's text)."""
 
+import random
 import re
 import unittest
 
-from harness.web.markdown import render
+from harness.web.markdown import inline, render
 
 # The shape of a lesson's "Writing ..., step by step" section: numbered steps separated by
 # blank lines, some with a second paragraph or a code block indented under them.
@@ -140,6 +141,118 @@ class SoftBreakTests(unittest.TestCase):
         self.assertIn("<code>wraps here</code>", out)
         out = render("a sentence that wraps to\n2. a number, `not\na list`")
         self.assertEqual(out, "<p>a sentence that wraps to 2. a number, <code>not a list</code></p>")
+
+
+def lesson(href):
+    """resolve_link as a lesson page has it: a lesson's file becomes its page."""
+    return "/t/x/01.02" if href.endswith(".md") else None
+
+
+class InlineNestingTests(unittest.TestCase):
+    """Code spans and links are set aside as placeholders while the rest of a line is read. One
+    span inside another (code in a link's text) must come out whole, never as a placeholder."""
+
+    def test_code_in_a_link_s_text(self):
+        self.assertEqual(render("See [antirez's `kilo.c`, the whole scanner](https://example.com/x) and `plain`."),
+                         '<p>See <a href="https://example.com/x">antirez&#x27;s <code>kilo.c</code>, the whole scanner</a>'
+                         ' and <code>plain</code>.</p>')
+        self.assertEqual(inline("[`a`](/u)"), '<a href="/u"><code>a</code></a>')
+        self.assertEqual(inline("[`a` and `b`](01.02-x.md)", lesson),
+                         '<a href="/t/x/01.02"><code>a</code> and <code>b</code></a>')
+
+    def test_code_in_bold_and_emphasis(self):
+        self.assertEqual(inline("**`a`** *`b`* _`c`_ __`d`__"),
+                         "<strong><code>a</code></strong> <em><code>b</code></em> <em><code>c</code></em> "
+                         "<strong><code>d</code></strong>")
+
+    def test_bold_and_emphasis_in_a_link_s_text(self):
+        self.assertEqual(inline("[**b** and *i*](/u)"), '<a href="/u"><strong>b</strong> and <em>i</em></a>')
+        self.assertEqual(inline("[**`x`** and *`y`*](/u)"),
+                         '<a href="/u"><strong><code>x</code></strong> and <em><code>y</code></em></a>')
+
+    def test_a_link_in_bold_or_emphasis(self):
+        self.assertEqual(inline("**[`x`](/u)** and *[`y` z](/v)*"),
+                         '<strong><a href="/u"><code>x</code></a></strong> and <em><a href="/v"><code>y</code> z</a></em>')
+
+    def test_in_every_block_that_reads_inline_spans(self):
+        self.assertIn('<h2 id="see-a-u">See <a href="/u"><code>a</code></a></h2>', render("## See [`a`](/u)"))
+        self.assertIn('<li><a href="/u"><code>a</code></a></li>', render("- [`a`](/u)\n- b"))
+        self.assertIn('<td><a href="/u"><code>a</code></a></td>', render("| h |\n|---|\n| [`a`](/u) |"))
+        self.assertIn('<blockquote><p><a href="/u"><code>a</code></a></p></blockquote>', render("> [`a`](/u)"))
+
+    def test_text_that_looks_like_a_placeholder(self):
+        # A placeholder is NUL, a number, NUL. The text's own NULs are dropped, so none can pose as one.
+        self.assertEqual(inline("a\x000\x00b \x001\x00 [`c`](/u) \x00"), 'a0b 1 <a href="/u"><code>c</code></a> ')
+        self.assertEqual(inline("[1`2`3](/0/1) `0` [`0` `1`](/2)"),
+                         '<a href="/0/1">1<code>2</code>3</a> <code>0</code> <a href="/2"><code>0</code> <code>1</code></a>')
+        self.assertEqual(inline("[x\x000\x00](/u\x00)"), '<a href="/u">x0</a>')
+        many = " ".join(f"`{k}`" for k in range(12))          # the link's code span is number 12: two digits
+        self.assertEqual(inline(many + " [`k`](/u)"),
+                         " ".join(f"<code>{k}</code>" for k in range(12)) + ' <a href="/u"><code>k</code></a>')
+
+    def test_unbalanced_backticks_and_brackets(self):
+        self.assertEqual(inline("[a `b](/u) c"), '<a href="/u">a `b</a> c')                 # no code span: a link
+        self.assertEqual(inline("[a `b](/u)` c"), "[a <code>b](/u)</code> c")               # the code span wins
+        self.assertEqual(inline("a]](/u) [b"), "a]](/u) [b")
+        self.assertEqual(inline("[a `b`](/u"), "[a <code>b</code>](/u")
+        self.assertEqual(inline("`` [a](/u) ``"), "<code>[a](/u)</code>")
+
+    def test_a_code_span_holding_link_syntax(self):
+        self.assertEqual(inline("[a `](` b](/u)"), '<a href="/u">a <code>](</code> b</a>')
+        self.assertEqual(inline("[`a[0]`](/u)"), '<a href="/u"><code>a[0]</code></a>')
+
+    def test_a_code_span_in_the_url_is_text_not_a_link(self):
+        seen = []
+        out = inline("[x](/a`b`c) [y](/u \"a `t` title\")", lambda h: seen.append(h))
+        self.assertEqual(out, '[x](/a<code>b</code>c) <a href="/u">y</a>')
+        self.assertEqual(seen, ["/u"])                                   # no URL with a placeholder in it
+        self.assertEqual(inline("[`a`](x.md)", lambda h: "/t/\x000\x00x"), '<a href="/t/0x"><code>a</code></a>')
+
+    def test_html_in_code_spans_and_link_text_stays_text(self):
+        out = inline('[<img src=x onerror=alert(1)> `<script>` say "`x`"](/u) `</a><b>`')
+        self.assertEqual(out, '<a href="/u">&lt;img src=x onerror=alert(1)&gt; <code>&lt;script&gt;</code> '
+                              'say &quot;<code>x</code>&quot;</a> <code>&lt;/a&gt;&lt;b&gt;</code>')
+
+    def test_a_refused_link_keeps_its_text_and_code(self):
+        for href in ("javascript:alert(1)", "//evil.example", "data:text/html,x"):
+            out = inline(f"[`a` b]({href})")
+            self.assertTrue(out.startswith("<code>a</code> b"), out)
+            self.assertNotIn("href", out)
+
+    def test_random_text_leaves_no_placeholder_and_no_raw_html(self):
+        rng = random.Random(1)
+        pieces = ["[", "]", "](", "](/u)", "(", ")", "`", "``", "*", "**", "_", " ", "a", "0", "12", "/u", "\x00",
+                  "\x000\x00", "<b>", "</a>", "&", '"', "'", "javascript:", "#", "01.02-x.md"]
+        tags = re.compile(r'</?(?:code|strong|em)>|<a href="[^"<>]*">|</a>')
+        for _ in range(5000):
+            text = "".join(rng.choice(pieces) for _ in range(rng.randint(1, 14)))
+            out = inline(text, lesson)
+            self.assertNotIn("\x00", out, text)
+            rest = tags.sub("", out)
+            self.assertNotIn("<", rest, text)
+            self.assertNotIn(">", rest, text)
+            for href in re.findall(r'href="([^"]*)"', out):
+                self.assertFalse(href.lower().startswith(("javascript:", "//")), text)
+
+    def test_ordinary_paragraphs_render_as_before(self):
+        # Outputs of the renderer before code spans in links were fixed, byte for byte.
+        for text, want in (
+            ("Plain text with **bold**, *emphasis*, _under_, __strong__, snake_case_name and `code < b && c`.",
+             "<p>Plain text with <strong>bold</strong>, <em>emphasis</em>, <em>under</em>, <strong>strong</strong>, "
+             "snake_case_name and <code>code &lt; b &amp;&amp; c</code>.</p>"),
+            ('A [link](https://e.com/?a=1&b=2 "title") and [a lesson](01.02-x.md), [**bold** text](/t/db) and [*it*](#frag).',
+             '<p>A <a href="https://e.com/?a=1&amp;b=2">link</a> and <a href="/t/x/01.02">a lesson</a>, '
+             '<a href="/t/db"><strong>bold</strong> text</a> and <a href="#frag"><em>it</em></a>.</p>'),
+            ("Refused: [c](javascript:alert(1)) [d](//evil.example) [e](data:text/html,x) and "
+             "<script>alert('x')</script> & \"q\".",
+             "<p>Refused: c) d e and &lt;script&gt;alert(&#x27;x&#x27;)&lt;/script&gt; &amp; &quot;q&quot;.</p>"),
+            ("Mixed `a` then **`b`** then *`c`* then `` d`e `` then a lone ` backtick and [ bracket ] (paren).",
+             "<p>Mixed <code>a</code> then <strong><code>b</code></strong> then <em><code>c</code></em> then "
+             "<code>d`e</code> then a lone ` backtick and [ bracket ] (paren).</p>"),
+            ("Numbers 0 1 22 next to `x`1 and 2`y` and [1](/2) 3.",
+             '<p>Numbers 0 1 22 next to <code>x</code>1 and 2<code>y</code> and <a href="/2">1</a> 3.</p>'),
+        ):
+            self.assertEqual(render(text, lesson), want)
 
 
 class CommentTests(unittest.TestCase):

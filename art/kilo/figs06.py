@@ -417,8 +417,8 @@ def hl0601():
     f.text(x0 + len(render) * bw + 4, y + 52, "19 classes", "tm", 10.5)
     # the runs, and what the frame sends for each
     ry = y + 98
-    f.text(24, ry, "the frame walks the row a byte at a time; it sends an escape code only where the class changes",
-           "tm", 10.5)
+    f.text(24, ry, "the frame walks the row a byte at a time; it sends an escape sequence only where the class "
+           "changes", "tm", 10.5)
     parts = [(0, 8, "#include", "class 0: the byte itself, in the default colour"),
              (8, 9, "ESC[7m A ESC[0m", "class 1: reverse video, A for the byte 1, then all back to normal"),
              (9, 19, " <stdio.h>", "class 0 again: the bytes themselves")]
@@ -798,8 +798,13 @@ def match0605():
     assert a.colors[0][13:18] == "bbbbb" and b.colors[0][13:18] == "bbbbb"
     assert "b" not in "".join(c.colors) and c.lines[6].startswith("        char order")
     assert b.lines[0].count("order") == 2 and b.colors[0].count("b") == 5
+    # After Escape the view is back where it was before the search: row 1 at the top, the cursor
+    # on it, the message line empty. The panel shows that top, down to row 10, the last match.
+    assert c.lines[:ROWS - 1] == shots[0].lines[:ROWS - 1] and c.colors[:ROWS - 1] == shots[0].colors[:ROWS - 1]
+    assert c.cursor == (0, 0)
+    assert c.lines[0] == COUNTDOWN.split("\n")[0] and c.lines[ROWS - 1] == ""
     f = Fig("f0605a", "Ctrl-F order, then Down, then Escape, at 06.05: the match is blue while it is the match, "
-            "and its row gets its own colours back as soon as it is not", 434)
+            "and its row gets its own colours back as soon as it is not", 533)
     f.text(24, 22, "kilo at 06.05, countdown.c on a terminal 16 rows by 56 columns; the top of the screen and "
            "the message line", "tm", 11)
     cw, rh = 6.4, 16.5
@@ -812,7 +817,7 @@ def match0605():
               (b, "Down: the next match", range(3), 10,
                "Row 7 gets its saved classes back. Row 10's are saved, and its first order is blue; "
                "the one in the comment is not."),
-              (c, "Escape: the search ends", range(6, 10), 1,
+              (c, "Escape: the search ends", range(10), 1,
                "Row 10 gets its classes back, and the view goes back to where it was. Nothing is "
                "blue.")]
     for shot, title, rows, first, note in panels:

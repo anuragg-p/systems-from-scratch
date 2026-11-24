@@ -11,7 +11,7 @@ Then MNIST, one pass, a few seeds: plain SGD at 0.05, momentum 0.9 at the
 same rate, and plain SGD at 0.5, the best rate of 03.01.
 
     python3 -m experiments.momentum          (needs MNIST: python3 -m data.fetch mnist)
-    python3 -m experiments.momentum runs=[]  the valley alone
+    python3 -m experiments.momentum "runs=[]"  the valley alone
 """
 
 import math

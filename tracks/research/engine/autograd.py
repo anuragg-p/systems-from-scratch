@@ -53,8 +53,8 @@ def gradcheck(func, inputs, eps=1e-6, atol=1e-5, rtol=1e-3):
         bad = np.abs(got - nudged) > atol + rtol * np.abs(nudged)
         if bad.any():
             i = int(np.argmax(bad))
+            place = tuple(int(j) for j in np.unravel_index(i, x.data.shape))
             raise RuntimeError(f"Jacobian mismatch for output 0 with respect to input {k}: at position "
-                               f"{np.unravel_index(i, x.data.shape)} backward gives {got[i]:.8g}, "
-                               f"the nudge {nudged[i]:.8g}")
+                               f"{place} backward gives {got[i]:.8g}, the nudge {nudged[i]:.8g}")
     return True
 # @end
