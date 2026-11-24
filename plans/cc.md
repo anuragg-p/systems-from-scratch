@@ -147,10 +147,11 @@ run. It never reads the host's system headers: a program includes
   compressed and no floating-point instructions. It writes the usual
   pseudo-instructions (`li`, `la`, `mv`, `call`, `ret`, `j`, `seqz`).
   An assembly file is assembled with the flags of what it links with.
-- Expressions: the temporaries `t0` to `t6` are a stack. `gen_expr(node,
+- Expressions: the temporaries `t0` to `t5` are a stack. `gen_expr(node,
   d)` leaves its value in the register at depth `d`; a binary operator
-  computes its left side at `d`, its right at `d + 1`. Past the seventh
-  the deepest live value is pushed to memory and popped after (02.06).
+  computes its left side at `d`, its right at `d + 1`. At the sixth the
+  left side is pushed to memory, the right side takes its register, and
+  the left comes back into `t6`, the spare (02.06).
   This is the scheme of the book's section 15.3.2 (read there). tcc keeps
   a value stack in registers too, as far as I remember: to be read from
   its source before a lesson says so. Upstream's push and pop of every
@@ -203,15 +204,20 @@ and listed in NOTES.md; no more than these:
    and compiles sums and differences (upstream's commits 2 and 3);
    `--tokens` prints every token the scanner now knows, with its line and
    column, which is what 01.02 to 01.04 show.
-3. From 02.01: tokens, tree, code. The input is one expression until
-   03.01, then real C: a single `int main() { ... }` with `int` locals,
-   until 04.02 allows any function.
+3. From 02.03: tokens, tree, code. At 02.01 and 02.02 the parser exists
+   and `--tree` prints what it builds, while form 2 still does the
+   compiling. The input is one expression until 03.01, then real C: a
+   single `int main() { ... }` with `int` locals, until 04.02 allows any
+   function. Every value is a 64-bit integer until module 06 gives nodes
+   types (as upstream until its commit 56); on what C defines for `int`
+   that gives gcc's answers.
 
 ## Modules (core), with the upstream commits each draws on
 
 00 The smallest compiler
-  00.01 From a number to a running program (1, 40)
-  00.02 What the assembler, the linker and the machine do with it (ours)
+  00.01 From a number to assembly (1, 40)
+  00.02 What the assembler, the linker and the machine do with it (ours:
+        `ccrun`, `rt/start.S`, `rt/link.ld`; the first run)
   00.03 The same answer as gcc: a test for every lesson (ours)
 01 Tokens
   01.01 A stream of tokens: numbers, plus and minus (2, 3)
@@ -220,8 +226,10 @@ and listed in NOTES.md; no more than these:
   01.04 Comments, character constants and strings (34 to 38, 43, 73, 80)
   01.05 Errors that point at the source (4, 19, 46)
 02 Expressions
-  02.01 A grammar, and a function for each rule (5)
-  02.02 The syntax tree (5; `--tree` ours)
+  02.01 A grammar, and a function for each rule (5: sums, and the tree
+        they build; `--tree` ours)
+  02.02 The syntax tree (5: `*`, `/` and parentheses; precedence is the
+        tree's shape)
   02.03 Code from a tree: registers as a stack (ours)
   02.04 Precedence and associativity: the whole table (83, 84, 94)
   02.05 Unary operators and comparisons (6, 7, 81, 82)
