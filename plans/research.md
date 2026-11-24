@@ -25,9 +25,9 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-Module 06 is on master whole: code, 31 tests, four lessons, module page,
-figures and cover; `./learn verify --fresh research 06` passes. In work,
-by an agent in its own worktree: module 07's code.
+Modules 06 and 07 are on master: 06 whole (code, tests, lessons, art),
+07 as code and 35 tests. In work, each by an agent in its own worktree:
+module 07's lessons, and module 08's code.
 
 After that, in this order: 07, 08 and 09, one module's code at a time,
 each module's lessons written while the next module's code is built
@@ -55,6 +55,13 @@ Decided on 2026-11-24 (Fable):
 - CIFAR-10 is fetched in its binary form (records of bytes), so the
   learner's reader parses bytes and nothing is unpickled.
 - The engine gains convolution in 06.01 and nothing after it.
+- Threads: nothing sets a thread count, from 06.02 on. The same seed on
+  the same machine at its default gives the same digits; another thread
+  count can change the last ones (07's small layers do), which is the
+  "across machines" case the pages already allow for.
+- A module's one long run goes to the paper's claim that needs it. A
+  lesson whose short run falls short says so, with the settings of a
+  longer run the reader can make and its measured time.
 
 Decided by the owner, 2026-11-14:
 - One track, a core and a shelf: the core runs from a first gradient to a
@@ -208,9 +215,23 @@ Built, as found:
   (held). Residual: 56 train better than 20 (held). The page's short
   run, 8 against 20 layers, shows only the plain half beyond noise.
 
+- 07.01 Shannon (1951): folded to his 27 symbols, the text's entropies
+  are 4.75, 4.09 and 3.32 bits against his 4.76, 4.03 and 3.32.
+- 07.02 Bengio et al. (2003): in the one-minute run the network is far
+  ahead of add-k counting but 0.058 bits behind the paper's own
+  baseline, deleted interpolation. In the recorded run (3 seeds, 20
+  minutes) every seed beats it at 3, 5 and 8 characters (2.346 against
+  2.416 at 5). Held, with the longer run; 8 characters no better than 5.
+- 07.03 The recurrent network is behind 07.02 at the page's budget
+  (2.540). It ignores what is more than 16 characters back; recall is
+  right after 10 blanks and at chance after 40; the gradient vanishes
+  even in the trained network, through tanh's flat ends.
+- 07.04 Bahdanau et al. (2015), figure 2: without attention copying
+  falls from 1.00 at length 2 to 0.16 at 20; with it 0.94 or better to
+  20, and 0.87, 0.80, 0.60 at 25, 30 and 40, beyond any length trained
+  on. Held, with a one-way encoder and greedy decoding.
+
 Still the plan:
-- 07.02 Neural language model: beats the count-based model in perplexity.
-- 07.04 Attention (Bahdanau): quality no longer falls with length.
 - 08 Transformer; 08.05 nucleus sampling against plain and top-k.
 - 09.01 BPE; 09.03 GPT-2: the published weights, the reference's logits.
 - 09.04 TinyStories: a model of a few million parameters tells a story.
