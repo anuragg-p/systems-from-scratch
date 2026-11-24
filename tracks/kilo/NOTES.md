@@ -2557,10 +2557,10 @@ them). `make clean` removes Lua's build too (from 09.01).
 
 | file | lines in tracks/ (markers in) | what it is |
 |---|---|---|
-| script.h | 43 | the limits, all of them; what kilo.c calls (scriptStart, scriptEval, scriptCall, scriptUnref, scriptRun) and what script.c calls in kilo.c (editorMessage, editorScriptReturned, disableRawMode) |
-| script.c | 743 | everything that includes lua.h: the state, the protected way in, errors, print, the dispatcher, references, the Lua on top, the count hook, the allocator, the panic function, kilo -l |
+| script.h | 48 | the limits, all of them; what kilo.c calls (scriptStart, scriptEval, scriptCall, scriptUnref, scriptKey, scriptKeysWaiting, scriptRun) and what script.c calls in kilo.c (editorMessage, editorScriptReturned, disableRawMode) |
+| script.c | 794 | everything that includes lua.h: the state, the protected way in, errors, print, the dispatcher, references, the Lua on top, the count hook and the keys it keeps, the allocator, the panic function, kilo -l |
 | api.h | 79 | the API's types (ApiType, ApiString, ApiValue, ApiError, ApiFn, ApiFunc) and the table's declaration |
-| kilo.c | 3647 | the hooks below, and the section "The API" above main(): the 25 functions, the table, --api-info, the prompt, keys by name, autocommands, highlights, the status line, kilo -l. No Lua header. |
+| kilo.c | 3711 | the hooks below, and the section "The API" above main(): the 25 functions, the table, --api-info, the prompt, keys by name, autocommands, highlights, the status line, kilo -l. No Lua header. |
 | Makefile | | from 09.01 `kilo.c script.c` and Lua's library |
 
 The project at each lesson (lines, `./learn files kilo --at 09.LL`):
@@ -2574,8 +2574,9 @@ The project at each lesson (lines, `./learn files kilo --at 09.LL`):
 | 09.05 | 1681 | 476 | 28 | 79 |
 | 09.06 | 1858 | 476 | 30 | 79 |
 | 09.07 | 1915 | 476 | 30 | 79 |
-| 09.08 | 1915 | 559 | 32 | 79 |
-| 09.09 | 1941 | 571 | 33 | 79 |
+| 09.08 | 1950 | 598 | 35 | 79 |
+| 09.09 | 1976 | 610 | 36 | 79 |
+| 09.10 | 1976 | 610 | 36 | 79 |
 
 ### The lessons, and how they divide the code
 
@@ -2772,6 +2773,7 @@ All in script.h, each tested:
 | HIGHLIGHT_MAX | 10000 | highlights at once, in all namespaces (0906) |
 | SCRIPT_MAX_MEMORY | 64 MB | what Lua may hold (0908) |
 | SCRIPT_HOOK_COUNT | 100000 | instructions between looks at the keyboard (0908) |
+| SCRIPT_KEYS_MAX | 4096 bytes | keys the count hook read while a script ran, kept for the editor; past it a byte is dropped, the one way a typed key is lost, and still looked at for Ctrl-C (0908) |
 | (the message line) | 79 bytes | E.statusmsg, then the screen's width (0901, 0908) |
 
 ### Invariants, and where each is tested
@@ -2870,6 +2872,25 @@ All in script.h, each tested:
   would otherwise catch "interrupted" and go on (`while true do
   pcall(function() while true do end end) end`, 0908). Its place is level
   0 for luaL_where: a count hook runs inside the function it stops.
+- **The keys the count hook reads are kept** (2026-11-25; until then it
+  dropped every byte but Ctrl-C, and with colour.lua loaded a paste of 60
+  letters arrived as 5: "09.10, the lesson: what its runs found"). The
+  hook keeps each byte that is not Ctrl-C, in order, in S.keys
+  (SCRIPT_KEYS_MAX, 4096). editorReadKey() reads every byte through
+  scriptKey(), which takes a kept one first and else read()s the terminal
+  (an `@from 09.08` line for each read(), the old read() its `@else`: no
+  project before 09.08 changes). An escape sequence split between the
+  two is still one key, if its next byte comes within VTIME (0908). A
+  Ctrl-C throws away the bytes kept before it (keys typed into a script
+  that went wrong are not wanted), and those after it in the same read
+  are kept. Past 4096 bytes waiting a byte is dropped, the one way a typed
+  key is lost, but a Ctrl-C is still seen (0908). The prompt (input(),
+  Ctrl-E) and find read through editorReadKey(), so they get kept keys
+  too. In the finished tree module 07's lspWaitKey(fd) is skipped while
+  kept bytes wait, as it would wait on the terminal with them unread: a
+  block nested in 07.04's, at no lesson (none has both 07 and 09); 0910
+  with the scripted server, and without the skip 29 of 60 arrived.
+  `kilo.test_keys()` (`@internal`) says how many bytes are kept.
 - **A full collection after any error** at the outermost return, not only
   after a memory error.
 - **luaL_newstate() to 09.07, lua_newstate() with kilo's allocator and
@@ -3068,6 +3089,13 @@ code) and after (09.09):
 | `kilo.test_panic()` (the aid) | (luaL_newstate's panic: a line on standard error, then abort(), the terminal left raw) | `kilo: Lua panic: a panic, on purpose`, status 1, the terminal put back |
 | a KeyPress function that takes every key | (not before 09.05) | Ctrl-Q still quits |
 | a finalizer that never ends, at Ctrl-Q | (terminal put back first from 09.01) | hangs, the terminal back; Ctrl-C ends kilo (SIGINT) |
+
+Keys typed while a script runs (2026-11-25, Departures, "The keys the
+count hook reads are kept"; 0908): 63 letters in two writes during a
+script of 0.5 s all arrive, in order; ESC read by the hook and `[A` 50 ms
+after it: Up; 0.4 s after it: the Escape key, then `[A` as text; `abc`
+during an endless loop, then `def`, Ctrl-C, `ghi` in one write: `ghi`
+alone arrives; 5000 digits: the first 4096.
 
 ### 09.09 The editor without its screen
 
@@ -4054,6 +4082,10 @@ pseudo-terminal with track.py's Editor; the lesson's sum.c (10 lines).
   frame, are never lost. Not changed (09.08's design; script.c says
   "Other keys typed while a script runs are dropped"), but with a plugin
   that works on every key a paste loses most of itself.
+  - 2026-11-25: fixed. The hook keeps those bytes (SCRIPT_KEYS_MAX, 4096)
+    and editorReadKey() takes them before the terminal's (Departures,
+    "The keys the count hook reads are kept"): 60 of 60 at 09.10 and in
+    the finished tree with the scripted server (0910).
 - **The two load orders on sum.c.** vi, then find: Ctrl-N, `total`: `t`
   taken by vi (nothing), `o` opens an empty row 1 and insert mode, `tal`
   to the find (the `int total` row at the top, `7/12`), the first Escape to vi (normal
@@ -4254,7 +4286,7 @@ and tests/):
   is the file as it was; from 08.02 it is saved with the edits, as in the
   core.
 
-For module 09 (the test aid `@internal` in script.c, the rest in track.py
+For module 09 (the test aids `@internal` in script.c, the rest in track.py
 and tests/):
 
 - `edit(..., init=None)`, the default, sets KILO_INIT to the empty string,
@@ -4269,6 +4301,8 @@ and tests/):
   "..."`, which shows true or false): the line holds 79 bytes.
 - `kilo.test_panic()` (`@internal`) asks for an error outside any
   protected call, the one way to reach the panic function (0908).
+  `kilo.test_keys()` (`@internal`) says how many bytes the count hook has
+  kept, so that a test knows a key has been read into them (0908).
 - tests/api_fuzz.py writes random calls of every API function as Lua:
   0908 runs 10 blocks of 300 in the editor, a block a key, the screen drawn
   after each, under ASan and UBSan (input, quit and keys that read the
