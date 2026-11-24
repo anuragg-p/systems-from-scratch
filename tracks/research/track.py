@@ -583,15 +583,20 @@ EXPERIMENTS.update({
     "tokenizer": ("09.02", ["repeats=1", "size=300"], r"s of reading, training and encoding on cpu"),
     "gpt2": ("09.03", ["test_tokens=300", "warm=16", "wrong_windows=1", "prompts=2", "prompt_tokens=8", "length=6",
                        "seeds=1", "greedy=4"], r"s of loading, scoring and sampling on cpu"),
+    "tinystories": ("09.04", ["seeds=1", "steps=5", "layers=1", "width=16", "heads=2", "context=16", "every=2", "held=4",
+                              "held_stories=20", "samples=2", "length=20", "checkpoint=none"],
+                    r"s of tokenising, training, scoring and telling on cpu"),
 })
-DATASET_OF.update({"bpe": None, "tokenizer": "gpt2", "gpt2": "gpt2"})
+DATASET_OF.update({"bpe": None, "tokenizer": "gpt2", "gpt2": "gpt2", "tinystories": "tinystories"})
 
 # The downloads of module 09 (data/fetch.py has their SHA-256s too), file by file with their sizes, and their names
 # in a test's line.
 DATASET_FILES = {
     "gpt2": {"vocab.json": 1042301, "merges.txt": 456318, "model.safetensors": 548105171},
+    "tinystories": {"train.txt": 67108864, "valid.txt": 19447282},
 }
-DATASET_NAMES = {"gpt2": "GPT-2 (its vocabulary, merges and weights)"}
+DATASET_NAMES = {"gpt2": "GPT-2 (its vocabulary, merges and weights)",
+                 "tinystories": "TinyStories (64 MiB of its training stories, and its validation stories)"}
 _have_before_09, _need_before_09 = have_dataset, need
 
 
@@ -621,3 +626,11 @@ def need(t, dataset="mnist", skip=False):
 
 
 TOOLS["gpt2"] = lambda: have_dataset("gpt2")
+TOOLS["tinystories"] = lambda: have_dataset("tinystories")
+
+# The long run of 09.04, recorded as 08.04's is (experiments/tinystories.py with out=experiments/recorded): every
+# config.json, log.jsonl and summary.json, the curves, what it printed (its stories with it); not its checkpoint. The
+# first glob that matches a file places it, so this narrower one goes first too.
+FILES_FROM = {"experiments/recorded/tinystories/*": "09.04", **FILES_FROM}
+DATA["experiments/recorded/tinystories/*"] = ("the long run of experiments/tinystories.py (09.04), recorded on the "
+                                              "machine in NOTES.md")

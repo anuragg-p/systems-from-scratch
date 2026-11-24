@@ -3,6 +3,7 @@
     python3 -m data.fetch mnist      MNIST's four files, 11,594,722 bytes in all
     python3 -m data.fetch cifar10    CIFAR-10, one archive of 170,052,171 bytes, unpacked  # @from 06.03
     python3 -m data.fetch gpt2       GPT-2 small: its vocabulary, merges and weights, 549,603,790 bytes  # @from 09.02
+    python3 -m data.fetch tinystories   TinyStories: 64 MiB of its training stories, its validation stories  # @from 09.04
     python3 -m data.fetch            what can be fetched, and whether it is here
 
 Nothing else in the track downloads anything. A script that needs a dataset
@@ -33,6 +34,17 @@ and weights (model.safetensors), from the openai-community/gpt2
 repository on Hugging Face at one fixed commit. Its model card gives the
 licence as MIT, the repository's licence file a modified MIT. A dropped
 connection carries on where it stopped.
+# @end
+# @from 09.04
+
+TinyStories (Eldan and Li, "TinyStories: How Small Can Language Models
+Be and Still Speak Coherent English?", 2023): short stories written by
+GPT-3.5 and GPT-4 in words a small child knows, from the
+roneneldan/TinyStories dataset on Hugging Face at one fixed commit,
+under the CDLA-Sharing-1.0 licence its card gives. Not all of it: the
+first 64 MiB of TinyStories-train.txt (the file the paper's models were
+trained on; it is 1.9 GB), fetched as one range of bytes, and the whole
+of TinyStories-valid.txt, 19 MB, for stories no model here trains on.
 # @end
 """
 
@@ -76,6 +88,17 @@ DATASETS = {
             "merges.txt": (456318, "1ce1664773c50f3e0cc8842619a93edc4624525b728b188a9e0be33b7726adc5"),
             "model.safetensors": (548105171, "248dfc3911869ec493c76e65bf2fcf7f615828b0254c12b473182f0f81d3a707"),
         },
+    },
+    # @end
+    # @from 09.04
+    "tinystories": {
+        "url": "https://huggingface.co/datasets/roneneldan/TinyStories/resolve/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64/",
+        "each": True,
+        "files": {
+            "train.txt": (67108864, "1aa3e81618481ba1bd7eab1bd092232bcb3c42699f7c7ab011fe4b7488788d82"),
+            "valid.txt": (19447282, "94e431816c4cce81ff71e4408ff8d3bda9a42e8d2663986697c3954288cb38b4"),
+        },
+        "ranges": {"train.txt": ("TinyStories-train.txt", 0), "valid.txt": ("TinyStories-valid.txt", 0)},
     },
     # @end
 }
