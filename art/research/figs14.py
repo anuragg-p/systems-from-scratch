@@ -735,7 +735,7 @@ def verdicts1404():
             f.circle(X(math.sqrt(pn[0] * pn[1])), y, 4.5, "s f")
         elif pn:
             f.text(x1, y - 6, "the paper: about 0", "tm", 9.5, "end")
-        f.circle(X(c["value"]), y, 3.5, "a fa" if kind == "did not hold" else ("s t" if cls == "t" else "m tm"))
+        f.circle(X(c["value"]), y, 3.5, "a fa" if kind == "did not hold" else "s t")
         f.text(X(c["value"]) + (8 if X(c["value"]) < x1 - 40 else -8), y - 6, sig(c["value"]),
                "ta" if kind == "did not hold" else "t", 9.5, "start" if X(c["value"]) < x1 - 40 else "end", mono=True)
         f.text(488, y + 4, kind, cls, 10.5, weight=700 if kind != "held in direction only" else 600)
