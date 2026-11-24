@@ -27,7 +27,7 @@ from models.gpt import GPT                                            # @from 08
 # cfg.context characters, starting at places drawn from run.rng, and the
 # character after every position of each as its target. AdamW at cfg.lr,
 # its weight decay cfg.weight_decay on the weight matrices and embeddings
-# only (not on biases or layer norms, as GPT-2 does), the rate rising over
+# only (not on biases or layer norms, as nanoGPT does), the rate rising over
 # cfg.warmup steps and then falling to 0 along half a cosine; the gradient
 # clipped to a length of cfg.clip (0: not clipped). Every cfg.every steps,
 # and at the last, the batch's bits go to the run's log. Returns the model.

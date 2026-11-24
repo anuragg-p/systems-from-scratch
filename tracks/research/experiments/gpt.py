@@ -36,7 +36,8 @@ CONFIG = dict(layers=4, heads=4, width=64, context=64, batch=32, steps=300, lr=0
               clip=1.0, dropouts=[0.0, 0.2], seeds=2, every=50, held=64, ks=[1.0, 0.3, 0.1, 0.03, 0.01, 0.003, 0.001],
               orders=7, length=500, device="cpu")
 
-# Module 07's networks, test bits per character, as their own runs printed them (NOTES.md has the runs).
+# Module 07's networks, test bits per character, as their own runs printed them (07.02's long run is recorded in
+# experiments/recorded/nplm; 07.03's 5000 steps was a longer run of that lesson's network, one seed).
 NETWORKS = [("07.02's network, 5 characters (its short run)", 2.474),
             ("07.02's network, 5 characters (its long run, 20 minutes)", 2.346),
             ("07.02's network and interpolation, half each (long run, 5)", 2.294),
