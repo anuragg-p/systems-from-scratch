@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 492.8" fill="none">
+<title>Three rules, three functions: each function reads exactly what its rule describes</title>
+<defs><marker id="f0201a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0201a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0201a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="18" font-size="11.5">the rules, from parse.c&#x27;s comments</text>
+<text class="tm" x="268" y="18" font-size="11.5">the functions in parse.c at 02.01</text>
+<rect class="s fs" x="260" y="36" width="364" height="50.8" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="268" y="51" font-size="10.5">static Node *expr(Token **rest, Token *tok) {</text>
+<text class="t mono" x="268" y="64.6" font-size="10.5"><tspan x="280.6">return</tspan><tspan x="324.7" class="ta">add(rest, tok)</tspan><tspan x="412.9">;</tspan></text>
+<text class="t mono" x="268" y="78.2" font-size="10.5">}</text>
+<text class="t mono" x="24" y="51" font-size="12">expr = add</text>
+<text class="t mono" x="24" y="51" font-size="12" font-weight="700">expr</text>
+<line class="s" x1="104" y1="47" x2="256" y2="47" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0201a-ah)"/>
+<line class="a" x1="74.4" y1="55" x2="96" y2="55" stroke-width="1.5" stroke-linecap="round"/>
+<path class="a" d="M85.2 56.0 C85.2 60.6 208 60.6 256 60.6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0201a-aa)"/>
+<rect class="s fs" x="260" y="100.8" width="364" height="241.2" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="268" y="115.8" font-size="10.5">static Node *add(Token **rest, Token *tok) {</text>
+<text class="t mono" x="268" y="129.4" font-size="10.5"><tspan x="280.6">Node *node =</tspan><tspan x="362.5" class="ta">primary(&amp;tok, tok)</tspan><tspan x="475.9">;</tspan></text>
+<text class="t mono" x="268" y="156.6" font-size="10.5"><tspan x="280.6">for (;;) {</tspan></text>
+<text class="t mono" x="268" y="170.2" font-size="10.5"><tspan x="293.2">Token *start = tok;</tspan></text>
+<text class="t mono" x="268" y="197.4" font-size="10.5"><tspan x="293.2">if (equal(tok, &quot;+&quot;)) {</tspan></text>
+<text class="t mono" x="268" y="211" font-size="10.5"><tspan x="305.8">node = new_binary(ND_ADD, node,</tspan></text>
+<text class="t mono" x="268" y="224.6" font-size="10.5"><tspan x="331" class="ta">primary(&amp;tok, tok-&gt;next)</tspan><tspan x="482.2">, start);</tspan></text>
+<text class="t mono" x="268" y="238.2" font-size="10.5"><tspan x="305.8">continue;</tspan></text>
+<text class="t mono" x="268" y="251.8" font-size="10.5"><tspan x="293.2">}</tspan></text>
+<text class="t mono" x="268" y="265.4" font-size="10.5"><tspan x="293.2">if (</tspan><tspan x="318.4" class="ta">equal(tok, &quot;-&quot;)</tspan><tspan x="412.9">) ...</tspan></text>
+<text class="tm" x="452.4" y="265.4" font-size="10.5">the same, ND_SUB</text>
+<text class="t mono" x="268" y="292.6" font-size="10.5"><tspan x="293.2">*rest = tok;</tspan></text>
+<text class="t mono" x="268" y="306.2" font-size="10.5"><tspan x="293.2">return node;</tspan></text>
+<text class="t mono" x="268" y="319.8" font-size="10.5"><tspan x="280.6">}</tspan></text>
+<text class="t mono" x="268" y="333.4" font-size="10.5">}</text>
+<text class="t mono" x="24" y="115.8" font-size="12">add = primary</text>
+<text class="t mono" x="24" y="132.8" font-size="12"><tspan x="38.4">(&quot;+&quot; primary | &quot;-&quot; primary)*</tspan></text>
+<text class="t mono" x="24" y="115.8" font-size="12" font-weight="700">add</text>
+<line class="s" x1="125.6" y1="111.8" x2="256" y2="111.8" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0201a-ah)"/>
+<line class="a" x1="67.2" y1="119.8" x2="117.6" y2="119.8" stroke-width="1.5" stroke-linecap="round"/>
+<path class="a" d="M92.4 120.8 C92.4 125.4 208 125.4 256 125.4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0201a-aa)"/>
+<line class="a" x1="45.6" y1="136.8" x2="124.8" y2="136.8" stroke-width="1.5" stroke-linecap="round"/>
+<path class="a" d="M85.2 137.8 C85.2 220.6 208 220.6 256 220.6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0201a-aa)"/>
+<line class="a" x1="146.4" y1="136.8" x2="225.6" y2="136.8" stroke-width="1.5" stroke-linecap="round"/>
+<path class="a" d="M186.0 137.8 C186.0 261.4 208 261.4 256 261.4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0201a-aa)"/>
+<rect class="s fs" x="260" y="356" width="364" height="118.8" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="268" y="371" font-size="10.5">static Node *primary(Token **rest, Token *tok) {</text>
+<text class="t mono" x="268" y="384.6" font-size="10.5"><tspan x="280.6">if (tok-&gt;kind ==</tspan><tspan x="387.7" class="ta">TK_NUM</tspan><tspan x="425.5">) {</tspan></text>
+<text class="t mono" x="268" y="398.2" font-size="10.5"><tspan x="293.2">Node *node = new_num(tok-&gt;val, tok);</tspan></text>
+<text class="t mono" x="268" y="411.8" font-size="10.5"><tspan x="293.2">*rest = tok-&gt;next;</tspan></text>
+<text class="t mono" x="268" y="425.4" font-size="10.5"><tspan x="293.2">return node;</tspan></text>
+<text class="t mono" x="268" y="439" font-size="10.5"><tspan x="280.6">}</tspan></text>
+<text class="t mono" x="268" y="452.6" font-size="10.5"><tspan x="280.6">error_tok(tok, &quot;expected an expression&quot;);</tspan></text>
+<text class="t mono" x="268" y="466.2" font-size="10.5">}</text>
+<text class="t mono" x="24" y="371" font-size="12">primary = num</text>
+<text class="t mono" x="24" y="371" font-size="12" font-weight="700">primary</text>
+<line class="s" x1="125.6" y1="367" x2="256" y2="367" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0201a-ah)"/>
+<line class="a" x1="96" y1="375" x2="117.6" y2="375" stroke-width="1.5" stroke-linecap="round"/>
+<path class="a" d="M106.8 376.0 C106.8 380.6 208 380.6 256 380.6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0201a-aa)"/>
+</svg>

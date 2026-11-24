@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 236" fill="none">
+<title>What the compiler does with the tokens at 01.01: one total in a0, each number through t0</title>
+<defs><marker id="f0101b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0101b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0101b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11.5">the tokens of 5 + 20 - 4, and the lines ./cc writes for each group</text>
+<rect class="s fs" x="79" y="36" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="92" y="54.04" font-size="14" font-weight="600" text-anchor="middle">5</text>
+<path class="m" d="M75 64 L75 70 L109 70 L109 64" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="92" y1="70" x2="92" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0101b-am)"/>
+<rect class="s fs" x="48.8" y="86" width="86.4" height="36" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="60.8" y="104" font-size="13">li a0, 5</text>
+<text class="t" x="92" y="172" font-size="16" font-weight="700" text-anchor="middle"><tspan class="ta mono">a0</tspan><tspan class="ta mono"> = 5</tspan></text>
+<rect class="s fs" x="266.6" y="36" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="279.6" y="54.04" font-size="14" font-weight="600" text-anchor="middle">+</text>
+<rect class="s fs" x="300.6" y="36" width="32.8" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="317" y="54.04" font-size="14" font-weight="600" text-anchor="middle">20</text>
+<path class="m" d="M262.6 64 L262.6 70 L337.4 70 L337.4 64" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="300" y1="70" x2="300" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0101b-am)"/>
+<rect class="s fs" x="233.4" y="86" width="133.2" height="56" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="245.4" y="104" font-size="13">li t0, 20</text>
+<text class="t mono" x="245.4" y="124" font-size="13">add a0, a0, t0</text>
+<text class="t" x="300" y="172" font-size="16" font-weight="700" text-anchor="middle"><tspan class="ta mono">a0</tspan><tspan class="ta mono"> = 25</tspan></text>
+<line class="a" x1="132" y1="167" x2="260" y2="167" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0101b-aa)"/>
+<rect class="s fs" x="486" y="36" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="499" y="54.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="520" y="36" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="533" y="54.04" font-size="14" font-weight="600" text-anchor="middle">4</text>
+<path class="m" d="M482 64 L482 70 L550 70 L550 64" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="516" y1="70" x2="516" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0101b-am)"/>
+<rect class="s fs" x="449.4" y="86" width="133.2" height="56" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="461.4" y="104" font-size="13">li t0, 4</text>
+<text class="t mono" x="461.4" y="124" font-size="13">sub a0, a0, t0</text>
+<text class="t" x="516" y="172" font-size="16" font-weight="700" text-anchor="middle"><tspan class="ta mono">a0</tspan><tspan class="ta mono"> = 21</tspan></text>
+<line class="a" x1="340" y1="167" x2="476" y2="167" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0101b-aa)"/>
+<text class="tm" x="24" y="216" font-size="11.5">Then ret: main returns a0, and ./ccrun try.c exits with 21. Anything but a number, + or - stops it.</text>
+</svg>

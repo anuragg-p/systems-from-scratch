@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 402" fill="none">
+<title>The linked program in the machine&#x27;s memory, and the test device</title>
+<defs><marker id="f0002a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0002a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0002a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="234" y="18" font-size="11.5" text-anchor="middle">the machine&#x27;s memory, low addresses at the bottom</text>
+<rect class="s f" x="150" y="40" width="168" height="136" rx="0" stroke-width="1.5"/>
+<text class="t" x="234" y="68" font-size="13.5" font-weight="700" text-anchor="middle">the stack</text>
+<text class="tm" x="234" y="86" font-size="11.5" text-anchor="middle">64 KiB, still empty</text>
+<line class="s" x1="234" y1="98" x2="234" y2="132" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0002a-ah)"/>
+<text class="tm" x="242" y="120" font-size="11">it grows down</text>
+<text class="tm" x="234" y="166" font-size="10.5" text-anchor="middle">(not to scale)</text>
+<text class="t mono" x="140" y="44" font-size="12" text-anchor="end">0x80010040</text>
+<text class="t" x="334" y="44" font-size="12.5"><tspan class="t mono">stack_top</tspan><tspan class="t">: _start sets sp here</tspan></text>
+<rect class="s fs" x="150" y="176" width="168" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="162" y="196" font-size="13" font-weight="700">main</text>
+<text class="tm" x="308" y="196" font-size="11" text-anchor="end">2 instructions</text>
+<rect class="a af" x="150" y="206" width="168" height="64" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="162" y="230" font-size="13" font-weight="700">_start</text>
+<text class="ta" x="162" y="248" font-size="11">14 instructions,</text>
+<text class="ta" x="162" y="262" font-size="11">from rt/start.S</text>
+<text class="tm mono" x="140" y="179.99" font-size="11" text-anchor="end">0x80000040</text>
+<text class="t mono" x="140" y="198" font-size="12" text-anchor="end">0x80000038</text>
+<line class="m" x1="143" y1="194" x2="150" y2="194" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="ta mono" x="140" y="274" font-size="12" text-anchor="end">0x80000000</text>
+<text class="t" x="334" y="196" font-size="12">prog.s: li a0, 42 and ret</text>
+<text class="ta" x="334" y="230" font-size="12.5" font-weight="700">where QEMU&#x27;s reset code jumps to,</text>
+<text class="ta" x="334" y="246" font-size="12.5" font-weight="700">the first address of RAM:</text>
+<text class="ta" x="334" y="262" font-size="12.5" font-weight="700">link.ld puts _start first</text>
+<path class="m" d="M150 270 V290.0 M318 270 V290.0 M150 326.0 V346 M318 326.0 V346" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="m" d="M143 294.0 l7 -4 l7 4 M311 294.0 l7 -4 l7 4 M143 326.0 l7 -4 l7 4 M311 326.0 l7 -4 l7 4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm" x="234" y="307" font-size="11" text-anchor="middle">2 GiB of addresses</text>
+<text class="tm" x="234" y="321" font-size="11" text-anchor="middle">with nothing at them</text>
+<rect class="s f" x="150" y="346" width="168" height="36" rx="0" stroke-width="1.5"/>
+<text class="t" x="234" y="369" font-size="13" font-weight="700" text-anchor="middle">the test device</text>
+<text class="t mono" x="140" y="368" font-size="12" text-anchor="end">0x00100000</text>
+<line class="m" x1="143" y1="364" x2="150" y2="364" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="t" x="334" y="361" font-size="12">not memory: a store here stops QEMU,</text>
+<text class="t" x="334" y="377" font-size="12">and 0x2a3333 makes it exit with 42</text>
+</svg>

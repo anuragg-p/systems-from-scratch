@@ -1,0 +1,189 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Parsing 5 + 20 - 4: the function running, the token it looks at, the tree so far</title>
+<defs><marker id="f0201b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0201b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0201b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11.5">the tokens</text>
+<rect class="s fs" x="24" y="40" width="30" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="39" y="60" font-size="14" font-weight="600" text-anchor="middle">5</text>
+<rect class="s fs" x="64" y="40" width="30" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="79" y="60" font-size="14" font-weight="600" text-anchor="middle">+</text>
+<rect class="s fs" x="104" y="40" width="34.8" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="121.4" y="60" font-size="14" font-weight="600" text-anchor="middle">20</text>
+<rect class="s fs" x="148.8" y="40" width="30" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="163.8" y="60" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="188.8" y="40" width="30" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="203.8" y="60" font-size="14" font-weight="600" text-anchor="middle">4</text>
+<rect class="m f" x="228.8" y="40" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="250.4" y="60" font-size="11" font-weight="600" text-anchor="middle">EOF</text>
+<text class="tm" x="24" y="112" font-size="11.5">the functions running, the last called on top</text>
+<rect class="s f" x="24" y="246" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="266" font-size="13.5" font-weight="500">parse</text>
+<text class="tm" x="330" y="112" font-size="11.5">the tree so far</text>
+<g class="step"><title>parse calls expr, at the token 5.</title>
+<rect class="a" x="21" y="37" width="36" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M33.0 84 L39.0 77 L45.0 84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="24" y="210" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="230" font-size="13.5" font-weight="700">expr</text>
+</g>
+<g class="step"><title>expr calls add, at the token 5.</title>
+<rect class="a" x="21" y="37" width="36" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M33.0 84 L39.0 77 L45.0 84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="24" y="210" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="230" font-size="13.5" font-weight="500">expr</text>
+<rect class="a af" x="24" y="174" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="194" font-size="13.5" font-weight="700">add</text>
+</g>
+<g class="step"><title>add calls primary, at the token 5.</title>
+<rect class="a" x="21" y="37" width="36" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M33.0 84 L39.0 77 L45.0 84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="24" y="210" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="230" font-size="13.5" font-weight="500">expr</text>
+<rect class="s f" x="24" y="174" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="194" font-size="13.5" font-weight="500">add</text>
+<rect class="a af" x="24" y="138" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="158" font-size="13.5" font-weight="700">primary</text>
+</g>
+<g class="step"><title>primary makes a num node, 5, and returns it; the next token is +.</title>
+<rect class="a" x="61" y="37" width="36" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M73.0 84 L79.0 77 L85.0 84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="24" y="210" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="230" font-size="13.5" font-weight="500">expr</text>
+<rect class="a af" x="24" y="174" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="194" font-size="13.5" font-weight="700">add</text>
+<circle class="a af" cx="340" cy="254" r="17" stroke-width="1.5"/>
+<text class="ta mono" x="340" y="259" font-size="14" font-weight="700" text-anchor="middle">5</text>
+</g>
+<g class="step"><title>add sees +, steps past it, and calls primary for the operand after it, 20.</title>
+<rect class="a" x="101" y="37" width="40.8" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M115.4 84 L121.4 77 L127.4 84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="24" y="210" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="230" font-size="13.5" font-weight="500">expr</text>
+<rect class="s f" x="24" y="174" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="194" font-size="13.5" font-weight="500">add</text>
+<rect class="a af" x="24" y="138" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="158" font-size="13.5" font-weight="700">primary</text>
+<circle class="s f" cx="340" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="340" y="259" font-size="14" font-weight="700" text-anchor="middle">5</text>
+</g>
+<g class="step"><title>primary makes a num node, 20, and returns it; the next token is -.</title>
+<rect class="a" x="145.8" y="37" width="36" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M157.8 84 L163.8 77 L169.8 84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="24" y="210" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="230" font-size="13.5" font-weight="500">expr</text>
+<rect class="a af" x="24" y="174" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="194" font-size="13.5" font-weight="700">add</text>
+<circle class="s f" cx="340" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="340" y="259" font-size="14" font-weight="700" text-anchor="middle">5</text>
+<circle class="a af" cx="426" cy="254" r="17" stroke-width="1.5"/>
+<text class="ta mono" x="426" y="259" font-size="14" font-weight="700" text-anchor="middle">20</text>
+</g>
+<g class="step"><title>add joins 5 and 20 under a + node: that node is now add's tree so far, the left operand of whatever comes next.</title>
+<rect class="s f" x="24" y="210" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="230" font-size="13.5" font-weight="500">expr</text>
+<rect class="a af" x="24" y="174" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="194" font-size="13.5" font-weight="700">add</text>
+<line class="s" x1="372.17" y1="215.1" x2="350.83" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="393.83" y1="215.1" x2="415.17" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="340" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="340" y="259" font-size="14" font-weight="700" text-anchor="middle">5</text>
+<circle class="s f" cx="426" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="426" y="259" font-size="14" font-weight="700" text-anchor="middle">20</text>
+<circle class="a af" cx="383" cy="202" r="17" stroke-width="1.5"/>
+<text class="ta mono" x="383" y="207" font-size="14" font-weight="700" text-anchor="middle">+</text>
+</g>
+<g class="step"><title>add sees -, steps past it, and calls primary for the operand after it, 4.</title>
+<rect class="a" x="185.8" y="37" width="36" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M197.8 84 L203.8 77 L209.8 84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="24" y="210" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="230" font-size="13.5" font-weight="500">expr</text>
+<rect class="s f" x="24" y="174" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="194" font-size="13.5" font-weight="500">add</text>
+<rect class="a af" x="24" y="138" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="158" font-size="13.5" font-weight="700">primary</text>
+<line class="s" x1="372.17" y1="215.1" x2="350.83" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="393.83" y1="215.1" x2="415.17" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="340" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="340" y="259" font-size="14" font-weight="700" text-anchor="middle">5</text>
+<circle class="s f" cx="426" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="426" y="259" font-size="14" font-weight="700" text-anchor="middle">20</text>
+<circle class="s f" cx="383" cy="202" r="17" stroke-width="1.5"/>
+<text class="t mono" x="383" y="207" font-size="14" font-weight="700" text-anchor="middle">+</text>
+</g>
+<g class="step"><title>primary makes a num node, 4, and returns it; the next token is the end of the file.</title>
+<rect class="a" x="225.8" y="37" width="49.2" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M244.4 84 L250.4 77 L256.4 84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="24" y="210" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="230" font-size="13.5" font-weight="500">expr</text>
+<rect class="a af" x="24" y="174" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="194" font-size="13.5" font-weight="700">add</text>
+<line class="s" x1="372.17" y1="215.1" x2="350.83" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="393.83" y1="215.1" x2="415.17" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="340" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="340" y="259" font-size="14" font-weight="700" text-anchor="middle">5</text>
+<circle class="s f" cx="426" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="426" y="259" font-size="14" font-weight="700" text-anchor="middle">20</text>
+<circle class="s f" cx="383" cy="202" r="17" stroke-width="1.5"/>
+<text class="t mono" x="383" y="207" font-size="14" font-weight="700" text-anchor="middle">+</text>
+<circle class="a af" cx="512" cy="202" r="17" stroke-width="1.5"/>
+<text class="ta mono" x="512" y="207" font-size="14" font-weight="700" text-anchor="middle">4</text>
+</g>
+<g class="step"><title>add joins the tree so far and 4 under a - node: that node is now add's tree so far, the left operand of whatever comes next.</title>
+<rect class="s f" x="24" y="210" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="230" font-size="13.5" font-weight="500">expr</text>
+<rect class="a af" x="24" y="174" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="194" font-size="13.5" font-weight="700">add</text>
+<line class="s" x1="372.17" y1="215.1" x2="350.83" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="393.83" y1="215.1" x2="415.17" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="434.27" y1="160.67" x2="396.23" y2="191.33" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460.73" y1="160.67" x2="498.77" y2="191.33" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="340" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="340" y="259" font-size="14" font-weight="700" text-anchor="middle">5</text>
+<circle class="s f" cx="426" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="426" y="259" font-size="14" font-weight="700" text-anchor="middle">20</text>
+<circle class="s f" cx="383" cy="202" r="17" stroke-width="1.5"/>
+<text class="t mono" x="383" y="207" font-size="14" font-weight="700" text-anchor="middle">+</text>
+<circle class="s f" cx="512" cy="202" r="17" stroke-width="1.5"/>
+<text class="t mono" x="512" y="207" font-size="14" font-weight="700" text-anchor="middle">4</text>
+<circle class="a af" cx="447.5" cy="150" r="17" stroke-width="1.5"/>
+<text class="ta mono" x="447.5" y="155" font-size="14" font-weight="700" text-anchor="middle">-</text>
+</g>
+<g class="step"><title>add sees the end of the file, not + or -: its loop ends, and it returns its tree, the - node.</title>
+<rect class="a" x="225.8" y="37" width="49.2" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M244.4 84 L250.4 77 L256.4 84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="24" y="210" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="230" font-size="13.5" font-weight="700">expr</text>
+<line class="s" x1="372.17" y1="215.1" x2="350.83" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="393.83" y1="215.1" x2="415.17" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="434.27" y1="160.67" x2="396.23" y2="191.33" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460.73" y1="160.67" x2="498.77" y2="191.33" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="340" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="340" y="259" font-size="14" font-weight="700" text-anchor="middle">5</text>
+<circle class="s f" cx="426" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="426" y="259" font-size="14" font-weight="700" text-anchor="middle">20</text>
+<circle class="s f" cx="383" cy="202" r="17" stroke-width="1.5"/>
+<text class="t mono" x="383" y="207" font-size="14" font-weight="700" text-anchor="middle">+</text>
+<circle class="s f" cx="512" cy="202" r="17" stroke-width="1.5"/>
+<text class="t mono" x="512" y="207" font-size="14" font-weight="700" text-anchor="middle">4</text>
+<circle class="a af" cx="447.5" cy="150" r="17" stroke-width="1.5"/>
+<text class="ta mono" x="447.5" y="155" font-size="14" font-weight="700" text-anchor="middle">-</text>
+</g>
+<g class="step"><title>expr returns that node to parse, which checks that the end of the file is next: the tree --tree prints. It leans left because of the loop in add: each turn put the tree so far on the left of a new node, so 5 + 20 - 4 is (5 + 20) - 4.</title>
+<rect class="a" x="225.8" y="37" width="49.2" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M244.4 84 L250.4 77 L256.4 84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="a af" x="24" y="246" width="150" height="30" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="266" font-size="13.5" font-weight="700">parse</text>
+<line class="s" x1="372.17" y1="215.1" x2="350.83" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="393.83" y1="215.1" x2="415.17" y2="240.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="434.27" y1="160.67" x2="396.23" y2="191.33" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460.73" y1="160.67" x2="498.77" y2="191.33" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="340" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="340" y="259" font-size="14" font-weight="700" text-anchor="middle">5</text>
+<circle class="s f" cx="426" cy="254" r="17" stroke-width="1.5"/>
+<text class="t mono" x="426" y="259" font-size="14" font-weight="700" text-anchor="middle">20</text>
+<circle class="s f" cx="383" cy="202" r="17" stroke-width="1.5"/>
+<text class="t mono" x="383" y="207" font-size="14" font-weight="700" text-anchor="middle">+</text>
+<circle class="s f" cx="512" cy="202" r="17" stroke-width="1.5"/>
+<text class="t mono" x="512" y="207" font-size="14" font-weight="700" text-anchor="middle">4</text>
+<circle class="a af" cx="447.5" cy="150" r="17" stroke-width="1.5"/>
+<text class="ta mono" x="447.5" y="155" font-size="14" font-weight="700" text-anchor="middle">-</text>
+</g>
+</svg>

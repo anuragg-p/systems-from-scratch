@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Where a space changes the tokens and where it does not</title>
+<defs><marker id="f0102b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0102b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0102b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="18" font-size="11.5">the text</text>
+<text class="tm" x="212" y="18" font-size="11.5">its tokens, ./cc --tokens at 01.02</text>
+<rect class="s f" x="24" y="34" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="35" y="53.04" font-size="14" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="46" y="34" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="57" y="53.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="68" y="34" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="79" y="53.04" font-size="14" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s f" x="90" y="34" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="101" y="53.04" font-size="14" font-weight="600" text-anchor="middle">2</text>
+<line class="m" x1="178" y1="48" x2="204" y2="48" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102b-am)"/>
+<rect class="s fs" x="212" y="35" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="225" y="52.68" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<rect class="s fs" x="246" y="35" width="31.6" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="261.8" y="52.68" font-size="13" font-weight="600" text-anchor="middle">-&gt;</text>
+<rect class="s fs" x="285.6" y="35" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="298.6" y="52.68" font-size="13" font-weight="600" text-anchor="middle">2</text>
+<text class="tm" x="325.6" y="52.5" font-size="12">one operator, -&gt;</text>
+<rect class="s f" x="24" y="84" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="35" y="103.04" font-size="14" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="46" y="84" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="57" y="103.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="a af" x="68" y="84" width="22" height="28" rx="0" stroke-width="1.5"/>
+<circle class="m fa" cx="79" cy="98" r="1.6" stroke-width="1.5"/>
+<rect class="s f" x="90" y="84" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="101" y="103.04" font-size="14" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s f" x="112" y="84" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="123" y="103.04" font-size="14" font-weight="600" text-anchor="middle">2</text>
+<line class="m" x1="178" y1="98" x2="204" y2="98" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102b-am)"/>
+<rect class="s fs" x="212" y="85" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="225" y="102.68" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<rect class="s fs" x="246" y="85" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="259" y="102.68" font-size="13" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="280" y="85" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="293" y="102.68" font-size="13" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s fs" x="314" y="85" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="327" y="102.68" font-size="13" font-weight="600" text-anchor="middle">2</text>
+<text class="ta" x="354" y="102.5" font-size="12" font-weight="700">a space inside it: two operators</text>
+<rect class="s f" x="24" y="164" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="35" y="183.04" font-size="14" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="46" y="164" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="57" y="183.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="68" y="164" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="79" y="183.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="90" y="164" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="101" y="183.04" font-size="14" font-weight="600" text-anchor="middle">2</text>
+<line class="m" x1="178" y1="178" x2="204" y2="178" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102b-am)"/>
+<rect class="s fs" x="212" y="165" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="225" y="182.68" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<rect class="s fs" x="246" y="165" width="31.6" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="261.8" y="182.68" font-size="13" font-weight="600" text-anchor="middle">--</text>
+<rect class="s fs" x="285.6" y="165" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="298.6" y="182.68" font-size="13" font-weight="600" text-anchor="middle">2</text>
+<text class="tm" x="325.6" y="182.5" font-size="12">--, as written: the longest match</text>
+<rect class="s f" x="24" y="214" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="35" y="233.04" font-size="14" font-weight="600" text-anchor="middle">1</text>
+<rect class="s f" x="46" y="214" width="22" height="28" rx="0" stroke-width="1.5"/>
+<circle class="m" cx="57" cy="228" r="1.6" stroke-width="1.5"/>
+<rect class="s f" x="68" y="214" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="79" y="233.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="a af" x="90" y="214" width="22" height="28" rx="0" stroke-width="1.5"/>
+<circle class="m fa" cx="101" cy="228" r="1.6" stroke-width="1.5"/>
+<rect class="s f" x="112" y="214" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="123" y="233.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="134" y="214" width="22" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="145" y="233.04" font-size="14" font-weight="600" text-anchor="middle">2</text>
+<line class="m" x1="178" y1="228" x2="204" y2="228" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102b-am)"/>
+<rect class="s fs" x="212" y="215" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="225" y="232.68" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<rect class="s fs" x="246" y="215" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="259" y="232.68" font-size="13" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="280" y="215" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="293" y="232.68" font-size="13" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="314" y="215" width="26" height="26" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="327" y="232.68" font-size="13" font-weight="600" text-anchor="middle">2</text>
+<text class="ta" x="354" y="232.5" font-size="12" font-weight="700">the space between them: two minuses</text>
+<text class="tm" x="24" y="138" font-size="11.5">1 -&gt; 2 gives the same three tokens as 1-&gt;2: a space between two tokens changes nothing.</text>
+<text class="tm" x="24" y="268" font-size="11.5">1--2 scans as 1, --, 2 although 1 - -2 may be what was meant; the parser, in module 02, rejects it.</text>
+</svg>

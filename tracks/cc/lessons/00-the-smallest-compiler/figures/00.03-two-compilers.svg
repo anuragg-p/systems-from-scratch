@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 352" fill="none">
+<title>The same source through two compilers to the same machine</title>
+<defs><marker id="f0003a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0003a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0003a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11.5">./same try.c: every file below is in build/same/</text>
+<rect class="s f" x="104" y="44" width="78" height="40" rx="7" stroke-width="1.5"/>
+<text class="t mono" x="143" y="60" font-size="12" font-weight="700" text-anchor="middle">./cc</text>
+<text class="tm mono" x="143" y="75" font-size="10.5" text-anchor="middle">ours.s</text>
+<rect class="s f" x="196" y="44" width="78" height="40" rx="7" stroke-width="1.5"/>
+<text class="t" x="235" y="60" font-size="12" font-weight="700" text-anchor="middle">assemble</text>
+<text class="tm mono" x="235" y="75" font-size="10.5" text-anchor="middle">ours.o</text>
+<line class="s" x1="183" y1="64" x2="194" y2="64" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-ah)"/>
+<rect class="s f" x="288" y="44" width="78" height="40" rx="7" stroke-width="1.5"/>
+<text class="t" x="327" y="60" font-size="12" font-weight="700" text-anchor="middle">link</text>
+<text class="tm mono" x="327" y="75" font-size="10.5" text-anchor="middle">ours.elf</text>
+<line class="s" x1="275" y1="64" x2="286" y2="64" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-ah)"/>
+<rect class="s f" x="380" y="44" width="78" height="40" rx="7" stroke-width="1.5"/>
+<text class="t" x="419" y="60" font-size="12" font-weight="700" text-anchor="middle">run</text>
+<text class="tm mono" x="419" y="75" font-size="10.5" text-anchor="middle">QEMU</text>
+<line class="s" x1="367" y1="64" x2="378" y2="64" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-ah)"/>
+<rect class="s f" x="104" y="182" width="78" height="40" rx="7" stroke-width="1.5"/>
+<text class="t" x="143" y="198" font-size="12" font-weight="700" text-anchor="middle">wrap</text>
+<text class="tm mono" x="143" y="213" font-size="10.5" text-anchor="middle">gcc.c</text>
+<rect class="s f" x="196" y="182" width="78" height="40" rx="7" stroke-width="1.5"/>
+<text class="t" x="235" y="198" font-size="12" font-weight="700" text-anchor="middle">gcc -c</text>
+<text class="tm mono" x="235" y="213" font-size="10.5" text-anchor="middle">gcc.o</text>
+<line class="s" x1="183" y1="202" x2="194" y2="202" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-ah)"/>
+<rect class="s f" x="288" y="182" width="78" height="40" rx="7" stroke-width="1.5"/>
+<text class="t" x="327" y="198" font-size="12" font-weight="700" text-anchor="middle">link</text>
+<text class="tm mono" x="327" y="213" font-size="10.5" text-anchor="middle">gcc.elf</text>
+<line class="s" x1="275" y1="202" x2="286" y2="202" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-ah)"/>
+<rect class="s f" x="380" y="182" width="78" height="40" rx="7" stroke-width="1.5"/>
+<text class="t" x="419" y="198" font-size="12" font-weight="700" text-anchor="middle">run</text>
+<text class="tm mono" x="419" y="213" font-size="10.5" text-anchor="middle">QEMU</text>
+<line class="s" x1="367" y1="202" x2="378" y2="202" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-ah)"/>
+<text class="t" x="104" y="36" font-size="12" font-weight="700">ours</text>
+<text class="t" x="104" y="174" font-size="12" font-weight="700">gcc, for the same machine</text>
+<path class="s fs" d="M22 103 H71 L80 112 V163 H22 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M71 103 V112 H80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="30" y="120" font-size="12" font-weight="700">try.c</text>
+<text class="t mono" x="51" y="147" font-size="16" font-weight="700" text-anchor="middle">42</text>
+<path class="s" d="M81 125 L88 125 L88 64 L102 64" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0003a-ah)"/>
+<path class="s" d="M81 141 L88 141 L88 202 L102 202" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0003a-ah)"/>
+<rect class="s fs" x="282" y="116" width="90" height="34" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="327" y="131" font-size="12" font-weight="700" text-anchor="middle">start.o</text>
+<text class="tm mono" x="327" y="144" font-size="10.5" text-anchor="middle">rt/start.S</text>
+<line class="s" x1="327" y1="115" x2="327" y2="86" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-ah)"/>
+<line class="s" x1="327" y1="151" x2="327" y2="180" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-ah)"/>
+<text class="tm" x="274" y="131" font-size="11" text-anchor="end">the same</text>
+<text class="tm" x="274" y="145" font-size="11" text-anchor="end">start-up code</text>
+<line class="s" x1="459" y1="64" x2="474" y2="64" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-ah)"/>
+<rect class="s f" x="476" y="51" width="56" height="26" rx="13" stroke-width="1.5"/>
+<text class="t mono" x="504" y="69" font-size="14" font-weight="700" text-anchor="middle">42</text>
+<text class="tm" x="504" y="47" font-size="10.5" text-anchor="middle">status</text>
+<path class="a" d="M533 64 L566 64 L566 247" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="s" x1="459" y1="202" x2="474" y2="202" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-ah)"/>
+<rect class="s f" x="476" y="189" width="56" height="26" rx="13" stroke-width="1.5"/>
+<text class="t mono" x="504" y="207" font-size="14" font-weight="700" text-anchor="middle">42</text>
+<text class="tm" x="504" y="185" font-size="10.5" text-anchor="middle">status</text>
+<path class="a" d="M533 202 L566 202 L566 247" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a af" cx="566" cy="260" r="12" stroke-width="1.5"/>
+<path class="a" d="M560.5 257 H571.5 M560.5 263 H571.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="548" y="264.5" font-size="12.5" font-weight="700" text-anchor="end">compare</text>
+<rect class="a af" x="434" y="288" width="190" height="34" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="448" y="310" font-size="14" font-weight="700">same: status 42</text>
+<line class="a" x1="566" y1="273" x2="566" y2="286" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-aa)"/>
+<path class="s fs" d="M24 252 H251 L260 261 V326 H24 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M251 252 V261 H260" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="34" y="269" font-size="11.5" font-weight="700">gcc.c</text>
+<text class="tm" x="80" y="269" font-size="11">the number, wrapped in a main</text>
+<text class="t mono" x="34" y="288" font-size="12">int main(void) { return 42</text>
+<text class="t mono" x="34" y="320" font-size="12">; }</text>
+<line class="m" x1="143" y1="223" x2="143" y2="250" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0003a-am)"/>
+</svg>

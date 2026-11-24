@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 318" fill="none">
+<title>One program from the file that holds 42 to the status 42 coming back</title>
+<defs><marker id="f0001a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0001a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0001a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<path class="a" d="M22 36 L22 30 L185 30 L185 36" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="103.5" y="20" font-size="12" font-weight="700" text-anchor="middle">this lesson</text>
+<path class="m" d="M207 36 L207 30 L563 30 L563 36" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm" x="385" y="20" font-size="12" font-weight="600" text-anchor="middle">lesson 00.02</text>
+<line class="a" x1="84" y1="126" x2="115" y2="93" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001a-aa)"/>
+<line class="s" x1="151" y1="93" x2="182" y2="125" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001a-ah)"/>
+<line class="s" x1="210" y1="126" x2="241" y2="93" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001a-ah)"/>
+<line class="s" x1="277" y1="93" x2="308" y2="125" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001a-ah)"/>
+<line class="s" x1="336" y1="126" x2="367" y2="93" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001a-ah)"/>
+<line class="s" x1="403" y1="93" x2="434" y2="125" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001a-ah)"/>
+<line class="s" x1="462" y1="126" x2="493" y2="93" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001a-ah)"/>
+<line class="s" x1="529" y1="93" x2="560" y2="125" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001a-ah)"/>
+<line class="s" x1="385" y1="244" x2="385" y2="93" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0001a-ah)"/>
+<rect class="a af" x="81" y="46" width="104" height="44" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="133" y="65" font-size="13.5" font-weight="700" text-anchor="middle">cc</text>
+<text class="ta mono" x="133" y="81" font-size="10.5" text-anchor="middle">./cc</text>
+<rect class="s f" x="207" y="46" width="104" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="259" y="65" font-size="13.5" font-weight="700" text-anchor="middle">assembler</text>
+<text class="tm mono" x="259" y="81" font-size="10.5" text-anchor="middle">riscv64-elf-as</text>
+<rect class="s f" x="333" y="46" width="104" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="385" y="65" font-size="13.5" font-weight="700" text-anchor="middle">linker</text>
+<text class="tm mono" x="385" y="81" font-size="10.5" text-anchor="middle">riscv64-elf-ld</text>
+<rect class="s f" x="459" y="46" width="104" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="511" y="65" font-size="13.5" font-weight="700" text-anchor="middle">the machine</text>
+<text class="tm mono" x="511" y="81" font-size="10.5" text-anchor="middle">QEMU</text>
+<path class="a af" d="M22 128 H109 L118 137 V187 H22 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M109 128 V137 H118" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="32" y="146" font-size="12.5" font-weight="700">try.c</text>
+<text class="ta" x="32" y="161" font-size="10.5">3 bytes</text>
+<text class="ta mono" x="32" y="180" font-size="11">42</text>
+<path class="s fs" d="M140 128 H243 L252 137 V232 H140 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M243 128 V137 H252" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="150" y="146" font-size="12.5" font-weight="700">prog.s</text>
+<text class="tm" x="150" y="161" font-size="10.5">38 bytes</text>
+<text class="t mono" x="150" y="180" font-size="11"><tspan x="163.2">.globl main</tspan></text>
+<text class="t mono" x="150" y="195" font-size="11">main:</text>
+<text class="t mono" x="150" y="210" font-size="11"><tspan x="163.2">li a0, 42</tspan></text>
+<text class="t mono" x="150" y="225" font-size="11"><tspan x="163.2">ret</tspan></text>
+<path class="s fs" d="M266 128 H369 L378 137 V202 H266 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M369 128 V137 H378" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="276" y="146" font-size="12.5" font-weight="700">prog.o</text>
+<text class="tm" x="276" y="161" font-size="10.5">888 bytes</text>
+<text class="t" x="276" y="180" font-size="11">main: 2 instructions,</text>
+<text class="t" x="276" y="195" font-size="11">8 bytes of code</text>
+<path class="s fs" d="M392 128 H495 L504 137 V202 H392 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M495 128 V137 H504" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="402" y="146" font-size="12.5" font-weight="700">prog.elf</text>
+<text class="tm" x="402" y="161" font-size="10.5">4944 bytes</text>
+<text class="t" x="402" y="180" font-size="11">64 bytes of code,</text>
+<text class="t" x="402" y="195" font-size="11">at 0x80000000</text>
+<path class="s fs" d="M329 246 H432 L441 255 V304 H329 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M432 246 V255 H441" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="339" y="264" font-size="12.5" font-weight="700">start.o</text>
+<text class="tm" x="339" y="279" font-size="10.5">1464 bytes</text>
+<text class="t" x="339" y="295" font-size="11">from rt/start.S</text>
+<rect class="s f" x="528" y="128" width="92" height="40" rx="20" stroke-width="1.5"/>
+<text class="tm" x="574" y="145" font-size="11" text-anchor="middle">status</text>
+<text class="t mono" x="574" y="161" font-size="15" font-weight="700" text-anchor="middle">42</text>
+<text class="tm" x="574" y="188" font-size="10.5" text-anchor="middle">what the shell</text>
+<text class="tm" x="574" y="202" font-size="10.5" text-anchor="middle">sees: echo $?</text>
+</svg>

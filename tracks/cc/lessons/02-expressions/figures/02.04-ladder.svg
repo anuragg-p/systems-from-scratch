@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 356" fill="none">
+<title>C&#x27;s binary operators from loosest to tightest, the function for each, and its lesson</title>
+<defs><marker id="f0204a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0204a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0204a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="68" y="22" font-size="11.5">operators</text>
+<text class="tm" x="260" y="22" font-size="11.5">the function</text>
+<text class="tm" x="390" y="22" font-size="11.5">the lesson that brings it</text>
+<rect class="a af" x="60" y="46" width="520" height="23" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="62" font-size="13.5" font-weight="700">|</text>
+<text class="ta mono" x="260" y="62" font-size="13" font-weight="700">bitor</text>
+<text class="ta" x="390" y="62" font-size="12.5" font-weight="700">02.04</text>
+<rect class="a af" x="60" y="74" width="520" height="23" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="90" font-size="13.5" font-weight="700">^</text>
+<text class="ta mono" x="260" y="90" font-size="13" font-weight="700">bitxor</text>
+<text class="ta" x="390" y="90" font-size="12.5" font-weight="700">02.04</text>
+<rect class="a af" x="60" y="102" width="520" height="23" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="118" font-size="13.5" font-weight="700">&amp;</text>
+<text class="ta mono" x="260" y="118" font-size="13" font-weight="700">bitand</text>
+<text class="ta" x="390" y="118" font-size="12.5" font-weight="700">02.04</text>
+<rect class="m f" x="60" y="130" width="520" height="23" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="72" y="146" font-size="13.5" font-weight="700"><tspan x="72">==</tspan><tspan x="104.4">!=</tspan></text>
+<text class="tm mono" x="260" y="146" font-size="13">equality</text>
+<text class="tm" x="390" y="146" font-size="12.5">02.05</text>
+<rect class="m f" x="60" y="158" width="520" height="23" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="72" y="174" font-size="13.5" font-weight="700"><tspan x="72">&lt;</tspan><tspan x="96.3">&lt;=</tspan><tspan x="128.7">&gt;</tspan><tspan x="153">&gt;=</tspan></text>
+<text class="tm mono" x="260" y="174" font-size="13">relational</text>
+<text class="tm" x="390" y="174" font-size="12.5">02.05</text>
+<rect class="a af" x="60" y="186" width="520" height="23" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="202" font-size="13.5" font-weight="700"><tspan x="72">&lt;&lt;</tspan><tspan x="104.4">&gt;&gt;</tspan></text>
+<text class="ta mono" x="260" y="202" font-size="13" font-weight="700">shift</text>
+<text class="ta" x="390" y="202" font-size="12.5" font-weight="700">02.04</text>
+<rect class="s f" x="60" y="214" width="520" height="23" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="230" font-size="13.5" font-weight="700"><tspan x="72">+</tspan><tspan x="96.3">-</tspan></text>
+<text class="t mono" x="260" y="230" font-size="13">add</text>
+<text class="t" x="390" y="230" font-size="12.5">02.01</text>
+<rect class="s f" x="60" y="242" width="520" height="23" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="258" font-size="13.5" font-weight="700">*</text>
+<text class="t mono" x="96.3" y="258" font-size="13.5" font-weight="700">/</text>
+<text class="ta mono" x="120.6" y="258" font-size="13.5" font-weight="700">%</text>
+<text class="t mono" x="260" y="258" font-size="13">mul</text>
+<text class="ta" x="390" y="258" font-size="12.5" font-weight="700">02.02; % 02.04</text>
+<rect class="m f" x="60" y="270" width="520" height="23" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="72" y="286" font-size="13.5" font-weight="700"><tspan x="72">+</tspan><tspan x="96.3">-</tspan><tspan x="120.6">!</tspan><tspan x="144.9">~</tspan></text>
+<text class="tm" x="169.2" y="286" font-size="12">one operand</text>
+<text class="tm mono" x="260" y="286" font-size="13">unary</text>
+<text class="tm" x="390" y="286" font-size="12.5">02.05</text>
+<rect class="m f" x="60" y="298" width="520" height="23" rx="5" stroke-width="1.5"/>
+<text class="tm" x="72" y="314" font-size="12">a number, or ( expr )</text>
+<text class="tm mono" x="260" y="314" font-size="13">primary</text>
+<text class="tm" x="390" y="314" font-size="12.5">02.01</text>
+<line class="m" x1="32" y1="50" x2="32" y2="260" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0204a-am)"/>
+<text class="tm" x="32" y="42" font-size="11" text-anchor="middle">looser</text>
+<text class="tm" x="32" y="276" font-size="11" text-anchor="middle">tighter</text>
+<text class="tm" x="60" y="342" font-size="11.5">Each function calls the next one down for its operands: a level lower binds tighter.</text>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 416" fill="none">
+<title>What each comparison and unary operator becomes</title>
+<defs><marker id="f0205b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0205b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0205b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11.5">written</text>
+<text class="tm" x="120" y="20" font-size="11.5">./cc at 02.05: after the operands are loaded</text>
+<text class="tm" x="520" y="20" font-size="11.5">t0 after</text>
+<rect class="fs" x="16" y="34" width="608" height="60" rx="5"/>
+<text class="t mono" x="24" y="53" font-size="15" font-weight="700">1 == 2</text>
+<text class="ta mono" x="120" y="53" font-size="13.5" font-weight="700">xor t0, t0, t1</text>
+<text class="ta mono" x="120" y="73" font-size="13.5" font-weight="700">seqz t0, t0</text>
+<text class="tm" x="290" y="53" font-size="11.5">equal when nothing is left after xor</text>
+<text class="t mono" x="560" y="53" font-size="15" font-weight="700" text-anchor="end">0</text>
+<text class="t mono" x="24" y="115" font-size="15" font-weight="700">1 != 2</text>
+<text class="ta mono" x="120" y="115" font-size="13.5" font-weight="700">xor t0, t0, t1</text>
+<text class="ta mono" x="120" y="135" font-size="13.5" font-weight="700">snez t0, t0</text>
+<text class="tm" x="290" y="115" font-size="11.5">not equal: something is left</text>
+<text class="t mono" x="560" y="115" font-size="15" font-weight="700" text-anchor="end">1</text>
+<rect class="fs" x="16" y="158" width="608" height="40" rx="5"/>
+<text class="t mono" x="24" y="177" font-size="15" font-weight="700">1 &lt; 2</text>
+<text class="ta mono" x="120" y="177" font-size="13.5" font-weight="700">slt t0, t0, t1</text>
+<text class="tm" x="290" y="177" font-size="11.5">the one comparison RISC-V has</text>
+<text class="t mono" x="560" y="177" font-size="15" font-weight="700" text-anchor="end">1</text>
+<text class="t mono" x="24" y="219" font-size="15" font-weight="700">1 &lt;= 2</text>
+<text class="ta mono" x="120" y="219" font-size="13.5" font-weight="700">slt t0, t1, t0</text>
+<text class="ta mono" x="120" y="239" font-size="13.5" font-weight="700">xori t0, t0, 1</text>
+<text class="tm" x="290" y="219" font-size="11.5">a &lt;= b is not (b &lt; a)</text>
+<text class="t mono" x="560" y="219" font-size="15" font-weight="700" text-anchor="end">1</text>
+<rect class="fs" x="16" y="262" width="608" height="40" rx="5"/>
+<text class="t mono" x="24" y="281" font-size="15" font-weight="700">-1</text>
+<text class="ta mono" x="120" y="281" font-size="13.5" font-weight="700">neg t0, t0</text>
+<text class="tm" x="290" y="281" font-size="11.5">0 minus it</text>
+<text class="t mono" x="560" y="281" font-size="15" font-weight="700" text-anchor="end">-1</text>
+<text class="t mono" x="24" y="323" font-size="15" font-weight="700">!1</text>
+<text class="ta mono" x="120" y="323" font-size="13.5" font-weight="700">seqz t0, t0</text>
+<text class="tm" x="290" y="323" font-size="11.5">1 if it is 0, else 0</text>
+<text class="t mono" x="560" y="323" font-size="15" font-weight="700" text-anchor="end">0</text>
+<rect class="fs" x="16" y="346" width="608" height="40" rx="5"/>
+<text class="t mono" x="24" y="365" font-size="15" font-weight="700">~1</text>
+<text class="ta mono" x="120" y="365" font-size="13.5" font-weight="700">not t0, t0</text>
+<text class="tm" x="290" y="365" font-size="11.5">every bit flipped</text>
+<text class="t mono" x="560" y="365" font-size="15" font-weight="700" text-anchor="end">-2</text>
+<text class="tm" x="24" y="404" font-size="11.5">The operands: li t0, 1 and li t1, 2 for the binary ones, li t0, 1 for the unary ones.</text>
+</svg>

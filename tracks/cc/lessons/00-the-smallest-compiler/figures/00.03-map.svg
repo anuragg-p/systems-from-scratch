@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 506" fill="none">
+<title>Where 00.03 fits: The same answer as gcc</title>
+<defs><marker id="map0003-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0003-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0003-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<path class="s" d="M64 35 L64 66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-ah)"/>
+<path class="m" d="M161 82 L176 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M233 82 L248 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M401 82 L416 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M465 82 L480 82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-am)" stroke-dasharray="4 4"/>
+<path class="s" d="M588 223 L588 282 L92 282 L92 302" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-ah)"/>
+<path class="s" d="M145 326 L168 326" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-ah)"/>
+<path class="s" d="M275 326 L298 326" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-ah)"/>
+<path class="s" d="M449 326 L472 326" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-ah)"/>
+<path class="s" d="M222 359 L222 350" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-ah)"/>
+<path class="a" d="M23 22 L10 22 L10 448 L38 448" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-aa)"/>
+<path class="a" d="M222 415 L222 426" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-aa)"/>
+<path class="a" d="M275 448 L298 448" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-aa)"/>
+<path class="a" d="M449 448 L472 448" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0003-aa)"/>
+<rect class="s" x="20" y="46" width="600" height="218" rx="12" stroke-width="1.5"/>
+<rect class="f" x="476" y="36" width="128" height="20" rx="0"/>
+<text class="t" x="540" y="51" font-size="13" font-weight="700" text-anchor="middle"><tspan class="t mono">cc</tspan><tspan class="tm">  the compiler</tspan></text>
+<rect class="s fs" x="24" y="10" width="104" height="24" rx="12" stroke-width="1.5"/>
+<text class="t mono" x="76" y="26.3" font-size="12" text-anchor="middle">source text</text>
+<text class="t mono" x="580" y="277" font-size="12" text-anchor="end">assembly</text>
+<rect class="m f" x="32" y="68" width="128" height="154" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="96" y="87" font-size="13" font-weight="500" text-anchor="middle">scanner</text>
+<rect class="m f" x="38" y="98" width="116" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="96" y="112" font-size="10.5" text-anchor="middle">numbers and operators</text>
+<rect class="m f" x="38" y="122.5" width="116" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="96" y="136.5" font-size="10.5" text-anchor="middle">longest match</text>
+<rect class="m f" x="38" y="147" width="116" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="96" y="161" font-size="10.5" text-anchor="middle">names and keywords</text>
+<rect class="m f" x="38" y="171.5" width="116" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="96" y="185.5" font-size="10.5" text-anchor="middle">comments and literals</text>
+<rect class="m f" x="178" y="68" width="54" height="154" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="205" y="142" font-size="11.5" font-weight="500" text-anchor="middle">pre-</text>
+<text class="tm" x="205" y="156" font-size="11.5" font-weight="500" text-anchor="middle">processor</text>
+<rect class="m f" x="250" y="68" width="150" height="154" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="325" y="87" font-size="13" font-weight="500" text-anchor="middle">parser</text>
+<rect class="m f" x="256" y="98" width="138" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="325" y="112" font-size="10.5" text-anchor="middle">a function for each rule</text>
+<rect class="m f" x="256" y="122.5" width="138" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="325" y="136.5" font-size="10.5" text-anchor="middle">the tree</text>
+<rect class="m f" x="256" y="147" width="138" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="325" y="161" font-size="10.5" text-anchor="middle">every operator</text>
+<rect class="m f" x="256" y="171.5" width="138" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="325" y="185.5" font-size="10.5" text-anchor="middle">statements</text>
+<rect class="m f" x="256" y="196" width="138" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="325" y="210" font-size="10.5" text-anchor="middle">declarations and scopes</text>
+<rect class="m f" x="418" y="68" width="46" height="154" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="441" y="149" font-size="11.5" font-weight="500" text-anchor="middle">types</text>
+<rect class="m f" x="482" y="68" width="126" height="154" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="545" y="87" font-size="13" font-weight="500" text-anchor="middle">code generator</text>
+<rect class="m f" x="488" y="98" width="114" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="545" y="112" font-size="10.5" text-anchor="middle">registers as a stack</text>
+<rect class="m f" x="488" y="122.5" width="114" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="545" y="136.5" font-size="10.5" text-anchor="middle">every operator</text>
+<rect class="m f" x="488" y="147" width="114" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="545" y="161" font-size="10.5" text-anchor="middle">spilling</text>
+<rect class="m f" x="488" y="171.5" width="114" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="545" y="185.5" font-size="10.5" text-anchor="middle">branches</text>
+<rect class="m f" x="488" y="196" width="114" height="20" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="545" y="210" font-size="10.5" text-anchor="middle">calls and frames</text>
+<rect class="m f" x="32" y="232" width="368" height="22" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="216" y="247" font-size="11" text-anchor="middle">errors that point at the source</text>
+<rect class="m f" x="418" y="232" width="130" height="22" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="483" y="247" font-size="11" text-anchor="middle">arrays, strings and structs</text>
+<rect class="s f" x="40" y="304" width="104" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="92" y="330.5" font-size="12.5" font-weight="600" text-anchor="middle">assembler</text>
+<rect class="s f" x="170" y="304" width="104" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="222" y="330.5" font-size="12.5" font-weight="600" text-anchor="middle">linker</text>
+<rect class="s f" x="170" y="360" width="104" height="54" rx="8" stroke-width="1.5"/>
+<text class="t" x="222" y="377" font-size="12.5" font-weight="600" text-anchor="middle">the runtime</text>
+<text class="tm mono" x="222" y="391.5" font-size="11" text-anchor="middle">rt/start.S</text>
+<text class="tm mono" x="222" y="406" font-size="11" text-anchor="middle">rt/link.ld</text>
+<rect class="s f" x="300" y="304" width="148" height="164" rx="8" stroke-width="1.5"/>
+<text class="t" x="374" y="383.25" font-size="12.5" font-weight="600" text-anchor="middle">the bare machine</text>
+<text class="t" x="374" y="397.75" font-size="12.5" font-weight="600" text-anchor="middle">in QEMU</text>
+<rect class="a af" x="40" y="428" width="234" height="40" rx="8" stroke-width="1.5"/>
+<text class="ta" x="157" y="452.5" font-size="12.5" font-weight="700" text-anchor="middle">gcc, for the same machine</text>
+<rect class="s f" x="474" y="314" width="96" height="24" rx="12" stroke-width="1.5"/>
+<text class="t mono" x="522" y="330.5" font-size="12" text-anchor="middle">exit status</text>
+<rect class="a af" x="474" y="436" width="96" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="522" y="452.5" font-size="12" text-anchor="middle">exit status</text>
+<line class="a" x1="522" y1="339" x2="522" y2="375" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="522" y1="399" x2="522" y2="435" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="522" cy="387" r="11" stroke-width="1.5"/>
+<path class="a" d="M517.0 384.0 H527.0 M517.0 390.0 H527.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="540" y="391.5" font-size="12.5" font-weight="700">same</text>
+<rect class="a af" x="20" y="481" width="22" height="16" rx="4" stroke-width="1.5"/>
+<text class="ta" x="50" y="494" font-size="14" font-weight="600">00.03: this lesson</text>
+<rect class="s f" x="219.12" y="481" width="22" height="16" rx="4" stroke-width="1.5"/>
+<text class="t" x="249.12" y="494" font-size="14">built earlier</text>
+<rect class="m f" x="379.04" y="481" width="22" height="16" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="409.04" y="494" font-size="14">still to come</text>
+</svg>

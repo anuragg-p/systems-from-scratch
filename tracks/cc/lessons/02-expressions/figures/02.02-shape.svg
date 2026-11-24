@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 262" fill="none">
+<title>Precedence is the shape of the tree: the operator that binds tighter sits deeper</title>
+<defs><marker id="f0202a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0202a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0202a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="116.8" y="34" font-size="16" font-weight="700">1 + 2 * 3</text>
+<line class="s" x1="186.15" y1="149.67" x2="168.85" y2="180.33" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="203.85" y1="149.67" x2="221.15" y2="180.33" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="130.87" y1="85.74" x2="101.63" y2="120.26" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="154.13" y1="85.74" x2="183.37" y2="120.26" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="90" cy="134" r="18" stroke-width="1.5"/>
+<text class="t mono" x="90" y="139.4" font-size="15" font-weight="600" text-anchor="middle">1</text>
+<circle class="s f" cx="160" cy="196" r="18" stroke-width="1.5"/>
+<text class="t mono" x="160" y="201.4" font-size="15" font-weight="600" text-anchor="middle">2</text>
+<circle class="s f" cx="230" cy="196" r="18" stroke-width="1.5"/>
+<text class="t mono" x="230" y="201.4" font-size="15" font-weight="600" text-anchor="middle">3</text>
+<circle class="a af" cx="195" cy="134" r="18" stroke-width="1.5"/>
+<text class="ta mono" x="195" y="139.4" font-size="15" font-weight="600" text-anchor="middle">*</text>
+<circle class="s f" cx="142.5" cy="72" r="18" stroke-width="1.5"/>
+<text class="t mono" x="142.5" y="77.4" font-size="15" font-weight="600" text-anchor="middle">+</text>
+<text class="t mono" x="142.5" y="240" font-size="18" font-weight="700" text-anchor="middle">= 7</text>
+<text class="ta" x="221" y="130" font-size="12" font-weight="700">* is deeper:</text>
+<text class="ta" x="221" y="145" font-size="12" font-weight="700">done first</text>
+<text class="t mono" x="427.2" y="34" font-size="16" font-weight="700">(1 + 2) * 3</text>
+<line class="s" x1="436.15" y1="149.67" x2="418.85" y2="180.33" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="453.85" y1="149.67" x2="471.15" y2="180.33" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="485.87" y1="85.74" x2="456.63" y2="120.26" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="509.13" y1="85.74" x2="538.37" y2="120.26" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="410" cy="196" r="18" stroke-width="1.5"/>
+<text class="t mono" x="410" y="201.4" font-size="15" font-weight="600" text-anchor="middle">1</text>
+<circle class="s f" cx="480" cy="196" r="18" stroke-width="1.5"/>
+<text class="t mono" x="480" y="201.4" font-size="15" font-weight="600" text-anchor="middle">2</text>
+<circle class="a af" cx="445" cy="134" r="18" stroke-width="1.5"/>
+<text class="ta mono" x="445" y="139.4" font-size="15" font-weight="600" text-anchor="middle">+</text>
+<circle class="s f" cx="550" cy="134" r="18" stroke-width="1.5"/>
+<text class="t mono" x="550" y="139.4" font-size="15" font-weight="600" text-anchor="middle">3</text>
+<circle class="s f" cx="497.5" cy="72" r="18" stroke-width="1.5"/>
+<text class="t mono" x="497.5" y="77.4" font-size="15" font-weight="600" text-anchor="middle">*</text>
+<text class="t mono" x="497.5" y="240" font-size="18" font-weight="700" text-anchor="middle">= 9</text>
+<text class="ta" x="419" y="130" font-size="12" font-weight="700" text-anchor="end">+ is deeper:</text>
+<text class="ta" x="419" y="145" font-size="12" font-weight="700" text-anchor="end">done first</text>
+</svg>
