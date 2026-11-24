@@ -232,15 +232,17 @@ def main():
 
     rot = model.blocks[0].attention.rotary
     made = bench.timings(lambda: rot.angles(0, cfg.context, torch.float32, dev), clock, repeats=cfg.repeats, number=50)
-    x = torch.randn(cfg.batch, cfg.heads, cfg.context, rot.d, device=dev, requires_grad=True)
-    grad = torch.randn_like(x)
-    turned = bench.timings(lambda: rot(x).backward(grad), clock, repeats=cfg.repeats, number=10)
+    turned = 0.0
+    for heads in (cfg.heads, cfg.kv_heads):          # a block turns its queries, then its keys
+        x = torch.randn(cfg.batch, heads, cfg.context, rot.d, device=dev, requires_grad=True)
+        grad = torch.randn_like(x)
+        turned += min(bench.timings(lambda: rot(x).backward(grad), clock, repeats=cfg.repeats, number=10))
     turns = 2 * cfg.layers
     print(f"\n3. Rotary positions: {turns} calls a step (each block's queries, then its keys), each making the "
           f"angles of {cfg.context} places again.\n   The angles alone: {1e6 * min(made):.1f} microseconds a call, "
           f"{1000 * turns * min(made):.2f} ms a step, {100 * turns * min(made) * 1000 / whole:.1f}% of it; the "
-          f"turning, forward and backward,\n   {1000 * min(turned):.2f} ms a call, {1000 * turns * min(turned):.1f} ms "
-          f"a step, {100 * turns * min(turned) * 1000 / whole:.1f}% of it")
+          f"turning, forward and backward,\n   {1000 * turned:.2f} ms a block (queries and keys), "
+          f"{1000 * cfg.layers * turned:.1f} ms a step, {100 * cfg.layers * turned * 1000 / whole:.1f}% of it")
     kept = {}
     for keep in (False, True):
         Rotary.keep = keep
