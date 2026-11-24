@@ -280,18 +280,20 @@ static pid_t lspSpawn(char **argv) {
     // @build 07.01 fork, exec and the pipes
     // Make three pipes and mark all six ends close-on-exec: one for the
     // server's input, one for its output, and one for the child to send
-    // back errno if execvp() fails. fork(). The child makes the first two
-    // its standard input and output (dup2, which leaves the copies open
-    // across exec), /dev/null its standard error, and runs the command; if
-    // that returns, it writes errno into the third pipe and exits. The
-    // parent closes the child's ends and reads the third pipe: nothing
-    // (end of file, the exec closed it) means the server is running; an
-    // errno means it is not, so reap the child and fail with it. Make our
-    // two ends non-blocking.
+    // back errno if execvp() fails. Hold SIGWINCH back, and fork(). The
+    // child sets SIGWINCH to its default and lets it through again, makes
+    // the first two pipes its standard input and output (dup2, which
+    // leaves the copies open across exec), /dev/null its standard error,
+    // and runs the command; if that returns, it writes errno into the
+    // third pipe and exits. The parent lets SIGWINCH through, closes the
+    // child's ends and reads the third pipe: nothing (end of file, the exec
+    // closed it) means the server is running; an errno means it is not, so
+    // reap the child and fail with it. Make our two ends non-blocking.
     int in[2], out[2], err[2];  /* each: [0] the end to read, [1] to write */
     int fds[6], e, j;
     ssize_t n;
     pid_t pid;
+    sigset_t winch, old;
 
     if (pipe(in) == -1) return -1;
     if (pipe(out) == -1) {
@@ -306,12 +308,21 @@ static pid_t lspSpawn(char **argv) {
     fds[3] = out[1]; fds[4] = err[0]; fds[5] = err[1];
     for (j = 0; j < 6; j++) fcntl(fds[j],F_SETFD,FD_CLOEXEC);
 
+    /* Until the exec the child runs kilo's code, kilo's resize handler too:
+     * a resize then would draw a screen from the child, onto the terminal
+     * or into the pipe. So SIGWINCH is held back across fork(); the child
+     * takes the default action for it before letting it through (a mask
+     * still blocking it would go on into the server, across exec), and the
+     * parent lets it through after, when a resize that came meanwhile is
+     * drawn as usual. */
+    sigemptyset(&winch);
+    sigaddset(&winch,SIGWINCH);
+    sigprocmask(SIG_BLOCK,&winch,&old);
     pid = fork();
     if (pid == 0) {
-        /* The child. Until the exec it still runs kilo's code, its resize
-         * handler too, which would draw a screen into the pipe. */
         int null = open("/dev/null",O_WRONLY|O_CLOEXEC);
         signal(SIGWINCH,SIG_DFL);
+        sigprocmask(SIG_SETMASK,&old,NULL);
         dup2(in[0],STDIN_FILENO);
         dup2(out[1],STDOUT_FILENO);
         if (null != -1) dup2(null,STDERR_FILENO); else close(STDERR_FILENO);
@@ -321,6 +332,7 @@ static pid_t lspSpawn(char **argv) {
         _exit(127);
     }
     e = errno;
+    sigprocmask(SIG_SETMASK,&old,NULL);
     close(in[0]); close(out[1]); close(err[1]);
     if (pid == -1) {
         close(in[1]); close(out[0]); close(err[0]);

@@ -46,6 +46,9 @@ def test(t):
     # (not the terminal, not the third pipe, not kilo's own ends of the pipes).
     t.check(start["fds"] == {"0": "pipe", "1": "pipe", "2": "devnull"},
             f"the server's descriptors: {start['fds']}")
+    # kilo holds SIGWINCH back across fork(); the server must not start with it still blocked.
+    import signal
+    t.check(int(signal.SIGWINCH) not in start["blocked"], f"signals blocked in the server: {start['blocked']}")
     t.check([p for p, _ in tr.children(ed.s.proc.pid)] == [pid], f"kilo's children: {tr.children(ed.s.proc.pid)}")
     # At exit it is stopped and reaped: by the time kilo has exited, it has too.
     t.check(ed.quit() == 0, "Ctrl-Q quits")

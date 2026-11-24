@@ -256,7 +256,8 @@ def main():
             code = f.read()
         scenario = {"srv": srv, "time": time, "os": os, "json": json, "signal": signal}
         exec(compile(code, path, "exec"), scenario)
-    srv.log("start", pid=os.getpid(), ppid=srv.parent, fds={str(k): v for k, v in fds.items()})
+    srv.log("start", pid=os.getpid(), ppid=srv.parent, fds={str(k): v for k, v in fds.items()},
+            blocked=sorted(int(s) for s in signal.pthread_sigmask(signal.SIG_BLOCK, [])))
     threading.Thread(target=watchdog, args=(srv,), daemon=True).start()
     if "on_start" in scenario:
         scenario["on_start"](srv)
