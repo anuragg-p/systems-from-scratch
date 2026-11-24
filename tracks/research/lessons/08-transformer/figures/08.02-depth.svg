@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
-<title>Bits per character on the test text, 3 seeds each: 08.01&#x27;s attention stacked, blocks on the residual stream, and one head against four at the same weights: a ring per seed, the bar their mean</title>
+<title>Bits per character on the test text, 2 seeds each: 08.01&#x27;s attention stacked, blocks on the residual stream, and one head against four at the same weights: a ring per seed, the bar their mean</title>
 <defs><marker id="depth0802-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="depth0802-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="depth0802-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
 <line class="m" x1="38.9" y1="245.8" x2="628" y2="245.8" stroke-width="0.75" stroke-opacity="0.6"/>
 <text class="tm mono" x="32.9" y="249.32" font-size="10.5" text-anchor="end">3.4</text>
@@ -21,14 +21,13 @@
 <text class="tm" x="32.9" y="18" font-size="11.5">bits per character on the test text</text>
 <text class="t" x="97.81" y="275" font-size="11" text-anchor="middle">1 attention</text>
 <text class="tm" x="97.81" y="289" font-size="11" text-anchor="middle">layer</text>
-<line class="s" x1="97.81" y1="204.06" x2="97.81" y2="196.09" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="97.81" y1="204.06" x2="97.81" y2="198.28" stroke-width="1.5" stroke-linecap="round"/>
 <line class="s" x1="91.81" y1="204.06" x2="103.81" y2="204.06" stroke-width="1.5" stroke-linecap="round"/>
-<line class="s" x1="91.81" y1="196.09" x2="103.81" y2="196.09" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="91.81" y1="198.28" x2="103.81" y2="198.28" stroke-width="1.5" stroke-linecap="round"/>
 <circle class="s f" cx="97.81" cy="198.28" r="2.5" stroke-width="1.5"/>
 <circle class="s f" cx="97.81" cy="204.06" r="2.5" stroke-width="1.5"/>
-<circle class="s f" cx="97.81" cy="196.09" r="2.5" stroke-width="1.5"/>
-<line class="s" x1="83.81" y1="199.48" x2="111.81" y2="199.48" stroke-width="1.5" stroke-linecap="round"/>
-<text class="t mono" x="115.81" y="202.98" font-size="10.5">3.73</text>
+<line class="s" x1="83.81" y1="201.17" x2="111.81" y2="201.17" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="115.81" y="204.67" font-size="10.5">3.71</text>
 <text class="t" x="215.63" y="275" font-size="11" text-anchor="middle">4 attention</text>
 <text class="tm" x="215.63" y="289" font-size="11" text-anchor="middle">layers</text>
 <line class="s" x1="215.63" y1="76.73" x2="215.63" y2="75.26" stroke-width="1.5" stroke-linecap="round"/>
@@ -36,9 +35,8 @@
 <line class="s" x1="209.63" y1="75.26" x2="221.63" y2="75.26" stroke-width="1.5" stroke-linecap="round"/>
 <circle class="s f" cx="215.63" cy="76.73" r="2.5" stroke-width="1.5"/>
 <circle class="s f" cx="215.63" cy="75.26" r="2.5" stroke-width="1.5"/>
-<circle class="s f" cx="215.63" cy="75.58" r="2.5" stroke-width="1.5"/>
-<line class="s" x1="201.63" y1="75.85" x2="229.63" y2="75.85" stroke-width="1.5" stroke-linecap="round"/>
-<text class="t mono" x="233.63" y="79.35" font-size="10.5">4.6</text>
+<line class="s" x1="201.63" y1="75.99" x2="229.63" y2="75.99" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="233.63" y="79.49" font-size="10.5">4.6</text>
 <text class="ta" x="333.45" y="275" font-size="11" font-weight="600" text-anchor="middle">1 block</text>
 <text class="tm" x="333.45" y="289" font-size="11" text-anchor="middle">4 heads</text>
 <line class="a" x1="333.45" y1="231.93" x2="333.45" y2="230.35" stroke-width="1.5" stroke-linecap="round"/>
@@ -46,9 +44,8 @@
 <line class="a" x1="327.45" y1="230.35" x2="339.45" y2="230.35" stroke-width="1.5" stroke-linecap="round"/>
 <circle class="a f" cx="333.45" cy="230.35" r="2.5" stroke-width="1.5"/>
 <circle class="a f" cx="333.45" cy="231.93" r="2.5" stroke-width="1.5"/>
-<circle class="a f" cx="333.45" cy="231.53" r="2.5" stroke-width="1.5"/>
-<line class="a" x1="319.45" y1="231.27" x2="347.45" y2="231.27" stroke-width="1.5" stroke-linecap="round"/>
-<text class="ta mono" x="351.45" y="234.77" font-size="10.5">3.5</text>
+<line class="a" x1="319.45" y1="231.14" x2="347.45" y2="231.14" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="351.45" y="234.64" font-size="10.5">3.5</text>
 <text class="ta" x="451.27" y="275" font-size="11" font-weight="600" text-anchor="middle">4 blocks</text>
 <text class="tm" x="451.27" y="289" font-size="11" text-anchor="middle">4 heads</text>
 <line class="a" x1="451.27" y1="246.17" x2="451.27" y2="243.63" stroke-width="1.5" stroke-linecap="round"/>
@@ -56,9 +53,8 @@
 <line class="a" x1="445.27" y1="243.63" x2="457.27" y2="243.63" stroke-width="1.5" stroke-linecap="round"/>
 <circle class="a f" cx="451.27" cy="243.63" r="2.5" stroke-width="1.5"/>
 <circle class="a f" cx="451.27" cy="246.17" r="2.5" stroke-width="1.5"/>
-<circle class="a f" cx="451.27" cy="244.56" r="2.5" stroke-width="1.5"/>
-<line class="a" x1="437.27" y1="244.79" x2="465.27" y2="244.79" stroke-width="1.5" stroke-linecap="round"/>
-<text class="ta mono" x="469.27" y="248.29" font-size="10.5">3.41</text>
+<line class="a" x1="437.27" y1="244.9" x2="465.27" y2="244.9" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="469.27" y="248.4" font-size="10.5">3.41</text>
 <text class="t" x="569.09" y="275" font-size="11" text-anchor="middle">4 blocks</text>
 <text class="tm" x="569.09" y="289" font-size="11" text-anchor="middle">1 head</text>
 <line class="s" x1="569.09" y1="243.7" x2="569.09" y2="239.55" stroke-width="1.5" stroke-linecap="round"/>
@@ -66,9 +62,8 @@
 <line class="s" x1="563.09" y1="239.55" x2="575.09" y2="239.55" stroke-width="1.5" stroke-linecap="round"/>
 <circle class="s f" cx="569.09" cy="239.55" r="2.5" stroke-width="1.5"/>
 <circle class="s f" cx="569.09" cy="243.7" r="2.5" stroke-width="1.5"/>
-<circle class="s f" cx="569.09" cy="240.14" r="2.5" stroke-width="1.5"/>
-<line class="s" x1="555.09" y1="241.13" x2="583.09" y2="241.13" stroke-width="1.5" stroke-linecap="round"/>
-<text class="t mono" x="587.09" y="244.63" font-size="10.5">3.43</text>
+<line class="s" x1="555.09" y1="241.63" x2="583.09" y2="241.63" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="587.09" y="245.13" font-size="10.5">3.43</text>
 <line class="m" x1="38.9" y1="217.6" x2="628" y2="217.6" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
 <text class="tm" x="624" y="212.6" font-size="10.5" text-anchor="end">07.01&#x27;s pairs: 3.599</text>
 <line class="m" x1="38.9" y1="40.18" x2="628" y2="40.18" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>

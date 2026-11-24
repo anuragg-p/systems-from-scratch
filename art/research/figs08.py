@@ -452,9 +452,10 @@ def depth0802():
             ("1 block\n4 heads", "blocks1-heads4", "a"), ("4 blocks\n4 heads", "blocks4-heads4", "a"),
             ("4 blocks\n1 head", "blocks4-heads1", "s")]
     groups = [(label, seeds_of(os.path.join(r.runs, d), "test_bits"), style) for label, d, style in rows]
-    f = Fig("depth0802", "Bits per character on the test text, 3 seeds each: 08.01's attention stacked, blocks on the "
-                         "residual stream, and one head against four at the same weights: a ring per seed, the bar "
-                         "their mean", 300)
+    n = len(groups[0][1])
+    f = Fig("depth0802", f"Bits per character on the test text, {n} seeds each: 08.01's attention stacked, blocks on the "
+                         f"residual stream, and one head against four at the same weights: a ring per seed, the bar "
+                         f"their mean", 300)
     ax = figart.seeds_chart(f, (8, 4, 624, 292), groups, ylabel="bits per character on the test text",
                             ylim=(3.3, 4.95), yticks=[3.4, 3.6, 3.8, 4.0, 4.2, 4.4, 4.6, 4.8])
     for name, label in (("pairs", "07.01's pairs"), ("single", "single characters")):

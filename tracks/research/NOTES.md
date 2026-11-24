@@ -1407,6 +1407,20 @@ threads fighting for cores); 45 s with OMP_NUM_THREADS=1 at load 5 to 8.
 The same digits every way. The slowest default of the module; fewer
 steps or layers=3 would shorten it, with what effect on the table not
 measured.
+Cut to 2 seeds by the lessons agent (the plan's rule: verifying, at load
+10 to 13 with another agent training, the 3-seed default took 82 s, over
+55; 08.01's took 44 s there against its 15 to 17). The default is now
+seeds=2 (heads.py CONFIG): 1 attention layer `3.715 +- 0.02878`, 4 layers
+`4.597 +- 0.007313`, t = +42.0; 1 block `3.503 +- 0.007851`, 4 blocks
+`3.406 +- 0.01263`, t = -9.2; 4 blocks of 1 head `3.43 +- 0.02069` against
+4 heads, t = -1.3 (within the noise at 2 seeds; the 3-seed numbers above
+are `heads seeds=3`, which 08.02's page runs again, trimmed to part 3);
+part 4 is seed 0's and unchanged. 44 s at load about 10 (the same run, 3
+seeds, 82 s); at load 6 not timed (two thirds of 45 s would be 30). The
+test already ran
+heads with seeds=2, so it is unchanged. 08.03's positions.py keeps 3
+seeds: its no-positions row (3.407) is the 3-seed number, not 08.02's
+default any more.
 
 **08.03 Where am I: position embeddings (Vaswani et al. 2017, section
 3.5).** experiments/positions.py, the same settings as 08.02 (4 blocks of
@@ -1741,8 +1755,8 @@ keeps them). The generator trains three models again in the project at
 their lesson, 08.01's masked OneHead (seed 0), 08.03's GPT with
 positions (seed 0) and 08.05's small model, and stops unless each scores
 what the page's run printed. Every default run printed on the pages gave
-the digits above, run by run (08.02 in 45 s at load 6 to 7, under the 55
-s line: not cut).
+the digits above, run by run (08.02 in 45 s at load 6 to 7; then 82 s
+when verifying at load 10 to 13, so cut to 2 seeds, see 08.02 above).
 Read at the sources for the pages, beyond what is above:
 - Vaswani et al., the PDF of arXiv 1706.03762v7: section 3.1, the norm
   after the addition, LayerNorm(x + Sublayer(x)); 3.2.2, "Multi-head

@@ -34,7 +34,7 @@ from experiments.sequences import window_bits, windows
 from models.gpt import GPT, SelfAttention
 
 CONFIG = dict(width=64, context=32, batch=32, steps=300, lr=0.003, warmup=50, weight_decay=0.1, clip=1.0, every=100,
-              seeds=3, layers=4, heads=4, shown=32, device="cpu")
+              seeds=2, layers=4, heads=4, shown=32, device="cpu")
 
 
 # @build 08.02 Stack
