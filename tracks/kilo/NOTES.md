@@ -46,11 +46,12 @@ Module 06, an extension (`optional: true`), puts the highlighting back,
 upstream's own code under upstream's names, in the same kilo.c: it arrives
 only at its own lessons, and the project at every core lesson is byte for
 byte what it was without it. See "06 Syntax highlighting" below. Module
-07, the other extension, is ours: a language server client in lsp.c and
+07, another extension, is ours: a language server client in lsp.c and
 json.c, which kilo.c calls from a few one-line hooks (see "07 A language
-server client"). The finished kilo.c (`./learn files kilo`, every lesson
-of every path) is 1541 lines (1472 with module 06 alone); at 05.02 it is
-1068, as without either.
+server client"). Module 08, a third, is ours too: undo and redo, in kilo.c
+(see "08 Undo and redo"). The finished kilo.c (`./learn files kilo`,
+every lesson of every path) is 1862 lines (1541 before module 08, 1472
+with module 06 alone); at 05.02 it is 1068, as without any of them.
 
 ## Every departure from upstream, and why
 
@@ -1582,6 +1583,818 @@ Apple clangd 21.0.0 (macOS): everything above. Debian clangd 19.1.7
 of 0706 and 0707 pass (the message starts "Use of undeclared identifier
 'totl'", the jumps land on the same rows and columns).
 
+## 08 Undo and redo (an extension)
+
+Module 08 (`lessons/08-undo/`, `optional: true`, started 2026-11-24 on the
+owner's word) is ours, not upstream's: undo and redo, Vim's way cut to
+kilo's size. Before a row changes, what it was is kept in a record; applying
+a record puts that back and takes what was there, so the record becomes its
+own opposite and redo is the same act as undo. It lives in kilo.c, as module
+06 does: it works on E.row, which only kilo.c sees. At a lesson of the
+module the project is the whole core plus the module's lessons so far;
+modules 06 and 07 are never in it, and module 08 is in no lesson of the
+core, of 06 or of 07 (checked: the projects at all 28 of those lessons
+written with `./learn files` before the module existed and after, compared
+with `diff -r`: identical; and no line of 06 or 07 is in an 08 project).
+kilo.c at 08.01, 08.02, 08.03 and 08.04 is 1249, 1304, 1352 and 1389 lines
+(1068 at 05.02); each of the four builds with `-Wall -W -pedantic -std=c99
+-Werror`. The lessons are not written yet: this section is for them.
+
+The design (records, hooks, steps, the saved point, the bound, the keys)
+was fixed by the coordinator before the code was written; where the code
+departs from it, "Departures from the design" says where and why.
+
+### Where the code is
+
+| where in kilo.c | what | lesson |
+|---|---|---|
+| "The undo history", after the editorSetStatusMessage prototype | U_CHG, U_INS, U_DEL; struct undoRecord, struct undoStep, struct undoState and the one global U; the prototypes of undoSave, undoClear and (08.04) undoClose | 08.01, fields by lesson |
+| the core's row functions, editorOpen, editorSave, editorProcessKeypress, enum KEY_ACTION | the hooks (below) | 08.01, 08.03, 08.04 |
+| "Undo and redo", a section after editorSave | UNDO_MAX_BYTES, undoSize (08.04); undoFreeStep, undoClear, undoGiveUp, undoPush (08.01); undoSave; undoClose; undoPut (08.01); undoApply (08.02); undoCursor (08.03); editorUndo (08.01); editorRedo (08.02); UNDO_OTHER, UNDO_TYPING, UNDO_DELETING, undoKind, undoKey (08.03) | |
+| `@internal`, in no project | undoBroken, undoMaxBytes (KILO_TEST_UNDO_MAX), undoCheck (KILO_TEST_UNDO_LOG), the check in undoApply, the call of undoCheck after every key | |
+
+U is a struct of its own, not fields of E: the history is not the editor's
+state but a record of it, and the core's struct stays the core's. Its
+fields: the undo stack (`undo`, `numundo`, oldest step first), the redo
+stack (`redo`, `numredo`, 08.02), `open` (the last step on the undo stack
+still takes records), `off` (nothing is remembered: a step being applied,
+a file being read), `lost` (the history was given up in this step), `kind`
+(08.03), `saved` and `bytes` (08.04).
+
+### The lessons, and how they divide the code
+
+The design's four, in its order, under its titles. Regions (`./learn
+solution kilo 08.LL`):
+
+| lesson | regions (function: title) |
+|---|---|
+| 08.01 | undoSave: keep what the row was; undoClose: close the open step; undoPut: put the row back; editorUndo: undo the last step |
+| 08.02 | undoSave: a new edit forgets what was undone; undoApply: apply a record, and keep what it replaces; editorUndo: keep the step for redo; editorRedo: redo the step undone last |
+| 08.03 | undoSave: a row already covered; undoClose: where the step ended; undoCursor: put the cursor back; editorUndo: the cursor where the step began; editorRedo: the cursor where the step ended; undoKind: the kind of a key; undoKey: where a step ends |
+| 08.04 | undoSave: room for the record; editorUndo: modified or not, after an undo; editorRedo: modified or not, after a redo |
+
+Not in regions, arriving with `@from`: the top block, a field per lesson
+(the redo stack 08.02; row0, col0, row1, col1 and kind 08.03; saved and
+bytes 08.04); undoSave's guard (`if (U.off || U.lost) return;`), and the
+helpers undoFreeStep, undoClear, undoGiveUp and undoPush (08.01), with
+their lines of 08.02 (the redo stack) and 08.04 (the byte count, the saved
+point); the cursor before a step, kept as undoSave opens it (08.03);
+UNDO_MAX_BYTES and undoSize (08.04); the three kinds (08.03); the keys.
+
+What the project shows at a lesson, before the module is whole (the
+`@else` parts):
+
+- **08.01: every key is a step of its own**: editorProcessKeypress calls
+  `undoClose()` for every key. editorUndo puts each record back with
+  undoPut and frees the step ("nothing redoes it yet"). Ctrl-R has a case
+  that does nothing. Undo leaves the cursor where it is.
+- **08.02**: editorUndo applies the records with undoApply and pushes the
+  step on the redo stack; Ctrl-R redoes. Still a key a step, the cursor
+  left where it is.
+- **08.03**: `undoKey(c)` takes the place of `undoClose()`; undo and redo
+  put the cursor back.
+- **Before 08.04** E.dirty counts as in the core, the changes undo and redo
+  make included, so "(modified)" stays after an undo back to the file as it
+  was.
+- The comment above struct undoState names the redo stack only from 08.02.
+
+### Hooks in core code
+
+Each is one marked line or a small marked block; none is inside module 06's
+or 07's blocks.
+
+- `editorInsertRow`, after its `at > E.numrows` guard:
+  `undoSave(U_INS,at);` (08.01).
+- `editorDelRow`, after its guard: `undoSave(U_DEL,at);` (08.01).
+- `editorRowInsertChar` (first line), `editorRowAppendString` (first line),
+  `editorRowDelChar` (after its guard): `undoSave(U_CHG,row-E.row);`
+  (08.01). The row's index is `row-E.row`: `idx` is module 06's.
+- `editorInsertNewline`, just before it cuts the row by hand
+  (`row->chars[filecol] = '\0'`): `undoSave(U_CHG,filerow);` (08.01).
+- `editorOpen`: `undoClear();` at its top (a file read anew: a history
+  anew), `U.off = 1;` just before the getline() loop and `U.off = 0;` just
+  after it (08.01).
+- `editorSave`, after a good write: `undoClose(); U.saved = U.numundo;`
+  (08.04).
+- `editorProcessKeypress`, just after the key is read: `undoClose();` at
+  08.01 and 08.02, `undoKey(c);` from 08.03; and after Ctrl-F's case (and
+  07's), `case CTRL_Z: editorUndo();` and `case CTRL_R:` (`editorRedo();`
+  from 08.02) (08.01).
+- `enum KEY_ACTION`: `CTRL_R = 18`, `CTRL_Z = 26` (08.01).
+
+The records are made in the row functions, not in the key handlers: every
+change to the text goes through those five functions and the one cut in
+editorInsertNewline, so whatever edits through them is remembered with no
+code of its own. That is why the hooks sit this low. In the finished
+project it holds for all there is: module 06 changes no text; module 07's
+editorJump does not edit either: it frees the rows itself and calls
+editorOpen, which starts a new history, so a jump to another file starts
+one with no code in module 07 (and the jump cannot be undone, as opening a
+file cannot). Module 09's set_lines, when it comes, edits through them and
+needs no undo code of its own. Not remembered: what undo and redo do
+themselves (they change the rows through the same functions, with U.off
+set) and the rows editorOpen reads.
+
+### Records, the swap, steps
+
+A record is one of three, made just before the change:
+
+    U_CHG  row at is about to change    text: a copy of its chars, '\0' and all
+    U_INS  a row is about to be inserted at at    text: NULL
+    U_DEL  the row at at is about to be deleted   text: a copy of its chars
+
+undoPut (08.01) puts a row back as a record says it was: U_CHG gives the
+row the record's text (freeing the row's), U_INS deletes the row, U_DEL
+inserts it again; the text is used up. undoApply (08.02) takes what the row
+holds first (for U_CHG and U_INS: the row's chars pointer itself, set to
+NULL in the row, so undoPut frees nothing; no copy), then calls undoPut,
+and leaves the record holding what it took, with the opposite type:
+
+    U_CHG(r, old)    the row gets old; the record gets the row's text    stays U_CHG
+    U_INS(r)         the row is deleted; the record gets its text        becomes U_DEL(r, text)
+    U_DEL(r, text)   a row with text is inserted at r                    becomes U_INS(r)
+
+A step holds its records in the order they were made. Undo applies them
+last to first and pushes the step on the redo stack; redo applies the same
+records first to last and pushes it back. Enter in the middle of "abcdef"
+at column 3: U_INS(r+1) (editorInsertRow), then U_CHG(r, "abcdef") before
+the cut. Undone: U_CHG puts "abcdef" back and keeps "abc", then U_INS
+deletes row r+1 and keeps "def" (now U_DEL(r+1, "def")). Redone, first to
+last: U_DEL inserts "def" at r+1, U_CHG puts "abc" back.
+
+A new edit (a record that opens a new step) empties the redo stack: the
+history is a line, not a tree.
+
+The leave-out rule (08.03): a U_CHG of row r is not recorded when the open
+step's last record is a U_CHG or a U_INS of row r. So a run of typing on
+one row is one record, as Vim saves a line once in an insert. Why it is
+safe: every change to the text goes through a hook, and every hook makes a
+record but for the ones this rule leaves out, which are only U_CHGs. So
+while that last record stays the step's last, every change since it was a
+change to the text of one row (a U_CHG left out), and each was of row r (a
+U_CHG of another row is recorded, and would be the last record); no row was
+inserted or deleted (U_INS and U_DEL are always recorded). So row r is
+still at r and no other row has changed: undone, U_CHG(r) puts back r's
+text from before all of those changes, and U_INS(r) deletes r whatever it
+holds; either way the text is what it was before that record. Redone, the
+record holds what it took at the undo: the row after all of them. Only the
+last record is looked at, because a record further back may have rows
+inserted or deleted after it, and then "row r" is another row. (Tested in
+0803: ten characters are one record; typing below the last row is one,
+the U_INS; a run of Backspaces that changes a row, joins it onto the row
+above and changes that row again is four records, U_CHG, U_CHG, U_DEL,
+U_CHG, and all of it comes undone.)
+
+Steps (08.03): a step is a run of keys of one kind: UNDO_TYPING (Tab, a
+printable character, a byte above 127), UNDO_DELETING (Backspace, Ctrl-H,
+Delete), UNDO_OTHER (every other key). undoKey(c), called with every key
+before it acts, closes the open step when the key is UNDO_OTHER or of
+another kind than the keys before it (U.kind). An UNDO_OTHER key's own
+edits (Enter's) open a step that the next key closes. A step is opened only
+by its first record, so a step with no records is never kept. A step keeps
+the cursor in the file (E.rowoff+E.cy, E.coloff+E.cx) from before its first
+record and from the moment it is closed; undo puts the cursor at the first,
+redo at the second, with undoCursor: a row off the screen goes to the top
+line, as a search puts its match, and a column past the screen's width
+scrolls the view right. That is what module 07's editorJump does after its
+clamping; 08 has its own few lines (07's are not in an 08 project), and
+does not clamp: the place is put back as it was, below the last row or
+past the end of a row if that is where the cursor was (the core lets it be
+there).
+
+Undo and redo both close the open step first (undoClose), so a step is
+whole before it is taken back, whoever calls them.
+
+### Limits
+
+| name | value | why |
+|---|---|---|
+| UNDO_MAX_BYTES | 8 MB (8388608) | what the history may hold: the bytes of text in both stacks, '\0's included, plus 24 bytes per record (sizeof struct undoRecord) and 32 per step (sizeof struct undoStep) on a 64-bit machine |
+
+The count is U.bytes, kept as records are made, swapped and freed. It is
+not malloc()'s own overhead, and the stack arrays are not shrunk when steps
+leave them (as E.row is not when a row is deleted), so a few dropped or
+undone steps' 32 bytes may still be allocated until the next push.
+
+When a new record would take the count past the bound, the oldest undo
+steps are dropped (never the open one) until it fits. If the open step and
+the record alone do not fit, the history is given up: emptied, the message
+line says `undo: change too big to remember`, and the rest of that step is
+not remembered either (U.lost, until the step is closed: half a step
+undone would put back a text that never was). An allocation that fails
+gives the history up the same way, `undo: out of memory`. Either way the
+change itself is made: undoSave returns, and the row function goes on.
+
+The bound is kept when a record is made, as the design says, not when undo
+or redo swap: an undo can take the count past it by what the step takes in
+(the text needed to redo it; undoing a run of typing on an empty row takes
+the whole typed row into the record). With nothing left to redo the count
+is always within the bound: redo gives each record back what it held, and
+the next record trims. 0804 checks exactly that, with a bound of 2000
+bytes, on every key of a random run.
+
+### The saved point (08.04)
+
+U.saved is the number of steps under the text that is on disk: 0 when the
+file is opened (undoClear), U.numundo in editorSave after a good write (the
+open step closed first). After every undo and redo, E.dirty = (U.numundo !=
+U.saved): "(modified)" goes when the undo stack is back at the save, and
+comes back past it. Between them E.dirty counts as in the core. The saved
+point is put out of reach, -1, so that the file stays modified until the
+next save:
+
+- by a new edit made after undoing below it (U.saved > U.numundo when the
+  redo stack is emptied): the steps between were the way back to it;
+- by dropping steps for memory, when more steps are dropped than were
+  under it: each dropped step takes it down one, and below 0 it is -1. When
+  exactly the steps under it are dropped, it is 0, the bottom of the
+  stack, and still reachable (0804: saved after 2 steps, 12 in all with a
+  bound of 10: undone to the bottom, not modified; one more step, and it is
+  -1);
+- by giving the history up (undoGiveUp).
+
+### Invariants, and where each is tested
+
+1. After undoing every step, the text is byte for byte what editorOpen read;
+   after redoing every step, byte for byte what it was before the first
+   undo. Tested by 0801 (every kind of edit, saved after the undo), 0802
+   (undone and redone three times over) and 0804's random runs: 400 keys
+   from a fixed seed (letters, space, Tab, Enter, Backspace, Delete, the
+   arrows, Page Up and Down; in three runs Ctrl-Z and Ctrl-R too, alone and
+   in bursts of up to six), on 24x80, 10x30, 6x20 and 12x40, on a .txt file
+   and a .c file (module 06's idx and colours in the way), under ASan; then
+   Ctrl-Z until "Nothing to undo" and a save, compared with the file as
+   opened; then Ctrl-R until "Nothing to redo" and a save, compared with the
+   save before the undos. A fifth run has a bound of 2000 bytes (steps are
+   dropped, the saved point goes to -1): there only the second half holds,
+   and it is checked. The four other runs end their 400 keys with 86 to
+   134 steps of 94 to 168 records on the undo stack (counted through
+   KILO_TEST_UNDO_LOG); where Ctrl-Z and Ctrl-R are in the mix, the redo
+   stack holds up to 6 steps at times; the bounded run keeps about 30.
+2. A record's row is inside the file when it is applied (0 to numrows-1,
+   or to numrows for a U_DEL). An `@internal` check in undoApply exits with
+   status 4 if not; every test runs with it, and the random runs under ASan
+   would stop on any access out of E.row.
+3. The bytes counted are the bytes held: U.bytes is what the stacks hold,
+   counted again from them (each step's 32, each record's 24 and its text's
+   len+1). With KILO_TEST_UNDO_LOG set, the `@internal` undoCheck counts
+   again after every key and exits with status 4 when the two differ; 0803
+   and 0804 run with it, the random runs included. (A test that left out
+   `U.bytes -= undoSize(r)` in undoApply was caught by it at once; see
+   "Break it".)
+4. As the design states it, "E.dirty is 0 exactly when the text is the file
+   as last opened or saved and the saved point is reachable", it is not
+   true: type "a" and Backspace it, and the text is the file again with
+   E.dirty not 0 and "(modified)" in the status bar (the core's count; a
+   step that cancels another is still a change). What holds: after every undo and redo, E.dirty is 0 exactly when
+   the undo stack is at a reachable saved point, and whenever E.dirty is 0
+   the text is the file as last opened or saved. Tested by 0804 (each case
+   of "The saved point", and in the random runs one Ctrl-Z after the last
+   save is modified and the Ctrl-R after it is not).
+
+### Departures from the design, and why
+
+- **The swap is 08.02's function around 08.01's.** At 08.01 undo only puts
+  rows back (undoPut: free the row's text, put the record's in); 08.02's
+  undoApply takes what is there first and keeps it, and calls undoPut for
+  the rest. So 08.01's code stays as it was and 08.02 adds to it; the swap
+  in one function from 08.01 would teach what the record keeps a lesson
+  before anything needs it. editorUndo calls undoPut at 08.01 and undoApply
+  from 08.02 (an `@else`).
+- **"A key a step" at 08.01 and 08.02 is `undoClose()` for every key**, at
+  the place where `undoKey(c)` goes at 08.03 (an `@else`).
+- **The cursor is 08.03's**, as the design's heading has it: at 08.01 and
+  08.02 undo and redo leave the cursor where it is (it may then be past the
+  end of a row or below the last row, places the core allows: typing there
+  pads with spaces or adds rows, as in the core).
+- **The leave-out rule is 08.03's** (a region of undoSave), not 08.01's:
+  it changes no result, only memory, and it matters once a step is a run
+  of keys. At 08.01 and 08.02 every change is recorded.
+- **Allocations are checked from 08.01**, not only at 08.04: undoSave and
+  the pushes of undo and redo give the history up (undoGiveUp: emptied,
+  U.lost, "undo: out of memory") when malloc or realloc fails. Written
+  without the checks, 08.01's code would have to change in three places at
+  08.04. 08.04 adds the saved point's -1 to undoGiveUp, and the bound.
+- **U.lost** (not in the design): after the history is given up in the
+  middle of a step, the rest of that step is not remembered, until the step
+  is closed. Without it, the records after the one that did not fit would
+  make a step of their own, and undoing it would put back a text that never
+  was (the middle of a join, say).
+- **editorOpen turns recording off around the getline() loop**, not "at its
+  top ... and on at its end": editorOpen returns early, with no rows, for a
+  file that does not exist, and recording would have stayed off for the
+  whole session on a new file. undoClear is at its top, as the design says.
+- **Typing is "a key that types a character"**, not "whatever reaches
+  editorInsertChar": undoKind cannot see which keys have no case of their
+  own without repeating the switch. It is Tab, 32 to 126, and a byte above
+  127, which editorReadKey returns as a negative char where char is signed
+  (macOS on arm64: 0xc3 comes as -61) and as 128 to 255 where it is not
+  (Linux on aarch64, Debian and Alpine: 195; checked with a two-line
+  program on each): both are typing, so the two bytes of an e-acute are
+  one step with the letters around them (0803, which passes on all three). A control character typed as text (Ctrl-A)
+  is UNDO_OTHER: a step of its own.
+- **Ctrl-R does nothing at 08.01** (a case that breaks), as the core's keys
+  do before their lesson; before 08.01, Ctrl-Z and Ctrl-R are text, as any
+  control key is in the core.
+- **The saved point and dropped steps**: the design says the saved point is
+  unreachable "if steps under the saved point are dropped". Dropping steps
+  under it does not by itself lose it: it is lost when more steps are
+  dropped than were under it (above). The code takes it down one per step
+  dropped, to -1 below 0.
+- **The bound is kept when a record is made**, not after undo and redo
+  (above); and a record's need is counted before it is made, with the step's
+  32 when it opens one.
+- **"A jump of module 07" is not remembered**, though the design lists it
+  with set_lines: a jump does not edit (above).
+- **undoPut's U_CHG counts a change** (`E.dirty++`), as editorInsertRow and
+  editorDelRow do for the other two; at 08.04 editorUndo and editorRedo set
+  E.dirty after the step anyway.
+- **Invariant 4** as stated does not hold (above).
+
+### How the screens below were captured
+
+With a scratch driver around track.py's `Editor`: the project at the lesson
+(`./learn files kilo --at 08.LL`, built with make), on a 10x44
+pseudo-terminal, on this notes.txt:
+
+```
+undo keeps
+what each line was
+before it changed
+```
+
+and the keys Down, `and `, Enter, Backspace, Backspace (which leave
+`andwhat each line was`, cursor 2,4), then Ctrl-Z until "Nothing to undo",
+then Ctrl-R until "Nothing to redo". Rows 4 to 8 (`~`) are left out below;
+the status bar is in reverse video.
+
+### 08.01 Remembering what a line was
+
+Every key a step, the cursor left where it is. The first screen, then each
+Ctrl-Z (the message line keeps the HELP line until "Nothing to undo"):
+
+```
+    |undo keeps
+    |andwhat each line was
+    |before it changed
+    |~
+    |notes.txt - 3 lines (modified)           2/3
+    [cursor 2,4]
+```
+
+Ctrl-Z 1: `and what each line was` (the second Backspace, the space).
+Ctrl-Z 2: `and` and `what each line was` on two rows, `notes.txt - 4 lines
+(modified)           2/4` (the join). Ctrl-Z 3: `and what each line was`
+(Enter). Ctrl-Z 4 to 7: `andwhat ...`, `anwhat ...`, `awhat ...`, `what
+each line was` (the four characters). Ctrl-Z 8:
+
+```
+    |undo keeps
+    |what each line was
+    |before it changed
+    |~
+    |notes.txt - 3 lines (modified)           2/3
+    |Nothing to undo
+    [cursor 2,4]
+```
+
+The cursor stayed at 2,4 throughout, and "(modified)" stays: E.dirty is
+the core's count. Ctrl-R changes nothing. Ctrl-Z in a file just opened:
+`Nothing to undo` (0801).
+
+### 08.02 Redo: a record that undoes itself
+
+The same eight Ctrl-Z, then Ctrl-R 1 to 7 give the screens back in the
+other order: `awhat`, `anwhat`, `andwhat`, `and what`, `and` / `what each
+line was` (4 lines), `and what`, `andwhat each line was`; Ctrl-R 8:
+
+```
+    |undo keeps
+    |andwhat each line was
+    |before it changed
+    |~
+    |notes.txt - 3 lines (modified)           2/3
+    |Nothing to redo
+    [cursor 2,4]
+```
+
+(Until then the message line still says `Nothing to undo`: nothing is said
+when a step is undone or redone.) An edit after an undo empties the redo
+stack: Ctrl-Z, a key typed, Ctrl-R says `Nothing to redo`.
+
+### 08.03 One Ctrl-Z, one thought: steps
+
+Three steps: `and ` (typing), Enter (other), the two Backspaces (deleting).
+Ctrl-Z 1, the Backspaces (the cursor where the first one was pressed):
+
+```
+    |undo keeps
+    |and
+    |what each line was
+    |before it changed
+    |notes.txt - 4 lines (modified)           3/4
+    [cursor 3,1]
+```
+
+Ctrl-Z 2, Enter: `and what each line was`, cursor 2,5. Ctrl-Z 3, `and `:
+`what each line was`, cursor 2,1. Ctrl-Z 4: `Nothing to undo`. Ctrl-R 1 to
+3: `and what ...` cursor 2,5; the two rows, cursor 3,1; `andwhat ...`
+cursor 2,4 (where each step ended). Ctrl-R 4: `Nothing to redo`.
+
+### 08.04 The saved point, and a bound on memory
+
+The same keys and screens as 08.03, but for the status bar: the file was
+not saved, so the saved point is the file as opened, and after Ctrl-Z 3
+
+```
+    |undo keeps
+    |what each line was
+    |before it changed
+    |~
+    |notes.txt - 3 lines                      2/3
+    [cursor 2,1]
+```
+
+with no "(modified)"; Ctrl-R 1 puts it back. With a save between, on the
+same file, A, Ctrl-S, B:
+
+```
+    |ABundo keeps
+    |what each line was
+    |before it changed
+    |~
+    |notes.txt - 3 lines (modified)           1/3
+    |49 bytes written on disk
+    [cursor 1,3]
+```
+
+Then (rows 2 to 4 as above, the message line keeping `49 bytes written on
+disk` for its 5 seconds):
+
+- Ctrl-Z, back at the save: `Aundo keeps`, `notes.txt - 3 lines
+  1/3` (no "(modified)"), cursor 1,2;
+- Ctrl-Z, past it: `undo keeps`, `notes.txt - 3 lines (modified)
+  1/3`, cursor 1,1;
+- C, a new edit below the save: `Cundo keeps`, "(modified)", cursor 1,2;
+- Ctrl-Z: `undo keeps`, still "(modified)": the text on disk, `Aundo keeps`,
+  cannot be reached now.
+
+A file of two rows, `short` and 9 000 000 w's, X typed at the start of the
+second row (the project's own 8 MB bound):
+
+```
+    |short
+    |Xwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    |~
+    |~
+    |big.txt - 2 lines (modified)             2/2
+    |undo: change too big to remember
+    [cursor 2,2]
+```
+
+and Ctrl-Z then says `Nothing to undo`; the X stays, and a save writes it.
+`undo: out of memory` was not seen: nothing here makes malloc fail, and no
+test does.
+
+### Measurements
+
+On the Mac (Apple M-series, macOS), kilo built as the tests build it.
+
+- **A 60-character line typed into an empty row**: as one step (a run of
+  typing, 08.03), 57 bytes held: one step (32), one record (24) and the
+  empty row it kept (1). As 60 steps (Ctrl-L, a key that does nothing,
+  after each character): 5190 bytes: 60 steps and records (3360), and the
+  row as it was before each character, 1 to 60 bytes with its '\0' (1830).
+  At 08.01 and 08.02, where every key is a step, typing is the second case.
+  On a file with no rows, the first character's record is the U_INS of the
+  row it makes (no text), and the rest are left out: 56 bytes, or 5189.
+- **A step that touches 10000 rows**: 10000 empty rows, the cursor on the
+  last, 9999 Backspaces in one run (each joins an empty row onto the one
+  above): one step of 19998 records (a U_CHG and a U_DEL a join), 499982
+  bytes held. Undo and redo, from the key sent to the frame drawn (the
+  frame itself takes about 0.5 ms), on the project at 08.04, 10 of each:
+  undo min 1.0, median 1.3, max 3.1 ms; redo min 0.7, median 0.9, max 2.8
+  ms. With the last row 60 y's (so each U_DEL keeps 61 bytes, 1099922
+  bytes held): undo median 4.3 ms (3.6 to 5.3), redo median 3.4 ms (3.1 to
+  11.0). Rows are inserted at the end each time (the joins went up from the
+  last row), so no memmove of E.row is long.
+
+### Ctrl-Z and the terminal
+
+Raw mode clears ISIG (enableRawMode, 01.01, says so in its comment), so
+Ctrl-Z reaches kilo as the byte 26 and Ctrl-R as 18. Checked otherwise, with
+a scratch build of the project at 08.04 that leaves ISIG on, run under a
+small job-control shell (a Python script that takes the pseudo-terminal as
+its controlling terminal, runs kilo in a process group of its own in the
+foreground, and waits for it with WUNTRACED): x, then Ctrl-Z. The terminal
+turns Ctrl-Z (VSUSP) into SIGTSTP for the foreground group, and kilo, which
+has no handler for it, stops: `stopped by signal 18 (SIGTSTP)` (macOS's
+number), and the shell has its terminal back still in kilo's
+raw mode (ECHO off, ICANON off). Built as it is, kilo keeps running and the
+x is undone. In the tests' own terminal the same build does not stop:
+there kilo leads a session of its own, its process group is orphaned, and
+a stop signal from the terminal to an orphaned group is not delivered.
+
+### Break it
+
+Each was run as the change it describes, on a copy of the tree, with the
+module's four tests (a scratch script; the result in brackets).
+
+- **08.01, reading the file remembered**: take out `U.off = 1;` before
+  editorOpen's loop. The rows read are one step: Ctrl-Z in a file just
+  opened deletes every row, and the screen is all `~`. (0801, 0803, 0804.)
+- **08.02, no opposite**: `was.type = r->type;` in undoApply, so a U_INS
+  stays a U_INS. Enter at the start of `xyz` (on `abc`, `xyz`), undone,
+  redone: the redo deletes a row again, and `xyz` is gone (`abc`, `~`).
+  In the longer runs the `@internal` check stops kilo with status 4 (a
+  record of a row that is not in the file). (0802, 0803, 0804.)
+- **08.02, redo last to first**: kilo stops with status 4 on the first
+  step of more than one record whose rows move (invariant 2). (0802, 0804.)
+- **08.02, the redo stack kept after a new edit**: take out the loop that
+  frees it in undoSave. `a`, Enter, `b`, two Ctrl-Z, `Q`, Ctrl-R: the redo
+  puts the rows back as they were before `Q` (`a`, `one`): the Q typed is
+  lost. (0802, 0804.)
+- **08.03, no leave-out rule**: ten characters typed on `abc` are ten
+  records, 357 bytes, not one record and 57. Nothing else changes. (0803.)
+- **08.03, a byte above 127 as an UNDO_OTHER key**: `caf` and an e-acute
+  typed, then Ctrl-Z: the e-acute's second byte is undone alone, and its
+  first stays on the screen. (0803.)
+- **08.03, no cursor row after a step**: take out the line that keeps row1
+  in undoClose: redo puts the cursor on the first row of the file, in the
+  right column (row1 is still the 0 the step was made with). (0802, 0803.)
+- **08.04, the count not taken down when a record is applied**: take out
+  `U.bytes -= undoSize(r);` in undoApply: the `@internal` count after the
+  next key differs, and kilo stops with status 4 (invariant 3). (0803,
+  0804.)
+- **08.04, E.dirty set to 1 after an undo**: "(modified)" stays after an
+  undo back to the file. (0801, 0803, 0804.)
+- **08.04, the saved point not taken down when a step is dropped**: with
+  ten steps allowed, saved after six, twelve made: the saved point is still
+  6 where it is 4. (0804.)
+- **08.04, the saved point kept after a new edit below it**: take out `if
+  (U.saved > U.numundo) U.saved = -1;`. `a`, Ctrl-S, Ctrl-Z, `c`, Ctrl-Z,
+  Ctrl-R: the undo stack is one step high, as at the save, so the status
+  bar says the file is not modified, with `cone` on the screen and `aone`
+  on disk. (0804.)
+- **08.01, the rest of a step kept after the history is given up**: take
+  out `|| U.lost` from undoSave's guard. With a bound of 1000 bytes, `tail`
+  joined onto a row of 5000 w's: the long row's record does not fit (the
+  message says so), the U_DEL of `tail` after it is kept as a step of its
+  own, and Ctrl-Z puts `tail` back under the row that already ends in it:
+  2 lines, where there never were. (0804.)
+
+Not caught, and why: the leave-out rule without its `type != U_DEL`
+(a U_CHG of row r left out after a U_DEL of row r too). With kilo's keys
+no step holds a U_DEL of row r and then a change to row r: after a join
+(the only U_DEL) the cursor is on the row above, and getting to row r
+takes a key that ends the step. So the half of the rule that excludes
+U_DEL is there for edits that do not come from keys (module 09's
+set_lines); the proof above covers it, no test reaches it.
+
+### Found on the way
+
+1. **The cursor past the end of a row.** The core lets the cursor stand
+   past the end of its row: when the window shrinks, handleSigWinCh pulls
+   E.cy up onto the screen and keeps E.cx, so on a shorter row the cursor is
+   past its end (0801 uses this: row 15 at column 25, the window cut to 8
+   rows, the cursor on row 5, `r5`, at column 25; X typed pads 23 spaces,
+   and an undo takes them all). Upstream's, kept.
+2. **Down from a long row scrolled right.** On a row of 120 x's at column
+   101 (the view scrolled right by 22), Down to `short` leaves the view
+   scrolled right by 5 with the cursor in column 0: the row shows empty.
+   editorMoveCursor's fix-up moves the view, not the cursor alone.
+   Upstream's, kept; 0803 moves left instead.
+3. **A stop from the terminal in the tests' terminal** (above): the
+   tests could not show Ctrl-Z stopping kilo. 0101's comment says that with
+   ISIG on, Ctrl-C, Ctrl-Z and Ctrl-\ "would stop it" there; for Ctrl-Z that
+   is not so (the stop is not delivered), though the test still catches ISIG
+   on: the byte never reaches kilo, and the file saved shows it.
+4. **0101 expected Ctrl-Z in the text.** The core's 01.01 test types Ctrl-C,
+   Ctrl-Z and Ctrl-\, and expected the saved file to start with the bytes
+   26 and 28: true of the core, but in the finished editor Ctrl-Z is now
+   undo, and the test failed there. Its last check was changed, and only
+   that: when kilo said `Nothing to undo` (module 08 is in the tree), the
+   file starts with 28 alone; otherwise with 26 and 28, as before. A learner
+   at 01.01 has the reference code of every later lesson, module 08's
+   included, so the test meets the same editor there.
+
+No bug in the core, module 06 or module 07 was found.
+
+### Kept simple
+
+- A line of history, not a tree: a new edit after an undo loses the steps
+  undone (Vim and Helix keep them as branches; see below).
+- No undo of opening another file (module 07's jump): the history starts
+  again.
+- Steps are runs of a kind of key, with no clock: no time interval groups
+  them (Zed's 300 ms), and no count ends a run (Emacs's 20).
+- Records hold whole rows: a character typed into a long row copies the
+  row once per step (the leave-out rule makes it once, not once a key).
+- No persistent undo; the history goes when kilo exits.
+- Module 09's mapped keys: undoKind classes a key by its code, so a
+  printable key that 09 maps to a function would count as typing. When 09
+  comes, a mapped key should be UNDO_OTHER (a script's edits a step of
+  their own, as the design says).
+
+### The notable editors
+
+Read from the sources at the tags below (raw files on GitHub, fetched with
+curl, 2026-11-24); every claim here is in a line quoted, and line numbers
+are the files' at those tags. What could not be seen in a source is under
+"Not confirmed" and must not go into a lesson.
+
+**Vim**, tag v9.2.1398 (6abceda02d4ede92405d61a435f846a06a1f32f3),
+https://raw.githubusercontent.com/vim/vim/v9.2.1398/ + the path.
+
+- What is saved: `src/undo.c` 242-243, u_save: "Save the lines between
+  "top" and "bot" for both the "u" and "U" command." u_savecommon (404-407):
+  "Common code for various ways to save text before a change." It copies
+  each line into the entry (724, 732): `for (i = 0, lnum = top + 1; i <
+  size; ++i)` ... `if (u_save_line(&uep->ue_array[i], lnum++) == FAIL)`.
+- The entry, `src/structs.h` 472-476: `ue_top; // number of line above undo
+  block`, `ue_bot; // number of line below undo block`, `ue_lcount; //
+  linecount when u_save called`, `*ue_array; // array of lines in undo
+  block`, `ue_size; // number of lines in ue_array`.
+- The swap, `src/undo.c` 2777-2779, u_undoredo: "The lines in the file are
+  replaced by the lines in the entry list at curbuf->b_u_curhead. The
+  replaced lines in the file are saved in the entry list for the next
+  undo/redo." Then (2888) "Delete the lines between top and bot and save
+  them in newarray.", and (2994-2995) `uep->ue_size = oldsize;`
+  `uep->ue_array = newarray;`. The entry list is reversed as it goes (2999,
+  3001-3003): "insert this entry in front of the new entry list". Undo calls
+  `u_undoredo(TRUE);` (2384), redo `u_undoredo(FALSE);` (2400): one
+  function for both.
+- A line saved once: `src/undo.c` 617-622: "When saving a single line, and
+  it has been saved just before, it doesn't make sense saving it again.
+  Saves a lot of memory when making lots of changes inside the same line.
+  This is only possible if the previous change didn't increase or decrease
+  the number of lines. Check the ten last changes." (648: `if
+  (uep->ue_size == 1 && uep->ue_top == top)`). Vim looks at ten; kilo at
+  one.
+- A step: `runtime/doc/undo.txt` 83-84: "One undo command normally undoes a
+  typed command, no matter how many changes that command makes. This
+  sequence of undo-able changes forms an undo block." In Insert mode,
+  `src/getchar.c` 1475-1476, may_sync_undo: "Do not sync: - In Insert
+  mode, unless cursor key has been used." `runtime/doc/insert.txt` 362-363,
+  of the cursor keys and the like: "The changes (inserted or deleted
+  characters) before and after these keys can be undone separately." CTRL-G
+  u starts a new block (undo.txt 109-111).
+- The tree: `runtime/doc/undo.txt` 130-135: "Undo branches ... it is also
+  possible to branch off. This happens when you undo a few changes and then
+  make a new change. The undone changes become a branch." `:undol[ist]`
+  "List the leafs in the tree of changes." (140); `g-` "Go to older text
+  state." (164); `:ea[rlier] {N}s` "Go to older text state about {N}
+  seconds before." (168); `:ea[rlier] {N}f` "... {N} file writes before."
+  (173); `g+`, `:lat[er]` (183, 186). 242-243: "Note that using "u" and
+  CTRL-R will not get you to all possible text states while repeating "g-"
+  and "g+" does."
+- Persistent undo: `runtime/doc/undo.txt` 246-251: "By setting the
+  'undofile' option, Vim will automatically save your undo history when you
+  write a file and restore undo history when you edit the file again."
+
+**Neovim**, tag v0.12.6 (022946c802832f938398dfae34b3f277ca9509d4),
+https://raw.githubusercontent.com/neovim/neovim/v0.12.6/ + the path. The
+same design, the same comments: `src/nvim/undo.c` 250 (u_save), 345-348
+(u_savecommon), 2256-2258 (u_undoredo: "The replaced lines in the file are
+saved in the entry list for the next undo/redo."), 2417-2418 (`uep->ue_size
+= oldsize;` `uep->ue_array = newarray;`), 502-504 and 531-532 (a single
+line saved once); `src/nvim/undo_defs.h` 22-27 (u_entry_T: `ue_top`,
+`ue_bot`, `ue_lcount`, `char **ue_array;`, `ue_size`); `runtime/doc/undo.txt`
+86-87 (undo blocks), 131-137 (branches; "The undo-tree of a file can be
+visualized and interactively applied using |:Undotree|."), 142
+(`:undolist`), 248-253 ('undofile').
+
+**Emacs**, tag emacs-31.1 (1f9518d22ae0fe4490ea9761ea7d39fbb970a890),
+https://raw.githubusercontent.com/emacs-mirror/emacs/emacs-31.1/ + the path.
+
+- An entry of buffer-undo-list, `doc/lispref/text.texi` (node Undo): "(BEG .
+  END) This kind of element indicates how to delete text that was inserted.
+  Upon insertion, the text occupied the range BEG--END in the buffer."
+  (1398-1401); "(TEXT . POSITION) This kind of element indicates how to
+  reinsert text that was deleted. The deleted text itself is the string
+  TEXT." (1403-1405); "nil This element is a boundary. The elements between
+  two boundaries are called a change group; normally, each change group
+  corresponds to one keyboard command" (1452-1455). Others: a position
+  (point), (t . TIME-FLAG), text properties, markers, (apply ...). An
+  insertion records no text, a deletion the text.
+- `src/undo.c` 81-84, record_insert: "Record an insertion ... (It is
+  possible to record an insertion before or after the fact because we
+  don't need to record the contents.)"; 98-99: "If this is following
+  another insertion and consecutive with it in the buffer, combine the
+  two."; record_delete (159-160, 189-191) pushes `(string . beg)`.
+- Undo is recorded too: `doc/lispref/text.texi` 1522-1527:
+  "primitive-undo adds elements to the buffer's undo list when it changes
+  the buffer. ... The new elements added by undoing are not part of this
+  saved value, so they don't interfere with continuing to undo."
+  `lisp/simple.el` 3427-3430: "a redo record is just an undo record, the
+  only difference is that it is created by an undo command (instead of an
+  ordinary buffer edit). ... a record used to undo an undo is called redo
+  record." undo-redo (3606-3607): "Undo the last ARG undos, i.e., redo the
+  last ARG changes."
+- Amalgamating, still 20: `lisp/simple.el` 49-50: `(defvar
+  amalgamating-undo-limit 20` "The maximum number of changes to possibly
+  amalgamate when undoing changes."; `doc/lispref/text.texi` 1476-1484:
+  "The editor command loop automatically calls undo-boundary just before
+  executing each key sequence ... A few exceptional commands are
+  amalgamating ... with these a boundary is inserted only every 20th
+  command ... By default, the commands self-insert-command ... and
+  delete-char ... are amalgamating."
+
+**Zed**, tag v1.29.3 (d01b134cddf5e4f71964deb2d6f81cdb38fcf1e7),
+https://raw.githubusercontent.com/zed-industries/zed/v1.29.3/ + the path.
+
+- An undo is an operation of its own: `crates/text/src/text.rs` 619-622,
+  `pub enum Operation { Edit(EditOperation), Undo(UndoOperation), }`;
+  633-636, `pub struct UndoOperation { pub timestamp: clock::Lamport, pub
+  version: clock::Global, pub counts: HashMap<clock::Lamport, u32>,`. Undo
+  and redo both build one (1423-1426, undo_or_redo): `counts.insert(edit_id,
+  self.undo_map.undo_count(edit_id).saturating_add(1));`. An edit is undone
+  when its count is odd, `crates/text/src/undo_map.rs` 68-69: `pub fn
+  is_undone(&self, edit_id: clock::Lamport) -> bool {
+  self.undo_count(edit_id) % 2 == 1`; a fragment of text is visible when its
+  insertion is not undone and every deletion of it is (text.rs 3151-3152).
+  So an undo marks edits; it does not apply an inverse edit.
+- A transaction: `pub struct Transaction { pub id: TransactionId, pub
+  edit_ids: Vec<clock::Lamport>, pub start: clock::Global,` (135-138); the
+  history is `undo_stack` and `redo_stack` (156-157), and ending a
+  transaction does `self.redo_stack.clear();` (278).
+- Grouping, 300 ms: 225-230, `group_interval: if cfg!(any(test, feature =
+  "test-support")) { Duration::ZERO } else { Duration::from_millis(300) },`;
+  293-294: `&& entry.first_edit_at - prev_entry.last_edit_at <
+  self.group_interval`.
+
+**Helix**, tag 25.07.1 (ac94841019910ff405f31a8668389a06a169e0e5),
+https://raw.githubusercontent.com/helix-editor/helix/25.07.1/ + the path.
+
+- `helix-core/src/history.rs` 58-65: `struct Revision { parent: usize,
+  last_child: Option<NonZeroUsize>, transaction: Transaction, // We need an
+  inversion for undos because delete transactions don't store // the
+  deleted text. inversion: Transaction, timestamp: Instant,`. 15-20: "the
+  history is represented as a vector of revisions ... Each revision ... has
+  a parent revision, a [Transaction] that can be applied to its parent to
+  transition from the parent to itself, and an inversion of that
+  transaction".
+- By time: 305-309, `pub enum UndoKind { Steps(usize),
+  TimePeriod(std::time::Duration),`; `earlier` and `later` (287-300) take
+  either. Steps follow the vector, not a path in the tree (228:
+  `self.jump_to(self.current.saturating_sub(delta))`).
+- A revision in Insert mode: `helix-term/src/ui/editor.rs` 1449-1452: "Store
+  a history state if not in insert mode. This also takes care of committing
+  changes when leaving insert mode."
+
+**VS Code**, tag 1.147.0 (8a14f0cc1b08d531eb83255ea3764ae22aa932b5),
+https://raw.githubusercontent.com/microsoft/vscode/1.147.0/ + the path.
+
+- An element of the edit stack, `src/vs/editor/common/model/editStack.ts`
+  40-47 (SingleModelEditStackElement's data): `beforeCursorState`,
+  `afterCursorState`, `changes: TextChange[]`, with before and after
+  version ids and line endings; a TextChange (`core/textChange.ts` 35-39)
+  is `oldPosition, oldText, newPosition, newText`. pushEditOperation
+  (428-432) applies the edits and keeps their inverses: `const
+  inverseEditOperations = this._model.applyEdits(editOperations, true,
+  reason);`.
+- Undo stops: `src/vs/editor/common/cursorCommon.ts` 34-40, `export const
+  enum EditOperationType { Other = 0, DeletingLeft = 2, DeletingRight = 3,
+  TypingOther = 4, TypingFirstSpace = 5, TypingConsecutiveSpace = 6,`; and
+  `src/vs/editor/common/cursor/cursorTypeEditOperations.ts` 1022-1033,
+  shouldPushStackElementBetween: "Always set an undo stop before non-type
+  operations" ... "Insert undo stop between different operation types"
+  (`return normalizeOperationType(previousTypingOperation) !==
+  normalizeOperationType(typingOperation);`); Enter (581-582)
+  `shouldPushStackElementBefore: true`; a cursor move pushes one
+  (`browser/coreCommands.ts` 607, 611: `viewModel.model.pushStackElement();`);
+  a delete that spans lines too (`cursor/cursorDeleteOperations.ts`
+  183-184).
+- A line, not a tree: `src/vs/platform/undoRedo/common/undoRedoService.ts`
+  284-292, pushElement: "remove the future" ... `this._future = [];`.
+
+| editor | what a record holds | what one step is | line or tree |
+|---|---|---|---|
+| Vim, Neovim | whole lines: the lines between ue_top and ue_bot, swapped with the buffer's on undo and redo | an undo block: one command; in Insert mode the whole insert, cut by cursor keys or CTRL-G u | tree (branches, g- g+, :undolist, :earlier by count, time or writes); persistent with 'undofile' |
+| Emacs | positions and characters: (BEG . END) for an insertion (no text), (TEXT . POSITION) for a deletion, and more | a change group between boundaries: one command; typed characters and delete-char amalgamated up to 20 | a line, in which undoing adds records, so redo is undoing the undo |
+| Zed | operations: a transaction is a list of edit ids; an undo is an operation of counts that marks edits undone | a transaction; transactions less than 300 ms apart are grouped | a line: undo and redo stacks, redo cleared when a transaction ends |
+| Helix | operations: a transaction and its inversion, with a timestamp | a revision, committed when not in Insert mode (so an insert is one) | tree of revisions (parent, last_child); earlier and later by steps or time |
+| VS Code | characters: TextChanges (old and new text and positions) from the inverse edits, with the cursor before and after | a run of one kind of edit (typing, deleting left, deleting right, other) between undo stops; Enter, a cursor move, a delete over lines push a stop | a line: a new element removes the future |
+| kilo (this module) | whole rows: a row's text before it changes or is deleted, or that it was inserted; swapped on undo and redo, as Vim's | a run of keys of one kind (typing, deleting, other), as VS Code's types; an other key ends one | a line |
+
+Not confirmed (could not be seen in the sources read, so not for a lesson):
+
+- Zed: the word "CRDT" is in neither file read; that the buffer is one is
+  an inference from the Lamport timestamps and versions. Which keys start
+  and end a transaction is decided in Zed's editor crate, not read; only
+  the 300 ms grouping in text.rs is confirmed. No inverse-edit construction
+  was seen in the undo path read (undo_or_redo, apply_undo), which does not
+  prove there is none elsewhere.
+- Neovim's getchar.c and options.txt were not read: its sync rule and its
+  'undofile' option text are confirmed through Vim and Neovim's undo.txt
+  only.
+- Vim: no doc line says "an Insert-mode session is one undo block" in so
+  many words; it follows from "One undo command normally undoes a typed
+  command" and the "Do not sync" comment in getchar.c.
+- Emacs's key bindings for undo and undo-redo, and Helix's keymap and any
+  persistent undo, were not read. VS Code's undo across file reloads was
+  not looked for.
+
 ## Other behaviour of the original, kept
 
 - kilo does not clear the screen on exit: the shell prompt appears where
@@ -1723,3 +2536,29 @@ project a reader sees):
   timeline checks pass on Debian trixie (glibc 2.41, gcc 14.2, clangd
   19.1.7) and Alpine 3.22 (musl, gcc 14.2, clangd 20.1.8), and every 07
   project and the finished one builds there with `-Werror`.
+
+For module 08 (the test aids `@internal` in kilo.c, the rest in track.py
+and tests/):
+
+- `undo_env(t, max_bytes=None)` gives an environment for `edit(...,
+  env=...)` and a log path: with KILO_TEST_UNDO_LOG set, kilo counts its
+  history again after every key and appends `bytes N undo N redo N records
+  N saved N open N` to the log (`undo_counts(log)` reads it, a dict a key),
+  and exits with status 4 when the count is not U.bytes; KILO_TEST_UNDO_MAX
+  sets the bound in bytes. A record applied to a row not in the file exits
+  with status 4 too. None of this is in a project a reader sees.
+- 0801 and 0802 undo and redo each kind of edit on a fresh editor and
+  check the rows, the cursor and the file saved after; 0801 also has the
+  two checks with other modules (06's colours after the undo of a line that
+  opened a comment; 07's scripted server sent the text as the undo left
+  it). 0803 counts steps and records through the log. 0804 has the saved
+  point, the bound made small, and the random runs under ASan (about 40 s of
+  the module's 100 or so).
+- The timeline at 08.01 to 08.04 runs the core's steps first (05.02's, on
+  learn.txt) and then the module's: the history they leave ("a", "b", "c",
+  Enter, two Backspaces; saved) undone and redone as each lesson's code
+  can, a key a step with the cursor left alone at 08.01 and 08.02, steps
+  and the cursor from 08.03, "(modified)" by the saved point at 08.04.
+  timeline_after: at 08.01, after every step undone and a save, learn.txt
+  is the file as it was; from 08.02 it is saved with the edits, as in the
+  core.
