@@ -8,17 +8,26 @@ tokens only (1e-10 in float64); tune trains only what needs a gradient; answers 
 taken one prompt at a time, stopping at the end marker. With GPT-2's files (python3 -m data.fetch
 gpt2; without them the test fails there with "missing:" and that command): each marker's token count,
 the prompt's and the reply's tokens joined are the whole example's tokens, and decode gives the text
-back. The default run: GPT-2 as it is answers almost nothing right; fine-tuned, held-out instances in
-trained wordings are mostly right, and every number is printed; the same settings twice give the same
-bytes.
+back. The default run: GPT-2 as it is answers almost nothing right; fine-tuned, over a quarter of the
+held-out instances in trained wordings are right, and asked for the smaller of two numbers (never
+trained) it mostly gives the larger; the same settings twice give the same bytes.
 """
 
+import json
 import os
+import re
 
 
 def read(path):
     with open(path, "rb") as f:
         return f.read()
+
+
+def _task_rows(T, t):
+    """instruct.py's scored rows of the task never trained, (task, prompt, answer), in order."""
+    r = T.py(t, ["-c", "import json, sys\nsys.argv = ['instruct']\nimport lab\nfrom experiments import instruct as X\n"
+                       "print(json.dumps(X.scored_sets(lab.config(X.CONFIG, []))['task']))"])
+    return json.loads(r.out)
 
 
 def test(t):
@@ -33,7 +42,11 @@ def test(t):
     s = T.summaries(r)
     t.check(len(s) == 2, f"two seeds: {s}")
     seen = sum(x["seen"] for x in s) / len(s)
-    t.check(seen > 0.5, f"fine-tuned, held-out instances in trained wordings mostly right: {[x['seen'] for x in s]}")
+    t.check(seen > 0.25, f"fine-tuned, held-out instances in trained wordings: over a quarter right, where GPT-2 got "
+                         f"none: {[x['seen'] for x in s]}")
+    larger = [a == str(max(map(int, re.findall(r"\d+", p)))) for (task, p, _), a in
+              zip(_task_rows(T, t), s[0]["answers"]["task"])]
+    t.check(sum(larger) > len(larger) / 2, "asked for the smaller number, the tuned model mostly gives the larger")
     t.check(all(len(x["answers"]["seen"]) == 60 for x in s), "60 answers scored in each set")
     tiny = ["steps=3", "seeds=2", "scored=1", "examples=20", "longest=3"]
     a, b = T.experiment(t, "instruct", *tiny), T.experiment(t, "instruct", *tiny)

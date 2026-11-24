@@ -97,11 +97,13 @@ def main():
             print(f"   {method:6s} {lab.mean([x['test_accuracy'] for x in s]):<16.4f} "
                   f"{lab.mean([x['shakespeare_bits'] for x in s]):<13.4f} {stories_bits:<13.4f} "
                   f"{lab.mean([x['moved'] for x in s]):<10.3g} ({len(s)} seeds)")
-        if "full" in runs and "head" in runs:
+        if "full" in runs:
             for method in [m for m in runs if m.startswith("lora")]:
-                a = [x["shakespeare_bits"] for x, _ in runs[method]]
-                b = [x["shakespeare_bits"] for x, _ in runs["full"]]
-                print(f"   Shakespeare's bits, {method} against full: Welch's t {lab.welch_t(a, b):+.1f}")
+                t = {k: lab.welch_t([x.get(k, float("nan")) for x, _ in runs[method]],
+                                    [x.get(k, float("nan")) for x, _ in runs["full"]])
+                     for k in ("shakespeare_bits", "stories_bits")}
+                print(f"   {method} against full, Welch's t: Shakespeare {t['shakespeare_bits']:+.1f}, TinyStories "
+                      f"{t['stories_bits']:+.1f}")
 
         with open(os.path.join(cfg.recorded, "full", "seed0", "config.json")) as f:
             logged = json.load(f)["untuned_tokens"]
