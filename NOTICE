@@ -92,7 +92,44 @@ Ours       The lessons, the order the code is built in and its markers,
            lsp.h, json.c and json.h are ours, and so are the lines in
            kilo.c that call into them, its section "The editor's side of
            the language client", and the Makefile's lines that build
-           lsp.c and json.c.
+           lsp.c and json.c. Module 09, another, is an API and Lua on top
+           of it, ours too: api.h, script.c and script.h, kilo.c's section
+           "The API" and the lines that call into it, and the Makefile's
+           lines that build script.c and link Lua's library.
+
+Lua        Lua 5.4.9, by R. Ierusalimschy, L. H. de Figueiredo and
+           W. Celes, Lua.org, PUC-Rio, https://www.lua.org/ (the release
+           https://www.lua.org/ftp/lua-5.4.9.tar.gz, sha256
+           2335b6c582a52654f94612bf10d2f4672805d05329aa6568b1d8cd9e5c6fb8e6)
+Licence    MIT. Copyright (C) 1994-2026 Lua.org, PUC-Rio. The text is at
+           the end of tracks/kilo/lua/src/lua.h, and here:
+
+           Permission is hereby granted, free of charge, to any person
+           obtaining a copy of this software and associated documentation
+           files (the "Software"), to deal in the Software without
+           restriction, including without limitation the rights to use,
+           copy, modify, merge, publish, distribute, sublicense, and/or
+           sell copies of the Software, and to permit persons to whom the
+           Software is furnished to do so, subject to the following
+           conditions:
+
+           The above copyright notice and this permission notice shall be
+           included in all copies or substantial portions of the Software.
+
+           THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+           EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+           OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+           NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+           HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+           WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+           FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+           OTHER DEALINGS IN THE SOFTWARE.
+Taken      Its README and src/, unchanged, in tracks/kilo/lua/: the one
+           thing in this track we do not write. Module 09 embeds it: kilo
+           links the liblua.a that Lua's own Makefile builds there. The
+           site does not show it; a reader fetches the same release (09.01
+           says how), and the course's own tools copy it into a project
+           they write out (track.py, supply_lua).
 
 
 dsa - Data structures and algorithms (tracks/dsa)
