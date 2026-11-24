@@ -404,6 +404,23 @@ Licence    As read at the source on 2026-11-24: the model card gives
            Apache-2.0 (its metadata, "license: apache-2.0", and its License
            section, which links the Apache License 2.0); the repository has
            no licence file of its own. Nothing of it is redistributed here.
+Data       Banking77, by PolyAI (Inigo Casanueva, Tadas Temcinas, Daniela
+           Gerz, Matthew Henderson and Ivan Vulic, "Efficient Intent
+           Detection with Dual Sentence Encoders", 2020): 13,083 customer
+           questions to an online bank, each labelled with one of 77
+           intents. Not in this repository, and never downloaded by a
+           build, a test or a lesson: the learner fetches it once, with
+           python3 -m data.fetch banking77, from the PolyAI-LDN/
+           task-specific-datasets repository on GitHub at commit
+           57ec275d8078af65b7731c2a98be812d844a6d6b (banking_data/
+           train.csv, test.csv and categories.json, 1,081,070 bytes),
+           each kept only if its size and SHA-256 match the ones pinned
+           in fetch.py.
+Licence    As read at the source on 2026-11-24: the repository's LICENSE
+           file is the Creative Commons Attribution 4.0 International
+           licence (CC BY 4.0), and its README asks that the paper above
+           be cited. Nothing of it is redistributed here but a question
+           or two quoted in a lesson's output, with this attribution.
 Generated  The two groups of points (data/points.py) are made from a seed
            when a script runs; none is stored.
 

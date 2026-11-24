@@ -56,6 +56,15 @@ its configuration (config.json), its tokenizer (tokenizer.json, and
 tokenizer_config.json, which the tests' reference reads) and its weights
 in bfloat16 (model.safetensors).
 # @end
+# @from 12.01
+
+Banking77 (Casanueva et al., "Efficient Intent Detection with Dual
+Sentence Encoders", 2020): 13,083 short questions customers asked an
+online bank, each labelled with one of 77 intents, from PolyAI's
+task-specific-datasets repository on GitHub at one fixed commit, under
+the Creative Commons Attribution 4.0 licence its LICENSE file gives.
+python3 -m data.fetch banking77 takes its three files, 1,081,070 bytes.
+# @end
 """
 
 import hashlib
@@ -120,6 +129,18 @@ DATASETS = {
             "tokenizer.json": (2104556, "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c"),
             "tokenizer_config.json": (3658, "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424"),
             "model.safetensors": (269060552, "80521b40281d6ce74e35c9282c22539e75aa0ac8578892b2a59955ef78d55da1"),
+        },
+    },
+    # @end
+    # @from 12.01
+    "banking77": {
+        "url": ("https://raw.githubusercontent.com/PolyAI-LDN/task-specific-datasets/"
+                "57ec275d8078af65b7731c2a98be812d844a6d6b/banking_data/"),
+        "each": True,
+        "files": {
+            "train.csv": (839073, "b06e26ac675513959a63135f11b94ea7786ed02da65db93a5650d8838cbc664b"),
+            "test.csv": (239961, "d12d6e3bc4c3103966ae786dc435913c0c563dfa328f5a3646d0e62cfeeb474d"),
+            "categories.json": (2036, "53261da888122daf2d120d925458631d9619e15d82e56052e7a42e535ce32b63"),
         },
     },
     # @end
