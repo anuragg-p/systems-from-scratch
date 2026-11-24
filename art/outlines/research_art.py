@@ -33,12 +33,15 @@ Computed, for the built modules, from the formulas and settings of the track's o
         deleted interpolation) read from tracks/research/experiments/recorded/nplm/; the rows of
         what each model looks back at are a schematic (the attention row is 07.04's copying, the
         decoder's weight on the position it writes)
+    08  the causal mask itself (0 and -inf, exact), the block drawn at the sizes of 08.04's recorded long run,
+        and that run's results read from tracks/research/experiments/recorded/gpt/: its weight count (checked
+        against what it printed), each dropout's mean test bits, the turn-up without dropout; and module 07's
+        best, 07.02's recorded network mixed with interpolation at 8 characters
 Where a cover prints a number the lessons print, the script asserts it is the same number, so a
 change to the track that moves it stops this script instead of leaving the cover wrong.
 Also computed: the double-descent curve in 05 (random ReLU features, least squares), the
 convolution in 06, the BPE merges in 09, the LoRA counts in 12, the DDPM noising in 17 and the
-PPO objective in 18. Schematic (the true shape, no measured numbers): 08's attention shading,
-11's loss curves, 13's panels, 14's grokking curves (after Power et al. 2022, Figure 1), 15's
+PPO objective in 18. Schematic (the true shape, no measured numbers): 11's loss curves, 13's panels, 14's grokking curves (after Power et al. 2022, Figure 1), 15's
 paper, 20's over-optimisation and 21's four phenomena.
 
 Modules 14 and 15 keep the covers first drawn for the older outline in outline_art.py (its
@@ -879,59 +882,87 @@ def res_lm():
 
 # =================================================================== 08 transformer
 
+def gpt_numbers():
+    """08's numbers as 08.04 prints them, from its recorded long run (tracks/research/experiments/recorded/gpt/):
+    the GPT's settings and weight count (V W + context W + L (12 W^2 + 13 W) + 2 W, as models/gpt.py's GPT has),
+    each dropout's mean test bits over its seeds, whether every seed without dropout turned up before the end,
+    and module 07's best, 07.02's recorded network mixed with interpolation at 8 characters."""
+    rec = os.path.join(ROOT, "tracks", "research", "experiments", "recorded")
+    cfg = json.load(open(os.path.join(rec, "gpt", "dropout0.2", "seed0", "config.json")))
+    V, W, L, ctx = 65, cfg["width"], cfg["layers"], cfg["context"]
+    weights = V * W + ctx * W + L * (12 * W * W + 13 * W) + 2 * W
+    with open(os.path.join(rec, "gpt", "output.txt")) as f:
+        printed = f.read()
+    assert f"{weights:,} weights" in printed, weights
+
+    def runs(dropout):
+        found = sorted(glob.glob(os.path.join(rec, "gpt", f"dropout{dropout}", "seed*", "summary.json")))
+        return [json.load(open(p)) for p in found]
+    none, some = runs("0.0"), runs("0.2")
+    mixed = [json.load(open(p))["mixed_bits"] for p in sorted(glob.glob(os.path.join(rec, "nplm", "context8", "seed*",
+                                                                                       "summary.json")))]
+    got = {"layers": L, "heads": cfg["heads"], "width": W, "steps": cfg["steps"], "weights": f"{weights:,}",
+           "seeds": len(some), "with": f"{sum(s['test_bits'] for s in some) / len(some):.3f}",
+           "without": f"{sum(s['test_bits'] for s in none) / len(none):.3f}",
+           "turned": all(s["lowest_step"] < cfg["steps"] - 1 and s["end_held_bits"] > s["lowest_held_bits"] + 0.02
+                         for s in none),
+           "best07": f"{sum(mixed) / len(mixed):.3f}"}
+    assert got == {"layers": 6, "heads": 6, "width": 192, "steps": 2800, "weights": "2,731,200", "seeds": 2,
+                   "with": "2.226", "without": "2.361", "turned": True, "best07": "2.283"}, got  # 08.04
+    return got
+
+
 def res_gpt():
-    a = Art("r08", "A transformer block: causal attention moves information between positions, the MLP changes each "
-                   "position in place, both added to the residual stream")
-    toks = ["to", "be", "or", "not", "to", "be"]
+    a = Art("r08", "A GPT: the causal mask lets each position look only back; each block's attention moves information "
+                   "between positions and its MLP changes each position in place, both added to the residual stream")
+    got = gpt_numbers()
+    toks = list("Not_in")
     n = len(toks)
-    r = random.Random(8)
-    scores = [[r.gauss(0, 1.3) for _ in range(n)] for _ in range(n)]
-    gx, gy, cw, ch = 84, 52, 32, 26
-    a.text(gx, 30, "attention weights, row by row", "tm", 10.5)
+    gx, gy, cw, ch = 60, 52, 30, 24
+    a.text(24, 30, "the causal mask, added to the scores", "ta", 10.5, weight=600)
     for j, t in enumerate(toks):
         a.text(gx + j * cw + cw / 2, gy - 6, t, "tm", 10.5, "middle", mono=True)
     for i in range(n):
-        a.text(gx - 8, gy + i * ch + 17, toks[i], size=11, anchor="end", mono=True, weight=600)
-        ex = [math.exp(scores[i][j]) for j in range(i + 1)]
-        tot = sum(ex)
-        w = [e / tot for e in ex]
-        assert abs(sum(w) - 1) < 1e-12
+        a.text(gx - 8, gy + i * ch + 16, toks[i], size=11, anchor="end", mono=True, weight=600)
         for j in range(n):
             x, y = gx + j * cw, gy + i * ch
             if j <= i:
-                shade(a, x + 1, y + 1, cw - 2, ch - 2, 0.1 + 0.9 * w[j] ** 0.8)
+                shade(a, x + 1, y + 1, cw - 2, ch - 2, 0.35)
+                a.text(x + cw / 2, y + 16, "0", "ta", 10, "middle", mono=True)
             else:
                 a.add(f'<rect class="fs" x="{x}" y="{y}" width="{cw}" height="{ch}"/>')
+                a.text(x + cw / 2, y + 15.5, "-inf", "tm", 8.5, "middle", mono=True)
     for k in range(n + 1):
         a.line(gx + k * cw, gy, gx + k * cw, gy + n * ch, "m")
         a.line(gx, gy + k * ch, gx + n * cw, gy + k * ch, "m")
-    a.text(gx + n * cw - 4, gy + 20, "masked:", "tm", 10, "end")
-    a.text(gx + n * cw - 4, gy + 34, "the future", "tm", 10, "end")
-    a.text(24, gy + n * ch + 22, "row i: how much position i takes from each", "tm", 10.5)
-    a.text(24, gy + n * ch + 37, "earlier one; each row sums to 1", "tm", 10.5)
-    a.text(24, gy + n * ch + 52, "(the shading here is illustrative)", "tm", 10)
+    a.text(24, gy + n * ch + 20, "row i looks at columns 0 to i: each", "tm", 10.5)
+    a.text(24, gy + n * ch + 35, "position's guess sees only the past", "tm", 10.5)
 
     ys = 160
-    a.text(316, 30, "one block, on the residual stream", "tm", 10.5)
-    a.text(306, ys + 4, "x", size=12, anchor="end", mono=True)
-    a.line(312, ys, 610, ys, "a", arrow=True)
-    for bx, name, sub, note in ((318, "attention", "causal, n heads", "between positions"),
-                                (466, "MLP", "4x wider", "each position alone")):
+    a.text(286, 30, f"one block of {got['layers']}, on the residual stream", "tm", 10.5)
+    a.text(282, ys + 4, "x", size=12, anchor="end", mono=True)
+    a.line(288, ys, 612, ys, "a", arrow=True)
+    for bx, name, sub, note in ((294, "attention", f"{got['heads']} heads of {got['width'] // got['heads']}",
+                                 "between positions"),
+                                (452, "MLP", f"{got['width']} -> {4 * got['width']} -> {got['width']}",
+                                 "each position alone")):
         a.path(f"M{bx} {ys} V 92 H {bx + 8}", "s")
         cell(a, bx + 8, 80, 30, 24, "ln", "s f", "t", 11, rx=6)
         a.line(bx + 38, 92, bx + 46, 92, "s")
-        a.box(bx + 46, 72, 84, 40, "s fs", rx=8)
-        a.text(bx + 88, 89, name, size=12, anchor="middle", weight=700)
-        a.text(bx + 88, 104, sub, "tm", 10, "middle")
-        px = bx + 140
-        a.path(f"M{bx + 130} 92 H {px} V {ys - 10}", "s", arrow=True)
+        a.box(bx + 46, 72, 92, 40, "s fs", rx=8)
+        a.text(bx + 92, 89, name, size=12, anchor="middle", weight=700)
+        a.text(bx + 92, 104, sub, "tm", 10, "middle")
+        px = bx + 148
+        a.path(f"M{bx + 138} 92 H {px} V {ys - 10}", "s", arrow=True)
         plus(a, px, ys)
-        a.text(bx + 88, 130, note, "ta", 10.5, "middle", 600)
-    a.text(460, ys + 22, "residual stream: one vector per position", "ta", 10.5, "middle")
-    a.text(300, 214, "attn(x) = softmax(q k.T / sqrt(d_head) + mask) v", size=10.5, mono=True)
-    a.text(300, 230, "mask: -inf above the diagonal, 0 elsewhere", "tm", 10.5)
-    a.text(24, 288, "x = x + attn(ln(x)), then x = x + mlp(ln(x)), once per block; the GPT is a stack of these.",
-           "tm", 11)
+        a.text(bx + 92, 130, note, "ta", 10.5, "middle", 600)
+    a.text(452, ys + 22, f"the residual stream: {got['width']} numbers per position", "ta", 10.5, "middle")
+    a.text(286, 214, "x = x + attention(ln(x)); x = x + mlp(ln(x))", size=10.5, mono=True)
+    a.text(286, 230, "scores: softmax(q k.T / sqrt(d_head) + mask) v", "tm", 10.5, mono=True)
+    a.text(24, 270, f"The recorded run, {got['layers']} blocks, width {got['width']}, {got['weights']} weights, "
+                    f"{got['steps']} steps, {got['seeds']} seeds each, bits per character on the test text:", "tm", 10.5)
+    a.text(24, 286, f"with dropout 0.2, {got['with']}; without, {got['without']}, its held-out curve turned up; "
+                    f"module 07's best, {got['best07']}.", "tm", 10.5)
     return a
 
 
