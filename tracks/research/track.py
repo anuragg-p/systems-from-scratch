@@ -538,5 +538,7 @@ EXPERIMENTS.update({
     "self_attention": ("08.01", ["seeds=1", "steps=5", "sizes=[16]", "length=20", "orders=2"],
                        r"s of training and scoring on cpu"),
     "heads": ("08.02", ["seeds=1", "steps=5", "layers=2"], r"s of training and scoring on cpu"),
+    "positions": ("08.03", ["seeds=1", "steps=5", "layers=2", "orders=2", "longer=[2]"],
+                  r"s of training and scoring on cpu"),
 })
-DATASET_OF.update({"self_attention": None, "heads": None})
+DATASET_OF.update({"self_attention": None, "heads": None, "positions": None})
