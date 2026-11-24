@@ -11,6 +11,9 @@ Every script that trains with tensors names its engine in one line, `import engi
 the tests run each on PyTorch too, by changing that line, and compare. PyTorch and the
 safetensors library are used only here, by the tests, as the reference.
 
+From 06.02 on the project's scripts import PyTorch themselves, and models/ holds the networks
+they share; module 06's part of this file is at its end.
+
 Fixtures (here) the lesson tests share:
 
     py(t, args, cwd=None, check=True)
@@ -421,6 +424,8 @@ EXPERIMENTS.update({
     "conv": ("06.01", ["seeds=1", "n_train=1000", "epochs=1", "n_test=400", "shifts=[0,2]"],
              r"convolutional +\S+ .*unshuffled, t = "),
     "switch": ("06.02", ["seeds=1", "steps=2", "width=8", "batch=16"], r"one pass over 50,000 images would take: "),
+    "cifar": ("06.03", ["seeds=1", "n_train=200", "n_test=100", "epochs=1"], r"s of training and scoring on cpu"),
+    "resnet": ("06.04", ["seeds=1", "n_train=64", "n_test=64", "epochs=1"], r"minutes of training on cpu"),
 })
 NAMES["nn"]["06.01"] = "Conv2d MaxPool2d Flatten"
 NAMES["F"]["06.01"] = "conv2d max_pool2d"
