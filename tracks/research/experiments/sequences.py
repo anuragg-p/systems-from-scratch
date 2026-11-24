@@ -64,3 +64,39 @@ def sample(next_scores, prompt, n, generator, temperature=1.0):
             ids.append(int(torch.multinomial(p, 1, generator=generator)))
     return ids[len(prompt):]
 # @end
+
+
+# @build 07.03 windows
+# For each of starts (a 1-d int64 tensor): the `length` numbers of ids
+# from it on, a row of a (len(starts), length) batch, and the `length`
+# after them, each one place later: the next symbol at every position.
+def windows(ids, starts, length):
+    at = starts[:, None] + torch.arange(length, device=ids.device)
+    return ids[at], ids[at + 1]
+# @end
+
+
+# @build 07.03 window_bits
+# A model that scores the next symbol at every position of a window,
+# predict(x) giving scores of shape (B, T, V) for x of shape (B, T), the
+# scores at t from x[:, :t + 1] alone, scored on ids: bits per symbol
+# over every position from warm on, without a graph. The positions are cut
+# into spans of `span`, each read in a window that starts `warm` symbols
+# before it, and only the span's own positions count: each has at least
+# `warm` symbols before it in its window. Windows go in batches of batch;
+# the last, shorter one alone.
+def window_bits(predict, ids, span, warm, batch=64):
+    firsts = list(range(0, len(ids) - warm, span))
+    length = warm - 1 + span
+    full = [s for s in firsts if s + length < len(ids)]
+    groups = [full[i:i + batch] for i in range(0, len(full), batch)] + [[s] for s in firsts if s not in full]
+    total, count = 0.0, 0
+    with torch.no_grad():
+        for group in groups:
+            n = min(length, len(ids) - 1 - group[0])
+            x, y = windows(ids, torch.tensor(group, device=ids.device), n)
+            scores, y = predict(x)[:, warm - 1:], y[:, warm - 1:]
+            total += bits(scores, y).item() * y.numel()
+            count += y.numel()
+    return total / count
+# @end

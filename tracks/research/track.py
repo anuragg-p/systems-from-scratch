@@ -510,8 +510,10 @@ EXPERIMENTS.update({
     "bigram": ("07.01", [], r"chosen: k = 0\.1\r?\n"),
     "nplm": ("07.02", ["contexts=[2]", "seeds=1", "steps=20", "orders=[0,1,2]", "length=20"],
              r"s of counting, training and scoring on cpu"),
+    "rnn": ("07.03", ["seeds=1", "steps=5", "recall_steps=5", "delays=[2]", "reads=[0,4]", "radii=[1.0]", "back=[0,4]",
+                      "orders=2", "drawn=20"], r"s of training and scoring on cpu"),
 })
-DATASET_OF.update({"bigram": None, "nplm": None})
+DATASET_OF.update({"bigram": None, "nplm": None, "rnn": None})
 
 # The text: shipped whole, shown on the site as data (its first lines).
 FILES_FROM["data/tinyshakespeare.txt"] = "07.01"
