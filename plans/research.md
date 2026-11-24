@@ -31,9 +31,10 @@ verify --fresh` passed on its lessons' branch (08: 534 s; 09: 315 s;
 10: 524 s; 14: 201 s). That is 53 of the core's 70 lessons, pushed on
 2026-11-24 up to module 09 and 14's code. 08.02's default run is 2
 seeds (3 took 82 s on a loaded machine); its heads comparison is inside
-the noise at 2 seeds and the page runs that part at 3 as well. In work,
-each by an agent in its own worktree: the code of modules 11, 12 and
-13. Agents that add to track.py, NOTES.md and the art generators at the
+the noise at 2 seeds and the page runs that part at 3 as well. Module
+13's code is on master too (57 tests). In work, each by an agent in its
+own worktree: the code of modules 11 and 12, module 13's lessons, and
+module 15 whole (its one experiment and its lessons, by one agent). Agents that add to track.py, NOTES.md and the art generators at the
 same time are merged by hand, keeping each block; the maps are then
 drawn again (`python3 -B art/research/archmap.py`).
 
@@ -327,10 +328,31 @@ Built, as found:
   minutes): base 2.337; RMSNorm +0.013 and grouped-query +0.009 (not
   beyond noise); rotary -0.060; SwiGLU -0.067; all four -0.089.
 
+- 13.01 03.03's pair again. Adam tuned against SGD at a documented
+  default: 6.25% against 14.6% test error. The same search of 8 rates
+  for both: 6.25 against 7.06, t = +2.7, a tie by the rule written down
+  first. Henderson et al. and the tuning playbook: held.
+- 13.02 08.02's heads, decided: at 10 seeds a side four heads are
+  better by 0.025 bits (t = -5.7, lower on 10 of 10). The comparison
+  was paired all along (one seed gives both arms the same start and
+  batches): at 3 seeds Welch's interval does not decide and the paired
+  one does. The test text's own sampling error for one model, 0.0138
+  bits, is as large as the spread over seeds; for a difference on the
+  same text it is 0.0018.
+- 13.03 The best of 32 runs chosen on one half of MNIST's test set
+  looks 1.11 points better than the average there and 0.78 on the
+  other half. CIFAR-10 has 346 test images (3.5%) with a twin in
+  training; MNIST and CIFAR-10 have no exact copies; 100 held-out
+  TinyStories are word for word in our training stories.
+- 13.04 Kaplan et al. (2020): five widths fitted, exponent 0.0971
+  counting weights their way; width 256 predicted at 3.904 bits per
+  token (3.836 to 3.973) before it was trained, 3.925 trained. Counting
+  the embeddings too, the prediction misses by 3.2%. Their exponent,
+  0.076, is for models trained to convergence; ours are not.
+
 Still the plan:
 - 11.03 FlashAttention, 11.04 mixed precision: the same numbers, sooner.
 - 12.02 LoRA: close to full fine-tuning with a small fraction of weights.
-- 13.04 Scaling laws: loss as a power law in size, used to predict.
 
 ## Decisions after module 08's code (Fable, 2026-11-24)
 
@@ -389,6 +411,25 @@ Still the plan:
   attention in place of self_attend; 11.06's one more optimisation is a
   cache of keys and values for writing text, which 10.04's grouped
   heads halve. Its recorded benchmark is taken only on a quiet machine.
+
+## Decisions after module 13's code (Fable, 2026-11-25)
+
+- 13.04's recorded run (51 minutes at a load of 10 to 21) and 13.02's
+  (3 minutes) stand: 54 minutes of the hour.
+- errorbars' default stays at 3 seeds; the quiet pass measures it.
+- 13.01's page gives the aside as found (a search of 16 trials on one
+  seed picks a rate that is unstable on fresh seeds) and names the
+  remedy, the best trials run again on several seeds before choosing,
+  as something to do, with no number: it was not built.
+- Module 15's worked example is the question 08.03 raised: from the
+  second block on the causal mask lets order in, so how much are
+  learned positions worth as blocks are added, and how many blocks
+  does a GPT without them need to match one with them? Done with
+  module 13's tools: the prediction written down first, the same
+  search for both arms, paired seeds, the number of seeds from the
+  spread, chosen on validation and reported on test. One agent builds
+  the experiment, its recorded run, the paper made from the logs, and
+  the three lessons.
 
 ## Directions for 07 to 15 (Fable, 2026-11-24)
 
