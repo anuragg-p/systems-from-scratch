@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 462" fill="none">
+<title>Three features as scripts: what each is or would be in C, the plugin that does it in Lua, and the API functions the plugin calls</title>
+<defs><marker id="f09-10a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-10a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-10a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">the three plugins of 09.10, each only Lua, each standing in for C</text>
+<text class="t" x="24" y="50" font-size="12" font-weight="700">vi&#x27;s keys</text>
+<text class="tm" x="24" y="68" font-size="9.5" font-weight="600">in C</text>
+<rect class="s fs" x="24" y="74" width="180" height="38" rx="5" stroke-width="1.5"/>
+<text class="t" x="32" y="89" font-size="10">none in the track:</text>
+<text class="tm" x="32" y="103" font-size="10">kilo&#x27;s keys have no modes</text>
+<line class="a" x1="114" y1="114" x2="114" y2="128" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-10a-aa)"/>
+<text class="tm" x="24" y="142" font-size="9.5" font-weight="600">as a script</text>
+<rect class="a af" x="24" y="148" width="180" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="163" font-size="9.5" font-weight="700">plugins/vi.lua</text>
+<text class="ta" x="24" y="186" font-size="10" font-weight="600">89 lines, 74 of code</text>
+<text class="t" x="24" y="204" font-size="10">A KeyPress function: h j k l, 0</text>
+<text class="t" x="24" y="217" font-size="10">and $, i a o, x, dd, Escape back</text>
+<text class="t" x="24" y="230" font-size="10">to normal; the mode in the status</text>
+<text class="t" x="24" y="243" font-size="10">bar.</text>
+<text class="t" x="230" y="50" font-size="12" font-weight="700">colour for C and Lua</text>
+<text class="tm" x="230" y="68" font-size="9.5" font-weight="600">in C</text>
+<rect class="s fs" x="230" y="74" width="180" height="38" rx="5" stroke-width="1.5"/>
+<text class="t" x="238" y="89" font-size="10">module 06: editorUpdateSyntax(),</text>
+<text class="tm" x="238" y="103" font-size="10">HLDB: 411 lines of kilo.c, 261 code</text>
+<line class="a" x1="320" y1="114" x2="320" y2="128" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-10a-aa)"/>
+<text class="tm" x="230" y="142" font-size="9.5" font-weight="600">as a script</text>
+<rect class="a af" x="230" y="148" width="180" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="238" y="163" font-size="9.5" font-weight="700">plugins/colour.lua</text>
+<text class="ta" x="230" y="186" font-size="10" font-weight="600">113 lines, 94 of code</text>
+<text class="t" x="230" y="204" font-size="10">A namespace of its own:</text>
+<text class="t" x="230" y="217" font-size="10">highlights over the rows on the</text>
+<text class="t" x="230" y="230" font-size="10">screen, again on BufReadPost,</text>
+<text class="t" x="230" y="243" font-size="10">TextChanged and CursorMoved; C,</text>
+<text class="t" x="230" y="256" font-size="10">and Lua besides.</text>
+<text class="t" x="436" y="50" font-size="12" font-weight="700">find, and go to a line</text>
+<text class="tm" x="436" y="68" font-size="9.5" font-weight="600">in C</text>
+<rect class="s fs" x="436" y="74" width="180" height="38" rx="5" stroke-width="1.5"/>
+<text class="t" x="444" y="89" font-size="10">module 05: editorFind(), Ctrl-F,</text>
+<text class="tm" x="444" y="103" font-size="10">in kilo.c</text>
+<line class="a" x1="526" y1="114" x2="526" y2="128" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-10a-aa)"/>
+<text class="tm" x="436" y="142" font-size="9.5" font-weight="600">as a script</text>
+<rect class="a af" x="436" y="148" width="180" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="444" y="163" font-size="9.5" font-weight="700">plugins/find.lua</text>
+<text class="ta" x="436" y="186" font-size="10" font-weight="600">105 lines, 78 of code</text>
+<text class="t" x="436" y="204" font-size="10">Ctrl-N: find as you type, a</text>
+<text class="t" x="436" y="217" font-size="10">KeyPress layer; next and</text>
+<text class="t" x="436" y="230" font-size="10">previous; Escape puts back the</text>
+<text class="t" x="436" y="243" font-size="10">cursor and the view (set_view).</text>
+<text class="t" x="436" y="256" font-size="10">Ctrl-O: go to a line, with</text>
+<text class="t" x="436" y="269" font-size="10">input().</text>
+<text class="tm" x="24" y="292" font-size="9.5" font-weight="600">the API it calls</text>
+<rect class="m f" x="24" y="300" width="81.4" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="29" y="310.5" font-size="8.5">create_autocmd</text>
+<rect class="m f" x="109.4" y="300" width="61" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="114.4" y="310.5" font-size="8.5">get_cursor</text>
+<rect class="m f" x="24" y="317" width="61" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="29" y="327.5" font-size="8.5">set_cursor</text>
+<rect class="m f" x="89" y="317" width="55.9" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="94" y="327.5" font-size="8.5">get_lines</text>
+<rect class="m f" x="24" y="334" width="61" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="29" y="344.5" font-size="8.5">line_count</text>
+<rect class="m f" x="89" y="334" width="55.9" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="94" y="344.5" font-size="8.5">set_lines</text>
+<rect class="m f" x="24" y="351" width="81.4" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="29" y="361.5" font-size="8.5">set_statusline</text>
+<rect class="m f" x="109.4" y="351" width="50.8" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="114.4" y="361.5" font-size="8.5">get_name</text>
+<rect class="m f" x="24" y="368" width="81.4" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="29" y="378.5" font-size="8.5">event KeyPress</text>
+<rect class="m f" x="24" y="385" width="96.7" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="29" y="395.5" font-size="8.5">event BufReadPost</text>
+<text class="tm" x="230" y="292" font-size="9.5" font-weight="600">the API it calls</text>
+<rect class="m f" x="230" y="300" width="91.6" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="235" y="310.5" font-size="8.5">create_namespace</text>
+<rect class="m f" x="230" y="317" width="86.5" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="235" y="327.5" font-size="8.5">clear_namespace</text>
+<rect class="m f" x="320.5" y="317" width="76.3" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="325.5" y="327.5" font-size="8.5">add_highlight</text>
+<rect class="m f" x="230" y="334" width="50.8" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="235" y="344.5" font-size="8.5">get_name</text>
+<rect class="m f" x="284.8" y="334" width="50.8" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="289.8" y="344.5" font-size="8.5">get_view</text>
+<rect class="m f" x="339.6" y="334" width="50.8" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="344.6" y="344.5" font-size="8.5">get_size</text>
+<rect class="m f" x="230" y="351" width="61" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="235" y="361.5" font-size="8.5">line_count</text>
+<rect class="m f" x="295" y="351" width="55.9" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="300" y="361.5" font-size="8.5">get_lines</text>
+<rect class="m f" x="230" y="368" width="81.4" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="235" y="378.5" font-size="8.5">create_autocmd</text>
+<rect class="m f" x="230" y="385" width="96.7" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="235" y="395.5" font-size="8.5">event BufReadPost</text>
+<rect class="m f" x="230" y="402" width="96.7" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="235" y="412.5" font-size="8.5">event TextChanged</text>
+<rect class="m f" x="230" y="419" width="96.7" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="235" y="429.5" font-size="8.5">event CursorMoved</text>
+<text class="tm" x="436" y="292" font-size="9.5" font-weight="600">the API it calls</text>
+<rect class="m f" x="436" y="300" width="61" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="441" y="310.5" font-size="8.5">set_keymap</text>
+<rect class="m f" x="501" y="300" width="81.4" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="506" y="310.5" font-size="8.5">create_autocmd</text>
+<rect class="m f" x="436" y="317" width="91.6" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="441" y="327.5" font-size="8.5">create_namespace</text>
+<rect class="m f" x="436" y="334" width="86.5" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="441" y="344.5" font-size="8.5">clear_namespace</text>
+<rect class="m f" x="526.5" y="334" width="76.3" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="531.5" y="344.5" font-size="8.5">add_highlight</text>
+<rect class="m f" x="436" y="351" width="61" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="441" y="361.5" font-size="8.5">get_cursor</text>
+<rect class="m f" x="501" y="351" width="61" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="506" y="361.5" font-size="8.5">set_cursor</text>
+<rect class="m f" x="436" y="368" width="50.8" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="441" y="378.5" font-size="8.5">get_view</text>
+<rect class="m f" x="490.8" y="368" width="50.8" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="495.8" y="378.5" font-size="8.5">set_view</text>
+<rect class="m f" x="545.6" y="368" width="61" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="550.6" y="378.5" font-size="8.5">line_count</text>
+<rect class="m f" x="436" y="385" width="55.9" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="441" y="395.5" font-size="8.5">get_lines</text>
+<rect class="m f" x="495.9" y="385" width="45.7" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="500.9" y="395.5" font-size="8.5">message</text>
+<rect class="m f" x="545.6" y="385" width="35.5" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="550.6" y="395.5" font-size="8.5">input</text>
+<rect class="m f" x="436" y="402" width="81.4" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="441" y="412.5" font-size="8.5">event KeyPress</text>
+<rect class="m f" x="436" y="419" width="96.7" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="441" y="429.5" font-size="8.5">event TextChanged</text>
+<rect class="m f" x="436" y="436" width="96.7" height="14" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="441" y="446.5" font-size="8.5">event CursorMoved</text>
+</svg>

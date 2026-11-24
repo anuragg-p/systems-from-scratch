@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 322" fill="none">
+<title>A row put in above a highlighted word: kilo&#x27;s highlight stays on its row number, over the row that moved there; Neovim&#x27;s extmark moves down with the word</title>
+<defs><marker id="f09-06c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-06c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-06c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 09.06 on sizes.txt, the lesson&#x27;s init.lua and a green highlight added at the prompt; Neovim from its source</text>
+<text class="t" x="24" y="52" font-size="11.5" font-weight="700">kilo: a highlight is a row and a range of bytes</text>
+<text class="t" x="24" y="70" font-size="11" font-weight="700">before</text>
+<text class="tm" x="24" y="84" font-size="10">green: row 1, bytes 0 to 6</text>
+<rect class="s fs" x="24" y="92" width="159.2" height="56" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="30" y="107.52" font-size="10.67">width</text>
+<text class="t mono" x="68.4" y="107.52" font-size="10.67">=</text>
+<rect class="af" x="81.2" y="97.5" width="19.2" height="13" rx="1"/>
+<text class="ta mono" x="81.2" y="107.52" font-size="10.67" font-weight="700">640</text>
+<rect class="a" x="30" y="113.5" width="38.4" height="13" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="30" y="123.52" font-size="10.67" font-weight="700">height</text>
+<text class="t mono" x="74.8" y="123.52" font-size="10.67">=</text>
+<rect class="af" x="87.6" y="113.5" width="19.2" height="13" rx="1"/>
+<text class="ta mono" x="87.6" y="123.52" font-size="10.67" font-weight="700">480</text>
+<rect class="t" x="106.8" y="113.5" width="19.2" height="13" rx="1"/>
+<text class="t mono" x="81.2" y="139.52" font-size="10.67">pixels</text>
+<text class="t mono" x="126" y="139.52" font-size="10.67">=</text>
+<rect class="af" x="138.8" y="129.5" width="38.4" height="13" rx="1"/>
+<text class="ta mono" x="138.8" y="139.52" font-size="10.67" font-weight="700">307200</text>
+<text class="ta" x="204" y="70" font-size="11" font-weight="700">Enter at the top</text>
+<text class="tm" x="204" y="84" font-size="10">green: still row 1, bytes 0 to 6</text>
+<rect class="s fs" x="204" y="92" width="159.2" height="72" rx="5" stroke-width="1.5"/>
+<rect class="a" x="210" y="113.5" width="38.4" height="13" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="210" y="123.52" font-size="10.67" font-weight="700">width</text>
+<text class="t mono" x="248.4" y="123.52" font-size="10.67">=</text>
+<rect class="af" x="261.2" y="113.5" width="19.2" height="13" rx="1"/>
+<text class="ta mono" x="261.2" y="123.52" font-size="10.67" font-weight="700">640</text>
+<text class="t mono" x="210" y="139.52" font-size="10.67">height</text>
+<text class="t mono" x="254.8" y="139.52" font-size="10.67">=</text>
+<rect class="af" x="267.6" y="129.5" width="19.2" height="13" rx="1"/>
+<text class="ta mono" x="267.6" y="139.52" font-size="10.67" font-weight="700">480</text>
+<rect class="t" x="286.8" y="129.5" width="19.2" height="13" rx="1"/>
+<text class="t mono" x="261.2" y="155.52" font-size="10.67">pixels</text>
+<text class="t mono" x="306" y="155.52" font-size="10.67">=</text>
+<rect class="af" x="318.8" y="145.5" width="38.4" height="13" rx="1"/>
+<text class="ta mono" x="318.8" y="155.52" font-size="10.67" font-weight="700">307200</text>
+<line class="m" x1="185.2" y1="120" x2="199.2" y2="120" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-06c-am)"/>
+<text class="tm" x="24" y="186" font-size="10">the line typed at the prompt, before Enter:</text>
+<text class="t mono" x="24" y="202" font-size="8.6">ns</text>
+<text class="t mono" x="39.48" y="202" font-size="8.6">=</text>
+<text class="t mono" x="49.8" y="202" font-size="8.6">kilo.api.create_namespace(&#x27;&#x27;)</text>
+<text class="t mono" x="24" y="215" font-size="8.6">kilo.api.add_highlight(ns,</text>
+<text class="t mono" x="163.32" y="215" font-size="8.6">1,</text>
+<text class="t mono" x="178.8" y="215" font-size="8.6">0,</text>
+<text class="t mono" x="194.28" y="215" font-size="8.6">6,</text>
+<text class="t mono" x="209.76" y="215" font-size="8.6">&#x27;green&#x27;)</text>
+<text class="t" x="24" y="240" font-size="10">The yellow and the reverse are put again by the scripts on</text>
+<text class="t" x="24" y="253" font-size="10">TextChanged, so they follow their rows. The green was put once:</text>
+<text class="t" x="24" y="266" font-size="10">it stays on row 1, now over width.</text>
+<line class="m" x1="388" y1="44" x2="388" y2="270" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="t" x="404" y="52" font-size="11.5" font-weight="700">Neovim: an extmark</text>
+<text class="t" x="404" y="70" font-size="11" font-weight="700">before</text>
+<text class="tm" x="404" y="84" font-size="10">row 1, col 0</text>
+<rect class="s fs" x="404" y="92" width="95.2" height="72" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="410" y="107.52" font-size="10.67">width</text>
+<text class="t mono" x="448.4" y="107.52" font-size="10.67">=</text>
+<text class="t mono" x="461.2" y="107.52" font-size="10.67">640</text>
+<rect class="a" x="410" y="113.5" width="38.4" height="13" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="410" y="123.52" font-size="10.67" font-weight="700">height</text>
+<text class="t mono" x="454.8" y="123.52" font-size="10.67">=</text>
+<text class="t mono" x="467.6" y="123.52" font-size="10.67">480</text>
+<text class="ta" x="514" y="70" font-size="11" font-weight="700">a row put in</text>
+<text class="tm" x="514" y="84" font-size="10">moved: row 2, col 0</text>
+<rect class="s fs" x="514" y="92" width="95.2" height="72" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="520" y="123.52" font-size="10.67">width</text>
+<text class="t mono" x="558.4" y="123.52" font-size="10.67">=</text>
+<text class="t mono" x="571.2" y="123.52" font-size="10.67">640</text>
+<rect class="a" x="520" y="129.5" width="38.4" height="13" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="520" y="139.52" font-size="10.67" font-weight="700">height</text>
+<text class="t mono" x="564.8" y="139.52" font-size="10.67">=</text>
+<text class="t mono" x="577.6" y="139.52" font-size="10.67">480</text>
+<line class="m" x1="501.2" y1="120" x2="511.2" y2="120" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-06c-am)"/>
+<text class="tm" x="404" y="196" font-size="10">nvim_buf_set_lines calls</text>
+<text class="tm" x="404" y="209" font-size="10">extmark_splice, and &quot;Marks are moved</text>
+<text class="tm" x="404" y="222" font-size="10">by calls to extmark_splice&quot;</text>
+<text class="tm" x="404" y="235" font-size="10">(extmark.c).</text>
+<text class="tm" x="404" y="254" font-size="10">They sit in a tree (marktree.c), with</text>
+<text class="tm" x="404" y="267" font-size="10">&quot;adjustment to text changes&quot;.</text>
+<text class="t" x="24" y="304" font-size="10.5">kilo: the script pays, again after every change. Neovim: the editor pays, once, in every edit; every plugin gains.</text>
+</svg>

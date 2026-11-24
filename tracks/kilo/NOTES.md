@@ -4015,6 +4015,27 @@ an init.lua that requires the three from the project's directory (`./?.lua`,
 the reader's way): colour.lua's colours, vi's status and moves, find's
 match at the top and Escape back, Ctrl-O; learn.c untouched.
 
+### Figures 09.06 to 09.10 (art/kilo/figs09b.py)
+
+Run for the figures on the lessons' own files and init.lua, beyond what the
+lessons ran (each run is in the generator):
+
+- **The C stack while input() waits** (09.07, add.c, Ctrl-O, `8`; a copy
+  whose editorPrompt() writes backtrace() to a file), innermost first:
+  editorPrompt, apiInput, scriptDispatch, precallC, luaD_precall,
+  luaV_execute, luaD_callnoyield, lua_callk, scriptCallIn, precallC,
+  luaD_precall, luaD_callnoyield, luaD_rawrunprotected, luaD_pcall,
+  lua_pcallk, scriptProtected, scriptCall, editorScriptKey,
+  editorProcessKeypress, main: two key loops on one stack.
+- **The lesson's Ctrl-X** (09.07, `x` typed and taken back, then Ctrl-X; a
+  copy writing a line at each point): apiQuit sets the mark inside the Lua
+  call; lua_pcall returns, depth 0; editorAfterKey() calls exit(0);
+  scriptStop() closes the state (depth 0). Status 0, add.c saved, the
+  terminal back.
+- **09.08's lines at the prompt** in one session on notes.txt: after
+  `s = string.rep('x', 100 * 2^20)` Lua held 25.8 KB, after the table grown
+  for ever 25.2 KB (the lesson: "a number near 26").
+
 ## Other behaviour of the original, kept
 
 - kilo does not clear the screen on exit: the shell prompt appears where

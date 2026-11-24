@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" fill="none">
+<title>Lua&#x27;s memory in kilo: every block through scriptAlloc(), refused past 64 MB, and given back by the collection after the error</title>
+<defs><marker id="f09-08b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-08b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-08b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 09.08 on notes.txt, lines typed at the prompt; at 09.07, with no limit, one line</text>
+<rect class="m fs" x="24" y="32" width="533.44" height="35.52" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="32" y="46.57" font-size="8.8">#define</text>
+<text class="t mono" x="74.24" y="46.57" font-size="8.8">SCRIPT_MAX_MEMORY</text>
+<text class="t mono" x="169.28" y="46.57" font-size="8.8">(64*1024*1024)</text>
+<text class="t mono" x="285.44" y="46.57" font-size="8.8">script.h</text>
+<text class="t mono" x="32" y="59.33" font-size="8.8">if</text>
+<text class="t mono" x="47.84" y="59.33" font-size="8.8">(nsize</text>
+<text class="t mono" x="84.8" y="59.33" font-size="8.8">&gt;</text>
+<text class="t mono" x="95.36" y="59.33" font-size="8.8">osize</text>
+<text class="t mono" x="127.04" y="59.33" font-size="8.8">&amp;&amp;</text>
+<text class="t mono" x="142.88" y="59.33" font-size="8.8">S.used-osize+nsize</text>
+<text class="t mono" x="243.2" y="59.33" font-size="8.8">&gt;</text>
+<text class="t mono" x="253.76" y="59.33" font-size="8.8">SCRIPT_MAX_MEMORY)</text>
+<text class="t mono" x="354.08" y="59.33" font-size="8.8">return</text>
+<text class="t mono" x="391.04" y="59.33" font-size="8.8">NULL;</text>
+<text class="t mono" x="428" y="59.33" font-size="8.8">script.c,</text>
+<text class="t mono" x="480.8" y="59.33" font-size="8.8">scriptAlloc()</text>
+<text class="t mono" x="24" y="94" font-size="10.5" font-weight="700">local t = {} while true do t[#t + 1] = {} end</text>
+<rect class="s f" x="40" y="102" width="400" height="20" rx="2" stroke-width="1.5"/>
+<rect class="af" x="41" y="103" width="398" height="18" rx="1"/>
+<text class="ta" x="48" y="116" font-size="10" font-weight="600">a table, and tables, block after block</text>
+<line class="a" x1="440" y1="96" x2="440" y2="128" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a" x="444" y="102" width="26" height="20" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="ta" x="476" y="111" font-size="10" font-weight="700">one more block:</text>
+<text class="ta" x="476" y="124" font-size="10" font-weight="700">NULL, refused</text>
+<line class="m" x1="40" y1="124" x2="40" y2="128" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="40" y="139" font-size="9" text-anchor="middle">0 MB</text>
+<line class="m" x1="140" y1="124" x2="140" y2="128" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="140" y="139" font-size="9" text-anchor="middle">16 MB</text>
+<line class="m" x1="240" y1="124" x2="240" y2="128" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="240" y="139" font-size="9" text-anchor="middle">32 MB</text>
+<line class="m" x1="340" y1="124" x2="340" y2="128" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="340" y="139" font-size="9" text-anchor="middle">48 MB</text>
+<line class="m" x1="440" y1="124" x2="440" y2="128" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="440" y="139" font-size="9" font-weight="700" text-anchor="middle">64 MB</text>
+<text class="t" x="24" y="160" font-size="10.5">Lua raises &quot;not enough memory&quot;; the error reaches the protected call; at the outermost return, a full collection:</text>
+<rect class="m f" x="40" y="170" width="400" height="16" rx="2" stroke-width="1.5"/>
+<rect class="fa" x="41" y="171" width="2" height="14" rx="0"/>
+<text class="ta" x="50" y="182" font-size="10" font-weight="700">25.2 KB held after: collectgarbage(&#x27;count&#x27;)</text>
+<text class="t mono" x="24" y="232" font-size="10.5" font-weight="700">s = string.rep(&#x27;x&#x27;, 100 * 2^20): one block of 100 MB</text>
+<rect class="s f" x="40" y="240" width="560" height="18" rx="2" stroke-width="1.5"/>
+<rect class="fs" x="41" y="241" width="558" height="16" rx="1"/>
+<path class="m" d="M510 237 l6 12 l-6 12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M518 237 l6 12 l-6 12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="a" x1="440" y1="234" x2="440" y2="264" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="48" y="253" font-size="9.5">09.07, no limit: #string.rep(&#x27;x&#x27;, 200 * 2^20) gave 209715200; Lua held 212642 KB after</text>
+<rect class="m f" x="40" y="270" width="400" height="18" rx="2" stroke-width="1.5"/>
+<text class="ta" x="50" y="283" font-size="9.5" font-weight="700">09.08: refused at once, &quot;not enough memory&quot;; 25.8 KB held after</text>
+<text class="tm" x="24" y="324" font-size="10">At 09.08 Lua&#x27;s state is made by lua_newstate(scriptAlloc, NULL); at 09.07 by luaL_newstate(), with no limit of kilo&#x27;s.</text>
+</svg>
