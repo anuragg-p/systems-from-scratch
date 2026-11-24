@@ -27,7 +27,7 @@ network put near each other, and part 5 at what it writes.
 
 The default is a short run. The long run recorded in experiments/recorded/
 (its config.json files hold every setting) is this script with a bigger
-network trained eight times as long.
+network trained ten times as long.
 """
 
 import numpy as np
@@ -41,7 +41,7 @@ from experiments.sequences import bits, context_bits, contexts, sample
 from models.ngram import NGram, mixture_weights
 
 CONFIG = dict(orders=[0, 1, 2, 3, 4, 5, 6, 7], ks=[1.0, 0.3, 0.1, 0.03, 0.01, 0.003, 0.001], contexts=[1, 3, 5],
-              embed=24, hidden=512, dropout=0.0, steps=2500, batch=1024, lr=0.01, seeds=3, length=300,
+              embed=24, hidden=512, dropout=0.0, steps=2000, batch=1024, lr=0.01, seeds=3, length=300,
               near="ae.A!s", common=1000, device="cpu")
 
 

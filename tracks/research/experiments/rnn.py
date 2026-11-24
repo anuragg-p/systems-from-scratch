@@ -36,7 +36,7 @@ from experiments.sequences import bits, contexts, sample, window_bits, windows
 from models.ngram import NGram, mixture_weights
 from models.rnn import RNN
 
-CONFIG = dict(embed=32, hidden=256, steps=800, batch=64, length=64, lr=0.005, clip=1.0, seeds=3, span=1024, warm=64,
+CONFIG = dict(embed=32, hidden=256, steps=600, batch=64, length=64, lr=0.005, clip=1.0, seeds=3, span=1024, warm=64,
               reads=[0, 1, 2, 4, 8, 16, 32, 64], symbols=8, recall_embed=16, recall_hidden=64, recall_steps=300,
               recall_batch=64, recall_opt="sgd", recall_lr=0.1, delays=[2, 5, 10, 20, 40], radii=[0.5, 1.0, 2.0, 3.0],
               back=[0, 5, 10, 20, 40, 60], orders=5, drawn=300, device="cpu")

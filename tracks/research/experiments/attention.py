@@ -28,7 +28,7 @@ import torch.nn.functional as F
 import lab
 from models.seq2seq import AttentionDecoder, Decoder, Encoder, Seq2Seq
 
-CONFIG = dict(task="copy", symbols=10, embed=32, hidden=64, size=64, shortest=1, longest=20, steps=1200, batch=64,
+CONFIG = dict(task="copy", symbols=10, embed=32, hidden=64, size=64, shortest=1, longest=20, steps=1000, batch=64,
               lr=0.003, clip=1.0, lengths=[2, 5, 10, 15, 20, 25, 30, 40], tested=500, seeds=3, examples=[10, 30],
               shown=10, device="cpu")
 KINDS = ("no attention", "attention")
