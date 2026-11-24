@@ -1,30 +1,46 @@
 """Track kilo: a text editor in C, antirez's kilo rebuilt lesson by lesson (UPSTREAM).
 
-The editor is one binary, ./kilo FILE (make builds it). It talks to a terminal: raw mode
-in, VT100 escape codes out, nothing in between. So do the tests: each runs ./kilo on a
-pseudo-terminal of a fixed size, types keys into it, and checks the screen it drew (its
-escape codes turned into a grid of text by Screen, below) or the file it saved.
+The editor is one binary, ./kilo FILE (make builds it from kilo.c, and from module 07 on
+lsp.c and json.c too). It talks to a terminal: raw mode in, VT100 escape codes out, nothing
+in between. So do the tests: each runs ./kilo on a pseudo-terminal of a fixed size, types
+keys into it, and checks the screen it drew (its escape codes turned into a grid of text by
+Screen, below) or the file it saved. Module 07's client also talks to a language server: its
+tests give it a scripted one (tests/lsp_server.py), and clangd where it is installed.
 
 Fixtures the lesson tests use:
 
     edit(t, text=None, name="f.txt", rows=24, cols=80, winsize=None, ctty=True, timeout=20,
-         asan=False)
+         asan=False, lsp=None, env=None, utf8=False)
                         write text to name in the test's scratch directory (None: leave
                         the file as it is, or missing), start ./kilo name on a terminal
                         of rows x cols, and wait for its first screen (at most timeout
                         seconds); an Editor. asan=True: kilo built with AddressSanitizer
-                        where the compiler can (asan_build), so a memory error stops it
+                        where the compiler can (asan_build), so a memory error stops it.
+                        lsp: the language server (module 07): None, none (KILO_LSP set
+                        and empty); a string, the scripted server playing that scenario
+                        ("" for its tiny language), its log in ed.lsp_log; "table", KILO_LSP
+                        left out, so clangd for a C file; "env", KILO_LSP as env has it.
+                        utf8=True: Screen counts a UTF-8 character as one cell
     Editor              ed.keys(*parts) types each part and waits for the screen to settle
                         ed.lines, ed.line(n), ed.cursor (row, col from 0), ed.status,
                         ed.message, ed.reverse(n): what the screen shows
                         ed.colors(n), ed.color(n, text), ed.painted(n): the colour of each
                         character (Screen.colors), for the syntax highlighting (module 06)
+                        ed.under(n), ed.underlined(n): what is underlined (module 07)
+                        ed.wait_for(cond, what), ed.wait_message(regex), ed.wait_said(text):
+                        wait for what a server causes, reading the screen meanwhile
+                        ed.server_log(), ed.received(method), ed.wait_received(method):
+                        what the scripted server got
                         ed.raw: every byte kilo wrote; ed.screen: the Screen
                         ed.resize(rows, cols), ed.termios(), ed.quit(), ed.saved()
     UP DOWN LEFT RIGHT HOME END DEL PAGE_UP PAGE_DOWN ESC ENTER BACKSPACE TAB, ctrl("q")
                         what those keys send
     lines_of(n)         text of n numbered lines, "line 1\\n" to "line n\\n"
     paint(text, codes)  a row with its colours written in: "[g:int] x = [r:10];"
+    children(pid), alive(pid), clangd(), skipped(t, what)
+                        a process's children (state "Z": a zombie), whether a process is
+                        there, clangd's path or None, and a line saying part of a test
+                        did not run (the harness has no SKIP)
 
 With ctty=True (the default) the terminal is the editor's controlling terminal, as in a
 real one: Ctrl-C would be SIGINT if raw mode left ISIG on, and a resize sends SIGWINCH.
@@ -37,7 +53,9 @@ out it fails at the stub: "kilo: NN.LL: <what> not written yet", exit status 3.
 check-timeline runs the project at each lesson on a pseudo-terminal too: timeline_run()
 starts this file as a program ("relay", at the end) that holds the terminal and a Screen,
 and takes commands on its standard input: keys to type, "screen" to print what the
-screen shows, "colors" its colours, "size R C" to resize it.
+screen shows, "colors" its colours, "underline" what is underlined, "until REGEX" to wait
+for the screen to match, "size R C" to resize it. At module 07 it runs with the scripted
+server, never clangd, so it is the same on every machine.
 """
 
 import json

@@ -96,8 +96,9 @@ project.
 The lists are the direction; fit them to the code, as the core's were.
 Order (the owner, 2026-11-15: "first finish highlighting", then "stop
 after completing highlighting"): 06 whole, its code, then its lessons and
-art, then a read of it. 07 is NOT started: it waits for the owner's word.
-Art for everything, as in the core.
+art, then a read of it. 07 was started on 2026-11-24 on the owner's word:
+its code, tests and notes first (see "Module 07 as built"), then its
+lessons and art from NOTES.md. Art for everything, as in the core.
 
 The `dsa` outline's module 03 (gap buffer, piece table, balanced tree)
 builds on this track: it starts from this track's finished core and
@@ -158,3 +159,46 @@ teaches only the buffer (plans/dsa.md).
 - Kept from upstream and documented in NOTES.md: Delete acts as
   Backspace, control characters go into the text, a key within 0.1 s
   after an unknown escape sequence is lost.
+
+## Module 07 as built (code, tests and notes; 2026-11-24)
+
+- Files of its own: lsp.c and lsp.h (the client), json.c and json.h (a
+  JSON reader and jsonQuote, knowing nothing of kilo). The Makefile builds
+  them from 07.01 (json.c from 07.02), same flags. The design (files,
+  hooks, messages, limits) was fixed by the coordinator; tracks/kilo/
+  NOTES.md, "07 A language server client", lists where the code departs
+  from it and why.
+- This relaxes the plan's "kilo.c takes only the calls into it": besides
+  one-line hooks (lspStart in main, lspPump then lspWaitKey in
+  editorReadKey, lspDrawRow after a row is drawn, Ctrl-G and Ctrl-B),
+  kilo.c has a short section "The editor's side of the language client"
+  above main() with editorCursor (07.06) and editorJump (07.07): moving the
+  cursor and replacing the file are editor code, and stay where E is.
+- The seven lessons are the plan's, in its order; two titles changed to
+  fit the code: 07.01 "fork, exec and three pipes" (a close-on-exec pipe
+  brings back execvp's errno), 07.05 "didOpen and didChange" (initialize
+  is sent at 07.02).
+- The server: clangd for C and C++ by the file's name; KILO_LSP names
+  another for any file (set and empty: none). No server for the file: not
+  a word, and the screen is the core's to the byte. Keys and the server
+  in one poll(); writes queued and written as the pipe takes them; the
+  whole text sent 300 ms after the last key, a waiting change replaced by
+  a newer one; diagnostics underlined by drawing over the row, counted in
+  the message line, and the cursor row's message at a pause; Ctrl-G to a
+  definition (another file only with no unsaved changes), Ctrl-B back.
+- Independence holds: the project at all 16 core lessons and the 5 of 06
+  is byte for byte what it was (diff -r); at a 07 lesson module 06 is not
+  there; the row-drawing hook is outside 06's blocks, the same on core +
+  07 and in the finished file. In the finished project an underlined span
+  is drawn over in the default colour, not 06's.
+- Tests: one per lesson, a scripted server (tests/lsp_server.py) for
+  everything exact and every hostile case (under ASan), a fuzzer
+  (tests/lsp_fuzz.c) of the frame reader, the JSON reader and whole
+  messages, and clangd on a sample program where it is installed (a
+  printed skip line where it is not; the harness has no SKIP). The
+  timeline uses the scripted server only.
+- All pass on macOS (Apple clangd 21.0.0), Debian trixie (glibc, gcc 14,
+  clangd 19.1.7) and Alpine (musl, gcc 14, clangd 20.1.8): ./learn test
+  kilo (28), check-skeleton, check-timeline; ./learn check reports only
+  the 4 research problems master has. Lessons and art are next, from
+  NOTES.md.
