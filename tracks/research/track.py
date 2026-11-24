@@ -498,3 +498,19 @@ def pytorch_era_tools():
             os.chmod(path, 0o755)
         out[name] = path
     return out
+
+
+# ---------------------------------------------------------------- module 07: language models
+#
+# Kept apart from the tables above, as module 06's part is. The text, Tiny Shakespeare, ships with the
+# project (data/tinyshakespeare.txt, a data file: see NOTES.md, Data), so no experiment of the module
+# needs a download; 07.01 is numpy only, 07.02 on import torch.
+
+EXPERIMENTS.update({
+    "bigram": ("07.01", [], r"chosen: k = 0\.1\r?\n"),
+})
+DATASET_OF.update({"bigram": None})
+
+# The text: shipped whole, shown on the site as data (its first lines).
+FILES_FROM["data/tinyshakespeare.txt"] = "07.01"
+DATA["data/tinyshakespeare.txt"] = "Tiny Shakespeare, from Andrej Karpathy's char-rnn, byte for byte (see NOTES.md)"
