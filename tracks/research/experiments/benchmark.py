@@ -87,7 +87,7 @@ def board(got):
             continue
         ratio = lab.mean(seconds) / lab.mean(base) if base else float("nan")
         t = lab.welch_t(seconds, base) if i and len(seconds) > 1 and len(base) > 1 else 0.0
-        against = f"x{ratio:.2f} (t {t:+5.1f})" if i else ""
+        against = f"x{ratio:.2f} (t {t:+5.1f})" if i and base else ""
         ms = lab.mean(r["ms"])
         lines.append(f"   {name:26s} {lab.spread(seconds, 3):48s} {lab.mean(steps):6.0f} "
                      f"{against:>18s} {ms:10.1f} {1000 * r['tokens'] / ms:16,.0f}"

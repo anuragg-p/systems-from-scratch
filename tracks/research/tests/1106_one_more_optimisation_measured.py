@@ -9,16 +9,74 @@ gives model(ids[:, -context:])'s last scores at every length, also past the wind
 caches again. generate with the cache writes the same symbols as without, greedy and sampled (plain,
 top-k, nucleus), on small GPTs of each kind; and with the downloads (python3 -m data.fetch gpt2 and
 smollm2; without them those checks are skipped, said so), on GPT-2 small (learned positions) and
-SmolLM2-135M (rotary, 3 key/value heads for 9). The short run (it needs SmolLM2): the same symbols
-everywhere, the float64 scores within 1e-10, and the table of times written.
+SmolLM2-135M (rotary, 3 key/value heads for 9). The recorded benchmark (experiments/recorded/benchmark,
+the module's long run, benchmark.py with every row): every row and seed run with the same settings but
+what its row changes, a log with the held-out curve to its end and a summary, times.json, the curves and
+what it printed, no weights; the numbers the same where they must be (the angles kept: every log and
+summary byte for byte the baseline's; fused attention: the baseline's curve to rounding), never its
+speeds. The short run (it needs SmolLM2): the same symbols everywhere, the float64 scores within 1e-10,
+and the table of times written.
 """
 
+import json
+import os
 import re
+
+LONG = "experiments/recorded/benchmark"
+ROWS = {"baseline": {}, "angles-kept": {}, "fused-attention": {}, "bfloat16": {"precision": "bfloat16"},
+        "twice-the-batch-and-rate": {"batch": 2, "lr": 2}, "all-together": {"batch": 2, "lr": 2}}
+
+
+def read(path):
+    with open(path, "rb") as f:
+        return f.read()
+
+
+def check_recorded(t, d):
+    """The recorded benchmark's shape, and its numbers the same where they must be; not its speeds."""
+    t.check(os.path.isdir(d), f"no recorded benchmark in {d}")
+    for name in ("times.json", "curves.svg", "output.txt"):
+        t.check(os.path.isfile(os.path.join(d, name)), f"the recorded benchmark: no {name}")
+    t.check(not any(f.endswith(".safetensors") for _, _, fs in os.walk(d) for f in fs), "no weights are shipped")
+    with open(os.path.join(d, "baseline", "seed0", "config.json")) as f:
+        base = json.load(f)
+    t.check(base["seeds"] >= 3 and base["steps"] >= 500, f"3 seeds a row or more, 500 steps or more: {base}")
+    with open(os.path.join(d, "times.json")) as f:
+        times = json.load(f)
+    t.check(sorted(n.replace(" ", "-") for n in times) == sorted(ROWS), f"times.json's rows: {list(times)}")
+    for row, changes in ROWS.items():
+        for seed in range(base["seeds"]):
+            run = os.path.join(d, row, f"seed{seed}")
+            with open(os.path.join(run, "config.json")) as f:
+                c = json.load(f)
+            want = dict(base, label=row, seed=seed)
+            for k, v in changes.items():
+                want[k] = v if isinstance(v, str) else base[k] * v
+            t.check({k: v for k, v in c.items() if k != "out"} == {k: v for k, v in want.items() if k != "out"},
+                    f"{run} was run with other settings than its row's: {c}")
+            with open(os.path.join(run, "log.jsonl")) as f:
+                log = [json.loads(line) for line in f if line.strip()]
+            with open(os.path.join(run, "summary.json")) as f:
+                s = json.load(f)
+            t.check(all("held_bits" in r for r in log) and s["steps"] == log[-1]["step"] + 1, f"{run}: its log and summary")
+            if s["steps_to_target"] is not None:
+                t.check(log[-1]["held_bits"] <= base["target"] < log[-2]["held_bits"],
+                        f"{run} should stop at the first row that reaches the target")
+    for seed in range(base["seeds"]):
+        for name in ("log.jsonl", "summary.json"):
+            t.check(read(os.path.join(d, "baseline", f"seed{seed}", name)) ==
+                    read(os.path.join(d, "angles-kept", f"seed{seed}", name)),
+                    f"keeping the angles changes no number: seed {seed}'s {name} should be the baseline's")
+        a, b = ([json.loads(line)["held_bits"] for line in open(os.path.join(d, row, f"seed{seed}", "log.jsonl"))]
+                for row in ("baseline", "fused-attention"))
+        n = min(len(a), len(b))
+        t.check(max(abs(x - y) for x, y in zip(a[:n], b[:n])) < 0.02, f"fused attention: the baseline's curve, seed {seed}")
 
 
 def test(t):
     T = t.track
     T.inside(t, __file__)
+    check_recorded(t, os.path.join(t.root, LONG))
     have = [T.need(t, d, skip=True) for d in ("gpt2", "smollm2")]
     if any(have):
         out = T.inside(t, __file__, "with_data")
@@ -32,6 +90,19 @@ def test(t):
     t.check(worst < 1e-10, f"cached scores in float64: {worst}")
     t.check(len(re.findall(r"^ +\d+ +\S+ +\S+ +\S+ ms +\S+ +\S+ +\S+ ms +x", r.out, re.M)) == 4,
             f"the table of times:\n{r.out[-2000:]}")
+    if os.environ.get("LEARN_RERUN_LONG"):
+        with open(os.path.join(t.root, LONG, "baseline", "seed0", "config.json")) as f:
+            cfg = json.load(f)
+        with open(os.path.join(t.root, LONG, "times.json")) as f:
+            rows = list(json.load(f))
+        settings = [f"{k}={cfg[k]!r}".replace(" ", "") for k in ("layers", "heads", "width", "context", "kv_heads", "batch",
+                                                                   "steps", "lr", "warmup", "weight_decay", "clip", "every",
+                                                                   "held", "target", "seeds")]
+        again = T.experiment(t, "benchmark", *settings, f"rows={rows!r}", "recorded=none", timeout=3 * 3600)
+        out = again.runs
+        with open(os.path.join(out, "output.txt"), "w") as f:
+            f.write(again.out)
+        check_recorded(t, out)
 
 
 def check_tokens(model, prompt, n, what):
