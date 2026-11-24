@@ -201,5 +201,45 @@ teaches only the buffer (plans/dsa.md).
 - All pass on macOS (Apple clangd 21.0.0), Debian trixie (glibc, gcc 14,
   clangd 19.1.7) and Alpine (musl, gcc 14, clangd 20.1.8): ./learn test
   kilo (28), check-skeleton, check-timeline; ./learn check reports only
-  the 4 research problems master has. Lessons and art are next, from
-  NOTES.md.
+  the 4 research problems master has. Lessons and art followed, from
+  NOTES.md (below).
+
+## Module 07's lessons, art and read (all on 2026-11-24)
+
+- 7 lessons and the module page, written in parallel on two branches
+  (07.01 to 07.04 and the page; 07.05 to 07.07) from a lesson design,
+  and the art on a third from an art design: a cover and icon, the map in
+  every lesson (the client in three rows under the core's grid: its
+  features, messages, then the server with start beside it), and 16
+  figures of the idea, at least two a lesson, five of them stepped
+  (07.01 fork-exec, 07.02 split-reads, 07.03 descent, 07.04 poll-set,
+  07.07 jump). Generators: art/kilo/figs07.py, covers.py, archmap.py.
+  Every lesson passes ./learn verify; none is on the pending list.
+- The sample program: 07.01 to 07.04 make sum.c and add.h in the
+  lesson's folder; 07.05 on make them in "sam ple" inside it, so the URI
+  has a space to escape, and 07.05 says so.
+- figs07.py runs the projects: with the scripted server (bytes fixed)
+  and with clangd (Apple clangd 21 here; other versions give other
+  bytes). What needed instrumented builds it does not repeat (the
+  descriptor tables, wake-up counts, delays) it reads from NOTES.md and
+  checks against its words. Its runs type the lessons' own keys.
+- The read (in order, on the site in light and dark and at 390 px, Back
+  and Next on every stepped figure; the Run it of every lesson but 07.05,
+  and the Break it of 07.02, 07.06 and 07.07, run again with clangd):
+  json.h's comment at 07.02
+  (said a phrase twice); 07.02's reply in pieces (NOTES.md and the text
+  had an older scripted server's 125 bytes; the figure's 171 is now);
+  07.04's wake-ups (the figure's and the text's numbers were from two
+  servers; NOTES.md said the 2 at 07.04 were "the pause and the answer",
+  they are the answer and the Ctrl-Q); 07.07's jump figure asked at
+  character 17 where the text says 18; five regions with no lead-in;
+  captions that said more or less than their figures; NOTICE's kilo
+  section now says module 07 is ours. Details in the commits.
+- Left as it is: lspDrawRow's signature runs onto a second, indented
+  line, which the site does not take for the start of a function
+  (harness/timeline.py, definition_span), so at 07.06 its region shows
+  without the signature, under a lead-in named by the region's title
+  that quotes it. A one-line signature in lsp.c, or the harness reading
+  an indented second line, would fix it; the read changed neither.
+- On a phone (390 px) every figure fits and nothing overflows; the
+  figures are drawn 640 wide and scale down, as in the core and 06.
