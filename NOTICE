@@ -136,6 +136,33 @@ Taken      Its README and src/, unchanged, in tracks/kilo/lua/: the one
            they write out (track.py, supply_lua).
 
 
+cc - A C compiler for RISC-V (tracks/cc)
+----------------------------------------
+
+Upstream   chibicc, by Rui Ueyama
+           https://github.com/rui314/chibicc (main, commit
+           90d1f7f199cc55b13c7fdb5839d1409806633fdb)
+Licence    MIT. Copyright (c) 2019 Rui Ueyama. The full text is in
+           tracks/cc/LICENSE, which comes with the project's files at
+           every lesson.
+Taken      The front end, as it stands at chibicc's commit 603de50
+           (the 205th): tokenize.c, the token and node types of
+           chibicc.h (in cc.h) and the expression functions of parse.c,
+           with chibicc's names and structure, re-commented as lesson
+           notes and cut into lessons, less what the track leaves out
+           (floating point, GNU extensions and more; the list is in
+           tracks/cc/NOTES.md, with every change to the code and its
+           reason). main.c keeps the shape of chibicc's option parsing
+           and its read_file, without the driver that runs the
+           assembler and the linker.
+Ours       The code generator (codegen.c: RISC-V, not chibicc's x86-64),
+           the runtime (rt/start.S, rt/link.ld), the scripts ccrun and
+           same, the sample try.c, --tokens and --tree, the early forms
+           of the compiler before its pipeline exists, the lessons, the
+           order the code is built in and its markers, and the internal
+           checks (tracks/cc/track.py and tests/).
+
+
 dsa - Data structures and algorithms (tracks/dsa)
 -------------------------------------------------
 

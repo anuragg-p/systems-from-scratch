@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>The recorded ablation (4 blocks, width 128, windows of 128, 2000 steps, 3 seeds a row): bits per character on the test text, a ring per seed, the bar their mean, the whisker min to max; under each row its weights, and its difference from the base with Welch&#x27;s t</title>
+<defs><marker id="table1005-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="table1005-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="table1005-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="39.2" y="253.5" font-size="10.5" text-anchor="end">2.22</text>
+<line class="m" x1="45.2" y1="205.2" x2="628" y2="205.2" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="208.7" font-size="10.5" text-anchor="end">2.25</text>
+<line class="m" x1="45.2" y1="160.4" x2="628" y2="160.4" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="163.9" font-size="10.5" text-anchor="end">2.28</text>
+<line class="m" x1="45.2" y1="115.6" x2="628" y2="115.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="119.1" font-size="10.5" text-anchor="end">2.31</text>
+<line class="m" x1="45.2" y1="70.8" x2="628" y2="70.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="74.3" font-size="10.5" text-anchor="end">2.34</text>
+<text class="tm mono" x="39.2" y="29.5" font-size="10.5" text-anchor="end">2.37</text>
+<rect class="m" x="45.2" y="26" width="582.8" height="224" rx="0" stroke-width="1.5"/>
+<text class="tm" x="39.2" y="18" font-size="11.5">bits per character, test text</text>
+<text class="t" x="93.77" y="265" font-size="11" text-anchor="middle">base (08)</text>
+<line class="s" x1="93.77" y1="82.99" x2="93.77" y2="69.58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="87.77" y1="82.99" x2="99.77" y2="82.99" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="87.77" y1="69.58" x2="99.77" y2="69.58" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="93.77" cy="73.52" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="93.77" cy="82.99" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="93.77" cy="69.58" r="2.5" stroke-width="1.5"/>
+<line class="s" x1="79.77" y1="75.37" x2="107.77" y2="75.37" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="111.77" y="78.87" font-size="10.5">2.34</text>
+<text class="tm" x="190.9" y="265" font-size="11" text-anchor="middle">RMSNorm</text>
+<line class="m" x1="190.9" y1="62.68" x2="190.9" y2="42.65" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="184.9" y1="62.68" x2="196.9" y2="62.68" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="184.9" y1="42.65" x2="196.9" y2="42.65" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="m f" cx="190.9" cy="61.01" r="2.5" stroke-width="1.5"/>
+<circle class="m f" cx="190.9" cy="62.68" r="2.5" stroke-width="1.5"/>
+<circle class="m f" cx="190.9" cy="42.65" r="2.5" stroke-width="1.5"/>
+<line class="m" x1="176.9" y1="55.45" x2="204.9" y2="55.45" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="208.9" y="58.95" font-size="10.5">2.35</text>
+<text class="ta" x="288.03" y="265" font-size="11" font-weight="600" text-anchor="middle">rotary</text>
+<line class="a" x1="288.03" y1="186.08" x2="288.03" y2="134.95" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="282.03" y1="186.08" x2="294.03" y2="186.08" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="282.03" y1="134.95" x2="294.03" y2="134.95" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="288.03" cy="175.35" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="288.03" cy="134.95" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="288.03" cy="186.08" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="274.03" y1="165.46" x2="302.03" y2="165.46" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="306.03" y="168.96" font-size="10.5">2.28</text>
+<text class="ta" x="385.17" y="265" font-size="11" font-weight="600" text-anchor="middle">SwiGLU</text>
+<line class="a" x1="385.17" y1="192.06" x2="385.17" y2="164.64" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="379.17" y1="192.06" x2="391.17" y2="192.06" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="379.17" y1="164.64" x2="391.17" y2="164.64" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="385.17" cy="170.62" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="385.17" cy="164.64" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="385.17" cy="192.06" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="371.17" y1="175.77" x2="399.17" y2="175.77" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="403.17" y="179.27" font-size="10.5">2.27</text>
+<text class="tm" x="482.3" y="265" font-size="11" text-anchor="middle">grouped</text>
+<line class="m" x1="482.3" y1="82.49" x2="482.3" y2="50.51" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="476.3" y1="82.49" x2="488.3" y2="82.49" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="476.3" y1="50.51" x2="488.3" y2="50.51" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="m f" cx="482.3" cy="50.98" r="2.5" stroke-width="1.5"/>
+<circle class="m f" cx="482.3" cy="82.49" r="2.5" stroke-width="1.5"/>
+<circle class="m f" cx="482.3" cy="50.51" r="2.5" stroke-width="1.5"/>
+<line class="m" x1="468.3" y1="61.32" x2="496.3" y2="61.32" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="500.3" y="64.82" font-size="10.5">2.35</text>
+<text class="ta" x="579.43" y="265" font-size="11" font-weight="600" text-anchor="middle">all four</text>
+<line class="a" x1="579.43" y1="231.67" x2="579.43" y2="190.55" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="573.43" y1="231.67" x2="585.43" y2="231.67" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="573.43" y1="190.55" x2="585.43" y2="190.55" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="579.43" cy="231.67" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="579.43" cy="190.55" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="579.43" cy="202.62" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="565.43" y1="208.28" x2="593.43" y2="208.28" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="597.43" y="211.78" font-size="10.5">2.25</text>
+<line class="s" x1="45.2" y1="75.37" x2="628" y2="75.37" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="t" x="624" y="70.37" font-size="10.5" text-anchor="end">the base&#x27;s mean</text>
+<text class="tm mono" x="93.77" y="280" font-size="10" text-anchor="middle">818,048</text>
+<text class="tm mono" x="190.9" y="280" font-size="10" text-anchor="middle">816,896</text>
+<text class="tm mono" x="190.9" y="295" font-size="10" text-anchor="middle">+0.013, t +2.6</text>
+<text class="tm" x="190.9" y="309" font-size="10" text-anchor="middle">not beyond</text>
+<text class="tm mono" x="288.03" y="280" font-size="10" text-anchor="middle">801,664</text>
+<text class="ta mono" x="288.03" y="295" font-size="10" font-weight="700" text-anchor="middle">-0.060, t -5.6</text>
+<text class="ta" x="288.03" y="309" font-size="10" text-anchor="middle">beyond noise</text>
+<text class="tm mono" x="385.17" y="280" font-size="10" text-anchor="middle">818,216</text>
+<text class="ta mono" x="385.17" y="295" font-size="10" font-weight="700" text-anchor="middle">-0.067, t -10.9</text>
+<text class="ta" x="385.17" y="309" font-size="10" text-anchor="middle">beyond noise</text>
+<text class="tm mono" x="482.3" y="280" font-size="10" text-anchor="middle">752,000</text>
+<text class="tm mono" x="482.3" y="295" font-size="10" text-anchor="middle">+0.009, t +1.2</text>
+<text class="tm" x="482.3" y="309" font-size="10" text-anchor="middle">not beyond</text>
+<text class="tm mono" x="579.43" y="280" font-size="10" text-anchor="middle">734,632</text>
+<text class="ta mono" x="579.43" y="295" font-size="10" font-weight="700" text-anchor="middle">-0.089, t -10.4</text>
+<text class="ta" x="579.43" y="309" font-size="10" text-anchor="middle">beyond noise</text>
+</svg>

@@ -846,9 +846,10 @@ def api_and_lua():
 
 
 MODULES["09"] = "09-api-and-lua"
-# the editor's box, the script's smaller box docked into its top edge, and the call going in
-ICONS["09"] = '<rect x="3" y="9" width="14" height="8" rx="2"/><rect x="7" y="3" width="6" height="6" rx="1.5"/>' \
-              '<path d="M10 9v4"/>'
+# a plug (a plug-in): a body flat on top, x 5 to 15, its lower half rounded into the cord; two
+# prongs up from its top edge; the cord down from (10, 15)
+ICONS["09"] = '<path d="M5 8h10v2.5a4.5 4.5 0 0 1-4.5 4.5h-1A4.5 4.5 0 0 1 5 10.5z"/>' \
+              '<path d="M7.5 8V4.5M12.5 8V4.5M10 15v3"/>'
 COVERS["09"] = api_and_lua
 
 

@@ -1,0 +1,49 @@
+#!/bin/sh
+# ccrun FILE: compile FILE with ./cc, assemble and link it with the runtime in
+# rt/, and run it on QEMU's bare RISC-V machine. Exits with the program's
+# status: what its main returned, its low 8 bits. What the program prints
+# comes out on standard output, and standard input goes to it.
+#
+# It works from any directory: ./cc and rt/ are found next to this script,
+# and what it builds goes in build/ there.
+
+here=$(cd "$(dirname "$0")" && pwd)
+build=$here/build
+
+if [ $# -ne 1 ]; then
+  echo "usage: ccrun FILE" >&2
+  exit 2
+fi
+
+# The RISC-V tools: the first of these prefixes that has an assembler.
+prefix=
+for p in riscv64-elf- riscv64-unknown-elf- riscv64-linux-gnu-; do
+  if command -v "${p}as" >/dev/null 2>&1; then
+    prefix=$p
+    break
+  fi
+done
+if [ -z "$prefix" ]; then
+  echo "ccrun: no RISC-V assembler (riscv64-elf-as, riscv64-unknown-elf-as or riscv64-linux-gnu-as): install the riscv64 toolchain" >&2
+  exit 2
+fi
+if ! command -v qemu-system-riscv64 >/dev/null 2>&1; then
+  echo "ccrun: no qemu-system-riscv64: install QEMU" >&2
+  exit 2
+fi
+
+mkdir -p "$build" || exit 2
+"$here/cc" -o "$build/prog.s" "$1" || exit $?
+
+# @build 00.02 assemble, link and run
+# Assemble rt/start.S and build/prog.s into build/start.o and build/prog.o
+# (${prefix}as -march=rv64im -mabi=lp64), link them with rt/link.ld into
+# build/prog.elf (${prefix}ld -T), and run that on QEMU's virt machine with
+# no firmware (-bios none), no display and no monitor, its serial port on
+# this terminal (-serial stdio). QEMU exits with the program's status.
+"${prefix}as" -march=rv64im -mabi=lp64 -o "$build/start.o" "$here/rt/start.S" || exit 2
+"${prefix}as" -march=rv64im -mabi=lp64 -o "$build/prog.o" "$build/prog.s" || exit 2
+"${prefix}ld" -T "$here/rt/link.ld" -o "$build/prog.elf" "$build/start.o" "$build/prog.o" || exit 2
+exec qemu-system-riscv64 -machine virt -bios none -display none -monitor none \
+  -serial stdio -kernel "$build/prog.elf"
+# @end

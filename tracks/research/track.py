@@ -678,6 +678,17 @@ DATASET_FILES["smollm2"] = {"config.json": 704, "tokenizer.json": 2104556, "toke
 DATASET_NAMES["smollm2"] = "SmolLM2-135M (its configuration, tokenizer and weights)"
 TOOLS["smollm2"] = lambda: have_dataset("smollm2")
 
+
+def _have_transformers():
+    """10.04's page compares SmolLM2's logits and ids with transformers' when transformers is installed (the project
+    never imports it): that session says needs="torch smollm2 transformers", so without it the lesson is "missing", not
+    failed."""
+    import importlib.util
+    return importlib.util.find_spec("transformers") is not None
+
+
+TOOLS["transformers"] = _have_transformers
+
 # The long run of 10.05, recorded as 09.04's is (experiments/ablation.py with out=experiments/recorded): every row's
 # config.json, log.jsonl and summary.json, the curves, the times and what it printed; no weights (it saves none). The
 # first glob that matches a file places it, so this narrower one goes first too.
