@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>A TextChanged function that changes the text: the key fires it; its own change raises the tick and fires nothing; the next key fires it once more</title>
+<defs><marker id="f0905c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0905c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0905c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">kilo at 09.05 with this lesson&#x27;s init.lua, on notes.txt; at the prompt, this function; then x, y</text>
+<rect class="s fs" x="24" y="30" width="592" height="40" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="32" y="46" font-size="9.2">kilo.api.create_autocmd(&#x27;TextChanged&#x27;,</text>
+<text class="t mono" x="247.28" y="46" font-size="9.2">function()</text>
+<text class="t mono" x="308" y="46" font-size="9.2">local</text>
+<text class="t mono" x="341.12" y="46" font-size="9.2">l</text>
+<text class="t mono" x="352.16" y="46" font-size="9.2">=</text>
+<text class="t mono" x="363.2" y="46" font-size="9.2">kilo.api.get_lines(0,</text>
+<text class="t mono" x="484.64" y="46" font-size="9.2">1)[1]</text>
+<text class="t mono" x="43.04" y="61" font-size="9.2">kilo.api.set_lines(0,</text>
+<text class="t mono" x="164.48" y="61" font-size="9.2">1,</text>
+<text class="t mono" x="181.04" y="61" font-size="9.2">{l</text>
+<text class="t mono" x="197.6" y="61" font-size="9.2">..</text>
+<text class="t mono" x="214.16" y="61" font-size="9.2">&#x27;!&#x27;})</text>
+<text class="t mono" x="247.28" y="61" font-size="9.2">end)</text>
+<line class="m" x1="24" y1="140" x2="616" y2="140" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="24" y="166" font-size="9.5">tick</text>
+<g class="step"><title>x is typed: the tick goes from 2 to 3, and at the top of the loop TextChanged fires, once: the word count, then this function.</title>
+<circle class="s f" cx="70" cy="140" r="4" stroke-width="1.5"/>
+<text class="t mono" x="70" y="166" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<circle class="s f" cx="170" cy="140" r="4" stroke-width="1.5"/>
+<text class="t mono" x="170" y="166" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<text class="t" x="170" y="128" font-size="10.5" font-weight="700" text-anchor="middle">x</text>
+<rect class="a af" x="126" y="176" width="88" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta" x="170" y="190" font-size="10" font-weight="700" text-anchor="middle">TextChanged</text>
+<text class="tm" x="24" y="222" font-size="9.5">the screen&#x27;s first row and its message line, after the key</text>
+<rect class="s fs" x="24" y="230" width="300" height="38" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="32" y="245" font-size="9.6">xhello</text>
+<text class="t mono" x="72.32" y="245" font-size="9.6">world</text>
+<text class="t mono" x="112.64" y="245" font-size="9.6">!</text>
+<text class="t mono" x="32" y="260" font-size="9.6">4</text>
+<text class="t mono" x="43.52" y="260" font-size="9.6">words</text>
+</g>
+<g class="step"><title>The function puts row 0 back with a ! at its end: the row deleted and put in, so the tick goes to 5. Nothing fires: the tick is noted, 5, after the functions return.</title>
+<circle class="s f" cx="70" cy="140" r="4" stroke-width="1.5"/>
+<text class="t mono" x="70" y="166" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<circle class="s f" cx="170" cy="140" r="4" stroke-width="1.5"/>
+<text class="t mono" x="170" y="166" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<text class="t" x="170" y="128" font-size="10.5" font-weight="700" text-anchor="middle">x</text>
+<rect class="a af" x="126" y="176" width="88" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta" x="170" y="190" font-size="10" font-weight="700" text-anchor="middle">TextChanged</text>
+<circle class="s f" cx="290" cy="140" r="4" stroke-width="1.5"/>
+<text class="t mono" x="290" y="166" font-size="12" font-weight="700" text-anchor="middle">5</text>
+<text class="t mono" x="290" y="128" font-size="10.5" font-weight="700" text-anchor="middle">set_lines</text>
+<text class="tm" x="24" y="222" font-size="9.5">the screen&#x27;s first row and its message line, after the key</text>
+<rect class="s fs" x="24" y="230" width="300" height="38" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="32" y="245" font-size="9.6">xhello</text>
+<text class="t mono" x="72.32" y="245" font-size="9.6">world</text>
+<text class="t mono" x="112.64" y="245" font-size="9.6">!</text>
+<text class="t mono" x="32" y="260" font-size="9.6">4</text>
+<text class="t mono" x="43.52" y="260" font-size="9.6">words</text>
+<text class="ta" x="340" y="236" font-size="10.5">its own change is not heard: editorAfterKey()</text>
+<text class="ta" x="340" y="250" font-size="10.5">notes the tick after the functions run</text>
+</g>
+<g class="step"><title>y is typed: the tick goes to 6, TextChanged fires once more, and another ! goes in: tick 8, and again nothing fires for that.</title>
+<circle class="s f" cx="70" cy="140" r="4" stroke-width="1.5"/>
+<text class="t mono" x="70" y="166" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<circle class="s f" cx="170" cy="140" r="4" stroke-width="1.5"/>
+<text class="t mono" x="170" y="166" font-size="12" font-weight="700" text-anchor="middle">3</text>
+<text class="t" x="170" y="128" font-size="10.5" font-weight="700" text-anchor="middle">x</text>
+<rect class="a af" x="126" y="176" width="88" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta" x="170" y="190" font-size="10" font-weight="700" text-anchor="middle">TextChanged</text>
+<circle class="s f" cx="290" cy="140" r="4" stroke-width="1.5"/>
+<text class="t mono" x="290" y="166" font-size="12" font-weight="700" text-anchor="middle">5</text>
+<text class="t mono" x="290" y="128" font-size="10.5" font-weight="700" text-anchor="middle">set_lines</text>
+<circle class="s f" cx="410" cy="140" r="4" stroke-width="1.5"/>
+<text class="t mono" x="410" y="166" font-size="12" font-weight="700" text-anchor="middle">6</text>
+<text class="t" x="410" y="128" font-size="10.5" font-weight="700" text-anchor="middle">y</text>
+<rect class="a af" x="366" y="176" width="88" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta" x="410" y="190" font-size="10" font-weight="700" text-anchor="middle">TextChanged</text>
+<circle class="s f" cx="530" cy="140" r="4" stroke-width="1.5"/>
+<text class="t mono" x="530" y="166" font-size="12" font-weight="700" text-anchor="middle">8</text>
+<text class="t mono" x="530" y="128" font-size="10.5" font-weight="700" text-anchor="middle">set_lines</text>
+<text class="tm" x="24" y="222" font-size="9.5">the screen&#x27;s first row and its message line, after the key</text>
+<rect class="s fs" x="24" y="230" width="300" height="38" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="32" y="245" font-size="9.6">xyhello</text>
+<text class="t mono" x="78.08" y="245" font-size="9.6">world</text>
+<text class="t mono" x="118.4" y="245" font-size="9.6">!!</text>
+<text class="t mono" x="32" y="260" font-size="9.6">5</text>
+<text class="t mono" x="43.52" y="260" font-size="9.6">words</text>
+<text class="t" x="340" y="236" font-size="10.5">one ! for each key that changes the text</text>
+</g>
+</svg>

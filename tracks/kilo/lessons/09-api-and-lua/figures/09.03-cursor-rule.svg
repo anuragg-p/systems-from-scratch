@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 312" fill="none">
+<title>Where set_lines leaves the cursor: below the range it keeps its line, which moves by the change in the count; inside it, it goes to the range&#x27;s new last row if it was below it; above, it stays</title>
+<defs><marker id="f0903b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0903b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0903b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">kilo at 09.03 on ten rows, line0 to line9: the cursor put with set_cursor, then set_lines, then get_cursor</text>
+<text class="ta" x="24" y="48" font-size="12" font-weight="700">below the range</text>
+<text class="t mono" x="24" y="66" font-size="9.2" font-weight="600">set_lines(2,</text>
+<text class="t mono" x="95.76" y="66" font-size="9.2" font-weight="600">5,</text>
+<text class="t mono" x="112.32" y="66" font-size="9.2" font-weight="600">{})</text>
+<text class="tm" x="28" y="88" font-size="9.5">before</text>
+<text class="t mono" x="28" y="104" font-size="9.5">line0</text>
+<text class="tm mono" x="22" y="104" font-size="8.5" text-anchor="end">0</text>
+<text class="t mono" x="28" y="119" font-size="9.5">line1</text>
+<text class="tm mono" x="22" y="119" font-size="8.5" text-anchor="end">1</text>
+<rect class="af" x="25" y="123" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="28" y="134" font-size="9.5">line2</text>
+<text class="tm mono" x="22" y="134" font-size="8.5" text-anchor="end">2</text>
+<rect class="af" x="25" y="138" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="28" y="149" font-size="9.5">line3</text>
+<text class="tm mono" x="22" y="149" font-size="8.5" text-anchor="end">3</text>
+<rect class="af" x="25" y="153" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="28" y="164" font-size="9.5">line4</text>
+<text class="tm mono" x="22" y="164" font-size="8.5" text-anchor="end">4</text>
+<text class="t mono" x="28" y="179" font-size="9.5">line5</text>
+<text class="tm mono" x="22" y="179" font-size="8.5" text-anchor="end">5</text>
+<text class="t mono" x="28" y="194" font-size="9.5">line6</text>
+<text class="tm mono" x="22" y="194" font-size="8.5" text-anchor="end">6</text>
+<text class="t mono" x="28" y="209" font-size="9.5">line7</text>
+<text class="tm mono" x="22" y="209" font-size="8.5" text-anchor="end">7</text>
+<text class="t mono" x="28" y="224" font-size="9.5">line8</text>
+<text class="tm mono" x="22" y="224" font-size="8.5" text-anchor="end">8</text>
+<text class="t mono" x="28" y="239" font-size="9.5">line9</text>
+<text class="tm mono" x="22" y="239" font-size="8.5" text-anchor="end">9</text>
+<rect class="a" x="38.9" y="214" width="6.7" height="12" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="28" y="270" font-size="10.5" font-weight="700">(8, 2)</text>
+<text class="tm" x="128" y="88" font-size="9.5">after</text>
+<text class="t mono" x="128" y="104" font-size="9.5">line0</text>
+<text class="t mono" x="128" y="119" font-size="9.5">line1</text>
+<text class="t mono" x="128" y="134" font-size="9.5">line5</text>
+<text class="t mono" x="128" y="149" font-size="9.5">line6</text>
+<text class="t mono" x="128" y="164" font-size="9.5">line7</text>
+<text class="t mono" x="128" y="179" font-size="9.5">line8</text>
+<text class="t mono" x="128" y="194" font-size="9.5">line9</text>
+<rect class="a" x="138.9" y="169" width="6.7" height="12" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="128" y="270" font-size="10.5" font-weight="700">(5, 2)</text>
+<line class="a" x1="90" y1="266" x2="122" y2="266" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903b-aa)"/>
+<text class="ta" x="230" y="48" font-size="12" font-weight="700">inside the range</text>
+<text class="t mono" x="230" y="66" font-size="9.2" font-weight="600">set_lines(3,</text>
+<text class="t mono" x="301.76" y="66" font-size="9.2" font-weight="600">8,</text>
+<text class="t mono" x="318.32" y="66" font-size="9.2" font-weight="600">{&#x27;x&#x27;,</text>
+<text class="t mono" x="351.44" y="66" font-size="9.2" font-weight="600">&#x27;y&#x27;})</text>
+<text class="tm" x="234" y="88" font-size="9.5">before</text>
+<text class="t mono" x="234" y="104" font-size="9.5">line0</text>
+<text class="tm mono" x="228" y="104" font-size="8.5" text-anchor="end">0</text>
+<text class="t mono" x="234" y="119" font-size="9.5">line1</text>
+<text class="tm mono" x="228" y="119" font-size="8.5" text-anchor="end">1</text>
+<text class="t mono" x="234" y="134" font-size="9.5">line2</text>
+<text class="tm mono" x="228" y="134" font-size="8.5" text-anchor="end">2</text>
+<rect class="af" x="231" y="138" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="234" y="149" font-size="9.5">line3</text>
+<text class="tm mono" x="228" y="149" font-size="8.5" text-anchor="end">3</text>
+<rect class="af" x="231" y="153" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="234" y="164" font-size="9.5">line4</text>
+<text class="tm mono" x="228" y="164" font-size="8.5" text-anchor="end">4</text>
+<rect class="af" x="231" y="168" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="234" y="179" font-size="9.5">line5</text>
+<text class="tm mono" x="228" y="179" font-size="8.5" text-anchor="end">5</text>
+<rect class="af" x="231" y="183" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="234" y="194" font-size="9.5">line6</text>
+<text class="tm mono" x="228" y="194" font-size="8.5" text-anchor="end">6</text>
+<rect class="af" x="231" y="198" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="234" y="209" font-size="9.5">line7</text>
+<text class="tm mono" x="228" y="209" font-size="8.5" text-anchor="end">7</text>
+<text class="t mono" x="234" y="224" font-size="9.5">line8</text>
+<text class="tm mono" x="228" y="224" font-size="8.5" text-anchor="end">8</text>
+<text class="t mono" x="234" y="239" font-size="9.5">line9</text>
+<text class="tm mono" x="228" y="239" font-size="8.5" text-anchor="end">9</text>
+<rect class="a" x="256.3" y="184" width="6.7" height="12" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="234" y="270" font-size="10.5" font-weight="700">(6, 4)</text>
+<text class="tm" x="334" y="88" font-size="9.5">after</text>
+<text class="t mono" x="334" y="104" font-size="9.5">line0</text>
+<text class="t mono" x="334" y="119" font-size="9.5">line1</text>
+<text class="t mono" x="334" y="134" font-size="9.5">line2</text>
+<rect class="af" x="331" y="138" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="334" y="149" font-size="9.5">x</text>
+<rect class="af" x="331" y="153" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="334" y="164" font-size="9.5">y</text>
+<text class="t mono" x="334" y="179" font-size="9.5">line8</text>
+<text class="t mono" x="334" y="194" font-size="9.5">line9</text>
+<rect class="a" x="339.2" y="154" width="6.7" height="12" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="334" y="270" font-size="10.5" font-weight="700">(4, 1)</text>
+<line class="a" x1="296" y1="266" x2="328" y2="266" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903b-aa)"/>
+<text class="ta" x="436" y="48" font-size="12" font-weight="700">above the range</text>
+<text class="t mono" x="436" y="66" font-size="9.2" font-weight="600">set_lines(5,</text>
+<text class="t mono" x="507.76" y="66" font-size="9.2" font-weight="600">7,</text>
+<text class="t mono" x="524.32" y="66" font-size="9.2" font-weight="600">{&#x27;x&#x27;})</text>
+<text class="tm" x="440" y="88" font-size="9.5">before</text>
+<text class="t mono" x="440" y="104" font-size="9.5">line0</text>
+<text class="tm mono" x="434" y="104" font-size="8.5" text-anchor="end">0</text>
+<text class="t mono" x="440" y="119" font-size="9.5">line1</text>
+<text class="tm mono" x="434" y="119" font-size="8.5" text-anchor="end">1</text>
+<text class="t mono" x="440" y="134" font-size="9.5">line2</text>
+<text class="tm mono" x="434" y="134" font-size="8.5" text-anchor="end">2</text>
+<text class="t mono" x="440" y="149" font-size="9.5">line3</text>
+<text class="tm mono" x="434" y="149" font-size="8.5" text-anchor="end">3</text>
+<text class="t mono" x="440" y="164" font-size="9.5">line4</text>
+<text class="tm mono" x="434" y="164" font-size="8.5" text-anchor="end">4</text>
+<rect class="af" x="437" y="168" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="440" y="179" font-size="9.5">line5</text>
+<text class="tm mono" x="434" y="179" font-size="8.5" text-anchor="end">5</text>
+<rect class="af" x="437" y="183" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="440" y="194" font-size="9.5">line6</text>
+<text class="tm mono" x="434" y="194" font-size="8.5" text-anchor="end">6</text>
+<text class="t mono" x="440" y="209" font-size="9.5">line7</text>
+<text class="tm mono" x="434" y="209" font-size="8.5" text-anchor="end">7</text>
+<text class="t mono" x="440" y="224" font-size="9.5">line8</text>
+<text class="tm mono" x="434" y="224" font-size="8.5" text-anchor="end">8</text>
+<text class="t mono" x="440" y="239" font-size="9.5">line9</text>
+<text class="tm mono" x="434" y="239" font-size="8.5" text-anchor="end">9</text>
+<rect class="a" x="456.6" y="109" width="6.7" height="12" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="440" y="270" font-size="10.5" font-weight="700">(1, 3)</text>
+<text class="tm" x="540" y="88" font-size="9.5">after</text>
+<text class="t mono" x="540" y="104" font-size="9.5">line0</text>
+<text class="t mono" x="540" y="119" font-size="9.5">line1</text>
+<text class="t mono" x="540" y="134" font-size="9.5">line2</text>
+<text class="t mono" x="540" y="149" font-size="9.5">line3</text>
+<text class="t mono" x="540" y="164" font-size="9.5">line4</text>
+<rect class="af" x="537" y="168" width="40.2" height="14" rx="2"/>
+<text class="ta mono" x="540" y="179" font-size="9.5">x</text>
+<text class="t mono" x="540" y="194" font-size="9.5">line7</text>
+<text class="t mono" x="540" y="209" font-size="9.5">line8</text>
+<text class="t mono" x="540" y="224" font-size="9.5">line9</text>
+<rect class="a" x="556.6" y="109" width="6.7" height="12" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="540" y="270" font-size="10.5" font-weight="700">(1, 3)</text>
+<line class="a" x1="502" y1="266" x2="534" y2="266" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903b-aa)"/>
+<text class="tm" x="24" y="290" font-size="10.5">Inside the range, column 4 was past the end of &#x27;y&#x27;, so it is cut to 1. Neovim&#x27;s nvim_buf_set_lines leaves a</text>
+<text class="tm" x="24" y="304" font-size="10.5">cursor inside the range on its own line number (fix_cursor).</text>
+</svg>

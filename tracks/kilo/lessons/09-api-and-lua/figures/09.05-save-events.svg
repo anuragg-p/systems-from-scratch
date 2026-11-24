@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 316" fill="none">
+<title>One Ctrl-S, in order: BufWritePre, whose function trims two rows; the rows made into one string; the write; BufWritePost; then, after the key&#x27;s work, TextChanged, since the tick moved</title>
+<defs><marker id="f0905a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0905a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0905a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">kilo at 09.05 with this lesson&#x27;s init.lua, on notes.txt after a and a space are typed; then Ctrl-S</text>
+<rect class="s fs" x="24" y="32" width="400" height="91" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="32" y="47" font-size="8.6">kilo.api.create_autocmd(&#x27;BufWritePre&#x27;,</text>
+<text class="t mono" x="233.24" y="47" font-size="8.6">function()</text>
+<text class="t mono" x="42.32" y="59.5" font-size="8.6">for</text>
+<text class="t mono" x="62.96" y="59.5" font-size="8.6">row,</text>
+<text class="t mono" x="88.76" y="59.5" font-size="8.6">line</text>
+<text class="t mono" x="114.56" y="59.5" font-size="8.6">in</text>
+<text class="t mono" x="130.04" y="59.5" font-size="8.6">kilo.lines()</text>
+<text class="t mono" x="197.12" y="59.5" font-size="8.6">do</text>
+<text class="t mono" x="52.64" y="72" font-size="8.6">local</text>
+<text class="t mono" x="83.6" y="72" font-size="8.6">trimmed</text>
+<text class="t mono" x="124.88" y="72" font-size="8.6">=</text>
+<text class="t mono" x="135.2" y="72" font-size="8.6">line:gsub(&#x27;%s+$&#x27;,</text>
+<text class="t mono" x="228.08" y="72" font-size="8.6">&#x27;&#x27;)</text>
+<text class="t mono" x="52.64" y="84.5" font-size="8.6">if</text>
+<text class="t mono" x="68.12" y="84.5" font-size="8.6">trimmed</text>
+<text class="t mono" x="109.4" y="84.5" font-size="8.6">~=</text>
+<text class="t mono" x="124.88" y="84.5" font-size="8.6">line</text>
+<text class="t mono" x="150.68" y="84.5" font-size="8.6">then</text>
+<text class="t mono" x="176.48" y="84.5" font-size="8.6">kilo.api.set_lines(row,</text>
+<text class="t mono" x="300.32" y="84.5" font-size="8.6">row</text>
+<text class="t mono" x="320.96" y="84.5" font-size="8.6">+</text>
+<text class="t mono" x="331.28" y="84.5" font-size="8.6">1,</text>
+<text class="t mono" x="346.76" y="84.5" font-size="8.6">{trimmed})</text>
+<text class="t mono" x="403.52" y="84.5" font-size="8.6">end</text>
+<text class="t mono" x="42.32" y="97" font-size="8.6">end</text>
+<text class="t mono" x="32" y="109.5" font-size="8.6">end)</text>
+<text class="tm" x="438" y="46" font-size="10">and on TextChanged, the words</text>
+<text class="tm" x="438" y="60" font-size="10">of the file, in the message</text>
+<text class="tm" x="438" y="74" font-size="10">line</text>
+<line class="m" x1="24" y1="150" x2="616" y2="150" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="48" cy="150" r="4.5" stroke-width="1.5"/>
+<text class="t" x="48" y="138" font-size="11" font-weight="700" text-anchor="middle">Ctrl-S</text>
+<text class="tm" x="48" y="168" font-size="9.5" text-anchor="middle">tick 4</text>
+<circle class="a fa" cx="150" cy="150" r="4.5" stroke-width="1.5"/>
+<text class="ta" x="150" y="138" font-size="11" font-weight="700" text-anchor="middle">BufWritePre</text>
+<text class="tm" x="150" y="168" font-size="9.5" text-anchor="middle">tick 4</text>
+<circle class="s f" cx="262" cy="150" r="4.5" stroke-width="1.5"/>
+<text class="t" x="262" y="138" font-size="11" font-weight="700" text-anchor="middle">the string</text>
+<text class="tm" x="262" y="168" font-size="9.5" text-anchor="middle">26 bytes</text>
+<circle class="s f" cx="360" cy="150" r="4.5" stroke-width="1.5"/>
+<text class="t" x="360" y="138" font-size="11" font-weight="700" text-anchor="middle">write()</text>
+<text class="tm" x="360" y="168" font-size="9.5" text-anchor="middle">26 bytes</text>
+<circle class="a fa" cx="464" cy="150" r="4.5" stroke-width="1.5"/>
+<text class="ta" x="464" y="138" font-size="11" font-weight="700" text-anchor="middle">BufWritePost</text>
+<text class="tm" x="464" y="168" font-size="9.5" text-anchor="middle">tick 8</text>
+<circle class="a fa" cx="574" cy="150" r="4.5" stroke-width="1.5"/>
+<text class="ta" x="574" y="138" font-size="11" font-weight="700" text-anchor="middle">TextChanged</text>
+<text class="tm" x="574" y="168" font-size="9.5" text-anchor="middle">tick 4 -&gt; 8</text>
+<text class="tm" x="574" y="182" font-size="9" text-anchor="middle">after the key&#x27;s work</text>
+<text class="tm" x="24" y="210" font-size="9.5">the rows when BufWritePre fires</text>
+<rect class="s f" x="24" y="216" width="166" height="18" rx="3" stroke-width="1.5"/>
+<path class="m" d="M105.92 226.5 L105.92 229 L109.6 229 L109.6 226.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M111.68 226.5 L111.68 229 L115.36 229 L115.36 226.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="30" y="229" font-size="9.6">a</text>
+<text class="t mono" x="41.52" y="229" font-size="9.6">hello</text>
+<text class="t mono" x="76.08" y="229" font-size="9.6">world</text>
+<rect class="s f" x="24" y="238" width="166" height="18" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="93.36" y="251" font-size="7.68">\t</text>
+<text class="t mono" x="30" y="251" font-size="9.6">second</text>
+<text class="t mono" x="70.32" y="251" font-size="9.6">line</text>
+<text class="tm" x="224" y="210" font-size="9.5">after the trim: tick 8</text>
+<rect class="a af" x="224" y="216" width="166" height="18" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="230" y="229" font-size="9.6">a</text>
+<text class="ta mono" x="241.52" y="229" font-size="9.6">hello</text>
+<text class="ta mono" x="276.08" y="229" font-size="9.6">world</text>
+<rect class="a af" x="224" y="238" width="166" height="18" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="230" y="251" font-size="9.6">second</text>
+<text class="ta mono" x="270.32" y="251" font-size="9.6">line</text>
+<line class="a" x1="194" y1="235" x2="220" y2="235" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0905a-aa)"/>
+<text class="tm" x="424" y="210" font-size="9.5">notes.txt on disk, 26 bytes</text>
+<rect class="s fs" x="424" y="216" width="166" height="40" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="430" y="229" font-size="9.6">a</text>
+<text class="t mono" x="441.52" y="229" font-size="9.6">hello</text>
+<text class="t mono" x="476.08" y="229" font-size="9.6">world\n</text>
+<text class="t mono" x="430" y="245" font-size="9.6">second</text>
+<text class="t mono" x="470.32" y="245" font-size="9.6">line\n</text>
+<text class="tm" x="24" y="286" font-size="10.5">the message line after the key:</text>
+<rect class="s fs" x="190" y="273" width="80" height="20" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="198" y="287" font-size="10.5" font-weight="600">5</text>
+<text class="t mono" x="210.6" y="287" font-size="10.5" font-weight="600">words</text>
+<text class="tm" x="280" y="287" font-size="10.5">TextChanged&#x27;s count, over the save&#x27;s &quot;26 bytes written on disk&quot;</text>
+</svg>

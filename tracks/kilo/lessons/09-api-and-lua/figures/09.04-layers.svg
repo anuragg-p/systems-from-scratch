@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 334" fill="none">
+<title>Three layers: kilo.c&#x27;s C functions; kilo.api, made from the table, one dispatcher for all; and kilo.keymap.set and kilo.lines, written in Lua on top. Beside each, Neovim&#x27;s name for the same layer</title>
+<defs><marker id="f0904b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0904b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0904b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">kilo at 09.04, and Neovim v0.12.6</text>
+<text class="t" x="24" y="44" font-size="12.5" font-weight="700">kilo</text>
+<text class="t" x="420" y="44" font-size="12.5" font-weight="700">Neovim</text>
+<rect class="a af" x="24" y="54" width="380" height="78" rx="8" stroke-width="1.5"/>
+<text class="ta" x="36" y="72" font-size="12" font-weight="700">written in Lua</text>
+<text class="tm" x="36" y="86" font-size="9.5">in script.c, run when the state is made</text>
+<text class="ta mono" x="36" y="100" font-size="8.6">function</text>
+<text class="ta mono" x="82.44" y="100" font-size="8.6">kilo.keymap.set(keys,</text>
+<text class="ta mono" x="195.96" y="100" font-size="8.6">fn)</text>
+<text class="ta mono" x="46.32" y="111" font-size="8.6">if</text>
+<text class="ta mono" x="61.8" y="111" font-size="8.6">type(keys)</text>
+<text class="ta mono" x="118.56" y="111" font-size="8.6">~=</text>
+<text class="ta mono" x="134.04" y="111" font-size="8.6">&#x27;table&#x27;</text>
+<text class="ta mono" x="175.32" y="111" font-size="8.6">then</text>
+<text class="ta mono" x="201.12" y="111" font-size="8.6">keys</text>
+<text class="ta mono" x="226.92" y="111" font-size="8.6">=</text>
+<text class="ta mono" x="237.24" y="111" font-size="8.6">{keys}</text>
+<text class="ta mono" x="273.36" y="111" font-size="8.6">end</text>
+<text class="ta mono" x="46.32" y="122" font-size="8.6">for</text>
+<text class="ta mono" x="66.96" y="122" font-size="8.6">_,</text>
+<text class="ta mono" x="82.44" y="122" font-size="8.6">key</text>
+<text class="ta mono" x="103.08" y="122" font-size="8.6">in</text>
+<text class="ta mono" x="118.56" y="122" font-size="8.6">ipairs(keys)</text>
+<text class="ta mono" x="185.64" y="122" font-size="8.6">do</text>
+<text class="ta mono" x="201.12" y="122" font-size="8.6">api.set_keymap(key,</text>
+<text class="ta mono" x="304.32" y="122" font-size="8.6">fn)</text>
+<text class="ta mono" x="324.96" y="122" font-size="8.6">end</text>
+<rect class="s fs" x="420" y="54" width="196" height="78" rx="8" stroke-width="1.5"/>
+<text class="t" x="430" y="74" font-size="10.5" font-weight="600">vim.keymap.set: Lua,</text>
+<text class="tm" x="430" y="90" font-size="10">runtime/lua/vim/keymap.lua;</text>
+<text class="tm" x="430" y="106" font-size="10">it calls vim.api.nvim_set_keymap</text>
+<line class="s" x1="214" y1="133" x2="214" y2="140" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0904b-ah)"/>
+<rect class="s f" x="24" y="142" width="380" height="78" rx="8" stroke-width="1.5"/>
+<text class="t" x="36" y="160" font-size="12" font-weight="700">kilo.api, made from the table</text>
+<text class="tm" x="36" y="174" font-size="9.5">12 names, each scriptDispatch() and its entry</text>
+<text class="t mono" x="36" y="188" font-size="8.6">kilo.api.set_keymap(key,</text>
+<text class="t mono" x="165" y="188" font-size="8.6">fn)</text>
+<text class="t mono" x="36" y="199" font-size="8.6">kilo.api.get_lines(start,</text>
+<text class="t mono" x="170.16" y="199" font-size="8.6">end)</text>
+<text class="t mono" x="36" y="210" font-size="8.6">...</text>
+<rect class="s fs" x="420" y="142" width="196" height="78" rx="8" stroke-width="1.5"/>
+<text class="t" x="430" y="162" font-size="10.5" font-weight="600">vim.api: a C binding for each,</text>
+<text class="tm" x="430" y="178" font-size="10">nlua_api_&lt;name&gt;, generated</text>
+<text class="tm" x="430" y="194" font-size="10">from the declarations</text>
+<line class="s" x1="214" y1="221" x2="214" y2="228" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0904b-ah)"/>
+<rect class="s f" x="24" y="230" width="380" height="78" rx="8" stroke-width="1.5"/>
+<text class="t" x="36" y="248" font-size="12" font-weight="700">the editor&#x27;s C functions</text>
+<text class="tm" x="36" y="262" font-size="9.5">kilo.c: rows, keys, the cursor; no Lua</text>
+<text class="t mono" x="36" y="276" font-size="8.6">apiSetKeymap(args,</text>
+<text class="t mono" x="134.04" y="276" font-size="8.6">nargs,</text>
+<text class="t mono" x="170.16" y="276" font-size="8.6">&amp;err)</text>
+<text class="t mono" x="36" y="287" font-size="8.6">apiGetLines(args,</text>
+<text class="t mono" x="128.88" y="287" font-size="8.6">nargs,</text>
+<text class="t mono" x="165" y="287" font-size="8.6">&amp;err)</text>
+<text class="t mono" x="36" y="298" font-size="8.6">...</text>
+<rect class="s fs" x="420" y="230" width="196" height="78" rx="8" stroke-width="1.5"/>
+<text class="t" x="430" y="250" font-size="10.5" font-weight="600">src/nvim/api/*.c:</text>
+<text class="tm" x="430" y="266" font-size="10">nvim_buf_set_lines in buffer.c,</text>
+<text class="tm" x="430" y="282" font-size="10">on typed Objects</text>
+<text class="tm" x="24" y="326" font-size="10.5">Each layer calls only the one under it. A function added in Lua needs no C and no compile.</text>
+</svg>

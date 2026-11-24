@@ -45,7 +45,7 @@ the size the cover names (the reference kilo.c, or the project at 02.01 for 02):
   09  (an extension) captured when this runs, by figs09a.py's capture_cover(): the project at
       09.04 with NOTES.md's init.lua (its Ctrl-D mapping drawn), on "local x = 1\\nprint(x)\\n"
       on a terminal 8 x 30; Ctrl-D: the row doubled, the cursor still on row 0. The names in
-      the table's column are kilo --api-info's at 09.09 (24 functions).
+      the table's column are kilo --api-info's at 09.09 (25 functions).
 
 Text in these SVGs is placed a run of non-spaces at a time, at its column: SVG
 collapses runs of spaces, and a screen's columns must line up.
