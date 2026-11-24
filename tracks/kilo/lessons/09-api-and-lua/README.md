@@ -10,13 +10,13 @@ This module is optional: it stands on the finished core, modules 00 to 05, and n
 
 The lessons:
 
-- 09.01 A second language inside the editor: embedding Lua
-- 09.02 The API is a table
-- 09.03 Changing the text from a script: set_lines
-- 09.04 Any key can run a Lua function
-- 09.05 Events: autocommands
-- 09.06 Drawing from a script: highlights and the status bar
-- 09.07 Asking, opening, leaving: input(), open(), quit()
-- 09.08 Scripts that go wrong
-- 09.09 The editor without its screen
-- 09.10 Features as scripts
+- [09.01 A second language inside the editor: embedding Lua](09.01-a-second-language-inside-the-editor-embedding-lua.md)
+- [09.02 The API is a table](09.02-the-api-is-a-table.md)
+- [09.03 Changing the text from a script: set_lines](09.03-changing-the-text-from-a-script-set-lines.md)
+- [09.04 Any key can run a Lua function](09.04-any-key-can-run-a-lua-function.md)
+- [09.05 Events: autocommands](09.05-events-autocommands.md)
+- [09.06 Drawing from a script: highlights and the status bar](09.06-drawing-from-a-script-highlights-and-the-status-bar.md)
+- [09.07 Asking, opening, leaving: input(), open(), quit()](09.07-asking-opening-leaving-input-open-quit.md)
+- [09.08 Scripts that go wrong](09.08-scripts-that-go-wrong.md)
+- [09.09 The editor without its screen](09.09-the-editor-without-its-screen.md)
+- [09.10 Features as scripts](09.10-features-as-scripts.md)

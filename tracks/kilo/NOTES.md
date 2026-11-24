@@ -2508,8 +2508,11 @@ written out before the module existed and after, are identical (`diff
 -r`); and after module 08 was merged in, the projects at all 32 lessons to
 08.04 are identical to master's at cf9919a, which has 08 and not 09; no 08
 project holds code of 09. The finished kilo.c is 2749 lines (with 06, 07
-and 08). 09.10, "Features as scripts" (plugins written only in Lua), is
-not built yet: it follows the review of this code.
+and 08). 09.10, "Features as scripts" (plugins written only in Lua), was
+built after the review of this code ("09.10 Features as scripts", below).
+The ten lessons, the module page and the art are written, and were read
+on the site on 2026-11-25 (plans/kilo.md, "Module 09's lessons, art and
+read").
 
 ### Lua itself
 
@@ -2579,7 +2582,8 @@ The project at each lesson (lines, `./learn files kilo --at 09.LL`):
 
 ### The lessons, and how they divide the code
 
-The coordinator's revised list, in its order (09.10 later). Regions
+The coordinator's revised list, in its order (09.10, built later, below).
+Regions
 (`./learn solution kilo 09.LL`):
 
 | lesson | regions (file: title) |
@@ -2811,7 +2815,8 @@ All in script.h, each tested:
 
 ### Departures from the design, and why
 
-- **The second revision is built**, 09.01 to 09.09; 09.10 is not.
+- **The second revision is built**, 09.01 to 09.09, and 09.10 after the
+  review.
 - **ApiFunc has the arguments' names** (`argnames`), for --api-info and
   for the errors; API_MAX_ARGS is 5 (add_highlight).
 - **NAMESPACE_MAX 64**, a limit the design did not have.
@@ -3379,7 +3384,7 @@ URLs are `https://raw.githubusercontent.com/neovim/neovim/v0.12.6/PATH`.
 | Neovim | Lua 5.1 (LuaJIT), Vimscript; any, as a remote plugin | Lua and Vimscript in the editor's process; remote plugins and the UI in other processes | C functions with typed Objects, a generated table serving Lua, msgpack-RPC and --api-info |
 | Vim | Vimscript | in the editor's process (not read in a source) | the language's functions and commands |
 | Emacs | Emacs Lisp | in the editor's process, by its own interpreter | a Lisp: most of the editor is Lisp, C primitives by DEFUN |
-| Zed | Rust (or any) compiled to WebAssembly | a sandbox in the editor's process, with capabilities | WIT interfaces |
+| Zed | Rust (or any) compiled to WebAssembly | in the editor's process, under wasmtime with WASI: file access only to the extension's own work directory, other operations governed by a capability system | WIT interfaces |
 | VS Code | JavaScript or TypeScript | another process (the extension host), or a web worker | the extension API (not read here) |
 | Redis (not an editor) | Lua 5.1 | in the server's process | redis.call and its kin |
 
@@ -3408,9 +3413,10 @@ above differ, both are kept:
   in an Extension Host process", overview.md line 125), which above is
   listed as not confirmed in those words.
 - Zed: read at v1.29.3 above and v0.233.10 here (both find the newest WIT
-  at since_v0.8.0); the table above says "a sandbox", a word this research
+  at since_v0.8.0); the table above said "a sandbox", a word this research
   found nowhere in Zed's docs (it confirms wasmtime with WASI, a preopened
-  work directory and capabilities).
+  work directory and capabilities). The read of 2026-11-25 put that
+  confirmed wording in the table's cell; no lesson calls Zed's a sandbox.
 - Vim: v9.2.1398 above, v9.2.1400 here; the same usr_41.txt sentence.
 
 Every claim below was read in the named file at the named tag or commit (fetched 2026-11-24/25).
