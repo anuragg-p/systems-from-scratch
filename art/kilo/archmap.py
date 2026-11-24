@@ -247,6 +247,82 @@ EXTENSIONS = {
     },
 }
 
+# 09, an API, and Lua on top of it. Three rows under the grid, as in 07. Row 4 is kilo.c's side of
+# the API, each piece under the core piece it hangs from: keymaps (09.04) in the cursor's column,
+# since the key handler offers every key to the scripts first (editorScriptKey); the prompt (Ctrl-E,
+# and input(): 09.01, 09.07) under find, which has the other prompt; events (09.05) under save,
+# which fires two of them; the API (09.02), the table of typed functions, under edit; highlights
+# (09.06) under rows, drawn over the frame's rows. Row 5 is script.c: Lua, the interpreter and the
+# one dispatcher, across four columns, and the guards (memory, Ctrl-C: 09.08) beside it. Row 6 is
+# outside the editor: the scripts (init.lua, plugins: 09.01, 09.10), and no screen (kilo -l: 09.09).
+# The key handler -> keymaps goes down the left margin (the handler and the cursor start 12 in, as
+# in 08), highlights -> frame up the right margin (the frame gives up 12, as in 07). API <-> rows is
+# an elbow in the gap between rows 3 and 4 with a head at each end (a script reads the rows and
+# changes them: a fourth item "both" in a link), and no screen -> Lua one in the gap between rows 5
+# and 6. The labels are cut to what a piece holds: "key -> a function" for keymaps, "save, change,
+# key" for events, "typed functions" for the API.
+_GAP34 = _BOT[3] + 11                    # half way between rows 3 and 4
+_GAP56 = _R5 + H + (_R6 - _R5 - H) / 2   # half way between rows 5 and 6
+_KEYMAP_MID = (COLS[0] + _IN + COLS[0] + W) / 2
+
+EXTENSIONS["09"] = {
+    "dir": "09-api-and-lua",
+    "height": HEIGHT + 3 * PITCH,
+    "move": {"handler": (COLS[0] + _IN, ROWS[2], COLS[3] + W - COLS[0] - _IN),
+             "cursor": (COLS[0] + _IN, ROWS[3], W - _IN),
+             "frame": (COLS[2], ROWS[1], RIGHT - COLS[2] - _IN)},
+    "reroute": {},
+    "pieces": {
+        "keymaps": ("keymaps", "key -> a function", COLS[0] + _IN, _R4, W - _IN),
+        "prompt": ("prompt", "Ctrl-E, input()", COLS[1], _R4, W),
+        "events": ("events", "save, change, key", COLS[2], _R4, W),
+        "api": ("API", "typed functions", COLS[3], _R4, W),
+        "highlights": ("highlights", "colour over a row", COLS[4], _R4, W),
+        "lua": ("Lua", "the interpreter, and the dispatcher", COLS[0], _R5, COLS[3] + W - COLS[0]),
+        "guards": ("guards", "memory, Ctrl-C", COLS[4], _R5, W),
+        "scripts": ("scripts", "init.lua, plugins", COLS[0], _R6, COLS[3] + W - COLS[0]),
+        "noscreen": ("no screen", "kilo -l", COLS[4], _R6, W),
+    },
+    "links": [
+        # every key is offered to the scripts first: down the left margin
+        ("handler", "keymaps", [(COLS[0] + _IN - 1, ROWS[2] + H / 2), (_MARGIN_L, ROWS[2] + H / 2),
+                                (_MARGIN_L, _R4 + H / 2), (COLS[0] + _IN - 2, _R4 + H / 2)]),
+        # a save fires BufWritePre and BufWritePost
+        ("save", "events", _down(cx(2), ROWS[3], _R4)),
+        # the API reads the rows and changes them
+        ("api", "rows", [(cx(3) + 22, _R4 - 2), (cx(3) + 22, _GAP34), (cx(4), _GAP34), (cx(4), _BOT[3] + 2)],
+         "both"),
+        # the frame draws the highlights: up the right margin
+        ("highlights", "frame", [(RIGHT + 1, _R4 + H / 2), (_MARGIN_R, _R4 + H / 2), (_MARGIN_R, _MID1),
+                                 (RIGHT - _IN + 2, _MID1)]),
+        # a key, a line at the prompt and an event each call into Lua
+        ("keymaps", "lua", _down(_KEYMAP_MID, _R4, _R5)),
+        ("prompt", "lua", _down(cx(1), _R4, _R5)),
+        ("events", "lua", _down(cx(2), _R4, _R5)),
+        # a script's call reaches the API through the dispatcher
+        ("lua", "api", _up(cx(3), _R4, _R5)),
+        # the guards watch Lua: its memory, and the keyboard while it runs
+        ("guards", "lua", [(COLS[4] - 1, _R5 + H / 2), (COLS[3] + W + 2, _R5 + H / 2)]),
+        # the scripts go into Lua, and Lua calls their functions
+        ("scripts", "lua", _up(cx(1) + 52, _R5, _R6)),
+        ("lua", "scripts", _down(cx(1) + 84, _R5, _R6)),
+        # kilo -l runs one script through the same Lua, with no screen
+        ("noscreen", "lua", [(cx(4), _R6 - 1), (cx(4), _GAP56), (cx(3) + 22, _GAP56), (cx(3) + 22, _R5 + H + 2)]),
+    ],
+    "lessons": [
+        ("09.01", "A second language inside the editor: embedding Lua", {"lua", "prompt", "scripts"}),
+        ("09.02", "The API is a table", {"api"}),
+        ("09.03", "Changing the text from a script: set_lines", {"api"}),
+        ("09.04", "Any key can run a Lua function", {"keymaps"}),
+        ("09.05", "Events: autocommands", {"events"}),
+        ("09.06", "Drawing from a script: highlights and the status bar", {"highlights"}),
+        ("09.07", "Asking, opening, leaving: input(), open(), quit()", {"prompt", "api"}),
+        ("09.08", "Scripts that go wrong", {"guards"}),
+        ("09.09", "The editor without its screen", {"noscreen"}),
+        ("09.10", "Features as scripts", {"scripts"}),
+    ],
+}
+
 
 def draw(lid, title, here, built, ext=None):
     """The map for lesson lid: the pieces in here in the accent, those in built solid, the
@@ -257,18 +333,19 @@ def draw(lid, title, here, built, ext=None):
     def state(k):
         return "here" if k in here else ("built" if k in built else "later")
 
-    def link(a, b, pts, arrow=True):
-        """A connector between two pieces, muted unless both are built or here."""
+    def link(a, b, pts, arrow=True, both=False):
+        """A connector between two pieces, muted unless both are built or here; both: a head at
+        each end."""
         live = state(a) != "later" and state(b) != "later"
         d = "M" + " L".join(f"{x:.1f} {y:.1f}" for x, y in pts)
-        f.path(d, "s" if live else "m", arrow=arrow, dash=not live)
+        f.path(d, "s" if live else "m", arrow=arrow, dash=not live, start=both)
 
     reroute = ext.get("reroute", {})
     for a, b, pts in core_links():
         for a2, b2, pts2 in reroute.get((a, b), [(a, b, pts)]):
             link(a2, b2, pts2)
-    for a, b, pts in ext.get("links", []):
-        link(a, b, pts)
+    for a, b, pts, *heads in ext.get("links", []):
+        link(a, b, pts, both=heads == ["both"])
 
     move = ext.get("move", {})
     pieces = [(k, (name, sub) + move.get(k, (x, y, w))) for k, (name, sub, x, y, w) in PIECES.items()]

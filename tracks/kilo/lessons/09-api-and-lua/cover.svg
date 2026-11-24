@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>An init.lua&#x27;s Ctrl-D mapping calls get_cursor, get_lines and set_lines, three names in the column of the API&#x27;s functions; set_lines puts a copy of the row under it on kilo&#x27;s screen</title>
+<defs><marker id="k09-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="k09-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="14" y="20" font-size="11">init.lua</text>
+<rect class="s fs" x="14" y="29" width="280" height="103" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="24" y="43" font-size="8.6">kilo.keymap.set(&#x27;&lt;C-d&gt;&#x27;,</text>
+<text class="t mono" x="153" y="43" font-size="8.6">function()</text>
+<text class="t mono" x="34.32" y="62" font-size="8.6">local</text>
+<text class="t mono" x="65.28" y="62" font-size="8.6">row</text>
+<text class="t mono" x="85.92" y="62" font-size="8.6">=</text>
+<text class="t mono" x="96.24" y="62" font-size="8.6">kilo.api.</text>
+<text class="ta mono" x="142.68" y="62" font-size="8.6" font-weight="700">get_cursor</text>
+<text class="t mono" x="194.28" y="62" font-size="8.6">()[1]</text>
+<text class="t mono" x="34.32" y="81" font-size="8.6">local</text>
+<text class="t mono" x="65.28" y="81" font-size="8.6">line</text>
+<text class="t mono" x="91.08" y="81" font-size="8.6">=</text>
+<text class="t mono" x="101.4" y="81" font-size="8.6">kilo.api.</text>
+<text class="ta mono" x="147.84" y="81" font-size="8.6" font-weight="700">get_lines</text>
+<text class="t mono" x="194.28" y="81" font-size="8.6">(row,</text>
+<text class="t mono" x="225.24" y="81" font-size="8.6">row</text>
+<text class="t mono" x="245.88" y="81" font-size="8.6">+</text>
+<text class="t mono" x="256.2" y="81" font-size="8.6">1)[1]</text>
+<text class="t mono" x="34.32" y="100" font-size="8.6">kilo.api.</text>
+<text class="ta mono" x="80.76" y="100" font-size="8.6" font-weight="700">set_lines</text>
+<text class="t mono" x="127.2" y="100" font-size="8.6">(row</text>
+<text class="t mono" x="153" y="100" font-size="8.6">+</text>
+<text class="t mono" x="163.32" y="100" font-size="8.6">1,</text>
+<text class="t mono" x="178.8" y="100" font-size="8.6">row</text>
+<text class="t mono" x="199.44" y="100" font-size="8.6">+</text>
+<text class="t mono" x="209.76" y="100" font-size="8.6">1,</text>
+<text class="t mono" x="225.24" y="100" font-size="8.6">{line})</text>
+<text class="t mono" x="24" y="119" font-size="8.6">end)</text>
+<text class="ta" x="322" y="20" font-size="11" font-weight="600">kilo.api: 24 functions</text>
+<rect class="a af" x="322" y="45" width="96" height="213" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="332" y="62" font-size="9.6">get_cursor</text>
+<text class="ta mono" x="332" y="81" font-size="9.6">get_lines</text>
+<text class="ta mono" x="332" y="100" font-size="9.6" font-weight="700">set_lines</text>
+<text class="ta mono" x="332" y="119" font-size="9.6">set_cursor</text>
+<text class="ta mono" x="332" y="138" font-size="9.6">save</text>
+<text class="ta mono" x="332" y="157" font-size="9.6">set_keymap</text>
+<text class="ta mono" x="332" y="176" font-size="9.6">feed_key</text>
+<text class="ta mono" x="332" y="195" font-size="9.6">create_autocmd</text>
+<text class="ta mono" x="332" y="214" font-size="9.6">add_highlight</text>
+<text class="ta mono" x="332" y="233" font-size="9.6">input</text>
+<text class="tm" x="332" y="252" font-size="10">and 14 more</text>
+<line class="s" x1="296" y1="58.5" x2="320" y2="58.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#k09-ah)"/>
+<line class="s" x1="296" y1="77.5" x2="320" y2="77.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#k09-ah)"/>
+<line class="a" x1="296" y1="96.5" x2="320" y2="96.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#k09-aa)"/>
+<text class="tm" x="450" y="65.7" font-size="11">kilo, 8 x 30, after Ctrl-D</text>
+<rect class="s fs" x="450" y="73.7" width="167" height="128" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="457" y="88.5" font-size="8.5">local</text>
+<text class="t mono" x="487.6" y="88.5" font-size="8.5">x</text>
+<text class="t mono" x="497.8" y="88.5" font-size="8.5">=</text>
+<text class="t mono" x="508" y="88.5" font-size="8.5">1</text>
+<rect class="af" x="454" y="93.7" width="62.1" height="13" rx="2"/>
+<text class="ta mono" x="457" y="103.5" font-size="8.5" font-weight="700">local</text>
+<text class="ta mono" x="487.6" y="103.5" font-size="8.5" font-weight="700">x</text>
+<text class="ta mono" x="497.8" y="103.5" font-size="8.5" font-weight="700">=</text>
+<text class="ta mono" x="508" y="103.5" font-size="8.5" font-weight="700">1</text>
+<text class="t mono" x="457" y="118.5" font-size="8.5">print(x)</text>
+<text class="t mono" x="457" y="133.5" font-size="8.5">~</text>
+<text class="t mono" x="457" y="148.5" font-size="8.5">~</text>
+<text class="t mono" x="457" y="163.5" font-size="8.5">~</text>
+<rect class="t" x="456" y="168.7" width="155" height="13" rx="1.5"/>
+<text class="f mono" x="457" y="178.5" font-size="8.5">f.txt</text>
+<text class="f mono" x="487.6" y="178.5" font-size="8.5">-</text>
+<text class="f mono" x="497.8" y="178.5" font-size="8.5">3</text>
+<text class="f mono" x="508" y="178.5" font-size="8.5">lines</text>
+<text class="f mono" x="538.6" y="178.5" font-size="8.5">(modified)</text>
+<text class="f mono" x="594.7" y="178.5" font-size="8.5">1/3</text>
+<text class="t mono" x="457" y="193.5" font-size="8.5">HELP:</text>
+<text class="t mono" x="487.6" y="193.5" font-size="8.5">Ctrl-S</text>
+<text class="t mono" x="523.3" y="193.5" font-size="8.5">=</text>
+<text class="t mono" x="533.5" y="193.5" font-size="8.5">save</text>
+<text class="t mono" x="559" y="193.5" font-size="8.5">|</text>
+<text class="t mono" x="569.2" y="193.5" font-size="8.5">Ctrl-Q</text>
+<text class="t mono" x="604.9" y="193.5" font-size="8.5">=</text>
+<rect class="a" x="456.5" y="79.2" width="6.1" height="12" rx="1" stroke-width="1.5"/>
+<line class="a" x1="420" y1="96.5" x2="448" y2="96.5" stroke-width="1.5" stroke-linecap="round" marker-end="url(#k09-aa)"/>
+<text class="tm mono" x="450" y="221.7" font-size="9.5">set_lines(1,</text>
+<text class="tm mono" x="524.1" y="221.7" font-size="9.5">1,</text>
+<text class="tm mono" x="541.2" y="221.7" font-size="9.5">{&#x27;local</text>
+<text class="tm mono" x="586.8" y="221.7" font-size="9.5">x</text>
+<text class="tm mono" x="598.2" y="221.7" font-size="9.5">=</text>
+<text class="tm mono" x="609.6" y="221.7" font-size="9.5">1&#x27;})</text>
+<text class="tm" x="24" y="288" font-size="11.5">A script calls a table of functions. The table does not know whether there is a screen.</text>
+</svg>

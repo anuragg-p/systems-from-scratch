@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 498" fill="none">
+<title>Where 09.03 fits: Changing the text from a script: set_lines</title>
+<defs><marker id="map0903-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0903-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0903-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<path class="s" d="M67.0 59.0 L67.0 78.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M67.0 125.0 L67.0 144.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M67.0 191.0 L67.0 210.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M193.0 191.0 L193.0 210.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M319.0 191.0 L319.0 210.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M445.0 191.0 L445.0 210.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M499.0 234.0 L516.0 234.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M571.0 211.0 L571.0 192.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M571.0 145.0 L571.0 126.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M247.0 102.0 L264.0 102.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M499.0 36.0 L516.0 36.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M571.0 59.0 L571.0 78.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M405.0 79.0 L405.0 60.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="m" d="M25.0 168.0 L7.0 168.0 L7.0 300.0 L24.0 300.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M319.0 257.0 L319.0 276.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-am)" stroke-dasharray="4 4"/>
+<path class="s" d="M467.0 276.0 L467.0 267.0 L571.0 267.0 L571.0 258.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)" marker-start="url(#map0903-ah)"/>
+<path class="m" d="M625.0 300.0 L632.0 300.0 L632.0 102.0 L614.0 102.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M73.0 323.0 L73.0 342.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-am)" stroke-dasharray="4 4"/>
+<path class="s" d="M193.0 323.0 L193.0 342.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="m" d="M319.0 323.0 L319.0 342.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-am)" stroke-dasharray="4 4"/>
+<path class="s" d="M445.0 343.0 L445.0 324.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="m" d="M517.0 366.0 L500.0 366.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-am)" stroke-dasharray="4 4"/>
+<path class="s" d="M245.0 409.0 L245.0 390.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="s" d="M277.0 389.0 L277.0 408.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-ah)"/>
+<path class="m" d="M571.0 409.0 L571.0 399.0 L467.0 399.0 L467.0 390.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0903-am)" stroke-dasharray="4 4"/>
+<rect class="s f" x="14" y="14" width="484" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="256" y="34" font-size="16" font-weight="600" text-anchor="middle">terminal</text>
+<text class="tm" x="256" y="50" font-size="11.5" text-anchor="middle">raw mode: bytes in, escape codes out</text>
+<rect class="s f" x="518" y="14" width="106" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="571" y="34" font-size="16" font-weight="600" text-anchor="middle">window size</text>
+<text class="tm" x="571" y="50" font-size="11.5" text-anchor="middle">height, width</text>
+<rect class="s f" x="14" y="80" width="106" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="67" y="100" font-size="16" font-weight="600" text-anchor="middle">read a key</text>
+<text class="tm" x="67" y="116" font-size="11.5" text-anchor="middle">bytes -&gt; one key</text>
+<rect class="s f" x="140" y="80" width="106" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="193" y="100" font-size="16" font-weight="600" text-anchor="middle">status bar</text>
+<text class="tm" x="193" y="116" font-size="11.5" text-anchor="middle">and messages</text>
+<rect class="s f" x="266" y="80" width="346" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="439" y="100" font-size="16" font-weight="600" text-anchor="middle">frame</text>
+<text class="tm" x="439" y="116" font-size="11.5" text-anchor="middle">built in memory, one write()</text>
+<rect class="s f" x="26" y="146" width="472" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="262" y="166" font-size="16" font-weight="600" text-anchor="middle">key handler</text>
+<text class="tm" x="262" y="182" font-size="11.5" text-anchor="middle">a case per key</text>
+<rect class="s f" x="518" y="146" width="106" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="571" y="166" font-size="16" font-weight="600" text-anchor="middle">render</text>
+<text class="tm" x="571" y="182" font-size="11.5" text-anchor="middle">tabs -&gt; spaces</text>
+<rect class="s f" x="26" y="212" width="94" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="73" y="232" font-size="16" font-weight="600" text-anchor="middle">cursor</text>
+<text class="tm" x="73" y="248" font-size="11.5" text-anchor="middle">move, scroll</text>
+<rect class="s f" x="140" y="212" width="106" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="193" y="232" font-size="16" font-weight="600" text-anchor="middle">find</text>
+<text class="tm" x="193" y="248" font-size="11.5" text-anchor="middle">as you type</text>
+<rect class="s f" x="266" y="212" width="106" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="319" y="232" font-size="16" font-weight="600" text-anchor="middle">save</text>
+<text class="tm" x="319" y="248" font-size="11.5" text-anchor="middle">rows -&gt; the file</text>
+<rect class="s f" x="392" y="212" width="106" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="445" y="232" font-size="16" font-weight="600" text-anchor="middle">edit</text>
+<text class="tm" x="445" y="248" font-size="11.5" text-anchor="middle">insert, delete</text>
+<rect class="s f" x="518" y="212" width="106" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="571" y="232" font-size="16" font-weight="600" text-anchor="middle">rows</text>
+<text class="tm" x="571" y="248" font-size="11.5" text-anchor="middle">the file&#x27;s lines</text>
+<rect class="m f" x="26" y="278" width="94" height="44" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="73" y="298" font-size="16" font-weight="500" text-anchor="middle">keymaps</text>
+<text class="tm" x="73" y="314" font-size="11.5" text-anchor="middle">key -&gt; a function</text>
+<rect class="s f" x="140" y="278" width="106" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="193" y="298" font-size="16" font-weight="600" text-anchor="middle">prompt</text>
+<text class="tm" x="193" y="314" font-size="11.5" text-anchor="middle">Ctrl-E, input()</text>
+<rect class="m f" x="266" y="278" width="106" height="44" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="319" y="298" font-size="16" font-weight="500" text-anchor="middle">events</text>
+<text class="tm" x="319" y="314" font-size="11.5" text-anchor="middle">save, change, key</text>
+<rect class="a af" x="392" y="278" width="106" height="44" rx="8" stroke-width="1.5"/>
+<text class="ta" x="445" y="298" font-size="16" font-weight="700" text-anchor="middle">API</text>
+<text class="ta" x="445" y="314" font-size="11.5" text-anchor="middle">typed functions</text>
+<rect class="m f" x="518" y="278" width="106" height="44" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="571" y="298" font-size="16" font-weight="500" text-anchor="middle">highlights</text>
+<text class="tm" x="571" y="314" font-size="11.5" text-anchor="middle">colour over a row</text>
+<rect class="s f" x="14" y="344" width="484" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="256" y="364" font-size="16" font-weight="600" text-anchor="middle">Lua</text>
+<text class="tm" x="256" y="380" font-size="11.5" text-anchor="middle">the interpreter, and the dispatcher</text>
+<rect class="m f" x="518" y="344" width="106" height="44" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="571" y="364" font-size="16" font-weight="500" text-anchor="middle">guards</text>
+<text class="tm" x="571" y="380" font-size="11.5" text-anchor="middle">memory, Ctrl-C</text>
+<rect class="s f" x="14" y="410" width="484" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="256" y="430" font-size="16" font-weight="600" text-anchor="middle">scripts</text>
+<text class="tm" x="256" y="446" font-size="11.5" text-anchor="middle">init.lua, plugins</text>
+<rect class="m f" x="518" y="410" width="106" height="44" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="571" y="430" font-size="16" font-weight="500" text-anchor="middle">no screen</text>
+<text class="tm" x="571" y="446" font-size="11.5" text-anchor="middle">kilo -l</text>
+<rect class="a af" x="16" y="473" width="22" height="16" rx="4" stroke-width="1.5"/>
+<text class="ta" x="46" y="486" font-size="14" font-weight="600">09.03: this lesson</text>
+<rect class="s f" x="215.12" y="473" width="22" height="16" rx="4" stroke-width="1.5"/>
+<text class="t" x="245.12" y="486" font-size="14">built earlier</text>
+<rect class="m f" x="375.04" y="473" width="22" height="16" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="405.04" y="486" font-size="14">still to come</text>
+</svg>
