@@ -146,6 +146,31 @@ _BOT = [y + H for y in ROWS]
 _MID1 = ROWS[1] + H / 2                  # the frame's row, half way down
 _ELBOW = (_BOT[0] + ROWS[1]) / 2          # between the terminal's row and the frame's
 
+# 07, a language server client. The editor now sits between two outside worlds: the terminal
+# above, the server below, in three rows under the grid. Row 4 is the client's features, each
+# under the core piece it works with: wait (poll(), 07.04) under the cursor's column, which read a
+# key now calls before it reads; definition (07.07), which moves the cursor; JSON (07.03); sync
+# (07.05), which sends the rows' text; diagnostics (07.06), which the frame draws as underlines.
+# Row 5 is messages (07.02), the frames that go out and come in, across all five columns. Row 6 is
+# the server, across the terminal's four columns, and start (fork, exec, pipes: 07.01) beside it,
+# as the window size sits beside the terminal. read a key -> wait goes down the left margin (read
+# a key, and wait, start 12 in to make room for it), diagnostics -> frame up the right margin (the
+# frame gives up 12 at its right end); definition -> cursor and rows -> sync are elbows in the gap
+# between rows 3 and 4, each at its own height so its arrowhead has room.
+_R4, _R5, _R6 = ROWS[3] + PITCH, ROWS[3] + 2 * PITCH, ROWS[3] + 3 * PITCH
+_MARGIN_L, _MARGIN_R = 7, RIGHT + 8      # the corridors down the left and up the right
+_IN = 12                                 # what a piece gives up to make a corridor
+_WAIT_X = (COLS[0] + _IN + COLS[0] + W) / 2
+
+
+def _down(x, top_row, bottom_row):
+    """A short vertical from the bottom of a piece in one row to the top of the next."""
+    return [(x, top_row + H + 1), (x, bottom_row - 2)]
+
+
+def _up(x, top_row, bottom_row):
+    return [(x, bottom_row - 1), (x, top_row + H + 2)]
+
 EXTENSIONS = {
     "06": {
         "dir": "06-highlighting",
@@ -168,6 +193,56 @@ EXTENSIONS = {
             ("06.03", "Comments, on one line and across many", {"highlight"}),
             ("06.04", "Keywords", {"highlight"}),
             ("06.05", "Showing the match", {"match"}),
+        ],
+    },
+    "07": {
+        "dir": "07-language-server",
+        "height": HEIGHT + 3 * PITCH,
+        "move": {"key": (COLS[0] + _IN, ROWS[1], W - _IN),
+                 "frame": (COLS[2], ROWS[1], RIGHT - COLS[2] - _IN)},
+        "reroute": {},
+        "pieces": {
+            "wait": ("wait", "key or message", COLS[0] + _IN, _R4, W - _IN),
+            "definition": ("definition", "ask, then jump", COLS[1], _R4, W),
+            "json": ("JSON", "text -> a tree", COLS[2], _R4, W),
+            "sync": ("sync", "the text as typed", COLS[3], _R4, W),
+            "diagnostics": ("diagnostics", "underlines", COLS[4], _R4, W),
+            "messages": ("messages", "frames out, frames in", COLS[0], _R5, RIGHT - COLS[0]),
+            "server": ("server", "clangd, another process: JSON in, JSON out", COLS[0], _R6, COLS[3] + W - COLS[0]),
+            "start": ("start", "fork, exec, pipes", COLS[4], _R6, W),
+        },
+        "links": [
+            # read a key waits for a key or a message first: down the left margin
+            ("key", "wait", [(COLS[0] + _IN - 1, _MID1), (_MARGIN_L, _MID1), (_MARGIN_L, _R4 + H / 2),
+                             (COLS[0] + _IN - 2, _R4 + H / 2)]),
+            # a jump moves the cursor; sync takes the rows' text: elbows between rows 3 and 4
+            ("definition", "cursor", [(COLS[1] + 22, _R4 - 1), (COLS[1] + 22, _BOT[3] + 15), (cx(0), _BOT[3] + 15),
+                                      (cx(0), _BOT[3] + 2)]),
+            ("rows", "sync", [(cx(4), _BOT[3] + 1), (cx(4), _BOT[3] + 7), (cx(3) + 22, _BOT[3] + 7),
+                              (cx(3) + 22, _R4 - 2)]),
+            # the frame draws the diagnostics: up the right margin
+            ("diagnostics", "frame", [(RIGHT + 1, _R4 + H / 2), (_MARGIN_R, _R4 + H / 2), (_MARGIN_R, _MID1),
+                                      (RIGHT - _IN + 2, _MID1)]),
+            # each feature sends or reads messages
+            ("wait", "messages", _down(_WAIT_X, _R4, _R5)),
+            ("definition", "messages", _down(cx(1), _R4, _R5)),
+            ("sync", "messages", _down(cx(3), _R4, _R5)),
+            ("messages", "json", _up(cx(2), _R4, _R5)),
+            ("messages", "diagnostics", _up(cx(4), _R4, _R5)),
+            # the two pipes: frames out, frames in
+            ("messages", "server", _down(cx(1) + 52, _R5, _R6)),
+            ("server", "messages", _up(cx(1) + 84, _R5, _R6)),
+            # start runs the server
+            ("start", "server", [(COLS[4] - 1, _R6 + H / 2), (COLS[3] + W + 2, _R6 + H / 2)]),
+        ],
+        "lessons": [
+            ("07.01", "Starting a server: fork, exec and three pipes", {"start", "server"}),
+            ("07.02", "Messages: Content-Length and JSON-RPC", {"messages"}),
+            ("07.03", "Reading JSON: just enough of a parser", {"json"}),
+            ("07.04", "Keys and the server at once: poll()", {"wait"}),
+            ("07.05", "Telling the server what you see: didOpen and didChange", {"sync"}),
+            ("07.06", "Diagnostics: errors as you type", {"diagnostics"}),
+            ("07.07", "Go to definition", {"definition"}),
         ],
     },
 }
