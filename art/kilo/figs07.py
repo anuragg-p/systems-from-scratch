@@ -1495,8 +1495,8 @@ def two_ways0704():
     message(y2, msg_t, msg_t + new_med, False)
     f.text(tx(msg_t) + 2, y2 + 30, f"seen at once: {m['new'][1]} ms later (the median), up to {m['new'][2]} ms",
            "ta", 10.5, "middle")
-    f.text(24, y2 + 52, f"idle, it does not wake: {m['wake'][1]} times in that run, for the server's answer to "
-           "initialize and for the Ctrl-Q that ended it", "t", 11)
+    f.text(24, y2 + 52, f"idle, it does not wake; in the whole run, {m['wake'][1]} wake-ups: the server's answer "
+           "to initialize, and the Ctrl-Q that ended it", "t", 11)
     return f
 
 
