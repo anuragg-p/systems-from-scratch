@@ -6241,11 +6241,12 @@ or from the default runs' own files; the same digits as the defaults):
   random in each process: harmless with B at 0, and the page says so),
   the loss 6.39 to 6.59, the merge 2.05e-05 and 0.000359. Peak memory
   (figs12.py's MEM_CODE, fresh processes, ru_maxrss), every weight / LoRA:
-  4,214 / 2,355, 4,101 / 2,284, 4,226 / 2,279 MiB, training adding 2,987 /
-  1,130 (38%), 2,877 / 1,057 (37%), 3,001 / 1,055 (35%); with the code's
-  4,208 / 2,270 (35%) above, the page says about 4,200 and 2,300, 35 to
-  38%, and the figure stops if a new measurement falls outside 4,000 to
-  4,400, 2,150 to 2,450, 34 to 39%.
+  4,214 / 2,355, 4,101 / 2,284, 4,226 / 2,279, 4,247 / 2,315 MiB, training
+  adding 2,987 / 1,130 (38%), 2,877 / 1,057 (37%), 3,001 / 1,055 (35%), and
+  36% (the figure's); with the code's 4,208 / 2,270 (35%) above, the page
+  says about 4,200 and 2,300, 35 to 38% in five measurements, and the
+  figure stops if a new one falls outside 4,000 to 4,400, 2,150 to 2,450,
+  34 to 39%.
 - 12.03: counted from the default's summaries, count is answered "1" 11
   times of 12 on both seeds ("1" is right for 5); smaller is answered with
   the larger number 53 (seed 0) and 51 (seed 1) times of 60 (a `fact` on

@@ -587,7 +587,7 @@ def adapter1202():
     f.text(ax_ + S / 2, y0 + S / 2 + 24, f"r x {d}", "ta", 10, "middle", mono=True)
     f.text(ax_ + S / 2, y0 + S / 2 + 44, "A: random; B: all 0,", "tm", 10, "middle")
     f.text(ax_ + S / 2, y0 + S / 2 + 58, "so B A starts at 0", "tm", 10, "middle")
-    f.text(bx, y0 + S + 34, "(r drawn wider than it is: at r = 8, B is 1 % as wide as W)", "tm", 9.5)
+    f.text(bx, y0 + S + 34, "(r drawn wider than it is: at r = 8, B is 1% as wide as W)", "tm", 9.5)
     # the table
     tx = 384
     cols = [tx, tx + 24, tx + 88, tx + 156, tx + 206]
