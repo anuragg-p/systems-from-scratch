@@ -1,0 +1,775 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The server&#x27;s answer to initialize arriving in three pieces, 10 and 30 bytes and the rest: what kilo&#x27;s buffer holds after each read(), and the message taken off its front once it is whole</title>
+<defs><marker id="f0702b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">the scripted server writes its 171-byte answer to kilo at 07.02 in pieces of 10, 30 and 131 bytes, 0.255 s apart</text>
+<g class="step"><title>read() returns 10 bytes: the buffer holds 10, "Content-Le". No \r\n yet, so not even the header is whole: lspFrame() says 0, wait for more.</title>
+<rect class="af" x="27" y="55" width="80" height="18" rx="2"/>
+<rect class="m" x="105" y="55" width="506.6" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="27" y="85" width="579.2" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="27" y="115" width="204.8" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t mono" x="31.9" y="68" font-size="11" text-anchor="middle">C</text>
+<text class="t mono" x="39.7" y="68" font-size="11" text-anchor="middle">o</text>
+<text class="t mono" x="47.5" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="55.3" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="63.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="70.9" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="78.7" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="86.5" y="68" font-size="11" text-anchor="middle">-</text>
+<text class="t mono" x="94.3" y="68" font-size="11" text-anchor="middle">L</text>
+<text class="t mono" x="102.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="109.9" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="117.7" y="68" font-size="11" text-anchor="middle">g</text>
+<text class="tm mono" x="125.5" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="133.3" y="68" font-size="11" text-anchor="middle">h</text>
+<text class="tm mono" x="141.1" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="156.7" y="68" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="164.5" y="68" font-size="11" text-anchor="middle">4</text>
+<text class="tm mono" x="172.3" y="68" font-size="11" text-anchor="middle">8</text>
+<rect class="a af" x="176.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="183.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\r</text>
+<rect class="a af" x="191.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="198.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\n</text>
+<rect class="a af" x="206.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="213.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\r</text>
+<rect class="a af" x="221.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="228.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\n</text>
+<text class="tm mono" x="240.1" y="68" font-size="11" text-anchor="middle">{</text>
+<text class="tm mono" x="247.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="255.7" y="68" font-size="11" text-anchor="middle">j</text>
+<text class="tm mono" x="263.5" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="271.3" y="68" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="279.1" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="286.9" y="68" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="294.7" y="68" font-size="11" text-anchor="middle">p</text>
+<text class="tm mono" x="302.5" y="68" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="310.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="318.1" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="325.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="333.7" y="68" font-size="11" text-anchor="middle">2</text>
+<text class="tm mono" x="341.5" y="68" font-size="11" text-anchor="middle">.</text>
+<text class="tm mono" x="349.3" y="68" font-size="11" text-anchor="middle">0</text>
+<text class="tm mono" x="357.1" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="364.9" y="68" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="372.7" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="380.5" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="388.3" y="68" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="396.1" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="403.9" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="411.7" y="68" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="419.5" y="68" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="427.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="435.1" y="68" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="442.9" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="450.7" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="458.5" y="68" font-size="11" text-anchor="middle">u</text>
+<text class="tm mono" x="466.3" y="68" font-size="11" text-anchor="middle">l</text>
+<text class="tm mono" x="474.1" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="481.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="489.7" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="497.5" y="68" font-size="11" text-anchor="middle">{</text>
+<text class="tm mono" x="505.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="513.1" y="68" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="520.9" y="68" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="528.7" y="68" font-size="11" text-anchor="middle">p</text>
+<text class="tm mono" x="536.5" y="68" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="544.3" y="68" font-size="11" text-anchor="middle">b</text>
+<text class="tm mono" x="552.1" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="559.9" y="68" font-size="11" text-anchor="middle">l</text>
+<text class="tm mono" x="567.7" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="575.5" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="583.3" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="591.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="598.9" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="606.7" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="31.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="39.7" y="98" font-size="11" text-anchor="middle">{</text>
+<text class="tm mono" x="47.5" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="55.3" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="63.1" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="70.9" y="98" font-size="11" text-anchor="middle">x</text>
+<text class="tm mono" x="78.7" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="86.5" y="98" font-size="11" text-anchor="middle">D</text>
+<text class="tm mono" x="94.3" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="102.1" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="109.9" y="98" font-size="11" text-anchor="middle">u</text>
+<text class="tm mono" x="117.7" y="98" font-size="11" text-anchor="middle">m</text>
+<text class="tm mono" x="125.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="133.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="141.1" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="148.9" y="98" font-size="11" text-anchor="middle">S</text>
+<text class="tm mono" x="156.7" y="98" font-size="11" text-anchor="middle">y</text>
+<text class="tm mono" x="164.5" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="172.3" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="180.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="187.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="195.7" y="98" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="203.5" y="98" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="211.3" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="219.1" y="98" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="226.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="234.7" y="98" font-size="11" text-anchor="middle">f</text>
+<text class="tm mono" x="242.5" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="250.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="258.1" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="265.9" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="273.7" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="281.5" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="289.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="297.1" y="98" font-size="11" text-anchor="middle">P</text>
+<text class="tm mono" x="304.9" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="312.7" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="320.5" y="98" font-size="11" text-anchor="middle">v</text>
+<text class="tm mono" x="328.3" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="336.1" y="98" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="343.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="351.7" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="359.5" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="367.3" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="375.1" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="382.9" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="390.7" y="98" font-size="11" text-anchor="middle">u</text>
+<text class="tm mono" x="398.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="406.3" y="98" font-size="11" text-anchor="middle">}</text>
+<text class="tm mono" x="414.1" y="98" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="421.9" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="429.7" y="98" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="437.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="445.3" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="453.1" y="98" font-size="11" text-anchor="middle">v</text>
+<text class="tm mono" x="460.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="468.7" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="476.5" y="98" font-size="11" text-anchor="middle">I</text>
+<text class="tm mono" x="484.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="492.1" y="98" font-size="11" text-anchor="middle">f</text>
+<text class="tm mono" x="499.9" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="507.7" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="515.5" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="523.3" y="98" font-size="11" text-anchor="middle">{</text>
+<text class="tm mono" x="531.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="538.9" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="546.7" y="98" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="554.5" y="98" font-size="11" text-anchor="middle">m</text>
+<text class="tm mono" x="562.3" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="570.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="577.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="585.7" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="593.5" y="98" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="601.3" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="31.9" y="128" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="39.7" y="128" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="47.5" y="128" font-size="11" text-anchor="middle">p</text>
+<text class="tm mono" x="55.3" y="128" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="63.1" y="128" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="70.9" y="128" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="78.7" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="86.5" y="128" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="94.3" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="102.1" y="128" font-size="11" text-anchor="middle">v</text>
+<text class="tm mono" x="109.9" y="128" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="117.7" y="128" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="125.5" y="128" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="133.3" y="128" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="141.1" y="128" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="148.9" y="128" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="156.7" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="164.5" y="128" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="172.3" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="180.1" y="128" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="187.9" y="128" font-size="11" text-anchor="middle">.</text>
+<text class="tm mono" x="195.7" y="128" font-size="11" text-anchor="middle">0</text>
+<text class="tm mono" x="203.5" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="211.3" y="128" font-size="11" text-anchor="middle">}</text>
+<text class="tm mono" x="219.1" y="128" font-size="11" text-anchor="middle">}</text>
+<text class="tm mono" x="226.9" y="128" font-size="11" text-anchor="middle">}</text>
+<line class="a" x1="106.5" y1="52" x2="106.5" y2="75" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="109" y="51" font-size="9.5" font-weight="600">read 1</text>
+<rect class="s f" x="24" y="192" width="592" height="16" rx="3" stroke-width="1.5"/>
+<rect class="a af" x="24" y="192" width="34.62" height="16" rx="3" stroke-width="1.5"/>
+<line class="m" x1="58.62" y1="208" x2="58.62" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="58.62" y="224" font-size="9.5" text-anchor="middle">10</text>
+<line class="m" x1="162.48" y1="208" x2="162.48" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="162.48" y="224" font-size="9.5" text-anchor="middle">40</text>
+<line class="m" x1="616" y1="208" x2="616" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="616" y="224" font-size="9.5" text-anchor="end">171</text>
+<text class="ta mono" x="24" y="184" font-size="13" font-weight="700">L.rx: 10 bytes</text>
+<text class="t" x="24" y="248" font-size="11.5">lspFrame() returns 0: no line end yet, wait for more</text>
+</g>
+<g class="step"><title>0.203 s later read() returns 30 more: 40 held. The header is whole, Content-Length 148, but only 17 bytes of the body have come: 0, wait.</title>
+<rect class="af" x="27" y="55" width="342.8" height="18" rx="2"/>
+<rect class="m" x="367.8" y="55" width="243.8" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="27" y="85" width="579.2" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="27" y="115" width="204.8" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t mono" x="31.9" y="68" font-size="11" text-anchor="middle">C</text>
+<text class="t mono" x="39.7" y="68" font-size="11" text-anchor="middle">o</text>
+<text class="t mono" x="47.5" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="55.3" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="63.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="70.9" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="78.7" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="86.5" y="68" font-size="11" text-anchor="middle">-</text>
+<text class="t mono" x="94.3" y="68" font-size="11" text-anchor="middle">L</text>
+<text class="t mono" x="102.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="109.9" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="117.7" y="68" font-size="11" text-anchor="middle">g</text>
+<text class="t mono" x="125.5" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="133.3" y="68" font-size="11" text-anchor="middle">h</text>
+<text class="t mono" x="141.1" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="156.7" y="68" font-size="11" text-anchor="middle">1</text>
+<text class="t mono" x="164.5" y="68" font-size="11" text-anchor="middle">4</text>
+<text class="t mono" x="172.3" y="68" font-size="11" text-anchor="middle">8</text>
+<rect class="a af" x="176.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="183.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\r</text>
+<rect class="a af" x="191.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="198.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\n</text>
+<rect class="a af" x="206.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="213.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\r</text>
+<rect class="a af" x="221.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="228.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\n</text>
+<text class="t mono" x="240.1" y="68" font-size="11" text-anchor="middle">{</text>
+<text class="t mono" x="247.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="255.7" y="68" font-size="11" text-anchor="middle">j</text>
+<text class="t mono" x="263.5" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="t mono" x="271.3" y="68" font-size="11" text-anchor="middle">o</text>
+<text class="t mono" x="279.1" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="286.9" y="68" font-size="11" text-anchor="middle">r</text>
+<text class="t mono" x="294.7" y="68" font-size="11" text-anchor="middle">p</text>
+<text class="t mono" x="302.5" y="68" font-size="11" text-anchor="middle">c</text>
+<text class="t mono" x="310.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="318.1" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="325.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="333.7" y="68" font-size="11" text-anchor="middle">2</text>
+<text class="t mono" x="341.5" y="68" font-size="11" text-anchor="middle">.</text>
+<text class="t mono" x="349.3" y="68" font-size="11" text-anchor="middle">0</text>
+<text class="t mono" x="357.1" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="364.9" y="68" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="372.7" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="380.5" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="388.3" y="68" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="396.1" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="403.9" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="411.7" y="68" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="419.5" y="68" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="427.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="435.1" y="68" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="442.9" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="450.7" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="458.5" y="68" font-size="11" text-anchor="middle">u</text>
+<text class="tm mono" x="466.3" y="68" font-size="11" text-anchor="middle">l</text>
+<text class="tm mono" x="474.1" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="481.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="489.7" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="497.5" y="68" font-size="11" text-anchor="middle">{</text>
+<text class="tm mono" x="505.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="513.1" y="68" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="520.9" y="68" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="528.7" y="68" font-size="11" text-anchor="middle">p</text>
+<text class="tm mono" x="536.5" y="68" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="544.3" y="68" font-size="11" text-anchor="middle">b</text>
+<text class="tm mono" x="552.1" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="559.9" y="68" font-size="11" text-anchor="middle">l</text>
+<text class="tm mono" x="567.7" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="575.5" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="583.3" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="591.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="598.9" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="606.7" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="31.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="39.7" y="98" font-size="11" text-anchor="middle">{</text>
+<text class="tm mono" x="47.5" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="55.3" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="63.1" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="70.9" y="98" font-size="11" text-anchor="middle">x</text>
+<text class="tm mono" x="78.7" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="86.5" y="98" font-size="11" text-anchor="middle">D</text>
+<text class="tm mono" x="94.3" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="102.1" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="109.9" y="98" font-size="11" text-anchor="middle">u</text>
+<text class="tm mono" x="117.7" y="98" font-size="11" text-anchor="middle">m</text>
+<text class="tm mono" x="125.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="133.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="141.1" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="148.9" y="98" font-size="11" text-anchor="middle">S</text>
+<text class="tm mono" x="156.7" y="98" font-size="11" text-anchor="middle">y</text>
+<text class="tm mono" x="164.5" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="172.3" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="180.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="187.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="195.7" y="98" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="203.5" y="98" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="211.3" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="219.1" y="98" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="226.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="234.7" y="98" font-size="11" text-anchor="middle">f</text>
+<text class="tm mono" x="242.5" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="250.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="258.1" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="265.9" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="273.7" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="281.5" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="289.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="297.1" y="98" font-size="11" text-anchor="middle">P</text>
+<text class="tm mono" x="304.9" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="312.7" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="320.5" y="98" font-size="11" text-anchor="middle">v</text>
+<text class="tm mono" x="328.3" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="336.1" y="98" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="343.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="351.7" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="359.5" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="367.3" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="375.1" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="382.9" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="390.7" y="98" font-size="11" text-anchor="middle">u</text>
+<text class="tm mono" x="398.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="406.3" y="98" font-size="11" text-anchor="middle">}</text>
+<text class="tm mono" x="414.1" y="98" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="421.9" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="429.7" y="98" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="437.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="445.3" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="453.1" y="98" font-size="11" text-anchor="middle">v</text>
+<text class="tm mono" x="460.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="468.7" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="476.5" y="98" font-size="11" text-anchor="middle">I</text>
+<text class="tm mono" x="484.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="492.1" y="98" font-size="11" text-anchor="middle">f</text>
+<text class="tm mono" x="499.9" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="507.7" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="515.5" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="523.3" y="98" font-size="11" text-anchor="middle">{</text>
+<text class="tm mono" x="531.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="538.9" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="546.7" y="98" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="554.5" y="98" font-size="11" text-anchor="middle">m</text>
+<text class="tm mono" x="562.3" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="570.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="577.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="585.7" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="593.5" y="98" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="601.3" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="31.9" y="128" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="39.7" y="128" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="47.5" y="128" font-size="11" text-anchor="middle">p</text>
+<text class="tm mono" x="55.3" y="128" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="63.1" y="128" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="70.9" y="128" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="78.7" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="86.5" y="128" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="94.3" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="102.1" y="128" font-size="11" text-anchor="middle">v</text>
+<text class="tm mono" x="109.9" y="128" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="117.7" y="128" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="125.5" y="128" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="133.3" y="128" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="141.1" y="128" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="148.9" y="128" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="156.7" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="164.5" y="128" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="172.3" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="180.1" y="128" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="187.9" y="128" font-size="11" text-anchor="middle">.</text>
+<text class="tm mono" x="195.7" y="128" font-size="11" text-anchor="middle">0</text>
+<text class="tm mono" x="203.5" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="211.3" y="128" font-size="11" text-anchor="middle">}</text>
+<text class="tm mono" x="219.1" y="128" font-size="11" text-anchor="middle">}</text>
+<text class="tm mono" x="226.9" y="128" font-size="11" text-anchor="middle">}</text>
+<line class="a" x1="106.5" y1="52" x2="106.5" y2="75" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="109" y="51" font-size="9.5" font-weight="600">read 1</text>
+<line class="a" x1="369.3" y1="52" x2="369.3" y2="75" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="371.8" y="51" font-size="9.5" font-weight="600">read 2</text>
+<rect class="s f" x="24" y="192" width="592" height="16" rx="3" stroke-width="1.5"/>
+<rect class="a af" x="24" y="192" width="138.48" height="16" rx="3" stroke-width="1.5"/>
+<line class="m" x1="58.62" y1="208" x2="58.62" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="58.62" y="224" font-size="9.5" text-anchor="middle">10</text>
+<line class="m" x1="162.48" y1="208" x2="162.48" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="162.48" y="224" font-size="9.5" text-anchor="middle">40</text>
+<line class="m" x1="616" y1="208" x2="616" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="616" y="224" font-size="9.5" text-anchor="end">171</text>
+<text class="ta mono" x="24" y="184" font-size="13" font-weight="700">L.rx: 40 bytes</text>
+<text class="t" x="24" y="248" font-size="11.5">lspFrame() returns 0: the header says 148 bytes of body; 17 are here</text>
+</g>
+<g class="step"><title>0.306 s later read() returns the other 131: 171 held, the whole message. lspFrame() returns 171: a 23-byte header and a 148-byte body.</title>
+<rect class="af" x="27" y="55" width="584.6" height="18" rx="2"/>
+<rect class="af" x="27" y="85" width="579.2" height="18" rx="2"/>
+<rect class="af" x="27" y="115" width="204.8" height="18" rx="2"/>
+<text class="t mono" x="31.9" y="68" font-size="11" text-anchor="middle">C</text>
+<text class="t mono" x="39.7" y="68" font-size="11" text-anchor="middle">o</text>
+<text class="t mono" x="47.5" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="55.3" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="63.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="70.9" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="78.7" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="86.5" y="68" font-size="11" text-anchor="middle">-</text>
+<text class="t mono" x="94.3" y="68" font-size="11" text-anchor="middle">L</text>
+<text class="t mono" x="102.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="109.9" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="117.7" y="68" font-size="11" text-anchor="middle">g</text>
+<text class="t mono" x="125.5" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="133.3" y="68" font-size="11" text-anchor="middle">h</text>
+<text class="t mono" x="141.1" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="156.7" y="68" font-size="11" text-anchor="middle">1</text>
+<text class="t mono" x="164.5" y="68" font-size="11" text-anchor="middle">4</text>
+<text class="t mono" x="172.3" y="68" font-size="11" text-anchor="middle">8</text>
+<rect class="a af" x="176.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="183.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\r</text>
+<rect class="a af" x="191.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="198.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\n</text>
+<rect class="a af" x="206.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="213.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\r</text>
+<rect class="a af" x="221.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="228.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\n</text>
+<text class="t mono" x="240.1" y="68" font-size="11" text-anchor="middle">{</text>
+<text class="t mono" x="247.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="255.7" y="68" font-size="11" text-anchor="middle">j</text>
+<text class="t mono" x="263.5" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="t mono" x="271.3" y="68" font-size="11" text-anchor="middle">o</text>
+<text class="t mono" x="279.1" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="286.9" y="68" font-size="11" text-anchor="middle">r</text>
+<text class="t mono" x="294.7" y="68" font-size="11" text-anchor="middle">p</text>
+<text class="t mono" x="302.5" y="68" font-size="11" text-anchor="middle">c</text>
+<text class="t mono" x="310.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="318.1" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="325.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="333.7" y="68" font-size="11" text-anchor="middle">2</text>
+<text class="t mono" x="341.5" y="68" font-size="11" text-anchor="middle">.</text>
+<text class="t mono" x="349.3" y="68" font-size="11" text-anchor="middle">0</text>
+<text class="t mono" x="357.1" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="364.9" y="68" font-size="11" text-anchor="middle">,</text>
+<text class="t mono" x="372.7" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="380.5" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="t mono" x="388.3" y="68" font-size="11" text-anchor="middle">d</text>
+<text class="t mono" x="396.1" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="403.9" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="411.7" y="68" font-size="11" text-anchor="middle">1</text>
+<text class="t mono" x="419.5" y="68" font-size="11" text-anchor="middle">,</text>
+<text class="t mono" x="427.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="435.1" y="68" font-size="11" text-anchor="middle">r</text>
+<text class="t mono" x="442.9" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="450.7" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="t mono" x="458.5" y="68" font-size="11" text-anchor="middle">u</text>
+<text class="t mono" x="466.3" y="68" font-size="11" text-anchor="middle">l</text>
+<text class="t mono" x="474.1" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="481.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="489.7" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="497.5" y="68" font-size="11" text-anchor="middle">{</text>
+<text class="t mono" x="505.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="513.1" y="68" font-size="11" text-anchor="middle">c</text>
+<text class="t mono" x="520.9" y="68" font-size="11" text-anchor="middle">a</text>
+<text class="t mono" x="528.7" y="68" font-size="11" text-anchor="middle">p</text>
+<text class="t mono" x="536.5" y="68" font-size="11" text-anchor="middle">a</text>
+<text class="t mono" x="544.3" y="68" font-size="11" text-anchor="middle">b</text>
+<text class="t mono" x="552.1" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="t mono" x="559.9" y="68" font-size="11" text-anchor="middle">l</text>
+<text class="t mono" x="567.7" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="t mono" x="575.5" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="583.3" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="t mono" x="591.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="598.9" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="t mono" x="606.7" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="31.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="39.7" y="98" font-size="11" text-anchor="middle">{</text>
+<text class="t mono" x="47.5" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="55.3" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="63.1" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="70.9" y="98" font-size="11" text-anchor="middle">x</text>
+<text class="t mono" x="78.7" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="86.5" y="98" font-size="11" text-anchor="middle">D</text>
+<text class="t mono" x="94.3" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="t mono" x="102.1" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="t mono" x="109.9" y="98" font-size="11" text-anchor="middle">u</text>
+<text class="t mono" x="117.7" y="98" font-size="11" text-anchor="middle">m</text>
+<text class="t mono" x="125.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="133.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="141.1" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="148.9" y="98" font-size="11" text-anchor="middle">S</text>
+<text class="t mono" x="156.7" y="98" font-size="11" text-anchor="middle">y</text>
+<text class="t mono" x="164.5" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="172.3" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="t mono" x="180.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="187.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="195.7" y="98" font-size="11" text-anchor="middle">1</text>
+<text class="t mono" x="203.5" y="98" font-size="11" text-anchor="middle">,</text>
+<text class="t mono" x="211.3" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="219.1" y="98" font-size="11" text-anchor="middle">d</text>
+<text class="t mono" x="226.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="234.7" y="98" font-size="11" text-anchor="middle">f</text>
+<text class="t mono" x="242.5" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="t mono" x="250.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="258.1" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="t mono" x="265.9" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="273.7" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="t mono" x="281.5" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="t mono" x="289.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="297.1" y="98" font-size="11" text-anchor="middle">P</text>
+<text class="t mono" x="304.9" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="t mono" x="312.7" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="t mono" x="320.5" y="98" font-size="11" text-anchor="middle">v</text>
+<text class="t mono" x="328.3" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="t mono" x="336.1" y="98" font-size="11" text-anchor="middle">d</text>
+<text class="t mono" x="343.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="351.7" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="t mono" x="359.5" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="367.3" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="375.1" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="382.9" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="t mono" x="390.7" y="98" font-size="11" text-anchor="middle">u</text>
+<text class="t mono" x="398.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="406.3" y="98" font-size="11" text-anchor="middle">}</text>
+<text class="t mono" x="414.1" y="98" font-size="11" text-anchor="middle">,</text>
+<text class="t mono" x="421.9" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="429.7" y="98" font-size="11" text-anchor="middle">s</text>
+<text class="t mono" x="437.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="445.3" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="t mono" x="453.1" y="98" font-size="11" text-anchor="middle">v</text>
+<text class="t mono" x="460.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="468.7" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="t mono" x="476.5" y="98" font-size="11" text-anchor="middle">I</text>
+<text class="t mono" x="484.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="492.1" y="98" font-size="11" text-anchor="middle">f</text>
+<text class="t mono" x="499.9" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="t mono" x="507.7" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="515.5" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="523.3" y="98" font-size="11" text-anchor="middle">{</text>
+<text class="t mono" x="531.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="538.9" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="546.7" y="98" font-size="11" text-anchor="middle">a</text>
+<text class="t mono" x="554.5" y="98" font-size="11" text-anchor="middle">m</text>
+<text class="t mono" x="562.3" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="570.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="577.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="585.7" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="593.5" y="98" font-size="11" text-anchor="middle">s</text>
+<text class="t mono" x="601.3" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="t mono" x="31.9" y="128" font-size="11" text-anchor="middle">r</text>
+<text class="t mono" x="39.7" y="128" font-size="11" text-anchor="middle">i</text>
+<text class="t mono" x="47.5" y="128" font-size="11" text-anchor="middle">p</text>
+<text class="t mono" x="55.3" y="128" font-size="11" text-anchor="middle">t</text>
+<text class="t mono" x="63.1" y="128" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="70.9" y="128" font-size="11" text-anchor="middle">d</text>
+<text class="t mono" x="78.7" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="86.5" y="128" font-size="11" text-anchor="middle">,</text>
+<text class="t mono" x="94.3" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="102.1" y="128" font-size="11" text-anchor="middle">v</text>
+<text class="t mono" x="109.9" y="128" font-size="11" text-anchor="middle">e</text>
+<text class="t mono" x="117.7" y="128" font-size="11" text-anchor="middle">r</text>
+<text class="t mono" x="125.5" y="128" font-size="11" text-anchor="middle">s</text>
+<text class="t mono" x="133.3" y="128" font-size="11" text-anchor="middle">i</text>
+<text class="t mono" x="141.1" y="128" font-size="11" text-anchor="middle">o</text>
+<text class="t mono" x="148.9" y="128" font-size="11" text-anchor="middle">n</text>
+<text class="t mono" x="156.7" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="164.5" y="128" font-size="11" text-anchor="middle">:</text>
+<text class="t mono" x="172.3" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="180.1" y="128" font-size="11" text-anchor="middle">1</text>
+<text class="t mono" x="187.9" y="128" font-size="11" text-anchor="middle">.</text>
+<text class="t mono" x="195.7" y="128" font-size="11" text-anchor="middle">0</text>
+<text class="t mono" x="203.5" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="t mono" x="211.3" y="128" font-size="11" text-anchor="middle">}</text>
+<text class="t mono" x="219.1" y="128" font-size="11" text-anchor="middle">}</text>
+<text class="t mono" x="226.9" y="128" font-size="11" text-anchor="middle">}</text>
+<line class="a" x1="106.5" y1="52" x2="106.5" y2="75" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="109" y="51" font-size="9.5" font-weight="600">read 1</text>
+<line class="a" x1="369.3" y1="52" x2="369.3" y2="75" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="371.8" y="51" font-size="9.5" font-weight="600">read 2</text>
+<line class="a" x1="231.3" y1="112" x2="231.3" y2="135" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="233.8" y="111" font-size="9.5" font-weight="600">read 3</text>
+<rect class="s f" x="24" y="192" width="592" height="16" rx="3" stroke-width="1.5"/>
+<rect class="a af" x="24" y="192" width="592" height="16" rx="3" stroke-width="1.5"/>
+<line class="m" x1="58.62" y1="208" x2="58.62" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="58.62" y="224" font-size="9.5" text-anchor="middle">10</text>
+<line class="m" x1="162.48" y1="208" x2="162.48" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="162.48" y="224" font-size="9.5" text-anchor="middle">40</text>
+<line class="m" x1="616" y1="208" x2="616" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="616" y="224" font-size="9.5" text-anchor="end">171</text>
+<text class="ta mono" x="24" y="184" font-size="13" font-weight="700">L.rx: 171 bytes</text>
+<text class="t" x="24" y="248" font-size="11.5">lspFrame() returns 171: a whole message, a 23-byte header and a 148-byte body</text>
+</g>
+<g class="step"><title>The message is taken off the front: 0 bytes are left, and the buffer starts where the next message will. lspHandle() gets the body, and 07.02 says how long it was.</title>
+<text class="tm mono" x="31.9" y="68" font-size="11" text-anchor="middle">C</text>
+<text class="tm mono" x="39.7" y="68" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="47.5" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="55.3" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="63.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="70.9" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="78.7" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="86.5" y="68" font-size="11" text-anchor="middle">-</text>
+<text class="tm mono" x="94.3" y="68" font-size="11" text-anchor="middle">L</text>
+<text class="tm mono" x="102.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="109.9" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="117.7" y="68" font-size="11" text-anchor="middle">g</text>
+<text class="tm mono" x="125.5" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="133.3" y="68" font-size="11" text-anchor="middle">h</text>
+<text class="tm mono" x="141.1" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="156.7" y="68" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="164.5" y="68" font-size="11" text-anchor="middle">4</text>
+<text class="tm mono" x="172.3" y="68" font-size="11" text-anchor="middle">8</text>
+<rect class="a af" x="176.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="183.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\r</text>
+<rect class="a af" x="191.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="198.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\n</text>
+<rect class="a af" x="206.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="213.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\r</text>
+<rect class="a af" x="221.7" y="59.42" width="14" height="10.45" rx="1.5" stroke-width="1.5"/>
+<text class="ta mono" x="228.7" y="66.5" font-size="6.05" font-weight="700" text-anchor="middle">\n</text>
+<text class="tm mono" x="240.1" y="68" font-size="11" text-anchor="middle">{</text>
+<text class="tm mono" x="247.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="255.7" y="68" font-size="11" text-anchor="middle">j</text>
+<text class="tm mono" x="263.5" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="271.3" y="68" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="279.1" y="68" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="286.9" y="68" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="294.7" y="68" font-size="11" text-anchor="middle">p</text>
+<text class="tm mono" x="302.5" y="68" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="310.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="318.1" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="325.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="333.7" y="68" font-size="11" text-anchor="middle">2</text>
+<text class="tm mono" x="341.5" y="68" font-size="11" text-anchor="middle">.</text>
+<text class="tm mono" x="349.3" y="68" font-size="11" text-anchor="middle">0</text>
+<text class="tm mono" x="357.1" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="364.9" y="68" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="372.7" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="380.5" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="388.3" y="68" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="396.1" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="403.9" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="411.7" y="68" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="419.5" y="68" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="427.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="435.1" y="68" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="442.9" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="450.7" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="458.5" y="68" font-size="11" text-anchor="middle">u</text>
+<text class="tm mono" x="466.3" y="68" font-size="11" text-anchor="middle">l</text>
+<text class="tm mono" x="474.1" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="481.9" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="489.7" y="68" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="497.5" y="68" font-size="11" text-anchor="middle">{</text>
+<text class="tm mono" x="505.3" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="513.1" y="68" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="520.9" y="68" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="528.7" y="68" font-size="11" text-anchor="middle">p</text>
+<text class="tm mono" x="536.5" y="68" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="544.3" y="68" font-size="11" text-anchor="middle">b</text>
+<text class="tm mono" x="552.1" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="559.9" y="68" font-size="11" text-anchor="middle">l</text>
+<text class="tm mono" x="567.7" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="575.5" y="68" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="583.3" y="68" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="591.1" y="68" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="598.9" y="68" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="606.7" y="68" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="31.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="39.7" y="98" font-size="11" text-anchor="middle">{</text>
+<text class="tm mono" x="47.5" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="55.3" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="63.1" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="70.9" y="98" font-size="11" text-anchor="middle">x</text>
+<text class="tm mono" x="78.7" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="86.5" y="98" font-size="11" text-anchor="middle">D</text>
+<text class="tm mono" x="94.3" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="102.1" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="109.9" y="98" font-size="11" text-anchor="middle">u</text>
+<text class="tm mono" x="117.7" y="98" font-size="11" text-anchor="middle">m</text>
+<text class="tm mono" x="125.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="133.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="141.1" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="148.9" y="98" font-size="11" text-anchor="middle">S</text>
+<text class="tm mono" x="156.7" y="98" font-size="11" text-anchor="middle">y</text>
+<text class="tm mono" x="164.5" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="172.3" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="180.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="187.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="195.7" y="98" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="203.5" y="98" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="211.3" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="219.1" y="98" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="226.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="234.7" y="98" font-size="11" text-anchor="middle">f</text>
+<text class="tm mono" x="242.5" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="250.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="258.1" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="265.9" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="273.7" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="281.5" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="289.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="297.1" y="98" font-size="11" text-anchor="middle">P</text>
+<text class="tm mono" x="304.9" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="312.7" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="320.5" y="98" font-size="11" text-anchor="middle">v</text>
+<text class="tm mono" x="328.3" y="98" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="336.1" y="98" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="343.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="351.7" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="359.5" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="367.3" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="375.1" y="98" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="382.9" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="390.7" y="98" font-size="11" text-anchor="middle">u</text>
+<text class="tm mono" x="398.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="406.3" y="98" font-size="11" text-anchor="middle">}</text>
+<text class="tm mono" x="414.1" y="98" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="421.9" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="429.7" y="98" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="437.5" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="445.3" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="453.1" y="98" font-size="11" text-anchor="middle">v</text>
+<text class="tm mono" x="460.9" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="468.7" y="98" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="476.5" y="98" font-size="11" text-anchor="middle">I</text>
+<text class="tm mono" x="484.3" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="492.1" y="98" font-size="11" text-anchor="middle">f</text>
+<text class="tm mono" x="499.9" y="98" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="507.7" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="515.5" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="523.3" y="98" font-size="11" text-anchor="middle">{</text>
+<text class="tm mono" x="531.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="538.9" y="98" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="546.7" y="98" font-size="11" text-anchor="middle">a</text>
+<text class="tm mono" x="554.5" y="98" font-size="11" text-anchor="middle">m</text>
+<text class="tm mono" x="562.3" y="98" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="570.1" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="577.9" y="98" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="585.7" y="98" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="593.5" y="98" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="601.3" y="98" font-size="11" text-anchor="middle">c</text>
+<text class="tm mono" x="31.9" y="128" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="39.7" y="128" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="47.5" y="128" font-size="11" text-anchor="middle">p</text>
+<text class="tm mono" x="55.3" y="128" font-size="11" text-anchor="middle">t</text>
+<text class="tm mono" x="63.1" y="128" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="70.9" y="128" font-size="11" text-anchor="middle">d</text>
+<text class="tm mono" x="78.7" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="86.5" y="128" font-size="11" text-anchor="middle">,</text>
+<text class="tm mono" x="94.3" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="102.1" y="128" font-size="11" text-anchor="middle">v</text>
+<text class="tm mono" x="109.9" y="128" font-size="11" text-anchor="middle">e</text>
+<text class="tm mono" x="117.7" y="128" font-size="11" text-anchor="middle">r</text>
+<text class="tm mono" x="125.5" y="128" font-size="11" text-anchor="middle">s</text>
+<text class="tm mono" x="133.3" y="128" font-size="11" text-anchor="middle">i</text>
+<text class="tm mono" x="141.1" y="128" font-size="11" text-anchor="middle">o</text>
+<text class="tm mono" x="148.9" y="128" font-size="11" text-anchor="middle">n</text>
+<text class="tm mono" x="156.7" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="164.5" y="128" font-size="11" text-anchor="middle">:</text>
+<text class="tm mono" x="172.3" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="180.1" y="128" font-size="11" text-anchor="middle">1</text>
+<text class="tm mono" x="187.9" y="128" font-size="11" text-anchor="middle">.</text>
+<text class="tm mono" x="195.7" y="128" font-size="11" text-anchor="middle">0</text>
+<text class="tm mono" x="203.5" y="128" font-size="11" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="211.3" y="128" font-size="11" text-anchor="middle">}</text>
+<text class="tm mono" x="219.1" y="128" font-size="11" text-anchor="middle">}</text>
+<text class="tm mono" x="226.9" y="128" font-size="11" text-anchor="middle">}</text>
+<text class="ta" x="238.8" y="128" font-size="10.5" font-weight="600">&lt;- taken off the front</text>
+<rect class="s f" x="24" y="192" width="592" height="16" rx="3" stroke-width="1.5"/>
+<line class="m" x1="58.62" y1="208" x2="58.62" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="58.62" y="224" font-size="9.5" text-anchor="middle">10</text>
+<line class="m" x1="162.48" y1="208" x2="162.48" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="162.48" y="224" font-size="9.5" text-anchor="middle">40</text>
+<line class="m" x1="616" y1="208" x2="616" y2="213" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="616" y="224" font-size="9.5" text-anchor="end">171</text>
+<text class="ta mono" x="24" y="184" font-size="13" font-weight="700">L.rx: 0 bytes</text>
+<text class="t" x="24" y="248" font-size="11.5">taken off the front: 171 bytes; lspHandle(body, 148)</text>
+<rect class="s fs" x="24" y="260" width="380" height="21" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="31" y="274.5" font-size="10">lsp: 148 bytes from scripted-lsp: {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:</text>
+<text class="tm" x="414" y="274.5" font-size="10">the message line, 56 columns</text>
+</g>
+</svg>

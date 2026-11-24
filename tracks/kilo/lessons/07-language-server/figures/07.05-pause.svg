@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Nine keys typed quickly, and the 300 ms pause that starts again at each: one didChange, 302 ms after the last key</title>
+<defs><marker id="f0705b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0705b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0705b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">&quot; /* ok */&quot; typed on row 3 of sum.c, kilo at 07.05 and clangd; ms from the first key</text>
+<line class="m" x1="60" y1="236" x2="620" y2="236" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="60" y1="233" x2="60" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="60" y="253" font-size="9.5" text-anchor="middle">0</text>
+<line class="m" x1="140" y1="233" x2="140" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="140" y="253" font-size="9.5" text-anchor="middle">100</text>
+<line class="m" x1="220" y1="233" x2="220" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="220" y="253" font-size="9.5" text-anchor="middle">200</text>
+<line class="m" x1="300" y1="233" x2="300" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="300" y="253" font-size="9.5" text-anchor="middle">300</text>
+<line class="m" x1="380" y1="233" x2="380" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="380" y="253" font-size="9.5" text-anchor="middle">400</text>
+<line class="m" x1="460" y1="233" x2="460" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="460" y="253" font-size="9.5" text-anchor="middle">500</text>
+<line class="m" x1="540" y1="233" x2="540" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="540" y="253" font-size="9.5" text-anchor="middle">600</text>
+<line class="m" x1="620" y1="233" x2="620" y2="239" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="620" y="253" font-size="9.5" text-anchor="middle">700</text>
+<text class="tm" x="626" y="240" font-size="9.5">ms</text>
+<rect class="s f" x="53" y="45" width="14" height="17" rx="3" stroke-width="1.5"/>
+<path class="s" d="M56.5 54 L56.5 57 L63.5 57 L63.5 54" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="60" y1="64" x2="60" y2="81" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m fs" x="60" y="81" width="28.61" height="6" rx="2" stroke-width="1.5"/>
+<line class="s" x1="88.61" y1="79" x2="88.61" y2="89" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="81.61" y="45" width="14" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="88.61" y="58" font-size="11" font-weight="600" text-anchor="middle">/</text>
+<line class="m" x1="88.61" y1="64" x2="88.61" y2="93" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m fs" x="88.61" y="93" width="32.47" height="6" rx="2" stroke-width="1.5"/>
+<line class="s" x1="121.08" y1="91" x2="121.08" y2="101" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="114.08" y="45" width="14" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="121.08" y="58" font-size="11" font-weight="600" text-anchor="middle">*</text>
+<line class="m" x1="121.08" y1="64" x2="121.08" y2="105" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m fs" x="121.08" y="105" width="28.79" height="6" rx="2" stroke-width="1.5"/>
+<line class="s" x1="149.88" y1="103" x2="149.88" y2="113" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="142.88" y="45" width="14" height="17" rx="3" stroke-width="1.5"/>
+<path class="s" d="M146.38 54 L146.38 57 L153.38 57 L153.38 54" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="149.88" y1="64" x2="149.88" y2="117" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m fs" x="149.88" y="117" width="30.4" height="6" rx="2" stroke-width="1.5"/>
+<line class="s" x1="180.28" y1="115" x2="180.28" y2="125" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="173.28" y="45" width="14" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="180.28" y="58" font-size="11" font-weight="600" text-anchor="middle">o</text>
+<line class="m" x1="180.28" y1="64" x2="180.28" y2="129" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m fs" x="180.28" y="129" width="30.08" height="6" rx="2" stroke-width="1.5"/>
+<line class="s" x1="210.35" y1="127" x2="210.35" y2="137" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="203.35" y="45" width="14" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="210.35" y="58" font-size="11" font-weight="600" text-anchor="middle">k</text>
+<line class="m" x1="210.35" y1="64" x2="210.35" y2="141" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m fs" x="210.35" y="141" width="30.36" height="6" rx="2" stroke-width="1.5"/>
+<line class="s" x1="240.71" y1="139" x2="240.71" y2="149" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="233.71" y="45" width="14" height="17" rx="3" stroke-width="1.5"/>
+<path class="s" d="M237.21 54 L237.21 57 L244.21 57 L244.21 54" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="m" x1="240.71" y1="64" x2="240.71" y2="153" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m fs" x="240.71" y="153" width="29.41" height="6" rx="2" stroke-width="1.5"/>
+<line class="s" x1="270.12" y1="151" x2="270.12" y2="161" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="263.12" y="45" width="14" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="270.12" y="58" font-size="11" font-weight="600" text-anchor="middle">*</text>
+<line class="m" x1="270.12" y1="64" x2="270.12" y2="165" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m fs" x="270.12" y="165" width="30.27" height="6" rx="2" stroke-width="1.5"/>
+<line class="s" x1="300.39" y1="163" x2="300.39" y2="173" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="293.39" y="45" width="14" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="300.39" y="58" font-size="11" font-weight="600" text-anchor="middle">/</text>
+<line class="m" x1="300.39" y1="64" x2="300.39" y2="177" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a af" x="300.39" y="177" width="240" height="6" rx="2" stroke-width="1.5"/>
+<text class="ta" x="420.39" y="172" font-size="10.5" font-weight="600" text-anchor="middle">300 ms with no key</text>
+<text class="tm" x="149.88" y="206" font-size="10.5">each key starts the 300 ms again</text>
+<line class="a" x1="542.12" y1="184" x2="542.12" y2="230" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0705b-aa)"/>
+<text class="ta" x="536.12" y="196" font-size="11" font-weight="700" text-anchor="end">didChange, version 2, 376 bytes</text>
+<text class="ta" x="536.12" y="211" font-size="10.5" text-anchor="end">302 ms after the last key: the whole text</text>
+<text class="t" x="24" y="286" font-size="14" font-weight="700">9 keys, 1 message</text>
+<text class="tm" x="160" y="286" font-size="10.5">the keys came 38 ms apart on average</text>
+</svg>

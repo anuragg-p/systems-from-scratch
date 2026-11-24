@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 352" fill="none">
+<title>The initialize message at 07.02, byte by byte: a header line, an empty line, then exactly 108 bytes of JSON; and the three shapes a JSON-RPC message takes</title>
+<defs><marker id="f0702a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0702a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">the first message kilo sends, as the server read it: 131 bytes</text>
+<rect class="s f" x="24" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="52" font-size="12.5" text-anchor="middle">C</text>
+<rect class="s f" x="46" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="56" y="52" font-size="12.5" text-anchor="middle">o</text>
+<rect class="s f" x="68" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="78" y="52" font-size="12.5" text-anchor="middle">n</text>
+<rect class="s f" x="90" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="100" y="52" font-size="12.5" text-anchor="middle">t</text>
+<rect class="s f" x="112" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="122" y="52" font-size="12.5" text-anchor="middle">e</text>
+<rect class="s f" x="134" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="144" y="52" font-size="12.5" text-anchor="middle">n</text>
+<rect class="s f" x="156" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="166" y="52" font-size="12.5" text-anchor="middle">t</text>
+<rect class="s f" x="178" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="188" y="52" font-size="12.5" text-anchor="middle">-</text>
+<rect class="s f" x="200" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="210" y="52" font-size="12.5" text-anchor="middle">L</text>
+<rect class="s f" x="222" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="232" y="52" font-size="12.5" text-anchor="middle">e</text>
+<rect class="s f" x="244" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="254" y="52" font-size="12.5" text-anchor="middle">n</text>
+<rect class="s f" x="266" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="276" y="52" font-size="12.5" text-anchor="middle">g</text>
+<rect class="s f" x="288" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="298" y="52" font-size="12.5" text-anchor="middle">t</text>
+<rect class="s f" x="310" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="320" y="52" font-size="12.5" text-anchor="middle">h</text>
+<rect class="s f" x="332" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="342" y="52" font-size="12.5" text-anchor="middle">:</text>
+<rect class="s f" x="354" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<rect class="s f" x="376" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="386" y="52" font-size="12.5" text-anchor="middle">1</text>
+<rect class="s f" x="398" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="408" y="52" font-size="12.5" text-anchor="middle">0</text>
+<rect class="s f" x="420" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="430" y="52" font-size="12.5" text-anchor="middle">8</text>
+<rect class="a af" x="442" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="452" y="51.5" font-size="10.5" font-weight="700" text-anchor="middle">\r</text>
+<rect class="a af" x="464" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="474" y="51.5" font-size="10.5" font-weight="700" text-anchor="middle">\n</text>
+<rect class="a af" x="486" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="496" y="51.5" font-size="10.5" font-weight="700" text-anchor="middle">\r</text>
+<rect class="a af" x="508" y="34" width="20" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="518" y="51.5" font-size="10.5" font-weight="700" text-anchor="middle">\n</text>
+<path class="m" d="M24 62 L24 68 L484 68 L484 62" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="24" y="86" font-size="10.5">the header: one line, Content-Length: 108, ended by \r\n</text>
+<path class="a" d="M486 62 L486 68 L528 68 L528 62" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="528" y="86" font-size="10.5" font-weight="600" text-anchor="end">an empty line:</text>
+<text class="ta" x="528" y="100" font-size="10.5" font-weight="600" text-anchor="end">the header ends</text>
+<rect class="s fs" x="24" y="112" width="372.4" height="46" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="32" y="128" font-size="11">{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;</text>
+<text class="t mono" x="32" y="146" font-size="11">:{&quot;processId&quot;:28896,&quot;rootUri&quot;:null,&quot;capabilities&quot;:{}}}</text>
+<path class="m" d="M24 160 L24 166 L396.4 166 L396.4 160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="24" y="184" font-size="10.5">the body: exactly 108 bytes of JSON, the count the header gave; then the next message&#x27;s header</text>
+<text class="t" x="24" y="216" font-size="12" font-weight="700">a request</text>
+<rect class="s f" x="24" y="224" width="186" height="76" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="34" y="242" font-size="10">&quot;jsonrpc&quot;:&quot;2.0&quot;</text>
+<text class="ta mono" x="34" y="258" font-size="10" font-weight="700">&quot;id&quot;:1</text>
+<text class="ta mono" x="34" y="274" font-size="10" font-weight="700">&quot;method&quot;:&quot;initialize&quot;</text>
+<text class="t mono" x="34" y="290" font-size="10">&quot;params&quot;:{...}</text>
+<text class="tm" x="24" y="318" font-size="10">kilo&#x27;s initialize: answered, with</text>
+<text class="tm" x="24" y="331" font-size="10">its id</text>
+<text class="t" x="227" y="216" font-size="12" font-weight="700">a response</text>
+<rect class="s f" x="227" y="224" width="186" height="60" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="237" y="242" font-size="10">&quot;jsonrpc&quot;:&quot;2.0&quot;</text>
+<text class="ta mono" x="237" y="258" font-size="10" font-weight="700">&quot;id&quot;:1</text>
+<text class="t mono" x="237" y="274" font-size="10">&quot;result&quot;:{...}</text>
+<text class="tm" x="227" y="302" font-size="10">the server&#x27;s answer: the request&#x27;s</text>
+<text class="tm" x="227" y="315" font-size="10">id, and a result (or an error); no</text>
+<text class="tm" x="227" y="328" font-size="10">method</text>
+<text class="t" x="430" y="216" font-size="12" font-weight="700">a notification</text>
+<rect class="s f" x="430" y="224" width="186" height="60" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="440" y="242" font-size="10">&quot;jsonrpc&quot;:&quot;2.0&quot;</text>
+<text class="ta mono" x="440" y="258" font-size="10" font-weight="700">&quot;method&quot;:&quot;initialized&quot;</text>
+<text class="t mono" x="440" y="274" font-size="10">&quot;params&quot;:{}</text>
+<text class="tm" x="430" y="302" font-size="10">kilo&#x27;s initialized, at 07.05: no</text>
+<text class="tm" x="430" y="315" font-size="10">id, so never answered</text>
+</svg>

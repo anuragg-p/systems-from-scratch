@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 270" fill="none">
+<title>The array kilo gives poll(): the keyboard, the server&#x27;s output, and the server&#x27;s input only while bytes wait to be written; and what comes back in revents</title>
+<defs><marker id="f0704b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0704b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0704b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">lspWaitKey()&#x27;s struct pollfd p[], from a build of 07.04 that logged each poll()</text>
+<text class="tm" x="24" y="48" font-size="10.5">p[i]</text>
+<text class="tm" x="70" y="48" font-size="10.5">fd</text>
+<text class="tm" x="106" y="48" font-size="10.5">what it is</text>
+<text class="tm" x="276" y="48" font-size="10.5">events</text>
+<text class="tm" x="372" y="48" font-size="10.5">revents</text>
+<g class="step"><title>Idle: two entries, the keyboard (fd 0) and the server's output (fd 5), both POLLIN. Nothing waits to be written, so fd 4 is not in the array. poll() sleeps, no timeout.</title>
+<rect class="s f" x="24" y="58" width="440" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="75" font-size="11">p[0]</text>
+<text class="t mono" x="70" y="75" font-size="12" font-weight="700">0</text>
+<text class="t" x="106" y="75" font-size="11">the keyboard</text>
+<text class="t mono" x="276" y="75" font-size="11">POLLIN</text>
+<text class="tm mono" x="372" y="75" font-size="11">-</text>
+<rect class="s f" x="24" y="92" width="440" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="109" font-size="11">p[1]</text>
+<text class="t mono" x="70" y="109" font-size="12" font-weight="700">5</text>
+<text class="t" x="106" y="109" font-size="11">the server&#x27;s output</text>
+<text class="t mono" x="276" y="109" font-size="11">POLLIN</text>
+<text class="tm mono" x="372" y="109" font-size="11">-</text>
+<rect class="m f" x="24" y="126" width="440" height="26" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="32" y="143" font-size="11">p[2]</text>
+<text class="tm mono" x="70" y="143" font-size="12">4</text>
+<text class="tm" x="106" y="143" font-size="11">the server&#x27;s input: not asked, nothing waits</text>
+<text class="t mono" x="484" y="68" font-size="12" font-weight="700">n = 2</text>
+<text class="tm" x="484" y="88" font-size="10.5">entries</text>
+<text class="t mono" x="484" y="120" font-size="11" font-weight="700">L.tx</text>
+<text class="tm mono" x="484" y="136" font-size="11">0 bytes</text>
+<text class="tm" x="484" y="150" font-size="10.5">waiting</text>
+<text class="t" x="24" y="186" font-size="11.5" font-weight="600">poll(p, 2, -1): asleep until one of them has something</text>
+</g>
+<g class="step"><title>A key: poll() returns 1, p[0].revents POLLIN. lspPump() looks after the server, and lspWaitKey() returns: editorReadKey() reads the key at once.</title>
+<rect class="a af" x="24" y="58" width="440" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="75" font-size="11">p[0]</text>
+<text class="t mono" x="70" y="75" font-size="12" font-weight="700">0</text>
+<text class="t" x="106" y="75" font-size="11">the keyboard</text>
+<text class="t mono" x="276" y="75" font-size="11">POLLIN</text>
+<text class="ta mono" x="372" y="75" font-size="11" font-weight="700">POLLIN</text>
+<rect class="s f" x="24" y="92" width="440" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="109" font-size="11">p[1]</text>
+<text class="t mono" x="70" y="109" font-size="12" font-weight="700">5</text>
+<text class="t" x="106" y="109" font-size="11">the server&#x27;s output</text>
+<text class="t mono" x="276" y="109" font-size="11">POLLIN</text>
+<text class="tm mono" x="372" y="109" font-size="11">0</text>
+<rect class="m f" x="24" y="126" width="440" height="26" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="32" y="143" font-size="11">p[2]</text>
+<text class="tm mono" x="70" y="143" font-size="12">4</text>
+<text class="tm" x="106" y="143" font-size="11">the server&#x27;s input: not asked, nothing waits</text>
+<text class="t mono" x="484" y="68" font-size="12" font-weight="700">n = 2</text>
+<text class="tm" x="484" y="88" font-size="10.5">entries</text>
+<text class="t mono" x="484" y="120" font-size="11" font-weight="700">L.tx</text>
+<text class="tm mono" x="484" y="136" font-size="11">0 bytes</text>
+<text class="tm" x="484" y="150" font-size="10.5">waiting</text>
+<text class="t" x="24" y="186" font-size="11.5" font-weight="600">poll() returns 1: the keyboard has a byte</text>
+</g>
+<g class="step"><title>The server's message: p[1].revents POLLIN. lspPump() reads it and acts on it, here the answer to initialize ("lsp: scripted 1.0 ready"), draws, and kilo polls again.</title>
+<rect class="s f" x="24" y="58" width="440" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="75" font-size="11">p[0]</text>
+<text class="t mono" x="70" y="75" font-size="12" font-weight="700">0</text>
+<text class="t" x="106" y="75" font-size="11">the keyboard</text>
+<text class="t mono" x="276" y="75" font-size="11">POLLIN</text>
+<text class="tm mono" x="372" y="75" font-size="11">0</text>
+<rect class="a af" x="24" y="92" width="440" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="109" font-size="11">p[1]</text>
+<text class="t mono" x="70" y="109" font-size="12" font-weight="700">5</text>
+<text class="t" x="106" y="109" font-size="11">the server&#x27;s output</text>
+<text class="t mono" x="276" y="109" font-size="11">POLLIN</text>
+<text class="ta mono" x="372" y="109" font-size="11" font-weight="700">POLLIN</text>
+<rect class="m f" x="24" y="126" width="440" height="26" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="32" y="143" font-size="11">p[2]</text>
+<text class="tm mono" x="70" y="143" font-size="12">4</text>
+<text class="tm" x="106" y="143" font-size="11">the server&#x27;s input: not asked, nothing waits</text>
+<text class="t mono" x="484" y="68" font-size="12" font-weight="700">n = 2</text>
+<text class="tm" x="484" y="88" font-size="10.5">entries</text>
+<text class="t mono" x="484" y="120" font-size="11" font-weight="700">L.tx</text>
+<text class="tm mono" x="484" y="136" font-size="11">0 bytes</text>
+<text class="tm" x="484" y="150" font-size="10.5">waiting</text>
+<text class="t" x="24" y="186" font-size="11.5" font-weight="600">poll() returns 1: the server wrote; lspPump() reads it, then poll() again</text>
+</g>
+<g class="step"><title>Bytes waiting (at 07.05: a 301220-byte didOpen, more than the pipe holds, to a server that has not read yet): p[2] asks fd 4 for POLLOUT. It comes: lspFlush() writes 65536 bytes, and 170248 still wait.</title>
+<rect class="s f" x="24" y="58" width="440" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="75" font-size="11">p[0]</text>
+<text class="t mono" x="70" y="75" font-size="12" font-weight="700">0</text>
+<text class="t" x="106" y="75" font-size="11">the keyboard</text>
+<text class="t mono" x="276" y="75" font-size="11">POLLIN</text>
+<text class="tm mono" x="372" y="75" font-size="11">0</text>
+<rect class="s f" x="24" y="92" width="440" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="109" font-size="11">p[1]</text>
+<text class="t mono" x="70" y="109" font-size="12" font-weight="700">5</text>
+<text class="t" x="106" y="109" font-size="11">the server&#x27;s output</text>
+<text class="t mono" x="276" y="109" font-size="11">POLLIN</text>
+<text class="tm mono" x="372" y="109" font-size="11">0</text>
+<rect class="a af" x="24" y="126" width="440" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="143" font-size="11">p[2]</text>
+<text class="t mono" x="70" y="143" font-size="12" font-weight="700">4</text>
+<text class="t" x="106" y="143" font-size="11">the server&#x27;s input</text>
+<text class="t mono" x="276" y="143" font-size="11">POLLOUT</text>
+<text class="ta mono" x="372" y="143" font-size="11" font-weight="700">POLLOUT</text>
+<text class="t mono" x="484" y="68" font-size="12" font-weight="700">n = 3</text>
+<text class="tm" x="484" y="88" font-size="10.5">entries</text>
+<text class="t mono" x="484" y="120" font-size="11" font-weight="700">L.tx</text>
+<text class="ta mono" x="484" y="136" font-size="11" font-weight="700">235784 bytes</text>
+<text class="tm" x="484" y="150" font-size="10.5">waiting</text>
+<text class="ta mono" x="484" y="168" font-size="11">then 170248</text>
+<text class="t" x="24" y="186" font-size="11.5" font-weight="600">poll() returns 1: the pipe to the server has room; lspFlush() writes 65536 bytes</text>
+<text class="tm" x="24" y="204" font-size="10.5">at 07.05, a 301220-byte didOpen to a server that waits a second before it reads</text>
+</g>
+<text class="tm" x="24" y="252" font-size="10.5">POLLIN (1): something to read; POLLOUT (4): room to write. revents is set by poll() when it returns.</text>
+</svg>

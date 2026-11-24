@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 346" fill="none">
+<title>The uri clangd answers with and the path kilo makes of it, %20 a space; then what kilo does with the answer: nothing found, the same file, or another file, unless changes are unsaved</title>
+<defs><marker id="f0707b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0707b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0707b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">the uri in clangd&#x27;s answer to Ctrl-G on add (the directory above sam ple cut short)</text>
+<text class="t mono" x="40" y="56" font-size="13">&quot;file:///.../sam</text>
+<text class="ta mono" x="164.8" y="56" font-size="13" font-weight="700">%20</text>
+<text class="t mono" x="188.2" y="56" font-size="13">ple/add.h&quot;</text>
+<line class="a" x1="176.5" y1="62" x2="176.5" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0707b-aa)"/>
+<text class="tm" x="184.5" y="77" font-size="10.5">lspPath(): &quot;file://&quot; off, and each % and two hex digits one byte: 0x20, a space</text>
+<text class="t mono" x="40" y="102" font-size="13">&quot;/.../sam</text>
+<rect class="a af" x="110.2" y="90" width="7.8" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="118" y="102" font-size="13">ple/add.h&quot;</text>
+<text class="tm" x="24" y="140" font-size="10.5">then what kilo does with the answer</text>
+<rect class="s fs" x="24" y="150" width="200" height="36" rx="6" stroke-width="1.5"/>
+<text class="t" x="34" y="165" font-size="11" font-weight="700">a uri and a line?</text>
+<text class="tm mono" x="34" y="179" font-size="9.5">lspDefinitionResult()</text>
+<line class="s" x1="226" y1="168" x2="287" y2="168" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0707b-ah)"/>
+<text class="tm" x="257" y="163" font-size="10" text-anchor="middle">no</text>
+<line class="s" x1="64" y1="188" x2="64" y2="198" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0707b-ah)"/>
+<text class="tm" x="70" y="197" font-size="10">yes</text>
+<rect class="a af" x="290" y="150" width="326" height="36" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="300" y="165" font-size="10.5" font-weight="700">lsp: no definition found</text>
+<text class="ta" x="300" y="179" font-size="9.5">Ctrl-G on row 3&#x27;s space: the answer is []</text>
+<rect class="s fs" x="24" y="200" width="200" height="36" rx="6" stroke-width="1.5"/>
+<text class="t" x="34" y="215" font-size="11" font-weight="700">the file that is open?</text>
+<text class="tm mono" x="34" y="229" font-size="9.5">lspSameFile()</text>
+<line class="s" x1="226" y1="218" x2="287" y2="218" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0707b-ah)"/>
+<text class="tm" x="257" y="213" font-size="10" text-anchor="middle">yes</text>
+<line class="s" x1="64" y1="238" x2="64" y2="248" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0707b-ah)"/>
+<text class="tm" x="70" y="247" font-size="10">no</text>
+<rect class="s f" x="290" y="200" width="326" height="36" rx="6" stroke-width="1.5"/>
+<text class="t" x="300" y="215" font-size="11" font-weight="700">move the cursor there</text>
+<text class="tm" x="300" y="229" font-size="9.5">Ctrl-G on total: to row 5, column 13</text>
+<rect class="s fs" x="24" y="250" width="200" height="36" rx="6" stroke-width="1.5"/>
+<text class="t" x="34" y="265" font-size="11" font-weight="700">changes not saved?</text>
+<text class="tm mono" x="34" y="279" font-size="9.5">editorJump()</text>
+<line class="s" x1="226" y1="268" x2="287" y2="268" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0707b-ah)"/>
+<text class="tm" x="257" y="263" font-size="10" text-anchor="middle">yes</text>
+<line class="s" x1="64" y1="288" x2="64" y2="298" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0707b-ah)"/>
+<text class="tm" x="70" y="297" font-size="10">no</text>
+<rect class="a af" x="290" y="250" width="326" height="36" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="300" y="265" font-size="10.5" font-weight="700">Unsaved changes: save first</text>
+<text class="ta mono" x="300" y="279" font-size="9.5">(Ctrl-S), then try again</text>
+<rect class="s f" x="24" y="300" width="592" height="36" rx="6" stroke-width="1.5"/>
+<text class="t" x="34" y="315" font-size="11" font-weight="700">read it in place of this one</text>
+<text class="tm" x="34" y="329" font-size="9.5">didClose the old file, didOpen the new: add.h</text>
+</svg>
