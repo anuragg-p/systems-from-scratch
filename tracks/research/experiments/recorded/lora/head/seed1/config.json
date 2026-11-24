@@ -1,0 +1,41 @@
+{
+ "alpha": 8,
+ "batch": 16,
+ "demo_steps": 10,
+ "device": "cpu",
+ "every": 150,
+ "head_lr": 0.003,
+ "label": "head",
+ "lora_lr": 0.001,
+ "lr": 6.25e-05,
+ "method": "head",
+ "methods": [
+  "head",
+  "lora1",
+  "lora4",
+  "lora8",
+  "full"
+ ],
+ "name": "lora",
+ "out": "experiments/recorded",
+ "questions": 0,
+ "ranks": [
+  1,
+  4,
+  8
+ ],
+ "recorded": "experiments/recorded/lora",
+ "scored_tokens": 0,
+ "seed": 1,
+ "seeds": 3,
+ "standardise_from": 1000,
+ "steps": 600,
+ "stories": 50,
+ "tested": 0,
+ "timed": 5,
+ "train": true,
+ "untuned_tokens": 2048,
+ "valid": 1000,
+ "warmup": 0.06,
+ "weight_decay": 0.0
+}

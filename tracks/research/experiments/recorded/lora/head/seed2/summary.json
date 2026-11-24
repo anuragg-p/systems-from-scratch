@@ -1,0 +1,8 @@
+{
+ "moved": 0.0,
+ "shakespeare_bits": 1.8511089784996537,
+ "stories_bits": 0.8256629714269915,
+ "test_accuracy": 0.8282467532467532,
+ "total": 124499021,
+ "trained": 59213
+}

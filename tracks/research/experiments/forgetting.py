@@ -103,9 +103,11 @@ def main():
                 b = [x["shakespeare_bits"] for x, _ in runs["full"]]
                 print(f"   Shakespeare's bits, {method} against full: Welch's t {lab.welch_t(a, b):+.1f}")
 
-        print(f"\n2. Along the way, at each evaluation: accuracy on validation and the bits on the first "
-              f"{cfg.untuned_tokens:,} tokens of\n   Shakespeare's test text. The bits when each method first reached an "
-              f"accuracy (mean over the seeds that did):\n")
+        with open(os.path.join(cfg.recorded, "full", "seed0", "config.json")) as f:
+            logged = json.load(f)["untuned_tokens"]
+        print(f"\n2. Along the way, at each evaluation: accuracy on validation and the bits on the first {logged:,} "
+              f"tokens of\n   Shakespeare's test text. The bits when each method first reached an accuracy (mean over "
+              f"the seeds that did):\n")
         print(f"   {'':6s} " + " ".join(f"{'at ' + str(level):>14s}" for level in cfg.levels) + "   the last evaluation")
         for method, seeds in runs.items():
             cells = []

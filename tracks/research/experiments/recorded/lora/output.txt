@@ -1,0 +1,42 @@
+1. GPT-2 small: 124,439,808 weights. LoRA on W_q and W_v (query, value) of its 12 blocks, alpha 8:
+   rank    A and B  2 x 24 x 768 x r  of the body   with the head's 59,213
+      1     36,864            36,864       0.030%   0.077%
+      4    147,456           147,456       0.118%   0.166%
+      8    294,912           294,912       0.237%   0.285%
+
+2. Adapted at rank 8, not yet trained: the largest difference from GPT-2's own scores, on 8 questions, 0.
+   Trained 10 steps with a new head (the loss 4.63 to 3.97), then merged:
+   the largest difference from the adapter's class scores 2.41e-05, from its scores for the next token 0.000237.
+
+3. A training step on this CPU (5 steps of 16 questions each, the same for both, after one not timed):
+   full      329 ms a step; trains 124,499,021 weights: their gradients and AdamW's two averages are 1,494.0 MB
+          beside the 498 MB of the weights themselves
+   lora8     178 ms a step; trains 354,125 weights: their gradients and AdamW's two averages are 4.2 MB
+          beside the 499 MB of the weights themselves
+
+4. Banking77, GPT-2's body with a new head: the head alone (frozen body), LoRA, and every weight trained;
+   test accuracy over seeds, Welch's t against every weight trained, and the time a step took.
+   head seed 0: test accuracy 0.8250; 0 s of training, 1 ms a step; 18 s of measuring
+   head seed 1: test accuracy 0.8299; 0 s of training, 1 ms a step; 18 s of measuring
+   head seed 2: test accuracy 0.8282; 0 s of training, 1 ms a step; 18 s of measuring
+   lora1 seed 0: test accuracy 0.8864; 137 s of training, 228 ms a step; 20 s of measuring
+   lora1 seed 1: test accuracy 0.8890; 167 s of training, 278 ms a step; 21 s of measuring
+   lora1 seed 2: test accuracy 0.8828; 175 s of training, 292 ms a step; 22 s of measuring
+   lora4 seed 0: test accuracy 0.8896; 149 s of training, 249 ms a step; 21 s of measuring
+   lora4 seed 1: test accuracy 0.8929; 231 s of training, 385 ms a step; 30 s of measuring
+   lora4 seed 2: test accuracy 0.8857; 234 s of training, 390 ms a step; 29 s of measuring
+   lora8 seed 0: test accuracy 0.8873; 230 s of training, 384 ms a step; 28 s of measuring
+   lora8 seed 1: test accuracy 0.8903; 286 s of training, 476 ms a step; 33 s of measuring
+   lora8 seed 2: test accuracy 0.8851; 251 s of training, 418 ms a step; 36 s of measuring
+   full seed 0: test accuracy 0.9010; 393 s of training, 655 ms a step; 29 s of measuring
+   full seed 1: test accuracy 0.9023; 359 s of training, 598 ms a step; 28 s of measuring
+   full seed 2: test accuracy 0.8971; 445 s of training, 742 ms a step; 32 s of measuring
+
+               trained    of all   test accuracy                                         t
+   head         59,213    0.048%   0.8277 +- 0.00248 (min 0.825, max 0.8299, 3 seeds)  -34.2      1 ms a step
+   lora1        96,077    0.077%   0.886 +- 0.003097 (min 0.8828, max 0.889, 3 seeds)   -5.9    266 ms a step
+   lora4       206,669    0.166%   0.8894 +- 0.003576 (min 0.8857, max 0.8929, 3 seeds)   -4.1    341 ms a step
+   lora8       354,125    0.284%   0.8876 +- 0.002604 (min 0.8851, max 0.8903, 3 seeds)   -5.8    426 ms a step
+   full    124,499,021  100.000%   0.9001 +- 0.002703 (min 0.8971, max 0.9023, 3 seeds)           665 ms a step
+
+3804 s of loading, training and scoring on cpu
