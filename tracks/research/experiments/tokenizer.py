@@ -23,12 +23,12 @@ from data import shakespeare
 from tokens import bpe, gpt2
 
 CONFIG = dict(shown=12, size=4096, repeats=2)
-SENTENCE = "Hello world! It's 2019, isn't it?  Yes...\n\n   NAME:\tnaïve 3.14 cafés"
+SENTENCE = "Hello world! It's 2019, isn't it?  Yes...\n\n   NAME:\tna\u00efve 3.14 caf\u00e9s"
 # Texts to encode (non-ASCII written as escapes, so that this file stays plain ASCII): a famous single token, digits,
 # a contraction in capitals, another script, an emoji, and a letter Unicode added in version 16.0 (U+1C89), which
 # this Python's unicodedata may not know.
-EXAMPLES = ["Hello world", " SolidGoldMagikarp", "1234567890", "IT'S", "你好", "\U0001f44b\U0001f3fd",
-            "Ᲊ's"]
+EXAMPLES = ["Hello world", " SolidGoldMagikarp", "1234567890", "IT'S", "\u4f60\u597d", "\U0001f44b\U0001f3fd",
+            "\u1c89's"]
 
 
 def main():

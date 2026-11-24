@@ -166,7 +166,7 @@ def inside(S):
             for f in (tinystories.stories, tinystories.tokenizer, tinystories.tokens):
                 f.cache_clear()
             assert tinystories.stories("train") == ["One day, a cat sat.", "The dog ran. The dog ran far.",
-                                                    "A bird sang “hi”."]
+                                                    "A bird sang \u201chi\u201d."]
             assert tinystories.stories("valid") == ["A fish swam.", "The cat ran."]
             merges, table = tinystories.tokenizer(270)
             assert len(merges) == 13 and merges == bpe.train("\n".join(tinystories.stories("train")), 269)

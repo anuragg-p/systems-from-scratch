@@ -102,10 +102,10 @@ def inside(S):
         assert ids == S.bpe_replay(s, merges), ascii(s)
         assert bpe.decode(ids, table) == s, ascii(s)
     assert len(bpe.encode(held, merges)) < len(held) / 2
-    for s in ["naïve café", "你好", "\U0001f44b\U0001f3fd", "é", "\x00\x7f\x80"]:
+    for s in ["na\u00efve caf\u00e9", "\u4f60\u597d", "\U0001f44b\U0001f3fd", "e\u0301", "\x00\x7f\x80"]:
         assert bpe.encode(s, merges) == list(s.encode("utf-8")) or bpe.decode(bpe.encode(s, merges), table) == s
         assert bpe.decode(bpe.encode(s, merges), table) == s
-    assert bpe.decode([0xE4, 0xBD], table) == "�" and bpe.decode([104, 0xFF, 105], table) == "h�i"
+    assert bpe.decode([0xE4, 0xBD], table) == "\ufffd" and bpe.decode([104, 0xFF, 105], table) == "h\ufffdi"
 
     assert experiment.unseen(["a", "b", "a"], ["a", "c", "c", "d"]) == (2 / 3, 3 / 4)
     small = {0: b"ab", 1: b"c", 2: b"def"}

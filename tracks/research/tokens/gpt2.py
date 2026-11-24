@@ -44,7 +44,7 @@ from tokens import bpe
 
 # Unicode's White_Space property (PropList.txt), all 25 characters: what \s means in the pattern GPT-2 was written
 # for. Python's unicodedata does not have the property; re's \s is str.isspace(), which also counts 0x1c to 0x1f.
-SPACE = r"\t\n\x0b\x0c\r \x85\xa0  -     　"
+SPACE = r"\t\n\x0b\x0c\r \x85\xa0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000"
 END = 50256                                   # <|endoftext|>: the id GPT-2 put between documents
 
 
@@ -53,7 +53,7 @@ END = 50256                                   # <|endoftext|>: the id GPT-2 put 
 # the bytes of printable characters ("!" to "~", and "\xa1" to "\xac" and
 # "\xae" to "\xff" read as Latin-1) as themselves, and the other 68 (the
 # space, controls, and the rest) as the characters 256, 257, ... in order
-# of their byte: a space is "Ġ", a newline "Ċ".
+# of their byte: a space is "\u0120", a newline "\u010a".
 def byte_symbols():
     printable = [*range(ord("!"), ord("~") + 1), *range(0xA1, 0xAD), *range(0xAE, 0x100)]
     others = [b for b in range(256) if b not in printable]

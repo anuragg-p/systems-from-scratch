@@ -43,9 +43,9 @@ def inside(S):
     from tokens import gpt2
 
     symbols = gpt2.byte_symbols()
-    assert len(set(symbols)) == 256 and symbols[32] == "Ġ" and symbols[10] == "Ċ" and symbols[ord("a")] == "a"
+    assert len(set(symbols)) == 256 and symbols[32] == "\u0120" and symbols[10] == "\u010a" and symbols[ord("a")] == "a"
     assert all(c.isprintable() and not c.isspace() for c in symbols), "every byte written as a printable character"
-    assert symbols[0] == "Ā" and symbols[0xAD] == chr(256 + 67) and symbols[0xE9] == "\xe9"
+    assert symbols[0] == "\u0100" and symbols[0xAD] == chr(256 + 67) and symbols[0xE9] == "\xe9"
 
     c = gpt2.classes()
     letter, number = re.compile(f"[{c['L']}]"), re.compile(f"[{c['N']}]")
@@ -87,7 +87,7 @@ def inside(S):
                 f.write("#version: 0.2\n" + "\n".join(lines) + "\n")
         tok = gpt2.Tokenizer(os.path.join(d, "vocab.json"), os.path.join(d, "good.txt"))
         ids = tok.encode("abc abcab ab")
-        assert ids == [257, vocab["Ġ"], 257, 256, vocab["Ġ"], 256], ids
+        assert ids == [257, vocab["\u0120"], 257, 256, vocab["\u0120"], 256], ids
         assert tok.decode(ids) == "abc abcab ab" and tok.encode("abc", cache=False) == [257]
         try:
             gpt2.Tokenizer(os.path.join(d, "vocab.json"), os.path.join(d, "bad.txt"))
@@ -102,26 +102,26 @@ def corpus():
     """Built strings the tokenizer must cut and merge as GPT-2's does: runs of spaces and line breaks, contractions,
     digits, punctuation runs, combining marks, many scripts, emoji (non-ASCII as escapes: this file stays ASCII)."""
     runs = [" " * n for n in range(1, 13)] + ["\n" * n for n in range(1, 6)] + [
-        " \n \n  ", "\t\t x", "\r\n", "a\r\nb", "  \t\n  y", "x  y", "　　z", "a   b", "end   "]
+        " \n \n  ", "\t\t x", "\r\n", "a\r\nb", "  \t\n  y", "x\u00a0\u00a0y", "\u3000\u3000z", "a \u2028 b", "end   "]
     runs += [f"a{' ' * n}b" for n in range(1, 9)] + [f"{' ' * n}word" for n in range(1, 9)] + [
         f"word{' ' * n}" for n in range(1, 9)] + [f"x{chr(10) * n}{' ' * m}y" for n in range(1, 4) for m in range(4)]
     contractions = ["it's", "IT'S", "you're", "we've", "I'm", "they'll", "he'd", "don't", "'s", "''s", "'st", " 's",
-                    "x 's", "o'clock", "rock 'n' roll", "'''", "'ll'", "it’s", "y'all'd've", "'S'", " ''", "'1"]
+                    "x 's", "o'clock", "rock 'n' roll", "'''", "'ll'", "it\u2019s", "y'all'd've", "'S'", " ''", "'1"]
     digits = ["1", "12", "123", "1234567890" * 3, " 2019", "3.14159", "1,000,000", "0x1F", "007", " 1 2 3",
-              "١٢٣", "ⅣⅤ", "½ ²", "x2y3", "A1B2", "１２"]
+              "\u0661\u0662\u0663", "\u2163\u2164", "\u00bd \u00b2", "x2y3", "A1B2", "\uff11\uff12"]
     marks = ["!!!", "...", "?!?!", "---", "***", " ...", "\"'(", "<<>>", "@#$%^&*()_+-=[]{}|;:,./<>?`~", " $5",
-             "«»", "——", "…", " !x", "!x!"]
-    combining = ["é", "à́̂", "́", " ́", "ño", "각",
-                 "ẍ̈̈", "क्ष"]
-    scripts = ["καλημέρα", "привет",
-               "שלום", "مرحبا", "नमस्ते",
-               "สวัสดี", "你好，世界", "こんにちは",
-               "안녕하세요", "ሰላም", "გამარჯობა",
-               "Բարեւ", "வணக்கம்",
-               "নমস্কার", "ᠠᠡᠢ", "\U00010400\U00010401",
+             "\u00ab\u00bb", "\u2014\u2014", "\u2026", " !x", "!x!"]
+    combining = ["e\u0301", "a\u0300\u0301\u0302", "\u0301", " \u0301", "n\u0303o", "\u1100\u1161\u11a8",
+                 "x\u0308\u0308\u0308", "\u0915\u094d\u0937"]
+    scripts = ["\u03ba\u03b1\u03bb\u03b7\u03bc\u03ad\u03c1\u03b1", "\u043f\u0440\u0438\u0432\u0435\u0442",
+               "\u05e9\u05dc\u05d5\u05dd", "\u0645\u0631\u062d\u0628\u0627", "\u0928\u092e\u0938\u094d\u0924\u0947",
+               "\u0e2a\u0e27\u0e31\u0e2a\u0e14\u0e35", "\u4f60\u597d\uff0c\u4e16\u754c", "\u3053\u3093\u306b\u3061\u306f",
+               "\uc548\ub155\ud558\uc138\uc694", "\u1230\u120b\u121d", "\u10d2\u10d0\u10db\u10d0\u10e0\u10ef\u10dd\u10d1\u10d0",
+               "\u0532\u0561\u0580\u0565\u0582", "\u0bb5\u0ba3\u0b95\u0bcd\u0b95\u0bae\u0bcd",
+               "\u09a8\u09ae\u09b8\u09cd\u0995\u09be\u09b0", "\u1820\u1821\u1822", "\U00010400\U00010401",
                "\U0001d400\U0001d401 math", "\U00020000\U0002a6d6"]
-    emoji = ["\U0001f600", "\U0001f44b\U0001f3fd", "\U0001f468‍\U0001f469‍\U0001f467", "\U0001f1ec\U0001f1e7",
-             "1️⃣", "❤️", "a\U0001f600b", " \U0001f600 ", "\U0001f600'"]
+    emoji = ["\U0001f600", "\U0001f44b\U0001f3fd", "\U0001f468\u200d\U0001f469\u200d\U0001f467", "\U0001f1ec\U0001f1e7",
+             "1\ufe0f\u20e3", "\u2764\ufe0f", "a\U0001f600b", " \U0001f600 ", "\U0001f600'"]
     mixed = [a + b for a in contractions[:6] + scripts[:4] + emoji[:3] for b in digits[:4] + marks[:4] + runs[:3]]
     return runs + contractions + digits + marks + combining + scripts + emoji + mixed
 

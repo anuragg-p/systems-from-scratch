@@ -37,10 +37,10 @@ CONFIG = dict(window=256, windows=2000, simple_merges=3, sizes=[256, 512, 1024, 
 WORD = re.compile(r"[A-Za-z]+")
 # Text the training text never had: accents, Greek, Russian, Chinese, Hindi, an emoji with a skin tone, a flag, and
 # a letter with a combining accent. Written as escapes, so that this file stays plain ASCII.
-STRANGERS = ["naïve café, señor", "καλημέρα",
-             "привет", "你好，世界",
-             "नमस्ते", "\U0001f44b\U0001f3fd \U0001f1ec\U0001f1e7",
-             "é and é", "tab\tnul\x00 and \x7f"]
+STRANGERS = ["na\u00efve caf\u00e9, se\u00f1or", "\u03ba\u03b1\u03bb\u03b7\u03bc\u03ad\u03c1\u03b1",
+             "\u043f\u0440\u0438\u0432\u0435\u0442", "\u4f60\u597d\uff0c\u4e16\u754c",
+             "\u0928\u092e\u0938\u094d\u0924\u0947", "\U0001f44b\U0001f3fd \U0001f1ec\U0001f1e7",
+             "e\u0301 and \u00e9", "tab\tnul\x00 and \x7f"]
 
 
 # @build 09.01 unseen
