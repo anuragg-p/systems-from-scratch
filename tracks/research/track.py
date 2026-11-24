@@ -397,3 +397,17 @@ def timeline_boot(lesson_id):
     elif k >= (3, 2):
         steps.append(sh_step(_code(momentum), r"momentum: ok"))
     return steps
+
+
+# ---------------------------------------------------------------- module 06: images, then PyTorch
+#
+# Kept apart from the tables above, which modules 00 to 05 fill. 06.01 is the last lesson that
+# adds to the engine; from 06.02 on, scripts say `import torch` (see NOTES.md, "Conventions from
+# 06.02 on").
+
+EXPERIMENTS.update({
+    "conv": ("06.01", ["seeds=1", "n_train=1000", "epochs=1", "n_test=400", "shifts=[0,2]"],
+             r"convolutional +\S+ .*unshuffled, t = "),
+})
+NAMES["nn"]["06.01"] = "Conv2d MaxPool2d Flatten"
+NAMES["F"]["06.01"] = "conv2d max_pool2d"

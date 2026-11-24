@@ -309,3 +309,63 @@ class Dropout(Module):
     def extra_repr(self):
         return f"p={self.p}"
 # @end
+
+
+# @build 06.01 Conv2d
+# functional.conv2d as a module: out_channels filters of shape
+# (in_channels, kh, kw), kernel_size one number or (kh, kw). Weights and
+# bias start as Linear's do, uniform in [-1/sqrt(fan_in), 1/sqrt(fan_in)],
+# where fan_in = in_channels * kh * kw is how many products each output
+# number sums.
+class Conv2d(Module):
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, bias=True):
+        super().__init__()
+        kh, kw = functional._pair(kernel_size)
+        self.in_channels, self.out_channels, self.kernel_size = in_channels, out_channels, (kh, kw)
+        self.stride, self.padding = functional._pair(stride), functional._pair(padding)
+        bound = 1 / math.sqrt(in_channels * kh * kw)
+        rng = _t.generator()
+        self.weight = Parameter(rng.uniform(-bound, bound, (out_channels, in_channels, kh, kw)).astype(np.float32))
+        if bias:
+            self.bias = Parameter(rng.uniform(-bound, bound, (out_channels,)).astype(np.float32))
+        else:
+            self.bias = None
+
+    def forward(self, x):
+        return functional.conv2d(x, self.weight, self.bias, self.stride, self.padding)
+
+    def extra_repr(self):
+        return (f"{self.in_channels}, {self.out_channels}, kernel_size={self.kernel_size}, "
+                f"stride={self.stride}, padding={self.padding}")
+# @end
+
+
+# @build 06.01 MaxPool2d
+# functional.max_pool2d as a module, so it can sit in a Sequential (the
+# stride is the kernel's size unless given).
+class MaxPool2d(Module):
+    def __init__(self, kernel_size, stride=None, padding=0):
+        super().__init__()
+        self.kernel_size, self.padding = kernel_size, padding
+        self.stride = kernel_size if stride is None else stride
+
+    def forward(self, x):
+        return functional.max_pool2d(x, self.kernel_size, self.stride, self.padding)
+
+    def extra_repr(self):
+        return f"kernel_size={self.kernel_size}, stride={self.stride}, padding={self.padding}"
+# @end
+
+
+# @build 06.01 Flatten
+# Every image's numbers in one row, so that a Linear layer can follow the
+# convolutions: dimensions start_dim to end_dim become one.
+class Flatten(Module):
+    def __init__(self, start_dim=1, end_dim=-1):
+        super().__init__()
+        self.start_dim, self.end_dim = start_dim, end_dim
+
+    def forward(self, x):
+        end = self.end_dim % x.ndim
+        return x.reshape(x.shape[:self.start_dim] + (-1,) + x.shape[end + 1:])
+# @end
