@@ -555,3 +555,15 @@ DATA["experiments/recorded/gpt/*"] = "the long run of experiments/gpt.py (08.04)
 # The run writes its checkpoint beside the record; a learner who runs it again gets one there. It is weights, not
 # part of the record: never shown or materialized, and not committed.
 HIDDEN.append("experiments/recorded/*/model.safetensors")
+
+
+# ---------------------------------------------------------------- module 14: reproduce a paper, grokking
+#
+# Kept apart from the tables above, as modules 06 to 08's parts are, and last in the file, so another module's part can
+# sit before it. data/modular.py makes the paper's data (nothing to download); experiments/predictions.py holds the
+# paper's claims as predictions, which claims.py prints and report.py (14.04) judges.
+
+EXPERIMENTS.update({
+    "claims": ("14.01", ["seeds=1"], r"A run has learned the operation only if its validation accuracy is far above"),
+})
+DATASET_OF.update({"claims": None})
