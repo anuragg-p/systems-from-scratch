@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Each change&#x27;s difference from the base, in the page&#x27;s short run (width 64, 80 steps, 2 seeds) and in the recorded long run (width 128, 2000 steps, 3 seeds): a dot the difference of the means, the whisker one spread of it either side; in the accent where |t| is 3 or more</title>
+<defs><marker id="flip1005-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="flip1005-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="flip1005-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="120" y1="230" x2="120" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="120" y="246" font-size="10.5" text-anchor="middle">-0.3</text>
+<line class="m" x1="168.89" y1="230" x2="168.89" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="168.89" y="246" font-size="10.5" text-anchor="middle">-0.2</text>
+<line class="m" x1="217.78" y1="230" x2="217.78" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="217.78" y="246" font-size="10.5" text-anchor="middle">-0.1</text>
+<line class="m" x1="266.67" y1="230" x2="266.67" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="266.67" y="246" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="315.56" y1="230" x2="315.56" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="315.56" y="246" font-size="10.5" text-anchor="middle">+0.1</text>
+<rect class="m" x="120" y="40" width="220" height="190" rx="0" stroke-width="1.5"/>
+<text class="tm" x="230" y="262" font-size="11.5" text-anchor="middle">less the base, bits</text>
+<text class="t" x="120" y="30" font-size="11.5" font-weight="700">the page&#x27;s run: 80 steps</text>
+<line class="s" x1="266.67" y1="40" x2="266.67" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="110" y="63" font-size="11" font-weight="600" text-anchor="end">RMSNorm</text>
+<line class="m" x1="265.79" y1="59" x2="276.15" y2="59" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="m fs" cx="270.97" cy="59" r="4" stroke-width="1.5"/>
+<text class="tm mono" x="283.15" y="63" font-size="10">+0.009</text>
+<text class="t" x="110" y="101" font-size="11" font-weight="600" text-anchor="end">rotary</text>
+<line class="a" x1="149.43" y1="97" x2="155.98" y2="97" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="152.7" cy="97" r="4" stroke-width="1.5"/>
+<text class="ta mono" x="162.98" y="101" font-size="10" font-weight="700">-0.233</text>
+<text class="t" x="110" y="139" font-size="11" font-weight="600" text-anchor="end">SwiGLU</text>
+<line class="a" x1="313.79" y1="135" x2="327.83" y2="135" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="320.81" cy="135" r="4" stroke-width="1.5"/>
+<text class="ta mono" x="306.79" y="139" font-size="10" font-weight="700" text-anchor="end">+0.111</text>
+<text class="t" x="110" y="177" font-size="11" font-weight="600" text-anchor="end">grouped-query</text>
+<line class="m" x1="261.7" y1="173" x2="276.41" y2="173" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="m fs" cx="269.06" cy="173" r="4" stroke-width="1.5"/>
+<text class="tm mono" x="283.41" y="177" font-size="10">+0.005</text>
+<text class="t" x="110" y="215" font-size="11" font-weight="600" text-anchor="end">all four</text>
+<line class="a" x1="165.64" y1="211" x2="189.84" y2="211" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="177.74" cy="211" r="4" stroke-width="1.5"/>
+<text class="ta mono" x="196.84" y="215" font-size="10" font-weight="700">-0.182</text>
+<line class="m" x1="382" y1="230" x2="382" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="382" y="246" font-size="10.5" text-anchor="middle">-0.12</text>
+<line class="m" x1="430.89" y1="230" x2="430.89" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="430.89" y="246" font-size="10.5" text-anchor="middle">-0.08</text>
+<line class="m" x1="479.78" y1="230" x2="479.78" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="479.78" y="246" font-size="10.5" text-anchor="middle">-0.04</text>
+<line class="m" x1="528.67" y1="230" x2="528.67" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="528.67" y="246" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="577.56" y1="230" x2="577.56" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="577.56" y="246" font-size="10.5" text-anchor="middle">+0.04</text>
+<rect class="m" x="382" y="40" width="220" height="190" rx="0" stroke-width="1.5"/>
+<text class="tm" x="492" y="262" font-size="11.5" text-anchor="middle">less the base, bits</text>
+<text class="t" x="382" y="30" font-size="11.5" font-weight="700">the recorded run: 2000 steps</text>
+<line class="s" x1="528.67" y1="40" x2="528.67" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="538.79" y1="59" x2="551.15" y2="59" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="m fs" cx="544.97" cy="59" r="4" stroke-width="1.5"/>
+<text class="tm mono" x="558.15" y="63" font-size="10">+0.013</text>
+<line class="a" x1="441.78" y1="97" x2="468.08" y2="97" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="454.93" cy="97" r="4" stroke-width="1.5"/>
+<text class="ta mono" x="434.78" y="101" font-size="10" font-weight="700" text-anchor="end">-0.060</text>
+<line class="a" x1="438.94" y1="135" x2="454.04" y2="135" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="446.49" cy="135" r="4" stroke-width="1.5"/>
+<text class="ta mono" x="431.94" y="139" font-size="10" font-weight="700" text-anchor="end">-0.067</text>
+<line class="m" x1="530.9" y1="173" x2="549.41" y2="173" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="m fs" cx="540.16" cy="173" r="4" stroke-width="1.5"/>
+<text class="tm mono" x="556.41" y="177" font-size="10">+0.009</text>
+<line class="a" x1="409.38" y1="211" x2="430.39" y2="211" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a fa" cx="419.88" cy="211" r="4" stroke-width="1.5"/>
+<text class="ta mono" x="437.39" y="215" font-size="10" font-weight="700">-0.089</text>
+<text class="tm" x="20" y="290" font-size="10.5">Left of the line is better than the base. The same five changes, ranked otherwise by the budget: SwiGLU from worst to best.</text>
+</svg>

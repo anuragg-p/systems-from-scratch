@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 240" fill="none">
+<title>Bits per character on Tiny Shakespeare&#x27;s test text: the ladder of modules 07 and 08, each trained here on the training plays, GPT-2 small (09.03), and SmolLM2-135M, with the weights of each model</title>
+<defs><marker id="ladder1004-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="ladder1004-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="ladder1004-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="316.92" y1="186" x2="316.92" y2="190" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="316.92" y="202" font-size="10.5" text-anchor="middle">1.4</text>
+<line class="m" x1="350.77" y1="186" x2="350.77" y2="190" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="350.77" y="202" font-size="10.5" text-anchor="middle">1.8</text>
+<line class="m" x1="384.62" y1="186" x2="384.62" y2="190" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="384.62" y="202" font-size="10.5" text-anchor="middle">2.2</text>
+<line class="m" x1="418.46" y1="186" x2="418.46" y2="190" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="418.46" y="202" font-size="10.5" text-anchor="middle">2.6</text>
+<line class="m" x1="452.31" y1="186" x2="452.31" y2="190" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="452.31" y="202" font-size="10.5" text-anchor="middle">3</text>
+<line class="m" x1="486.15" y1="186" x2="486.15" y2="190" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="486.15" y="202" font-size="10.5" text-anchor="middle">3.4</text>
+<line class="m" x1="520" y1="186" x2="520" y2="190" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="520" y="202" font-size="10.5" text-anchor="middle">3.8</text>
+<rect class="m" x="300" y="30" width="220" height="156" rx="0" stroke-width="1.5"/>
+<text class="tm" x="410" y="218" font-size="11.5" text-anchor="middle">bits per character on the test text</text>
+<text class="tm" x="532" y="26" font-size="10.5">weights</text>
+<text class="t" x="292" y="48" font-size="10.5" text-anchor="end">every character equally likely (07.01)</text>
+<line class="m" x1="490" y1="44" x2="516" y2="44" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ladder1004-am)"/>
+<text class="tm mono" x="486" y="48" font-size="9.5" text-anchor="end">6.022</text>
+<text class="t" x="292" y="66" font-size="10.5" text-anchor="end">pairs (07.01)</text>
+<circle class="s fs" cx="502.99" cy="62" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="511.99" y="66" font-size="10">3.599</text>
+<text class="t" x="292" y="84" font-size="10.5" text-anchor="end">deleted interpolation, contexts up to 7 (07.02)</text>
+<circle class="s fs" cx="402.3" cy="80" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="411.3" y="84" font-size="10">2.409</text>
+<text class="t" x="292" y="102" font-size="10.5" text-anchor="end">07.02&#x27;s network, its long run</text>
+<circle class="s fs" cx="396.97" cy="98" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="405.97" y="102" font-size="10">2.346</text>
+<text class="t" x="292" y="120" font-size="10.5" text-anchor="end">07.02&#x27;s network and interpolation, mixed (long run, 8)</text>
+<circle class="s fs" cx="391.64" cy="116" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="400.64" y="120" font-size="10">2.283</text>
+<text class="t" x="292" y="138" font-size="10.5" text-anchor="end">08.04&#x27;s GPT, its long run (dropout 0.2)</text>
+<text class="t mono" x="532" y="138" font-size="10">2,731,200</text>
+<circle class="s fs" cx="386.82" cy="134" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="395.82" y="138" font-size="10">2.226</text>
+<text class="t" x="292" y="156" font-size="10.5" text-anchor="end">GPT-2 small, never trained on this text by us</text>
+<text class="t mono" x="532" y="156" font-size="10">124,439,808</text>
+<circle class="s fs" cx="355.08" cy="152" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="364.08" y="156" font-size="10">1.851</text>
+<text class="ta" x="292" y="174" font-size="10.5" font-weight="700" text-anchor="end">SmolLM2-135M</text>
+<text class="ta mono" x="532" y="174" font-size="10">134,515,008</text>
+<circle class="a fa" cx="317.35" cy="170" r="4" stroke-width="1.5"/>
+<text class="ta mono" x="326.35" y="174" font-size="10" font-weight="700">1.405</text>
+</svg>
