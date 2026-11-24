@@ -128,7 +128,7 @@ def main():
           f"{', '.join(f'{b:#04x}' for b in missing[:8])}, ... {len(missing)} in all), {len(tok.merges):,} merges. "
           f"GPT-2's: 50,257, 1 special, 256 bytes, 50,000 merges.")
     for s in (" in 2019, 1234567890", "x\U00040000y"):
-        print(f"   {s!r}: pieces {tokens.split(s)}, tokens {tok.encode(s)}, decoded {tok.decode(tok.encode(s))!r}")
+        print(f"   {s!r}: pieces {tokens.split(s)}, tokens {tok.encode(s)}, decoded {ascii(tok.decode(tok.encode(s)))}")
     print(f"   The test text, {len(test_text):,} characters: {len(ids):,} tokens, {len(test_text) / len(ids):.3f} bytes "
           f"a token (GPT-2's {GPT2_BYTES_PER_TOKEN}); decoded the same: {tok.decode(ids) == test_text}")
 
