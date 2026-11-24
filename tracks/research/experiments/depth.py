@@ -108,12 +108,16 @@ def table(found, runs, control, cfg, out=None):
     """Parts 1 to 5 for a run, done or read back; the figures to out/ when given. Returns the verdicts."""
     chosen = q.choose(found)
     depths = sorted({d for d, _ in runs})
-    print(f"   The search, validation bits by rate ({', '.join(f'{r:g}' for r in sorted(cfg.rates))}), seed 0; "
-          f"the rate chosen:")
-    for (d, arm), scores in sorted(found.items()):
-        edge = " (at the edge of the range)" if chosen[d, arm] in (min(cfg.rates), max(cfg.rates)) else ""
-        print(f"   {d} block{'s' * (d > 1)}, {arm:8s} " + "  ".join(f"{scores[r]:.4f}" for r in sorted(scores)) +
-              f"   chosen {chosen[d, arm]:g}{edge}")
+    rates = sorted(cfg.rates)
+    print(f"   The search, seed 0: validation bits per character at each rate, and the rate chosen:")
+    print(f"   {'':20s}" + "".join(f"{r:>9g}" for r in rates) + "   chosen")
+    for d in depths:
+        for arm in q.ARMS:
+            scores = found[d, arm]
+            edge = " (an end of the range)" if chosen[d, arm] in (rates[0], rates[-1]) else ""
+            name = f"{d} block{'s' * (d > 1)}" if arm == "none" else ""
+            print(f"   {name:10s}{arm:10s}" + "".join(f"{scores[r]:9.4f}" for r in rates) +
+                  f"   {chosen[d, arm]:g}{edge}")
     seeds = len(runs[depths[0], "none"])
     test = {k: [s["test_bits"] for s in v] for k, v in runs.items()}
     val = {k: [s["val_bits"] for s in v] for k, v in runs.items()}
@@ -123,18 +127,20 @@ def table(found, runs, control, cfg, out=None):
     on_test, on_val = q.gaps(test, depths), q.gaps(val, depths)
     for d in depths:
         each, mean, (plo, phi), (wlo, whi), lower = on_test[d]
-        print(f"   {d} block{'s' * (d > 1)}:  none {lab.spread(test[d, 'none'], 4)}\n"
-              f"   {'':10s}learned {lab.spread(test[d, 'learned'], 4)}\n"
-              f"   {'':10s}gap {mean:+.4f}   paired {plo:+.4f} to {phi:+.4f}   Welch {wlo:+.4f} to {whi:+.4f}   "
-              f"learned lower on {lower} of {len(each)};  on validation {on_val[d][1]:+.4f}")
+        name = f"{d} block{'s' * (d > 1)}"
+        print(f"   {name:10s}none      {lab.spread(test[d, 'none'], 4)}\n"
+              f"   {'':10s}learned   {lab.spread(test[d, 'learned'], 4)}\n"
+              f"   {'':10s}the gap   {mean:+.4f}, paired {plo:+.4f} to {phi:+.4f}, Welch {wlo:+.4f} to {whi:+.4f}; "
+              f"learned lower on {lower} of {len(each)}; on validation {on_val[d][1]:+.4f}")
     if control:
         for d, rows in control.items():
             bits = [s["test_bits"] for s in rows]
             added = rows[0]["weights"] - runs[d, "none"][0]["weights"]
-            print(f"\n   The control at {d} blocks: no positions, {added} more weights in the MLPs (learned positions "
-                  f"add {runs[d, 'learned'][0]['weights'] - runs[d, 'none'][0]['weights']}):\n"
-                  f"   {'':10s}{lab.spread(bits, 4)}; minus learned, paired: " +
-                  "{:+.4f} ({:+.4f} to {:+.4f})".format(*lab.difference(bits, test[d, "learned"], paired=True)))
+            print(f"\n   The control at {d} blocks: no positions, and {added} more weights in the MLPs (learned "
+                  f"positions add {runs[d, 'learned'][0]['weights'] - runs[d, 'none'][0]['weights']}):\n"
+                  f"   {'':10s}wider     {lab.spread(bits, 4)}\n   {'':10s}the gap   " +
+                  "{:+.4f}, paired {:+.4f} to {:+.4f}".format(*lab.difference(bits, test[d, "learned"], paired=True)) +
+                  f" (wider minus learned)")
     results = ({d: on_test[d][0] for d in depths}, test, {d: [s["test_bits"] for s in rows] for d, rows in control.items()})
     print("\n   The predictions, each by the rule written before any run:")
     verdicts = {}

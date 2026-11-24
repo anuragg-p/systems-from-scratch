@@ -48,9 +48,10 @@ def describe(runs, depths, seconds=None):
         gaps = [a - b for a, b in zip(none, learned, strict=True)]
         worst = max(worst, lab.sd(gaps))
         time = f"   {seconds[d]:.1f} s a run" if seconds else ""
-        print(f"   {d} block{'s' * (d > 1)}:  none {lab.spread(none, 4)}\n"
-              f"   {'':9s} learned {lab.spread(learned, 4)}\n"
-              f"   {'':9s} the gap {lab.spread(gaps, 3)}{time}")
+        name = f"{d} block{'s' * (d > 1)}"
+        print(f"   {name:10s}none      {lab.spread(none, 4)}\n"
+              f"   {'':10s}learned   {lab.spread(learned, 4)}\n"
+              f"   {'':10s}the gap   {lab.spread(gaps, 3)}{time}")
     return worst
 
 
