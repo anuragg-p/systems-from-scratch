@@ -3818,6 +3818,86 @@ whose pages another agent is writing, and 10.0N); nothing else.
 - tokens/smollm.py's load is not a region (models/smollm.py's load is,
   in the same lesson).
 
+**The lessons (written 2026-11-25, after the code).** Five lessons in
+lessons/10-todays-architecture/, the module page, 19 figures
+(art/research/figs10.py, every one from a run of the project, the fetched
+files or the recorded ablation, each checked against what its run
+printed), the five maps (archmap.py: the piece "10" from 10.01, the
+language experiments' label "modules 07-10", so every map was drawn
+again), and the cover (research_art.py's res_modern, its numbers read from
+recorded/ablation/ and 10.04's page and asserted). Measured on a busy
+machine (three other agents training, load 11 to 20); the digits are the
+ones above, the times are not to be quoted from here but from a quiet
+pass:
+- The default runs as the pages show them: rmsnorm 42 s (load 12), rotary
+  57 s (15), swiglu 51 s (15), smollm 66 s (20), ablation 64 s (17).
+  Times in them: RMSNorm alone 0.64 and 0.67 of the written-out layer
+  norm, 2.69 and 2.45 times nn.LayerNorm; a step x1.203 (the figure's own
+  run x1.25); rotary x1.259; SwiGLU x0.887; 2 key/value heads x1.106;
+  SmolLM2 loaded in 1.9 s. The pages state NOTES' ranges above, not these.
+- 10.03's longer runs, made for its figure and quoted on the page
+  (experiments.swiglu steps=600 and steps=1200, 3 seeds, the defaults
+  otherwise): 600 steps GELU 3.020, SwiGLU 2.962, -0.0580 (t = -3.4), 199
+  s; 1200 steps 2.725 against 2.673, -0.0529 (t = -3.9), 366 s. (The
+  2-seed spikes above: -0.044 and -0.049.) The sign turns between 150 and
+  600 steps at width 64.
+- The recorded run's validation curves (every 100 steps, mean of 3
+  seeds, less the base): SwiGLU -0.043 at step 100, -0.07 to -0.15 from
+  300 on, ahead at every logged step but 0 (+0.05 at the start, before
+  training). So at width 128, rate 0.002, warmup 100, SwiGLU is never
+  behind: the slow start is the page's setting's (width 64, rate 0.003,
+  warmup 50). 10.03 says so beside the reason offered. Rotary: -0.38 at
+  100, -0.489 at 200, -0.095 at 1999. RMSNorm and grouped heads within
+  0.03 of the base throughout.
+- Break it, each run once: 10.01, RMSNorm's mean over dim -2 (the window's
+  positions): part 1 1.88 from nn.RMSNorm; RMSNorm 3.456, -0.1069 (t =
+  -10.3): a false win, the norm reading later positions. 10.02, turning
+  the queries only: 3.544, -0.0194 (t = -6.3); past the length 3.534 /
+  3.644 and 3.525 / 3.646 / 3.808; the offset line unchanged. 10.03,
+  down(up(x)): 3.568, +0.0050 (t = +1.1), part 3 prints no blocks (the
+  gate layer is never called). Also tried, not on the page: the gate
+  without SiLU (Shazeer's bilinear), 3.571, +0.0076 (t = +1.8). 10.04,
+  repeat instead of repeat_interleave: 2 key/value heads 3.574 (+0.0088,
+  t = +2.6); SmolLM2 18.605 bits a token, 5.975 a character, its likeliest
+  tokens byte pieces of accented letters. 10.05, the line at 2: the long
+  run's RMSNorm row (t = +2.6) becomes "yes"; the short run unchanged.
+- 10.04's page compares with transformers in a session of its own
+  (needs="torch smollm2 transformers"; track.py's module-10 part gains
+  TOOLS["transformers"], as 09.02's tiktoken): the same ids on all of Tiny
+  Shakespeare (341,094 tokens), logits of 1,024 tokens up to 40.5, the
+  largest difference 0.0; 16 s. transformers writes warnings and a
+  protobuf AttributeError to stderr here, so the page's command ends in
+  2> /dev/null.
+- Fixed in the code: experiments/smollm.py printed the decoded "x" +
+  U+FFFD x 3 + "y" with !r, which keeps U+FFFD as itself (it is
+  printable): the page could not show it in ASCII. It prints ascii() of
+  it now, 'x\ufffd\ufffd\ufffdy'; nothing else changed.
+- Read at the source for the pages, beyond the papers above: GLU Variants
+  whole (pdftotext): table 1's other rows, FFN_GLU 1.982 (0.006) / 1.663,
+  FFN_Bilinear 1.960 (0.005) / 1.648, FFN_ReGLU 1.953 (0.003) / 1.645; its
+  caption, "All models are matched for parameters and computation";
+  section 3.1, d_ff 3072, 2048 for the GLU variants. RoFormer v5:
+  section 4.2 ("we replace the original sinusoidal position encoding of
+  BERT with our RoPE"; bert-base-uncased, batch 64, length 512, 100k
+  steps, AdamW at 1e-5); 4.2.3 points at figure 3, left (MLM loss, no
+  table); 4.5.5's two limits; table 5 (BERT-512 67.77%, WoBERT-512
+  68.10%, RoFormer-512 68.29%, RoFormer-1024 69.79% on test). The GQA
+  abstract page: Ainslie, Lee-Thorp, de Jong, Zemlyanskiy, Lebron (with an
+  accent), Sanghai; v1 22 May 2023, v3 23 Dec 2023. cs336.stanford.edu:
+  lecture 3 "Architectures, hyperparameters", assignment 1 "Implement all
+  of the components (tokenizer, model architecture, optimizer) necessary
+  to train a standard Transformer"; it names none of the four changes.
+- Not changed, for the planner: ablation.py's CLAIMS says rotary was
+  faster than "BERT's learned positions"; the paper's section 4.2 says it
+  replaced BERT's "sinusoidal position encoding" (bert-base-uncased's
+  positions are in fact learned). The page quotes the paper's own words.
+- For whoever edits these pages: a file-writing tool may turn a
+  backslash-u escape into the character itself (it did, once, in 10.04's
+  transcript); check with LC_ALL=C grep -nP '[^\x00-\x7F]'. verify
+  refuses the words "reference code" in a page (it reads them as talk of
+  the track's own reference solution). In a trimmed session, "line N"
+  counts the block's own lines, not the program's.
+
 ## Module 14: reproduce a paper, grokking
 
 Built by one agent on 2026-11-24, on the reference machine above (Apple M4
