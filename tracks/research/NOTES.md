@@ -2930,6 +2930,15 @@ track.py names it in FILES_FROM (09.02); `./learn check` found it before
 that line. `./learn selftest` ok (269 tests). `./learn check` reports
 exactly nine problems, `research/08.0N` and `research/09.0N: test has no
 lesson doc`; nothing else.
+With module 09's pages (lessons agent, 2026-11-24; other agents training,
+load 9 to 16): `./learn verify --fresh research 09` ok in 315 s (09.01 82
+s, 09.02 29, 09.03 124 with its Break it's second run of the default,
+09.04 80); an earlier fresh run 303 s. `./learn check` ok, no problems;
+`./learn check-skeleton research` ok (56 s); `./learn check-timeline
+research` ok (3 min 34 s; 174, 176, 178 and 194 files at 09.01 to 09.04);
+`./learn selftest` ok (269 tests). Every map was drawn again (the data row
+has seven pieces now). 09.02's tiktoken session needs="gpt2 tiktoken": on
+a machine without tiktoken that lesson is "missing".
 
 ## For the harness work and module 06
 
