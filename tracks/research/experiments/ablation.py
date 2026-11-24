@@ -35,8 +35,8 @@ from data import shakespeare
 from experiments.language import compare
 from experiments.sequences import windows
 
-CONFIG = dict(layers=4, heads=4, width=64, context=64, batch=32, steps=100, lr=0.003, warmup=50, weight_decay=0.1,
-              clip=1.0, every=25, held=32, seeds=2, kv_heads=2, recorded="experiments/recorded/ablation", device="cpu")
+CONFIG = dict(layers=4, heads=4, width=64, context=64, batch=32, steps=80, lr=0.003, warmup=40, weight_decay=0.1,
+              clip=1.0, every=20, held=32, seeds=2, kv_heads=2, recorded="experiments/recorded/ablation", device="cpu")
 
 # What each paper claimed, and at what size (read at the sources; NOTES.md has the quotes).
 CLAIMS = {
