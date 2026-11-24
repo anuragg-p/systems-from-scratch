@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 350" fill="none">
+<title>What is trained on and what is scored: five tasks in three wordings each, on four fifths of the words and of the number tasks&#x27; instances; scored on instances never trained on, in the trained wordings and in a fourth, and on a sixth task never trained</title>
+<defs><marker id="held1203-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="held1203-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="held1203-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="20" y="24" font-size="11.5" font-weight="700">trained: 5 tasks x 3 wordings x the training instances</text>
+<text class="t mono" x="32" y="46" font-size="10.5">Which is larger, a or b?</text>
+<text class="t" x="330" y="46" font-size="10" font-weight="600">trained</text>
+<text class="t mono" x="32" y="62" font-size="10.5">Give the larger number: a or b.</text>
+<text class="t" x="330" y="62" font-size="10" font-weight="600">trained</text>
+<text class="t mono" x="32" y="78" font-size="10.5">What is the bigger of a and b?</text>
+<text class="t" x="330" y="78" font-size="10" font-weight="600">trained</text>
+<text class="ta mono" x="32" y="94" font-size="10.5">Of a and b, which is greater?</text>
+<text class="ta" x="330" y="94" font-size="10" font-weight="600">held out</text>
+<text class="t" x="420" y="46" font-size="10.5" font-weight="700">the cut, once (seed 0):</text>
+<text class="t mono" x="420" y="64" font-size="10.5">words: 5,117 / 1,279</text>
+<text class="t mono" x="420" y="80" font-size="10.5">pairs a, b: 7,920 / 1,980</text>
+<text class="t mono" x="420" y="96" font-size="10.5">triples of digits: 576 / 144</text>
+<text class="tm" x="420" y="112" font-size="10">train / held out</text>
+<rect class="s fs" x="20" y="128" width="196" height="196" rx="6" stroke-width="1.5"/>
+<text class="t" x="30" y="148" font-size="11" font-weight="700">held-out instances,</text>
+<text class="t" x="30" y="162" font-size="11" font-weight="700">trained wordings</text>
+<text class="t mono" x="30" y="186" font-size="9.5">Give the larger number: 68 or 17.</text>
+<text class="t mono" x="206" y="198" font-size="9.5" font-weight="600" text-anchor="end">-&gt; 68</text>
+<text class="t mono" x="30" y="213" font-size="9.5">Put 6, 3, 8 in increasing order.</text>
+<text class="t mono" x="206" y="225" font-size="9.5" font-weight="600" text-anchor="end">-&gt; 3 6 8</text>
+<text class="t mono" x="30" y="240" font-size="9.5">Write chance in capital letters.</text>
+<text class="t mono" x="206" y="252" font-size="9.5" font-weight="600" text-anchor="end">-&gt; CHANCE</text>
+<text class="t mono" x="30" y="267" font-size="9.5">Reverse the word wenty.</text>
+<text class="t mono" x="206" y="279" font-size="9.5" font-weight="600" text-anchor="end">-&gt; ytnew</text>
+<text class="t mono" x="30" y="294" font-size="9.5">In tear, how many times is the...</text>
+<text class="t mono" x="206" y="306" font-size="9.5" font-weight="600" text-anchor="end">-&gt; 0</text>
+<text class="tm" x="118" y="340" font-size="10" text-anchor="middle">60 scored</text>
+<rect class="a af" x="226" y="128" width="196" height="196" rx="6" stroke-width="1.5"/>
+<text class="ta" x="236" y="148" font-size="11" font-weight="700">held-out instances,</text>
+<text class="ta" x="236" y="162" font-size="11" font-weight="700">the held-out wording</text>
+<text class="t mono" x="236" y="186" font-size="9.5">Of 55 and 81, which is greater?</text>
+<text class="ta mono" x="412" y="198" font-size="9.5" font-weight="600" text-anchor="end">-&gt; 81</text>
+<text class="t mono" x="236" y="213" font-size="9.5">Arrange 7 8 6 in ascending order.</text>
+<text class="ta mono" x="412" y="225" font-size="9.5" font-weight="600" text-anchor="end">-&gt; 6 7 8</text>
+<text class="t mono" x="236" y="240" font-size="9.5">Convert the word called to upp...</text>
+<text class="ta mono" x="412" y="252" font-size="9.5" font-weight="600" text-anchor="end">-&gt; CALLED</text>
+<text class="t mono" x="236" y="267" font-size="9.5">What is napt with its letters ...</text>
+<text class="ta mono" x="412" y="279" font-size="9.5" font-weight="600" text-anchor="end">-&gt; tpan</text>
+<text class="t mono" x="236" y="294" font-size="9.5">Tell me the number of ks in be...</text>
+<text class="ta mono" x="412" y="306" font-size="9.5" font-weight="600" text-anchor="end">-&gt; 0</text>
+<text class="tm" x="324" y="340" font-size="10" text-anchor="middle">60 scored</text>
+<rect class="a af" x="432" y="128" width="196" height="196" rx="6" stroke-width="1.5"/>
+<text class="ta" x="442" y="148" font-size="11" font-weight="700">a task never</text>
+<text class="ta" x="442" y="162" font-size="11" font-weight="700">trained: smaller</text>
+<text class="t mono" x="442" y="186" font-size="9.5">Which is smaller, 47 or 59?</text>
+<text class="ta mono" x="618" y="198" font-size="9.5" font-weight="600" text-anchor="end">-&gt; 47</text>
+<text class="t mono" x="442" y="213" font-size="9.5">What is the lesser of 43 and 89?</text>
+<text class="ta mono" x="618" y="225" font-size="9.5" font-weight="600" text-anchor="end">-&gt; 43</text>
+<text class="t mono" x="442" y="240" font-size="9.5">Which is smaller, 72 or 89?</text>
+<text class="ta mono" x="618" y="252" font-size="9.5" font-weight="600" text-anchor="end">-&gt; 72</text>
+<text class="t mono" x="442" y="267" font-size="9.5">What is the lesser of 79 and 28?</text>
+<text class="ta mono" x="618" y="279" font-size="9.5" font-weight="600" text-anchor="end">-&gt; 28</text>
+<text class="t mono" x="442" y="294" font-size="9.5">Give the smaller number: 55 or...</text>
+<text class="ta mono" x="618" y="306" font-size="9.5" font-weight="600" text-anchor="end">-&gt; 52</text>
+<text class="tm" x="530" y="340" font-size="10" text-anchor="middle">60 scored</text>
+</svg>

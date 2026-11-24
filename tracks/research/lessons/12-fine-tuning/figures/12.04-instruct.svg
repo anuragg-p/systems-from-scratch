@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 290" fill="none">
+<title>12.04&#x27;s instruction model: GPT-2 tuned 30 steps of 8 on the five tasks, with LoRA and with every weight, 2 seeds each: exact match on 20 held-out instances, and bits per character on the first 1,024 tokens of Shakespeare&#x27;s test text, beside GPT-2 as it is</title>
+<defs><marker id="instruct1204-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="instruct1204-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="instruct1204-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="54" y="233.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="60" y1="166.7" x2="260" y2="166.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="170.17" font-size="10.5" text-anchor="end">0.2</text>
+<line class="m" x1="60" y1="103.3" x2="260" y2="103.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="106.83" font-size="10.5" text-anchor="end">0.4</text>
+<text class="tm mono" x="54" y="43.5" font-size="10.5" text-anchor="end">0.6</text>
+<rect class="m" x="60" y="40" width="200" height="190" rx="0" stroke-width="1.5"/>
+<text class="tm" x="54" y="32" font-size="11.5">exact match</text>
+<line class="m" x1="60" y1="230" x2="260" y2="230" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="256" y="225" font-size="10.5" text-anchor="end">GPT-2: 0.0</text>
+<text class="tm mono" x="374" y="233.5" font-size="10.5" text-anchor="end">1.68</text>
+<line class="m" x1="380" y1="182.5" x2="600" y2="182.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="374" y="186" font-size="10.5" text-anchor="end">1.72</text>
+<line class="m" x1="380" y1="135.0" x2="600" y2="135.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="374" y="138.5" font-size="10.5" text-anchor="end">1.76</text>
+<line class="m" x1="380" y1="87.5" x2="600" y2="87.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="374" y="91" font-size="10.5" text-anchor="end">1.8</text>
+<text class="tm mono" x="374" y="43.5" font-size="10.5" text-anchor="end">1.84</text>
+<rect class="m" x="380" y="40" width="220" height="190" rx="0" stroke-width="1.5"/>
+<text class="tm" x="374" y="32" font-size="11.5">bits per character</text>
+<line class="m" x1="380" y1="78.95" x2="600" y2="78.95" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="596" y="73.95" font-size="10.5" text-anchor="end">GPT-2: 1.8072</text>
+<circle class="a f" cx="110" cy="87.5" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="110" cy="119.17" r="3" stroke-width="1.5"/>
+<line class="a" x1="98" y1="103.33" x2="122" y2="103.33" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="126" y="107.33" font-size="10" font-weight="600">0.400</text>
+<text class="ta" x="110" y="245" font-size="10.5" font-weight="600" text-anchor="middle">LoRA</text>
+<circle class="a f" cx="435" cy="72.61" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="435" cy="120.88" r="3" stroke-width="1.5"/>
+<line class="a" x1="423" y1="96.74" x2="447" y2="96.74" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="451" y="100.74" font-size="10" font-weight="600">1.7922</text>
+<text class="ta" x="435" y="245" font-size="10.5" font-weight="600" text-anchor="middle">LoRA</text>
+<circle class="s f" cx="210" cy="103.33" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="210" cy="103.33" r="3" stroke-width="1.5"/>
+<line class="s" x1="198" y1="103.33" x2="222" y2="103.33" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="226" y="107.33" font-size="10" font-weight="600">0.400</text>
+<text class="t" x="210" y="245" font-size="10.5" font-weight="600" text-anchor="middle">every weight</text>
+<circle class="s f" cx="545" cy="187.06" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="545" cy="205.92" r="3" stroke-width="1.5"/>
+<line class="s" x1="533" y1="196.49" x2="557" y2="196.49" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="561" y="200.49" font-size="10" font-weight="600">1.7082</text>
+<text class="t" x="545" y="245" font-size="10.5" font-weight="600" text-anchor="middle">every weight</text>
+<text class="t" x="380" y="270" font-size="10.5">LoRA against every weight: t = +3.8</text>
+<text class="tm" x="20" y="270" font-size="10.5">The same exact match; every weight trained made</text>
+<text class="tm" x="20" y="284" font-size="10.5">Shakespeare more likely, not less.</text>
+</svg>

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>Along the recorded run: at each evaluation (steps 0, 150, 300, 450, 599), validation accuracy against the bits per character on the first 2,048 tokens of Shakespeare&#x27;s test text, the mean of 3 seeds; GPT-2 itself 1.8152 there</title>
+<defs><marker id="along1204-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="along1204-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="along1204-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="60" y="269.5" font-size="10.5" text-anchor="end">1.8</text>
+<line class="m" x1="66" y1="227.7" x2="476" y2="227.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="60" y="231.17" font-size="10.5" text-anchor="end">1.81</text>
+<line class="m" x1="66" y1="189.3" x2="476" y2="189.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="60" y="192.83" font-size="10.5" text-anchor="end">1.82</text>
+<line class="m" x1="66" y1="151.0" x2="476" y2="151.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="60" y="154.5" font-size="10.5" text-anchor="end">1.83</text>
+<line class="m" x1="66" y1="112.7" x2="476" y2="112.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="60" y="116.17" font-size="10.5" text-anchor="end">1.84</text>
+<line class="m" x1="66" y1="74.3" x2="476" y2="74.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="60" y="77.83" font-size="10.5" text-anchor="end">1.85</text>
+<text class="tm mono" x="60" y="39.5" font-size="10.5" text-anchor="end">1.86</text>
+<line class="m" x1="66" y1="266" x2="66" y2="270" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="66" y="282" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="155.13" y1="266" x2="155.13" y2="270" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="155.13" y="282" font-size="10.5" text-anchor="middle">0.2</text>
+<line class="m" x1="244.26" y1="266" x2="244.26" y2="270" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="244.26" y="282" font-size="10.5" text-anchor="middle">0.4</text>
+<line class="m" x1="333.39" y1="266" x2="333.39" y2="270" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="333.39" y="282" font-size="10.5" text-anchor="middle">0.6</text>
+<line class="m" x1="422.52" y1="266" x2="422.52" y2="270" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="422.52" y="282" font-size="10.5" text-anchor="middle">0.8</text>
+<rect class="m" x="66" y="36" width="410" height="230" rx="0" stroke-width="1.5"/>
+<text class="tm" x="271" y="298" font-size="11.5" text-anchor="middle">validation accuracy</text>
+<text class="tm" x="60" y="28" font-size="11.5">bits per character, untuned text</text>
+<line class="m" x1="66" y1="207.74" x2="476" y2="207.74" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="70" y="202.74" font-size="10.5">GPT-2</text>
+<line class="m" x1="422.52" y1="36" x2="422.52" y2="266" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="444.8" y1="36" x2="444.8" y2="266" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="458.17" y1="36" x2="458.17" y2="266" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<polyline class="a" points="70.9,207.6 387.2,99.1 432.5,99.0 452.5,86.9 459.1,86.2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+<circle class="a fa" cx="70.9" cy="207.6" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="387.17" cy="99.08" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="432.47" cy="98.98" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="452.53" cy="86.89" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="459.07" cy="86.16" r="2.5" stroke-width="1.5"/>
+<polyline class="a" points="70.9,207.8 390.7,145.7 433.5,126.5 453.9,122.7 459.2,117.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 3"/>
+<circle class="a fa" cx="70.9" cy="207.77" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="390.73" cy="145.74" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="433.51" cy="126.46" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="453.87" cy="122.71" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="459.21" cy="117.42" r="2.5" stroke-width="1.5"/>
+<polyline class="a" points="70.9,207.7 388.9,118.4 432.3,112.3 453.6,107.0 460.7,107.1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="70.9" cy="207.71" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="388.95" cy="118.43" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="432.33" cy="112.25" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="453.57" cy="107.03" r="2.5" stroke-width="1.5"/>
+<circle class="a fa" cx="460.7" cy="107.1" r="2.5" stroke-width="1.5"/>
+<polyline class="s" points="71.3,207.3 352.6,210.8 423.0,233.3 458.2,222.1 466.5,232.6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="71.35" cy="207.26" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="352.55" cy="210.82" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="422.97" cy="233.33" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="458.17" cy="222.08" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="466.49" cy="232.58" r="2.5" stroke-width="1.5"/>
+<polyline class="a" points="494.0,56.0 516.0,56.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+<text class="ta" x="522" y="60" font-size="11">LoRA r = 1</text>
+<polyline class="a" points="494.0,73.0 516.0,73.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 3"/>
+<text class="ta" x="522" y="77" font-size="11">LoRA r = 4</text>
+<polyline class="a" points="494.0,90.0 516.0,90.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="522" y="94" font-size="11">LoRA r = 8</text>
+<polyline class="s" points="494.0,107.0 516.0,107.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="522" y="111" font-size="11">every weight</text>
+<text class="tm" x="494" y="146" font-size="10">dashed upright lines:</text>
+<text class="tm" x="494" y="160" font-size="10">0.80, 0.85, 0.88, where</text>
+<text class="tm" x="494" y="174" font-size="10">the run&#x27;s part 2 reads</text>
+<text class="tm" x="494" y="188" font-size="10">each method&#x27;s bits</text>
+<text class="tm" x="20" y="316" font-size="10.5">At the same accuracy every weight trained is near GPT-2&#x27;s bits; LoRA is 0.02 to 0.03 above them.</text>
+</svg>
