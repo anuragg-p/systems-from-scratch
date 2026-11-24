@@ -526,3 +526,16 @@ DATA["data/tinyshakespeare.txt"] = "Tiny Shakespeare, from Andrej Karpathy's cha
 # narrower glob goes first.
 FILES_FROM = {"experiments/recorded/nplm/*": "07.02", **FILES_FROM}
 DATA["experiments/recorded/nplm/*"] = "the long run of experiments/nplm.py (07.02), recorded on the machine in NOTES.md"
+
+
+# ---------------------------------------------------------------- module 08: the transformer, a GPT
+#
+# Kept apart from the tables above, as modules 06 and 07's parts are. models/gpt.py is built up over 08.01 to 08.03
+# (regions, and @from blocks where a later lesson changes code an earlier one wrote), and experiments/language.py
+# is the loop the module's experiments share. The text ships with the project, so nothing needs a download.
+
+EXPERIMENTS.update({
+    "self_attention": ("08.01", ["seeds=1", "steps=5", "sizes=[16]", "length=20", "orders=2"],
+                       r"s of training and scoring on cpu"),
+})
+DATASET_OF.update({"self_attention": None})
