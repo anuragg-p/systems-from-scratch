@@ -6385,3 +6385,514 @@ reports nothing for research 12. The site: 12.02's page is about 40,000
 px tall, nearly all of it the recorded run's 49 files as blocks in The
 code (the harness quirk the plan lists; nothing in the track can fold
 them).
+
+## Module 15: your own result
+
+Built by one agent on 2026-11-25, code, recorded runs, lessons and art, on
+the reference machine above (Apple M4 Pro, Python 3.12.7, numpy 2.4.3,
+PyTorch 2.10.0, 10 threads by default), shared all the while with other
+agents' work (modules 11 and 12's code, module 13's lessons): load average
+8 to 19. Every time below says its load. The module does one piece of
+research whole, on the question 08.03 left: how much are learned positions
+worth as blocks are added, and how many blocks does a GPT without them
+need to match one with them?
+
+### The files
+
+```
+experiments/question.py  15.01   QUESTION, BEFORE (08.03's numbers), RELATED, PREDICTIONS (7), SMALLEST, LEVEL,
+                                 POWER, ARMS; pair, trained, judge, budget, read_runs, pack (regions); runs_in,
+                                 unpack, rule_text
+                         15.02   choose, gaps (regions); results (an @from block): depth.py's runs read back
+experiments/pilot.py     15.01   the pilot (no regions: FILES_FROM)
+experiments/depth.py     15.02   search, Wider (regions); widen, extra_units, table, draw, main
+experiments/paper.py     15.03   defaults, command, abstract, verdicts (regions); gather, paper, surprises, main
+experiments/recorded/pilot/      15.01's recorded pilot (depths 1 and 8, 4 pairs): runs.jsonl (packed), output.txt
+experiments/recorded/depth/      15.02's recorded experiment: runs.jsonl (282 runs, packed), output.txt, bits.svg,
+                                 gap.svg
+experiments/recorded/followup/   15.02's follow-up past the top of the search: depth/runs.jsonl, its figures,
+                                 output.txt
+experiments/recorded/paper/      paper.txt, as paper.py wrote it from the two records
+tests/1501_... to 1503_...       one a lesson
+```
+
+question.py is shared code with no main, as 14.01's predictions.py is:
+an experiment never imports another, so what pilot.py, depth.py and
+paper.py share lives there (the predictions, the pairing, the scoring,
+the readers, the comparison). models/gpt.py and experiments/language.py
+are not changed: the two arms are GPT(V, 32, layers, 4, 64,
+positions=False) and positions=True, trained by language.train.
+
+### What was read, at the source
+
+Fetched on 2026-11-25 with curl into a scratch folder and read as text
+(the HTML with its tags taken out; each PDF through pdftotext); every quote
+on the pages and in question.py was found again in that text by search.
+
+- Richard Hamming, "You and Your Research", the transcription of the
+  Bellcore colloquium of 7 March 1986 at
+  https://www.cs.virginia.edu/~robins/YouAndYourResearch.html. Read: the
+  talk whole (not the question period after it). Used: "Most great
+  scientists know many important problems. They have something between 10
+  and 20 important problems for which they are looking for an attack.";
+  "It's not the consequence that makes a problem important, it is that you
+  have a reasonable attack."; "If you do not work on an important problem,
+  it's unlikely you'll do important work."; Friday afternoons, "Great
+  Thoughts Time"; on selling, "it is not sufficient to do a job, you have
+  to sell it", "You have to learn to write clearly and well so that people
+  will read it", "The tendency is to give a highly restricted, safe talk;
+  this is usually ineffective." Not used: the parts on drive, courage, the
+  door open or shut, age.
+- John Schulman, "An Opinionated Guide to ML Research" (posted
+  2020/01/24), http://joschu.net/blog/opinionated-guide-ml-research.html,
+  whole. Used: "Your ability to choose the right problems to work on is
+  even more important than your raw technical skill."; idea-driven against
+  goal-driven research and "One major downside of idea-driven research is
+  that there's a high risk of getting scooped or duplicating the work of
+  others. Researchers around the world are reading the same literature,
+  which leads them to similar ideas."; "Aim High, and Climb Incrementally
+  Towards High Goals" ("Will this be a 10% improvement or a 10X
+  improvement?"); "Keep a Notebook, and Review It". The quotes are written
+  in ASCII: the page has curly apostrophes.
+- Simon Peyton Jones, "How to Write a Great Research Paper". The page the
+  outline links (microsoft.com/en-us/research/academic-program/
+  write-great-research-paper/) refused an automated client (a page
+  titled "Microsoft" with no content); so did the PDF of the slides at
+  microsoft.com/en-us/research/uploads/prod/2016/07/How-to-write-a-great-
+  research-paper.pdf. Read instead: his own page,
+  https://simon.peytonjones.org/great-research-paper/ (which links the
+  same PDF and PPT), and the PDF itself through the Wayback Machine
+  (web.archive.org/web/2023id_/<that URL>, 513,948 bytes), whole: the
+  slides' text, 352 lines. Used: "Writing papers is a primary mechanism
+  for doing research (not just for reporting it)"; "Do not be
+  intimidated" and "Write a paper, and give a talk, about any idea, no
+  matter how weedy and insignificant it may seem to you"; one "ping";
+  the structure (Title (1000 readers), Abstract (4 sentences, 100
+  readers), Introduction (1 page, 100 readers), The problem, My idea, The
+  details, Related work (1-2 pages, 10 readers), Conclusions and further
+  work); "Use an example to introduce the problem"; "Contributions should
+  be refutable"; no "rest of this paper is..."; related work later ("No
+  related work yet!"); "Be generous to the competition"; "Acknowledge
+  weaknesses in your approach"; "Use the active voice" ("We ran 34 tests"
+  against "34 tests were run"). The video was not watched.
+- The question's literature, each PDF from arxiv.org/pdf/<id>:
+  - Haviv, Ram, Press, Izsak and Levy (2022), arXiv 2203.16634 (08.03's
+    paper, read again for depth): table 2 (NoPos against learned at 125M,
+    350M, 760M, 1.3B: 22.15/22.04, 16.87/16.84, 14.29/14.21, 13.10/13.05;
+    "Smaller models benefit from fixed, non-parametric positional
+    encodings (Sinusoidal and ALiBi), but these performance gaps diminish
+    as the models scale up"), table 5's sizes (12 layers at 125M, 24 at
+    350M to 1.3B), section 5 and figure 2 (the probe: no position in the
+    first layer, "it becomes position-aware within four layers"), section
+    9, Limitations.
+  - Irie, Zeyer, Schlueter and Ney (2019), "Language Modeling with Deep
+    Transformers", Interspeech 2019, arXiv 1905.04226: the abstract,
+    section 1, section 7 (7.1 to 7.3) and table 9: models (L, 2048, 512, 8)
+    at L = 12, 24, 42 on LibriSpeech's word-level text, perplexity after 5
+    epochs, train/dev/test: sinusoidal 61.8/63.1/66.1 against none
+    58.0/60.5/63.4 (12 layers); 55.6/58.0/60.8 against 52.7/56.6/59.2
+    (24); 51.2/55.0/57.7 against 50.5/54.2/56.8 (42). "we experimentally
+    show that the positional encoding is not needed for multi-layer
+    autoregressive self-attention models"; without positions the first
+    layer "learns to focus on the new input token". Their comparison is
+    against sines and cosines, not learned positions.
+  - Kazemnejad, Padhi, Natesan Ramamurthy, Das and Reddy (2023), "The
+    Impact of Positional Encoding on Length Generalization in
+    Transformers", NeurIPS 2023, arXiv 2305.19466v2: the abstract and
+    section 5.1, theorem 1 ("the first layer of f_theta can recover
+    absolute positions [1, . . . , T + 1] in the hidden state H(1)"; the
+    input starts with <bos>) and theorem 2 (later layers can then
+    implement relative positions). Their models are about 107M weights;
+    not read: their experiments' details, the appendices.
+  - Chi, Fan, Chen, Rudnicky and Ramadge (2023), "Latent Positional
+    Information is in the Self-Attention Variance of Transformer Language
+    Models Without Positional Embeddings", ACL 2023, arXiv 2305.13571: the
+    abstract only.
+  - Zuo, Guerzhoy and Guerzhoy (2024), "Position Information Emerges in
+    Causal Transformers Without Positional Encodings via Similarity of
+    Nearby Embeddings", COLING 2025 (its arXiv comment), arXiv 2501.00073:
+    the abstract and the first paragraphs of the introduction only.
+  The search that found them (2026-11-25, three web searches: "transformer
+  language model without positional encoding number of layers depth NoPE
+  causal mask"; Irie et al.'s title; "NoPos NoPE shallow transformer few
+  layers perplexity gap learned positional embedding ablation by number of
+  layers"; and arXiv's own pages). Found: comparisons at 12 layers and
+  more (Irie et al., Haviv et al.), theory for the first layers
+  (Kazemnejad et al.), mechanisms (Chi et al., Zuo et al.). Not found: the
+  gap block by block from one block, in a small model, at a fixed budget.
+  A few searches are not a survey; 15.01 and the paper say so.
+- The Deep Learning Tuning Playbook (Godbole, Dahl, Gilmer, Shallue,
+  Nado), README.md at commit 7554a51f5d30 (2024-06-13), the sections
+  "Identifying scientific, nuisance, and fixed hyperparameters" ("The
+  learning rate is a nuisance hyperparameter because we can only fairly
+  compare models with different numbers of hidden layers if the learning
+  rate is tuned separately for each number of layers (the optimal
+  learning rate generally depends on the model architecture)") and
+  "Identifying bad search space boundaries" ("If the best points cluster
+  towards the edge of a search space (in some dimension), then the search
+  space boundaries might need to be expanded until the best observed point
+  is no longer close to the boundary."), the reason for the follow-up.
+
+### 15.01 Choosing a question a laptop can answer
+
+experiments/question.py was written first and committed (31d3c6a, 01:58:23
+on 2026-11-25) before the pilot or any run that scored a model; the only
+run before it was a timing script outside the project (40 steps of each
+model at each depth, printing milliseconds and weight counts, no bits). It
+holds the question, 08.03's numbers (BEFORE), what the search found
+(RELATED, five papers), seven predictions with their rules, SMALLEST =
+0.02 bits (the smallest gap worth finding), LEVEL 0.95, POWER 0.8, and the
+shared code. The rules: "largest" and "falls" by the means; "about" within
+a factor of 2 by the mean; "above" by the paired interval (held / did not
+hold / not settled); "clear" held only if the paired interval is above 0;
+"worse" by Welch's interval (none at the deepest against learned at 4);
+"closes_under" by the means.
+
+The two arms of one seed (pair): GPT(V, 32, layers, 4, 64,
+positions=False) built after torch.manual_seed(seed), the same with
+positions=True built after the same seed, then every weight of the first
+copied into the second (load_state_dict strict=False; the only missing key
+is positions.weight, asserted). Without the copy the two would differ in
+every block: positions.weight is drawn between tokens.weight and the
+blocks in GPT's start loop. The batches are paired by the seed already
+(run.rng). Measured that dropout 0 draws nothing from torch's generator
+(F.dropout with p = 0 leaves the state unchanged), so the training adds no
+other randomness.
+
+The pilot, recorded (experiments/recorded/pilot):
+
+    python3 -m experiments.pilot "depths=[1,8]" seeds=4 out=experiments/recorded
+
+157 s by its own clock (01:59:24 to 02:02:02 on 2026-11-25), load 8 to 11.
+At 08.03's rate 0.003, 300 steps, validation bits per character (each
+character with 16 or more before it), 4 pairs (seeds 0 to 3):
+- 1 block: none `3.486 +- 0.004904` (3.481 to 3.49), learned `3.336 +-
+  0.03574` (3.291 to 3.371); the gap `0.149 +- 0.0315` (0.12 to 0.191);
+  2.7 s a run.
+- 8 blocks: none `3.386 +- 0.0109`, learned `3.354 +- 0.007017`; the gap
+  `0.032 +- 0.00643` (0.0224 to 0.0362); 16.9 s a run.
+The largest sd of a depth's gaps, 0.0315 (one block, nearly all of it the
+model with positions), gives seeds_needed(0.02, 0.0315, paired) = 22
+pairs; at eight blocks' 0.0064 it would be 3. Unpaired, at the largest sd
+of one arm (0.0357), 52 a side. The budget at those times: 4 rates on one
+seed and 22 pairs at depths 1, 2, 4, 6, 8, and 22 runs of the control at 4
+blocks, about 43 minutes. The rule (the largest spread of any depth) was
+in pilot.py before it ran; it was followed, though a rule per depth would
+have asked far fewer pairs of the deep models (15.01's Decide the
+boundary).
+
+### 15.02 The experiment, and the result you did not expect
+
+The recorded experiment (experiments/recorded/depth, packed into runs.jsonl
+from search-blocks<d>-<arm>-lr<r>/seed0, blocks<d>-<arm>/seed1 to seed22,
+control-blocks4-wider/seed1 to seed22; output.txt, bits.svg, gap.svg):
+
+    python3 -m experiments.depth "depths=[1,2,4,6,8]" "rates=[0.0015,0.003,0.006,0.012]" seeds=22 steps=300 every=100 control=4 out=experiments/recorded
+    python3 -c "from experiments.question import pack; pack('experiments/recorded/depth')"
+
+(and the same pack for experiments/recorded/pilot and
+experiments/recorded/followup/depth)
+
+2817 s by its own clock (02:03:42 to 02:50:39 on 2026-11-25), load 9 to 19
+(other agents training; 2.2 to 2.5 minutes a seed at load 15 to 19, about
+1.7 at load 11). The pilot's estimate, 43 minutes at load 8 to 11. 282
+runs: 40 of search (seed 0, validation only), 220 of pairs (seeds 1 to
+22), 22 of the control. Each model at each depth kept the rate with the
+lowest validation bits; the choices (none, learned): 1 block 0.006, 0.006;
+2 blocks 0.012, 0.012; 4 blocks 0.012, 0.012; 6 blocks 0.012, 0.006; 8
+blocks 0.012, 0.012: 7 of 10 at the top of the range.
+Test bits per character (each character with 16 or more before it), 22
+pairs; the gap none minus learned with its paired 95% interval (Welch's on
+the same runs beside it):
+- 1 block: none `3.484 +- 0.003809`, learned `3.196 +- 0.0227`; gap 0.2881
+  (0.2781 to 0.2982; Welch 0.2780 to 0.2983); learned lower on 22 of 22;
+  on validation 0.2922.
+- 2 blocks: none `3.435 +- 0.009087`, learned `3.164 +- 0.03498`; 0.2707
+  (0.2553 to 0.2862); 22 of 22; validation 0.2773.
+- 4 blocks: none `3.392 +- 0.01759`, learned `3.191 +- 0.01914`; 0.2013
+  (0.1903 to 0.2123); 22 of 22; validation 0.2062.
+- 6 blocks: none `3.391 +- 0.01384`, learned `3.249 +- 0.01772`; 0.1412
+  (0.1305 to 0.1520); 22 of 22; validation 0.1401.
+- 8 blocks: none `3.384 +- 0.01204`, learned `3.26 +- 0.021`; 0.1241
+  (0.1129 to 0.1352); 22 of 22; validation 0.1241.
+- The control at 4 blocks (no positions, every MLP 4 hidden units wider:
+  2064 more weights, against positions' 2048): `3.396 +- 0.01455`; minus
+  the model without positions, paired, +0.0036 (-0.0041 to +0.0114): no
+  difference; its gap to learned 0.2049 (0.1942 to 0.2157).
+The question's answer: positions are worth 0.288 bits at one block and less
+at every block added, 0.124 at eight, never 0 by eight blocks; no depth
+without positions matches even one block with them (the best without,
+8 blocks, 3.384; the worst with, 8 blocks, 3.260; one block with, 3.196):
+at this size (width 64, windows of 32) and budget (300 steps), more than
+eight blocks.
+The predictions (question.py, committed at 01:58:23, before the pilot
+at 01:59:24; PREDICTIONS, the constants and judge are unchanged since,
+checked by parsing the commit's file; rule_text, the words a table prints,
+was reworded): one_block held (0.288); shrinks held (0.288, 0.271, 0.201,
+0.141, 0.124); size_one held (0.278 to 0.298); again did not hold (0.201,
+against 0.0325 to 0.13); not_closed held (0.113 to 0.135); depth_no_substitute
+held (Welch, none at 8 minus learned at 4: 0.183 to 0.202); not_weights
+held (the control closes -1.8% of the gap). Six of seven.
+Not expected, each seen after the runs (the paper's section 6 says so):
+1. The rate, more than the depth: at 4 blocks, seed 0, the gap on
+   validation is 0.016 at 0.0015, 0.076 at 0.003, 0.167 at 0.006, 0.169 at
+   0.012. From 08.03's 0.003 to the searched rate the model with positions
+   gained 0.117 bits on validation, the model without 0.025. 08.03's 0.065
+   was a number at one rate for both; with each model's rate searched it
+   is 0.201 (3.1 times). At 0.0015 positions are worth almost nothing at
+   any depth (0.005, 0.019, 0.016, 0.004, -0.002). Why the model with
+   positions needs the larger step is not measured.
+2. shrinks held for another reason than it gave: with positions the best
+   depth is 2 blocks (3.164); from 2 to 8 blocks it gets worse by 0.096,
+   the model without positions better by 0.051; 65% of the gap's fall
+   from 2 to 8 is the deeper model with positions doing worse in 300 steps.
+3. Pairing bought nothing: paired intervals 0.97 to 1.11 times Welch's; the
+   two arms' correlation over seeds -0.17 to +0.15 (13.02's heads: +0.60,
+   26% narrower). The spread of the gap is the model with positions'
+   (sd 0.019 to 0.035 against 0.004 to 0.018 without).
+4. Validation and test agree within 0.007 bits on every gap; test is a
+   little harder than validation for these models (by 0.014 to 0.024 bits,
+   not the 0.2 07's count models showed).
+5. The pilot's spread was not the experiment's: at 8 blocks the pilot (rate
+   0.003) measured sd 0.0064, the experiment (rate 0.012) 0.025, which
+   asks 15 pairs; the rule that took the largest spread (22) covered it by
+   luck. At 2 blocks the experiment's sd 0.035 would ask 26 for a gap of
+   0.02; the gaps found are 7 to 14 times that.
+The follow-up (the playbook's step for a best at the edge of the range),
+recorded in experiments/recorded/followup (depth/..., output.txt):
+
+    python3 -m experiments.depth "depths=[4]" "rates=[0.012,0.024,0.048]" seeds=3 steps=300 every=100 out=experiments/recorded/followup
+
+96 s at load 8 to 10 (02:53 to 02:55; it was run twice, the first time,
+97 s at load 9 to 11, printing the verdicts of a one-depth run, which
+depth.py now marks "not run here"; the second run's files are byte for
+byte the first's, and output.txt is the second's). Validation bits at
+0.012, 0.024, 0.048: none 3.379, 3.415, 3.867; learned 3.210, 3.235,
+4.045: at 4 blocks 0.012 is the best rate for both, not a limit. Its three
+pairs, at the experiment's rates and seeds, are the experiment's seeds 1
+to 3 again, the same bytes (cmp of every log.jsonl and summary.json): a
+second command, in another folder, made the recorded runs again. The other
+depths' edges (2, 6 none, 8) were not followed up.
+The recorded runs, the hour: the pilot 157 s, the experiment 2817 s, the
+follow-up 96 s: 3070 s, 51 min 10 s, at load 8 to 19. As the runs wrote
+them, 938 files (pilot 49, depth 849, followup 39, paper 1), 245 KB;
+packed, 11 files (a runs.jsonl a record, the figures, the outputs, the
+paper). No weights.
+
+The default (`python3 -m experiments.depth`): depths 1 and 2, rates 0.003
+and 0.006, 2 pairs, 150 steps; then the record. Both models at both depths
+choose 0.006; test gaps 0.0999 at one block and 0.0581 at two, neither
+interval clear of 0 (t at one degree of freedom, 12.7); its verdicts
+(one_block held, shrinks held, size_one not settled, not_closed at two
+blocks did not hold, three not run here). 27 s at load 7 to 8; 24 s at load
+5 to 6. The Break it (the pairs at 0.003 for both, in main()): gaps
+-0.0007 and -0.0077, positions worth nothing at 150 steps, the model with
+positions behind on every pair.
+
+### 15.03 The paper, and a repository anyone can rerun
+
+experiments/paper.py writes experiments/recorded/paper/paper.txt (231
+lines, 100 columns) from the two records, the follow-up and question.py;
+every number is read from a config.json, summary.json or output.txt, or
+computed from them (the text's size and SHA-256 from its bytes); others'
+numbers and the predictions from question.py. Sections: title, abstract
+(four sentences), 1 the problem (08.03's order test as the example), 2 what
+the paper shows (each a number with its section), 3 method, 4 results (the
+table), 5 the predictions with rules and verdicts, 6 what was not expected
+(computed paragraphs: the rate, why the gap shrinks, pairing, validation
+against test, the edges, the follow-up), 7 what others found (RELATED), 8
+limits, 9 the commands, made from config.json by command(), which keeps a
+setting only when its recorded value is not the script's default (read
+from the script's source by ast, never imported). 1.6 s. The words that
+depend on a number are chosen by it (closes / stays above 0; how many
+blocks match; the control's share; the follow-up's choice).
+Read against Peyton Jones's slides (see What was read): one ping, the
+four-sentence abstract, an example first, refutable contributions with
+forward references, related work late and generous, weaknesses said. Not
+followed: the active voice everywhere (the generated sentences often state
+numbers without a subject), and the intuition is in words in section 1,
+with no figure inside the text.
+The Break it: depth.py's default warmup 50 made 40; the paper's commands
+gain `warmup=50` (both depth.py lines), the recorded value no longer the
+default.
+The rerun on the page: `python3 -m experiments.depth "depths=[4]"
+"rates=[0.012]" seeds=1 steps=300 every=100 out=runs/again` in the
+project at 15.03, then cmp against experiments/recorded/depth/
+blocks4-learned/seed1/{log.jsonl,summary.json}: the same bytes, 27 s at
+load 5.
+
+### Departures from the design, and why
+
+- The design's numbers changed nothing in the claims; the lesson changed
+  with the measurement: the gap at 4 blocks is 0.201, not 08.03's 0.065,
+  and the module's "result you did not expect" is the learning rate.
+- One control row, at 4 blocks (08.03's depth), not at the shallowest:
+  where the gap first raised the question. The control model is the
+  no-positions model of the seed with each block's MLP made 4 hidden units
+  wider (depth.py's Wider, the first units copied), not a model built with
+  a wider MLP: models/gpt.py is not this agent's to change.
+- The search is a grid of four rates, 0.0015 to 0.012 (factor 2), the same
+  for both models at every depth, on seed 0, not 13.01's random draws: in
+  one dimension the playbook allows a grid, and the grid holds 08.03's
+  0.003. Seven of ten choices fell at its top; the follow-up widened it at
+  4 blocks only (the hour). 13.01's aside holds here too: one seed chose
+  each rate.
+- The pilot was run at depths 1 and 8, 4 pairs, at 08.03's rate, not at the
+  rates the search would choose (the search had not run); the number of
+  pairs is the largest spread's, by a rule in pilot.py as it ran (decide);
+  it asked 22 and 22 ran. The predictions file was committed before the
+  pilot; pilot.py and depth.py were committed after the pilot ran (3ae8395,
+  02:03:51) and before the experiment's results were read.
+- The recorded runs took 51 minutes, inside the hour, on a machine at load
+  8 to 19; on a quiet machine about 30 to 35 (the defaults ran 20 to 25%
+  faster at load 5 than at 7).
+- Every lesson has a test (./learn check reports "lesson has no test"
+  otherwise), and every lesson has code: 15.01 question.py's regions
+  (pair, trained, judge, budget, read_runs) and pilot.py; 15.02 depth.py's
+  search and Wider, question.py's choose and gaps; 15.03 paper.py's
+  defaults, command, abstract and verdicts. Labels "with code, decision
+  boundary" on all three.
+- depth.py with seeds=1 printed a traceback at its table (an interval of
+  one pair asks t_quantile for 0 degrees of freedom: a math domain error,
+  after every run had written its files). table() now prints one pair's
+  bits with "no interval, and no verdict, from one pair" and returns; found
+  by 15.03's test, fixed after the recorded runs (printing only: the runs'
+  files are the same).
+
+### The lessons, the art, and what the pages measured
+
+lessons/15-your-own-result/: README.md, 15.01 to 15.03 (labels "with code,
+decision boundary"), cover.svg and icon.svg (art/outlines/research_art.py's
+module 15 cover is now drawn from the recorded experiment: the gap against
+blocks with its intervals, 08.03's 0.065, and the path question,
+predictions, pilot, experiment, paper, its numbers asserted), and 14
+figures from art/research/figs15.py (no training; it reads the records,
+question.py and data/fetch.py) besides the three maps (archmap.py: piece
+"15" comes with 15.01, the three lessons, MODULE_TITLES; figlib.MODULE_DIRS
+"15"). Looked at on the site in both themes (port 8115, shot.py).
+- 15.01: the questions the track's results leave, each with the minutes of
+  the recorded run it extends (from the records' output.txt: 08.03's pilot
+  plan 43, 14.04 27, 10.05 42, 13.04 three budgets 153; TinyStories'
+  grammar not on a laptop); what the search found, honestly partial; one
+  model, one text, one number, one budget; the predictions; the pilot.
+  Found while writing: 10.05's recorded logs have SwiGLU's held-out curve
+  ahead of the base from step 100 at width 128, where 10.03 found it behind
+  after 150 steps at width 64: "the width or the steps?" is one of the
+  page's questions, not run. The page's pilot (3 pairs at 1 and 2 blocks,
+  30 to 35 s) asks 27 pairs, against the record's 22. Break it (the weight
+  copy taken out of pair): the model with positions' sd at one block 0.0072
+  against 0.040 and 7 pairs, not 27; a spike outside the page, 10 seeds of
+  each at one block (lr 0.003), gave sd 0.0234 paired and 0.0215 built on
+  its own, gaps 0.151 and 0.154: no difference; three seeds' spread is that
+  rough. The page says so.
+- 15.02: the obvious experiment and its three faults (one rate, three
+  seeds, unpaired); the plan; the default (two depths, two rates, two
+  pairs, 150 steps) and the record; the results and each surprise; the
+  follow-up. Break it: the pairs at 0.003 instead of the searched rate:
+  gaps -0.0007 and -0.0077 at 150 steps.
+- 15.03: the paper whole in Run it, read against Peyton Jones; a
+  repository anyone can rerun, on the track's own project (seven points);
+  a checklist for publishing one's own; the rerun session (one depth, one
+  rate, one pair of the recorded command: the same bytes, cmp). Break it:
+  depth.py's default warmup moved, the paper's commands gain warmup=50.
+
+### Tests (module 15)
+
+`./learn test research 15`: all 3 pass (15.01 39.7 s, 15.02 42.4 s, 15.03
+13.7 s, load 5 to 6). Each runs its exact checks first (inside()):
+- 15.01: the seven predictions complete, every rule kind judge knows, and
+  judge's outcomes on made gaps (largest, falls, above with all three
+  answers, clear, about, worse with all three, closes_under); pair: every
+  shared tensor equal, positions.weight only in the learned arm, another
+  seed other weights; the two arms of a seed draw the same windows (a spy
+  on the Run's rng, 3 steps); trained scores the test text only when asked
+  and counts the weights; budget against a line worked by hand; read_runs
+  against runs lab.Run wrote. The recorded pilot: both arms at 1 and 8
+  blocks, 4 seeds, configs equal but the label, no test bits, logs from 0
+  to the last step, positions adding context x width weights; the pairs
+  its spread asks (seeds_needed, run in the project) equal the pairs every
+  recorded depth ran. The default: predictions before the pilot, 3 seeds a
+  depth, positions worth more than 0.05 bits at one block on every seed,
+  no test bits, a number of pairs, the recorded 22 read back, the budget;
+  a tiny run twice, the same bytes.
+- 15.02: choose; gaps against lab.difference (paired narrower than Welch's
+  on runs made to move together); Wider: the MLP's weights copied, the new
+  units drawn as GPT-2's, the same function once their way out is zero;
+  widen adds context x width weights within 2% at 1, 2, 4 and 8 blocks;
+  search on a tiny text: every rate for both arms, seed 0, validation
+  only; results reads the search back. The record: depths 1 to 8, three
+  rates or more, 300 steps, the control at 4; every search run seed 0 at
+  its rate with validation bits only; every pair at the rate its search
+  chose, seeds 1 to n, settings equal but seed, label and rate, logs and
+  test bits; the control's seeds, rate and weights; the result (the gap at
+  one block over 0.1, every pair positive there, more than twice the
+  deepest's, the largest of all depths). The default: 2 pairs at 1 and 2
+  blocks, positions over 0.05 bits at one block on both, 14 verdict lines,
+  3 "not run here"; a tiny run with the control twice, the same bytes.
+- 15.03: defaults reads a CONFIG from a file that would stop if imported;
+  command keeps only what differs from the defaults, quotes lists, leaves
+  the runner's keys out, and gives back the recorded pilot's own command;
+  the paper from a fixture of runs written by the test: its gap and
+  interval, the pairs asked, the verdicts, four sentences of abstract,
+  every prediction's words. Then the recorded paper: printed as written,
+  equal to experiments/recorded/paper/paper.txt, nine sections, seven
+  verdicts, the experiment's command with exactly the settings that differ
+  from depth.py's defaults, the text's SHA-256; and the command run in a
+  clean copy of the project (no runs, no records), cut to one block, the
+  rate chosen there and two pairs: blocks1-none and blocks1-learned seeds 1
+  and 2, log.jsonl and summary.json, byte for byte the record's.
+`./learn check-skeleton research 15` ok (15.01 fails at judge, 15.02 at
+choose, 15.03 at defaults); the whole track's ok, 1 min 26 s. `./learn
+verify --fresh research 15` ok, 150 s at load 4 to 6 (15.01 65 s, 15.02
+52 s, 15.03 33 s). `./learn test research 08` all 5 pass (3 min 52 s) and
+`13` all 4 (1 min 55 s), at load 6 to 12: nothing of theirs changed.
+`./learn selftest` ok (269 tests). `./learn check-timeline research` ok,
+8 min 24 s at load 6 to 12: the project has 507 files at 15.01, 1396 at
+15.02 (the recorded experiment and follow-up) and 1398 at 15.03. `./learn
+check`: nothing for research 15 (the lines left are research/13.0N
+without their lessons yet, and another track's).
+
+### For the harness, and what a page writer meets
+
+- No harness change. track.py's module-15 part is the last block of the
+  file: the three experiments in EXPERIMENTS (short settings for the
+  timeline), DATASET_OF (none), pilot.py placed at 15.01 by FILES_FROM,
+  and the four recorded folders (pilot 15.01, depth and followup 15.02,
+  paper 15.03) first in FILES_FROM with DATA lines.
+- The records are packed (question.pack), a workaround in the track for a
+  harness quirk plans/research.md lists: The code shows every new data
+  file as a block of its own. Unpacked, the recorded experiment was 849
+  files (282 runs, three files each) and 15.02's page was about 430,000 px
+  tall (a full-page screenshot: 1200 x 430,939), The code standing between
+  The idea and Run it; 15.01's 49 pilot files would have been as long as
+  14.04's page. Packed: one runs.jsonl a record, each line a run with its
+  three files' text verbatim; read_runs reads a pack or folders; unpack
+  writes the folders back byte for byte (checked on all three records
+  against the folders as the runs wrote them, before they were removed,
+  and by 15.01's test on a fixture). The fix belongs in harness/ (one
+  folded block for a DATA glob); then the records could be unpacked again
+  with one call each, and the readers would not change.
+- Lead-in names: question.py, depth.py and paper.py define results, texts,
+  table, search, choose, gaps, widen, paper, seconds, blocks, gather, para,
+  took, surprises; a "###" heading that holds one of these words is pulled
+  into The code. The pages' headings avoid them ("The shape it takes",
+  not "The shape of the paper").
+- 15.03's Run it is the whole paper (234 lines): the reading needs it.
+
+### Checked, and not checked
+
+Checked: every quote of Hamming, Schulman, Peyton Jones's slides, the
+playbook and the five papers found again in their text; the predictions,
+SMALLEST, LEVEL, POWER and judge unchanged since the commit before the
+pilot; the pairs share every weight but the table, and draw the same
+windows; the follow-up's pairs and the page's rerun are the record's bytes;
+the paper's numbers against the record (the cover asserts the gaps); the
+defaults' times on a machine at load 5 to 6 (pilot 30 s, depth 24 s, paper
+1.6 s). Not checked: other widths, windows or budgets (the gap may well
+depend on the steps: the model with positions is best at 2 blocks after 300
+steps, and deeper ones are not trained as far); the edges of the search at
+2, 6 and 8 blocks; whether the spread of the gap would shrink with a search
+on several seeds; why the model with positions wants the larger rate; a
+token marking each window's start (Kazemnejad et al.'s proof uses one);
+Linux. The published work beyond the five papers read, which were found by
+a few searches: someone may have measured this.

@@ -74,7 +74,7 @@ PIECES = {
     # research (15 not built yet)
     "13": ("research", "experiments that hold up", "13", "13.01"),
     "14": ("research", "the reproduction", "14", "14.01"),
-    "15": ("research", "your own result", "15", None),
+    "15": ("research", "your own result", "15", "15.01"),
     # models: models/, one file per network family (06 on); the modules after 09 not built yet
     "06": ("models", "image networks", "06", "06.02"),
     "07": ("models", "language models", "07", "07.02"),
@@ -179,6 +179,9 @@ LESSONS = [
     ("14.02", "The experiment from the text: modular arithmetic", "14", "the experiment"),
     ("14.03", "The figure: memorise first, generalise much later", "14", "the figure"),
     ("14.04", "Ablations, and the report", "14", "ablations, report"),
+    ("15.01", "Choosing a question a laptop can answer", "15", "choosing a question"),
+    ("15.02", "The experiment, and the result you did not expect", "15", "the experiment"),
+    ("15.03", "The paper, and a repository anyone can rerun", "15", "the paper, a repository"),
 ]
 
 MODULE_TITLES = {
@@ -196,6 +199,7 @@ MODULE_TITLES = {
     "12": "Fine-tuning",
     "13": "Experiments that hold up",
     "14": "Reproduce a paper: grokking",
+    "15": "Your own result",
 }
 
 # The rows, top to bottom: key -> its label over the row.

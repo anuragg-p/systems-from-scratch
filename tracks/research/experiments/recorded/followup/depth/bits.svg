@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+<line x1="64" y1="242.6" x2="490" y2="242.6" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="246.6" font-size="11" text-anchor="end" fill="currentColor">3.2</text>
+<line x1="64" y1="141.5" x2="490" y2="141.5" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="145.5" font-size="11" text-anchor="end" fill="currentColor">3.3</text>
+<line x1="64" y1="40.3" x2="490" y2="40.3" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="44.3" font-size="11" text-anchor="end" fill="currentColor">3.4</text>
+<line x1="64.0" y1="314" x2="64.0" y2="318" stroke="currentColor"/>
+<text x="64.0" y="331" font-size="11" text-anchor="middle" fill="currentColor">3</text>
+<line x1="170.5" y1="314" x2="170.5" y2="318" stroke="currentColor"/>
+<text x="170.5" y="331" font-size="11" text-anchor="middle" fill="currentColor">3.5</text>
+<line x1="277.0" y1="314" x2="277.0" y2="318" stroke="currentColor"/>
+<text x="277.0" y="331" font-size="11" text-anchor="middle" fill="currentColor">4</text>
+<line x1="383.5" y1="314" x2="383.5" y2="318" stroke="currentColor"/>
+<text x="383.5" y="331" font-size="11" text-anchor="middle" fill="currentColor">4.5</text>
+<line x1="490.0" y1="314" x2="490.0" y2="318" stroke="currentColor"/>
+<text x="490.0" y="331" font-size="11" text-anchor="middle" fill="currentColor">5</text>
+<rect x="64" y="34" width="426" height="280" fill="none" stroke="currentColor"/>
+<text x="277.0" y="352" font-size="12" text-anchor="middle" fill="currentColor">blocks</text>
+<text x="14" y="174.0" font-size="12" text-anchor="middle" fill="currentColor" transform="rotate(-90 14 174.0)">bits per character, test text</text>
+<circle cx="277.0" cy="53.1" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<polyline points="277.0,60.6 277.0,46.7" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="1.0"/>
+<circle cx="277.0" cy="267.1" r="2.5" fill="#d62728" opacity="1.0"/>
+<polyline points="277.0,301.3 277.0,247.6" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="1.0"/>
+<line x1="502" y1="42" x2="522" y2="42" stroke="#1f77b4" stroke-width="2.5"/>
+<text x="528" y="46" font-size="11" fill="currentColor">none positions</text>
+<line x1="502" y1="60" x2="522" y2="60" stroke="#d62728" stroke-width="2.5"/>
+<text x="528" y="64" font-size="11" fill="currentColor">learned positions</text>
+</svg>

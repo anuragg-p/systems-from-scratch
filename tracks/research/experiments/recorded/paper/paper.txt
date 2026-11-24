@@ -1,0 +1,232 @@
+What learned positions are worth to a small GPT, block by block
+
+Written by experiments/paper.py from the logs of experiments/recorded/pilot and
+experiments/recorded/depth: runs on one laptop's CPU.
+
+Abstract
+
+Without position embeddings a GPT of one block cannot tell one order of its window from another, and
+from the second block on its causal mask lets order in; at 4 blocks learned positions were worth
+0.065 bits per character in an earlier run, at one learning rate for both models. We measure what
+they are worth at 1, 2, 4, 6 and 8 blocks of a character-level GPT 64 wide on Tiny Shakespeare, each
+model's learning rate chosen by the same search on held-out text, each depth on 22 pairs of runs
+that share their batches and starting weights, a number fixed by a pilot before the experiment ran.
+The gap falls from 0.288 bits (0.278 to 0.298) at one block to 0.124 bits (0.113 to 0.135) at 8 (95%
+intervals), its interval stays above 0 at every depth, and no depth without positions reaches even
+one block with them (3.384 bits at best, against 3.196). At 4 blocks it is 0.201, 3.1 times the
+earlier run's, because the model with positions gains most from a larger rate; and the weights
+positions add, given to the model without them, close none of it (+0.004 bits).
+
+1. The problem
+
+Take 32 characters of Shakespeare and a GPT of one block without position embeddings, and put the 31
+characters before the last in another order. Its scores for the next character do not move: in the
+earlier run the largest change over five orders was 3.55e-15, rounding. With four blocks they moved
+by up to 2.44. In one block the last position weighs a set of characters, and a weighted sum does
+not care in what order its terms come; from the second block on, each position reads what the first
+block saw at the positions up to it, and the causal mask made those views differ. So a GPT without
+positions sees some of the order, and at four blocks learned positions were worth only 0.065 bits
+per character (3.407 against 3.342, 3 seeds). How much are they worth as blocks are added, and how
+many blocks does a GPT without them need to match one with them?
+
+2. What this paper shows
+
+- The gap at 1, 2, 4, 6, 8 blocks, each on 22 pairs of runs, each model's rate searched alike
+  (section 4): 0.288 bits (0.278 to 0.298) at one block, 0.124 bits (0.113 to 0.135) at 8; at no
+  depth tried does its 95% interval reach 0.
+- How many blocks without positions match one with them: none of 1 to 8. The best without, 8 blocks,
+  scores 3.384 bits; the worst with, 8 blocks, 3.260 (section 4).
+- The rate matters as much as the depth: at 0.003, the earlier run's rate, the search put the gap at
+  4 blocks at 0.076 on validation, at the rates it chose at 0.169 (sections 4 and 6).
+- Not the weights: the 2048 weights positions add at 4 blocks, put into the MLPs of the model
+  without them instead, close none of it (+0.004 bits) (section 4).
+- Seven predictions written before any run: 6 held (section 5).
+
+3. Method
+
+Model. The GPT of the track's module 08: pre-norm blocks of attention and an MLP, GELU, a last layer
+norm, the output tied to the embeddings, GPT-2's start (every weight drawn with sd 0.02); width 64,
+4 heads, windows of 32 characters, 1 to 8 blocks. With learned positions it has a table of 32 x 64 =
+2048 more weights, added to the embeddings.
+
+Data. Tiny Shakespeare, 1,115,394 bytes, one byte a character: the first 90% to train on, the next
+5% to choose on (validation), the last 5% to report on (test), split by position. Scores are bits
+per character, each character read with 16 or more before it.
+
+Training. AdamW, weight decay 0.1 on the matrices and embeddings, the rate warmed up over 50 steps
+then a cosine to 0, the gradient clipped to 1.0; 300 steps of 32 windows.
+
+Search. At every depth both models ran at each of the rates 0.0015, 0.003, 0.006, 0.012 on seed 0,
+and each kept the rate with the lowest validation bits.
+
+Pairs. Seeds 1 to 22 at the rates chosen: one seed gives both models the same batches and the same
+start for every weight they share; only the table of positions is not shared.
+
+Seeds. A pilot before the experiment ran 4 pairs at 1 block and 8 blocks, rate 0.003, scored on
+validation only. Its largest standard deviation of a depth's gaps, 0.0315, and the smallest gap
+worth finding, 0.02 bits, ask for 22 pairs for a true gap of that size to come out clear of 0 four
+times in five.
+
+Control. At 4 blocks the model without positions again, with every MLP 4 hidden units wider (2064
+weights, as many as positions add, within a few), at the rate chosen for the model without
+positions, on the same seeds.
+
+Statistics. Each pair's gap, no positions minus learned; the mean with a 95% paired t interval, and
+Welch's interval on the same runs beside it.
+
+Cost. The pilot took 157 s (3 minutes) and the experiment 2817 s (47 minutes) on one laptop's CPU,
+with other work running.
+
+4. Results
+
+Bits per character on the test text, the mean over 22 seeds; the gap is no positions minus learned,
+pair by pair, with its 95% interval as pairs and by Welch's; 'lower' counts the pairs in which
+positions helped; the last column is the gap on the validation text.
+
+blocks    none  learned     gap            paired             Welch   lower  validation
+     1   3.484    3.196   0.288   0.278 to  0.298   0.278 to  0.298   22/22       0.292
+     2   3.435    3.164   0.271   0.255 to  0.286   0.255 to  0.287   22/22       0.277
+     4   3.392    3.191   0.201   0.190 to  0.212   0.190 to  0.212   22/22       0.206
+     6   3.391    3.249   0.141   0.130 to  0.152   0.132 to  0.151   22/22       0.140
+     8   3.384    3.260   0.124   0.113 to  0.135   0.114 to  0.135   22/22       0.124
+
+The rates chosen (no positions, learned): 1 block 0.006, 0.006; 2 blocks 0.012, 0.012; 4 blocks
+0.012, 0.012; 6 blocks 0.012, 0.006; 8 blocks 0.012, 0.012.
+
+The control at 4 blocks: 3.396 bits, against 3.392 without the extra weights and 3.191 with
+positions; its gap to positions 0.205 (0.194 to 0.216).
+
+Figures: experiments/recorded/depth/bits.svg, each model's bits against blocks;
+experiments/recorded/depth/gap.svg, the gap with both intervals.
+
+5. The predictions, written before any run
+
+one_block: Positions are worth the most to a GPT of one block, which cannot see order at all without
+them.
+   rule: held if the mean gap at 1 block is the largest
+   ours: 0.288 (the mean gap at 1 block against the mean gap at every other depth)
+   held
+
+shrinks: The gap shrinks as blocks are added: the mask gives a deeper model more of the order.
+   rule: held if the mean gap falls at every step of depth
+   ours: 0.288, 0.271, 0.201, 0.141, 0.124 (the mean gap at each depth against the one before it)
+   held
+
+size_one: At one block the gap is more than 0.1 bits per character.
+   rule: held if the gap's interval at 1 block is all above 0.1
+   ours: 0.288, 0.278, 0.298 (the gap at 1 block, its paired interval)
+   held
+
+again: At four blocks, each arm with its own searched rate, the gap is about 08.03's 0.065.
+   rule: held if the mean gap at 4 blocks is within 0.0325 to 0.13
+   ours: 0.201 (the mean gap at 4 blocks, within a factor of 2 of 0.065)
+   did not hold
+
+not_closed: No depth tried closes the gap: at the deepest, positions still help beyond the noise.
+   rule: held if the gap's interval at the deepest is all above 0
+   ours: 0.124, 0.113, 0.135 (the gap at the deepest depth, its paired interval)
+   held
+
+depth_no_substitute: Twice the blocks do not buy what positions buy: no positions at 8 blocks is
+worse than learned positions at 4.
+   rule: held if Welch's interval (none at the deepest, learned at 4 blocks) is above 0
+   ours: 0.193, 0.183, 0.202 (test bits without positions at the deepest depth minus with them at 4,
+   Welch's interval)
+   held
+
+not_weights: The positions' weights are not why they help: the same number of weights given to the
+MLPs of a GPT without positions closes under a quarter of the gap.
+   rule: held if it closes under 25% of the gap at 4 blocks
+   ours: -0.018 (the share of the gap at 4 blocks the wider model without positions closes, by the
+   means)
+   held
+
+6. What was not expected
+
+The predictions that did not hold: again (did not hold).
+
+What follows was seen in the numbers after the runs; no rule was written for it before.
+
+The rate, more than the depth. At 4 blocks the gap on validation (seed 0, the search) is 0.016 at
+0.0015, 0.076 at 0.003, 0.167 at 0.006, 0.169 at 0.012. From the earlier run's 0.003 to the rate
+each model's search chose, the model with positions gained 0.117 bits and the model without them
+0.025. One rate for both, chosen for neither, measured 45% of the gap at the rates the searches
+chose; the prediction 'again' failed for that reason.
+
+Why the gap shrinks. With positions the best depth is 2 blocks (3.164 bits); from there to 8 blocks
+the model with positions gets worse by 0.096, and the model without gets better by 0.051. Of the
+gap's fall of 0.147, 65% is the deeper model with positions doing worse in 300 steps, not the deeper
+model without them catching up: 'shrinks' held by its rule, and not for the reason it gave.
+
+Pairing bought nothing. The paired intervals are 0.97 to 1.11 times as wide as Welch's on the same
+runs: the two models of a seed do not move together (their correlation over seeds is -0.17 to
++0.15), though they share their batches and every weight but the table of positions.
+
+Validation and test agree: at no depth do the two texts' gaps differ by more than 0.007 bits, so the
+test text's own sampling is not what the numbers show.
+
+7 of the 10 choices of the search are an end of its range (learned at 2 blocks, none at 2 blocks,
+learned at 4 blocks, none at 4 blocks, none at 6 blocks, learned at 8 blocks, none at 8 blocks): a
+search whose best is at its edge may have stopped short of the best.
+
+A follow-up past the top of the search, at 4 blocks: both models at 0.012, 0.024, 0.048 on seed 0,
+validation bits 3.379, 3.415, 3.867 without positions and 3.210, 3.235, 4.045 with them, so the
+search keeps 0.012 and 0.012, the experiment's own: there its edge was the best rate, not a limit.
+Its 3 pairs give a gap of 0.211 (0.133 to 0.290), against 0.201 in the experiment; run at the same
+rates and seeds by another command, they are the experiment's seeds 1 to 3 again, to the last digit.
+It took 96 s (2 minutes).
+
+7. What others found
+
+- Irie, Zeyer, Schlueter and Ney (2019), Language Modeling with Deep Transformers, Interspeech 2019,
+  arXiv 1905.04226 (section 7.1 and table 9): word-level models of 12, 24 and 42 layers on
+  LibriSpeech: without positions the perplexity is lower than with sinusoidal ones at every depth
+  (development set 60.5 against 63.1 at 12 layers, 56.6 against 58.0 at 24, 54.2 against 55.0 at
+  42); 'the positional encoding is not needed for multi-layer autoregressive self-attention models'.
+- Haviv, Ram, Press, Izsak and Levy (2022), Transformer Language Models without Positional Encodings
+  Still Learn Positional Information, Findings of EMNLP 2022, arXiv 2203.16634 (table 2 and section
+  5): on the Pile, 125 million to 1.3 billion weights (12 to 24 layers): no positions against
+  learned, perplexity 22.15 against 22.04 at 125M and 13.10 against 13.05 at 1.3B, 'these
+  performance gaps diminish as the models scale up'; a probe finds the model without positions has
+  no position in its first layer and 'becomes position-aware within four layers'.
+- Kazemnejad, Padhi, Natesan Ramamurthy, Das and Reddy (2023), The Impact of Positional Encoding on
+  Length Generalization in Transformers, NeurIPS 2023, arXiv 2305.19466 (theorem 1): 'the first
+  layer of f_theta can recover absolute positions' (with a beginning-of-sequence token at the start
+  of every input), so that later layers can use them; models without positions generalise to longer
+  inputs better than with any explicit positions, on reasoning and arithmetic tasks.
+- Chi, Fan, Chen, Rudnicky and Ramadge (2023), Latent Positional Information is in the Self-
+  Attention Variance of Transformer Language Models Without Positional Embeddings, ACL 2023, arXiv
+  2305.13571 (the abstract): a model without positions, even untrained, 'inherently encodes strong
+  positional information through the shrinkage of self-attention variance': the average over more
+  earlier positions varies less.
+- Zuo, Guerzhoy and Guerzhoy (2024), Position Information Emerges in Causal Transformers Without
+  Positional Encodings via Similarity of Nearby Embeddings, COLING 2025, arXiv 2501.00073 (the
+  abstract): 'nearby embeddings are more similar to each other than faraway embeddings, allowing the
+  transformer to potentially reconstruct the positions of tokens', in trained and untrained models.
+
+Not found in that search: the gap block by block from one block up, in a small model, at a fixed
+budget. The search was a few queries of the web and arXiv and the papers they led to, not a survey.
+
+8. Limits
+
+- One size (64 wide, 4 heads, windows of 32), one text, one budget (300 steps): a model trained
+  longer, or wider, or on another text may give another curve.
+- Each rate was chosen on one seed; a rate that was lucky on seed 0 runs on every later seed.
+- The windows start at random places in the text and have no token that marks a start, which the
+  proof of Kazemnejad et al. uses.
+- The runs record their settings and seeds, not the machine or the library's version; the last
+  digits can differ on another machine.
+
+9. To make every number again
+
+The text: data/tinyshakespeare.txt, 1,115,394 bytes, SHA-256
+86c4e6aa9db7c042ec79f339dcb96d42b0075e16b8fc2e86bf0ca57e2dc565ed. From the project's top:
+
+   python3 -m experiments.pilot "depths=[1,8]" seeds=4 out=experiments/recorded
+   python3 -m experiments.depth steps=300 every=100 "depths=[1,2,4,6,8]" "rates=[0.0015,0.003,0.006,0.012]" seeds=22 control=4 out=experiments/recorded
+   python3 -m experiments.depth steps=300 every=100 "depths=[4]" "rates=[0.012,0.024,0.048]" seeds=3 out=experiments/recorded/followup
+   python3 -m experiments.paper
+
+Each run's config.json holds every setting it used and its seed; the commands above are made from
+them. The records keep their runs packed, one line a run in runs.jsonl with each file's text
+(experiments/question.py's pack); its unpack writes the folders back, byte for byte.

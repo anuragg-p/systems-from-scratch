@@ -807,3 +807,37 @@ DATA["experiments/recorded/errorbars/*"] = ("the runs of experiments/errorbars.p
                                             "on the machine in NOTES.md")
 DATA["experiments/recorded/scaling/*"] = ("the long run of experiments/scaling.py (13.04), recorded on the machine in "
                                           "NOTES.md")
+
+
+# ---------------------------------------------------------------- module 15: your own result
+#
+# Kept apart from the tables above, in one block at the end of the file, so that the parts other modules add at the
+# same time stay whole when they are merged. experiments/question.py holds the question, what others found, the
+# predictions written before any run and the code the module's three scripts share (15.01: pair, trained, judge,
+# budget, read_runs; 15.02: choose, gaps); pilot.py (15.01) has no region of its own, so it is placed here; depth.py
+# (15.02) is the experiment and paper.py (15.03) the paper written from its logs. Tiny Shakespeare ships with the
+# project, so nothing needs a download: needs="torch". The pilot and the experiment are recorded; their defaults read
+# the records, and paper.py reads nothing else.
+
+EXPERIMENTS.update({
+    "pilot": ("15.01", ["seeds=2", "steps=4", "every=2", "depths=[1,2]", "width=16", "context=16"],
+              r"s of training and scoring on cpu"),
+    "depth": ("15.02", ["seeds=2", "steps=4", "every=2", "width=16", "context=16", "rates=[0.003]"],
+              r"s of training and scoring on cpu"),
+    "paper": ("15.03", [], r"the paper in "),
+})
+DATASET_OF.update({"pilot": None, "depth": None, "paper": None})
+FILES_FROM["experiments/pilot.py"] = "15.01"
+
+# The recorded runs, as 13.02's and 14.03's are (each script with out=experiments/recorded): every config.json,
+# log.jsonl and summary.json, the figures and what it printed; and the paper as paper.py wrote it from them. No weights.
+# The first glob that matches a file places it (module 07's part says why), so these narrower ones go first.
+FILES_FROM = {"experiments/recorded/pilot/*": "15.01", "experiments/recorded/depth/*": "15.02",
+              "experiments/recorded/followup/*": "15.02", "experiments/recorded/paper/*": "15.03", **FILES_FROM}
+DATA["experiments/recorded/pilot/*"] = ("the pilot of experiments/pilot.py (15.01), recorded on the machine in "
+                                        "NOTES.md")
+DATA["experiments/recorded/depth/*"] = ("the experiment of experiments/depth.py (15.02), recorded on the machine in "
+                                        "NOTES.md")
+DATA["experiments/recorded/followup/*"] = ("the follow-up of experiments/depth.py past the top of its search (15.02), "
+                                           "recorded on the machine in NOTES.md")
+DATA["experiments/recorded/paper/*"] = "the paper experiments/paper.py (15.03) wrote from the recorded runs"

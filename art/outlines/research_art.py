@@ -57,17 +57,16 @@ Computed, for the built modules, from the formulas and settings of the track's o
     14  the recorded long run of 14.03 (tracks/research/experiments/recorded/grokking/): every seed's accuracy
         curves and its two 99% steps; 14.04's recorded ablations: the start's and no weight decay's results;
         the paper's span is figure 1's caption (under 1e3, close to 1e6)
+    15  15.02's recorded experiment read from tracks/research/experiments/recorded/depth/runs.jsonl (packed, one line a
+        run): each depth's gap (test bits without positions minus with them, pair by pair), its mean and paired 95%
+        interval, the runs it made; the
+        pairs the recorded pilot asked for (tracks/research/experiments/recorded/pilot/output.txt); 08.03's 0.065
 Where a cover prints a number the lessons print, the script asserts it is the same number, so a
 change to the track that moves it stops this script instead of leaving the cover wrong.
 Also computed: the double-descent curve in 05 (random ReLU features, least squares), the
 convolution in 06, the DDPM noising in 17 and the
-PPO objective in 18. Schematic (the true shape, no measured numbers): 11's loss curves, 15's
-paper, 20's over-optimisation and 21's four phenomena.
-
-Module 15 keeps the cover first drawn for the older outline in outline_art.py (its module 07),
-with its repository shown as the track lays one out (a run
-is `python3 -m experiments.<name>` with key=value settings, and leaves config.json, log.jsonl
-and summary.json). The rest are new here.
+PPO objective in 18. Schematic (the true shape, no measured numbers): 11's loss curves,
+20's over-optimisation and 21's four phenomena.
 
 The Art class is the one from art/xv6/covers.py and dsa_art.py, repeated so this file stands alone.
 Module 00's cover needs numpy, as the track does.
@@ -1587,44 +1586,77 @@ def res_grok():
 
 # =================================================================== 15 your own result
 
+def result_numbers():
+    """15's numbers as 15.02 prints them, from the recorded experiment (tracks/research/experiments/recorded/depth):
+    each depth's gaps (test bits without positions minus with them, pair by pair) and their mean and paired 95%
+    interval, the pairs a depth ran, the runs in all, and the pairs the recorded pilot asked for (its output.txt)."""
+    rec = os.path.join(ROOT, "tracks", "research", "experiments", "recorded")
+    with open(os.path.join(rec, "depth", "runs.jsonl")) as f:      # the record, packed: one line a run
+        packed = [json.loads(line) for line in f if line.strip()]
+
+    def test_bits(label):
+        return [json.loads(r["files"]["summary.json"])["test_bits"]
+                for r in sorted((r for r in packed if r["label"] == label), key=lambda r: r["seed"])]
+    depths = sorted(int(r["label"][6:].split("-")[0]) for r in packed if r["label"].startswith("blocks")
+                    and r["label"].endswith("-none") and r["seed"] == 1)
+    gaps = {d: [a - b for a, b in zip(test_bits(f"blocks{d}-none"), test_bits(f"blocks{d}-learned"))] for d in depths}
+
+    def interval(xs):                    # the mean and a 95% t interval (13.02's interval; t from its table)
+        n = len(xs)
+        m = sum(xs) / n
+        sd = math.sqrt(sum((x - m) ** 2 for x in xs) / (n - 1))
+        t = {22: 2.0796}[n]              # Student's t, 21 degrees of freedom, 97.5%
+        return m, m - t * sd / math.sqrt(n), m + t * sd / math.sqrt(n)
+    runs = len(packed)
+    pairs = int(open(os.path.join(rec, "pilot", "output.txt")).read().split(" pairs (13.02")[0].split()[-1])
+    got = {"depths": depths, "gaps": {d: interval(g) for d, g in gaps.items()}, "pairs": len(gaps[depths[0]]),
+           "runs": runs, "asked": pairs}
+    shown = {d: tuple(round(x, 3) for x in v) for d, v in got["gaps"].items()}
+    assert shown == {1: (0.288, 0.278, 0.298), 2: (0.271, 0.255, 0.286), 4: (0.201, 0.19, 0.212),
+                     6: (0.141, 0.13, 0.152), 8: (0.124, 0.113, 0.135)}, shown        # 15.02, the paper
+    assert (got["depths"], got["pairs"], got["runs"], got["asked"]) == ([1, 2, 4, 6, 8], 22, 282, 22), got
+    return got
+
+
 def res_result():
-    a = Art("r15", "Your own result: a loop of question, prediction, experiment and doubt, and a way out to a short "
-                   "paper and a public repository anyone can rerun")
-    nodes = {"Q": (24, 46, "a small question"), "P": (196, 46, "a prediction"), "E": (196, 146, "the experiment"),
-             "D": (24, 146, "try to break it")}
-    for _, (x, y, t) in nodes.items():
-        a.box(x, y, 124, 36, "s f", rx=18)
-        a.text(x + 62, y + 23, t, size=12, anchor="middle", weight=600)
-    a.line(148, 64, 194, 64, arrow=True)
-    a.line(258, 82, 258, 144, arrow=True)
-    a.line(196, 164, 150, 164, arrow=True)
-    a.line(86, 146, 86, 84, "m", arrow=True)
-    a.text(95, 120, "it breaks: refine", "tm", 10.5)
-    a.path("M86 182 V 236 H 330 V 100 H 342", "a", arrow=True)
-    a.text(208, 228, "it survives: write it up", "ta", 11, "middle", 600)
-    # the paper, a schematic page
-    px, pw = 346, 76
-    a.box(px, 30, pw, 140, "s f", rx=6)
-    a.add(f'<rect class="s fs" x="{px + 10}" y="42" width="{pw - 20}" height="9" rx="2" {SW}/>')
-    for y in (62, 71, 80):
-        a.line(px + 10, y, px + pw - 10, y, "m")
-    a.line(px + 14, 128, px + 14, 92, "m"); a.line(px + 14, 128, px + pw - 12, 128, "m")
-    poly(a, [(px + 18, 122), (px + 27, 116), (px + 36, 117), (px + 45, 106), (px + 54, 101), (px + 62, 96)], "s")
-    for y in (142, 151, 160):
-        a.line(px + 10, y, px + pw - 10 if y < 160 else px + pw - 30, y, "m")
-    a.text(px + pw / 2, 188, "paper", size=12, anchor="middle", weight=700)
-    # the repository: the track's own layout, and the files every run leaves
-    rx, rw = 436, 180
-    a.box(rx, 30, rw, 140, "s fs", rx=6)
-    tree = [("repo/", 0, "t"), ("engine/  lab/  data/", 1, "tm"), ("experiments/<name>.py", 1, "tm"),
-            ("runs/<name>/seed0/", 1, "tm"), ("config.json", 2, "ta"), ("log.jsonl", 2, "ta"), ("summary.json", 2, "ta")]
-    for i, (t, depth, cls) in enumerate(tree):
-        a.text(rx + 10 + 14 * depth, 50 + i * 17, t, cls, 10, weight=600 if i == 0 else None, mono=True)
-    a.text(rx + rw / 2, 188, "code, and every run", size=12, anchor="middle", weight=700)
-    a.text(px, 216, "$ python3 -m experiments.<name> key=value", size=10.5, mono=True, weight=600)
-    a.text(px, 232, "reruns it; each run's config.json records every", "tm", 10.5)
-    a.text(px, 247, "setting it used and its seed", "tm", 10.5)
-    a.text(24, 284, "Small, finished and public beats big and half done.", "tm", 11)
+    got = result_numbers()
+    g = got["gaps"]
+    a = Art("r15", f"Your own result: what learned positions are worth to a small GPT, block by block, "
+                   f"{g[1][0]:.2f} bits at one block and {g[8][0]:.2f} at eight, from a question written down "
+                   f"with its predictions before any run to a paper made from the logs")
+    # the result: the gap against blocks, each with its paired interval
+    px0, px1, py0, py1 = 70, 330, 60, 226
+    X = lambda d: px0 + (d - 0.3) / 8.4 * (px1 - px0)       # noqa: E731
+    top = 0.35
+    Y = lambda v: py1 - v / top * (py1 - py0)                # noqa: E731
+    a.line(px0, py1, px1, py1, "m"); a.line(px0, py1, px0, py0 - 6, "m")
+    for d in got["depths"]:
+        a.line(X(d), py1, X(d), py1 + 4, "m")
+        a.text(X(d), py1 + 17, str(d), "tm", 10, "middle", mono=True)
+    for v in (0, 0.1, 0.2, 0.3):
+        a.text(px0 - 8, Y(v) + 4, f"{v:g}", "tm", 10, "end", mono=True)
+    a.text((px0 + px1) / 2, py1 + 34, "blocks", "tm", 10.5, "middle")
+    a.text(24, 24, "what learned positions are worth, in bits per character", "t", 11, weight=600)
+    a.text(24, 40, f"no positions minus learned, {got['pairs']} pairs a depth, 95% intervals", "tm", 10.5)
+    poly(a, [(X(d), Y(g[d][0])) for d in got["depths"]], "a")
+    for d in got["depths"]:
+        m, lo, hi = g[d]
+        a.line(X(d), Y(lo), X(d), Y(hi), "a")
+        dot(a, X(d), Y(m), 3.5, "a fa")
+    dot(a, X(4), Y(0.065), 3.5, "s f")
+    a.text(X(4) + 8, Y(0.065) + 4, "08.03: 0.065, one rate for both", "tm", 10)
+    # the path: question, predictions, pilot, experiment, paper
+    rx = 372
+    steps = [("a question 08.03 left", "s f", "t"), ("7 predictions, committed first", "s f", "t"),
+             (f"a pilot: {got['asked']} pairs needed", "s f", "t"), (f"the experiment: {got['runs']} runs", "a af", "ta"),
+             ("a paper made from the logs", "s f", "t")]
+    for k, (t, cls, tcls) in enumerate(steps):
+        y = 30 + k * 46
+        a.box(rx, y, 244, 32, cls, rx=16)
+        a.text(rx + 122, y + 21, t, tcls, 11.5, "middle", 600)
+        if k:
+            a.line(rx + 122, y - 13, rx + 122, y - 2, arrow=True)
+    a.text(24, 284, "Small, finished and rerunnable: every number in the paper read from a log.", "tm", 11)
     return a
 
 

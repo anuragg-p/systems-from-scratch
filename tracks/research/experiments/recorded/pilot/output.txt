@@ -1,0 +1,33 @@
+1. The question: How much are learned positions worth to a GPT as blocks are added, and how many blocks does a GPT without positions need before it matches one with them, at the size and budget of 08.03, on Tiny Shakespeare?
+   It comes from 08.03: at 4 blocks, 3.407 bits per character without positions against 3.342 with them, a gap of 0.065.
+   The predictions, written down before any run, and the rule that decides each:
+   one_block            Positions are worth the most to a GPT of one block, which cannot see order at all without them.
+                        (held if the mean gap at 1 block is the largest)
+   shrinks              The gap shrinks as blocks are added: the mask gives a deeper model more of the order.
+                        (held if the mean gap falls at every step of depth)
+   size_one             At one block the gap is more than 0.1 bits per character.
+                        (held if the gap's interval at 1 is all above 0.1)
+   again                At four blocks, each arm with its own searched rate, the gap is about 08.03's 0.065.
+                        (held if the mean gap at 4 is within 0.0325 to 0.13)
+   not_closed           No depth tried closes the gap: at the deepest, positions still help beyond the noise.
+                        (held if the gap's interval at deepest is all above 0)
+   depth_no_substitute  Twice the blocks do not buy what positions buy: no positions at 8 blocks is worse than learned positions at 4.
+                        (held if Welch's interval (none at deepest, learned at 4) is above 0)
+   not_weights          The positions' weights are not why they help: the same number of weights given to the MLPs of a GPT without positions closes under a quarter of the gap.
+                        (held if it closes under 25% of the gap at 4)
+
+2. The pilot: 4 pairs at each depth, 300 steps at lr 0.003 (08.03's), bits per character on the validation text (each character with 16 or more before it):
+   1 block:  none 3.486 +- 0.004904 (min 3.481, max 3.49, 4 seeds)
+             learned 3.336 +- 0.03574 (min 3.291, max 3.371, 4 seeds)
+             the gap 0.149 +- 0.0315 (min 0.12, max 0.191, 4 seeds)   2.7 s a run
+   8 blocks:  none 3.386 +- 0.0109 (min 3.373, max 3.398, 4 seeds)
+             learned 3.354 +- 0.007017 (min 3.348, max 3.363, 4 seeds)
+             the gap 0.032 +- 0.00643 (min 0.0224, max 0.0362, 4 seeds)   16.9 s a run
+
+3. The seeds: a gap of 0.02 clear of 0 (95% interval) 80% of the time, at the largest sd of a depth's gaps, 0.0315:
+   22 pairs (13.02's seeds_needed, paired; at least 3). Unpaired, at the largest sd of one arm, 0.0357: 52 a side.
+
+4. The budget: 4 rates on one seed and 22 fresh seeds, both arms, at depths 1, 2, 4, 6, 8,
+   and 22 runs of the control at 4 blocks: about 43 minutes at the times measured now (a run: 1 blocks 3 s, 2 blocks 5 s, 4 blocks 9 s, 6 blocks 13 s, 8 blocks 17 s)
+
+157 s of training and scoring on cpu
