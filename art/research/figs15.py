@@ -437,7 +437,7 @@ def repo1503():
     fetched = [(name, sum(s for s, _ in d["files"].values()))
                for name, d in fetch.DATASETS.items()]
     f = Fig("repo1503", "What the track's project ships, what it fetches by a pinned command, and what it never ships, "
-                        "with their sizes: from the files on disk and from data/fetch.py's pins", 300)
+                        "with their sizes: from the files on disk and from data/fetch.py's pins", 262)
     f.text(16, 22, "in the repository", "t", 11.5, weight=700)
     for k, (name, size) in enumerate(shipped):
         f.label_box(16, 34 + k * 40, 300, 32, name, "s f", "t", 10, False, sub=mb(size), subsize=10)
@@ -449,7 +449,7 @@ def repo1503():
         y = 34 + k * 34
         f.label_box(340, y, 284, 28, f"{name}: {mb(size)}", "s fs", "t", 10.5, True)
     f.text(340, 34 + len(fetched) * 34 + 14, "each file's size and SHA-256 pinned; its licence in NOTICE", "tm", 10.5)
-    f.text(16, 290, "Sizes in MB (a million bytes); the downloads are the files kept, not the archives.", "tm", 10.5)
+    f.text(16, 250, "Sizes in MB (a million bytes); the downloads are the files kept, not the archives.", "tm", 10.5)
     return f
 
 
