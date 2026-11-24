@@ -3297,6 +3297,65 @@ Neovim checks first; Vim's process model (no Vim source read for it); VS
 Code's pages do not say "separate process from the window" in those words;
 Zed's github.wit was not read.
 
+### 09.01 to 09.03: what the lessons ran
+
+Run on the Mac on 2026-11-25, on the projects as `./learn files` writes
+them; screens on an 8 x 80 pseudo-terminal through track.py's `Editor`, on
+notes.txt ("hello world", "second line").
+
+- **Fetching Lua (09.01).** In build/at/kilo/09.01 without lua/, `make`
+  stops: `make: *** lua/src: No such file or directory.  Stop.` The three
+  commands above fetched 373429 bytes, `shasum -a 256` gave 2335b6c5...b8e6,
+  and the unpacked lua/ (Makefile, README, doc/, src/) has src/ and README
+  identical to the track's (`diff -r`). The first `make` built liblua.a (32
+  objects, 401200 bytes) and kilo in 4.0 s wall; kilo at 09.01 is 318072
+  bytes; `./kilo notes.txt` then runs in that folder. `./learn run` leaves a
+  fetched lua/ in place and builds with it.
+- **The Lua manual** (https://www.lua.org/manual/5.4/manual.html, fetched
+  2026-11-25), quoted in 09.01: "Lua is implemented as a library, written in
+  clean C"; "it works embedded in a host client, called the embedding
+  program or simply the host."; "a powerful, lightweight, embeddable
+  scripting language for any program that needs one"; 4.1 on indices
+  ("index 1 represents the first element ...", "index -1 also represents the
+  last element ..."); 4.4: "Internally, Lua uses the C longjmp facility to
+  handle errors.", "A protected environment uses setjmp to set a recovery
+  point; any error jumps to the most recent active recovery point.", "If an
+  error happens outside any protected environment, Lua calls a panic
+  function (see lua_atpanic) and then calls abort, thus exiting the host
+  application.", "Most functions in the API can raise an error, for instance
+  due to a memory allocation error."; lua_pcall "always removes the function
+  and its arguments from the stack". Lua's own lua.c tries a line as
+  `"return %s;"` first (addreturn); lstrlib.c's str_rep checks with
+  `luaL_checkinteger(L, 2)`.
+- **At the 09.01 prompt:** `_VERSION` is `Lua 5.4`; `math.type(3),
+  math.type(3.0), 7 // 2` is `integer float 3`.
+- **09.01 Break it** (`status = lua_pcall(L,1,0,0);` made `lua_call(L,1,0);
+  status = LUA_OK;`, the init.lua with `nme`): `PANIC: unprotected error in
+  call to Lua API (init.lua:2: attempt to concatenate a nil value (global
+  'nme'))`, no screen, kilo ended by SIGABRT (`./learn run` exits 250). The
+  terminal stays raw: under bash with readline, `stty -a` then shows
+  `-icanon -isig -iexten -echo` and output lines without a carriage return;
+  zsh puts icanon and echo back but not isig or the output's carriage
+  return; `stty sane` restores both. verify's own bash (`--noediting`) reads
+  end of file under kilo's VMIN 0 / VTIME 1 and exits, printing `exit`,
+  hence the lesson's `ignore /\$ exit/`.
+- **09.02 Break it** (the type-check loop in scriptDispatch deleted): the
+  build warns `unused variable 'why'` and `unused function 'scriptCheck'`;
+  `#kilo.api.get_lines("a", "b")` is 0, `get_lines('a', 1)[1]` and
+  `get_lines(0.5, 1)[1]` are `hello world`, `get_lines('1', 2)[1]` is
+  `second line` (lua_tointegerx gives 0 for what is not an integer, and
+  reads "1" as 1); `message({})` and `message(nil)` show an empty line, no
+  crash.
+- **09.03.** On a, b, c, d, e: `set_lines(1, 3, {'X', 'Y'})` gives a X Y d
+  e, `(2, 2, {'new'})` a b new c d e, `(1, 3, {})` a d e. Page Down on the
+  2-line file puts the cursor on screen row 6 (bar `6/2`); a script's
+  `get_cursor()[1]` then says 5, and after it returns the bar is `3/2` and
+  the next says 2. Break it (each line checked as it goes in): `set_lines(0,
+  1, {'a', 'b', 'c\nd'})` with the cursor on row 1, column 2 leaves a, b,
+  second line, 3 lines (modified), the same error, and the cursor on row 1
+  after the b (column cut by editorScriptReturned). 0903 and 0904 pass on
+  the finished tree (colour, the language server and undo see set_lines).
+
 ## Other behaviour of the original, kept
 
 - kilo does not clear the screen on exit: the shell prompt appears where
