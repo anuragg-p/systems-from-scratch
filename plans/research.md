@@ -25,15 +25,20 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-Modules 06 and 07 are on master whole: code, 35 tests, eight lessons,
-module pages, figures and covers; `./learn verify --fresh research 07`
-passes. Module 08's code is on master (models/gpt.py, five experiments,
-40 tests, the recorded GPT run). In work, each by an agent in its own
-worktree: module 08's lessons, and module 09's code.
+Modules 06, 07 and 08 are on master whole: code, 40 tests, thirteen
+lessons, module pages, figures and covers; `./learn verify --fresh
+research 08` passed on the lessons' branch (534 s) and `./learn check`
+is ok on master. That is 40 of the core's 70 lessons. 08.02's default
+run is 2 seeds (3 took 82 s on a loaded machine); its heads comparison
+is inside the noise at 2 seeds and the page runs that part at 3 as well.
+In work, each by an agent in its own worktree: module 09's code, and
+module 14's code (grokking, which needs nothing of 09 to 13). Both
+append to track.py and NOTES.md, so the second merge keeps both blocks
+by hand.
 
-After that, in this order: 07, 08 and 09, one module's code at a time,
-each module's lessons written while the next module's code is built
-(lessons module by module); then 10 to 14 in parallel.
+After that: 09's lessons when its code is merged, with 10, 12 and 13's
+code in parallel (11 after 10, both change models/gpt.py); 14's lessons
+when its code is merged; 15 last.
 
 Still open, not in work:
 - Harness quirks the writers met, for whoever next works in harness/: a
