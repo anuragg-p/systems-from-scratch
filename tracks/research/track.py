@@ -508,9 +508,17 @@ def pytorch_era_tools():
 
 EXPERIMENTS.update({
     "bigram": ("07.01", [], r"chosen: k = 0\.1\r?\n"),
+    "nplm": ("07.02", ["contexts=[2]", "seeds=1", "steps=20", "orders=[0,1,2]", "length=20"],
+             r"s of counting, training and scoring on cpu"),
 })
-DATASET_OF.update({"bigram": None})
+DATASET_OF.update({"bigram": None, "nplm": None})
 
 # The text: shipped whole, shown on the site as data (its first lines).
 FILES_FROM["data/tinyshakespeare.txt"] = "07.01"
 DATA["data/tinyshakespeare.txt"] = "Tiny Shakespeare, from Andrej Karpathy's char-rnn, byte for byte (see NOTES.md)"
+
+# The long run of 07.02, recorded as 06.04's is (experiments/nplm.py with out=experiments/recorded). 06.04's glob,
+# "experiments/recorded/*", matches these files too, and the first glob that matches a file places it: so the
+# narrower glob goes first.
+FILES_FROM = {"experiments/recorded/nplm/*": "07.02", **FILES_FROM}
+DATA["experiments/recorded/nplm/*"] = "the long run of experiments/nplm.py (07.02), recorded on the machine in NOTES.md"
