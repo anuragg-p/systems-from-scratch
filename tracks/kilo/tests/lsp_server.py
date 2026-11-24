@@ -59,6 +59,7 @@ class Server:
             return
         kw["event"] = event
         kw["t"] = round(time.monotonic() - self.t0, 4)
+        kw["mono"] = time.monotonic()      # the system's monotonic clock, to set beside kilo's
         with open(self.log_path, "a") as f:
             f.write(json.dumps(kw) + "\n")
 

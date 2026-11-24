@@ -11,9 +11,19 @@
  * the editor waits for.
  */
 
+// @from 07.05
+/* fork(), pipe() and the rest are POSIX, not C99, and realpath() is in
+ * POSIX's X/Open part: on Linux, ask for them. macOS shows them anyway. */
 #ifdef __linux__
-#define _POSIX_C_SOURCE 200809L
+#define _XOPEN_SOURCE 700
 #endif
+// @else
+// /* fork(), pipe() and the rest are POSIX, not C99: on Linux, ask for
+//  * them. macOS shows them anyway. */
+// #ifdef __linux__
+// #define _POSIX_C_SOURCE 200809L
+// #endif
+// @end
 
 #include <ctype.h>          // @from 07.03
 #include <errno.h>

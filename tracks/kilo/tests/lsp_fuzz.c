@@ -19,7 +19,7 @@
  * report at the first error. Not part of any project a reader sees. */
 
 #ifdef __linux__
-#define _POSIX_C_SOURCE 200809L
+#define _XOPEN_SOURCE 700           /* as lsp.c asks, before any header */
 #endif
 #include "json.c"
 #include "lsp.c"
