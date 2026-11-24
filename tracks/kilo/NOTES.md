@@ -4036,6 +4036,56 @@ lessons ran (each run is in the generator):
   `s = string.rep('x', 100 * 2^20)` Lua held 25.8 KB, after the table grown
   for ever 25.2 KB (the lesson: "a number near 26").
 
+### 09.10, the lesson: what its runs found
+
+Run on the Mac on 2026-11-25, on the project at 09.10 as `./learn files`
+writes it, kilo started in that folder (require finds plugins/ through
+`./?.lua`), KILO_INIT=init.lua requiring colour, find, vi; a 14 x 60
+pseudo-terminal with track.py's Editor; the lesson's sum.c (10 lines).
+
+- **Keys that arrive at once are dropped with colour.lua loaded.** Sixty
+  letters sent in one write in insert mode (as a paste arrives): 5 arrive
+  with colour.lua (alone, or with the others), the same in five runs; 60
+  with an empty init file, with vi.lua alone, and in the project at 06.05.
+  With SCRIPT_HOOK_COUNT made 1000000000 in a copy of the project: 60. The
+  count hook (09.08) reads and drops every pending key but Ctrl-C when it
+  fires, and colour.lua's two runs on every key reach 100000 instructions
+  a few keys into the burst. Keys sent one at a time, each after the last
+  frame, are never lost. Not changed (09.08's design; script.c says
+  "Other keys typed while a script runs are dropped"), but with a plugin
+  that works on every key a paste loses most of itself.
+- **The two load orders on sum.c.** vi, then find: Ctrl-N, `total`: `t`
+  taken by vi (nothing), `o` opens an empty row 1 and insert mode, `tal`
+  to the find (the `int total` row at the top, `7/12`), the first Escape to vi (normal
+  mode, the find goes on), the second to the find (cursor and view back),
+  the file 12 lines. find, colour, vi: a search for `int` shows its match
+  green on each row Down moves to (`i` and `in` in `#include` stay blue:
+  colour.lua has no highlight there).
+- **colour() alone at the prompt**, on the core's kilo.c at 05.02 as
+  big.c, 24 x 80, a hundred calls timed with os.clock(): 0.014 ms a call at
+  the top (its first rows are a comment), 4.7 ms with row 1050 on the
+  screen. The key-to-frame table above was run again: module 06 0.49 ms,
+  colour.lua 11.99 ms, none 0.40 ms at main().
+- **Neovim, read for the lesson** (v0.12.6, runtime/doc/api.txt, fetched
+  2026-11-25): `nvim_buf_attach({buf}, {send_buffer}, {opts})` "Activates
+  |api-buffer-updates| events on a channel, or as Lua callbacks."; its
+  `on_lines`: "Called on linewise changes", with "first line that changed
+  (zero-indexed)", "last line that was changed", "last line in the updated
+  range". nvim_buf_set_extmark's `priority`: "a priority value for the
+  highlight group, sign attribute or virtual text. For virtual text, item
+  with highest priority is drawn last. For example treesitter highlighting
+  uses a value of 100." `nvim_create_buf`: "Creates a new, empty, unnamed
+  buffer."; "Floating windows ("floats") are displayed on top of normal
+  windows." luvref.txt: "the Lua bindings for the LibUV library which is
+  used for Nvim's event-loop".
+- **Vim** (v9.2.1400, src/normal.c, fetched 2026-11-25): "normal.c:
+  Contains the main routine for processing characters in command mode."
+- **Emacs** (emacs-31.1, doc/emacs/emacs.texi line 1630, fetched
+  2026-11-25): "Most of the editing commands in Emacs are written in Lisp;
+  the few exceptions could have been written in Lisp but use C instead for
+  efficiency." The Go deeper pages (Neovim's runtime/lua/vim and Emacs's
+  lisp/ at those tags on GitHub) answered 200.
+
 ## Other behaviour of the original, kept
 
 - kilo does not clear the screen on exit: the shell prompt appears where
