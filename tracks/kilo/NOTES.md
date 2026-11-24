@@ -1042,7 +1042,7 @@ it, "Departures from the design" below says where and why.
 | file | lines in tracks/ (markers and instructions in) | what it is |
 |---|---|---|
 | lsp.h | 51 | what kilo.c calls (lspStart, lspPump until 07.04, lspWaitKey, lspDrawRow, lspDefinition, lspBack) and what lsp.c calls in kilo.c (editorSetStatusMessage, editorRefreshScreen, editorRowsToString, abAppend, editorCursor, editorJump); `struct abuf;` as an incomplete type |
-| lsp.c | 1523 | the client: the server table, starting and stopping, frames, the session, poll(), diagnostics, definitions |
+| lsp.c | 1524 | the client: the server table, starting and stopping, frames, the session, poll(), diagnostics, definitions |
 | json.h | 60 | the JSON tree (`struct json`), the reader's and getters' prototypes, jsonQuote |
 | json.c | 424 | the reader (recursive descent, depth cap) and the one writer helper; knows nothing of kilo or LSP |
 | Makefile | | from 07.01 `kilo.c lsp.c`, from 07.02 `kilo.c lsp.c json.c`, same flags |
@@ -1056,8 +1056,8 @@ The project at each lesson (lines, `./learn files kilo --at 07.LL`):
 | 07.03 | 1071 | 553 | 17 | 370 | 49 |
 | 07.04 | 1071 | 587 | 17 | 370 | 49 |
 | 07.05 | 1071 | 809 | 18 | 370 | 49 |
-| 07.06 | 1085 | 1091 | 28 | 370 | 49 |
-| 07.07 | 1137 | 1239 | 31 | 370 | 49 |
+| 07.06 | 1085 | 1092 | 28 | 370 | 49 |
+| 07.07 | 1137 | 1240 | 31 | 370 | 49 |
 
 lsp.c in order: the limits; the servers (`struct lspServer`, `LSPDB` with a
 C stanza and a C++ stanza, `lspServerFor`); the state (`struct lspBuf`,
@@ -1170,7 +1170,11 @@ the scripted server answering shutdown, 0.013 s; clangd 21, 0.026 s.
 
 - **lspDrawRow takes chars and size too** (eight arguments). Diagnostics
   are byte columns of chars; turning them into columns of render needs the
-  tabs, which render no longer shows.
+  tabs, which render no longer shows. Its signature is the only one in the
+  track that takes two lines, so its opening brace is on a line of its own
+  at column 0: the site finds the function around a region by the nearest
+  column-0 line above it that ends in "{", and the signature's indented
+  second line is not one.
 - **ESC [ n C counts cells, not render columns.** n is the bytes of render
   before the range less the UTF-8 continuation bytes (0x80 to 0xBF): on
   `printf("e-acute t e-acute: %d\n", totl);` totl is at render column 30
