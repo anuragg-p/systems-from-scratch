@@ -74,6 +74,7 @@ def main():
         run = lab.Run(cfg, seed, label="float64")
         engine.manual_seed(seed)
         ours = convnet(engine, cfg.width).double()
+        torch.manual_seed(seed)                 # PyTorch's own generator draws other weights: copy_weights replaces them
         theirs = copy_weights(ours, convnet(torch, cfg.width).double())
         x, y = run.rng.standard_normal((cfg.batch, 3, 32, 32)), run.rng.integers(0, 10, cfg.batch)
         loss = []
@@ -97,7 +98,8 @@ def main():
     run = lab.Run(cfg, 0, label="float32")
     engine.manual_seed(0)
     ours = convnet(engine, cfg.width)
-    sides = [("engine", engine, ours, cpu), ("PyTorch", torch, copy_weights(ours, convnet(torch, cfg.width)), cpu)]
+    torch.manual_seed(0)
+    sides =[("engine", engine, ours, cpu), ("PyTorch", torch, copy_weights(ours, convnet(torch, cfg.width)), cpu)]
     if dev.type != "cpu":
         sides.append((f"PyTorch on {dev.type}", torch, copy_weights(ours, convnet(torch, cfg.width)).to(dev), dev))
     data = [(run.rng.standard_normal((cfg.batch, 3, 32, 32)).astype(np.float32), run.rng.integers(0, 10, cfg.batch))

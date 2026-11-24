@@ -310,10 +310,134 @@ def maps0601():
     return f
 
 
+# ------------------------------------------------------------------ 06.02
+
+def switch_table(out):
+    """The float64 table switch prints: [(parameter, shape, gradient, after the step)]."""
+    rows = []
+    for line in out.splitlines():
+        m = __import__("re").match(r"^   (\d+\.\w+) +(\(.*?\)) +(\S+) +(\S+)$", line)
+        if m:
+            rows.append((m.group(1), m.group(2), float(m.group(3)), float(m.group(4))))
+    if len(rows) != 8:
+        raise SystemExit(f"switch: expected 8 parameters in its table, read {len(rows)}:\n{out}")
+    return rows
+
+
+def import0602():
+    """One line names the library; the rest of the script is the same on either."""
+    r = figart.experiment("switch", at="06.02")
+    loss = figart.value(r.out, r"the loss: (\S+)")
+    worst = max(max(g, a) for _, _, g, a in switch_table(r.out))
+    f = Fig("import0602", "The same script on either library: one line names it, and every name after that line is "
+                          "the same on both", 262)
+    x0, y0, lh = 20, 34, 19
+    lines = [("import engine as torch", "a"), ("nn = torch.nn", "t"), ("F = torch.nn.functional", "t"),
+             ("model = nn.Sequential(nn.Conv2d(3, 32, 3), ...)", "t"),
+             ("opt = torch.optim.SGD(model.parameters(), lr=0.01)", "t"),
+             ("loss = F.cross_entropy(model(x), y)", "t"), ("loss.backward()", "t"), ("opt.step()", "t")]
+    w = 372
+    f.rect(x0, y0, w, 26 + lh * len(lines), "s fs", 6)
+    f.text(x0, y0 - 10, "a training step, as the scripts of modules 00 to 06.01 write it", "tm", 11)
+    for i, (s, cls) in enumerate(lines):
+        f.text(x0 + 12, y0 + 22 + i * lh, s, "ta" if cls == "a" else "t", 11, weight=700 if cls == "a" else None,
+               mono=True)
+    bx, bw = 430, 190
+    ya, yb, bh = 30, 118, 62
+    f.label_box(bx, ya, bw, bh, "the engine", "s f", "t", 12.5, False, weight=700,
+                sub="numpy, on the CPU only")
+    f.label_box(bx, yb, bw, bh, "PyTorch", "a af", "ta", 12.5, False, weight=700,
+                sub="the CPU, or a GPU: cuda, mps")
+    sy = y0 + 22 - 4
+    f.path(f"M{x0 + 12 + tw('import engine as torch', 11, True) + 8:.1f} {sy} L{bx - 8} {ya + bh / 2}", "s", arrow=True)
+    f.path(f"M{x0 + 12 + tw('import engine as torch', 11, True) + 8:.1f} {sy + 4} L{bx - 8} {yb + bh / 2}", "a",
+           arrow=True, dash=True)
+    f.text(bx + bw / 2, yb + bh + 18, "import torch", "ta", 11.5, "middle", 700, mono=True)
+    f.text(x0, 232, f"Built by one function from the same weights and fed the same batch, the two take a training "
+                    f"step that agrees to {sig(loss, 2)}", "tm", 11)
+    f.text(x0, 248, f"in the loss and to {sig(worst, 2)} in every gradient and weight, in float64: the same arithmetic, "
+                    f"added up in another order.", "tm", 11)
+    return f
+
+
+def same0602():
+    r = figart.experiment("switch", at="06.02")
+    rows = switch_table(r.out)
+    f = Fig("same0602", "Engine against PyTorch. Left: float64, one step, the largest relative difference of each "
+                        "parameter (3 seeds). Right: float32, the same 10 steps, the difference in the loss", 300)
+    ax = figart.Axes(f, 52, 30, 300, 220, (-0.5, len(rows) - 0.5), (1e-19, 1e-15), False, True)
+    ax.draw(xticks=[], yticks=[1e-19, 1e-18, 1e-17, 1e-16, 1e-15], frame=False)
+    f.line(ax.x, ax.y + ax.h, ax.x + ax.w, ax.y + ax.h, "m")
+    f.text(ax.x - 6, 22, "float64: relative difference", "tm", 11)
+    bw = 13
+    for i, (name, _, g, a) in enumerate(rows):
+        for k, (v, cls) in enumerate(((g, "s fs"), (a, "a af"))):
+            top = ax.py(v)
+            f.rect(ax.px(i) - bw + k * bw, top, bw - 1, ax.y + ax.h - top, cls, 1)
+        f.text(ax.px(i), ax.y + ax.h + 14, name.replace(".weight", ".w").replace(".bias", ".b"), "tm", 10, "middle",
+               mono=True)
+    ax.hline(2 ** -52, "float64's step at 1: 2.2e-16", side="left")
+    for k, (label, cls, tcls) in enumerate((("gradient", "s fs", "t"), ("weight after the step", "a af", "ta"))):
+        f.rect(ax.x + ax.w - 140, ax.y + 4 + 16 * k, 10, 10, cls, 1)
+        f.text(ax.x + ax.w - 125, ax.y + 13 + 16 * k, label, tcls, 10.5)
+    log = figart.read_log(os.path.join(r.runs, "float32", "seed0"))
+    steps_, diff = [row["step"] for row in log], [abs(row["engine"] - row["PyTorch"]) for row in log]
+    floor = 1e-8
+    ax2 = figart.Axes(f, 408, 30, 216, 220, (-0.5, steps_[-1] + 0.5), (floor, 1e-4), False, True)
+    ax2.draw(xlabel="step", xticks=[0, 2, 4, 6, 8, 10], yticks=[1e-8, 1e-7, 1e-6, 1e-5, 1e-4])
+    f.text(ax2.x - 6, 22, "float32: |engine - PyTorch|, the loss", "tm", 11)
+    ax2.hline(2 ** -22, "float32's step at 2.3", side="left")
+    for s, d in zip(steps_, diff):
+        if d > 0:
+            ax2.dot(s, d, "a fa", 3)
+        else:
+            f.text(ax2.px(s), ax2.y + ax2.h - 6, "=", "ta", 12, "middle", 700, mono=True)
+    ax2.curve([s for s, d in zip(steps_, diff) if d > 0], [d for d in diff if d > 0], "a", width=1.25)
+    f.text(ax2.x + 4, ax2.y + ax2.h - 20, "=: the same float32", "ta", 10)
+    return f
+
+
+def clock0602():
+    """Why lab.clock waits: a GPU works through a queue while Python goes on (a schematic)."""
+    f = Fig("clock0602", "A GPU works through a queue while Python goes on: a clock read without waiting times "
+                         "the asking, lab.clock waits for the device first", 236)
+    x0, x1 = 120, 610
+    yp, yg = 58, 118
+    f.text(20, yp + 5, "Python", "t", 12, weight=700)
+    f.text(20, yg + 5, "the GPU", "ta", 12, weight=700)
+    f.line(x0, yp, x1, yp, "m")
+    f.line(x0, yg, x1, yg, "m")
+    asks = [x0 + 10 + 34 * i for i in range(6)]
+    for i, x in enumerate(asks):
+        f.rect(x, yp - 9, 26, 18, "s fs", 3)
+        f.text(x + 13, yp + 4, f"k{i + 1}", "t", 10, "middle", mono=True)
+    gx = x0 + 40
+    for i in range(6):
+        f.rect(gx + 70 * i, yg - 10, 64, 20, "a af", 3)
+        f.text(gx + 70 * i + 32, yg + 4, f"k{i + 1}", "ta", 10.5, "middle", mono=True)
+        f.line(asks[i] + 13, yp + 9, gx + 70 * i + 10, yg - 11, "m", arrow=True)
+    t_ask = asks[-1] + 30
+    t_done = gx + 70 * 6
+    for x, label, cls in ((t_ask, "a clock read here: the time to queue the work", "tm"),
+                          (t_done, "lab.clock: wait, then read", "ta")):
+        f.line(x, yp - 24, x, yg + 34, "m" if cls == "tm" else "a", dash=True)
+    f.text(t_ask - 4, yg + 48, "time.perf_counter() here:", "tm", 10.5, "end")
+    f.text(t_ask - 4, yg + 62, "the time to ask, not to do", "tm", 10.5, "end")
+    f.text(t_done - 4, yg + 48, "torch.mps.synchronize() first,", "ta", 10.5, "end")
+    f.text(t_done - 4, yg + 62, "then the clock: the work, done", "ta", 10.5, "end")
+    f.text(20, 214, "k1 ... k6: one training step's operations (kernels). On the CPU each is done when its line returns, "
+                    "so there is nothing to wait for.", "tm", 10.5)
+    f.text(20, 230, "Schematic: the widths are not measured.", "tm", 10.5)
+    return f
+
+
 FIGS = [
     ("06.01-slide", slide0601),
     ("06.01-moved", moved0601),
     ("06.01-maps", maps0601),
+    ("06.02-import", import0602),
+    ("06.02-same", same0602),
+    ("06.02-clock", clock0602),
 ]
 
 

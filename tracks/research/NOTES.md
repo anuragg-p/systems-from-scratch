@@ -659,6 +659,16 @@ against 26 s, the same table within the spread (06.01 above): that is the
 "one import" demonstration for the page.
 lab/devices.py: `device(torch, name)`, `clock(torch, dev)`; models/convnet.py:
 `convnet(torch, width=32)`, 113,738 weights at 32, 33,834 at 16 (06.03's).
+Changed for the page (lessons agent): switch.py now also calls
+`torch.manual_seed(seed)` (part 1) and `torch.manual_seed(0)` (part 2) before
+building PyTorch's network, whose weights copy_weights then replaces, so its
+output is unchanged. Without it PyTorch's default generator is seeded anew in
+every process (torch.initial_seed() differs run to run), and 06.02's Break it,
+which comments out the copy, printed other numbers every run; seeded, it prints
+the same (loss 9.6e-03 apart, weights up to 0.32). The page's run with
+`device=auto`, with other runs going (load 4 to 8): engine 138 ms, PyTorch CPU
+75.7 ms, mps 7.1 ms a step; the mps losses equal the engine's to the 7 decimals
+printed until step 8 (2.3242767 against 2.3242760), the CPU's until step 4.
 
 **06.03 A convolutional network on CIFAR-10.** cifar: the first 2000
 training images, 12 passes, batches of 64, SGD momentum 0.9, 3 seeds, test
