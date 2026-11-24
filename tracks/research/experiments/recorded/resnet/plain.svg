@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+<text x="64" y="20" font-size="14" font-weight="bold" fill="currentColor">plain: training (dashed) and test</text>
+<line x1="64" y1="312.0" x2="490" y2="312.0" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="316.0" font-size="11" text-anchor="end" fill="currentColor">70</text>
+<line x1="64" y1="245.2" x2="490" y2="245.2" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="249.2" font-size="11" text-anchor="end" fill="currentColor">75</text>
+<line x1="64" y1="178.3" x2="490" y2="178.3" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="182.3" font-size="11" text-anchor="end" fill="currentColor">80</text>
+<line x1="64" y1="111.5" x2="490" y2="111.5" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="115.5" font-size="11" text-anchor="end" fill="currentColor">85</text>
+<line x1="64" y1="44.7" x2="490" y2="44.7" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="48.7" font-size="11" text-anchor="end" fill="currentColor">90</text>
+<line x1="124.9" y1="314" x2="124.9" y2="318" stroke="currentColor"/>
+<text x="124.9" y="331" font-size="11" text-anchor="middle" fill="currentColor">2</text>
+<line x1="246.6" y1="314" x2="246.6" y2="318" stroke="currentColor"/>
+<text x="246.6" y="331" font-size="11" text-anchor="middle" fill="currentColor">4</text>
+<line x1="368.3" y1="314" x2="368.3" y2="318" stroke="currentColor"/>
+<text x="368.3" y="331" font-size="11" text-anchor="middle" fill="currentColor">6</text>
+<line x1="490.0" y1="314" x2="490.0" y2="318" stroke="currentColor"/>
+<text x="490.0" y="331" font-size="11" text-anchor="middle" fill="currentColor">8</text>
+<rect x="64" y="34" width="426" height="280" fill="none" stroke="currentColor"/>
+<text x="277.0" y="352" font-size="12" text-anchor="middle" fill="currentColor">pass over the training images</text>
+<text x="14" y="174.0" font-size="12" text-anchor="middle" fill="currentColor" transform="rotate(-90 14 174.0)">error %</text>
+<polyline points="64.0,89.8 124.9,154.0 185.7,201.4 246.6,232.1 307.4,279.2 368.3,277.6 429.1,288.9 490.0,297.6" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="0.8" stroke-dasharray="5 3"/>
+<polyline points="64.0,87.5 124.9,123.6 185.7,213.1 246.6,238.5 307.4,262.5 368.3,265.2 429.1,274.5 490.0,270.5" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="0.8"/>
+<polyline points="64.0,79.5 124.9,120.9 185.7,160.3 246.6,205.4 307.4,247.2 368.3,247.5 429.1,261.9 490.0,255.2" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="0.8" stroke-dasharray="5 3"/>
+<polyline points="64.0,90.2 124.9,132.9 185.7,139.6 246.6,203.7 307.4,238.5 368.3,239.8 429.1,231.8 490.0,233.1" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="0.8"/>
+<polyline points="64.0,107.2 124.9,156.0 185.7,197.4 246.6,259.5 307.4,284.6 368.3,279.2 429.1,291.9 490.0,279.6" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="0.8" stroke-dasharray="5 3"/>
+<polyline points="64.0,134.2 124.9,144.9 185.7,233.1 246.6,286.6 307.4,297.3 368.3,301.3 429.1,290.6 490.0,294.6" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="0.8"/>
+<polyline points="64.0,61.8 124.9,109.5 185.7,129.9 246.6,154.0 307.4,188.4 368.3,184.0 429.1,186.7 490.0,196.7" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="0.8" stroke-dasharray="5 3"/>
+<polyline points="64.0,50.1 124.9,150.3 185.7,151.6 246.6,178.3 307.4,222.4 368.3,227.8 429.1,225.1 490.0,229.1" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="0.8"/>
+<polyline points="64.0,65.4 124.9,78.8 185.7,92.2 246.6,97.5 307.4,117.5 368.3,116.5 429.1,112.9 490.0,119.9" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="0.8" stroke-dasharray="5 3"/>
+<polyline points="64.0,48.7 124.9,94.2 185.7,95.5 246.6,102.2 307.4,107.5 368.3,107.5 429.1,115.5 490.0,112.9" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="0.8"/>
+<polyline points="64.0,46.7 124.9,75.1 185.7,92.8 246.6,104.2 307.4,115.9 368.3,120.6 429.1,127.9 490.0,117.5" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="0.8" stroke-dasharray="5 3"/>
+<polyline points="64.0,63.4 124.9,86.1 185.7,100.8 246.6,110.2 307.4,116.9 368.3,123.6 429.1,128.9 490.0,128.9" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="0.8"/>
+<line x1="502" y1="42" x2="522" y2="42" stroke="#1f77b4" stroke-width="2.5"/>
+<text x="528" y="46" font-size="11" fill="currentColor">20 layers</text>
+<line x1="502" y1="60" x2="522" y2="60" stroke="#d62728" stroke-width="2.5"/>
+<text x="528" y="64" font-size="11" fill="currentColor">56 layers</text>
+</svg>

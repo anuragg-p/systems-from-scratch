@@ -1,0 +1,11 @@
+4000 training images, 8 passes, width 16, 3 seeds, on cpu: error in % at the end
+network    layers  training error                          test error
+plain          20  71.9 +- 1.51 (min 70.3, max 73.3, 3 seeds)  73.4
+plain          56  81.8 +- 2.96 (min 78.4, max 83.5, 3 seeds)  81.6
+residual       20  59.2 +- 0.694 (min 58.6, max 60, 3 seeds)  61.0
+residual       56  55 +- 1.88 (min 53.7, max 57.1, 3 seeds)  57.5
+plain: 56 layers against 20, training error 81.8 against 71.9, t = +5.2 (positive: the deeper is worse)
+residual: 56 layers against 20, training error 55.0 against 59.2, t = -3.7 (positive: the deeper is worse)
+plain curves in experiments/recorded/resnet/plain.svg
+residual curves in experiments/recorded/resnet/residual.svg
+39.7 minutes of training on cpu

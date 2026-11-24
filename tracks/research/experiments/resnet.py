@@ -8,8 +8,10 @@ paper's networks (models/resnet.py) at two depths, plain and residual,
 trained the paper's way at laptop size (SGD with momentum 0.9 and weight
 decay 1e-4, the rate divided by 10 halfway and at three quarters, every
 pass a new crop and mirror of every image), on the first n_train
-training images, a few seeds each. The training error at the end is the
-claim; the test error is beside it.
+training images, a few seeds each, but at a tenth of the paper's rate:
+in a few hundred steps at 0.1 a deep residual network has not started
+to learn, as the paper says of its 110 layers, which it starts at 0.01.
+The training error at the end is the claim; the test error is beside it.
 
     python3 -m experiments.resnet          (needs CIFAR-10: python3 -m data.fetch cifar10)
 
