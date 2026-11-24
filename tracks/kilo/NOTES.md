@@ -3170,7 +3170,15 @@ On the Mac (Apple M-series, Apple clang 21):
    drawn over the row in turn. Under ASan in Docker that was slow enough
    for 0906's prompt to outrun the test's wait for a quiet screen; the test
    clears them in the same line now. Kept: HIGHLIGHT_MAX bounds it.
-7. No bug in the core, in 07 or in 08 was found. All earlier tests (the 28
+7. **Marker text in every 09 project** (found 2026-11-25): four fields of
+   script.c's state ended `... @from 09.08 */` (or 09.09, or `@internal`):
+   a marker must end its line, so these were plain comments, and the
+   fields with their marker text were in script.c from 09.01 on. Now a
+   marked line and two blocks; no written-out project, 00.01 to 09.10 or
+   the finished one, holds `@from`, `@else`, `@end`, `@internal` or
+   `@build`, and no marker in kilo.c, script.c, script.h, api.h, lsp.c,
+   json.c, the Makefile or plugins/ is malformed.
+8. No bug in the core, in 07 or in 08 was found. All earlier tests (the 28
    to 07.07, and 08's 4) pass on the finished tree, which has 09 in it.
 
 ### Kept simple, and the frontier
