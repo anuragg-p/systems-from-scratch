@@ -3,10 +3,10 @@
 best_of gives the expected best of n trials drawn from N, and the expected reported number of the one chosen,
 the same as every way of drawing n counted out by hand; draw_rates draws the same search for each optimiser,
 seeded, every rate inside its range; run_one trains one optimiser at one rate and seed the same way twice and
-scores validation and test. Then (with MNIST) the experiment on short settings: the hypothesis and its rule
-printed before anything else; the hurried comparison (Adam tuned against SGD at the docs' rate) a far wider gap
-than the fair one, the docs' rate worse than SGD's own tuned one; the expected best of n falling as n grows, for
-both; and the same seed gives the same bytes again.
+scores validation and test. Then (with MNIST) the experiment, its search as the default's and 3 fresh seeds: the
+hypothesis and its rule printed before anything else; the hurried comparison (Adam tuned against SGD at the docs'
+rate) a far wider gap than the fair one, the docs' rate worse than SGD's own tuned one; the expected best of n
+falling as n grows, for both; and the same seed gives the same bytes again.
 """
 
 import os
@@ -22,8 +22,7 @@ def test(t):
     T = t.track
     T.inside(t, __file__)
     T.need(t, "mnist")
-    short = ["n_train=5000", "trials=4", "seeds=3", "epochs=1"]
-    r = T.experiment(t, "baseline", *short)
+    r = T.experiment(t, "baseline", "seeds=3")
     t.check(r.out.startswith("1. The hypothesis: Adam reaches a lower test error"),
             f"the hypothesis should be printed first, before any run:\n{r.out[:500]}")
     gaps = [float(x) for x in re.findall(r"SGD's test error minus Adam's: ([+-][\d.]+) points", r.out)]
@@ -37,7 +36,7 @@ def test(t):
     t.check(sum(s["test_error"] for s in docs) > sum(s["test_error"] for s in tuned),
             "SGD at the docs' rate should be worse than SGD at its own tuned rate")
     table = re.findall(r"^\s+(\d+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)$", r.out, re.M)
-    t.check(len(table) == 4, f"the best-of-n table should have a row for n = 1 to 4:\n{r.out[-1500:]}")
+    t.check(len(table) == 8, f"the best-of-n table should have a row for n = 1 to 8:\n{r.out[-1500:]}")
     for col in (1, 3):
         values = [float(row[col]) for row in table]
         t.check(all(a >= b - 1e-9 for a, b in zip(values, values[1:])),

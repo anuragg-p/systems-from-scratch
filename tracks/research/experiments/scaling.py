@@ -41,7 +41,7 @@ from models.gpt import GPT
 
 CONFIG = dict(size=4096, layers=4, heads=4, widths=[16, 24, 32], largest=48, context=64, batch=32, steps=120,
               lr=0.003, warmup=20, weight_decay=0.1, clip=1.0, every=20, seeds=2, largest_seeds=2, held=32,
-              held_stories=200, level=0.95, recorded="experiments/recorded/scaling", device="cpu")
+              held_stories=200, level=0.95, recorded="experiments/recorded", device="cpu")
 # The paper's law in N alone (its equation 1.1, section 1.2): nats per token on WebText2's test text, averaged over
 # a context of 1024, for models trained to near convergence on its 22 billion tokens.
 PAPER = dict(alpha=0.076, n_c=8.8e13)

@@ -95,6 +95,10 @@ def check_recorded(t, d, rerun=False):
         slope = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / sum((x - mx) ** 2 for x in xs)
         t.check(abs(-slope - fit["weights"]["law"]["alpha"]) < 1e-9 and fit["weights"]["law"]["alpha"] > 0,
                 f"{where}: the fit should be the summaries' own: {-slope} against {fit['weights']['law']}")
+        miss = {by: abs(fit[by]["got"] - fit[by]["predicted"]) for by in ("weights", "all_weights")}
+        t.check(fit["weights"]["inside"] and miss["weights"] < miss["all_weights"],
+                f"{where}: counted as the paper counts, the largest should land inside the interval, and nearer than "
+                f"with every weight counted: {fit}")
 
 
 def inside(S):
