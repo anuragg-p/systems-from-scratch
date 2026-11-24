@@ -87,6 +87,12 @@ Taken      kilo.c: the editor, with kilo's functions and their structure,
 Ours       The lessons, the order the code is built in and its markers,
            what the project shows before its screen exists (01.01-01.03),
            and the internal checks (tracks/kilo/track.py and tests/).
+           Module 07, an optional extension, is a language server client
+           written for this course and not derived from kilo: lsp.c,
+           lsp.h, json.c and json.h are ours, and so are the lines in
+           kilo.c that call into them, its section "The editor's side of
+           the language client", and the Makefile's lines that build
+           lsp.c and json.c.
 
 
 dsa - Data structures and algorithms (tracks/dsa)
