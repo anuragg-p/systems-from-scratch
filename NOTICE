@@ -322,6 +322,23 @@ Licence    As read at the source on 2026-11-24: the dataset card gives
            phrase or two quoted in the track's recorded run
            (tracks/research/experiments/recorded/tinystories/output.txt),
            beside stories written by a model trained on it.
+Weights    SmolLM2-135M, by Hugging Face (Allal et al., "SmolLM2: When Smol
+           Goes Big -- Data-Centric Training of a Small Language Model",
+           2025): its weights (model.safetensors, 269,060,552 bytes, in
+           bfloat16), its configuration (config.json) and its tokenizer
+           (tokenizer.json and tokenizer_config.json). Not in this
+           repository, and never downloaded by a build, a test or a lesson:
+           the learner fetches them once, with python3 -m data.fetch
+           smollm2, from the HuggingFaceTB/SmolLM2-135M repository on Hugging
+           Face at commit 93efa2f097d58c2a74874c7e644dbc9b0cee75a2, into a
+           cache outside the project; each file is kept only if its size and
+           SHA-256 match the ones pinned in fetch.py. Lesson 10.04 reads
+           them; the internal tests compare the track's model and tokenizer
+           with transformers', built from the same files.
+Licence    As read at the source on 2026-11-24: the model card gives
+           Apache-2.0 (its metadata, "license: apache-2.0", and its License
+           section, which links the Apache License 2.0); the repository has
+           no licence file of its own. Nothing of it is redistributed here.
 Generated  The two groups of points (data/points.py) are made from a seed
            when a script runs; none is stored.
 

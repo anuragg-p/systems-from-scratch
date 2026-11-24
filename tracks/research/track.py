@@ -647,6 +647,45 @@ DATA["experiments/recorded/tinystories/*"] = ("the long run of experiments/tinys
                                               "machine in NOTES.md")
 
 
+# ---------------------------------------------------------------- module 10: today's architecture
+#
+# Kept apart from the tables above, as modules 06 to 09's parts are. models/gpt.py gains RMSNorm (10.01), Rotary
+# (10.02), SwiGLU (10.03) and grouped-query attention (10.04), each chosen by an argument of GPT whose default is module
+# 08's piece; experiments/language.py gains compare (10.01), the loop that trains GPTs differing in one piece alike.
+# 10.04 loads SmolLM2-135M (models/smollm.py, tokens/smollm.py; lab/safetensors.py reads bfloat16): it needs
+# python3 -m data.fetch smollm2. 10.05's long run is recorded in experiments/recorded/ablation/.
+
+FILES_FROM["experiments/smollm.py"] = "10.04"          # no regions: its lesson's code is in models/, tokens/ and lab/
+
+EXPERIMENTS.update({
+    "rmsnorm": ("10.01", ["seeds=1", "steps=5", "layers=1", "width=16", "context=16", "repeats=2", "big=[2,8,16]"],
+                r"s of timing, training and scoring on cpu"),
+    "rotary": ("10.02", ["seeds=1", "steps=5", "layers=1", "width=16", "context=16", "longer=[2]"],
+               r"s of training and scoring on cpu"),
+    "swiglu": ("10.03", ["seeds=1", "steps=5", "layers=1", "width=16", "context=16"], r"s of training and scoring on cpu"),
+    "smollm": ("10.04", ["seeds=1", "steps=5", "layers=1", "width=16", "context=16", "kv=[4,2]", "test_tokens=300",
+                         "warm=16", "span=49", "greedy=4", "prompt_tokens=8", "length=4"],
+               r"s of training, loading, scoring and sampling on cpu"),
+    "ablation": ("10.05", ["seeds=1", "steps=5", "layers=1", "width=16", "context=16", "every=2", "held=4"],
+                 r"s of training and scoring on cpu"),
+})
+DATASET_OF.update({"rmsnorm": None, "rotary": None, "swiglu": None, "smollm": "smollm2", "ablation": None})
+
+# The download of 10.04 (data/fetch.py has the SHA-256s too), file by file with their sizes, and its name in a test's
+# line. need(t, "smollm2") and have_dataset("smollm2") are module 09's, which read these dicts.
+DATASET_FILES["smollm2"] = {"config.json": 704, "tokenizer.json": 2104556, "tokenizer_config.json": 3658,
+                            "model.safetensors": 269060552}
+DATASET_NAMES["smollm2"] = "SmolLM2-135M (its configuration, tokenizer and weights)"
+TOOLS["smollm2"] = lambda: have_dataset("smollm2")
+
+# The long run of 10.05, recorded as 09.04's is (experiments/ablation.py with out=experiments/recorded): every row's
+# config.json, log.jsonl and summary.json, the curves, the times and what it printed; no weights (it saves none). The
+# first glob that matches a file places it, so this narrower one goes first too.
+FILES_FROM = {"experiments/recorded/ablation/*": "10.05", **FILES_FROM}
+DATA["experiments/recorded/ablation/*"] = ("the long run of experiments/ablation.py (10.05), recorded on the machine in "
+                                           "NOTES.md")
+
+
 # ---------------------------------------------------------------- module 14: reproduce a paper, grokking
 #
 # Kept apart from the tables above, as modules 06 to 08's parts are, and last in the file, so another module's part can

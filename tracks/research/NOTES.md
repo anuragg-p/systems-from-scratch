@@ -2995,6 +2995,829 @@ a machine without tiktoken that lesson is "missing".
   are in the cache, tinystories where TinyStories is (DATASET_OF), and
   expects the "is missing" line elsewhere, as for CIFAR-10.
 
+## Module 10: today's architecture
+
+Built on 2026-11-24 on the machine above (Apple M4 Pro, Python 3.12.7,
+torch 2.10.0, numpy 2.4.3; transformers 4.57.6 and tokenizers 0.22.2 for
+the tests only), with two other agents' work running: every time below
+has the load average beside it. The learner's code imports numpy, torch
+and the standard library only.
+
+**What is new, and where.**
+
+```
+models/gpt.py           10.01   RMSNorm (region); GPT's norm="rms" (Block's norm1, norm2, GPT's norm)
+                        10.02   Rotary (region); positions="rotary" and base (SelfAttention's rotary, in qkv)
+                        10.03   SwiGLU (region); mlp="swiglu" and hidden (Block's mlp)
+                        10.04   kv_heads (SelfAttention's key and value, the view and repeat in qkv)
+models/smollm.py        10.04   CONFIG, from_smollm, load: SmolLM2-135M's published weights in GPT
+tokens/smollm.py        10.04   split, Tokenizer (regions), END, load: SmolLM2's tokenizer, from tokenizer.json
+lab/safetensors.py      10.04   bfloat16 (region); DTYPES["BF16"] (one-line @from); load_file widens BF16
+                                (an @from 10.04 block inside 09.03's block inside the 02.05 region)
+data/fetch.py           10.04   smollm2 (an @from block): four files, pinned
+experiments/language.py 10.01   compare: GPTs that differ in one piece, trained, timed and scored alike
+experiments/            10.01   rmsnorm.py (written_layer_norm, norm_times, centring, uncentred)
+                        10.02   rotary.py (neighbours: the paper's own form)
+                        10.03   swiglu.py (gates)
+                        10.04   smollm.py (no regions; FILES_FROM)
+                        10.05   ablation.py (table); recorded/ablation/, the long run
+tests/support.py        10.01   gpt10_numpy and its pieces: rms_norm, rotate_numpy, silu_numpy, attention10_numpy
+```
+
+**GPT's new arguments** (models/gpt.py; each default is module 08's
+piece): `norm="layer"` or `"rms"`; `positions=True` (08.03's learned
+table), `False` (none) or `"rotary"`, with `base=10000.0` (rotary's
+angles, theta_i = base^(-2i/d)); `mlp="gelu"` or `"swiglu"`, with
+`hidden=None` (SwiGLU's inner width, 8 x width // 3 when None); and
+`kv_heads=None` (heads of keys and values; None: as many as query
+heads). Block and SelfAttention take the same ones (SelfAttention's
+`rotary` is the base, or None). A checkpoint written by 08.04's or
+09.04's runs stores a config without them and loads as before
+(language.load builds GPT(**config)). Measured: the default model is
+built draw for draw as before, so every earlier number is unchanged:
+08.03's positions, 08.04's gpt and 08.01's self_attention, run on short
+settings before and after the change, gave the same bytes in every
+log.jsonl, summary.json and checkpoint (only config.json's out path
+differed); the earlier lessons' views of models/gpt.py are unchanged at
+08.01, 08.02, 08.03, 08.05 and 09.04 (harness/timeline.py's lines_at,
+compared before and after). `positions` is now tested with `is True`
+(a "rotary" string is truthy). The signatures grow one argument line a
+lesson: each `def __init__` is `... positions=True,` / `norm="layer",` /
+`base=10000.0,  # @from 10.02` / ... / `):`, so 10.01 shows the
+signature with `norm` alone and each later lesson adds its line, with
+the earlier lessons' one-line signatures kept as @else parts (nested as
+kilo.c nests them: a later @from inside an earlier one's body).
+
+What stays right (the three the planner named):
+- GPT.__init__'s start still finds layers by name: RMSNorm's weight is
+  named norm1.weight, norm2.weight, norm.weight ("norm" in it: left at 1
+  by the loop, RMSNorm starts it at 1); SwiGLU's three are mlp.gate,
+  mlp.up and mlp.down, and mlp.down.weight is still the one that adds
+  into the stream (started by sqrt(2 x layers) smaller; the 10.03 test
+  checks it); key and value of fewer heads are ordinary weights.
+- attention_maps (experiments/language.py) is unchanged and right for
+  every variant: SelfAttention.qkv returns the queries and keys already
+  turned (rotary) and the keys and values already repeated to every
+  query head (grouped), so self_attend(*a.qkv(block.norm1(x)), a.mask,
+  a.scale) is the block's attention; the 10.02 and 10.04 tests rebuild
+  the first block's output from its maps (1e-12).
+- generate reads the last `model.context` symbols. A rotary model has
+  no table to run out of and reads any length (10.02 part 3), but it
+  gets worse past the length it was trained on, so `context` keeps its
+  meaning: the window the model was trained on, the longest it is good
+  for; generate keeps to it. SmolLM2's context is 8192, its config's
+  max_position_embeddings (its model card's table calls it
+  SmolLM2-135M-8k).
+
+**The comparisons of 10.01 to 10.04** all use experiments/language.py's
+compare on 08.04's default GPT (4 blocks of 4 heads, width 64, windows
+of 64, bias=True, learned positions, GELU MLP: 208,320 weights) with
+08.04's training (AdamW 0.003, weight decay 0.1 on the matrices, warmup
+50 then a cosine to 0, clipped to 1, batches of 32 windows from random
+places of the training text), 150 steps, 3 seeds, the variants taking
+turns seed by seed; bits per character on the test text by window_bits
+with warm = context / 4 (each character with 16 or more before it, as
+08.04 scores); ms a step = the training's wall clock (lab.clock) over
+the steps, after an untimed warm-up step. Same seed: the same starting
+draws for every variant whose shapes match (torch.manual_seed before
+each), the same batches (run.rng). The base row is therefore the same
+three runs in all four lessons: `3.563 +- 0.004889` (min 3.559, max
+3.568). Times a step are the busy machine's (load 6 to 16 while these
+ran): compare them only inside one run, where the variants took turns.
+
+**10.01 RMSNorm: normalising with less (Zhang and Sennrich 2019).**
+experiments/rmsnorm.py. Default run 38.2 s at load 8.4 to 9.1, 36.6 s
+at load 8.8 to 11.7 (the same digits but for the times):
+1. RMSNorm against torch.nn.RMSNorm on 64 vectors of 64 (float64): the
+   largest difference 0; against the formula 1.78e-15. [3, 4, 0, 0]
+   (root mean square 2.5): RMSNorm [1.2, 1.6, 0, 0], layer norm [0.7001,
+   1.2603, -0.9802, -0.9802]; [5, 6, 7, 8]: RMSNorm [0.7581, 0.9097,
+   1.0613, 1.213], layer norm [-1.3416, -0.4472, 0.4472, 1.3416]: RMSNorm
+   keeps the vector's direction, layer norm moves it to around 0 first.
+2. The norm alone, forward and backward (the median of 100 calls, the
+   four taking turns), ms: 32 x 64 x 64 (the GPT's activations):
+   nn.LayerNorm 0.290, layer norm written out (written_layer_norm, the
+   same operations as RMSNorm plus the mean) 1.121, RMSNorm 0.763,
+   nn.RMSNorm 0.763; 8 x 512 x 576 (SmolLM2's width): 0.870, 3.572, 2.587,
+   2.453. RMSNorm takes 0.68 and 0.72 of the written-out layer norm's
+   time, and 2.64 and 2.97 times nn.LayerNorm's. An earlier run (200
+   calls, load 6 to 9): 0.260, 1.017, 0.718, 0.696 and 0.744, 2.486,
+   1.702, 1.662 (0.71 and 0.68; 2.76 and 2.29). So the paper's saving is
+   there in the arithmetic, about 30% when both are written alike, and
+   PyTorch's layer norm, one fused kernel, is faster than either.
+3. Trained (150 steps, 3 seeds): layer norm `3.563 +- 0.004889`, RMSNorm
+   `3.561 +- 0.01412` (min 3.547, max 3.576): -0.0020, t = -0.2. ms a
+   step 34.1 +- 7.07 against 37.9 +- 1.31, x1.111, t = +0.9 (one of layer
+   norm's seeds at 42.3 under the load). 576 weights fewer (9 norms'
+   biases). An earlier default of 200 steps (load 6 to 9): 3.474 against
+   3.471, t = -0.5; 28.8 against 32.9 ms, x1.146, t = +3.0.
+4. What the mean did. |mean| / rms of the vectors each norm reads (seed
+   0, 125 windows of the test text), block 1's norm1 and norm2, then the
+   rest: layer-norm model 0.047, 0.049, then 0.018 to 0.021; RMSNorm
+   model 0.109, 0.109, then 0.083 to 0.121. The vectors the layer norms
+   read are already nearly centred (their mean 2 to 5% of their size).
+   The trained layer-norm model with every norm dividing by the root
+   mean square without taking the mean away (gains and biases kept,
+   experiments/rmsnorm.py's uncentred): 3.5683 as trained, 3.5684
+   without. The mean step was doing almost nothing in the trained model.
+Longer: the 600-step spike (2 seeds, below) +0.013 (t = +0.5); the long
+run (10.05) +0.0133 (t = +2.6) and x1.18 a step. As found: the paper's
+"comparable performance" held at every budget here (within 0.013 bits,
+inside the noise); its time saving did not, in a whole step on this CPU:
+RMSNorm made the step 11 to 18% slower, because PyTorch's nn.LayerNorm is
+one fused kernel and RMSNorm here is four operations; the paper's own
+Transformer saving was 7% (table 4), in TensorFlow on a GPU, and its
+section 7 says the gain depends on "the framework, hardware, neural
+network architecture and relative computational cost of other
+components". Why every open model uses it anyway is not measured here
+(a fused RMSNorm kernel, on a GPU, is the usual answer; not run).
+
+**10.02 Rotary positions: turning instead of adding (Su et al. 2021).**
+experiments/rotary.py. Default run 29.7 s at load 8.9, 37.1 s at load
+9.5 (the same digits but for the times):
+1. Exact, float64, 8 x 40 queries and keys of 16: the largest change in
+   a score when both move along by 1, 7 or 1000 places 3.79e-13 (the
+   angles of place 1000 rounded; 1e-15 for small moves); in a vector's
+   length 8.88e-16; between the paper's neighbours and ours with the
+   numbers reordered 3.55e-15; and, for scale, between turned and
+   unturned scores 25.1.
+2. Trained: learned positions `3.563 +- 0.004889`, rotary `3.248 +-
+   0.007674` (min 3.24, max 3.255): -0.3151, t = -60.0. ms 26.1 against
+   30.9, x1.182, t = +2.8. 4,096 weights fewer (the table).
+3. Past the length trained on (64), seed 0: learned, a window of 256:
+   "ValueError: 256 positions, but there are learned vectors for 64";
+   rotary, windows of 64, 128 and 256, bits at positions 0 to 63 / 64 to
+   127 / 128 to 255: n = 1 3.265; n = 2 3.271 / 3.303; n = 4 3.262 / 3.300
+   / 3.562. It reads any length, and gets worse past the length it was
+   trained on: a little at twice it, 0.3 bits at four times. (08.03's
+   model without positions, at windows of 32: 3.399, 3.537 at 2x, 3.682
+   at 4x: the same shape.)
+Longer: 600 steps -0.242 (t = -11.2), 1200 steps -0.158 (t = -10.5), the
+long run -0.060 (t = -5.6) and x1.52 a step. As found: "faster
+convergence" held, strongly: the gap is widest early and narrows with
+training, and is still there at 2000 steps of a model four times the
+size. "Flexibility of sequence length": the model runs at any length,
+but it is no better past its training length than 08.03's model
+without positions; the paper does not measure this beyond its
+1024-token row. The time: our Rotary rebuilds its angles at every call,
+which costs 18 to 50% a step here (For module 11).
+
+**10.03 A gated MLP: SwiGLU (Shazeer 2020; Dauphin et al. 2017).**
+experiments/swiglu.py. Default run 23.0 s at load 7.4, 31.2 s at load
+8.3 (the same digits but for the times):
+1. The weights of one MLP: width 64 with biases, MLP (inner 256) 33,088,
+   SwiGLU (inner 170) 33,044, -44; without biases 32,768 / 32,640, -128;
+   width 576 with biases 2,657,088 / 2,657,856, +768; without biases
+   2,654,208 / 2,654,208, +0 (SmolLM2's: 1536 = 8 x 576 / 3 exactly).
+2. Trained: GELU MLP `3.563 +- 0.004889`, SwiGLU `3.596 +- 0.01129` (min
+   3.59, max 3.609): +0.0333, t = +4.7: behind, at 150 steps. ms 22.9
+   against 21.7, x0.947, t = -0.8. 176 weights fewer.
+3. The gates (seed 0, 125 windows): the share of silu(gate) under 0.1 in
+   size, and over 1: block 1 0.262 and 0.059; blocks 2 to 4 0.401 to
+   0.425 and 0.003 to 0.004. About two fifths of the inner numbers are
+   shut for any one character in the deeper blocks.
+Longer: 600 steps -0.044 (t = -1.9), 1200 steps -0.049 (t = -3.5), the
+long run -0.067 (t = -10.9), the largest single change there, and x0.91
+a step. As found: the paper's gain (1.944 against GELU's 1.983, its
+table 1, at 65,536 steps of a T5 base) held once the model had trained
+a while; at 150 steps SwiGLU is behind. Why it starts slower is
+reasoned, not measured: at the start gate and up are both small, and
+their product is smaller still, so the gated MLP adds almost nothing
+to the stream until its weights grow. Its time a step is the MLP's (the
+same multiplies, 3 x 64 x 170 against 2 x 64 x 256).
+
+**10.04 Grouped-query attention, and loading a current open model
+(Ainslie et al. 2023; Allal et al. 2025).** experiments/smollm.py.
+Default run 33.2 s at load 9.6 to 10.6, 36.9 s at load 8.9 (the same
+digits but for the times):
+1. Heads (2 seeds): 4 key/value heads (each query head its own)
+   208,320 weights, 512 numbers kept a token (2 x 4 heads x 16 x 4
+   blocks), `3.565 +- 0.004595`; 2 key/value heads 191,680, 256 kept,
+   `3.566 +- 0.006775`: +0.0011, t = +0.2, x1.003 a step, 16,640 weights
+   fewer. With 3 seeds (the first default, 45 s at load 6.5): 3.563
+   against 3.565, +0.0023, t = +0.6. Longer: 600 steps -0.003 (t =
+   -0.2); the long run +0.0094 (t = +1.2) with 66,048 weights (8%)
+   fewer, x1.05 a step. Multi-query (kv=[4,1]) not run. As found:
+   "quality close to multi-head attention" held, from the start (the
+   paper's models were uptrained from multi-head ones; ours grouped
+   from the first step). Its speed is in writing with a cache, which
+   module 11 builds: here the cache would hold half as much.
+2. SmolLM2-135M: its config.json beside GPT's arguments, every one the
+   same (printed); 272 tensors, all BF16, 134,515,008 weights, loaded in
+   1.6 s; keys and values 3 heads of 64 for 9: 11,520 numbers kept a
+   token where 9 heads would keep 34,560. After "To be, or not to be,":
+   ' the' 0.154, ' a' 0.122, ' is' 0.046, '\n' 0.026, ' in' 0.025 (the
+   play's next word, ' that', is not among them); greedy: "To be, or not to be, the most important thing in
+   life, is the fact that we are all human beings".
+3. The tokenizer: 49,152 symbols, 17 special, 235 of the 256 bytes (none
+   for 0x04, 0x06, 0x13, 0x14, 0x16, 0x1d, 0xc0, 0xc1, 0xf1, 0xf2, 0xf5 to
+   0xff: control characters, and bytes that are never in UTF-8 or begin
+   characters of planes 4 to 15), 48,900 merges, against GPT-2's 50,257,
+   1, 256, 50,000. " in 2019, 1234567890": pieces ' in', ' ', '2', '0',
+   '1', '9', ',', ' ', '1', ... (GPT-2: ' in', ' 2019', ',', ' 1234567890'
+   cut by its merges); "x\U00040000y" is tokens [104, 218, 218, 218, 105]
+   and decodes to "x" + three U+FFFD + "y" (its first byte, 0xf1, has
+   no symbol). The test text: 17,912 tokens, 3.114 characters a token
+   (GPT-2: 17,995, 3.099); all of Tiny Shakespeare 341,094 (GPT-2
+   338,025); every one decodes back.
+4. Bits on the test text (windows of 1024, each token with 64 or more
+   before it, as 09.03 scores GPT-2): 4.375 a token, 1.405 a character.
+   Beside: 08.04's long-run GPT 2.226 (2,731,200 weights), GPT-2 small
+   1.851 (124,439,808), SmolLM2-135M 1.405 (134,515,008). Not "never
+   seen": its 2 trillion tokens of web, code and education pages may
+   hold the plays. Spike (scratch code, greedy, 12 tokens after the
+   200 characters before a line of the test text): of five famous lines
+   of The Tempest's first act ("Full fathom five thy father lies;",
+   "'Hell is empty", "You taught me language;", "This island's mine,",
+   "Come unto these yellow sands,") SmolLM2 continues one with four
+   right words ("Of his bones are", then "the footstool'st") and one
+   with one ("\nAnd"); GPT-2 none. Its validation bits are nearly its
+   test bits (1.389 against 1.405; GPT-2 1.843 against 1.851), where the
+   models trained here are 0.2 bits worse on test (Data above): as for
+   models that did not learn the training plays in particular.
+5. After "PROSPERO:\n'Tis time\nI should inform thee farther." (16 tokens,
+   a speech in the middle of the test text), 40 tokens, seed 0: greedy
+   "\n\n'Tis time, my dear,\nTo tell thee more of the world.\n\n'Tis time,
+   my dear,\nTo tell thee more of the world.\n\n" (a loop, as 08.05 and
+   09.03 found); top-k 40 "\n\nLORD OF EPHESUS:\n\nSIR ALEXANDER, (as at
+   part's end of the film, his body was seen)\n'Nestle!'"; nucleus 0.95
+   "\n\nNARRATOR: The Channel, which was just turning back to the Great
+   Barrier, ...". Shakespeare's form for a line or two, then the web.
+
+**10.05 Which change paid: an ablation table.** experiments/ablation.py:
+rows base (08's GPT), RMSNorm, rotary, SwiGLU, grouped-query (2 key and
+value heads for 4), all four; compare with every row trained alike,
+validation bits of 64 (32 in the default) fixed windows logged every
+`every` steps; table() prints weights, bits (spread), the difference
+from the base with Welch's t, "beyond noise" (|t| >= 3) and ms a step;
+curves.svg is each row's validation curve, the mean over seeds;
+times.json the ms a step of every row and seed (times are never in
+summary.json). The default run: 4 blocks of 4 heads, width 64, windows
+of 64, 80 steps (warmup 40), 2 seeds a row; 40.9 s at load 8.6 to 10 and
+44.4 s at load 12.2 to 12.7, the same digits:
+
+    base (08)        208,320   3.721 +- 0.009156                       32.9
+    RMSNorm          207,744   3.73 +- 0.01186    +0.0088 (t  +0.8)  no   39.0
+    rotary           204,224   3.488 +- 0.002474  -0.2331 (t -34.8)  yes  39.8
+    SwiGLU           208,144   3.832 +- 0.01812   +0.1108 (t  +7.7)  yes  30.6
+    grouped-query    191,680   3.726 +- 0.0192    +0.0049 (t  +0.3)  no   33.3
+    all four         186,832   3.539 +- 0.03378   -0.1819 (t  -7.3)  yes  42.9
+
+then the recorded table and each paper's claim. What the short run can
+show: rotary's early lead; that RMSNorm and grouped heads change nothing
+yet; SwiGLU behind, beyond the noise, and so all four together behind
+rotary alone. What it cannot: which changes still pay once the model has
+trained, the long run's question, where SwiGLU turns into the largest
+gain. The first default was 100 steps (40.4 s at load 7.5 but 48.4 s at
+load 9.8: cut): base 3.665, RMSNorm +0.0020, rotary -0.2674 (t = -34.2),
+SwiGLU +0.0499 (t = +6.4), grouped -0.0032, all four -0.2529 (t = -12.7).
+
+The long run, recorded in experiments/recorded/ablation/ (config.json,
+log.jsonl and summary.json of every row and seed; curves.svg; times.json;
+output.txt, what it printed); no weights (the script saves none):
+
+    python3 -m experiments.ablation layers=4 heads=4 width=128 context=128 batch=32 steps=2000 lr=0.002 warmup=100 every=100 held=64 seeds=3 kv_heads=2 recorded=none out=experiments/recorded
+
+4 blocks of 4 heads of 32, width 128, windows of 128 (818,048 weights
+for the base), 2000 steps of 32 windows (8.2 passes), AdamW 0.002 (08.04's
+long run's), weight decay 0.1, warmup 100 then cosine, clipped to 1, no
+dropout; 6 rows x 3 seeds. 2540 s by its own clock, 42 min 21 s of wall
+clock (22:41:37 to 23:23:58), load 7 to 16 (two other agents' work);
+each round of six rows 13 to 16 minutes. recorded=none: it writes where
+the default reads, so its output leaves the recorded table out.
+Bits per character on the test text (each character with 32 or more
+before it):
+
+    base (08)        818,048   2.337 +- 0.004618 (min 2.332, max 2.341)                       59.6
+    RMSNorm          816,896   2.35 +- 0.007442 (min 2.345, max 2.359)  +0.0133 (t  +2.6)  no   70.6
+    rotary           801,664   2.277 +- 0.01805 (min 2.263, max 2.297)  -0.0603 (t  -5.6)  yes  90.9
+    SwiGLU           818,216   2.27 +- 0.009653 (min 2.259, max 2.277)  -0.0672 (t -10.9)  yes  54.5
+    grouped-query    752,000   2.346 +- 0.01227 (min 2.332, max 2.354)  +0.0094 (t  +1.2)  no   62.7
+    all four         734,632   2.248 +- 0.01415 (min 2.232, max 2.26)   -0.0890 (t -10.4)  yes  83.5
+
+(the last column ms a step, the mean of 3 seeds; each seed's in
+times.json, e.g. the base's 60.5, 71.3 and 46.9: the load moved them more
+than the rows differ, but for rotary's and all four's.) What paid, at
+this size and budget: SwiGLU (0.067 bits) and rotary positions (0.060),
+both beyond the noise; RMSNorm and grouped heads did not change the
+bits (+0.013 and +0.009, inside the noise) and are there for other
+reasons (RMSNorm, speed where its kernel is fused, not measured here;
+grouped heads, 8% fewer weights here and half the cache). All four
+together are the lowest row, 0.089 below the base with 10% fewer
+weights; the single changes add up to -0.105, so they do not quite add.
+The paper's claims, beside: RMSNorm "comparable" (held), rotary's
+faster convergence (held: 0.23 bits at 80 steps and 0.32 at 150 at
+width 64, 0.06 at 2000 at width 128),
+SwiGLU's 0.04 log-perplexity on a T5 base (held, at about 0.07 bits per
+character, once trained 600 steps or more), grouped-query "quality
+close to multi-head" (held; its speed not measured here). The test holds
+rotary, SwiGLU and all four below the base by more than 0.03 and
+beyond t = -3, all four the lowest, RMSNorm and grouped heads within
+0.02 and |t| < 3.
+Spikes, the size and the budget (what I tried; scratch code calling
+compare, not in the project):
+- width 64, windows of 64 (08.04's default GPT), 600 steps, 2 seeds
+  (load 12.7, 211 s): base 3.015; RMSNorm +0.013 (t = +0.5); rotary
+  -0.242 (t = -11.2); SwiGLU -0.044 (t = -1.9); 2 key/value heads -0.003
+  (t = -0.2); all four -0.346 (t = -20.1); ms 24.4, 27.7, 30.4, 26.7,
+  28.5, 35.4.
+- the same at 1200 steps (load 9.4, 268 s): base 2.716; SwiGLU -0.049 (t
+  = -3.5); rotary -0.158 (t = -10.5); all four -0.222 (t = -8.4).
+- speed a step for the long run's candidates (load 9 to 10): width 128,
+  windows of 128: 56 to 70 ms for the six rows (40 steps each); 6 blocks
+  of width 192: 191 ms (base), 168 (all four), too slow for 18 runs of
+  more than 900 steps in the hour; width 96: 75 and 91.
+Chosen: width 128 at 2000 steps (8 passes: by 08.04's spike, a model of
+this size starts to overfit after 15 to 20 passes, so no dropout), 3
+seeds, about 2.3 minutes a run; the 600 and 1200-step spikes had shown
+rotary's lead shrinking and SwiGLU's growing, so a longer budget was
+the question worth the hour.
+
+**Module 10's papers: what was read at the source** (2026-11-24, the PDFs
+from arXiv; quotes are the papers' words, maths in ASCII; read for this
+module by an agent working from the PDFs, which checked the one place
+where the text extraction was unclear, the 2/3 of GLU Variants, against
+the page image):
+- Zhang and Sennrich, "Root Mean Square Layer Normalization", arXiv
+  1910.07467v1 (NeurIPS 2019). Section 4, equation 4: abar_i = (a_i /
+  RMS(a)) g_i, RMS(a) = sqrt((1/n) sum_{i=1}^n a_i^2); no bias in the
+  equation (a bias b appears only in the general form, equation 5, y =
+  f((Wx / RMS(a)) (.) g + b)); "Intuitively, RMSNorm simplifies LayerNorm
+  by totally removing the mean statistic in Eq. (3) at the cost of
+  sacrificing the invariance that mean normalization affords. When the
+  mean of summed inputs is zero, RMSNorm is exactly equal to LayerNorm."
+  The hypothesis (section 4): "we hypothesize that the re-scaling
+  invariance is the reason for success of LayerNorm, rather than
+  re-centering invariance." The claim (abstract): "RMSNorm achieves
+  comparable performance against LayerNorm but reduces the running time
+  by 7%~64% on different models." Where the time comes from (section 6:
+  TensorFlow, PyTorch and Theano, "Unless otherwise noted, all
+  speed-related statistics are measured on one TITAN X (Pascal)"): RNN
+  models in TensorFlow, where "LayerNorm is slower than the Baseline by
+  about 67%" and RMSNorm improves on it by about 25%; the Transformer,
+  "a speedup of 7%~9%. Compared with RNNSearch, the relative cost of
+  normalization is lower because there are significantly fewer
+  sequential normalization operations in Transformer"; the 64% is
+  pRMSNorm's (the RMS from the first p% of the numbers) on an
+  order-embedding model (table 8: 12.02 s, RMSNorm 7.12, pRMSNorm 4.34).
+  Section 7: "Actual speed improvements depend on the framework,
+  hardware, neural network architecture and relative computational
+  cost of other components". Table 4 (Transformer base, WMT14
+  English-German, SacreBLEU, seconds per 1,000 steps on a V100):
+  LayerNorm 26.6 / 27.7, 248 s; RMSNorm 26.8 / 27.7, 231 s (6.9%).
+  Not read: the other tasks' tables beyond tables 2, 4 and 8.
+- Su et al., "RoFormer: Enhanced Transformer with Rotary Position
+  Embedding", arXiv 2104.09864v5. Section 3.1,
+  equation 11, the goal: <f_q(x_m, m), f_k(x_n, n)> = g(x_m, x_n, m - n);
+  3.2.1, the 2D case, equations 12 and 13 ("simply rotate the
+  affine-transformed word embedding vector by amount of angle multiples
+  of its position index"); 3.2.2, equations 14 and 15: "we divide the
+  d-dimension space into d/2 sub-spaces", a block-diagonal R^d_{Theta,m}
+  whose block j turns coordinates 2j - 1 and 2j (neighbours), Theta =
+  {theta_i = 10000^(-2(i-1)/d), i in [1, ..., d/2]} (section 3.3 writes
+  10000^(-2i/d), 0-based as ours); equation 16, q_m^T k_n = x^T W_q
+  R^d_{Theta,n-m} W_k x_n; 3.4.2, equation 34, the efficient form, x
+  times (cos m theta_1, cos m theta_1, cos m theta_2, ...) plus (-x2, x1,
+  -x4, x3, ...) times the sines (our neighbours()); "Note that R^d_Theta
+  is an orthogonal matrix" and (3.3) RoPE "keeps the norm of hidden
+  representations unchanged". Claims: abstract, "RoPE enables valuable
+  properties, including the flexibility of sequence length, decaying
+  inter-token dependency with increasing relative distances, and the
+  capability of equipping the linear self-attention with relative
+  position encoding"; 4.2.3, "Compare to the vanilla BERT, RoFormer
+  experiences faster convergence" (a figure, no numbers); table 1, WMT14
+  English-German BLEU 27.3 (Transformer base) against 27.5; table 5
+  (CAIL2019-SCM, test accuracy), BERT-512 67.77%, RoFormer-512 68.29%,
+  RoFormer-1024 69.79%; 4.5.5, its limits: "there lacks of thorough
+  explanations on why it converges faster than baseline models". The
+  paper has no section that measures "flexibility of sequence length"
+  beyond the 1024-token row.
+- Shazeer, "GLU Variants Improve Transformer", arXiv 2002.05202v1.
+  Swish_beta(x) = x sigma(beta x); SwiGLU(x, W, V, b, c, beta) =
+  Swish_beta(xW + b) (x) (xV + c) (equation 5); "we omit the bias terms":
+  FFN_SwiGLU(x, W, V, W2) = (Swish_1(xW) (x) xV) W2 (equation 6). Section
+  2: "All of these layers have three weight matrices, as opposed to two
+  for the original FFN. To keep the number of parameters and the amount
+  of computation constant, we reduce the number of hidden units d_ff
+  (the second dimension of W and V and the first dimension of W2) by a
+  factor of 2/3"; 3.1, d_ff 3072 against 2048 for d_model 768; the
+  set-up, a T5 encoder and decoder of 12 layers each, d_model 768, 12
+  heads, 524,288 steps on C4, batches of 128 examples of 512 input and 114
+  output tokens. Table 1 (heldout log-perplexity, 65,536 steps with the
+  sd of four runs / 524,288 steps): FFN_ReLU 1.997 (0.005) / 1.677,
+  FFN_GELU 1.983 (0.005) / 1.679, FFN_Swish 1.994 (0.003) / 1.683,
+  FFN_GEGLU 1.942 (0.004) / 1.633, FFN_SwiGLU 1.944 (0.010) / 1.636.
+  Section 4: "We offer no explanation as to why these architectures seem
+  to work; we attribute their success, as all else, to divine
+  benevolence." Its fine-tuning tables (GLUE, SuperGLUE, SQuAD) not read.
+- Dauphin et al., "Language Modeling with Gated Convolutional Networks",
+  arXiv 1612.08083v3: equation 1, h_l(X) = (X *
+  W + b) (x) sigma(X * V + c), "We dub this gating mechanism Gated Linear
+  Units (GLU)"; section 1, "Our gated linear units reduce the vanishing
+  gradient problem for deep architectures by providing a linear path for
+  the gradients while retaining non-linear capabilities"; section 3, the
+  GLU's gradient "has a path grad X (x) sigma(X) without downscaling for
+  the activated gating units in sigma(X). This can be thought of as a
+  multiplicative skip connection which helps gradients flow through the
+  layers." Its experiments not read.
+- Ainslie et al., "GQA: Training Generalized Multi-Query Transformer
+  Models from Multi-Head Checkpoints", arXiv 2305.13245v3. Section 2.2: "Grouped-query attention
+  divides query heads into G groups, each of which shares a single key
+  head and value head. GQA-G refers to grouped-query with G groups.
+  GQA-1, with a single group and therefore single key and value head, is
+  equivalent to MQA, while GQA-H, with groups equal to number of heads,
+  is equivalent to MHA." Why (section 1): "Autoregressive decoder
+  inference is a severe bottleneck for Transformer models due to the
+  memory bandwidth overhead from loading decoder weights and all
+  attention keys and values at every decoding step"; 2.2, "reducing the
+  size of the key-value cache and therefore amount of data that needs to
+  be loaded by a factor of H". The claim (abstract): "We show that
+  uptrained GQA achieves quality close to multi-head attention with
+  comparable speed to MQA"; the uptraining: "using 5% of original
+  pre-training compute", key and value heads "mean pooled" from the
+  multi-head checkpoint (2.1). Table 1 (T5, the XXL MQA and GQA uptrained
+  5%; inference time a sample in s, average quality): MHA-Large 0.37,
+  46.0; MHA-XXL 1.51, 47.2; MQA-XXL 0.24, 46.6; GQA-8-XXL 0.28, 47.1. Ours
+  trains grouped heads from the start, not uptrained: the paper's
+  set-up is not run.
+- Touvron et al., "LLaMA: Open and Efficient Foundation Language Models",
+  arXiv 2302.13971v1, section 2.2, the three bullets: "Pre-normalization
+  [GPT3]. ... We use the RMSNorm normalizing function, introduced by
+  Zhang and Sennrich (2019)."; "SwiGLU activation function [PaLM]. We
+  replace the ReLU non-linearity by the SwiGLU activation function,
+  introduced by Shazeer (2020) to improve the performance. We use a
+  dimension of 2/3 4d instead of 4d as in PaLM."; "Rotary Embeddings
+  [GPTNeo]. We remove the absolute positional embeddings, and instead,
+  add rotary positional embeddings (RoPE), introduced by Su et al.
+  (2021), at each layer of the network." Table 2's smallest row: 6.7B,
+  dimension 4096, 32 heads, 32 layers, lr 3.0e-4, batch 4M tokens, 1.0T
+  tokens. Touvron et al., "Llama 2", arXiv 2307.09288v2: "adopted
+  grouped-query attention (Ainslie et al., 2023)" (section 1); table 1's
+  caption, "Bigger models - 34B and 70B - use Grouped-Query Attention
+  (GQA) for improved inference scalability"; appendix A.2.1, "the GQA
+  variant performs comparably to the MHA baseline on most evaluation
+  tasks and is better than the MQA variant on average". Its numbers for
+  that ablation not read.
+- Allal et al., "SmolLM2: When Smol Goes Big", arXiv 2502.02737v1:
+  section 6, SmolLM2-135M "trained on 2T tokens", "These models share the
+  same architecture as SmolLM2-1.7B but use Grouped Query Attention
+  (GQA)"; section 4.1, "the tokenizer from Allal et al. (2024), which has
+  a vocabulary size of 49,152 tokens"; appendix A's table 6 is the 1.7B
+  (tied embedding, RoPE theta 10,000, SwiGLU); the 135M's own sizes are
+  only in its model card and config.json ("More details about
+  SmolLM2-360M and 135M can be found in their respective model cards").
+- The model card (README.md at the pinned commit, read whole):
+  `license: apache-2.0` in its metadata, a License section linking the
+  Apache License 2.0; "The 135M model was trained on 2 trillion tokens
+  using a diverse dataset combination: FineWeb-Edu, DCLM, The Stack";
+  nanotron, 64 H100s, bfloat16. config.json, every field: in
+  models/smollm.py's docstring, and printed by 10.04's part 2.
+- The reference code, read where it is installed (transformers 4.57.6,
+  models/llama/modeling_llama.py and modeling_rope_utils.py):
+  LlamaRMSNorm (x in float32, x * rsqrt(mean(x^2) + eps), times weight;
+  no bias), LlamaRotaryEmbedding (inv_freq = 1 / base^(arange(0, d, 2) /
+  d) in float32; the angles a matrix product, then cat(freqs, freqs), cos
+  and sin, "Force float32" with autocast off, cast to the input's type
+  at the end), rotate_half (cat(-x2, x1): numbers i and i + d / 2 make a
+  pair), apply_rotary_pos_emb, LlamaMLP (down(act(gate(x)) * up(x))),
+  repeat_kv ("the equivalent of torch.repeat_interleave(x, dim=1,
+  repeats=n_rep)"), eager_attention_forward (scores times head_dim^-0.5,
+  the mask added, softmax in float32), LlamaDecoderLayer (pre-norm: x +
+  attention(input_layernorm(x)), then x + mlp(post_attention_layernorm
+  (x))). SmolLM2's config.json says "rope_interleaved": false, a nanotron
+  field: its weights are for the half-split pairing, which is ours.
+- tokenizers v0.22.2 (github, the tag), read for 10.04's tokenizer:
+  pre_tokenizers/digits.rs, `normalized.split(char::is_numeric,
+  SplitDelimiterBehavior::Isolated)` with individual_digits (Rust's
+  is_numeric is the categories Nd, Nl and No: every number, not only
+  0-9); pre_tokenizers/byte_level.rs, the regex GPT-2's encoder.py has,
+  word for word, applied when use_regex is true.
+
+**Departures from the design, and why** (each said above where it
+belongs):
+- The defaults of 10.01 to 10.04 train 150 steps, not 08.04's 300: two
+  models of 3 seeds in under a minute on a machine at load 8 to 13 (at
+  200 steps 10.01's default took 42.9 s at load 6 to 9, so 300 would pass
+  a minute). So their base row is not 08.04's 3.332 (that was 300 steps,
+  2 seeds); at 150 steps the base GPT scores 3.563 (3 seeds). Longer
+  comparisons are the ablation's long run and its spikes.
+- 10.04's default compares the heads over 2 seeds, not 3 (45 s at load
+  6.5 with 3; 33 to 37 s with 2), and 10.05's default trains 80 steps,
+  not the first 100 (48 s at load 9.8; 41 to 44 s with 80).
+- RMSNorm has no bias (the paper's equation 4, transformers' and
+  torch.nn.RMSNorm's), so the RMSNorm GPT has (2L + 1) x width fewer
+  weights than layer norm's with bias=True: 576 of 208,320 at the
+  default, said in the run.
+- SwiGLU's inner width is 8 x width // 3, rounded down: 170 at width 64
+  (two thirds of 256 is 170.7), 176 weights fewer over 4 blocks with
+  biases (-44 a block), said in the run; exact at SmolLM2's 576 (1536,
+  without biases the same count as the GELU MLP's, which the run and
+  the test show), and at any width divisible by 3 the matrices are
+  equal and only the biases differ.
+- Rotary pairs numbers i and i + d / 2, transformers' and SmolLM2's
+  convention ("rope_interleaved": false), not the paper's neighbours.
+  The two are the same turning with the projection's rows in another
+  order: 10.02's run and test show the scores equal to 1e-12 once the
+  numbers are reordered, and experiments/rotary.py has the paper's form
+  (neighbours) as a region.
+- 10.04's grouped-query attention has no region: it is four @from 10.04
+  blocks in SelfAttention (the key and value widths, the check, the
+  view by -1, the repeat). The lesson's regions are lab/safetensors.py's
+  bfloat16, models/smollm.py's from_smollm and load, tokens/smollm.py's
+  split and Tokenizer; experiments/smollm.py has none (FILES_FROM).
+- 10.04's default compares 4 key and value heads with 2 (kv=[4,2]), not
+  with 1 as well: a third row did not fit beside SmolLM2 in a minute.
+  kv=[4,2,1] runs multi-query too (not measured here).
+- tokens/smollm.py reads tokenizer.json, not vocab.json and merges.txt as
+  tokens/gpt2.py reads GPT-2's: the special symbols and the steps that
+  cut a text are only in tokenizer.json (the repository's vocab.json and
+  merges.txt hold the same symbols and merges: checked equal). It refuses
+  a file that cuts text any other way. Its Tokenizer is new code, not
+  tokens/gpt2.py's: GPT-2's checks that the k-th merge makes 256 + k,
+  and SmolLM2's k-th makes 252 + k (17 specials and 235 bytes before
+  them); byte_symbols, classes, split (GPT-2's pattern) and 09.01's merge
+  loop and decode are reused.
+- The fetch has four files: config.json (10.04 prints it beside GPT's
+  arguments, and the test's reference reads it), tokenizer.json,
+  tokenizer_config.json (only the test's reference, transformers'
+  AutoTokenizer, reads it) and model.safetensors.
+- experiments/language.py's compare warms each variant up with one
+  untimed AdamW step before the timed runs: a process's first optimiser
+  step costs about 0.4 s here (measured: 74 to 79 ms a step over 6 steps
+  for the first run of a process, 2.5 to 2.9 after; with an optimiser
+  step first, 3.2 to 3.9), which put 2 to 3 ms a step on the first
+  variant's first seed at 150 steps. The bits are unchanged (the seed is
+  set again before each model).
+
+## For module 11: what module 10 leaves in models/gpt.py
+
+- `self_attend(q, k, v, mask, scale)` is unchanged and still the one
+  function to swap. Everything module 10 added happens before it, in
+  `SelfAttention.qkv`: q and k are already turned by Rotary (when the
+  model has rotary positions) and k and v are already repeated from
+  kv_heads to heads (repeat_interleave on dim 1: query head h reads key
+  head h // (heads // kv_heads), as transformers' repeat_kv). So
+  F.scaled_dot_product_attention(q, k, v, is_causal=True) takes qkv's
+  output as self_attend does (its default scale is 1 / sqrt(d), ours).
+  With grouped heads it can also take k and v before the repeat with
+  enable_gqa=True (torch 2.10 has it; the 10.04 test compares the two at
+  1e-12): if module 11 moves the repeat there, attention_maps (which
+  calls a.qkv and self_attend) must get the repeat some other way.
+- A cache of keys and values for generate: keep each block's k and v as
+  qkv makes them, turned and before the repeat (kv_heads of them: that
+  is the point of grouped heads, a third of the numbers for SmolLM2).
+  New tokens must be turned for their own places: Rotary.forward(x,
+  start) takes the place of x's first vector, and qkv does not pass one
+  yet (it turns from place 0): give qkv a `start` and pass it to both
+  turns. The mask is no longer square: T new queries at places start to
+  start + T - 1 see start + T keys; causal_mask(T) and is_causal assume
+  as many queries as keys (PyTorch's is_causal aligns the triangle at the
+  top left, which is wrong for T new queries after a cache unless T is
+  1). transformers
+  caches post-rotary keys too (LlamaAttention: apply_rotary_pos_emb, then
+  past_key_values.update).
+- Rotary computes its angles, cos and sin at every call: twice a block,
+  every forward. At 08.04's size (width 64, 4 heads of 16) a training
+  step of the rotary GPT took 18 to 30% longer than the learned-position
+  GPT's (10.02: 30.9 against 26.1 ms; the 1200-step spike 31.6 against
+  24.6), and at the long run's (width 128, windows of 128) 52% longer
+  (90.9 against 59.6 ms, a busy machine). The arithmetic is small; the cost is a
+  dozen small operations a call (arange, pow, mul, repeat, cos, sin, cat,
+  ...), which a table made once per length would remove. A candidate for
+  11.02's profile and 11.06's "one more optimisation".
+- RMSNorm is written out (pow, mean, rsqrt, two multiplies) and is
+  slower than nn.LayerNorm's one fused kernel on this CPU (10.01: alone
+  2.3 to 3.0 times nn.LayerNorm's time; a whole step 11 to 18% slower);
+  torch.nn.RMSNorm is no faster here (torch 2.10, CPU). A fused
+  F.rms_norm, where torch has one for the device, is the same numbers.
+- Numbers to keep the same: SmolLM2-135M's logits equal transformers'
+  exactly in float32 with eager attention (the 10.04 test asserts 1e-4
+  of each logit and prints the largest difference, 0 here); with
+  transformers' sdpa attention 7.8e-5 apart; in float64 2.4e-5 apart,
+  because transformers computes the rotary angles in float32 whatever
+  the model's type. Rotary's cos and sin are taken of the angles each
+  repeated twice ((T, d), not (T, d / 2) then repeated): on this CPU cos
+  of the two layouts differs in the last bit for some lengths (from 512
+  places), and the repeated layout is what transformers computes; the
+  10.02 test holds Rotary equal to transformers' turning bit for bit at
+  16 and 600 places.
+
+## For modules 12 and 13: the variants, SmolLM2 and its tokenizer
+
+**Each variant** is GPT with one argument (all compose):
+
+    GPT(vocab, context, layers, heads, width, norm="rms")                 # 10.01: RMSNorm everywhere
+    GPT(vocab, context, layers, heads, width, positions="rotary")         # 10.02: base=10000.0 by default
+    GPT(vocab, context, layers, heads, width, mlp="swiglu")               # 10.03: hidden = 8 * width // 3
+    GPT(vocab, context, layers, heads, width, kv_heads=2)                 # 10.04: heads % kv_heads == 0
+    experiments.language.compare(variants, common, cfg, dev, ids, test)   # train, time and score several alike
+
+compare's cfg needs steps, batch, context, lr, warmup, weight_decay,
+clip, every, seeds, out and name (lab.config gives the last two);
+variants is {name: GPT's arguments}, common the arguments they share;
+it returns each variant's bits, ms a step, weights and models by seed
+and writes a run for each (label = the name). 13.01 to 13.04 can use it
+as it is for "the same budget for both".
+
+**SmolLM2-135M and its tokenizer in three lines**, from the project's top,
+once `python3 -m data.fetch smollm2` has run:
+
+    import torch; from models import smollm as M; from tokens import smollm as T
+    model, tok = M.load(torch.device("cpu")), T.load()       # GPT(**M.CONFIG) in eval mode, float32; the tokenizer
+    scores = model(torch.tensor([tok.encode("To be, or not to be,")]))   # (1, n, 49152); tok.decode(ids)
+
+model is models/gpt.py's GPT (vocab 49152, context 8192, 30 blocks of 9
+query heads on 3 key and value heads of 64, width 576, SwiGLU of 1536,
+RMSNorm, rotary base 100000, no biases, tied output): generate,
+window_bits, save and load (experiments/language.py) all work on it
+(save writes float32: 538 MB). tok.encode treats special symbols' text
+as text; T.END is 0, <|endoftext|>; tok.specials maps each special's
+text to its id: <|im_start|> is 1, <|im_end|> 2, the chat template's
+markers (SmolLM2-135M is the base model, not the instruct one, so it
+has never been trained on a chat in them: 12.03 would teach it).
+tok.first[b] is None for the 21 bytes with no symbol (a text with one
+of them does not decode back: the reference does the same).
+Fine-tuning it (12): the training step below, AdamW's two moments for
+134.5M weights (another 1.1 GB in float32).
+
+**SmolLM2-135M's files, checked before they were pinned** (2026-11-24):
+the repository's commit 93efa2f097d58c2a74874c7e644dbc9b0cee75a2 (its
+main on that day, last changed 2025-02-06; Hugging Face's API, models/
+HuggingFaceTB/SmolLM2-135M/revision/main and /tree/<commit>, lists ten
+files: .gitattributes, README.md, config.json, generation_config.json,
+merges.txt, model.safetensors, special_tokens_map.json, tokenizer.json,
+tokenizer_config.json, vocab.json). model.safetensors is a Git LFS file
+of 269,060,552 bytes whose LFS oid, its SHA-256, is
+80521b40281d6ce74e35c9282c22539e75aa0ac8578892b2a59955ef78d55da1 (the
+X-Linked-ETag module 09's notes saw): fetched in 32 s, its SHA-256 the
+same. The small
+files are plain git blobs: each one's git blob SHA-1 (sha1 of "blob
+<size>\0" and the bytes) equals the tree's oid, then its SHA-256 was
+computed and pinned (data/fetch.py has all four). The header (30,528
+bytes, metadata {"format": "pt"}): 272 tensors, every one BF16, names
+model.embed_tokens.weight [49152, 576], model.layers.i.{input_layernorm,
+post_attention_layernorm}.weight [576], .self_attn.{q,o}_proj.weight
+[576, 576], .self_attn.{k,v}_proj.weight [192, 576], .mlp.{gate,up}_proj
+.weight [1536, 576], .mlp.down_proj.weight [576, 1536], model.norm.weight
+[576]; no lm_head (tied), no biases: 134,515,008 weights. Read by
+lab/safetensors.py in 0.1 s from the page cache; every tensor equals the
+safetensors library's (safetensors.torch, bfloat16, .float()), exactly.
+
+**Fetching** (data/fetch.py; checked against the pinned size and
+SHA-256 before it is kept; resumed with an HTTP Range request if
+dropped; a generic User-Agent, no account, no token):
+
+    python3 -m data.fetch smollm2       config.json 704, tokenizer.json 2,104,556, tokenizer_config.json 3,658,
+                                        model.safetensors 269,060,552 bytes (271,169,470 in all)
+                                        https://huggingface.co/HuggingFaceTB/SmolLM2-135M/resolve/93efa2f097d58c2a74874c7e644dbc9b0cee75a2/
+                                        32 s here
+
+**Speeds on this CPU** (SmolLM2-135M in float32, 10 threads, load about
+10, no cache of keys and values):
+- loading (models/smollm.load: the file, widening, GPT's random start,
+  load_state_dict): 1.6 s, peak 1.4 GB.
+- the tokenizer: all of Tiny Shakespeare (1.1 MB) in 0.42 s with its
+  cache, 341,094 tokens (transformers' fast tokenizer 0.33 s).
+- forward, scoring: 1 x 1024 tokens 0.36 s (2,800 tokens a second); 4 x
+  256 0.19 s (5,300); 16 x 64 0.18 s (5,700); 1 x 64 0.05 s. Scoring the
+  test text (17,912 tokens, windows of 1024, warm 64) is part of 10.04's
+  33 s.
+- generating (language.generate, a whole forward a step): 1 row, 64
+  tokens after 32: 3.1 s, 20 tokens a second (49 ms a step); 8 rows: 8.7
+  s, 59 a second (136 ms a step); 1 row, 32 after 512: 5.5 s, 5.8 a
+  second (172 ms a step). Module 11's cache is what would change this.
+- a training step (AdamW, float32, cross-entropy on the next token): 4 x
+  256 tokens 1.0 s, 8 x 128 0.99 s; the process's peak memory 5.2 GB (the
+  weights, their gradients and AdamW's two moments: 4 x 538 MB, and the
+  activations). An hour of CPU is about 3,600 such steps, 3.7 million
+  tokens: enough for 12's fine-tuning on a small labelled set, not for
+  pretraining.
+- the variants at 08.04's size (width 64, windows of 64): 20 to 35 ms a
+  step, rotary and all four the slowest (10.01 to 10.05 above).
+
+**Module 10's tests** (tests/1001_ to 1005_, each its exact and
+differential checks first, in a fresh python, then its experiment):
+- 1001: RMSNorm against the formula (support.rms_norm) and
+  torch.nn.RMSNorm (1e-12, float64), gradcheck, equal to layer norm on
+  centred vectors; the written-out layer norm against nn.LayerNorm; the
+  default GPT built draw for draw as one with norm="layer"; GPT(norm=
+  "rms"): every norm an RMSNorm, (2L + 1) W weights fewer, the names,
+  against support.gpt10_numpy (1e-10), causal; compare: two variants of
+  the same settings give the same bits whatever their turn, a third
+  differs, every run written; centring's first value against a direct
+  computation; uncentred leaves its model alone, changes nothing on
+  centred vectors and does change the scores; norm_times. Then rmsnorm
+  (the default, 3 seeds): RMSNorm within 0.05 bits of layer norm, the
+  layer-norm model's norms reading vectors with |mean| / rms under 0.2,
+  its bits within 0.01 without the mean step; a tiny run twice, byte
+  for byte.
+- 1002: Rotary against the 2 x 2 turns written out (support.rotate_numpy,
+  bases 10000 and 100000, 1e-12), place 0 unturned, scores unchanged when
+  both move by 1, 5, 77 or 500 places (1e-12), lengths kept (1e-14), the
+  paper's neighbours reordered (1e-12); against transformers'
+  LlamaRotaryEmbedding and apply_rotary_pos_emb bit for bit (float32, 16
+  and 600 places); GPT(positions="rotary"): no table, context x W weights
+  fewer, against gpt10_numpy (1e-10), causal, reads 4 x context,
+  attention_maps rebuilds block 1 (1e-12). Then rotary (the default):
+  rotary more than 0.1 bits below learned, the ValueError, worse past the
+  trained length by 0.05 or more, the shift line under 1e-9; a tiny run
+  twice.
+- 1003: SwiGLU against the formula (1e-12), F.silu against x sigmoid(x)
+  (1e-15), its weight count 3 W h + (2h + W) for three sizes, equal to the
+  MLP's at 576 / 1536 without biases; against transformers' LlamaMLP on
+  the same weights (1e-12); GPT(mlp="swiglu"): shapes, the count, the
+  start (gate sd 0.02, down 0.02 / sqrt(2L), biases 0), hidden=, against
+  gpt10_numpy (1e-10); gates against a direct computation. Then swiglu:
+  within 0.1 bits of the GELU MLP and below 3.8, -176 weights, the 576
+  line, the gates' shares in [0, 1]; a tiny run twice.
+- 1004: SelfAttention(12, heads=6, kv_heads=2) against support's loops
+  (1e-12), its repeated keys, against F.scaled_dot_product_attention with
+  enable_gqa (1e-12), against full heads whose key and value rows repeat
+  each group's (1e-12), 6 on 4 refused; GPT(kv_heads=1): its count,
+  against gpt10_numpy (1e-10), causal, attention_maps; bfloat16 against
+  PyTorch on all 65,536 bit patterns (as float32 bits, NaNs included);
+  load_file on a file the safetensors library wrote with a BF16, an F32
+  and an I64 tensor; split against the tokenizers library's Digits and
+  ByteLevel pre-tokenizers, built in the test as tokenizer.json names
+  them, on 09.02's corpus, 2,000 random strings and three more (every
+  piece equal, as byte symbols); a tokenizer.json written by the test
+  (specials, a byte missing, three merges): ids, decode, the missing byte
+  left out, merges out of order and another pre-tokenizer refused;
+  from_smollm with transformers' LlamaForCausalLM (random weights, 2
+  blocks, 6 heads on 2, rotary base 100000, tied, no biases) at 1e-5 in
+  float32 and float64; without kv_heads, a size mismatch. Then
+  T.need(t, "smollm2") (without the files: "missing:" and the fetch
+  command, as 09.03), and with_data: SmolLM2-135M's logits against
+  transformers' (AutoModelForCausalLM from the cache folder,
+  local_files_only, eager, float32) on 1,024 tokens of Tiny Shakespeare
+  and 4 rows of 64 random tokens (1e-4 of each logit; printed: 0 and 0);
+  ids against transformers' AutoTokenizer (GPT2TokenizerFast from the same
+  folder) on all of Tiny Shakespeare, 09.02's corpus, 3,000 random strings
+  and three more, every string decoding back unless it holds a byte with
+  no symbol (53 of 3,296 here). Then smollm (the default): grouped within
+  0.1 bits of full heads, 16,640 weights fewer, SmolLM2 below 1.8 bits
+  per character with 134,515,008 weights and over 17,000 tokens, its
+  config confirmed, 272 BF16 tensors, the round trip; a tiny run twice.
+- 1005: table against direct numbers (the difference, t, yes / no, the
+  times); variants' names and labels; the recorded long run's files
+  (every row and seed with the same settings, the validation curve in
+  every log, the summaries, curves.svg, times.json, output.txt, no
+  weights) and its result (rotary, SwiGLU and all four below the base
+  by more than 0.03 and t below -3, all four the lowest, RMSNorm and
+  grouped heads within 0.02 and |t| under 3); then ablation (the default):
+  every row 2 seeds, rotary more than 0.05 below the base, the recorded
+  table and the claims printed, curves and times written; a tiny run
+  twice; LEARN_RERUN_LONG=1 runs the long run again.
+
+With module 10 (two other agents' work going, load 8 to 12): `./learn
+test research` 49 tests, all pass, 19 min 12 s; module 10's five 4 min 9
+s (10.01 51.9 s, 10.02 47.4, 10.03 42.3, 10.04 57.4, 10.05 50.3), each
+with its experiment's default run and a tiny run twice. 10.04's printed
+lines: the largest difference from transformers' logits 0 on 1,024 tokens
+of Tiny Shakespeare (logits up to 40) and on 4 rows of 64 random tokens
+(up to 38); the same ids as GPT2TokenizerFast on Tiny Shakespeare
+(341,094 tokens) and 3,296 awkward strings, 53 of which do not decode
+back, each holding a byte SmolLM2 has no symbol for. The long run is
+rerun only with LEARN_RERUN_LONG=1 (about 45 minutes).
+10.05's test again after its default was cut to 80 steps: pass, 54.9 s.
+`./learn check-skeleton research` ok, 58 s (49 lessons, each fails at
+its stub: 10.01 at RMSNorm, 10.02 at Rotary, 10.03 at SwiGLU, 10.04 at
+bfloat16, 10.05 at table). `./learn check-timeline research` ok, 4 min
+59 s at load 9 to 12; the project has 195 files at 10.01, 196 at 10.02,
+197 at 10.03, 200 at 10.04 and 258 at 10.05 (57 of them the recorded
+run); 06.04 still 98, 07.02 145, 08.04 170, 08.05 171, 09.04 194.
+`./learn selftest` ok (269 tests). `./learn check` reports exactly the
+"test has no lesson doc" lines of the lessons not yet written (09.0N,
+whose pages another agent is writing, and 10.0N); nothing else.
+
+**For the harness and the lessons agent (module 10).**
+- No harness change. The glob order once more: track.py's module-10
+  part puts "experiments/recorded/ablation/*" first in FILES_FROM.
+  needs=: 10.01, 10.02, 10.03 and 10.05 need "torch" (the text ships);
+  10.04 needs "torch smollm2" (TOOLS["smollm2"], DATASET_FILES, need()).
+  check-timeline runs smollm only where SmolLM2's files are in the
+  cache (DATASET_OF) and expects its "smollm2 is missing" line
+  elsewhere; its part 1 (the heads) runs before the check, so the
+  missing line comes after part 1's table.
+- Signatures that grow over several lessons: each new argument is a
+  continuation line with a one-line `# @from 10.0N` marker, and the
+  closing `):` stands on a line of its own; the lesson that first splits
+  the signature (10.01 for Block and GPT, 10.02 for SelfAttention) nests
+  its @from block inside the earlier lesson's body (kilo.c's pattern),
+  so 08.0N's one-line signature is still an @else part. Checked with
+  harness/timeline.py: the file at 08.01 to 09.04 is exactly as before.
+- Lead-in names that match more than one thing (they match without
+  case): `rmsnorm` (experiments/rmsnorm.py) and `RMSNorm` (the class);
+  `rotary` (experiments/rotary.py) and `Rotary`; `swiglu` and `SwiGLU`;
+  `smollm` (models/smollm.py, tokens/smollm.py, experiments/smollm.py).
+  Ordinary-word region titles: compare (language.py 10.01), table
+  (ablation.py 10.05), gates (swiglu.py 10.03), centring, uncentred,
+  neighbours, split (tokens/gpt2.py 09.02 and tokens/smollm.py 10.04),
+  load (four files), Tokenizer (09.02 and 10.04). No lesson has two
+  regions of one name.
+- tokens/smollm.py's load is not a region (models/smollm.py's load is,
+  in the same lesson).
+
 ## Module 14: reproduce a paper, grokking
 
 Built by one agent on 2026-11-24, on the reference machine above (Apple M4
