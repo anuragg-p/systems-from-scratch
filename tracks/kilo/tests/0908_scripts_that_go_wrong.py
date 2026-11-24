@@ -18,6 +18,7 @@ Ctrl-C ends it. And thousands of random calls of every API function, in
 the editor under AddressSanitizer, change nothing of that.
 """
 
+import errno
 import importlib.util
 import os
 import signal
@@ -245,8 +246,18 @@ def test(t):
         except Exception as e:
             raise tr.Fail(f"seed {seed}, block {b + 1}: {e}")
     t.check(ed.s.proc.poll() is None, f"seed {seed}: kilo is still there")
+    # Ctrl-Q until kilo leaves: once with nothing unsaved, four times with a change. No press
+    # once it has gone: the write would land on a closed terminal (EIO), as it can in the
+    # moment between its exit and poll() seeing it.
     for _ in range(4):
-        ed.s.send(tr.ctrl("q"))
+        if ed.s.proc.poll() is not None:
+            break
+        try:
+            ed.s.send(tr.ctrl("q"))
+        except OSError as e:
+            if e.errno != errno.EIO:
+                raise
+            break
         time.sleep(0.1)
     rc = ed.s.wait_exit(20)
     t.check(rc == 0, f"seed {seed}: Ctrl-Q left after the fuzz, status {rc}: {ed.tail()}")
