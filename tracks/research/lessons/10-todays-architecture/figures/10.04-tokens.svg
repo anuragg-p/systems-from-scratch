@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 276" fill="none">
+<title>SmolLM2&#x27;s tokenizer beside GPT-2&#x27;s on two pieces of text: the same pattern cuts both, but SmolLM2 cuts every digit out first; each piece in a box, its ids under it</title>
+<defs><marker id="tokens1004-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tokens1004-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tokens1004-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="20" y="22" font-size="11.5" font-weight="700">&#x27; in 2019, 1234567890&#x27;</text>
+<text class="t" x="20" y="49" font-size="11" font-weight="700">GPT-2</text>
+<rect class="s f" x="86" y="36" width="28.9" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="100.45" y="50" font-size="10.5" text-anchor="middle">_in</text>
+<text class="tm mono" x="100.45" y="68" font-size="9" text-anchor="middle">287</text>
+<rect class="s f" x="117.9" y="36" width="41.5" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="138.65" y="50" font-size="10.5" text-anchor="middle">_2019</text>
+<text class="tm mono" x="138.65" y="68" font-size="9" text-anchor="middle">13130</text>
+<rect class="s f" x="162.4" y="36" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="170.55" y="50" font-size="10.5" text-anchor="middle">,</text>
+<text class="tm mono" x="170.55" y="68" font-size="9" text-anchor="middle">11</text>
+<rect class="s f" x="181.7" y="36" width="117.4" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="240.4" y="50" font-size="10.5" text-anchor="middle">_1234567890</text>
+<text class="tm mono" x="240.4" y="68" font-size="9" text-anchor="middle">17031 2231 30924 3829</text>
+<text class="tm" x="20" y="64" font-size="10">7 ids</text>
+<text class="ta" x="20" y="95" font-size="11" font-weight="700">SmolLM2</text>
+<rect class="a af" x="86" y="82" width="28.9" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="100.45" y="96" font-size="10.5" text-anchor="middle">_in</text>
+<text class="tm mono" x="100.45" y="114" font-size="9" text-anchor="middle">281</text>
+<rect class="a af" x="117.9" y="82" width="20.2" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="128" y="96" font-size="10.5" text-anchor="middle">_</text>
+<text class="tm mono" x="128" y="114" font-size="9" text-anchor="middle">216</text>
+<rect class="a af" x="141.1" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="149.25" y="96" font-size="10.5" text-anchor="middle">2</text>
+<text class="tm mono" x="149.25" y="114" font-size="9" text-anchor="middle">34</text>
+<rect class="a af" x="160.4" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="168.55" y="96" font-size="10.5" text-anchor="middle">0</text>
+<text class="tm mono" x="168.55" y="114" font-size="9" text-anchor="middle">32</text>
+<rect class="a af" x="179.7" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="187.85" y="96" font-size="10.5" text-anchor="middle">1</text>
+<text class="tm mono" x="187.85" y="114" font-size="9" text-anchor="middle">33</text>
+<rect class="a af" x="199" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="207.15" y="96" font-size="10.5" text-anchor="middle">9</text>
+<text class="tm mono" x="207.15" y="114" font-size="9" text-anchor="middle">41</text>
+<rect class="a af" x="218.3" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="226.45" y="96" font-size="10.5" text-anchor="middle">,</text>
+<text class="tm mono" x="226.45" y="114" font-size="9" text-anchor="middle">28</text>
+<rect class="a af" x="237.6" y="82" width="20.2" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="247.7" y="96" font-size="10.5" text-anchor="middle">_</text>
+<text class="tm mono" x="247.7" y="114" font-size="9" text-anchor="middle">216</text>
+<rect class="a af" x="260.8" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="268.95" y="96" font-size="10.5" text-anchor="middle">1</text>
+<text class="tm mono" x="268.95" y="114" font-size="9" text-anchor="middle">33</text>
+<rect class="a af" x="280.1" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="288.25" y="96" font-size="10.5" text-anchor="middle">2</text>
+<text class="tm mono" x="288.25" y="114" font-size="9" text-anchor="middle">34</text>
+<rect class="a af" x="299.4" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="307.55" y="96" font-size="10.5" text-anchor="middle">3</text>
+<text class="tm mono" x="307.55" y="114" font-size="9" text-anchor="middle">35</text>
+<rect class="a af" x="318.7" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="326.85" y="96" font-size="10.5" text-anchor="middle">4</text>
+<text class="tm mono" x="326.85" y="114" font-size="9" text-anchor="middle">36</text>
+<rect class="a af" x="338" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="346.15" y="96" font-size="10.5" text-anchor="middle">5</text>
+<text class="tm mono" x="346.15" y="114" font-size="9" text-anchor="middle">37</text>
+<rect class="a af" x="357.3" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="365.45" y="96" font-size="10.5" text-anchor="middle">6</text>
+<text class="tm mono" x="365.45" y="114" font-size="9" text-anchor="middle">38</text>
+<rect class="a af" x="376.6" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="384.75" y="96" font-size="10.5" text-anchor="middle">7</text>
+<text class="tm mono" x="384.75" y="114" font-size="9" text-anchor="middle">39</text>
+<rect class="a af" x="395.9" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="404.05" y="96" font-size="10.5" text-anchor="middle">8</text>
+<text class="tm mono" x="404.05" y="114" font-size="9" text-anchor="middle">40</text>
+<rect class="a af" x="415.2" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="423.35" y="96" font-size="10.5" text-anchor="middle">9</text>
+<text class="tm mono" x="423.35" y="114" font-size="9" text-anchor="middle">41</text>
+<rect class="a af" x="434.5" y="82" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="442.65" y="96" font-size="10.5" text-anchor="middle">0</text>
+<text class="tm mono" x="442.65" y="114" font-size="9" text-anchor="middle">32</text>
+<text class="tm" x="20" y="110" font-size="10">18 ids</text>
+<text class="t mono" x="20" y="138" font-size="11.5" font-weight="700">&#x27;PROSPERO:\n&#x27;Tis time\nI should inform thee farther.&#x27;</text>
+<text class="t" x="20" y="165" font-size="11" font-weight="700">GPT-2</text>
+<rect class="s f" x="86" y="152" width="101.2" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="136.6" y="166" font-size="10.5" text-anchor="middle">PROSPERO</text>
+<text class="tm mono" x="136.6" y="184" font-size="9" text-anchor="middle">4805 2640 18973 46</text>
+<rect class="s f" x="190.2" y="152" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="198.35" y="166" font-size="10.5" text-anchor="middle">:</text>
+<text class="tm mono" x="198.35" y="184" font-size="9" text-anchor="middle">25</text>
+<rect class="s f" x="209.5" y="152" width="22.6" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="220.8" y="166" font-size="10.5" text-anchor="middle">\n</text>
+<text class="tm mono" x="220.8" y="184" font-size="9" text-anchor="middle">198</text>
+<rect class="s f" x="235.1" y="152" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="243.25" y="166" font-size="10.5" text-anchor="middle">&#x27;</text>
+<text class="tm mono" x="243.25" y="184" font-size="9" text-anchor="middle">6</text>
+<rect class="s f" x="254.4" y="152" width="36.4" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="272.6" y="166" font-size="10.5" text-anchor="middle">Tis</text>
+<text class="tm mono" x="272.6" y="184" font-size="9" text-anchor="middle">51 271</text>
+<rect class="s f" x="293.8" y="152" width="41.5" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="314.55" y="166" font-size="10.5" text-anchor="middle">_time</text>
+<text class="tm mono" x="314.55" y="184" font-size="9" text-anchor="middle">640</text>
+<rect class="s f" x="338.3" y="152" width="22.6" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="349.6" y="166" font-size="10.5" text-anchor="middle">\n</text>
+<text class="tm mono" x="349.6" y="184" font-size="9" text-anchor="middle">198</text>
+<rect class="s f" x="363.9" y="152" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="372.05" y="166" font-size="10.5" text-anchor="middle">I</text>
+<text class="tm mono" x="372.05" y="184" font-size="9" text-anchor="middle">40</text>
+<rect class="s f" x="383.2" y="152" width="54.1" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="410.25" y="166" font-size="10.5" text-anchor="middle">_should</text>
+<text class="tm mono" x="410.25" y="184" font-size="9" text-anchor="middle">815</text>
+<rect class="s f" x="440.3" y="152" width="54.1" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="467.35" y="166" font-size="10.5" text-anchor="middle">_inform</text>
+<text class="tm mono" x="467.35" y="184" font-size="9" text-anchor="middle">4175</text>
+<rect class="s f" x="497.4" y="152" width="41.5" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="518.15" y="166" font-size="10.5" text-anchor="middle">_thee</text>
+<text class="tm mono" x="518.15" y="184" font-size="9" text-anchor="middle">17903</text>
+<rect class="s f" x="541.9" y="152" width="60.4" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="572.1" y="166" font-size="10.5" text-anchor="middle">_farther</text>
+<text class="tm mono" x="572.1" y="184" font-size="9" text-anchor="middle">18485</text>
+<rect class="s f" x="605.3" y="152" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="613.45" y="166" font-size="10.5" text-anchor="middle">.</text>
+<text class="tm mono" x="613.45" y="184" font-size="9" text-anchor="middle">13</text>
+<text class="tm" x="20" y="180" font-size="10">17 ids</text>
+<text class="ta" x="20" y="211" font-size="11" font-weight="700">SmolLM2</text>
+<rect class="a af" x="86" y="198" width="90.4" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="131.2" y="212" font-size="10.5" text-anchor="middle">PROSPERO</text>
+<text class="tm mono" x="131.2" y="230" font-size="9" text-anchor="middle">13535 7149 38700</text>
+<rect class="a af" x="179.4" y="198" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="187.55" y="212" font-size="10.5" text-anchor="middle">:</text>
+<text class="tm mono" x="187.55" y="230" font-size="9" text-anchor="middle">42</text>
+<rect class="a af" x="198.7" y="198" width="22.6" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="210" y="212" font-size="10.5" text-anchor="middle">\n</text>
+<text class="tm mono" x="210" y="230" font-size="9" text-anchor="middle">198</text>
+<rect class="a af" x="224.3" y="198" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="232.45" y="212" font-size="10.5" text-anchor="middle">&#x27;</text>
+<text class="tm mono" x="232.45" y="230" font-size="9" text-anchor="middle">23</text>
+<rect class="a af" x="243.6" y="198" width="36.4" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="261.8" y="212" font-size="10.5" text-anchor="middle">Tis</text>
+<text class="tm mono" x="261.8" y="230" font-size="9" text-anchor="middle">68 271</text>
+<rect class="a af" x="283" y="198" width="41.5" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="303.75" y="212" font-size="10.5" text-anchor="middle">_time</text>
+<text class="tm mono" x="303.75" y="230" font-size="9" text-anchor="middle">655</text>
+<rect class="a af" x="327.5" y="198" width="22.6" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="338.8" y="212" font-size="10.5" text-anchor="middle">\n</text>
+<text class="tm mono" x="338.8" y="230" font-size="9" text-anchor="middle">198</text>
+<rect class="a af" x="353.1" y="198" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="361.25" y="212" font-size="10.5" text-anchor="middle">I</text>
+<text class="tm mono" x="361.25" y="230" font-size="9" text-anchor="middle">57</text>
+<rect class="a af" x="372.4" y="198" width="54.1" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="399.45" y="212" font-size="10.5" text-anchor="middle">_should</text>
+<text class="tm mono" x="399.45" y="230" font-size="9" text-anchor="middle">868</text>
+<rect class="a af" x="429.5" y="198" width="54.1" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="456.55" y="212" font-size="10.5" text-anchor="middle">_inform</text>
+<text class="tm mono" x="456.55" y="230" font-size="9" text-anchor="middle">3125</text>
+<rect class="a af" x="486.6" y="198" width="41.5" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="507.35" y="212" font-size="10.5" text-anchor="middle">_thee</text>
+<text class="tm mono" x="507.35" y="230" font-size="9" text-anchor="middle">20322</text>
+<rect class="a af" x="531.1" y="198" width="60.4" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="561.3" y="212" font-size="10.5" text-anchor="middle">_farther</text>
+<text class="tm mono" x="561.3" y="230" font-size="9" text-anchor="middle">16928</text>
+<rect class="a af" x="594.5" y="198" width="16.3" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="602.65" y="212" font-size="10.5" text-anchor="middle">.</text>
+<text class="tm mono" x="602.65" y="230" font-size="9" text-anchor="middle">30</text>
+<text class="tm" x="20" y="226" font-size="10">16 ids</text>
+<text class="tm" x="20" y="262" font-size="10.5">_ is a space. On the whole test text: SmolLM2 3.114 characters a token, GPT-2 3.099.</text>
+</svg>

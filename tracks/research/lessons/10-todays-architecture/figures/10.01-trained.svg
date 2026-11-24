@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 316" fill="none">
+<title>08.04&#x27;s GPT with layer norm and with RMSNorm in every norm, 150 steps, 3 seeds: bits per character on the test text (a ring per seed, the bar their mean), and ms a training step (the mean of the seeds, the whisker min to max; one run, other work on the machine)</title>
+<defs><marker id="trained1001-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="trained1001-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="trained1001-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="39.2" y="275.5" font-size="10.5" text-anchor="end">3.54</text>
+<line class="m" x1="45.2" y1="210.5" x2="334" y2="210.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="214" font-size="10.5" text-anchor="end">3.55</text>
+<line class="m" x1="45.2" y1="149.0" x2="334" y2="149.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="152.5" font-size="10.5" text-anchor="end">3.56</text>
+<line class="m" x1="45.2" y1="87.5" x2="334" y2="87.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="91" font-size="10.5" text-anchor="end">3.57</text>
+<text class="tm mono" x="39.2" y="29.5" font-size="10.5" text-anchor="end">3.58</text>
+<rect class="m" x="45.2" y="26" width="288.8" height="246" rx="0" stroke-width="1.5"/>
+<text class="tm" x="39.2" y="18" font-size="11.5">bits per character, test text</text>
+<text class="t" x="117.4" y="287" font-size="11" text-anchor="middle">layer norm</text>
+<line class="s" x1="117.4" y1="156.77" x2="117.4" y2="97.87" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="111.4" y1="156.77" x2="123.4" y2="156.77" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="111.4" y1="97.87" x2="123.4" y2="97.87" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="117.4" cy="97.87" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="117.4" cy="137.84" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="117.4" cy="156.77" r="2.5" stroke-width="1.5"/>
+<line class="s" x1="103.4" y1="130.83" x2="131.4" y2="130.83" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="135.4" y="134.33" font-size="10.5">3.56</text>
+<text class="ta" x="261.8" y="287" font-size="11" font-weight="600" text-anchor="middle">RMSNorm</text>
+<line class="a" x1="261.8" y1="226.18" x2="261.8" y2="52.93" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="255.8" y1="226.18" x2="267.8" y2="226.18" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="255.8" y1="52.93" x2="267.8" y2="52.93" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="261.8" cy="52.93" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="261.8" cy="150.21" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="261.8" cy="226.18" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="247.8" y1="143.1" x2="275.8" y2="143.1" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="279.8" y="146.6" font-size="10.5">3.56</text>
+<text class="ta" x="190" y="308" font-size="10.5" font-weight="600" text-anchor="middle">the same bits: t = -0.2</text>
+<text class="tm mono" x="404" y="249.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="410" y1="183.4" x2="610" y2="183.4" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="404" y="186.88" font-size="10.5" text-anchor="end">20</text>
+<line class="m" x1="410" y1="120.8" x2="610" y2="120.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="404" y="124.26" font-size="10.5" text-anchor="end">40</text>
+<line class="m" x1="410" y1="58.1" x2="610" y2="58.1" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="404" y="61.64" font-size="10.5" text-anchor="end">60</text>
+<rect class="m" x="410" y="26" width="200" height="220" rx="0" stroke-width="1.5"/>
+<text class="tm" x="404" y="18" font-size="11.5">ms a training step</text>
+<line class="s" x1="460" y1="98.22" x2="460" y2="96.02" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="454" y1="98.22" x2="466" y2="98.22" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="454" y1="96.02" x2="466" y2="96.02" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="446" y1="97.28" x2="474" y2="97.28" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="478" y="100.78" font-size="10.5">47.5</text>
+<text class="t" x="460" y="261" font-size="11" text-anchor="middle">layer norm</text>
+<line class="a" x1="560" y1="63.46" x2="560" y2="54.7" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="554" y1="63.46" x2="566" y2="63.46" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="554" y1="54.7" x2="566" y2="54.7" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="546" y1="59.39" x2="574" y2="59.39" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="578" y="62.89" font-size="10.5">59.6</text>
+<text class="ta" x="560" y="261" font-size="11" font-weight="600" text-anchor="middle">RMSNorm</text>
+<text class="ta" x="510" y="308" font-size="10.5" font-weight="600" text-anchor="middle">a slower step: x1.25 in this run</text>
+</svg>

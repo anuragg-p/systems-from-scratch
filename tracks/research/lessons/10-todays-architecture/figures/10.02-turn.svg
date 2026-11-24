@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>One pair of a query&#x27;s numbers and the same pair of a key&#x27;s (pair 1 of a head of 16: 0.316 radians a place), turned for their places: m and n move together, the angle between them stays, and so does their dot product</title>
+<defs><marker id="turn1002-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="turn1002-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="turn1002-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<circle class="m" cx="150" cy="140" r="86" stroke-width="1.5"/>
+<line class="m" x1="56" y1="140" x2="244" y2="140" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="150" y1="46" x2="150" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="150" y1="140" x2="231.9" y2="119.52" stroke-width="1.5" stroke-linecap="round" marker-end="url(#turn1002-am)" stroke-dasharray="4 4"/>
+<line class="m" x1="150" y1="140" x2="174.57" y2="201.43" stroke-width="1.5" stroke-linecap="round" marker-end="url(#turn1002-am)" stroke-dasharray="4 4"/>
+<line class="a" x1="150" y1="140" x2="203.96" y2="75.07" stroke-width="1.5" stroke-linecap="round" marker-end="url(#turn1002-aa)"/>
+<line class="s" x1="150" y1="140" x2="211.17" y2="114.79" stroke-width="1.5" stroke-linecap="round" marker-end="url(#turn1002-ah)"/>
+<path class="a" d="M169.2 116.9 A 30 30 0 0 0 177.7 128.6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="212.63" y="68.63" font-size="10.5" font-weight="700">q at place 2</text>
+<text class="t" x="240.61" y="106.66" font-size="10.5" font-weight="700">k at place 5</text>
+<text class="tm" x="150" y="254" font-size="10.5" text-anchor="middle">q turned by 2 x 0.316, k by 5 x 0.316</text>
+<text class="ta mono" x="150" y="272" font-size="11.5" font-weight="700" text-anchor="middle">q . k = 0.735995</text>
+<circle class="m" cx="450" cy="140" r="86" stroke-width="1.5"/>
+<line class="m" x1="356" y1="140" x2="544" y2="140" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="450" y1="46" x2="450" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="450" y1="140" x2="531.9" y2="119.52" stroke-width="1.5" stroke-linecap="round" marker-end="url(#turn1002-am)" stroke-dasharray="4 4"/>
+<line class="m" x1="450" y1="140" x2="474.57" y2="201.43" stroke-width="1.5" stroke-linecap="round" marker-end="url(#turn1002-am)" stroke-dasharray="4 4"/>
+<line class="a" x1="450" y1="140" x2="404.33" y2="68.99" stroke-width="1.5" stroke-linecap="round" marker-end="url(#turn1002-aa)"/>
+<line class="s" x1="450" y1="140" x2="444.39" y2="74.08" stroke-width="1.5" stroke-linecap="round" marker-end="url(#turn1002-ah)"/>
+<path class="a" d="M433.8 114.8 A 30 30 0 0 0 447.5 110.1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="396.99" y="61.58" font-size="10.5" font-weight="700" text-anchor="end">q at place 6</text>
+<text class="t" x="441.68" y="46.35" font-size="10.5" font-weight="700">k at place 9</text>
+<text class="tm" x="450" y="254" font-size="10.5" text-anchor="middle">q turned by 6 x 0.316, k by 9 x 0.316</text>
+<text class="ta mono" x="450" y="272" font-size="11.5" font-weight="700" text-anchor="middle">q . k = 0.735995</text>
+<text class="tm" x="320" y="292" font-size="10.5" text-anchor="middle">Dashed: the pair before it is turned (place 0). Both cases are 3 places apart.</text>
+</svg>

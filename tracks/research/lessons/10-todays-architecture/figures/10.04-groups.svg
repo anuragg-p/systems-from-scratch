@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>Query heads sharing key and value heads: 08.02&#x27;s attention, every head its own; the page&#x27;s run, 2 key and value heads for 4 query heads; SmolLM2-135M, 3 for 9; and the numbers a cache of keys and values would keep for each token</title>
+<defs><marker id="groups1004-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="groups1004-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="groups1004-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="20" y="28" font-size="11.5" font-weight="700">08.02: 4 query heads, each its own keys and values</text>
+<rect class="s f" x="20" y="38" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="37" y="53.78" font-size="10.5" text-anchor="middle">q1</text>
+<rect class="s f" x="62" y="38" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="79" y="53.78" font-size="10.5" text-anchor="middle">q2</text>
+<rect class="s f" x="104" y="38" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="121" y="53.78" font-size="10.5" text-anchor="middle">q3</text>
+<rect class="s f" x="146" y="38" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="163" y="53.78" font-size="10.5" text-anchor="middle">q4</text>
+<rect class="s fs" x="20" y="90" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="37" y="105.78" font-size="10.5" text-anchor="middle">kv1</text>
+<line class="s" x1="37" y1="62" x2="37" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-ah)"/>
+<rect class="s fs" x="62" y="90" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="79" y="105.78" font-size="10.5" text-anchor="middle">kv2</text>
+<line class="s" x1="79" y1="62" x2="79" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-ah)"/>
+<rect class="s fs" x="104" y="90" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="121" y="105.78" font-size="10.5" text-anchor="middle">kv3</text>
+<line class="s" x1="121" y1="62" x2="121" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-ah)"/>
+<rect class="s fs" x="146" y="90" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="163" y="105.78" font-size="10.5" text-anchor="middle">kv4</text>
+<line class="s" x1="163" y1="62" x2="163" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-ah)"/>
+<text class="ta" x="20" y="138" font-size="11.5" font-weight="700">kv_heads=2: query heads 1, 2 share one; 3, 4 the other</text>
+<rect class="s f" x="20" y="148" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="37" y="163.78" font-size="10.5" text-anchor="middle">q1</text>
+<rect class="s f" x="62" y="148" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="79" y="163.78" font-size="10.5" text-anchor="middle">q2</text>
+<rect class="s f" x="104" y="148" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="121" y="163.78" font-size="10.5" text-anchor="middle">q3</text>
+<rect class="s f" x="146" y="148" width="34" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="163" y="163.78" font-size="10.5" text-anchor="middle">q4</text>
+<rect class="a af" x="20" y="200" width="76" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="58" y="215.78" font-size="10.5" text-anchor="middle">k, v 1</text>
+<line class="a" x1="37" y1="172" x2="37" y2="198" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<line class="a" x1="79" y1="172" x2="79" y2="198" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<rect class="a af" x="104" y="200" width="76" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="142" y="215.78" font-size="10.5" text-anchor="middle">k, v 2</text>
+<line class="a" x1="121" y1="172" x2="121" y2="198" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<line class="a" x1="163" y1="172" x2="163" y2="198" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<text class="tm" x="290" y="248" font-size="10.5">numbers kept for each token, every block (a cache)</text>
+<text class="t" x="370" y="267" font-size="10.5" text-anchor="end">our GPT, 4 kv heads</text>
+<rect class="s fs" x="378" y="258" width="190" height="12" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="574" y="268" font-size="10.5">512</text>
+<text class="ta" x="370" y="284" font-size="10.5" text-anchor="end">our GPT, 2 kv heads</text>
+<rect class="a af" x="378" y="275" width="95" height="12" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="479" y="285" font-size="10.5">256</text>
+<text class="t" x="370" y="301" font-size="10.5" text-anchor="end">SmolLM2 if 9 kv heads</text>
+<rect class="s fs" x="378" y="292" width="190" height="12" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="574" y="302" font-size="10.5">34,560</text>
+<text class="ta" x="370" y="318" font-size="10.5" text-anchor="end">SmolLM2, 3 kv heads</text>
+<rect class="a af" x="378" y="309" width="63.33" height="12" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="447.33" y="319" font-size="10.5">11,520</text>
+<text class="tm mono" x="20" y="262" font-size="10.5">2 x kv heads x 64</text>
+<text class="tm mono" x="20" y="278" font-size="10.5">x blocks: keys and values</text>
+<text class="tm" x="20" y="300" font-size="10.5">(SmolLM2: 30 blocks, heads of 64)</text>
+<text class="ta" x="360" y="28" font-size="11.5" font-weight="700">SmolLM2-135M: 9 query heads on 3</text>
+<rect class="s f" x="360" y="38" width="22" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="371" y="51.42" font-size="9.5" text-anchor="middle">1</text>
+<rect class="s f" x="386" y="38" width="22" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="397" y="51.42" font-size="9.5" text-anchor="middle">2</text>
+<rect class="s f" x="412" y="38" width="22" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="423" y="51.42" font-size="9.5" text-anchor="middle">3</text>
+<rect class="s f" x="438" y="38" width="22" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="449" y="51.42" font-size="9.5" text-anchor="middle">4</text>
+<rect class="s f" x="464" y="38" width="22" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="475" y="51.42" font-size="9.5" text-anchor="middle">5</text>
+<rect class="s f" x="490" y="38" width="22" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="501" y="51.42" font-size="9.5" text-anchor="middle">6</text>
+<rect class="s f" x="516" y="38" width="22" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="527" y="51.42" font-size="9.5" text-anchor="middle">7</text>
+<rect class="s f" x="542" y="38" width="22" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="553" y="51.42" font-size="9.5" text-anchor="middle">8</text>
+<rect class="s f" x="568" y="38" width="22" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="579" y="51.42" font-size="9.5" text-anchor="middle">9</text>
+<rect class="a af" x="360" y="84" width="74" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="397" y="97.42" font-size="9.5" text-anchor="middle">k, v 1</text>
+<line class="a" x1="371" y1="58" x2="371" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<line class="a" x1="397" y1="58" x2="397" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<line class="a" x1="423" y1="58" x2="423" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<rect class="a af" x="438" y="84" width="74" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="475" y="97.42" font-size="9.5" text-anchor="middle">k, v 2</text>
+<line class="a" x1="449" y1="58" x2="449" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<line class="a" x1="475" y1="58" x2="475" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<line class="a" x1="501" y1="58" x2="501" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<rect class="a af" x="516" y="84" width="74" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="553" y="97.42" font-size="9.5" text-anchor="middle">k, v 3</text>
+<line class="a" x1="527" y1="58" x2="527" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<line class="a" x1="553" y1="58" x2="553" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<line class="a" x1="579" y1="58" x2="579" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#groups1004-aa)"/>
+<text class="tm" x="360" y="124" font-size="10.5">query head h reads key and value</text>
+<text class="tm" x="360" y="138" font-size="10.5">head h // 3 (from 0): repeat_interleave</text>
+</svg>
