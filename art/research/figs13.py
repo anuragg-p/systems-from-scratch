@@ -35,7 +35,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)                          # art/research/: figlib, figart
 import figart  # noqa: E402
 import figlib  # noqa: E402
-from figlib import Fig, sig, tw, write  # noqa: E402
+from figlib import Fig, tw, write  # noqa: E402
 
 MOD = "13"
 REC = os.path.join(figlib.TRACK, "experiments", "recorded")
@@ -85,13 +85,6 @@ def find(out, regex):
     if not m:
         raise SystemExit(f"no {regex!r} in:\n{out[-1500:]}")
     return m
-
-
-def bracket(f, x1, x2, y, text, cls="a", tcls="ta", up=True):
-    """A bracket over (or under) x1..x2 at y with a label beside its middle."""
-    d = 6 if up else -6
-    f.path(f"M{x1:.1f} {y + d:.1f}L{x1:.1f} {y:.1f}L{x2:.1f} {y:.1f}L{x2:.1f} {y + d:.1f}", cls)
-    f.text((x1 + x2) / 2, y - 6 if up else y + 14, text, tcls, 10.5, "middle", 600)
 
 
 # ================================================================== 13.01
@@ -444,7 +437,7 @@ def pairs1302():
                 f.circle(ax.px(k), ax.py(v), 3, "s f" if k == 0 else "a f")
             f.text(ax.px(k), ax.y + ax.h + 15, "1 head" if k == 0 else "4 heads", "t" if k == 0 else "ta", 11,
                    "middle", 600)
-        f.text(ax.x + ax.w + 8, ax.y + 12, f"correlation", "tm", 10)
+        f.text(ax.x + ax.w + 8, ax.y + 12, "correlation", "tm", 10)
         f.text(ax.x + ax.w + 8, ax.y + 26, f"{corr:+.2f}", "t", 11, weight=700, mono=True)
         bx = figart.Axes(f, 330, y0, 290, 120, (-0.07, 0.035), (0, 3), False, False)
         bx.draw(xticks=[-0.06, -0.04, -0.02, 0, 0.02], yticks=[], grid=False, xfmt=lambda v: f"{v:+.2f}" if v else "0",
@@ -470,9 +463,9 @@ def noise1302():
     m = find(r.out, r"moves by sd ([\d.]+) \(1 head\) and ([\d.]+) \(4 heads\); the test text's own sampling error, "
                     r"([\d.]+) \(batches of 64")
     same("the seeds' sds", (f"{sd(one):.4f}", f"{sd(four):.4f}"), m.groups()[:2])
-    text_one = float(m.group(3))
     rows = re.findall(r"^ +(1 head|4 heads|4 minus 1)((?: +[\d.]+){5})$", r.out, re.M)
     table = {name: [float(v) for v in vals.split()] for name, vals in rows[:3]}
+    same("one model's text error", f"{table['1 head'][3]:.4f}", m.group(3))
     pair_text = float(find(r.out, r"For the difference on the same text it is ([\d.]+), against the spread of the "
                                   r"seeds' differences, ([\d.]+)").group(1))
     same("the difference's text error", f"{table['4 minus 1'][3]:.4f}", f"{pair_text:.4f}")
