@@ -1,16 +1,18 @@
 """Track kilo: a text editor in C, antirez's kilo rebuilt lesson by lesson (UPSTREAM).
 
-The editor is one binary, ./kilo FILE (make builds it from kilo.c, and from module 07 on
-lsp.c and json.c too). It talks to a terminal: raw mode in, VT100 escape codes out, nothing
-in between. So do the tests: each runs ./kilo on a pseudo-terminal of a fixed size, types
-keys into it, and checks the screen it drew (its escape codes turned into a grid of text by
-Screen, below) or the file it saved. Module 07's client also talks to a language server: its
-tests give it a scripted one (tests/lsp_server.py), and clangd where it is installed.
+The editor is one binary, ./kilo FILE (make builds it from kilo.c, from module 07 on lsp.c
+and json.c too, and from module 09 script.c and Lua's library, lua/). It talks to a
+terminal: raw mode in, VT100 escape codes out, nothing in between. So do the tests: each runs
+./kilo on a pseudo-terminal of a fixed size, types keys into it, and checks the screen it drew
+(its escape codes turned into a grid of text by Screen, below) or the file it saved. Module
+07's client also talks to a language server: its tests give it a scripted one
+(tests/lsp_server.py), and clangd where it is installed. Module 09's tests give the editor an
+init.lua, and run kilo -l.
 
 Fixtures the lesson tests use:
 
     edit(t, text=None, name="f.txt", rows=24, cols=80, winsize=None, ctty=True, timeout=20,
-         asan=False, lsp=None, env=None, utf8=False)
+         asan=False, lsp=None, env=None, utf8=False, init=None)
                         write text to name in the test's scratch directory (None: leave
                         the file as it is, or missing), start ./kilo name on a terminal
                         of rows x cols, and wait for its first screen (at most timeout
@@ -21,6 +23,13 @@ Fixtures the lesson tests use:
                         ("" for its tiny language), its log in ed.lsp_log; "table", KILO_LSP
                         left out, so clangd for a C file; "env", KILO_LSP as env has it.
                         utf8=True: Screen counts a UTF-8 character as one cell
+                        init: module 09's init file: None, none (KILO_INIT set and empty);
+                        a string, Lua written to an init.lua; "env", as env has it
+    run_script(t, lua, text=None, name="f.txt", script="script.lua", exe=None, env=None)
+                        kilo -l script [name] in the scratch directory, with no terminal:
+                        what subprocess.run() gives (module 09)
+    asan_build(t, sanitize="address")
+                        the tree built with -fsanitize=..., or None where it cannot be
     Editor              ed.keys(*parts) types each part and waits for the screen to settle
                         ed.lines, ed.line(n), ed.cursor (row, col from 0), ed.status,
                         ed.message, ed.reverse(n): what the screen shows
@@ -36,6 +45,7 @@ Fixtures the lesson tests use:
     UP DOWN LEFT RIGHT HOME END DEL PAGE_UP PAGE_DOWN ESC ENTER BACKSPACE TAB, ctrl("q")
                         what those keys send
     lines_of(n)         text of n numbered lines, "line 1\\n" to "line n\\n"
+    lua_quote(s)        s as a Lua string literal, any byte in it
     paint(text, codes)  a row with its colours written in: "[g:int] x = [r:10];"
     children(pid), alive(pid), clangd(), skipped(t, what)
                         a process's children (state "Z": a zombie), whether a process is
@@ -55,7 +65,9 @@ starts this file as a program ("relay", at the end) that holds the terminal and 
 and takes commands on its standard input: keys to type, "screen" to print what the
 screen shows, "colors" its colours, "underline" what is underlined, "until REGEX" to wait
 for the screen to match, "size R C" to resize it. At module 07 it runs with the scripted
-server, never clangd, so it is the same on every machine.
+server, never clangd, so it is the same on every machine. At module 09 it runs with an
+init.lua of its own (TIMELINE_INIT), and prepare() first copies lua/ into the project, which
+the site does not show (supply_lua).
 """
 
 import json
@@ -881,10 +893,86 @@ def has_lsp(root):
     return os.path.exists(os.path.join(root, "lsp.c"))
 
 
+# A project with module 09's Lua in it runs on learn.txt with this init.lua (KILO_INIT), which
+# uses what the lesson has: from 09.04 Ctrl-T comments the cursor's row or not; from 09.05 the
+# words are counted on TextChanged; from 09.06 every number on the screen is red; from 09.07
+# Ctrl-O asks for a line to go to.
+TIMELINE_INIT = r"""
+local n = 0
+for _ in pairs(kilo.api or {}) do n = n + 1 end
+print('init.lua: ' .. n .. ' functions')
+if kilo.keymap then
+  kilo.keymap.set('<C-t>', function()
+    local row = kilo.api.get_cursor()[1]
+    local line = kilo.api.get_lines(row, row + 1)[1]
+    if line:sub(1, 3) == '-- ' then line = line:sub(4) else line = '-- ' .. line end
+    kilo.api.set_lines(row, row + 1, {line})
+  end)
+end
+if kilo.api and kilo.api.create_autocmd then
+  kilo.api.create_autocmd('TextChanged', function()
+    local words = 0
+    for _, line in kilo.lines() do
+      for _ in line:gmatch('%S+') do words = words + 1 end
+    end
+    kilo.api.message(words .. ' words')
+  end)
+end
+if kilo.api and kilo.api.add_highlight then
+  local ns = kilo.api.create_namespace('numbers')
+  local function paint()
+    kilo.api.clear_namespace(ns)
+    local top, rows = kilo.api.get_view()[1], kilo.api.get_size()[1]
+    local last = math.min(top + rows, kilo.api.line_count())
+    if last <= top then return end
+    for i, line in ipairs(kilo.api.get_lines(top, last)) do
+      for s, e in line:gmatch('()%d+()') do
+        kilo.api.add_highlight(ns, top + i - 1, s - 1, e - 1, 'red')
+      end
+    end
+  end
+  for _, event in ipairs({'BufReadPost', 'TextChanged', 'CursorMoved'}) do
+    kilo.api.create_autocmd(event, paint)
+  end
+end
+if kilo.api and kilo.api.input then
+  kilo.api.set_keymap('<C-o>', function()
+    local n = tonumber(kilo.api.input('Go to line: ') or '')
+    if n and n >= 1 and n <= kilo.api.line_count() then kilo.api.set_cursor({math.floor(n) - 1, 0}) end
+  end)
+end
+"""
+
+# At 09.09 timeline_after runs this with kilo -l on a copy of learn.txt.
+TIMELINE_UPPER = r"""
+local n = 0
+for row, line in kilo.lines() do
+  local up = line:upper()
+  if up ~= line then
+    kilo.api.set_lines(row, row + 1, {up})
+    n = n + 1
+  end
+end
+kilo.api.save()
+print(n .. ' lines upper-cased')
+"""
+
+
+def has_script(root):
+    """Does the project at root have module 09's Lua in it?"""
+    return os.path.exists(os.path.join(root, "script.c"))
+
+
 def timeline_run(root):
     with open(os.path.join(root, TIMELINE_FILE), "w") as f:
         f.write(TIMELINE_TEXT)
     name = TIMELINE_FILE
+    if has_script(root):
+        init = os.path.join(root, "init.lua")
+        with open(init, "w") as f:
+            f.write(TIMELINE_INIT)
+        return ["env", f"KILO_INIT={init}", sys.executable, os.path.abspath(__file__), "relay", "24", "80",
+                "--", "./kilo", name]
     if highlights(root):
         with open(os.path.join(root, TIMELINE_C_FILE), "w") as f:
             f.write(TIMELINE_C_TEXT)
@@ -934,6 +1022,8 @@ def timeline_boot(lesson_id):
         return _highlight_steps(k)
     if lesson_id.startswith("07."):
         return _lsp_steps(k)
+    if lesson_id.startswith("09."):
+        return _script_steps(k)
     if k < (1, 1):
         return []
     S = "screen"
@@ -1186,13 +1276,107 @@ def _lsp_after(root, lesson_id):
     return note
 
 
+def _script_steps(k):
+    """Steps for the project at a lesson of module 09, on learn.txt with TIMELINE_INIT: what
+    init.lua says, a line at the Ctrl-E prompt, and from each lesson on what it brings: the
+    API's reads, a header put in with set_lines, Ctrl-T (Lua) commenting a row, the words
+    counted on TextChanged, the numbers coloured and the status bar set, Ctrl-O asking for a
+    line, a loop that never ends stopped by Ctrl-C."""
+    S = "screen"
+    rows = _file_rows(1, 22)
+    bar = {22: re.compile(r"learn\.txt - 40 lines +1/40")}
+    count = 24 if k >= (9, 7) else 21 if k >= (9, 6) else 15 if k >= (9, 5) else 12 if k >= (9, 4) \
+        else 9 if k >= (9, 3) else 6 if k >= (9, 2) else 0
+    steps = [(S, _screen(24, rows | bar | {23: f"init.lua: {count} functions"}, cursor=(1, 1))),
+             ("keys {ctrl-e}1+1{enter}", SENT), (S, _screen(24, rows | {23: "2"}, cursor=(1, 1))),
+             ("keys {ctrl-e}nosuch(){enter}", SENT),
+             (S, _screen(24, rows | {23: "lua:1: attempt to call a nil value (global 'nosuch')"}, cursor=(1, 1))),
+             ("keys {ctrl-e}x = 1{esc}", SENT), (S, _screen(24, rows | {23: ""}, cursor=(1, 1)))]
+    if k < (9, 2):
+        return steps
+    # 09.02: the API's reads; a tab in a message is a space.
+    steps += [("keys {ctrl-e}kilo.api.line_count(){enter}", SENT), (S, _screen(24, rows | {23: "40"})),
+              ("keys {ctrl-e}kilo.api.get_lines(1, 2)[1]{enter}", SENT), (S, _screen(24, rows | {23: " after a tab"}))]
+    if k < (9, 3):
+        return steps
+    # 09.03: a header put in above the cursor's row: the cursor stays on its line, one down.
+    # From 09.05 the words are counted after each change (85 with the header).
+    words = (lambda n: f"{n} words") if k >= (9, 5) else (lambda n: "")
+    header = {0: "-- header"} | _file_rows(1, 21, top=1) | \
+        {22: re.compile(r"learn\.txt - 41 lines \(modified\) +2/41")}
+    steps += [("keys {ctrl-e}kilo.api.set_lines(0, 0, {'-- header'}){enter}", SENT),
+              (S, _screen(24, header | {23: words(85)}, cursor=(2, 1)))]
+    if k < (9, 4):
+        return steps
+    # 09.04: Ctrl-T, a Lua function, comments the cursor's row, and again takes it back.
+    steps += [("keys {ctrl-t}", SENT), (S, _screen(24, header | {1: "-- kilo at a lesson", 23: words(86)}, cursor=(2, 1))),
+              ("keys {ctrl-t}", SENT), (S, _screen(24, header | {23: words(85)}, cursor=(2, 1)))]
+    if k >= (9, 5):
+        # 09.05: typing counts the words again; moving does not.
+        steps += [("keys x", SENT), (S, _screen(24, header | {1: "xkilo at a lesson", 23: "85 words"}, cursor=(2, 2))),
+                  ("keys {bs}{down}", SENT),
+                  (S, _screen(24, header | {22: re.compile(r"learn\.txt - 41 lines \(modified\) +3/41"),
+                                            23: "85 words"}, cursor=(3, 1)))]
+    if k >= (9, 6):
+        # 09.06: the numbers on the screen in red (every line N); the status bar a script's.
+        colored = {i: f"line [r:{i}]" for i in range(3, 22)}
+        steps += [("colors", _colors(24, colored)),
+                  ("keys {ctrl-e}kilo.api.set_statusline('my status'){enter}", SENT),
+                  (S, _screen(24, header | {22: re.compile(r"my status +3/41"), 23: ""}))]
+    if k >= (9, 7):
+        # 09.07: Ctrl-O asks for a line, and goes there.
+        steps += [("keys {ctrl-o}", SENT), (S, _screen(24, {23: "Go to line:"})),
+                  ("keys 30{enter}", SENT), (S, _screen(24, {21: "line 29", 22: re.compile(r"my status +30/41")},
+                                                       cursor=(22, 1)))]
+    if k >= (9, 8):
+        # 09.08: a loop that never ends, at the prompt; Ctrl-C stops it, and the editor goes on.
+        steps += [("keys {ctrl-e}while true do end{enter}", SENT), ("keys {ctrl-c}", SENT),
+                  (S, _screen(24, {21: "line 29", 23: "lua:1: interrupted"}, cursor=(22, 1)))]
+    return steps
+
+
+def _script_after(root, lesson_id):
+    """At module 09: learn.txt untouched (nothing there saves); from 09.02 kilo --api-info,
+    a line per function of the lesson's API; at 09.09 kilo -l upper-cases a copy of it."""
+    from harness.core import lesson_key
+    k = lesson_key(lesson_id)
+    with open(os.path.join(root, TIMELINE_FILE)) as f:
+        if f.read() != TIMELINE_TEXT:
+            raise Fail(f"{TIMELINE_FILE} changed, with no save")
+    notes = [f"{TIMELINE_FILE} untouched"]
+    if k >= (9, 2):
+        r = subprocess.run(["./kilo", "--api-info"], cwd=root, capture_output=True, text=True, timeout=20,
+                           stdin=subprocess.DEVNULL)
+        want = 24 if k >= (9, 7) else 21 if k >= (9, 6) else 15 if k >= (9, 5) else 12 if k >= (9, 4) \
+            else 9 if k >= (9, 3) else 6
+        lines = r.stdout.splitlines()
+        if r.returncode != 0 or len(lines) != want or not lines[1].startswith("get_lines(start: integer, end: integer)"):
+            raise Fail(f"--api-info: status {r.returncode}, {len(lines)} lines, not {want}: {lines[:2]}")
+        notes.append(f"--api-info {want} functions")
+    if k >= (9, 9):
+        with open(os.path.join(root, "upper.lua"), "w") as f:
+            f.write(TIMELINE_UPPER)
+        with open(os.path.join(root, "copy.txt"), "w") as f:
+            f.write(TIMELINE_TEXT)
+        r = subprocess.run(["./kilo", "-l", "upper.lua", "copy.txt"], cwd=root, capture_output=True, text=True,
+                           timeout=20, stdin=subprocess.DEVNULL, env=dict(os.environ, KILO_INIT=""))
+        with open(os.path.join(root, "copy.txt")) as f:
+            got = f.read()
+        if (r.returncode, r.stdout, r.stderr) != (0, "40 lines upper-cased\n", "") or got != TIMELINE_TEXT.upper():
+            raise Fail(f"kilo -l upper.lua: {r.returncode} {r.stdout!r} {r.stderr!r} {got[:40]!r}")
+        notes.append("kilo -l upper-cased 40 lines")
+    return ", ".join(notes)
+
+
 def timeline_after(root, lesson_id):
     """The file the run worked on: untouched until 04.04, saved with the edits after; at
     module 06, the C file, untouched (nothing there saves); at module 07 that too, and what
-    the scripted server was sent."""
+    the scripted server was sent; at module 09, learn.txt untouched, --api-info and kilo -l."""
     from harness.core import lesson_key
     if lesson_id.startswith("07."):
         return _lsp_after(root, lesson_id)
+    if lesson_id.startswith("09."):
+        return _script_after(root, lesson_id)
     if lesson_id.startswith("06."):
         with open(os.path.join(root, TIMELINE_C_FILE), encoding="latin-1", newline="") as f:
             got = f.read()

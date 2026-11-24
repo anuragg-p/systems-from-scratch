@@ -2849,13 +2849,19 @@ static ApiValue apiSetStatusline(ApiValue *args, int nargs, ApiError *err) {
 
 /* Called by editorRefreshScreen() with the left part of the status bar it
  * made (len bytes in status, size big): put set_statusline()'s text there
- * if there is one. Returns the length of what is there now. */
+ * if there is one, cut so that the cursor's "row/rows" still fits on the
+ * right. Returns the length of what is there now. */
 int editorStatusLine(char *status, int size, int len) {
     // @build 09.06 the status bar
-    // No text set: len, untouched. Else copy it in (snprintf(), cut to
-    // size) and return its length.
+    // No text set: len, untouched. Else the room is the screen's width less
+    // the "row/rows" the bar ends with and a space (and at most size-1):
+    // copy that much of the text in, and return its length.
+    int room = E.screencols-snprintf(NULL,0,"%d/%d",E.rowoff+E.cy+1,E.numrows)-1;
+
     if (editorStatus[0] == '\0') return len;
-    snprintf(status,size,"%s",editorStatus);
+    if (room > size-1) room = size-1;
+    if (room < 0) room = 0;
+    snprintf(status,size,"%.*s",room,editorStatus);
     return strlen(status);
     // @end
 }
@@ -2899,7 +2905,7 @@ static ApiValue apiInput(ApiValue *args, int nargs, ApiError *err) {
  * is no file is a new, empty file of that name, as on the command line. */
 static ApiValue apiOpen(ApiValue *args, int nargs, ApiError *err) {
     // @build 09.07 open
-    // Unsaved changes: fail. In a save's events: fail. A name with a '\0'
+    // In a save's events: fail. Unsaved changes: fail. A name with a '\0'
     // in it, or none: fail. fopen() it first: editorOpen() exits on a file
     // that is there but cannot be read, so that is an error here. Then free
     // every row, empty the file and the view, and editorOpen() the path (it
@@ -2909,9 +2915,9 @@ static ApiValue apiOpen(ApiValue *args, int nargs, ApiError *err) {
     int j;
 
     (void)nargs;
-    if (E.dirty) return apiFail(err,"unsaved changes");
     if (editorRunning && strncmp(editorRunning,"BufWrite",8) == 0)
         return apiFail(err,"a save is going on");
+    if (E.dirty) return apiFail(err,"unsaved changes");
     if (path[0] == '\0' || strlen(path) != args[0].u.string.len)
         return apiFail(err,"\"%.40s\" is not a file name",path);
     if ((fp = fopen(path,"r")) != NULL) fclose(fp);

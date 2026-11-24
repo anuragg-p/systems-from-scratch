@@ -558,7 +558,8 @@ static void scriptHook(lua_State *L, lua_Debug *ar) {
     // Unless already interrupted: while poll() with no wait says standard
     // input has bytes, read() them, and note a 3 among them in
     // S.interrupted. None: return. Then lua_sethook() to a count of 1. Raise
-    // "interrupted" with luaL_error().
+    // "interrupted", with where the script was in front: a hook runs inside
+    // the function it stops, so that is level 0 for luaL_where().
     struct pollfd pfd;
     char buf[64];
     ssize_t n, i;
@@ -574,7 +575,10 @@ static void scriptHook(lua_State *L, lua_Debug *ar) {
         if (!S.interrupted) return;
         lua_sethook(L,scriptHook,LUA_MASKCOUNT,1);
     }
-    luaL_error(L,"interrupted");
+    luaL_where(L,0);
+    lua_pushliteral(L,"interrupted");
+    lua_concat(L,2);
+    lua_error(L);
     // @end
 }
 
