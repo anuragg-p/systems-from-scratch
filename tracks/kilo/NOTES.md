@@ -2401,6 +2401,73 @@ Not confirmed (could not be seen in the sources read, so not for a lesson):
   persistent undo, were not read. VS Code's undo across file reloads was
   not looked for.
 
+### Added by the lesson writer (2026-11-24)
+
+Facts the lessons needed that the notes above lacked, each run or read
+for them.
+
+**The bound in Vim and Emacs** (for 08.04's boundary), read as above, with
+curl, at the same tags:
+
+- Vim, `runtime/doc/options.txt` 9970-9976: `'undolevels' 'ul' number
+  (default 100, 1000 for Unix, VMS and Win32)`, "Maximum number of changes
+  that can be undone. Since undo information is kept in memory, higher
+  numbers will cause more memory to be used. Nevertheless, a single change
+  can already use a large amount of memory." A bound in changes.
+- Emacs, `doc/lispref/text.texi` 1580-1604 (node Maintaining Undo): "garbage
+  collection trims them back to size limits you can set"; "size is counted
+  as the number of bytes occupied, which includes both saved text and other
+  data"; `undo-limit` "the soft limit ... The change group at which this
+  size is exceeded is the last one kept"; `undo-outer-limit`: "If at
+  garbage collection time the undo info for the current command exceeds
+  this limit, Emacs discards the info and displays a warning." A bound in
+  bytes, and a command too big to keep, as kilo's.
+
+**The Break its as the lessons have them**, each run on the project at its
+lesson (`./learn files`, make), on notes.txt, 10x44, with the driver above:
+
+- 08.01, the records applied first to last (`for (j = 0; j < s.numrec;
+  j++)` in editorUndo): Run it's keys and eight Ctrl-Z give the same
+  screens as unbroken. Enter's two records (U_INS(r+1), U_CHG(r)) and a
+  join's (U_CHG(r-1), U_DEL(r)) are of two rows and neither moves the
+  other, so either order puts them back: the design's "Enter leaves the
+  wrong rows" does not happen. At a key a step the one step whose records
+  are of one row is a character typed on the row under the last (U_INS(r),
+  then U_CHG(r)): Ctrl-Z there stops kilo, killed by signal 5 (SIGTRAP) on
+  this Mac (macOS's crash report: EXC_BREAKPOINT, libsystem_malloc's "BUG
+  IN CLIENT OF LIBMALLOC: not an allocated block", in undoPut), `./learn
+  run` exiting 251, the terminal left in raw mode
+  (`reset` puts it right, in bash and zsh). A build with
+  `-fsanitize=address` says `attempting double-free` in undoPut (its
+  `free(row->chars)`), of 2 bytes editorFreeRow freed from editorDelRow
+  the moment before.
+- 08.02, the redo stack kept after a new edit: Run it's keys, Ctrl-Z
+  (`and what each line was`), X (`andX what ...`), Ctrl-R: `andwhat each
+  line was`, the X and the space gone, nothing said; Ctrl-Z brings
+  `andX what ...` back.
+- 08.03, other keys not ending a step: taking `kind == UNDO_OTHER ||` out of
+  undoKey changes nothing for "type, arrow, type": the arrow is still of
+  another kind than the typing, and the typing after it of another kind
+  than the arrow. The nearest one-line change is `if (kind == UNDO_OTHER)
+  return;` after `int kind = undoKind(c);`: Down, `so `, Down, Left three
+  times, `and `, Ctrl-Z: both runs go at once, the cursor at 2,1; a second
+  Ctrl-Z says `Nothing to undo`.
+- 08.04, the saved point kept after an edit below it: a letter typed after
+  the Ctrl-Z shows "(modified)", the core's count, not a clean file (the
+  design expected clean there). It takes an undo or redo back to the save's
+  height: Down, `so `, Ctrl-S (`51 bytes written on disk`), Ctrl-Z, `if `,
+  Ctrl-Z, Ctrl-R: `if what each line was` and `notes.txt - 3 lines`, no
+  "(modified)"; Ctrl-Q quits at once, and the file holds `so what each
+  line was`.
+
+**Screens the lessons show beyond the ones above** (same terminal and
+file): at 08.03, after Run it's three Ctrl-Z, `so `, Down, Left three
+times, `and ` gives `so what each line was` and `and before it changed`;
+Ctrl-Z, `before it changed` again, cursor 3,1; Ctrl-Z, `what each line
+was`, cursor 2,1; Ctrl-R, cursor 2,4; Ctrl-R, cursor 3,5. At 08.04, a
+letter typed and deleted (`a`, Backspace) leaves the text the file and
+the status bar "(modified)"; two Ctrl-Z, and it is not.
+
 ## 09 An API, and Lua on top of it (an extension)
 
 Module 09 (`lessons/09-api-and-lua/`, `optional: true`, started 2026-11-24
