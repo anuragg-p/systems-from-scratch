@@ -581,8 +581,10 @@ EXPERIMENTS.update({
     "bpe": ("09.01", ["seeds=1", "steps=5", "layers=1", "width=16", "context=16", "sizes=[256,300]", "vocab=300",
                       "windows=10", "simple_merges=1"], r"s of counting, training and scoring on cpu"),
     "tokenizer": ("09.02", ["repeats=1", "size=300"], r"s of reading, training and encoding on cpu"),
+    "gpt2": ("09.03", ["test_tokens=300", "warm=16", "wrong_windows=1", "prompts=2", "prompt_tokens=8", "length=6",
+                       "seeds=1", "greedy=4"], r"s of loading, scoring and sampling on cpu"),
 })
-DATASET_OF.update({"bpe": None, "tokenizer": "gpt2"})
+DATASET_OF.update({"bpe": None, "tokenizer": "gpt2", "gpt2": "gpt2"})
 
 # The downloads of module 09 (data/fetch.py has their SHA-256s too), file by file with their sizes, and their names
 # in a test's line.

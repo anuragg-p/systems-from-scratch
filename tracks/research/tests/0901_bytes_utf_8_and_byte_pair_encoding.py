@@ -6,7 +6,7 @@ reference written apart from them (tests/support.py), on Shakespeare and on text
 Unicode, ties broken by the smaller pair; encode gives what applying every merge in the order learned
 gives, and of the training text what training made of it; decode(encode(text)) is the text for any
 text, in any script, with bytes the training text never had; a list of symbols that cuts a character
-gives U+FFFD. unseen and per_character against direct counts. The short run: a window of 256
+gives U+FFFD. unseen and per_character (experiments/sequences.py) against direct counts. The short run: a window of 256
 characters holds about 48 words, 15.9% of the test text's different words never occur in training;
 the fast trainer gives the obvious one's merges far sooner; bytes per token grow with the vocabulary,
 and more on the training text than on the test text; every round trip holds; the GPT on BPE tokens
@@ -61,6 +61,7 @@ def inside(S):
     import numpy as np
     from data import shakespeare
     from experiments import bpe as experiment
+    from experiments.sequences import per_character
     from tokens import bpe
 
     rng = np.random.default_rng(0)
@@ -108,4 +109,4 @@ def inside(S):
 
     assert experiment.unseen(["a", "b", "a"], ["a", "c", "c", "d"]) == (2 / 3, 3 / 4)
     small = {0: b"ab", 1: b"c", 2: b"def"}
-    assert abs(experiment.per_character(2.0, [0, 1, 2, 2, 1], small, 2) - 2.0 * 3 / 7) < 1e-12
+    assert abs(per_character(2.0, [0, 1, 2, 2, 1], small, 2) - 2.0 * 3 / 7) < 1e-12

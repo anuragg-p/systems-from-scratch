@@ -27,7 +27,7 @@ import torch
 import lab
 from data import shakespeare
 from experiments.language import train
-from experiments.sequences import window_bits
+from experiments.sequences import per_character, window_bits
 from models.gpt import GPT
 from tokens import bpe
 
@@ -53,17 +53,6 @@ def unseen(seen, held):
     different = set(held)
     return (sum(w not in known for w in different) / len(different),
             sum(w not in known for w in held) / len(held))
-# @end
-
-
-# @build 09.01 per_character
-# A model's bits per token on text of tokens ids, made into bits per
-# character: window_bits (07.03) scores every token from the warm-th on,
-# so the bits of all of them over the characters they stand for (table
-# gives each token's bytes; Tiny Shakespeare is ASCII, a byte a character).
-def per_character(bits_per_token, ids, table, warm):
-    scored = ids[warm:]
-    return bits_per_token * len(scored) / sum(len(table[int(i)]) for i in scored)
 # @end
 
 

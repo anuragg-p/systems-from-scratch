@@ -193,3 +193,12 @@ def generate(model, prompts, n, generator, temperature=1.0, k=None, p=None):
             ids = torch.cat([ids, chosen], dim=1)
     return ids[:, prompts.shape[1]:]
 # @end
+
+
+# @build 09.03 loops
+# Holtzman et al.'s repetition, 08.05's measure, here for any symbols
+# (09.03's word pieces, 09.04's): True when ids (a list) end with a
+# phrase of 2 or more symbols repeated at least 3 times in a row.
+def loops(ids):
+    return any(ids[-L:] == ids[-2 * L:-L] == ids[-3 * L:-2 * L] for L in range(2, len(ids) // 3 + 1))
+# @end

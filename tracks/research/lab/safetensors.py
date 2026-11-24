@@ -17,6 +17,7 @@ these write and the other way round. A model's state_dict goes in as
 """
 
 import json
+import os                                                           # @from 09.03
 import struct
 
 import numpy as np
@@ -62,31 +63,65 @@ def save_file(tensors, filename, metadata=None):
 # and type say, and the ranges cover the data part exactly, in order, with
 # no gaps and no overlaps. Anything else is a ValueError, not a guess.
 def load_file(filename):
+    # @from 09.03
+    # Read in place: the header, its checks, then each tensor's bytes from
+    # the file straight into an array of its own (np.fromfile). Reading the
+    # whole file and copying out of it held the file four times over at the
+    # peak: 2.1 GB for GPT-2's 548 MB (09.03).
+    size = os.path.getsize(filename)
     with open(filename, "rb") as f:
-        raw = f.read()
-    if len(raw) < 8:
-        raise ValueError(f"{filename}: too short to be a safetensors file")
-    (n,) = struct.unpack("<Q", raw[:8])
-    if 8 + n > len(raw):
-        raise ValueError(f"{filename}: header of {n} bytes in a file of {len(raw)}")
-    header = json.loads(raw[8:8 + n])
-    header.pop("__metadata__", None)
-    data = bytearray(raw[8 + n:])
-    out, end = {}, 0
-    for name, spec in sorted(header.items(), key=lambda kv: kv[1]["data_offsets"]):
-        if spec["dtype"] not in DTYPES:
-            raise ValueError(f"{name}: unknown dtype {spec['dtype']}")
-        dtype = np.dtype(DTYPES[spec["dtype"]]).newbyteorder("<")
-        begin, stop = spec["data_offsets"]
-        if begin != end or stop - begin != int(np.prod(spec["shape"])) * dtype.itemsize:
-            raise ValueError(f"{name}: bytes {begin} to {stop} do not follow on from {end} "
-                             f"at the size of a {spec['dtype']} {spec['shape']}")
-        out[name] = np.frombuffer(data, dtype=dtype, count=(stop - begin) // dtype.itemsize,
-                                  offset=begin).reshape(spec["shape"]).astype(dtype.newbyteorder("="))
-        end = stop
-    if end != len(data):
-        raise ValueError(f"{filename}: {len(data) - end} bytes after the last tensor")
+        if size < 8:
+            raise ValueError(f"{filename}: too short to be a safetensors file")
+        (n,) = struct.unpack("<Q", f.read(8))
+        if 8 + n > size:
+            raise ValueError(f"{filename}: header of {n} bytes in a file of {size}")
+        header = json.loads(f.read(n))
+        header.pop("__metadata__", None)
+        specs, end = sorted(header.items(), key=lambda kv: kv[1]["data_offsets"]), 0
+        for name, spec in specs:
+            if spec["dtype"] not in DTYPES:
+                raise ValueError(f"{name}: unknown dtype {spec['dtype']}")
+            begin, stop = spec["data_offsets"]
+            if begin != end or stop - begin != int(np.prod(spec["shape"])) * np.dtype(DTYPES[spec["dtype"]]).itemsize:
+                raise ValueError(f"{name}: bytes {begin} to {stop} do not follow on from {end} "
+                                 f"at the size of a {spec['dtype']} {spec['shape']}")
+            end = stop
+        if end != size - 8 - n:
+            raise ValueError(f"{filename}: {size - 8 - n - end} bytes after the last tensor")
+        out = {}
+        for name, spec in specs:
+            dtype = np.dtype(DTYPES[spec["dtype"]]).newbyteorder("<")
+            count = int(np.prod(spec["shape"]))
+            out[name] = np.fromfile(f, dtype=dtype, count=count).reshape(spec["shape"]).astype(
+                dtype.newbyteorder("="), copy=False)
     return out
+    # @else
+    # with open(filename, "rb") as f:
+    #     raw = f.read()
+    # if len(raw) < 8:
+    #     raise ValueError(f"{filename}: too short to be a safetensors file")
+    # (n,) = struct.unpack("<Q", raw[:8])
+    # if 8 + n > len(raw):
+    #     raise ValueError(f"{filename}: header of {n} bytes in a file of {len(raw)}")
+    # header = json.loads(raw[8:8 + n])
+    # header.pop("__metadata__", None)
+    # data = bytearray(raw[8 + n:])
+    # out, end = {}, 0
+    # for name, spec in sorted(header.items(), key=lambda kv: kv[1]["data_offsets"]):
+    #     if spec["dtype"] not in DTYPES:
+    #         raise ValueError(f"{name}: unknown dtype {spec['dtype']}")
+    #     dtype = np.dtype(DTYPES[spec["dtype"]]).newbyteorder("<")
+    #     begin, stop = spec["data_offsets"]
+    #     if begin != end or stop - begin != int(np.prod(spec["shape"])) * dtype.itemsize:
+    #         raise ValueError(f"{name}: bytes {begin} to {stop} do not follow on from {end} "
+    #                          f"at the size of a {spec['dtype']} {spec['shape']}")
+    #     out[name] = np.frombuffer(data, dtype=dtype, count=(stop - begin) // dtype.itemsize,
+    #                               offset=begin).reshape(spec["shape"]).astype(dtype.newbyteorder("="))
+    #     end = stop
+    # if end != len(data):
+    #     raise ValueError(f"{filename}: {len(data) - end} bytes after the last tensor")
+    # return out
+    # @end
 # @end
 
 
