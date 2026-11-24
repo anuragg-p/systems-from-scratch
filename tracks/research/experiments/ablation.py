@@ -13,13 +13,13 @@ when it is wide next to the spread over seeds (Welch's t).
    from the rest; most differences here are inside the noise.
 2. The table of the recorded long run (experiments/recorded/ablation/, its
    config.json files hold every setting): a larger GPT trained far longer,
-   3 seeds a row; and beside each change, what its paper claimed and at
-   what size.
+   3 seeds a row (recorded=none leaves this part out). Then, for each
+   change, what its paper claimed and at what size.
 
     python3 -m experiments.ablation
 
 The long run is this script with bigger settings (NOTES.md has the command
-and its time, about an hour on a laptop's CPU).
+and its time, under an hour on a laptop's CPU).
 """
 
 import glob
@@ -138,10 +138,10 @@ def main():
     print(table(rows, times))
     print(f"\n   curves in {path}")
 
-    have = recorded(cfg.recorded, list(rows))
-    if have is None:
+    have = recorded(cfg.recorded, list(rows)) if cfg.recorded != "none" else None
+    if have is None and cfg.recorded != "none":
         print(f"\n2. No recorded long run in {cfg.recorded}.")
-    else:
+    elif have is not None:
         rec, c, rec_times = have
         passes = c["steps"] * c["batch"] * c["context"] / len(train_t)
         print(f"\n2. The recorded long run ({cfg.recorded}): {c['layers']} blocks of {c['heads']} heads, width "
@@ -150,9 +150,9 @@ def main():
               f"key/value heads for {c['heads']}.\n   Bits per character on the test text (each character with "
               f"{c['context'] // 4} or more before it), ms a step on the CPU it was run on:\n")
         print(table(rec, rec_times))
-        print("\n   What each paper claimed, and at what size:")
-        for name, claim in CLAIMS.items():
-            print(f"   {name}: {claim}")
+    print("\n   What each paper claimed, and at what size:")
+    for name, claim in CLAIMS.items():
+        print(f"   {name}: {claim}")
     print(f"\n{lab.clock(torch, dev) - start:.0f} s of training and scoring on {dev.type}")
 
 
