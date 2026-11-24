@@ -1,5 +1,5 @@
-// cc.h: what the files of the compiler share. The token and the tree node,
-// and every function that one file calls in another.
+// cc.h: what the files of the compiler share: its types, and every
+// function that one file calls in another.
 //
 // Derived from chibicc's chibicc.h by Rui Ueyama
 // (https://github.com/rui314/chibicc, MIT; the licence is in LICENSE).

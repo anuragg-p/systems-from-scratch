@@ -53,7 +53,7 @@ mkdir -p "$build" || exit 2
 "${prefix}ld" -T "$here/rt/link.ld" -o "$build/ours.elf" "$build/start.o" "$build/ours.o" || exit 2
 
 # The file is one expression, not yet a C program, so for gcc it goes into
-# a main that returns it. (When the input becomes C, 03.01, this goes.)
+# a main that returns it. (When the input is a whole C program, this goes.)
 { printf 'int main(void) { return '; cat "$1"; printf '\n; }\n'; } > "$build/gcc.c"
 "${prefix}gcc" -O0 -march=rv64im -mabi=lp64 -mcmodel=medany -fno-pie \
   -ffreestanding -nostdlib -fno-builtin -mno-relax \
