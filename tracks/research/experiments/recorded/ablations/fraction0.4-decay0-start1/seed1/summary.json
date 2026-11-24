@@ -1,0 +1,6 @@
+{
+ "best_val_acc": 0.07141578942537308,
+ "last_step": 6000,
+ "train99": 398,
+ "val99": null
+}

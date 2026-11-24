@@ -568,13 +568,17 @@ HIDDEN.append("experiments/recorded/*/model.safetensors")
 EXPERIMENTS.update({
     "claims": ("14.01", ["seeds=1"], r"A run has learned the operation only if its validation accuracy is far above"),
     "grokking": ("14.02", ["seeds=1", "steps=5", "p=7"], r"s of training and scoring on cpu"),
+    "ablations": ("14.04", [], r"s of training and reading on cpu"),
+    "report": ("14.04", [], r"the report in "),
 })
-DATASET_OF.update({"claims": None, "grokking": None})
+DATASET_OF.update({"claims": None, "grokking": None, "ablations": None, "report": None})
 FILES_FROM["experiments/grokking.py"] = "14.02"
 
 # The long runs, recorded as 06.04's, 07.02's and 08.04's are: grokking.py's (14.03, the figure) and ablations.py's
 # (14.04), each with out=experiments/recorded: every config.json, log.jsonl and summary.json, the curves and what it
 # printed. As module 07's part says, the first glob that matches a file places it, so these narrower ones go first.
-FILES_FROM = {"experiments/recorded/grokking/*": "14.03", **FILES_FROM}
+FILES_FROM = {"experiments/recorded/grokking/*": "14.03", "experiments/recorded/ablations/*": "14.04", **FILES_FROM}
 DATA["experiments/recorded/grokking/*"] = ("the long run of experiments/grokking.py (14.03), recorded on the machine in "
                                            "NOTES.md")
+DATA["experiments/recorded/ablations/*"] = ("the runs of experiments/ablations.py (14.04), recorded on the machine in "
+                                            "NOTES.md")
