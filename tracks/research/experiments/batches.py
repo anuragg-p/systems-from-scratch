@@ -13,8 +13,9 @@ not a longer step, unless the rate grows with it.
    from 4 parts of 32.
 2. Accumulation gives the gradient of the whole batch: exactly, in
    float64; and what dropout does to that.
-3. The time to 11.01's target against the batch, the rate held and the
-   rate scaled with the batch.
+3. The time to a target against the batch (3.2 bits, short of 11.01's
+   3.0, to keep to the minute), the rate held and the rate scaled with
+   the batch.
 4. Clipping: how long the gradient is at each batch, how many steps the
    clip of 1 cuts, and the time to the target with it and without.
 
@@ -32,7 +33,7 @@ from lab import bench
 from models.gpt import GPT
 
 CONFIG = dict(layers=4, heads=4, width=64, context=64, kv_heads=2, batch=32, steps=600, lr=0.003, warmup=50,
-              weight_decay=0.1, clip=1.0, every=10, held=32, target=3.0, seeds=2, sizes=[8, 16, 32, 64, 128],
+              weight_decay=0.1, clip=1.0, every=10, held=32, target=3.2, seeds=2, sizes=[8, 16, 32, 64, 128],
               parts=4, batches=[16, 32, 64], scaled=[64], norm_steps=40, clip_batches=[16], repeats=3, number=2,
               device="cpu")
 ALL_FOUR = dict(norm="rms", positions="rotary", mlp="swiglu")

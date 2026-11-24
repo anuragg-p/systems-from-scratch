@@ -65,7 +65,7 @@ def inside(S):
         h.remove()
     assert all(not m._forward_hooks and not m._forward_pre_hooks for m in model.modules()), "the hooks come off"
 
-    with profile(activities=[ProfilerActivity.CPU]) as prof:
+    with profile(activities=[ProfilerActivity.CPU], acc_events=True) as prof:
         handles = P.timers(model, lambda: 0.0, collections.defaultdict(float), labels=True)
         loss = bits(model(ids), ids)
         loss.backward()

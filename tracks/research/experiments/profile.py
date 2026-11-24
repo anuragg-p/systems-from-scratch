@@ -198,7 +198,7 @@ def main():
 
     labelled = collections.defaultdict(float)
     handles = timers(model, clock, labelled, labels=True)
-    with profile(activities=[ProfilerActivity.CPU]) as prof:
+    with profile(activities=[ProfilerActivity.CPU], acc_events=True) as prof:
         for _ in range(cfg.steps):
             step(model, opt, cfg, dev, train_t, rng, clock, labelled, label=True)
     for h in handles:

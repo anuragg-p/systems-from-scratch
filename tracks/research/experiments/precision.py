@@ -40,7 +40,7 @@ from experiments.sequences import bits, windows
 from lab import bench
 from models.gpt import GPT
 
-CONFIG = dict(layers=4, heads=4, width=64, context=64, kv_heads=2, batch=32, steps=40, lr=0.003, warmup=10,
+CONFIG = dict(layers=4, heads=4, width=64, context=64, kv_heads=2, batch=32, steps=60, lr=0.003, warmup=10,
               weight_decay=0.1, clip=1.0, every=10, held=32, seeds=2, warm_steps=60, precisions=["float32", "bfloat16"],
               scales=[1, 1024, 65536], repeats=3, number=2, device="cpu")
 ALL_FOUR = dict(norm="rms", positions="rotary", mlp="swiglu")
