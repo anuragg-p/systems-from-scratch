@@ -463,4 +463,8 @@ teaches only the buffer (plans/dsa.md).
   not "a sandbox"; the lines that said 09.10 was not built are current.
 - 09.06 to 09.10: see the commits of the second read.
 - `./learn verify` passes 09.01 to 09.05; `./learn check` lists nothing for
-  kilo; `./learn test kilo` passes.
+  kilo; `./learn test kilo` passes (all 42). Once, run beside the
+  read's screenshots and verify, 0908 failed at its last step: the fuzz's
+  four Ctrl-Q, 0.1 s apart, met a pseudo-terminal kilo had already closed
+  (EIO on the send); alone three times and in the whole run again, it
+  passed. The test is unchanged.
