@@ -6290,3 +6290,13 @@ page's run against what that run printed):
   scored_sets).
 - 12.04-bits, -along, -moved (the recorded run; the default's part 3
   summaries), -instruct (the default's part 3).
+
+Checks, at a load of 11 to 14 with other agents' runs: `./learn verify
+--fresh research 12` ok in 342 s (12.01 145 s: the fetch, the default,
+the all-data run and Break it; 12.02 36 s; 12.03 81 s; 12.04 80 s);
+`./learn check-timeline research` ok (10 min); `./learn check-skeleton
+research` ok (76 s); `./learn selftest` ok (269 tests); `./learn check`
+reports nothing for research 12. The site: 12.02's page is about 40,000
+px tall, nearly all of it the recorded run's 49 files as blocks in The
+code (the harness quirk the plan lists; nothing in the track can fold
+them).
