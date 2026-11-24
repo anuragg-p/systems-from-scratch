@@ -629,6 +629,16 @@ def need(t, dataset="mnist", skip=False):
 TOOLS["gpt2"] = lambda: have_dataset("gpt2")
 TOOLS["tinystories"] = lambda: have_dataset("tinystories")
 
+
+def _have_tiktoken():
+    """09.02's page compares the learner's ids with tiktoken's when tiktoken is installed (the project never imports
+    it): that session says needs="gpt2 tiktoken", so without tiktoken the lesson is "missing", not failed."""
+    import importlib.util
+    return importlib.util.find_spec("tiktoken") is not None
+
+
+TOOLS["tiktoken"] = _have_tiktoken
+
 # The long run of 09.04, recorded as 08.04's is (experiments/tinystories.py with out=experiments/recorded): every
 # config.json, log.jsonl and summary.json, the curves, what it printed (its stories with it); not its checkpoint. The
 # first glob that matches a file places it, so this narrower one goes first too.

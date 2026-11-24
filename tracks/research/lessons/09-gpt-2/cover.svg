@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The same tokens in, the same numbers out: byte pair encoding learned on bytes, GPT-2&#x27;s tokenizer and published weights run in your GPT, and a small GPT pretrained on TinyStories that tells a story</title>
+<defs><marker id="r09-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="r09-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="30" font-size="10.5">byte pair encoding, learned on Shakespeare&#x27;s training plays</text>
+<text class="t mono" x="24" y="56" font-size="11.5" font-weight="700">&#x27;_heavens&#x27;</text>
+<text class="tm" x="103.2" y="56" font-size="10">35 times in the training plays</text>
+<rect class="s f" x="24" y="64" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32.5" y="78.8" font-size="11" text-anchor="middle">_</text>
+<rect class="s f" x="44" y="64" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="52.5" y="78.8" font-size="11" text-anchor="middle">h</text>
+<rect class="s f" x="64" y="64" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="72.5" y="78.8" font-size="11" text-anchor="middle">e</text>
+<rect class="s f" x="84" y="64" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="78.8" font-size="11" text-anchor="middle">a</text>
+<rect class="s f" x="104" y="64" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="112.5" y="78.8" font-size="11" text-anchor="middle">v</text>
+<rect class="s f" x="124" y="64" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="132.5" y="78.8" font-size="11" text-anchor="middle">e</text>
+<rect class="s f" x="144" y="64" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="152.5" y="78.8" font-size="11" text-anchor="middle">n</text>
+<rect class="s f" x="164" y="64" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="172.5" y="78.8" font-size="11" text-anchor="middle">s</text>
+<text class="tm" x="190" y="79" font-size="10">8 bytes</text>
+<rect class="a af" x="24" y="94" width="75" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="61.5" y="108.8" font-size="11" font-weight="700" text-anchor="middle">_heavens</text>
+<text class="ta" x="108" y="109" font-size="10" font-weight="600">1 token, made by merge 1,790</text>
+<text class="t mono" x="24" y="142" font-size="11.5" font-weight="700">&#x27;_Prospero&#x27;</text>
+<text class="tm" x="110.4" y="142" font-size="10">never in the training plays</text>
+<rect class="s f" x="24" y="150" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32.5" y="164.8" font-size="11" text-anchor="middle">_</text>
+<rect class="s f" x="44" y="150" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="52.5" y="164.8" font-size="11" text-anchor="middle">P</text>
+<rect class="s f" x="64" y="150" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="72.5" y="164.8" font-size="11" text-anchor="middle">r</text>
+<rect class="s f" x="84" y="150" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="92.5" y="164.8" font-size="11" text-anchor="middle">o</text>
+<rect class="s f" x="104" y="150" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="112.5" y="164.8" font-size="11" text-anchor="middle">s</text>
+<rect class="s f" x="124" y="150" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="132.5" y="164.8" font-size="11" text-anchor="middle">p</text>
+<rect class="s f" x="144" y="150" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="152.5" y="164.8" font-size="11" text-anchor="middle">e</text>
+<rect class="s f" x="164" y="150" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="172.5" y="164.8" font-size="11" text-anchor="middle">r</text>
+<rect class="s f" x="184" y="150" width="17" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="192.5" y="164.8" font-size="11" text-anchor="middle">o</text>
+<text class="tm" x="210" y="165" font-size="10">9 bytes</text>
+<rect class="a af" x="24" y="180" width="27" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="37.5" y="194.8" font-size="11" font-weight="700" text-anchor="middle">_P</text>
+<rect class="a af" x="54" y="180" width="27" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="67.5" y="194.8" font-size="11" font-weight="700" text-anchor="middle">ro</text>
+<rect class="a af" x="84" y="180" width="19" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="93.5" y="194.8" font-size="11" font-weight="700" text-anchor="middle">s</text>
+<rect class="a af" x="106" y="180" width="35" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="123.5" y="194.8" font-size="11" font-weight="700" text-anchor="middle">per</text>
+<rect class="a af" x="144" y="180" width="19" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="153.5" y="194.8" font-size="11" font-weight="700" text-anchor="middle">o</text>
+<text class="ta" x="172" y="195" font-size="10" font-weight="600">5 tokens, pieces it had</text>
+<text class="tm" x="24" y="220" font-size="10">Merges of 1,792, learned first, applied first; &#x27;_&#x27; is a space.</text>
+<text class="t" x="404" y="30" font-size="11.5" font-weight="700">held to the real thing</text>
+<rect class="s f" x="404" y="40" width="212" height="24" rx="6" stroke-width="1.5"/>
+<text class="t" x="510.0" y="55.7" font-size="10.5" font-weight="600" text-anchor="middle">text</text>
+<line class="s" x1="434" y1="64" x2="434" y2="84" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r09-ah)"/>
+<rect class="s fs" x="404" y="86" width="212" height="24" rx="6" stroke-width="1.5"/>
+<text class="t" x="510.0" y="101.7" font-size="10.5" font-weight="600" text-anchor="middle">your GPT-2 tokenizer</text>
+<line class="s" x1="434" y1="110" x2="434" y2="130" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r09-ah)"/>
+<text class="ta" x="444" y="125" font-size="10.5" font-weight="600">ids = tiktoken&#x27;s *</text>
+<rect class="s fs" x="404" y="132" width="212" height="24" rx="6" stroke-width="1.5"/>
+<text class="t" x="510.0" y="147.7" font-size="10.5" font-weight="600" text-anchor="middle">your GPT, GPT-2&#x27;s weights</text>
+<line class="s" x1="434" y1="156" x2="434" y2="176" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r09-ah)"/>
+<text class="ta" x="444" y="171" font-size="10.5" font-weight="600">logits = transformers&#x27;</text>
+<rect class="s f" x="404" y="178" width="212" height="24" rx="6" stroke-width="1.5"/>
+<text class="t" x="510.0" y="193.7" font-size="10.5" font-weight="600" text-anchor="middle">the next token</text>
+<text class="tm" x="404" y="234" font-size="10">* but for a letter newer than your Python&#x27;s</text>
+<text class="tm" x="404" y="247" font-size="10">Unicode tables, followed by &#x27;s</text>
+<text class="tm" x="24" y="258" font-size="10.5">GPT-2: 256 bytes + 50,000 merges + &lt;|endoftext|&gt; = 50,257 ids; GPT-2 small, 124,439,808 weights, from its published file.</text>
+<text class="tm" x="24" y="274" font-size="10.5">TinyStories: a GPT of 4,273,664 weights, 45 minutes of a laptop&#x27;s CPU, 2 seeds: 0.7367 bits per byte on held-out</text>
+<text class="tm" x="24" y="290" font-size="10.5">stories. Its stories end on their own (16 of 16), in paragraphs, and share less with the training text than real unseen stories do.</text>
+</svg>

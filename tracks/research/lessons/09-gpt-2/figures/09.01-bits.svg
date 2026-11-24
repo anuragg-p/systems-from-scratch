@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 290" fill="none">
+<title>08.04&#x27;s GPT for 300 steps on characters and on BPE tokens of 2,048, both scored in bits per character of the test text (a ring per seed); and how much of the text one step reads</title>
+<defs><marker id="bits0901-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="bits0901-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="bits0901-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="38.9" y1="225.8" x2="334" y2="225.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="32.9" y="229.3" font-size="10.5" text-anchor="end">2.6</text>
+<line class="m" x1="38.9" y1="181.4" x2="334" y2="181.4" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="32.9" y="184.9" font-size="10.5" text-anchor="end">2.8</text>
+<line class="m" x1="38.9" y1="137.0" x2="334" y2="137.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="32.9" y="140.5" font-size="10.5" text-anchor="end">3</text>
+<line class="m" x1="38.9" y1="92.6" x2="334" y2="92.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="32.9" y="96.1" font-size="10.5" text-anchor="end">3.2</text>
+<line class="m" x1="38.9" y1="48.2" x2="334" y2="48.2" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="32.9" y="51.7" font-size="10.5" text-anchor="end">3.4</text>
+<rect class="m" x="38.9" y="26" width="295.1" height="222" rx="0" stroke-width="1.5"/>
+<text class="tm" x="32.9" y="18" font-size="11.5">bits per character, test text</text>
+<text class="t" x="112.68" y="263" font-size="11" text-anchor="middle">characters</text>
+<text class="tm" x="112.68" y="277" font-size="11" text-anchor="middle">65 symbols</text>
+<line class="s" x1="112.68" y1="65.72" x2="112.68" y2="60.74" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="106.68" y1="65.72" x2="118.68" y2="65.72" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="106.68" y1="60.74" x2="118.68" y2="60.74" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="112.68" cy="60.74" r="2.5" stroke-width="1.5"/>
+<circle class="s f" cx="112.68" cy="65.72" r="2.5" stroke-width="1.5"/>
+<line class="s" x1="98.68" y1="63.23" x2="126.68" y2="63.23" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="130.68" y="66.73" font-size="10.5">3.33</text>
+<text class="ta" x="260.23" y="263" font-size="11" font-weight="600" text-anchor="middle">BPE tokens</text>
+<text class="tm" x="260.23" y="277" font-size="11" text-anchor="middle">2,048 symbols</text>
+<line class="a" x1="260.23" y1="207.11" x2="260.23" y2="204.11" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="254.23" y1="207.11" x2="266.23" y2="207.11" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="254.23" y1="204.11" x2="266.23" y2="204.11" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="260.23" cy="204.11" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="260.23" cy="207.11" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="246.23" y1="205.61" x2="274.23" y2="205.61" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="278.23" y="209.11" font-size="10.5">2.69</text>
+<text class="tm" x="380" y="26" font-size="11.5">characters one step reads</text>
+<text class="tm" x="380" y="54" font-size="10.5">32 windows of 64 symbols:</text>
+<text class="t" x="380" y="74" font-size="11.5" font-weight="600">characters</text>
+<rect class="s fs" x="380" y="82" width="61.72" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="447.72" y="99" font-size="11">2,048</text>
+<text class="ta" x="380" y="138" font-size="11.5" font-weight="600">BPE tokens</text>
+<rect class="a af" x="380" y="146" width="180" height="24" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="566" y="163" font-size="11">5,973</text>
+<text class="tm" x="380" y="220" font-size="10.5">A window of 64 tokens is about 187 characters</text>
+<text class="tm" x="380" y="235" font-size="10.5">of the text: at equal steps the tokens</text>
+<text class="tm" x="380" y="250" font-size="10.5">see 2.9 times as much.</text>
+</svg>

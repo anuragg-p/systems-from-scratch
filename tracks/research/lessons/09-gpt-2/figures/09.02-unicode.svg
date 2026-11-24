@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 372" fill="none">
+<title>Where the ids part from tiktoken&#x27;s: U+1C89, a letter Unicode added in version 16.0, before &#x27;s. This Python&#x27;s unicodedata (15.0.0) does not know it, so the pattern cuts it with the apostrophe; tiktoken cuts it as a letter</title>
+<defs><marker id="unicode0902-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="unicode0902-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="unicode0902-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="20" y="34" font-size="12" font-weight="700">this project: Python&#x27;s unicodedata 15.0.0</text>
+<text class="tm" x="20" y="50" font-size="10.5">U+1C89 is Cn, unassigned: not a letter, so &#x27;other marks&#x27;</text>
+<rect class="s f" x="20" y="62" width="131.1" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="85.55" y="79" font-size="11.5" font-weight="700" text-anchor="middle">\u1c89&#x27;</text>
+<text class="tm mono" x="85.55" y="104" font-size="10" text-anchor="middle">bytes e1 b2 89 27</text>
+<text class="t mono" x="85.55" y="120" font-size="10.5" font-weight="600" text-anchor="middle">ids 157 110 231 6</text>
+<rect class="s f" x="161.1" y="62" width="72" height="26" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="197.1" y="79" font-size="11.5" font-weight="700" text-anchor="middle">s</text>
+<text class="tm mono" x="197.1" y="104" font-size="10" text-anchor="middle">bytes 73</text>
+<text class="t mono" x="197.1" y="120" font-size="10.5" font-weight="600" text-anchor="middle">ids 82</text>
+<text class="t mono" x="263.1" y="79" font-size="12" font-weight="700">= [157, 110, 231, 6, 82]</text>
+<text class="ta" x="20" y="150" font-size="12" font-weight="700">tiktoken 0.14.0, built from the same two files</text>
+<text class="tm" x="20" y="166" font-size="10.5">a letter to it (Unicode 16.0.0: Lu, cyrillic capital letter tje)</text>
+<rect class="a af" x="20" y="178" width="118.5" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="79.25" y="195" font-size="11.5" font-weight="700" text-anchor="middle">\u1c89</text>
+<text class="tm mono" x="79.25" y="220" font-size="10" text-anchor="middle">bytes e1 b2 89</text>
+<text class="ta mono" x="79.25" y="236" font-size="10.5" font-weight="600" text-anchor="middle">ids 157 110 231</text>
+<rect class="a af" x="148.5" y="178" width="90" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="193.5" y="195" font-size="11.5" font-weight="700" text-anchor="middle">&#x27;s</text>
+<text class="tm mono" x="193.5" y="220" font-size="10" text-anchor="middle">bytes 27 73</text>
+<text class="ta mono" x="193.5" y="236" font-size="10.5" font-weight="600" text-anchor="middle">ids 338</text>
+<text class="ta mono" x="268.5" y="195" font-size="12" font-weight="700">= [157, 110, 231, 338]</text>
+<text class="t" x="20" y="276" font-size="10.5">Every code point unassigned in Unicode 15.0.0, planes 0 to 3: 104,782. Before &#x27;s, 5,004 give other ids than tiktoken&#x27;s,</text>
+<text class="t" x="20" y="291" font-size="10.5">U+1C89 to U+2EE5D: the letters and numbers newer Unicode added; in each, tiktoken&#x27;s ids are ours for the character</text>
+<text class="t" x="20" y="306" font-size="10.5">alone, then ours for &#x27;s. In 7 other places (after x, a space or a digit; before x or a digit; ...) all 5,004 give the same ids.</text>
+<rect class="s fs" x="20" y="320" width="600" height="14" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="20" y="320" width="28.65" height="14" rx="0" stroke-width="1.5"/>
+<text class="tm" x="20" y="350" font-size="10.5">4.8% of them; everything else the project encodes gives exactly tiktoken&#x27;s ids. A newer Python&#x27;s tables close the gap.</text>
+</svg>
