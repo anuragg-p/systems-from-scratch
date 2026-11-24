@@ -793,6 +793,9 @@ def cost1202():
                                  r"two averages are ([\d,.]+) MB\n +beside the ([\d,]+) MB", out, re.M)}
     need(set(keep) == {"full", "lora8"}, f"lora: part 3's memory lines {keep}")
     mem = {m: in_project("12.02", MEM_CODE.replace("METHOD", repr(m))) for m in ("full", "lora")}
+    share = (mem["lora"]["peak"] - mem["lora"]["loaded"]) / (mem["full"]["peak"] - mem["full"]["loaded"])
+    need(4000 < mem["full"]["peak"] < 4400 and 2150 < mem["lora"]["peak"] < 2450 and 0.34 < share < 0.39,
+         f"the memory measured, {mem}, is not what 12.02's page says (about 4,200 and 2,300 MiB, 35 to 38%)")
     times, pair = step_times()
     f = Fig("cost1202", "What training costs, every weight against LoRA at rank 8: the numbers kept to train beside the "
                         "weights (computed), the process's peak memory over 6 steps of 16 questions (measured in a fresh "

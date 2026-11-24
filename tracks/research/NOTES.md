@@ -6186,3 +6186,106 @@ steps=60 (not measured at these settings).
 - Times on this CPU (load about 10): GPT-2 small loaded 1.3 to 1.5 s; read
   at 5,400 to 5,700 tokens a second; a training step of 16 questions 400 ms
   whole, 230 ms LoRA; peak memory of a whole fine-tune about 4.4 GB.
+
+### The lessons (written 2026-11-25, after the code)
+
+Four lessons, the module page, 19 figures (art/research/figs12.py), the
+four maps (archmap.py: the models row's "12" piece, lit from 12.01), and
+the cover and icon (art/outlines/research_art.py's finetune_numbers: the
+recorded run's accuracies and counts, asserted against its output.txt and
+12.02's page). Written at a load of 10 to 18 with other agents' runs; no
+time a page states comes from these runs but the ones it quotes as this
+page's, which are `vary`.
+
+Read at the source for the pages, beyond what is above (2026-11-25):
+- Casanueva et al. (2020): the arXiv abstract page only (2003.04807): the
+  title, the five authors, "a new challenging single-domain intent
+  detection dataset comprising 13,083 annotated examples over 77
+  intents". The paper's body is still not read.
+- Biderman, Portes, Gonzalez Ortiz, Paul, Greengard, Jennings, King,
+  Havens, Chiley, Frankle, Blakeney and Cunningham, "LoRA Learns Less and
+  Forgets Less", arXiv 2405.09673 (v1 15 May 2024, v2 20 September 2024):
+  the abstract ("LoRA better maintains the base model's performance on
+  tasks outside the target domain"; full finetuning "learns perturbations
+  with a rank that is 10-100x greater than typical LoRA configurations")
+  and the first 100,000 characters of v2's HTML: section 3.3 (forgetting
+  is HellaSwag, WinoGrande and ARC-Challenge, "MosaicML Gauntlet"),
+  figure 2's caption ("LoRA forgets less than full finetuning", "the
+  y-axis shows the average of HellaSwag, ARC-Challenge and Winogrande";
+  its x-axis is not named there), Llama-2-7B (appendix A), LoRA on every
+  module of a block with alpha = 2r (section 4.1, appendix A), and section
+  4.6 on the rank of the full fine-tune's change. 12.04 asks their
+  question at laptop size; nothing of theirs is run. The plan had no
+  paper for 12.04.
+- Raschka's LLMs-from-scratch on GitHub: the README's chapter titles ("Ch
+  6: Finetuning for Text Classification", "Ch 7: Finetuning to Follow
+  Instructions", "Appendix E: Parameter-efficient Finetuning with LoRA")
+  and ch06/02_bonus_additional-experiments' table (GPT-2 small, a
+  two-class task the page does not name: the last token 95.00% test, the
+  first 75.00%; all layers 96.67%, LoRA 96.67%). The book is not read.
+- CS336, the spring 2025 page: lecture 15 "Alignment - SFT/RLHF",
+  assignment 5 "Alignment and Reasoning RL" (supervised finetuning on
+  math problems). No lecture is read.
+
+Made for the pages (CPU, in scratch copies of the project at each lesson
+or from the default runs' own files; the same digits as the defaults):
+- 12.01: the head on the vectors as they come has a loss of 9.63, 12.07
+  and 8.92 on its first batch (seeds 0 to 2; standardised 4.40, 4.55,
+  4.47; ln 77 = 4.344): 04.06's check, the page's measured reason, held by
+  a `fact` on the reader's own run. Break it, the first position's vector
+  (`lengths - 1` made `0`): the bag of words 0.8169 unchanged, the small
+  GPT 0.04286, the frozen head 0.04978 raw and 0.05065 standardised; 59 s.
+- 12.02: Break it, B started random (randn / sqrt(r)): the adapted model's
+  difference from GPT-2 48.1 in one run and 75.3 in another (that model
+  is adapted before the script seeds torch, and torch's own start is
+  random in each process: harmless with B at 0, and the page says so),
+  the loss 6.39 to 6.59, the merge 2.05e-05 and 0.000359. Peak memory
+  (figs12.py's MEM_CODE, fresh processes, ru_maxrss), every weight / LoRA:
+  4,214 / 2,355, 4,101 / 2,284, 4,226 / 2,279 MiB, training adding 2,987 /
+  1,130 (38%), 2,877 / 1,057 (37%), 3,001 / 1,055 (35%); with the code's
+  4,208 / 2,270 (35%) above, the page says about 4,200 and 2,300, 35 to
+  38%, and the figure stops if a new measurement falls outside 4,000 to
+  4,400, 2,150 to 2,450, 34 to 39%.
+- 12.03: counted from the default's summaries, count is answered "1" 11
+  times of 12 on both seeds ("1" is right for 5); smaller is answered with
+  the larger number 53 (seed 0) and 51 (seed 1) times of 60 (a `fact` on
+  the reader's seed 1). Tokens: " curtsy" is " cur" "tsy", "CURTSY" is "C"
+  "UR" "TS" "Y", " lout" " l" "out", "LOUT" "L" "OUT". The loss on every
+  token (keep's first half made `at[None, :] >= 0`): 0.333 / 0.283 /
+  0.108, by task larger 0.88, sort 0.21, upper 0.12, reverse 0.00, count
+  0.46 (61 s; quoted in How it works). Break it, the reply without the
+  end marker: 0.425 / 0.358 / 0.075, larger 0.96, sort 0.50, upper 0.17,
+  reverse 0.00, count 0.50; 0 of 6 wrote the marker, each repeating its
+  answer line after line (55 s).
+- 12.04: Break it, `weights()` without the LoRA layers' delta: LoRA moved
+  0, everything else the same digits.
+
+Where the pages depart from the plan or from the notes above:
+- 12.01 calls 08's GPT from nothing "the same kind of model", smaller (2
+  blocks of width 64, 3.3 million weights), where the plan says "the same
+  model"; the largest one tried (4 x 128, 0.841 on validation, 2 seeds) is
+  quoted. The all-data run is a verified session (trimmed), so its numbers
+  are replayed; t = +5.0 for every weight (recorded) against the small GPT
+  (all data) is computed from the two runs' summaries.
+- 12.02 states the measured memory as a range over four measurements and
+  says the figure is one of them.
+- 12.03 quotes the 300-step trial (mps, 1 seed) for what longer training
+  does, as found above.
+
+The figures, each from (figs12.py checks every number it shares with a
+page's run against what that run printed):
+- 12.01-data (banking77.split, classes; the all-data run), -head (a
+  question's GPT-2 tokens, GPT(**CONFIG)'s count; the page's run), -bag
+  (words, bag, the vocabulary of the 3,000; the page's run), -spread
+  (GPT-2's vectors at END for the 3,000, read in the project; the page's
+  run's frozen-raw and frozen logs), -models (the page's run and the
+  all-data run's summaries, the recorded full), -fewer (the page's run).
+- 12.02-adapter (part 1), -merge (a LoRA of rank 1 on a 4 x 3 Linear in
+  the project; part 2), -table and -curves (the recorded summaries and
+  logs), -cost (part 3's kept numbers, MEM_CODE, output.txt's step times).
+- 12.03-template (the example's tokens; part 1), -held (scored_sets and
+  the cut), -answers (GPT-2's answers to the six prompts in the project;
+  part 3's), -match (the default's summaries' answers against
+  scored_sets).
+- 12.04-bits, -along, -moved (the recorded run; the default's part 3
+  summaries), -instruct (the default's part 3).
