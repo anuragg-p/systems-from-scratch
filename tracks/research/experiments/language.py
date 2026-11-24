@@ -17,9 +17,11 @@ import torch.nn.functional as F                                       # @from 08
 import lab
 from experiments.sequences import bits, windows
 from experiments.sequences import window_bits                         # @from 10.01
+from lab import bench                                                 # @from 11.01
 from lab import safetensors                                           # @from 08.04
 from models.gpt import self_attend                                    # @from 08.02
 from models.gpt import GPT                                            # @from 08.04
+from models.gpt import Cache                                          # @from 11.06
 
 
 # @build 08.01 train
@@ -32,8 +34,19 @@ from models.gpt import GPT                                            # @from 08
 # cfg.warmup steps and then falling to 0 along half a cosine; the gradient
 # clipped to a length of cfg.clip (0: not clipped). Every cfg.every steps,
 # and at the last, the batch's bits go to the run's log. Returns the model.
+# From 11.01: with times (a list), the seconds spent training so far are   # @from 11.01
+# added to it at every row of the log, the held-out scoring left out; with # @from 11.01
+# until, training stops at the first row whose held-out bits reach it.     # @from 11.01
+# From 11.04: cfg.precision "bfloat16" or "float16" runs the forward pass  # @from 11.04
+# and the loss under autocast; "float32" (or no such setting) does not.    # @from 11.04
+# From 11.05: cfg.accumulate splits each batch into that many equal parts, # @from 11.05
+# each one's gradient added up before the step: the whole batch's.        # @from 11.05
 # @from 08.04
-def train(model, cfg, run, dev, ids, held=None):
+# @from 11.01
+def train(model, cfg, run, dev, ids, held=None, times=None, until=None):
+# @else
+# def train(model, cfg, run, dev, ids, held=None):
+# @end
 # @else
 # def train(model, cfg, run, dev, ids):
 # @end
@@ -42,17 +55,51 @@ def train(model, cfg, run, dev, ids, held=None):
     opt = torch.optim.AdamW([{"params": matrices, "weight_decay": cfg.weight_decay},
                              {"params": others, "weight_decay": 0.0}], lr=cfg.lr)
     scheduler = torch.optim.lr_scheduler.LambdaLR(opt, lab.warmup_cosine(cfg.warmup, cfg.steps))
+    # @from 11.04
+    sixteen = {"bfloat16": torch.bfloat16, "float16": torch.float16}.get(cfg.get("precision", "float32"))
+    # @end
+    # @from 11.05
+    parts = cfg.get("accumulate", 1)
+    if cfg.batch % parts:
+        raise ValueError(f"a batch of {cfg.batch} does not split into {parts} equal parts")
+    # @end
+    # @from 11.01
+    spent, mark = 0.0, lab.clock(torch, dev)
+    # @end
     for step in range(cfg.steps):
         starts = torch.from_numpy(run.rng.integers(0, len(ids) - cfg.context, cfg.batch)).to(dev)
         x, y = windows(ids, starts, cfg.context)
-        loss = bits(model(x), y)
+        # @from 11.04
+        # @from 11.05
         opt.zero_grad()
-        loss.backward()
+        loss = 0.0
+        for xs, ys in zip(x.chunk(parts), y.chunk(parts)):
+            with torch.autocast(dev.type, dtype=sixteen, enabled=sixteen is not None):
+                part = bits(model(xs), ys) / parts
+            part.backward()
+            loss = loss + part.detach()
+        # @else
+        # with torch.autocast(dev.type, dtype=sixteen, enabled=sixteen is not None):
+        #     loss = bits(model(x), y)
+        # opt.zero_grad()
+        # loss.backward()
+        # @end
+        # @else
+        # loss = bits(model(x), y)
+        # opt.zero_grad()
+        # loss.backward()
+        # @end
         if cfg.clip:
             torch.nn.utils.clip_grad_norm_(model.parameters(), cfg.clip)
         opt.step()
         scheduler.step()
         if step % cfg.every == 0 or step == cfg.steps - 1:
+            # @from 11.01
+            if times is not None:
+                now = lab.clock(torch, dev)
+                spent, mark = spent + now - mark, now
+                times.append(spent)
+            # @end
             # @from 08.04
             # with held, a fixed batch (x, y) of held-out windows: their bits too
             row = {"step": step, "bits": loss.item()}
@@ -61,6 +108,12 @@ def train(model, cfg, run, dev, ids, held=None):
             run.log(**row)
             # @else
             # run.log(step=step, bits=loss.item())
+            # @end
+            # @from 11.01
+            if times is not None:
+                mark = lab.clock(torch, dev)
+            if until is not None and row["held_bits"] <= until:
+                break
             # @end
     return model
 # @end
@@ -176,12 +229,28 @@ def top_p(scores, p):
 # with generator (a seeded torch.Generator, on the CPU); temperature 0 is
 # greedy, the highest score every time. Returns the symbols drawn, (batch,
 # n). In eval mode, without a graph.
-def generate(model, prompts, n, generator, temperature=1.0, k=None, p=None):
+# With cache (11.06), each step reads only the new symbol, after the keys  # @from 11.06
+# and values kept from the steps before it (cached_scores): the same       # @from 11.06
+# scores, so the same symbols.                                             # @from 11.06
+# @from 11.06
+def generate(model, prompts, n, generator, temperature=1.0, k=None, p=None, cache=False):
+# @else
+# def generate(model, prompts, n, generator, temperature=1.0, k=None, p=None):
+# @end
     model.eval()
     ids = prompts
     with torch.no_grad():
+        state = None                                                  # @from 11.06
         for _ in range(n):
-            scores = model(ids[:, -model.context:])[:, -1].float()
+            # @from 11.06
+            if cache:
+                scores, state = cached_scores(model, ids, state)
+                scores = scores.float()
+            else:
+                scores = model(ids[:, -model.context:])[:, -1].float()
+            # @else
+            # scores = model(ids[:, -model.context:])[:, -1].float()
+            # @end
             if temperature == 0:
                 chosen = scores.argmax(-1, keepdim=True)
             else:
@@ -193,6 +262,26 @@ def generate(model, prompts, n, generator, temperature=1.0, k=None, p=None):
                 chosen = torch.multinomial(F.softmax(scores, dim=-1).cpu(), 1, generator=generator).to(ids.device)
             ids = torch.cat([ids, chosen], dim=1)
     return ids[:, prompts.shape[1]:]
+# @end
+
+
+# @build 11.06 cached_scores
+# The scores of the symbol after ids (batch, n) at its last position, as
+# model(ids[:, -model.context:]) gives them, reading only what the caches
+# have not seen. state is None at first, then what the last call returned:
+# a Cache for each block, holding ids[:, start:], and start. The first call
+# reads the whole window and fills the caches; each later one reads the
+# symbols added since. Once ids no longer fit the window, the window moves
+# on and its keys would all be made again, so the caches start again from
+# the last model.context symbols: past the window, a step costs what it
+# costs without a cache. Returns (scores, state).
+def cached_scores(model, ids, state=None):
+    caches, start = state if state is not None else (None, 0)
+    if caches is None or ids.shape[1] - start > model.context:
+        start = max(0, ids.shape[1] - model.context)
+        caches = [Cache(model.context) for _ in model.blocks]
+    scores = model(ids[:, start + len(caches[0]):], caches)[:, -1]
+    return scores, (caches, start)
 # @end
 
 
@@ -242,5 +331,42 @@ def compare(variants, common, cfg, dev, ids, test, held=None):
             r["ms"].append(ms)
             r["models"].append(model)
             r["weights"] = weights
+    return out
+# @end
+
+
+# @build 11.01 race
+# How soon a GPT learns: for each of cfg.seeds seeds, GPT(**common,
+# **changes) built from the seed and trained by train on the training
+# text ids, the held-out windows held scored every cfg.every steps, until
+# their bits reach cfg.target or cfg.steps are done. The training is timed
+# (train's times), the scoring is not. Each run's summary.json has the
+# steps to the target (bench.time_to: between the logged steps on either
+# side, in a straight line; null if not reached) and the last held-out
+# bits; the seconds stay out of it, so the same seed gives the same file.
+# Before the timed runs, one untimed step of AdamW (a process's first
+# step is slow while memory and the optimiser are set up: compare's
+# warm-up). Returns {"steps": [...], "seconds": [...] (None where the
+# target was not reached), "ms": [...] a step, "bits": [...] (the last
+# held-out), "tokens": n (a step), "models": [...]}, by seed.
+def race(changes, common, cfg, dev, ids, held, label=""):
+    model, x = GPT(**common, **changes).to(dev), ids[:cfg.batch * cfg.context].view(cfg.batch, cfg.context)
+    bits(model(x), x).backward()
+    torch.optim.AdamW(model.parameters()).step()
+    out = {"steps": [], "seconds": [], "ms": [], "bits": [], "models": [], "tokens": cfg.batch * cfg.context}
+    for seed in range(cfg.seeds):
+        run = lab.Run(cfg, seed, label=label)
+        torch.manual_seed(seed)
+        model = GPT(**common, **changes).to(dev)
+        times = []
+        train(model, cfg, run, dev, ids, held, times, cfg.target)
+        steps, seconds = bench.time_to(run.rows, times, cfg.target)
+        last = run.rows[-1]
+        run.finish(steps_to_target=steps, held_bits=last["held_bits"], steps=last["step"] + 1)
+        out["steps"].append(steps)
+        out["seconds"].append(seconds)
+        out["ms"].append(1000 * times[-1] / (last["step"] + 1))
+        out["bits"].append(last["held_bits"])
+        out["models"].append(model)
     return out
 # @end

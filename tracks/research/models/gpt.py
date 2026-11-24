@@ -11,6 +11,8 @@
     RMSNorm(width, eps)                  each vector over the root of its mean square, times a learned gain  # @from 10.01
     Rotary(d, base)                      queries and keys turned by angles that grow with their place       # @from 10.02
     SwiGLU(width, hidden, bias)          a gated MLP: down(silu(gate(x)) * up(x))                          # @from 10.03
+    fused_attend(q, k, v, mask, scale)   self_attend's sums from PyTorch's one fused kernel                # @from 11.03
+    Cache(size)                          one block's keys and values, kept while text is written           # @from 11.06
 
 07.04's attention looked from one sequence (the decoder's) at another
 (the encoder's states). Self-attention looks from a sequence at itself:
@@ -31,6 +33,10 @@ default is module 08's piece, so a model of 08 or 09 is built as it was:  # @fro
     positions="rotary"   Rotary inside attention, no Positions (10.02)    # @from 10.02
     mlp="swiglu"         SwiGLU for the MLP (10.03)                       # @from 10.03
     kv_heads=k           k heads of keys and values for all heads (10.04) # @from 10.04
+Module 11 makes the same numbers come sooner:                             # @from 11.02
+    Rotary keeps its angles instead of making them on every call (11.02)  # @from 11.02
+    fused=True           fused_attend in place of self_attend (11.03)     # @from 11.03
+    model(ids, caches)   new symbols read after the cached ones (11.06)   # @from 11.06
 The shapes are chosen so that GPT-2 small's published weights load into   # @from 08.02
 GPT without changing it (09.03).                                          # @from 08.02
 """
@@ -48,8 +54,17 @@ from models.attention import attend
 # A (T, T) table of booleans, True where position i (the row) may look at
 # position j (the column): at itself and every position before it, j <= i,
 # the lower triangle with its diagonal (torch.tril).
-def causal_mask(T, device=None):
-    return torch.ones(T, T, dtype=torch.bool, device=device).tril()
+# @from 11.06
+# With keys (11.06), T new positions after keys - T kept ones: a (T, keys)
+# table whose row i, the position keys - T + i, may look at the columns up
+# to its own place, the triangle moved to the right by keys - T.
+def causal_mask(T, device=None, keys=None):
+    keys = keys or T
+    return torch.ones(T, keys, dtype=torch.bool, device=device).tril(keys - T)
+# @else
+# def causal_mask(T, device=None):
+#     return torch.ones(T, T, dtype=torch.bool, device=device).tril()
+# @end
 # @end
 
 
@@ -67,8 +82,35 @@ def self_attend(q, k, v, mask=True, scale=True):
     if scale:
         scores = scores / math.sqrt(q.shape[-1])
     if mask:
-        scores = scores.masked_fill(~causal_mask(q.shape[-2], q.device), float("-inf"))
+        # @from 11.06
+        scores = scores.masked_fill(~causal_mask(q.shape[-2], q.device, k.shape[-2]), float("-inf"))
+        # @else
+        # scores = scores.masked_fill(~causal_mask(q.shape[-2], q.device), float("-inf"))
+        # @end
     return attend(scores, v)
+# @end
+
+
+# @build 11.03 fused_attend
+# self_attend's sums, without its weights, from PyTorch's
+# F.scaled_dot_product_attention: the scores, the mask, the softmax and
+# the weighted sum in one fused kernel. The written-out way makes the
+# (..., T, T) table of scores, then of weights, each a pass over memory,
+# and keeps the weights for the backward pass; the fused kernel works
+# through the keys in blocks that stay in the processor's caches, keeps
+# each row's softmax total instead of its weights, and works them out
+# again in the backward pass (Dao et al. 2022's FlashAttention; on the
+# CPU, PyTorch 2.10 runs its own flash-attention kernel). is_causal is the
+# mask; its scale is 1 / sqrt(d) unless given (1.0: no division). It
+# returns no weights: attention_maps keeps self_attend.
+def fused_attend(q, k, v, mask=True, scale=True):
+    # @from 11.06
+    T, keys = q.shape[-2], k.shape[-2]
+    if mask and T != keys:     # new positions after kept keys: is_causal would put the triangle top left
+        return F.scaled_dot_product_attention(q, k, v, attn_mask=causal_mask(T, q.device, keys) if T > 1 else None,
+                                              scale=None if scale else 1.0)
+    # @end
+    return F.scaled_dot_product_attention(q, k, v, is_causal=mask, scale=None if scale else 1.0)
 # @end
 
 
@@ -81,12 +123,14 @@ def self_attend(q, k, v, mask=True, scale=True):
 # results are put side by side again before out. mask and scale are
 # self_attend's, there to be turned off (08.01). qkv(x) gives the queries,
 # keys and values, (batch, heads, T, width / heads) from 08.02 on.
+# With fused (11.03), fused_attend does self_attend's work: the same sums.   # @from 11.03
 class SelfAttention(nn.Module):
     # @from 08.02
     # @from 10.02
     def __init__(self, width, heads=1, bias=True, mask=True, scale=True,
                  rotary=None,
                  kv_heads=None,                                               # @from 10.04
+                 fused=False,                                                 # @from 11.03
                  ):
     # @else
     # def __init__(self, width, heads=1, bias=True, mask=True, scale=True):
@@ -119,8 +163,16 @@ class SelfAttention(nn.Module):
             raise ValueError(f"{heads} query heads do not share {kv_heads} key and value heads evenly")
         self.kv_heads = kv_heads
         # @end
+        self.fused = fused                                                    # @from 11.03
 
-    def qkv(self, x):
+    # @from 11.06
+    # With a cache (11.06), x is the new positions only: they are turned
+    # for their own places, after the len(cache) kept, and their keys and
+    # values join the cache's (before the repeat: kv_heads of them).
+    def qkv(self, x, cache=None):
+    # @else
+    # def qkv(self, x):
+    # @end
         q, k, v = self.query(x), self.key(x), self.value(x)
         # @from 08.02
         B, T, width = x.shape
@@ -132,7 +184,16 @@ class SelfAttention(nn.Module):
         # @end
         # @from 10.02
         if self.rotary is not None:
-            q, k = self.rotary(q), self.rotary(k)
+            # @from 11.06
+            start = len(cache) if cache is not None else 0
+            q, k = self.rotary(q, start), self.rotary(k, start)
+            # @else
+            # q, k = self.rotary(q), self.rotary(k)
+            # @end
+        # @end
+        # @from 11.06
+        if cache is not None:
+            k, v = cache.add(k, v)
         # @end
         # @from 10.04
         if self.kv_heads < self.heads:
@@ -140,8 +201,24 @@ class SelfAttention(nn.Module):
         # @end
         return q, k, v
 
-    def forward(self, x):
-        y, _ = self_attend(*self.qkv(x), self.mask, self.scale)
+    # @from 11.06
+    def forward(self, x, cache=None):
+    # @else
+    # def forward(self, x):
+    # @end
+        # @from 11.03
+        # @from 11.06
+        q, k, v = self.qkv(x, cache)
+        # @else
+        # q, k, v = self.qkv(x)
+        # @end
+        if self.fused:
+            y = fused_attend(q, k, v, self.mask, self.scale)
+        else:
+            y, _ = self_attend(q, k, v, self.mask, self.scale)
+        # @else
+        # y, _ = self_attend(*self.qkv(x), self.mask, self.scale)
+        # @end
         # @from 08.02
         y = y.transpose(1, 2).reshape(x.shape)
         # @end
@@ -187,6 +264,7 @@ class Block(nn.Module):
                  rotary=None,                                                 # @from 10.02
                  mlp="gelu", hidden=None,                                     # @from 10.03
                  kv_heads=None,                                               # @from 10.04
+                 fused=False,                                                 # @from 11.03
                  ):
     # @else
     # def __init__(self, width, heads, dropout=0.0, bias=True):
@@ -201,6 +279,7 @@ class Block(nn.Module):
         self.attention = SelfAttention(width, heads, bias,
                                        rotary=rotary,
                                        kv_heads=kv_heads,                     # @from 10.04
+                                       fused=fused,                           # @from 11.03
                                        )
         # @else
         # self.attention = SelfAttention(width, heads, bias)
@@ -217,8 +296,13 @@ class Block(nn.Module):
         # @end
         self.dropout = dropout
 
-    def forward(self, x):
-        x = x + F.dropout(self.attention(self.norm1(x)), self.dropout, self.training)
+    # @from 11.06
+    def forward(self, x, cache=None):
+        x = x + F.dropout(self.attention(self.norm1(x), cache), self.dropout, self.training)
+    # @else
+    # def forward(self, x):
+    #     x = x + F.dropout(self.attention(self.norm1(x)), self.dropout, self.training)
+    # @end
         x = x + F.dropout(self.mlp(self.norm2(x)), self.dropout, self.training)
         return x
 # @end
@@ -235,11 +319,20 @@ class Positions(nn.Module):
         super().__init__()
         self.weight = nn.Parameter(0.02 * torch.randn(context, width))
 
-    def forward(self, x):
-        T = x.shape[1]
+    # @from 11.06
+    # (x's first position is at place start: 11.06's new positions after a cache)
+    def forward(self, x, start=0):
+        T = start + x.shape[1]
         if T > len(self.weight):
             raise ValueError(f"{T} positions, but there are learned vectors for {len(self.weight)}")
-        return x + self.weight[:T]
+        return x + self.weight[start:T]
+    # @else
+    # def forward(self, x):
+    #     T = x.shape[1]
+    #     if T > len(self.weight):
+    #         raise ValueError(f"{T} positions, but there are learned vectors for {len(self.weight)}")
+    #     return x + self.weight[:T]
+    # @end
 # @end
 
 
@@ -274,15 +367,55 @@ class RMSNorm(nn.Module):
 # 2i + 1, the same turning with a projection's rows in another order.
 # start is the place of x's first vector.
 class Rotary(nn.Module):
+    keep = True                                                               # @from 11.02
+
     def __init__(self, d, base=10000.0):
         super().__init__()
         self.d, self.base = d, base
+        self.kept = None                                                      # @from 11.02
+
+    # @from 11.02
+    # The cos and sin of the angles of places start to start + T - 1 (each
+    # angle twice, once for each number of its pair), made as forward made
+    # them in 10.02, and kept: the next call for the same places, type and
+    # device (every call of a training run, each block's keys after its
+    # queries, step after step) takes them back instead of making them
+    # again, the same numbers bit for bit. Rotary.keep = False makes them
+    # on every call, as 10.02 did.
+    def angles(self, start, T, dtype, device):
+        key = (start, T, dtype, device)
+        if self.kept is not None and self.kept[0] == key:
+            return self.kept[1]
+        # @from 11.04
+        # Sixteen bits cannot hold a place's angle (bfloat16 has 8 bits of
+        # precision: place 257 is 256, and an angle of 60 radians is out by
+        # up to an eighth of one): under autocast the angles are made in
+        # float32 and only their cos and sin are made 16 bits, as
+        # transformers' Llama does.
+        work = dtype if dtype in (torch.float32, torch.float64) else torch.float32
+        theta = 1.0 / self.base ** (torch.arange(0, self.d, 2, device=device).to(work) / self.d)
+        angles = (torch.arange(start, start + T, device=device).to(work)[:, None] * theta).repeat(1, 2)
+        made = angles.cos().to(dtype), angles.sin().to(dtype)
+        # @else
+        # theta = 1.0 / self.base ** (torch.arange(0, self.d, 2, device=device).to(dtype) / self.d)
+        # angles = (torch.arange(start, start + T, device=device).to(dtype)[:, None] * theta).repeat(1, 2)
+        # made = angles.cos(), angles.sin()
+        # @end
+        if self.keep:
+            self.kept = (key, made)
+        return made
+    # @end
 
     def forward(self, x, start=0):
         half = self.d // 2
-        theta = 1.0 / self.base ** (torch.arange(0, self.d, 2, device=x.device).to(x.dtype) / self.d)
-        angles = (torch.arange(start, start + x.shape[-2], device=x.device).to(x.dtype)[:, None] * theta).repeat(1, 2)
-        return x * angles.cos() + torch.cat([-x[..., half:], x[..., :half]], dim=-1) * angles.sin()
+        # @from 11.02
+        cos, sin = self.angles(start, x.shape[-2], x.dtype, x.device)
+        return x * cos + torch.cat([-x[..., half:], x[..., :half]], dim=-1) * sin
+        # @else
+        # theta = 1.0 / self.base ** (torch.arange(0, self.d, 2, device=x.device).to(x.dtype) / self.d)
+        # angles = (torch.arange(start, start + x.shape[-2], device=x.device).to(x.dtype)[:, None] * theta).repeat(1, 2)
+        # return x * angles.cos() + torch.cat([-x[..., half:], x[..., :half]], dim=-1) * angles.sin()
+        # @end
 # @end
 
 
@@ -325,6 +458,7 @@ class GPT(nn.Module):
                  base=10000.0,                                                # @from 10.02
                  mlp="gelu", hidden=None,                                     # @from 10.03
                  kv_heads=None,                                               # @from 10.04
+                 fused=False,                                                 # @from 11.03
                  ):
     # @else
     # def __init__(self, vocab, context, layers=4, heads=4, width=128, dropout=0.0, bias=True, positions=True):
@@ -348,6 +482,7 @@ class GPT(nn.Module):
                                           rotary=base if positions == "rotary" else None,  # @from 10.02
                                           mlp=mlp, hidden=hidden,                          # @from 10.03
                                           kv_heads=kv_heads,                               # @from 10.04
+                                          fused=fused,                                     # @from 11.03
                                           ) for _ in range(layers))
         self.norm = RMSNorm(width) if norm == "rms" else nn.LayerNorm(width, bias=bias)
         # @else
@@ -361,17 +496,63 @@ class GPT(nn.Module):
                 into_stream = name.endswith("attention.out.weight") or name.endswith("mlp.down.weight")
                 nn.init.normal_(p, 0.0, 0.02 / math.sqrt(2 * layers) if into_stream else 0.02)
 
-    def embed(self, ids):
+    # @from 11.06
+    def embed(self, ids, start=0):
+    # @else
+    # def embed(self, ids):
+    # @end
         x = self.tokens(ids)
         # @from 08.03
         if self.positions is not None:
-            x = self.positions(x)
+            # @from 11.06
+            x = self.positions(x, start)
+            # @else
+            # x = self.positions(x)
+            # @end
         # @end
         return F.dropout(x, self.dropout, self.training)
 
-    def forward(self, ids):
-        x = self.embed(ids)
-        for block in self.blocks:
-            x = block(x)
+    # @from 11.06
+    # With caches (11.06: a Cache for each block), ids are the symbols after
+    # the ones the caches hold, and each block reads its keys and values too.
+    def forward(self, ids, caches=None):
+        x = self.embed(ids, len(caches[0]) if caches else 0)
+        for i, block in enumerate(self.blocks):
+            x = block(x, caches[i] if caches else None)
         return self.norm(x) @ self.tokens.weight.T
+    # @else
+    # def forward(self, ids):
+    #     x = self.embed(ids)
+    #     for block in self.blocks:
+    #         x = block(x)
+    #     return self.norm(x) @ self.tokens.weight.T
+    # @end
+# @end
+
+
+# @build 11.06 Cache
+# The keys and values one block has made for the symbols written so far,
+# so that the next symbol's step reads them instead of making them again:
+# room for `size` places (the model's context), filled from the front. add
+# puts the new positions' keys and values (batch, kv_heads, T, d: turned for
+# their places, before grouped heads are repeated) after the kept ones and
+# returns all of them; len is the number of places kept.
+class Cache:
+    def __init__(self, size):
+        self.size, self.keys, self.values, self.length = size, None, None, 0
+
+    def __len__(self):
+        return self.length
+
+    def add(self, k, v):
+        T = k.shape[-2]
+        if self.length + T > self.size:
+            raise ValueError(f"a cache of {self.size} places cannot take {T} more after {self.length}")
+        if self.keys is None:
+            self.keys = k.new_empty(*k.shape[:-2], self.size, k.shape[-1])
+            self.values = v.new_empty(*v.shape[:-2], self.size, v.shape[-1])
+        self.keys[..., self.length:self.length + T, :] = k
+        self.values[..., self.length:self.length + T, :] = v
+        self.length += T
+        return self.keys[..., :self.length, :], self.values[..., :self.length, :]
 # @end
