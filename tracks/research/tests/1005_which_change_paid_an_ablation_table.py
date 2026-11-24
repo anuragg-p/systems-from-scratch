@@ -4,8 +4,9 @@ table gives each row its weights, its bits over seeds, the difference from the f
 and whether that is beyond the noise (|t| of 3 or more), against the same numbers computed directly.
 The recorded long run (experiments/recorded/ablation) has every row and seed with the same settings, a
 log with the validation curve, a summary, the curves, the times and what it printed, and no weights; and
-its result, as measured: rotary positions and all four changes together below the base beyond the
-noise, all four the lowest row, and RMSNorm within 0.02 bits of the base. The short run: six rows, the
+its result, as measured: rotary positions, SwiGLU and all four changes together below the base by
+more than 0.03 bits and beyond the noise, all four the lowest row, RMSNorm and grouped-query attention
+within 0.02 bits of the base and inside the noise. The short run: six rows, the
 recorded table read back with the papers' claims, rotary below the base; and the same seed gives the same
 bytes again. With LEARN_RERUN_LONG=1 the long run is run again (about an hour).
 """
@@ -85,11 +86,13 @@ def check_recorded(t, d, rerun=False):
     def welch(a, b):
         va, vb = (sum((x - mean(xs)) ** 2 for x in xs) / (len(xs) - 1) for xs in (a, b))
         return (mean(a) - mean(b)) / math.sqrt(va / len(a) + vb / len(b))
-    for row in ("rotary", "all-four"):
-        t.check(mean(got[row]) < mean(got["base"]) and welch(got[row], got["base"]) < -3,
+    for row in ("rotary", "SwiGLU", "all-four"):
+        t.check(mean(got[row]) < mean(got["base"]) - 0.03 and welch(got[row], got["base"]) < -3,
                 f"{where}: {row} should be below the base beyond the noise: {got}")
     t.check(min(got, key=lambda r: mean(got[r])) == "all-four", f"{where}: all four together should be the lowest: {got}")
-    t.check(abs(mean(got["RMSNorm"]) - mean(got["base"])) < 0.02, f"{where}: RMSNorm should score as the base does: {got}")
+    for row in ("RMSNorm", "grouped-query"):
+        t.check(abs(mean(got[row]) - mean(got["base"])) < 0.02 and abs(welch(got[row], got["base"])) < 3,
+                f"{where}: {row} should score as the base does, within the noise: {got}")
 
 
 def inside(S):

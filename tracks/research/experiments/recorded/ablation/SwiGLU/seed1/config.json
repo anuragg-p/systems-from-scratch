@@ -1,0 +1,22 @@
+{
+ "batch": 32,
+ "clip": 1.0,
+ "context": 128,
+ "device": "cpu",
+ "every": 100,
+ "heads": 4,
+ "held": 64,
+ "kv_heads": 2,
+ "label": "SwiGLU",
+ "layers": 4,
+ "lr": 0.002,
+ "name": "ablation",
+ "out": "experiments/recorded",
+ "recorded": "none",
+ "seed": 1,
+ "seeds": 3,
+ "steps": 2000,
+ "warmup": 100,
+ "weight_decay": 0.1,
+ "width": 128
+}

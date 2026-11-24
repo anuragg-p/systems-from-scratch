@@ -1,0 +1,25 @@
+1. This run: 4 blocks of 4 heads, width 128, windows of 128; 2000 steps of 32 (8.16 passes over the
+   training text), AdamW 0.002; 3 seeds a row; grouped-query: 2 key/value heads for 4. Bits per character on the test
+   text (each character with 32 or more before it):
+
+                    weights   bits per character                                  against the base   beyond noise  ms a step
+   base (08)        818,048   2.337 +- 0.004618 (min 2.332, max 2.341, 3 seeds)                                    59.6
+   RMSNorm          816,896   2.35 +- 0.007442 (min 2.345, max 2.359, 3 seeds)   +0.0133 (t  +2.6)   no            70.6
+   rotary           801,664   2.277 +- 0.01805 (min 2.263, max 2.297, 3 seeds)   -0.0603 (t  -5.6)   yes           90.9
+   SwiGLU           818,216   2.27 +- 0.009653 (min 2.259, max 2.277, 3 seeds)   -0.0672 (t -10.9)   yes           54.5
+   grouped-query    752,000   2.346 +- 0.01227 (min 2.332, max 2.354, 3 seeds)   +0.0094 (t  +1.2)   no            62.7
+   all four         734,632   2.248 +- 0.01415 (min 2.232, max 2.26, 3 seeds)    -0.0890 (t -10.4)   yes           83.5
+
+   curves in experiments/recorded/ablation/curves.svg
+
+   What each paper claimed, and at what size:
+   RMSNorm: Zhang and Sennrich (2019): "comparable performance" to layer norm, "7%~64%" less time; a
+      Transformer base on WMT14 English-German, 26.8 BLEU against 26.6, 6.9% faster (TensorFlow, a V100)
+   rotary: Su et al. (2021): "faster convergence" than BERT's learned positions in pre-training (a figure, no
+      numbers); 27.5 BLEU against 27.3 on WMT14 English-German
+   SwiGLU: Shazeer (2020): log-perplexity 1.944 against GELU's 1.983 after 65,536 steps (a T5 base of 12 + 12
+      layers, d_model 768, on C4), parameters and computation matched
+   grouped-query: Ainslie et al. (2023): "quality close to multi-head attention" with less to read when
+      writing; T5-XXL uptrained, average 47.1 (8 groups) against 47.2 (every head)
+
+2540 s of training and scoring on cpu
