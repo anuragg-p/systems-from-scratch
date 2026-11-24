@@ -32,9 +32,10 @@ verify --fresh` passed on its lessons' branch (08: 534 s; 09: 315 s;
 2026-11-24 up to module 09 and 14's code. 08.02's default run is 2
 seeds (3 took 82 s on a loaded machine); its heads comparison is inside
 the noise at 2 seeds and the page runs that part at 3 as well. Module
-13's code is on master too (57 tests). In work, each by an agent in its
-own worktree: the code of modules 11 and 12, module 13's lessons, and
-module 15 whole (its one experiment and its lessons, by one agent). Agents that add to track.py, NOTES.md and the art generators at the
+12's and 13's code is on master too (61 tests). In work, each by an
+agent in its own worktree: module 11's code, the lessons of modules 12
+and 13, and module 15 whole (its one experiment and its lessons, by
+one agent). Agents that add to track.py, NOTES.md and the art generators at the
 same time are merged by hand, keeping each block; the maps are then
 drawn again (`python3 -B art/research/archmap.py`).
 
@@ -350,9 +351,28 @@ Built, as found:
   the embeddings too, the prediction misses by 3.2%. Their exponent,
   0.076, is for models trained to convergence; ours are not.
 
+- 12.01 Radford et al. (2018) on Banking77 (77 classes): GPT-2 with
+  every weight fine-tuned 0.900 against the same model from nothing
+  0.793 (held). Not in the paper: the frozen body with a new head,
+  0.863, loses to a tuned bag of words, 0.882; and a head learns almost
+  nothing from GPT-2's vectors until each number is standardised (0.19
+  against 0.77).
+- 12.02 Hu et al. (2021), the recorded run (3 seeds, 600 steps, 63
+  minutes at a load of 9 to 25): LoRA at rank 1, 4 and 8 reaches 0.886
+  to 0.889 with under 0.3% of the weights, 1.1 to 1.4 points behind
+  every weight's 0.900, beyond noise. Within about a point, rank 1 as
+  good as rank 8, a third of the memory: held. "On par or better": did
+  not hold at 600 steps.
+- 12.03 Five tasks made by code. GPT-2 answers none; after 80 LoRA
+  steps 0.375 on new instances, 0.342 in a wording not trained, 0.108
+  on a task not trained.
+- 12.04 Whether LoRA forgets less depends on the text: on held-out
+  TinyStories it does, on Shakespeare it does not. LoRA moved the
+  weights further than full fine-tuning, so the distance moved does
+  not predict what is forgotten.
+
 Still the plan:
 - 11.03 FlashAttention, 11.04 mixed precision: the same numbers, sooner.
-- 12.02 LoRA: close to full fine-tuning with a small fraction of weights.
 
 ## Decisions after module 08's code (Fable, 2026-11-24)
 
@@ -430,6 +450,15 @@ Still the plan:
   spread, chosen on validation and reported on test. One agent builds
   the experiment, its recorded run, the paper made from the logs, and
   the three lessons.
+
+## Decisions after module 12's code (Fable, 2026-11-25)
+
+- The recorded run stands at 63 minutes: it was taken at a load of 9 to
+  25 and is estimated at 44 on a quiet machine. The page gives the time
+  with the load.
+- "LoRA did not match full fine-tuning at 600 steps" is the finding. No
+  longer run.
+- No default run is cut; the quiet pass measures classify and instruct.
 
 ## Directions for 07 to 15 (Fable, 2026-11-24)
 
