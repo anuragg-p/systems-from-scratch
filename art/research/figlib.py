@@ -81,6 +81,7 @@ MODULE_DIRS = {
     "05": "05-generalisation",
     "06": "06-images",
     "07": "07-language-models",
+    "08": "08-transformer",
 }
 
 
