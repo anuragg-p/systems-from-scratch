@@ -29,7 +29,7 @@ FUNCS = [
     ("add_highlight", [("ns", "integer"), ("row", "integer"), ("start", "integer"), ("end", "integer"),
                        ("style", "string")], None),
     ("clear_namespace", [("ns", "integer")], None), ("set_statusline", [("text", "string")], None),
-    ("get_view", [], "position"), ("get_size", [], "position"),
+    ("get_view", [], "position"), ("get_size", [], "position"), ("set_view", [("pos", "position")], None),
     ("input", [("prompt", "string")], "string"), ("open", [("path", "string")], None),
     ("quit", [("force", "boolean")], None),
 ]

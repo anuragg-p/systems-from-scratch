@@ -37,7 +37,7 @@ SIGS = {
     "feed_key": ["key"], "create_autocmd": ["event", "function"], "del_autocmd": ["integer"],
     "get_changedtick": [], "create_namespace": ["string"],
     "add_highlight": ["integer", "integer", "integer", "integer", "style"], "clear_namespace": ["integer"],
-    "set_statusline": ["string"], "get_view": [], "get_size": [], "input": ["string"], "open": ["path"],
+    "set_statusline": ["string"], "get_view": [], "get_size": [], "set_view": ["position"], "input": ["string"], "open": ["path"],
     "quit": ["boolean"],
 }
 

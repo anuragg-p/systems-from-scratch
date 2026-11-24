@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Three rows of notes.txt, row 1 just changed, and the undo stack of three steps, the top one open: U_CHG of row 1 and the text the row had before. Ctrl-Z puts that text in the row and takes the row&#x27;s into the record; Ctrl-R swaps them back</title>
+<defs><marker id="k08-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="k08-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="26" y="76" font-size="11">notes.txt, after Down, then a, n, d</text>
+<rect class="s fs" x="26" y="86" width="209.8" height="86" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="56" y="107.16" font-size="13">undo</text>
+<text class="t mono" x="95" y="107.16" font-size="13">keeps</text>
+<text class="tm mono" x="44" y="107.16" font-size="10" text-anchor="end">0</text>
+<rect class="af" x="51" y="119" width="173.8" height="20" rx="3"/>
+<text class="ta mono" x="56" y="133.16" font-size="13" font-weight="600">andwhat</text>
+<text class="ta mono" x="118.4" y="133.16" font-size="13" font-weight="600">each</text>
+<text class="ta mono" x="157.4" y="133.16" font-size="13" font-weight="600">line</text>
+<text class="ta mono" x="196.4" y="133.16" font-size="13" font-weight="600">was</text>
+<text class="tm mono" x="44" y="133.16" font-size="10" text-anchor="end">1</text>
+<text class="t mono" x="56" y="159.16" font-size="13">before</text>
+<text class="t mono" x="110.6" y="159.16" font-size="13">it</text>
+<text class="t mono" x="134" y="159.16" font-size="13">changed</text>
+<text class="tm mono" x="44" y="159.16" font-size="10" text-anchor="end">2</text>
+<rect class="s f" x="404" y="196" width="212" height="26" rx="6" stroke-width="1.5"/>
+<text class="t" x="416" y="213" font-size="11.5" font-weight="700">step 1</text>
+<text class="tm" x="604" y="213" font-size="11" text-anchor="end">a typed</text>
+<rect class="s f" x="404" y="166" width="212" height="26" rx="6" stroke-width="1.5"/>
+<text class="t" x="416" y="183" font-size="11.5" font-weight="700">step 2</text>
+<text class="tm" x="604" y="183" font-size="11" text-anchor="end">n typed</text>
+<rect class="a af" x="404" y="82" width="212" height="78" rx="8" stroke-width="1.5"/>
+<text class="t" x="416" y="102" font-size="11.5" font-weight="700">step 3</text>
+<text class="tm" x="604" y="102" font-size="11" text-anchor="end">d typed</text>
+<text class="ta mono" x="416" y="126" font-size="15" font-weight="700">U_CHG</text>
+<text class="t" x="470" y="126" font-size="12.5" font-weight="600">row 1</text>
+<text class="t mono" x="416" y="147" font-size="12">&quot;anwhat</text>
+<text class="t mono" x="473.6" y="147" font-size="12">each</text>
+<text class="t mono" x="509.6" y="147" font-size="12">line</text>
+<text class="t mono" x="545.6" y="147" font-size="12">was&quot;</text>
+<text class="tm" x="510" y="244" font-size="11" text-anchor="middle">the undo stack</text>
+<line class="a" x1="396" y1="121.16" x2="243.8" y2="121.16" stroke-width="1.5" stroke-linecap="round" marker-end="url(#k08-aa)"/>
+<line class="a" x1="243.8" y1="137.16" x2="396" y2="137.16" stroke-width="1.5" stroke-linecap="round" marker-end="url(#k08-aa)"/>
+<text class="ta" x="319.9" y="113.16" font-size="12.5" font-weight="700" text-anchor="middle">Ctrl-Z</text>
+<text class="ta" x="319.9" y="155.16" font-size="12.5" font-weight="700" text-anchor="middle">Ctrl-R</text>
+<text class="tm" x="24" y="288" font-size="11.5">Before a row changes, kilo keeps what it was. Putting it back takes what was there.</text>
+</svg>

@@ -119,6 +119,37 @@ def test(t):
     ed.resize(30, 100)
     t.check(lua("table.concat(kilo.api.get_size(), ',')") == "28,100", f"{ed.message!r}")
     ed.quit()
+
+    # set_view, get_view's pair: the view where it is asked, and the cursor brought into it,
+    # as little as that takes. Row 4 is 130 bytes long.
+    text = "".join((f"line {i}" if i != 5 else "y" * 130) + "\n" for i in range(1, 41))
+    ed = tr.edit(t, text, asan=True)
+    view = "table.concat(kilo.api.get_view(), ',') .. ' ' .. table.concat(kilo.api.get_cursor(), ',')"
+    t.check(lua(f"kilo.api.set_view({{10, 0}}) return {view}") == "10,0 10,0" and ed.line(0) == "line 11"
+            and ed.cursor == (0, 0), f"the cursor above the view: to its first row: {ed.message!r} {ed.cursor}")
+    t.check(lua(f"kilo.api.set_view({{0, 0}}) return {view}") == "0,0 10,0" and ed.cursor == (10, 0),
+            f"the cursor inside the view stays: {ed.message!r} {ed.cursor}")
+    t.check(lua(f"kilo.api.set_cursor({{35, 2}}) kilo.api.set_view({{0, 0}}) return {view}") == "0,0 21,2"
+            and ed.cursor == (21, 2), f"below the view: to its last row: {ed.message!r} {ed.cursor}")
+    t.check(lua(f"kilo.api.set_cursor({{4, 120}}) kilo.api.set_view({{4, 0}}) return {view}") == "4,0 4,79"
+            and ed.cursor == (0, 79), f"right of the view: to its last column: {ed.message!r} {ed.cursor}")
+    t.check(lua(f"kilo.api.set_cursor({{0, 0}}) kilo.api.set_view({{0, 50}}) return {view}") == "0,6 0,6"
+            and ed.cursor == (0, 0), f"a row that ends left of the view: the view's column goes back to "
+                                     f"its end: {ed.message!r} {ed.cursor}")
+    t.check(lua(f"kilo.api.set_view({{4, 60}}) local v = kilo.api.get_view() kilo.api.set_view({{0, 0}}) "
+                f"kilo.api.set_view(v) return {view}") == "4,60 4,60", f"a round trip: {ed.message!r}")
+    t.check(ed.line(0) == "y" * 70, f"drawn from column 60: {ed.line(0)!r}")
+    for pos, said in (("-1, 0", "row -1 is outside the file (it has 40 rows)"),
+                      ("40, 0", "row 40 is outside the file (it has 40 rows)"),
+                      ("0, -1", "column -1 is negative"),
+                      ("0, 131", "column 131 is past every row (the longest has 130 bytes)")):
+        t.check(lua(f"kilo.api.set_view({{{pos}}})") == f"lua:1: set_view: {said}", f"{pos}: {ed.message!r}")
+    ed.quit()
+    ed = tr.edit(t, None, name="empty.txt", asan=True)
+    t.check(lua("kilo.api.set_view({0, 0}) return table.concat(kilo.api.get_view(), ',')") == "0,0", f"{ed.message!r}")
+    t.check(lua("kilo.api.set_view({1, 0})") == "lua:1: set_view: row 1 is outside the file (it has 0 rows)",
+            f"{ed.message!r}")
+    ed.quit()
     # A long row scrolled right, and text that is not ASCII: the highlight lands on its bytes.
     ed = tr.edit(t, "x" * 100 + " tail\n\u00e9t\u00e9 x\n".encode("utf-8").decode("latin-1"), utf8=True,
                  init="ns = kilo.api.create_namespace('') kilo.api.add_highlight(ns, 0, 101, 105, 'red') "

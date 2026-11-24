@@ -36,6 +36,11 @@ the size the cover names (the reference kilo.c, or the project at 02.01 for 02):
       columns, as kilo cuts it), the didChange that carried the change and its Content-Length,
       and clangd's publishDiagnostics, its Content-Length and the error's range. It needs
       clangd: without it, that cover is not written and the others are.
+  08  (an extension) captured when this runs, by figs08.py's capture_cover(): the project at
+      08.02 (a key a step, and redo) on NOTES.md's notes.txt, 10 x 44: Down, then a, n, d. The
+      three rows, and the undo stack: three steps of one U_CHG of row 1 each, the top one
+      holding "anwhat each line was"; the same run's Ctrl-Z and Ctrl-R check the swap drawn
+      (the row gets that text and the record "andwhat each line was", and back).
 
 Text in these SVGs is placed a run of non-spaces at a time, at its column: SVG
 collapses runs of spaces, and a screen's columns must line up.
@@ -58,7 +63,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 TRACK = os.path.join(ROOT, "tracks", "kilo")
 LESSONS = os.path.join(TRACK, "lessons")
 MODULES = {"00": "00-workbench", "01": "01-terminal", "02": "02-screen", "03": "03-viewer",
-           "04": "04-editor", "05": "05-search", "06": "06-highlighting", "07": "07-language-server"}
+           "04": "04-editor", "05": "05-search", "06": "06-highlighting", "07": "07-language-server",
+           "08": "08-undo"}
 SW = 'stroke-width="1.5"'
 
 # ESC [ n m -> (name, fill): the colours kilo's editorSyntaxToColor() returns.
@@ -629,6 +635,62 @@ def language_server():
     return a
 
 
+# ------------------------------------------------------------------ 08 undo and redo (an extension)
+
+def undo():
+    """A record and a row exchange their text: the same record is the undo and the redo.
+    Captured by figs08.py's capture_cover()."""
+    import figs08
+    cap = figs08.capture_cover()
+    rows, recs, keys = cap["rows"], cap["steps"], cap["keys"]
+    assert len(rows) == 3 and len(recs) == 3 and all(r[:2] == ("U_CHG", 1) for r in recs)
+    top = recs[-1]
+    a = Art("k08", "Three rows of notes.txt, row 1 just changed, and the undo stack of three steps, the top one "
+                   "open: U_CHG of row 1 and the text the row had before. Ctrl-Z puts that text in the row and "
+                   "takes the row's into the record; Ctrl-R swaps them back")
+    # the screen: the three rows, row 1 as the last key left it
+    size, pitch = 13, 26
+    c = cw(size)
+    x0, y0 = 56, 90
+    width = max(len(r) for r in rows) * c
+    a.text(x0 - 30, y0 - 14, f"notes.txt, after Down, then {', '.join(keys)}", "tm", 11)
+    a.box(x0 - 30, y0 - 4, width + 46, 3 * pitch + 8, "s fs", rx=8)
+    base = []
+    for i, r in enumerate(rows):
+        b = y0 + i * pitch + pitch * 0.66
+        base.append(b)
+        if i == 1:
+            a.fill(x0 - 5, y0 + i * pitch + 3, len(r) * c + 10, pitch - 6, "af", 3)
+        a.mono(x0, b, r, "ta" if i == 1 else "t", size, 600 if i == 1 else None)
+        a.text(x0 - 12, b, str(i), "tm", 10, "end", mono=True)
+    right = x0 + width + 16
+    # the undo stack, oldest step at the bottom, the top one open
+    sx, sw = 404, 212
+    bottom = 226
+    for j, k in enumerate(keys[:-1]):
+        y = bottom - (j + 1) * 30
+        a.box(sx, y, sw, 26, "s f", rx=6)
+        a.text(sx + 12, y + 17, f"step {j + 1}", "t", 11.5, weight=700)
+        a.text(sx + sw - 12, y + 17, f"{k} typed", "tm", 11, "end")
+    ty, th = bottom - 2 * 30 - 84, 78
+    a.box(sx, ty, sw, th, "a af", rx=8)
+    a.text(sx + 12, ty + 20, f"step {len(keys)}", "t", 11.5, weight=700)
+    a.text(sx + sw - 12, ty + 20, f"{keys[-1]} typed", "tm", 11, "end")
+    a.text(sx + 12, ty + 44, top[0], "ta", 15, weight=700, mono=True)
+    a.text(sx + 12 + 6 * cw(15), ty + 44, f"row {top[1]}", "t", 12.5, weight=600)
+    a.mono(sx + 12, ty + 65, '"' + top[2] + '"', "t", 12)
+    a.text(sx + sw / 2, bottom + 18, "the undo stack", "tm", 11, "middle")
+    # one record, one row: Ctrl-Z brings the kept text into the row, Ctrl-R takes it back
+    ry = base[1] - 4
+    a.line(sx - 8, ry - 8, right + 8, ry - 8, "a", arrow=True)
+    a.line(right + 8, ry + 8, sx - 8, ry + 8, "a", arrow=True)
+    mid = (right + sx) / 2
+    a.text(mid, ry - 16, "Ctrl-Z", "ta", 12.5, "middle", 700)
+    a.text(mid, ry + 26, "Ctrl-R", "ta", 12.5, "middle", 700)
+    a.text(24, 288, "Before a row changes, kilo keeps what it was. Putting it back takes what was there.", "tm", 11.5)
+    return a
+
+
 # ------------------------------------------------------------------ icons and the track's own art
 
 ICONS = {
@@ -643,6 +705,8 @@ ICONS = {
     "06": '<path d="M5.5 13.5L10 3.25l4.5 10.25M7.1 10h5.8"/><path d="M3.5 17h13" stroke-width="2.5"/>',
     # two pipes, one each way: a straight arrow right over a straight arrow left
     "07": '<path d="M3 7h14M14 4l3 3-3 3"/><path d="M17 13H3M6 10l-3 3 3 3"/>',
+    # the turn-back arrow: a chevron at the left, a line from its tip, a half turn down and back
+    "08": '<path d="M7 4L3 8l4 4"/><path d="M3 8h9a4 4 0 0 1 0 8H8"/>',
 }
 TRACK_ICON = '<rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M5.5 7h9M5.5 12h3.5"/><path d="M11.5 10.5v3"/>'
 
@@ -692,7 +756,7 @@ def card():
 
 
 COVERS = {"00": workbench, "01": terminal, "02": screen, "03": viewer, "04": editor, "05": search,
-          "06": highlighting, "07": language_server}
+          "06": highlighting, "07": language_server, "08": undo}
 
 
 def main():
@@ -717,8 +781,9 @@ def main():
         with open(os.path.join(TRACK, name), "w") as f:
             f.write(s)
         print(os.path.join(TRACK, name))
-    if "figs07" in sys.modules:
-        sys.modules["figs07"].cleanup()
+    for m in ("figs07", "figs08"):
+        if m in sys.modules:
+            sys.modules[m].cleanup()
 
 
 if __name__ == "__main__":
