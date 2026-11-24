@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 304" fill="none">
+<title>The bytes kilo at 09.06 writes for row 0 with a highlight on 640: the row as always, then back to its start, 12 cells right, red on, 640 again, colours off</title>
+<defs><marker id="f0906a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0906a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0906a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">row 0 of the frame, from what kilo at 09.06 wrote to the terminal; NUMBERS of 0906 as init.lua</text>
+<text class="t mono" x="24" y="58" font-size="11.5">int</text>
+<text class="t mono" x="51.6" y="58" font-size="11.5">width</text>
+<text class="t mono" x="93" y="58" font-size="11.5">=</text>
+<text class="t mono" x="106.8" y="58" font-size="11.5">640;</text>
+<text class="tm mono" x="140.4" y="58" font-size="11.5">ESC[0K</text>
+<text class="ta mono" x="187.8" y="58" font-size="11.5" font-weight="700">\r</text>
+<text class="ta mono" x="207.6" y="58" font-size="11.5" font-weight="700">ESC[12C</text>
+<text class="ta mono" x="261.9" y="58" font-size="11.5" font-weight="700">ESC[31m</text>
+<text class="ta mono" x="316.2" y="58" font-size="11.5" font-weight="700">640</text>
+<text class="ta mono" x="342.9" y="58" font-size="11.5" font-weight="700">ESC[0m</text>
+<text class="tm mono" x="390.3" y="58" font-size="11.5">\r\n</text>
+<path class="m" d="M24 62 L24 68 L181.8 68 L181.8 62" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="24" y="86" font-size="10.5">first pass: the row, and erase to its end</text>
+<path class="a" d="M187.8 62 L187.8 68 L384.3 68 L384.3 62" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="187.8" y="102" font-size="10.5" font-weight="600">second pass: the highlight, over the same cells</text>
+<text class="tm" x="24" y="124" font-size="10.5">the call NUMBERS made for this row:</text>
+<text class="t mono" x="230.45" y="124" font-size="10.5">kilo.api.add_highlight(nums,</text>
+<text class="t mono" x="413.15" y="124" font-size="10.5">0,</text>
+<text class="t mono" x="432.05" y="124" font-size="10.5">12,</text>
+<text class="t mono" x="457.25" y="124" font-size="10.5">15,</text>
+<text class="t mono" x="482.45" y="124" font-size="10.5">&#x27;red&#x27;)</text>
+<text class="tm mono" x="45" y="152" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="125" y="152" font-size="9" text-anchor="middle">8</text>
+<text class="ta mono" x="165" y="152" font-size="9" font-weight="700" text-anchor="middle">12</text>
+<text class="ta mono" x="195" y="152" font-size="9" text-anchor="middle">15</text>
+<rect class="s fs" x="34" y="160" width="232" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="40" y="176.5" font-size="16.5">int</text>
+<text class="t mono" x="79.6" y="176.5" font-size="16.5">width</text>
+<text class="t mono" x="139" y="176.5" font-size="16.5">=</text>
+<text class="t mono" x="158.8" y="176.5" font-size="16.5">640;</text>
+<text class="tm" x="276" y="176" font-size="10.5">after the first pass</text>
+<rect class="s fs" x="34" y="220" width="232" height="24" rx="4" stroke-width="1.5"/>
+<rect class="af" x="160" y="223" width="30" height="18" rx="2"/>
+<text class="t mono" x="40" y="236.5" font-size="16.5">int</text>
+<text class="t mono" x="79.6" y="236.5" font-size="16.5">width</text>
+<text class="t mono" x="139" y="236.5" font-size="16.5">=</text>
+<text class="ta mono" x="160" y="236.5" font-size="16.5" font-weight="700">640</text>
+<text class="t mono" x="190" y="236.5" font-size="16.5">;</text>
+<text class="ta" x="276" y="236" font-size="10.5" font-weight="600">after the second: 640 in red</text>
+<path class="a" d="M230 198 L40 198" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0906a-aa)"/>
+<text class="ta mono" x="236" y="202" font-size="10.5" font-weight="700">\r</text>
+<path class="a" d="M40 207 L160 207" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0906a-aa)"/>
+<text class="ta mono" x="166" y="211" font-size="10.5" font-weight="700">ESC[12C</text>
+<text class="tm" x="24" y="274" font-size="10.5">Bytes [12, 15) of the row are cells 12 to 14 here: no tab before them, and the view starts at column 0. With a tab,</text>
+<text class="tm" x="24" y="289" font-size="10.5">the cells are counted again: a tab goes to the next multiple of 8, and the view&#x27;s left column is taken off.</text>
+</svg>

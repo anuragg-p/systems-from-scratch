@@ -3297,6 +3297,61 @@ Neovim checks first; Vim's process model (no Vim source read for it); VS
 Code's pages do not say "separate process from the window" in those words;
 Zed's github.wit was not read.
 
+### Figures 09.06 to 09.10 (art/kilo/figs09b.py)
+
+Run for the figures (each run is in the generator, on the lesson's project):
+
+- **The C stack while input() waits** (09.07, GOTO, Ctrl-O; a scratch build
+  whose editorPrompt() writes backtrace() to a file), innermost first:
+  editorPrompt, apiInput, scriptDispatch, precallC, luaD_precall,
+  luaV_execute, luaD_callnoyield, lua_callk, scriptCallIn, precallC,
+  luaD_precall, luaD_callnoyield, luaD_rawrunprotected, luaD_pcall,
+  lua_pcallk, scriptProtected, scriptCall, editorScriptKey,
+  editorProcessKeypress, main: two key loops on one stack.
+- **quit(true) in a mapped function** (09.07, a scratch build writing a line
+  at each point): the mark is set; the function's next line runs (it wrote a
+  file) and lua_pcall returns, depth 0; editorAfterKey() calls exit(0); at
+  exit scriptStop() puts the terminal back, then lua_close. Status 0, and
+  the change typed before it not saved.
+- **Two namespaces on the same rows** (09.06): create_namespace('numbers')
+  and ('trailing') give 1 and 2; `clear_namespace(create_namespace('numbers'))`
+  at the prompt takes the yellow and leaves every reversed cell.
+- **A highlight does not move** (09.06): put on row 1, bytes 4 to 8 ("word"),
+  Enter at the top leaves it on row 1 (now "t li" of "first line"); with a
+  TextChanged function that finds the word again it is on row 2.
+- **The same file through both doors** (09.09): UPPER with `kilo -l`, and
+  through a key mapped to `dofile('upper.lua')`, both leave HELLO / WORLD /
+  123 and say `2 lines upper-cased` (on standard output; in the message line).
+
+Read for the figures (the coordinator's research of 2026-11-24/25; quotes
+exact, at the tags named):
+
+- Neovim v0.12.6, runtime/doc/vim_diff.txt: "The Nvim UI is "decoupled" from
+  the core editor: all UIs, including the builtin |TUI| are just plugins that
+  connect to a Nvim server (via |--server| or |--embed|)." and "Platform and
+  I/O facilities are built upon libuv." starting.txt, --embed: "Use
+  stdin/stdout as a msgpack-RPC channel, so applications can embed and
+  control Nvim via the RPC |API|." lua.txt: "`vim.uv` exposes the "luv" Lua
+  bindings for the libUV library that Nvim uses for networking, filesystem,
+  and process management". src/nvim/extmark.c: "Marks are moved by calls to
+  extmark_splice."; src/nvim/marktree.c: "Tree data structure for storing
+  marks at (row, col) positions and updating them to arbitrary text
+  changes."
+- VS Code (microsoft/vscode-docs at a6b59615f645):
+  api/extension-capabilities/overview.md: "we run extensions in an [Extension
+  Host](/api/advanced-topics/extension-host) process and prevent direct
+  access to the DOM."; docs/configure/extensions/extension-runtime-security.md:
+  "The extension host has the same permissions as" the product "itself", and
+  "an extension can read and write files on your machine, make network
+  requests, run external processes, and modify workspace settings."
+- Zed v0.233.10: crates/extension_host/src/wasm_host.rs runs an extension
+  with wasmtime (`wasmtime::Engine`, `wasmtime::Store::new(`) inside Zed's
+  process, and build_wasi_ctx gives it one directory, the extension's own
+  work dir: `ctx.preopened_dir(&path, ".", dir_perms, file_perms)?;`.
+  docs/src/extensions/capabilities.md: "The operations that Zed extensions
+  are able to perform are governed by a capability system." Its docs do not
+  say "sandbox": read the table's "a sandbox" above as these two facts.
+
 ## Other behaviour of the original, kept
 
 - kilo does not clear the screen on exit: the shell prompt appears where

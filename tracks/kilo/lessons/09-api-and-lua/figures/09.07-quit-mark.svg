@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 312" fill="none">
+<title>quit(true) inside a mapped function, in kilo at 09.07: the mark is set, the function returns to C, and only then does kilo close Lua and leave</title>
+<defs><marker id="f0907b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0907b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0907b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 09.07, &quot;new &quot; typed and not saved, then Ctrl-X; a scratch build writes a line at each point</text>
+<rect class="m fs" x="24" y="32" width="289.6" height="65.1" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="32" y="47.33" font-size="9.5">kilo.api.set_keymap(&#x27;&lt;C-x&gt;&#x27;,</text>
+<text class="t mono" x="197.3" y="47.33" font-size="9.5">function()</text>
+<text class="t mono" x="43.4" y="61.11" font-size="9.5">kilo.api.quit(true)</text>
+<text class="t mono" x="43.4" y="74.88" font-size="9.5">io.open(&#x27;after.txt&#x27;,</text>
+<text class="t mono" x="163.1" y="74.88" font-size="9.5">&#x27;w&#x27;):write(&#x27;ran&#x27;):close()</text>
+<text class="t mono" x="32" y="88.66" font-size="9.5">end)</text>
+<text class="tm" x="24" y="118" font-size="10.5">the stack</text>
+<text class="tm" x="306" y="118" font-size="10.5">the state</text>
+<g class="step"><title>Ctrl-X: the function mapped to it calls quit(true). quit() only sets a mark, editorQuit = 1, and returns: the Lua function goes on to its next line.</title>
+<rect class="a" x="27" y="50.78" width="283.6" height="14.46" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="24" y="271" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="283" font-size="9.5">main: while(1)</text>
+<rect class="s f" x="24" y="252" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="264" font-size="9.5">editorProcessKeypress</text>
+<rect class="s f" x="24" y="233" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="245" font-size="9.5">editorScriptKey</text>
+<rect class="s f" x="24" y="214" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="226" font-size="9.5">scriptCall</text>
+<rect class="s f" x="24" y="195" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="207" font-size="9.5">scriptProtected: lua_pcall</text>
+<rect class="s f" x="24" y="176" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="188" font-size="9.5">Lua: the function mapped to &lt;C-x&gt;</text>
+<rect class="a af" x="24" y="157" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="169" font-size="9.5" font-weight="700">kilo.api.quit(true): apiQuit</text>
+<text class="tm" x="306" y="140" font-size="10.5">editorQuit</text>
+<text class="ta" x="400" y="140" font-size="10.5" font-weight="700">1: the mark</text>
+<text class="tm" x="306" y="159" font-size="10.5">Lua running</text>
+<text class="t" x="400" y="159" font-size="10.5">yes, one call deep</text>
+<text class="tm" x="306" y="178" font-size="10.5">after.txt</text>
+<text class="t" x="400" y="178" font-size="10.5">not yet: the next line</text>
+<text class="tm" x="306" y="197" font-size="10.5">the Lua state</text>
+<text class="t" x="400" y="197" font-size="10.5">open</text>
+<text class="tm" x="306" y="216" font-size="10.5">the terminal</text>
+<text class="t" x="400" y="216" font-size="10.5">raw</text>
+<text class="tm" x="306" y="235" font-size="10.5">kilo</text>
+<text class="t" x="400" y="235" font-size="10.5">running</text>
+<text class="tm" x="306" y="262" font-size="9.5">the scratch build wrote:</text>
+<text class="ta mono" x="306" y="277" font-size="8.4" font-weight="700">quit(true):</text>
+<text class="ta mono" x="366.48" y="277" font-size="8.4" font-weight="700">editorQuit</text>
+<text class="ta mono" x="421.92" y="277" font-size="8.4" font-weight="700">=</text>
+<text class="ta mono" x="432" y="277" font-size="8.4" font-weight="700">1</text>
+</g>
+<g class="step"><title>The function's last line has run (after.txt was written) and it returns: lua_pcall in scriptProtected returns, and no Lua is running. The key's work ends there.</title>
+<rect class="a" x="27" y="64.55" width="283.6" height="28.24" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="24" y="271" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="283" font-size="9.5">main: while(1)</text>
+<rect class="s f" x="24" y="252" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="264" font-size="9.5">editorProcessKeypress</text>
+<rect class="s f" x="24" y="233" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="245" font-size="9.5">editorScriptKey</text>
+<rect class="s f" x="24" y="214" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="226" font-size="9.5">scriptCall</text>
+<rect class="a af" x="24" y="195" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="207" font-size="9.5" font-weight="700">scriptProtected: lua_pcall returned</text>
+<rect class="m f" x="24" y="176" width="270" height="17" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="32" y="188" font-size="9.5">Lua: the function mapped to &lt;C-x&gt;</text>
+<rect class="m f" x="24" y="157" width="270" height="17" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="32" y="169" font-size="9.5">kilo.api.quit(true): apiQuit</text>
+<text class="tm" x="306" y="140" font-size="10.5">editorQuit</text>
+<text class="t" x="400" y="140" font-size="10.5">1</text>
+<text class="tm" x="306" y="159" font-size="10.5">Lua running</text>
+<text class="ta" x="400" y="159" font-size="10.5" font-weight="700">no: depth 0</text>
+<text class="tm" x="306" y="178" font-size="10.5">after.txt</text>
+<text class="ta" x="400" y="178" font-size="10.5" font-weight="700">ran</text>
+<text class="tm" x="306" y="197" font-size="10.5">the Lua state</text>
+<text class="t" x="400" y="197" font-size="10.5">open</text>
+<text class="tm" x="306" y="216" font-size="10.5">the terminal</text>
+<text class="t" x="400" y="216" font-size="10.5">raw</text>
+<text class="tm" x="306" y="235" font-size="10.5">kilo</text>
+<text class="t" x="400" y="235" font-size="10.5">running</text>
+<text class="tm" x="306" y="262" font-size="9.5">the scratch build wrote:</text>
+<text class="ta mono" x="306" y="277" font-size="8.4" font-weight="700">scriptProtected:</text>
+<text class="ta mono" x="391.68" y="277" font-size="8.4" font-weight="700">lua_pcall</text>
+<text class="ta mono" x="442.08" y="277" font-size="8.4" font-weight="700">returned,</text>
+<text class="ta mono" x="492.48" y="277" font-size="8.4" font-weight="700">depth</text>
+<text class="ta mono" x="522.72" y="277" font-size="8.4" font-weight="700">0,</text>
+<text class="ta mono" x="537.84" y="277" font-size="8.4" font-weight="700">after.txt</text>
+<text class="ta mono" x="588.24" y="277" font-size="8.4" font-weight="700">there</text>
+</g>
+<g class="step"><title>At the top of main's loop, editorAfterKey() sees the mark and calls exit(0). At exit, scriptStop() puts the terminal back, then closes the Lua state: nothing of Lua is on the stack. The change was not saved.</title>
+<rect class="s f" x="24" y="271" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="283" font-size="9.5">main: while(1)</text>
+<rect class="s f" x="24" y="252" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="264" font-size="9.5">editorAfterKey: exit(0)</text>
+<rect class="a af" x="24" y="233" width="270" height="17" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="245" font-size="9.5" font-weight="700">atexit: scriptStop</text>
+<text class="tm" x="306" y="140" font-size="10.5">editorQuit</text>
+<text class="t" x="400" y="140" font-size="10.5">1</text>
+<text class="tm" x="306" y="159" font-size="10.5">Lua running</text>
+<text class="t" x="400" y="159" font-size="10.5">no</text>
+<text class="tm" x="306" y="178" font-size="10.5">after.txt</text>
+<text class="t" x="400" y="178" font-size="10.5">ran</text>
+<text class="tm" x="306" y="197" font-size="10.5">the Lua state</text>
+<text class="ta" x="400" y="197" font-size="10.5" font-weight="700">closed: lua_close</text>
+<text class="tm" x="306" y="216" font-size="10.5">the terminal</text>
+<text class="ta" x="400" y="216" font-size="10.5" font-weight="700">put back (ECHO on)</text>
+<text class="tm" x="306" y="235" font-size="10.5">kilo</text>
+<text class="ta" x="400" y="235" font-size="10.5" font-weight="700">exited, status 0</text>
+<text class="tm" x="306" y="262" font-size="9.5">the scratch build wrote:</text>
+<text class="ta mono" x="306" y="277" font-size="8.4" font-weight="700">editorAfterKey:</text>
+<text class="ta mono" x="386.64" y="277" font-size="8.4" font-weight="700">editorQuit</text>
+<text class="ta mono" x="442.08" y="277" font-size="8.4" font-weight="700">is</text>
+<text class="ta mono" x="457.2" y="277" font-size="8.4" font-weight="700">set:</text>
+<text class="ta mono" x="482.4" y="277" font-size="8.4" font-weight="700">exit(0)</text>
+<text class="ta mono" x="306" y="290" font-size="8.4" font-weight="700">scriptStop:</text>
+<text class="ta mono" x="366.48" y="290" font-size="8.4" font-weight="700">raw</text>
+<text class="ta mono" x="386.64" y="290" font-size="8.4" font-weight="700">mode</text>
+<text class="ta mono" x="411.84" y="290" font-size="8.4" font-weight="700">off;</text>
+<text class="ta mono" x="437.04" y="290" font-size="8.4" font-weight="700">lua_close:</text>
+<text class="ta mono" x="492.48" y="290" font-size="8.4" font-weight="700">yes</text>
+</g>
+</svg>

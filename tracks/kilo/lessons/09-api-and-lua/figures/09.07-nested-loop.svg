@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 352" fill="none">
+<title>The C stack while input() waits in kilo at 09.07: main&#x27;s loop, the key, the Lua function mapped to Ctrl-O, input(), and the prompt&#x27;s own key loop on top</title>
+<defs><marker id="f0907a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0907a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0907a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 09.07 with GOTO of 0907: Ctrl-O, then 30 typed; the backtrace of editorPrompt() (a scratch build)</text>
+<rect class="m f" x="40" y="44" width="150" height="11" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="46" y="52.6" font-size="9">read()</text>
+<rect class="m f" x="40" y="57" width="150" height="11" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="46" y="65.6" font-size="9">editorReadKey()</text>
+<rect class="a af" x="40" y="70" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="46" y="78.6" font-size="9" font-weight="700">editorPrompt</text>
+<text class="ta mono" x="185" y="78.6" font-size="8" font-weight="700" text-anchor="end">while(1)</text>
+<rect class="s f" x="40" y="83" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="46" y="91.6" font-size="9">apiInput</text>
+<rect class="s f" x="40" y="96" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="46" y="104.6" font-size="9">scriptDispatch</text>
+<rect class="m f" x="40" y="109" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="46" y="117.6" font-size="9">precallC</text>
+<rect class="m f" x="40" y="122" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="46" y="130.6" font-size="9">luaD_precall</text>
+<rect class="m f" x="40" y="135" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="46" y="143.6" font-size="9">luaV_execute</text>
+<rect class="m f" x="40" y="148" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="46" y="156.6" font-size="9">luaD_callnoyield</text>
+<rect class="m f" x="40" y="161" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="46" y="169.6" font-size="9">lua_callk</text>
+<rect class="s f" x="40" y="174" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="46" y="182.6" font-size="9">scriptCallIn</text>
+<rect class="m f" x="40" y="187" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="46" y="195.6" font-size="9">precallC</text>
+<rect class="m f" x="40" y="200" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="46" y="208.6" font-size="9">luaD_precall</text>
+<rect class="m f" x="40" y="213" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="46" y="221.6" font-size="9">luaD_callnoyield</text>
+<rect class="m f" x="40" y="226" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="46" y="234.6" font-size="9">luaD_rawrunprotected</text>
+<rect class="m f" x="40" y="239" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="46" y="247.6" font-size="9">luaD_pcall</text>
+<rect class="m f" x="40" y="252" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="46" y="260.6" font-size="9">lua_pcallk</text>
+<rect class="s f" x="40" y="265" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="46" y="273.6" font-size="9">scriptProtected</text>
+<rect class="s f" x="40" y="278" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="46" y="286.6" font-size="9">scriptCall</text>
+<rect class="s f" x="40" y="291" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="46" y="299.6" font-size="9">editorScriptKey</text>
+<rect class="s f" x="40" y="304" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="46" y="312.6" font-size="9">editorProcessKeypress</text>
+<rect class="a af" x="40" y="317" width="150" height="11" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="46" y="325.6" font-size="9" font-weight="700">main</text>
+<text class="ta mono" x="185" y="325.6" font-size="8" font-weight="700" text-anchor="end">while(1)</text>
+<text class="tm" x="115" y="342" font-size="9.5" text-anchor="middle">the bottom of the stack</text>
+<text class="tm" x="16" y="52" font-size="9.5">top</text>
+<path class="a" d="M198 45 L203 45 L203 80 L198 80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="210" y="61.5" font-size="10.5" font-weight="700">the prompt&#x27;s own key loop</text>
+<text class="tm" x="210" y="73.5" font-size="9.5">draws, reads a key: it waits here</text>
+<path class="m" d="M198 84 L203 84 L203 106 L198 106" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="210" y="94" font-size="10.5" font-weight="700">input()</text>
+<text class="tm" x="210" y="106" font-size="9.5">the dispatcher, then the API&#x27;s function</text>
+<path class="m" d="M198 110 L203 110 L203 145 L198 145" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="210" y="126.5" font-size="10.5" font-weight="700">the mapped Lua function</text>
+<text class="tm" x="210" y="138.5" font-size="9.5">init.lua, line 3: kilo.api.input(...)</text>
+<path class="m" d="M198 149 L203 149 L203 275 L198 275" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="210" y="211" font-size="10.5" font-weight="700">into Lua, protected</text>
+<text class="tm" x="210" y="223" font-size="9.5">scriptCallIn: the function by its reference</text>
+<path class="m" d="M198 279 L203 279 L203 301 L198 301" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="210" y="289" font-size="10.5" font-weight="700">the key</text>
+<text class="tm" x="210" y="301" font-size="9.5">Ctrl-O is mapped: offered to Lua</text>
+<path class="a" d="M198 305 L203 305 L203 327 L198 327" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="210" y="315" font-size="10.5" font-weight="700">main&#x27;s loop</text>
+<text class="tm" x="210" y="327" font-size="9.5">it read Ctrl-O, and has not returned</text>
+<text class="tm" x="210" y="342" font-size="9.5">grey: Lua&#x27;s own functions (lua/src)</text>
+<text class="tm" x="444" y="56" font-size="10">the message line meanwhile</text>
+<rect class="s fs" x="444" y="64" width="172" height="20" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="452" y="78" font-size="10">Go</text>
+<text class="t mono" x="470" y="78" font-size="10">to</text>
+<text class="t mono" x="488" y="78" font-size="10">line:</text>
+<text class="t mono" x="524" y="78" font-size="10">30</text>
+<text class="t" x="444" y="112" font-size="10">Two key loops on one stack.</text>
+<text class="t" x="444" y="125.5" font-size="10">Enter gives the line back to the</text>
+<text class="t" x="444" y="139" font-size="10">Lua function, which moves the</text>
+<text class="t" x="444" y="152.5" font-size="10">cursor (to row 30: the bar then</text>
+<text class="t" x="444" y="166" font-size="10">says 30/40); only then does</text>
+<text class="t" x="444" y="179.5" font-size="10">main&#x27;s loop read a key again.</text>
+</svg>

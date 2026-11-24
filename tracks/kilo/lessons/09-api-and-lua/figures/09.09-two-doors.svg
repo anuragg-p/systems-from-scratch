@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 358" fill="none">
+<title>Two ways into the same API: the keyboard and the screen, or kilo -l with a script; main() takes the second before any of the screen&#x27;s work</title>
+<defs><marker id="f0909a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0909a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0909a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 09.09, UPPER of 0909 as upper.lua, on notes.txt (hello / World / 123), each way</text>
+<text class="t" x="24" y="52" font-size="11" font-weight="700">the keyboard and the screen</text>
+<text class="t mono" x="24" y="70" font-size="9.5">$</text>
+<text class="t mono" x="35.4" y="70" font-size="9.5">./kilo</text>
+<text class="t mono" x="75.3" y="70" font-size="9.5">notes.txt</text>
+<text class="tm" x="24" y="90" font-size="10">Ctrl-U, mapped in init.lua:</text>
+<text class="t mono" x="24" y="104" font-size="9.5">dofile(&#x27;upper.lua&#x27;)</text>
+<text class="tm" x="24" y="128" font-size="10">the screen after:</text>
+<rect class="s fs" x="24" y="132" width="129.6" height="64" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="30" y="146.08" font-size="9.33">HELLO</text>
+<text class="t mono" x="30" y="160.08" font-size="9.33">WORLD</text>
+<text class="t mono" x="30" y="174.08" font-size="9.33">123</text>
+<text class="t mono" x="30" y="188.08" font-size="9.33">2</text>
+<text class="t mono" x="41.2" y="188.08" font-size="9.33">lines</text>
+<text class="t mono" x="74.8" y="188.08" font-size="9.33">upper-cased</text>
+<text class="tm" x="186" y="52" font-size="10">main() at 09.09</text>
+<rect class="m fs" x="186" y="58" width="226" height="193" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="194" y="72.15" font-size="8.2">int</text>
+<text class="t mono" x="213.68" y="72.15" font-size="8.2">main(int</text>
+<text class="t mono" x="257.96" y="72.15" font-size="8.2">argc,</text>
+<text class="t mono" x="287.48" y="72.15" font-size="8.2">char</text>
+<text class="t mono" x="312.08" y="72.15" font-size="8.2">**argv)</text>
+<text class="t mono" x="351.44" y="72.15" font-size="8.2">{</text>
+<text class="t mono" x="213.68" y="84.35" font-size="8.2">if</text>
+<text class="t mono" x="228.44" y="84.35" font-size="8.2">(...</text>
+<text class="t mono" x="253.04" y="84.35" font-size="8.2">--api-info</text>
+<text class="t mono" x="307.16" y="84.35" font-size="8.2">...)</text>
+<text class="t mono" x="331.76" y="84.35" font-size="8.2">return</text>
+<text class="t mono" x="366.2" y="84.35" font-size="8.2">apiInfo();</text>
+<rect class="af" x="189" y="87.77" width="220" height="12.2" rx="2"/>
+<text class="ta mono" x="213.68" y="96.55" font-size="8.2" font-weight="700">if</text>
+<text class="ta mono" x="228.44" y="96.55" font-size="8.2" font-weight="700">(...</text>
+<text class="ta mono" x="253.04" y="96.55" font-size="8.2" font-weight="700">-l</text>
+<text class="ta mono" x="267.8" y="96.55" font-size="8.2" font-weight="700">...)</text>
+<rect class="af" x="189" y="99.97" width="220" height="12.2" rx="2"/>
+<text class="ta mono" x="233.36" y="108.75" font-size="8.2" font-weight="700">return</text>
+<text class="ta mono" x="267.8" y="108.75" font-size="8.2" font-weight="700">editorRunScript(...);</text>
+<text class="t mono" x="213.68" y="120.95" font-size="8.2">enableRawMode(STDIN_FILENO);</text>
+<text class="t mono" x="213.68" y="133.15" font-size="8.2">initEditor();</text>
+<text class="t mono" x="213.68" y="145.35" font-size="8.2">editorOpen(argv[1]);</text>
+<text class="t mono" x="213.68" y="157.55" font-size="8.2">editorSetStatusMessage(&quot;HELP:</text>
+<text class="t mono" x="361.28" y="157.55" font-size="8.2">...&quot;);</text>
+<text class="t mono" x="213.68" y="169.75" font-size="8.2">scriptStart();</text>
+<text class="t mono" x="213.68" y="181.95" font-size="8.2">editorEvent(&quot;BufReadPost&quot;);</text>
+<text class="t mono" x="213.68" y="194.15" font-size="8.2">while(1)</text>
+<text class="t mono" x="257.96" y="194.15" font-size="8.2">{</text>
+<text class="t mono" x="233.36" y="206.35" font-size="8.2">editorAfterKey();</text>
+<text class="t mono" x="233.36" y="218.55" font-size="8.2">editorRefreshScreen();</text>
+<text class="t mono" x="233.36" y="230.75" font-size="8.2">editorProcessKeypress(STDIN_FILENO);</text>
+<text class="t mono" x="213.68" y="242.95" font-size="8.2">}</text>
+<path class="a" d="M416 111.95 L422 111.95 L422 245.95 L416 245.95" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="430" y="52" font-size="11" font-weight="700">no screen</text>
+<text class="t mono" x="430" y="70" font-size="8.6">$</text>
+<text class="t mono" x="440.32" y="70" font-size="8.6">./kilo</text>
+<text class="t mono" x="476.44" y="70" font-size="8.6">-l</text>
+<text class="t mono" x="491.92" y="70" font-size="8.6">upper.lua</text>
+<text class="t mono" x="543.52" y="70" font-size="8.6">notes.txt</text>
+<text class="tm" x="430" y="90" font-size="10">editorRunScript():</text>
+<rect class="m fs" x="430" y="96" width="186" height="65.1" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="438" y="109.27" font-size="7.6">editorScreen</text>
+<text class="t mono" x="497.28" y="109.27" font-size="7.6">=</text>
+<text class="t mono" x="506.4" y="109.27" font-size="7.6">0;</text>
+<text class="t mono" x="438" y="120.28" font-size="7.6">E.screenrows</text>
+<text class="t mono" x="497.28" y="120.28" font-size="7.6">=</text>
+<text class="t mono" x="506.4" y="120.28" font-size="7.6">22;</text>
+<text class="t mono" x="438" y="131.31" font-size="7.6">E.screencols</text>
+<text class="t mono" x="497.28" y="131.31" font-size="7.6">=</text>
+<text class="t mono" x="506.4" y="131.31" font-size="7.6">80;</text>
+<text class="t mono" x="438" y="142.32" font-size="7.6">if</text>
+<text class="t mono" x="451.68" y="142.32" font-size="7.6">(filename)</text>
+<text class="t mono" x="501.84" y="142.32" font-size="7.6">editorOpen(filename);</text>
+<text class="t mono" x="438" y="153.34" font-size="7.6">return</text>
+<text class="t mono" x="469.92" y="153.34" font-size="7.6">scriptRun(script)</text>
+<text class="t mono" x="552" y="153.34" font-size="7.6">==</text>
+<text class="t mono" x="565.68" y="153.34" font-size="7.6">0</text>
+<text class="t mono" x="574.8" y="153.34" font-size="7.6">?</text>
+<text class="t mono" x="583.92" y="153.34" font-size="7.6">0</text>
+<text class="t mono" x="593.04" y="153.34" font-size="7.6">:</text>
+<text class="t mono" x="602.16" y="153.34" font-size="7.6">1;</text>
+<text class="ta" x="430" y="192" font-size="10" font-weight="600">kilo -l skips every line the</text>
+<text class="ta" x="430" y="205" font-size="10" font-weight="600">bracket holds: raw mode, the</text>
+<text class="ta" x="430" y="218" font-size="10" font-weight="600">window&#x27;s size, the HELP line,</text>
+<text class="ta" x="430" y="231" font-size="10" font-weight="600">init.lua and its count hook,</text>
+<text class="ta" x="430" y="244" font-size="10" font-weight="600">BufReadPost, and the key loop with</text>
+<text class="ta" x="430" y="257" font-size="10" font-weight="600">the screen.</text>
+<rect class="a af" x="150" y="290" width="340" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta" x="320" y="306" font-size="11" font-weight="700" text-anchor="middle">kilo.api: the same 24 functions, the same rows</text>
+<line class="s" x1="172" y1="98" x2="172" y2="287" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909a-ah)"/>
+<line class="s" x1="468" y1="280" x2="468" y2="287" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909a-ah)"/>
+<line class="a" x1="414" y1="93.55" x2="427" y2="93.55" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909a-aa)"/>
+<text class="t" x="24" y="334" font-size="10.5">Both leave notes.txt as HELLO / WORLD / 123 and say &quot;2 lines upper-cased&quot;: in the message line;</text>
+<text class="t" x="24" y="348" font-size="10.5">with -l, on standard output, and kilo&#x27;s status is 0.</text>
+</svg>

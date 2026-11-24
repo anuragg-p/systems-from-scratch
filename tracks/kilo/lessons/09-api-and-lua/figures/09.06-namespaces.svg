@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 314" fill="none">
+<title>Two scripts draw on the same rows, each in a namespace of its own: numbers in yellow, spaces at a row&#x27;s end in reverse; clearing the first namespace leaves the second&#x27;s highlights</title>
+<defs><marker id="f0906b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0906b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0906b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 09.06, a terminal 8 x 40; init.lua holds two scripts (the rows 0 to 3 and the bar)</text>
+<text class="t" x="24" y="50" font-size="11" font-weight="700">both drawn (BufReadPost)</text>
+<text class="t" x="386" y="50" font-size="11" font-weight="700">after the line at the prompt</text>
+<rect class="s fs" x="24" y="60" width="228" height="113" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="30" y="74.8" font-size="9">width</text>
+<text class="t mono" x="62.4" y="74.8" font-size="9">=</text>
+<rect class="af" x="73.2" y="65.5" width="16.2" height="12" rx="1"/>
+<text class="ta mono" x="73.2" y="74.8" font-size="9" font-weight="700">640</text>
+<rect class="t" x="89.4" y="65.5" width="16.2" height="12" rx="1"/>
+<text class="t mono" x="30" y="89.8" font-size="9">height</text>
+<text class="t mono" x="67.8" y="89.8" font-size="9">=</text>
+<rect class="af" x="78.6" y="80.5" width="16.2" height="12" rx="1"/>
+<text class="ta mono" x="78.6" y="89.8" font-size="9" font-weight="700">480</text>
+<text class="t mono" x="30" y="104.8" font-size="9">area</text>
+<text class="t mono" x="57" y="104.8" font-size="9">=</text>
+<text class="t mono" x="67.8" y="104.8" font-size="9">width</text>
+<text class="t mono" x="100.2" y="104.8" font-size="9">*</text>
+<text class="t mono" x="111" y="104.8" font-size="9">height</text>
+<rect class="t" x="143.4" y="95.5" width="10.8" height="12" rx="1"/>
+<text class="t mono" x="30" y="119.8" font-size="9">limit</text>
+<text class="t mono" x="62.4" y="119.8" font-size="9">=</text>
+<rect class="af" x="73.2" y="110.5" width="10.8" height="12" rx="1"/>
+<text class="ta mono" x="73.2" y="119.8" font-size="9" font-weight="700">64</text>
+<rect class="t" x="84" y="110.5" width="5.4" height="12" rx="1"/>
+<text class="t mono" x="30" y="134.8" font-size="9">~</text>
+<text class="t mono" x="30" y="149.8" font-size="9">~</text>
+<rect class="t" x="29" y="155" width="218" height="13" rx="1.5"/>
+<text class="f mono" x="30" y="164.8" font-size="9">f.txt</text>
+<text class="f mono" x="62.4" y="164.8" font-size="9">-</text>
+<text class="f mono" x="73.2" y="164.8" font-size="9">4</text>
+<text class="f mono" x="84" y="164.8" font-size="9">lines</text>
+<text class="f mono" x="229.8" y="164.8" font-size="9">1/4</text>
+<rect class="s fs" x="386" y="60" width="228" height="113" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="392" y="74.8" font-size="9">width</text>
+<text class="t mono" x="424.4" y="74.8" font-size="9">=</text>
+<text class="t mono" x="435.2" y="74.8" font-size="9">640</text>
+<rect class="t" x="451.4" y="65.5" width="16.2" height="12" rx="1"/>
+<text class="t mono" x="392" y="89.8" font-size="9">height</text>
+<text class="t mono" x="429.8" y="89.8" font-size="9">=</text>
+<text class="t mono" x="440.6" y="89.8" font-size="9">480</text>
+<text class="t mono" x="392" y="104.8" font-size="9">area</text>
+<text class="t mono" x="419" y="104.8" font-size="9">=</text>
+<text class="t mono" x="429.8" y="104.8" font-size="9">width</text>
+<text class="t mono" x="462.2" y="104.8" font-size="9">*</text>
+<text class="t mono" x="473" y="104.8" font-size="9">height</text>
+<rect class="t" x="505.4" y="95.5" width="10.8" height="12" rx="1"/>
+<text class="t mono" x="392" y="119.8" font-size="9">limit</text>
+<text class="t mono" x="424.4" y="119.8" font-size="9">=</text>
+<text class="t mono" x="435.2" y="119.8" font-size="9">64</text>
+<rect class="t" x="446" y="110.5" width="5.4" height="12" rx="1"/>
+<text class="t mono" x="392" y="134.8" font-size="9">~</text>
+<text class="t mono" x="392" y="149.8" font-size="9">~</text>
+<rect class="t" x="391" y="155" width="218" height="13" rx="1.5"/>
+<text class="f mono" x="392" y="164.8" font-size="9">f.txt</text>
+<text class="f mono" x="424.4" y="164.8" font-size="9">-</text>
+<text class="f mono" x="435.2" y="164.8" font-size="9">4</text>
+<text class="f mono" x="446" y="164.8" font-size="9">lines</text>
+<text class="f mono" x="591.8" y="164.8" font-size="9">1/4</text>
+<line class="a" x1="258" y1="94" x2="380" y2="94" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0906b-aa)"/>
+<text class="ta mono" x="319" y="86" font-size="10" font-weight="700" text-anchor="middle">clear_namespace</text>
+<text class="ta" x="319" y="108" font-size="10" text-anchor="middle">of numbers (1)</text>
+<rect class="af" x="24" y="190" width="21.06" height="13" rx="2"/>
+<text class="ta mono" x="27" y="200" font-size="10" font-weight="700">640</text>
+<text class="t mono" x="56" y="200" font-size="9.5">local</text>
+<text class="t mono" x="90.2" y="200" font-size="9.5">nums</text>
+<text class="t mono" x="118.7" y="200" font-size="9.5">=</text>
+<text class="t mono" x="130.1" y="200" font-size="9.5">kilo.api.create_namespace(&#x27;numbers&#x27;)</text>
+<text class="tm" x="56" y="215" font-size="10">namespace 1: every number, in yellow, on BufReadPost and TextChanged</text>
+<rect class="t" x="24" y="228" width="21.06" height="13" rx="2"/>
+<text class="f mono" x="27" y="238" font-size="10" font-weight="700">   </text>
+<text class="t mono" x="56" y="238" font-size="9.5">local</text>
+<text class="t mono" x="90.2" y="238" font-size="9.5">trail</text>
+<text class="t mono" x="124.4" y="238" font-size="9.5">=</text>
+<text class="t mono" x="135.8" y="238" font-size="9.5">kilo.api.create_namespace(&#x27;trailing&#x27;)</text>
+<text class="tm" x="56" y="253" font-size="10">namespace 2: the spaces at a row&#x27;s end, in reverse, on the same events</text>
+<text class="ta mono" x="24" y="282" font-size="9.5" font-weight="700">lua:</text>
+<text class="ta mono" x="52.5" y="282" font-size="9.5" font-weight="700">kilo.api.clear_namespace(kilo.api.create_namespace(&#x27;numbers&#x27;))</text>
+<text class="tm" x="24" y="298" font-size="10.5">The same name gives the same id, 1: clear_namespace() takes that namespace&#x27;s highlights, and no other.</text>
+</svg>

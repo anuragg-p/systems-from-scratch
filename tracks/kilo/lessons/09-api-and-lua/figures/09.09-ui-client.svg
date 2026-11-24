@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" fill="none">
+<title>Neovim as a server: the terminal UI is one client of the API, in a process of its own, and other programs are clients the same way; kilo keeps its screen inside</title>
+<defs><marker id="f0909b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0909b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0909b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">Neovim v0.12.6, from its documentation as NOTES.md (09) quotes it; not run</text>
+<rect class="s f" x="24" y="44" width="178" height="60" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="34" y="62" font-size="10.5" font-weight="700">$</text>
+<text class="t mono" x="46.6" y="62" font-size="10.5" font-weight="700">nvim</text>
+<text class="t" x="34" y="78" font-size="10">the builtin UI client (the TUI)</text>
+<text class="tm" x="34" y="92" font-size="10">draws the terminal</text>
+<rect class="s f" x="230" y="44" width="178" height="60" rx="6" stroke-width="1.5"/>
+<text class="t" x="240" y="62" font-size="10.5" font-weight="700">other programs</text>
+<text class="t" x="240" y="78" font-size="10">embedders, other UIs</text>
+<text class="tm" x="240" y="92" font-size="10">via --embed or --server</text>
+<rect class="a af" x="24" y="150" width="384" height="128" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="168" font-size="10.5" font-weight="700">nvim</text>
+<text class="ta mono" x="67.5" y="168" font-size="10.5" font-weight="700">--embed</text>
+<text class="ta" x="121.6" y="168" font-size="10.5" font-weight="600">the server: a child process</text>
+<rect class="s f" x="36" y="180" width="360" height="34" rx="5" stroke-width="1.5"/>
+<text class="t" x="46" y="195" font-size="10" font-weight="600">the API: C functions in src/nvim/api/*.h, one generated table</text>
+<text class="tm" x="46" y="208" font-size="9.5">Buffer and Window are among its types</text>
+<rect class="s f" x="36" y="226" width="84" height="38" rx="5" stroke-width="1.5"/>
+<text class="t" x="78" y="242" font-size="10" font-weight="700" text-anchor="middle">RPC</text>
+<text class="tm" x="78" y="256" font-size="9" text-anchor="middle">msgpack</text>
+<rect class="s f" x="128" y="226" width="84" height="38" rx="5" stroke-width="1.5"/>
+<text class="t" x="170" y="242" font-size="10" font-weight="700" text-anchor="middle">Lua</text>
+<text class="tm mono" x="170" y="256" font-size="9" text-anchor="middle">vim.api</text>
+<rect class="s f" x="220" y="226" width="84" height="38" rx="5" stroke-width="1.5"/>
+<text class="t" x="262" y="242" font-size="10" font-weight="700" text-anchor="middle">Vimscript</text>
+<rect class="s f" x="312" y="226" width="84" height="38" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="354" y="242" font-size="10" font-weight="700" text-anchor="middle">--api-info</text>
+<text class="tm" x="354" y="256" font-size="9" text-anchor="middle">its metadata</text>
+<line class="a" x1="113" y1="106" x2="113" y2="148" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909b-aa)" marker-start="url(#f0909b-aa)"/>
+<line class="a" x1="319" y1="106" x2="319" y2="148" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909b-aa)" marker-start="url(#f0909b-aa)"/>
+<text class="ta" x="121" y="124" font-size="9.5" font-weight="600">msgpack-RPC on</text>
+<text class="ta" x="121" y="136" font-size="9.5" font-weight="600">stdin/stdout</text>
+<text class="ta" x="327" y="130" font-size="9.5" font-weight="600">msgpack-RPC</text>
+<text class="tm" x="24" y="312" font-size="10">&quot;all UIs, including the builtin TUI are just plugins that connect to a Nvim server&quot; (vim_diff.txt); the TUI</text>
+<text class="tm" x="24" y="326" font-size="10">became a process of its own in 0.9 (news-0.9.txt). --headless starts Nvim without a UI.</text>
+<line class="m" x1="424" y1="44" x2="424" y2="280" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="t" x="434" y="58" font-size="12" font-weight="700">kilo</text>
+<rect class="s fs" x="434" y="68" width="182" height="100" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="444" y="86" font-size="9.5">$</text>
+<text class="t mono" x="455.4" y="86" font-size="9.5">./kilo</text>
+<text class="t mono" x="495.3" y="86" font-size="9.5">notes.txt</text>
+<text class="tm" x="444" y="100" font-size="9.5">one process</text>
+<rect class="s f" x="444" y="108" width="162" height="22" rx="4" stroke-width="1.5"/>
+<text class="t" x="452" y="123" font-size="9">the screen: editorRefreshScreen</text>
+<rect class="a af" x="444" y="136" width="162" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="452" y="151" font-size="9.5" font-weight="700">kilo.api</text>
+<rect class="s fs" x="434" y="184" width="182" height="60" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="444" y="202" font-size="9">$</text>
+<text class="t mono" x="454.8" y="202" font-size="9">./kilo</text>
+<text class="t mono" x="492.6" y="202" font-size="9">-l</text>
+<text class="t mono" x="508.8" y="202" font-size="9">s.lua</text>
+<text class="t mono" x="541.2" y="202" font-size="9">notes.txt</text>
+<rect class="a af" x="444" y="212" width="162" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta" x="452" y="227" font-size="9.5" font-weight="700">kilo.api, no screen</text>
+<text class="t" x="434" y="262" font-size="10">The screen is drawn inside kilo;</text>
+<text class="t" x="434" y="275" font-size="10">only the API is shared by the</text>
+<text class="t" x="434" y="288" font-size="10">editor and -l.</text>
+</svg>
