@@ -3887,10 +3887,13 @@ pass:
   lecture 3 "Architectures, hyperparameters", assignment 1 "Implement all
   of the components (tokenizer, model architecture, optimizer) necessary
   to train a standard Transformer"; it names none of the four changes.
-- Not changed, for the planner: ablation.py's CLAIMS says rotary was
-  faster than "BERT's learned positions"; the paper's section 4.2 says it
-  replaced BERT's "sinusoidal position encoding" (bert-base-uncased's
-  positions are in fact learned). The page quotes the paper's own words.
+- ablation.py's CLAIMS said rotary was faster than "BERT's learned
+  positions"; the paper's section 4.2 says it replaced BERT's "sinusoidal
+  position encoding" (bert-base-uncased's positions are in fact learned).
+  The planner changed the claim to "than BERT in pre-training" in the
+  script, in the recorded output.txt and in 10.05's transcript (the same
+  words, wrapped as the script wraps them; no number moved). The page
+  quotes the paper's own words.
 - For whoever edits these pages: a file-writing tool may turn a
   backslash-u escape into the character itself (it did, once, in 10.04's
   transcript); check with LC_ALL=C grep -nP '[^\x00-\x7F]'. verify
