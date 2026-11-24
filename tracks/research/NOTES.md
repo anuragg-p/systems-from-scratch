@@ -3546,3 +3546,816 @@ right: x - y "about the same amount of data", not run); S5 (the paper's
 figure 1 center and figure 2 left are on S5; ours on x/y, which the claims
 table says beside each). Thilak et al.'s slingshot paper and the Omnigrok
 body were not read. Nothing was run on Linux.
+
+## Module 12: fine-tuning
+
+Built by one agent on 2026-11-24, on the reference machine above (Apple M4
+Pro, 14 cores, 48 GB, Python 3.12.7, numpy 2.4.3, PyTorch 2.10.0, 10
+threads by default), shared all the while with two other agents' work
+(module 10's code, module 14's lessons): load average 6 to 16. Every time
+below says its load. Explorations ran on the Apple GPU (mps) to spare the
+CPU, as 08.04's and 09.04's did; every number a page may print is a CPU
+number from the scripts' own runs.
+
+### The files
+
+```
+data/banking77.py        12.01   classes, same, split: Banking77, its validation part cut by a seed, duplicates left out
+data/fetch.py            12.01   banking77 (an @from block in the docstring and in DATASETS; fetch_each)
+models/classifier.py     12.01   last_states, Classifier (a GPT's body, a standardised Linear head)
+models/lora.py           12.02   LoRA, adapt, merge, trained
+data/instructions.py     12.03   words, instances, wordings, chat, reply (and TASKS, TRAINED, the markers)
+experiments/tuning.py    12.01   pad, vectors, accuracy, fit: the loop module 12 shares (as language.py is 08's)
+                         12.03   answer_loss, tune, answers (and holds, no region)
+                         12.04   text_bits, weights, moved
+experiments/classify.py  12.01   words, bag (and Bag, settings, subset, heads): baselines, small GPT, frozen body
+experiments/lora.py      12.02   no region (FILES_FROM): the count, the merge, time and memory, the comparison
+experiments/instruct.py  12.03   no region (FILES_FROM): tasks, template, exact match before and after
+experiments/forgetting.py 12.04  at_accuracy (and read): the recorded run's forgetting, and the instruction model's
+experiments/recorded/lora/       12.02's long run (FILES_FROM 12.02, DATA), which also logs 12.04's measures
+```
+
+models/gpt.py and experiments/language.py are not changed: the head and the
+adapter wrap a built GPT, using only embed, blocks, norm, tokens and each
+block's attention.query and .value (the names "For module 09 and after"
+gives). An experiment never imports another, so what two of them share is in
+tuning.py. lora.py's measures of 12.04 (text_bits, moved) are @from 12.04
+blocks: at 12.02 the script trains and scores accuracy only, from 12.04 it
+also logs the bits on untuned text and how far the weights moved; the
+recorded run was made with the final code, so its logs have both.
+
+### The labelled set: Banking77, and why
+
+Read at the source on 2026-11-24. Banking77 is in PolyAI-LDN/
+task-specific-datasets on GitHub: the repository's LICENSE file is the
+Creative Commons Attribution 4.0 International licence (the GitHub API also
+reports cc-by-4.0), and its README says "The datasets shared on this
+repository are licensed under the license found in the LICENSE file" and
+"When using the banking dataset in your work, please cite Efficient Intent
+Detection with Dual Sentence Encoders" (Casanueva, Temcinas, Gerz,
+Henderson and Vulic, arXiv 2003.04807, NLP for ConvAI workshop at ACL 2020;
+the paper itself was not read). CC BY 4.0 permits redistribution with
+attribution; nothing is redistributed (fetched, like every download), and
+NOTICE has the entry. The README's statistics: 10,003 training examples,
+3,080 test examples, 77 intents.
+
+Why it and not the fallback: it is the planner's first choice, its licence
+permits redistribution with attribution, and it separates the models of
+12.01 well beyond noise inside the budget (below, on all of it: the small
+GPT 0.79, the frozen body 0.86, every weight fine-tuned 0.90, most spreads
+under half a point; 77 classes leave room at both ends). The SMS Spam
+Collection was not fetched and its licence not read: two classes, one of
+them most messages, which leaves little room between a bag of words and a
+fine-tuned GPT (a judgement, not measured).
+
+Fetched by `python3 -m data.fetch banking77` (fetch_each, "each": True) from
+https://raw.githubusercontent.com/PolyAI-LDN/task-specific-datasets/57ec275d8078af65b7731c2a98be812d844a6d6b/banking_data/
+(the repository's last commit, 2022-04-29, "index of datasets"; 1 s here):
+train.csv 839,073 bytes, SHA-256 b06e26ac675513959a63135f11b94ea7786ed02da65db93a5650d8838cbc664b;
+test.csv 239,961, d12d6e3bc4c3103966ae786dc435913c0c563dfa328f5a3646d0e62cfeeb474d;
+categories.json 2,036, 53261da888122daf2d120d925458631d9619e15d82e56052e7a42e535ce32b63.
+Each was checked before it was pinned: its git blob SHA-1 (sha1 of "blob
+<size>\0" + bytes) equals the one the repository's tree lists for it
+(98e2543c..., 799687a8..., cdd2a5c7...). The raw host answers a Range
+request, so fetch_each's resuming works there too. 1,081,070 bytes in all.
+
+The data, as data/banking77.py reads it: csv with a header text,category;
+77 intents (categories.json's order is a class's number; card_arrival is 0).
+train.csv's largest intent is card_payment_fee_charged (187), its smallest
+contactless_not_working (35); test.csv has 40 of each. 52 lines of train.csv
+and 9 of test.csv hold a character that is not ASCII (curly quotes, a pound
+sign): GPT-2's tokenizer takes them as bytes, the bag of words drops them.
+A question is 13.8 GPT-2 tokens on average (median 11, 90% 25 or fewer,
+longest 94; test.csv 12.7, longest 79); 11.9 words.
+
+The split (the dataset has no validation part): train.csv in an order drawn
+from numpy's default_rng(0); its first 1,000 questions are "valid", the rest
+"train". Duplicates counted with same() (lower case, spaces made single):
+none exact between train.csv and test.csv; 7 test questions have a twin in
+train.csv by same(); one of those twins fell into valid (so valid and test
+share 1 question: left, it is only for choosing settings), the other 6 are
+left out of "train". Nothing in "train" has a twin in valid or test. 4
+same() pairs inside "train" are left (harmless). So: train 8,997, valid
+1,000 (one intent, by chance, has none there), test 3,080 whole, so its
+numbers sit beside other people's. In "train" the largest intent is
+direct_debit_payment_not_recognised, 1.87%; guessing it always scores 1.30%
+on test (40 of 3,080).
+
+### What was read, at the source
+
+- Radford, Narasimhan, Salimans and Sutskever (2018), "Improving Language
+  Understanding by Generative Pre-Training", the PDF at
+  cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf,
+  read whole as text (pdftotext), sections 1 to 6 and the tables; figure 1
+  and 2 not looked at closely. Quoted (the paper's symbols in ASCII):
+  section 3.2, "The inputs are passed through our pre-trained model to
+  obtain the final transformer block's activation h_l^m, which is then fed
+  into an added linear output layer with parameters W_y to predict y:
+  P(y|x1, ..., xm) = softmax(h_l^m W_y)"; "We additionally found that
+  including language modeling as an auxiliary objective to the fine-tuning
+  helped learning by (a) improving generalization of the supervised model,
+  and (b) accelerating convergence", L3(C) = L2(C) + lambda * L1(C);
+  "Overall, the only extra parameters we require during fine-tuning are W_y,
+  and embeddings for delimiter tokens"; section 3.3, "For some tasks, like
+  text classification, we can directly fine-tune our model as described
+  above", and "All transformations include adding randomly initialized start
+  and end tokens (<s>, <e>)"; section 4.1, the model: "a 12-layer
+  decoder-only transformer with masked self-attention heads (768 dimensional
+  states and 12 attention heads)", 3072 inner states, BooksCorpus, "a
+  bytepair encoding (BPE) vocabulary with 40,000 merges", N(0, 0.02);
+  fine-tuning: "We add dropout to the classifier with a rate of 0.1. For most
+  tasks, we use a learning rate of 6.25e-5 and a batchsize of 32. Our model
+  finetunes quickly and 3 epochs of training was sufficient for most cases.
+  We use a linear learning rate decay schedule with warmup over 0.2% of
+  training. lambda was set to 0.5."; table 4, SST-2 91.3% and CoLA 45.4;
+  table 5 (ablations): with pre-training and the auxiliary loss SST-2 91.3,
+  "Transformer w/o pre-training" 84.0, "w/o aux LM" 92.0, average score 74.7,
+  59.9 and 75.0; section 5, "the lack of pre-training hurts performance
+  across all the tasks, resulting in a 14.8% decrease compared to our full
+  model", and on the auxiliary loss "the trend suggests that larger datasets
+  benefit from the auxiliary objective but smaller datasets do not". The
+  paper has no frozen-body baseline of its own (it names "hidden
+  representations from a pre-trained language or machine translation model
+  as auxiliary features", section 2, as other work's).
+- Hu, Shen, Wallis, Allen-Zhu, Li, Wang, Wang and Chen (2021), "LoRA:
+  Low-Rank Adaptation of Large Language Models", arXiv 2106.09685v2 (16 Oct
+  2021), the PDF read as text: the abstract, sections 1 to 5, 7.1 and 7.2,
+  appendix D (hyperparameters), F.1, F.3 and H.2 (table 18). Quoted: section
+  4.1, "For a pre-trained weight matrix W0 in R^{d x k}, we constrain its
+  update by representing the latter with a low-rank decomposition W0 + Delta
+  W = W0 + BA, where B in R^{d x r}, A in R^{r x k}, and the rank r <<
+  min(d, k). During training, W0 is frozen and does not receive gradient
+  updates, while A and B contain trainable parameters"; "We use a random
+  Gaussian initialization for A and zero for B, so Delta W = BA is zero at
+  the beginning of training. We then scale Delta W x by alpha/r, where alpha
+  is a constant in r. When optimizing with Adam, tuning alpha is roughly the
+  same as tuning the learning rate if we scale the initialization
+  appropriately. As a result, we simply set alpha to the first r we try and
+  do not tune it."; "we can explicitly compute and store W = W0 + BA and
+  perform inference as usual"; section 4.2, "We limit our study to only
+  adapting the attention weights for downstream tasks and freeze the MLP
+  modules", and on memory "we reduce that VRAM usage by up to 2/3 if r <<
+  d_model as we do not need to store the optimizer states for the frozen
+  parameters. On GPT-3 175B, we reduce the VRAM consumption during training
+  from 1.2TB to 350GB", and "We also observe a 25% speedup during training on
+  GPT-3 175B compared to full fine-tuning" (footnote 5: 32.5 against 43.1
+  tokens a second per V100); section 5.1, "we only apply LoRA to Wq and Wv in
+  most experiments for simplicity. The number of trainable parameters is
+  determined by the rank r and the shape of the original weights: |Theta| = 2
+  x L_LoRA x d_model x r, where L_LoRA is the number of weight matrices we
+  apply LoRA to"; the abstract's claim: "LoRA performs on-par or better than
+  fine-tuning in model quality on RoBERTa, DeBERTa, GPT-2, and GPT-3, despite
+  having fewer trainable parameters, a higher training throughput, and,
+  unlike adapters, no additional inference latency". Its tables: table 2,
+  RoBERTa base fine-tuned (125.0M trained) GLUE average 86.4, LoRA (0.3M)
+  87.2; table 3, GPT-2 medium fine-tuned (354.92M) E2E BLEU 68.2, LoRA
+  (0.35M) 70.4 +- .1; GPT-2 large 68.5 (774.03M) and 70.4 +- .1 (0.77M);
+  table 6 (GPT-3, Wq and Wv): r = 1, 2, 4, 8, 64 give WikiSQL 73.4, 73.3,
+  73.7, 73.8, 73.5 and MNLI 91.3, 91.4, 91.3, 91.6, 91.4 ("a rank as small as
+  one suffices"); table 18 (GPT-2 medium, E2E, 26,000 steps): r = 1, 4, 8
+  validation loss 1.23, 1.18, 1.17 and BLEU 68.72, 70.38, 69.57; table 16
+  (GPT-3, MNLI with 100 / 1k / 10k / all examples): fine-tuned 60.2, 85.8,
+  88.9, 89.5, LoRA 63.8, 85.6, 89.2, 91.7. Appendix D.3, GPT-2: AdamW, "a
+  linear learning rate schedule for 5 epochs", batch 8, learning rate 0.0002,
+  "rq = rv = 4", alpha 32, weight decay 0.01, dropout 0.1, label smoothing
+  0.1, warmup 500 steps; "We report the mean over 3 random seeds; the result
+  for each run is taken from the best epoch". The paper gives no sd for A's
+  Gaussian. The authors' code, github.com/microsoft/LoRA at commit
+  c4593f060e6a368d7bb5af5273b8e42810cdef90, loralib/layers.py, class Linear:
+  "nn.init.kaiming_uniform_(self.lora_A, a=math.sqrt(5))" and
+  "nn.init.zeros_(self.lora_B)", under a comment that says the opposite
+  ("initialize B the same way as the default for nn.Linear and A to zero /
+  this is different than what is described in the paper"): the code does
+  what the paper says about which one is 0, with a uniform A, not a Gaussian.
+  Ours: A Gaussian with sd 1 / sqrt(in_features) (three times the variance
+  of loralib's uniform; with Adam the scale of A acts like the learning rate
+  of the change, so this choice and alpha were settled by the learning rate
+  chosen on validation, below). Not read: sections 6, 7.3 and 8 beyond
+  their first lines, appendices A, B, C, E, G and H.1, H.3, H.4.
+- Not read: Casanueva et al. (2020), the Banking77 paper (only cited, as its
+  README asks); Raschka's book and CS336, which the outline lists for the
+  pages.
+
+### Spike 7: what of the module fits a minute, and what needs the hour
+
+A training step of GPT-2 small on this CPU, measured first (scratch code: the
+whole model in training mode, AdamW over all 124 million weights; random
+tokens; the best of 3 after one; 10 threads, load 9.5 to 11 with other
+agents' runs):
+
+    batch x tokens   forward   step, scores for every token   step, the last vector only
+         8 x 32        93 ms        414 ms                         308 ms
+        16 x 32       150 ms        496 ms                         416 ms
+        32 x 32       247 ms        874 ms                         715 ms
+         8 x 64       126 ms        409 ms                         341 ms
+        16 x 64       192 ms        701 ms                         582 ms
+         4 x 128      110 ms        405 ms                         354 ms
+
+The process's peak memory was 4.4 GB (ru_maxrss: the weights, their
+gradients, AdamW's two averages, the activations). With Banking77's
+questions (16 a step, padded to the longest of the 16), lora.py's part 3
+measured a whole step at 398 ms and LoRA's at 231 ms (load about 10). So a
+minute holds about 100 steps of fine-tuning, minus loading (1.3 to 1.5 s
+each time GPT-2 is loaded) and scoring: not enough to fine-tune GPT-2 on
+anything. On the Apple GPU (mps; explorations only) a step was 135 to 150 ms
+(whole) and 70 to 80 ms (LoRA).
+
+What was tried, and what fits where:
+- The frozen body is cheap once read: GPT-2 reads Banking77 at 5,400 to 5,700
+  tokens a second (all 13,083 questions of train.csv and test.csv, with END:
+  190,160 tokens, 33 s at load 7). A head trained on vectors read once costs
+  about 1 ms a step. So 12.01's default reads 3,770 questions (3,000 to train
+  on, 10 of each intent of test.csv) once, in 9 to 11 s, and trains every head
+  on those vectors; reading all of them is 33 s and stays out of the minute.
+- The baselines and the small GPT fit easily (below).
+- Fine-tuning every weight, and LoRA, do not fit a minute at any size that
+  learns: 600 steps of 16 (about one pass over the 8,997 questions), the
+  budget at which they reach 88 to 89% on validation, is 4 minutes whole and
+  2.3 minutes with LoRA per seed. They are the long run (12.02's).
+- 12.03's instruction tuning fits, small: 80 steps of 8 with LoRA, 2 seeds,
+  about 50 s (scoring is most of it: every answer is a whole forward pass a
+  token, GPT-2 has no cache of keys and values here).
+- 12.04's own part fits small (30 steps of 8, LoRA and whole, 2 seeds); its
+  classifier numbers are read from the long run, which logged them.
+- The long run: 5 ways of training (the head alone, LoRA at ranks 1, 4 and 8,
+  every weight), 3 seeds each, 600 steps of 16, scored on validation every
+  150 steps and on test at the end: estimated 45 minutes at load 10, so it
+  fits the hour with 3 seeds; 1200 steps would not (2 seeds would). It took
+  63 minutes, at load 9 to 25 (12.02 below).
+
+### 12.01 A new head on a pretrained body (Radford et al. 2018)
+
+models/classifier.py: last_states (the body run as GPT.forward runs it up to
+its last layer norm, the vector at each text's last token kept; padding after
+it changes nothing, the mask sees to that) and Classifier (body, head: a
+Linear layer started as GPT starts its layers, sd 0.02; the head reads the
+vector standardised, less `center` over `spread`, two buffers that
+standardise() sets from the training questions' vectors before any training;
+dropout on the classifier as an option, Radford et al.'s 0.1, not used:
+0 in every run here). Every question ends with END (50256), GPT-2's
+<|endoftext|>, and the head reads END's vector: GPT-2's own counterpart of
+Radford et al.'s "randomly initialized ... end token <e>" (theirs was new and
+learned; ours is one the frozen body already knows). experiments/tuning.py:
+pad, vectors (the body read once, in batches of similar length), accuracy,
+fit (AdamW over what needs a gradient, a head at a rate of its own; inputs
+either texts or vectors read once). experiments/classify.py: words, bag (the
+bag of words), and the experiment.
+
+**The failure the lesson can start from, found, not designed: GPT-2's
+vectors are lopsided.** At a question's END, after the last layer norm, most
+of the 768 numbers vary from question to question by about 0.019 (the median
+sd over the training questions), and a few sit far from 0 and vary by
+several units: number 496 around 175.8 with sd 3.66, number 430 around 94.4
+(3.41), number 36 around 25.4 (2.44) (the default run prints these; over
+all of train.csv the largest |number| is 195). A new Linear layer, started
+small and trained by AdamW, learns from such inputs very slowly: on the
+vectors as they come, 500 steps of 64, test accuracy `0.1866 +- 0.02324`
+(3 seeds), and in a spike (all of train.csv, test.csv) no setting reached
+55% (lr 1e-3 to 1e-2, up to 3,000 steps of 64: best 0.542). Standardised
+(each number less its mean over the training questions, over its spread
+there) the same head reaches `0.7732 +- 0.002703` at once (t = +43.4). The
+same thing slowed full fine-tuning in spikes before standardising: with the
+head at the body's rate (5e-5) validation was 3.5% after 100 steps and 83.8%
+after 600, against 88.6% for the standardised head. The standardisation is
+part of the Classifier, and every model of 12.01 to 12.04 that reads GPT-2's
+vectors uses it. (Not checked: which of the 768 these are in other work;
+GPT-2's few very large hidden numbers are reported elsewhere as "massive
+activations", not read.)
+
+Which vector to read (spike, frozen body, a head on standardised vectors,
+all of train.csv, scored on test.csv, settings chosen as below but on test,
+so for comparison only): the question's own last token 0.838 to 0.842, END
+appended 0.863 to 0.868, the mean over all the question's positions 0.882 to
+0.884. The design (and the paper) reads the last token; END was kept.
+
+Settings, chosen on validation (the 1,000 questions; 2 seeds each; spike
+code over vectors read once). The head on standardised vectors and the bag
+of words (a Linear layer on the counts of the training questions' words),
+validation accuracy at 3,000 training questions / at all 8,997:
+- frozen body: 300 steps of 64 at lr 1e-3 0.716 / 0.763, 3e-3 0.762 / 0.826,
+  1e-2 0.762 / 0.828, 3e-2 0.717 / 0.810; 1000 steps 1e-3 0.768 / 0.829,
+  3e-3 0.775 / 0.857, 1e-2 0.761 / 0.843, 3e-2 0.725 / 0.833; 3000 steps
+  3e-3 0.774 / 0.852 (more steps overfit). Chosen: lr 3e-3.
+- bag of words: 300 steps 1e-3 0.539 / 0.639, 3e-3 0.685 / 0.750, 1e-2
+  0.792 / 0.845, 3e-2 0.816 / 0.869; 1000 steps 1e-3 0.700 / 0.773, 3e-3
+  0.793 / 0.853, 1e-2 0.820 / 0.880, 3e-2 0.830 / 0.891, 1e-1 0.825 / 0.887;
+  3000 steps 1e-2 0.831 / 0.895. Chosen: lr 3e-2.
+- steps: 500 of 64 gave within 0.003 of 1000 at half the time (0.30 against
+  0.73 s a head at load 10); 250 of 256 within 0.01. Chosen: 500 of 64.
+- So, tuned, the bag of words is ahead of the frozen body at every size
+  (100: 0.231 / 0.214, 1,000: 0.654 / 0.625, 3,000: 0.830 / 0.773, all:
+  0.891 / 0.857). Untuned (lr 1e-3, the rate that suits the frozen body's
+  head) it was behind (0.700 at 3,000, 0.773 at all). Which is ahead depends
+  on tuning the baseline as hard as the method: module 13's first lesson.
+- the small GPT, 08's GPT from nothing (GPT-2's tokens, context 128, a head
+  on END's vector, every weight trained): at 3,000 questions, 2 blocks of 4
+  heads, width 64: 600 steps of 32, lr 1e-3, dropout 0.1, 0.714; lr 3e-3
+  0.715; lr 3e-3 without dropout 0.784 (7 s); 1200 steps lr 1e-3 0.787 (22
+  s); 4 blocks of 4 heads, width 128: 600 steps lr 1e-3 0.713 (20 s), 3e-3
+  0.609. All 8,997: 2 x 64, 1200 steps, 3e-3, dropout 0.1, 0.835; 4 x 128,
+  1200 steps, 1e-3, 0.841 (50 s). Chosen: 2 x 64, no dropout, 600 steps of
+  32, 3e-3 (most of its 3.3 million weights are the 50,257 x 64 embedding).
+- fine-tuning every weight and LoRA: 12.02's (below).
+
+The default run (`python3 -m experiments.classify`): 3,000 training
+questions (a fixed random part of the 8,997, rng 0), 770 test questions
+(the first 10 of each intent in test.csv), 3 seeds:
+1. The largest class in these 3,000, request_refund, is 2.20%; always
+   guessing it scores 1.30% on test. The bag of words (1,527 training words),
+   500 steps of 64 at 3e-2: `0.8169 +- 0.002597`.
+2. 08's GPT from nothing (2 blocks of 4 heads, width 64, 3,329,741 weights,
+   3,216,448 of them the embedding of GPT-2's tokens; no dropout; 600 steps
+   of 32 at 3e-3): `0.7766 +- 0.02219`.
+3. GPT-2's body frozen, read once (3,770 questions in 9 to 17 s); the head on
+   the vectors as they come `0.1866 +- 0.02324`, standardised `0.7732 +-
+   0.002703`; Welch's t standardised against raw +43.4, against the bag of
+   words -20.2, against the small GPT -0.3. Trained: 59,213 weights of
+   124,499,021.
+4. Fewer questions (a random part for each seed), bag of words / frozen
+   body: 100 `0.216 +- 0.0187` / `0.206 +- 0.0119`; 300 `0.403` / `0.384`;
+   1,000 `0.639` / `0.614`; 3,000 `0.817` / `0.773`.
+5. Fine-tuned: not in the default (tune_steps=0 prints where its numbers
+   are: 12.02's recorded run). tune_steps= runs it here on the same part of
+   the data (not run: a whole step is 0.3 to 0.7 s on this CPU, so 600 steps
+   for 3 seeds is 15 to 35 minutes).
+Times: 43 s at load 6 to 8 (the same settings, an earlier run, the same
+digits), 99 s and 71 s at load 36 to 68 (four other agents' runs and a
+check-timeline: not a load the rule cuts at); the same digits each time.
+The same run on all of the data (`train=0 test_per_class=0
+"sizes=[100,300,1000,3000]"`, 69 s at load 11 to 24; not recorded): 8,997 training questions, all 3,080 test
+questions; the bag of words (2,312 words) `0.8824 +- 0.0008171`; the small
+GPT `0.793 +- 0.0367` (0.753 to 0.825); the frozen body read in 29 s, the
+head on raw vectors `0.2623 +- 0.001687`, standardised `0.8629 +- 0.00114`
+(t against the bag of words -24.1, against the small GPT +3.3); fewer
+questions, bag / frozen: 100 0.220 / 0.204, 300 0.387 / 0.379, 1,000 0.648
+/ 0.631, 3,000 0.814 / 0.790, 8,997 0.882 / 0.863. Beside 12.02's recorded
+run on the same test set: LoRA 0.886 to 0.889, every weight 0.9001.
+
+What held of Radford et al.: a pretrained body with a new linear head on the
+last token's vector, every weight fine-tuned (12.02's recorded run, 0.9001
+on the whole test set), beats the same kind of model trained from nothing
+on the labelled set alone (0.793 on all of the data, 0.7766 at 3,000),
+by 10.7 points: the paper's table 5 has 91.3 against 84.0 on SST-2 and
+"a 14.8% decrease" on average without pre-training. Held, at laptop size.
+What the paper does not test and the module found: GPT-2's body frozen, with
+only a new head, is not better than a bag of words on this task once the
+bag of words is tuned (0.773 against 0.817 at 3,000 questions; 0.863
+against 0.882 on all of it), and its vectors need standardising before a
+new head learns from them at all. Fine-tuning (whole or LoRA) is what beats
+the bag of words (every weight, 0.900, by 1.8 points, t = +10.9; LoRA, 0.886 to 0.889,
+by less than a point, t = +2.0 to +3.3; computed by hand from the two
+runs' summaries). The auxiliary language
+model loss (lambda 0.5) was not built: the paper's own table 5 has it
+helping some tasks and not others (SST-2 92.0 without it against 91.3 with
+it).
+
+### 12.02 LoRA: training under one percent of the weights (Hu et al. 2021)
+
+models/lora.py: LoRA (a frozen nn.Linear, A (r, in) normal with sd 1 /
+sqrt(in), B (out, r) zeros, forward linear(x) + (alpha / r) (x A^T) B^T,
+delta() = (alpha / r) B A; A and B take the layer's dtype and device), adapt
+(every parameter frozen, then each block's attention.query and
+attention.value wrapped; the classifier's head is made trainable again by
+the caller, models made by lora.py's build), merge (each LoRA layer replaced
+by its nn.Linear with delta() added: GPT's own names again), trained (the
+numbers with requires_grad).
+
+The count (the default run's part 1; GPT-2 small, 124,439,808 weights, 12
+blocks, d_model 768): rank 1 36,864 (0.030%), rank 4 147,456 (0.118%), rank
+8 294,912 (0.237%), each equal to the paper's 2 x 24 x 768 x r (24 matrices
+adapted: W_q and W_v of 12 blocks); with the classifier's head (768 x 77 +
+77 = 59,213) 0.077%, 0.166%, 0.285%. Under one percent at every rank, the
+head included.
+
+Exact (part 2, and the test): adapted and not trained, GPT-2's scores on 8
+questions differ by 0 (B is 0, so x A^T B^T is exactly 0). Trained 10 steps
+with a new head (LoRA at rank 8, lr 1e-3; the loss 4.63 to 3.93 in the first
+default run), then merged: the class scores differ from the adapter's by
+2.2e-05 and the next-token scores (up to a few hundred) by 4.6e-04, float32
+rounding (the test holds the merge at 1e-10 in float64 on a small GPT, and
+merge gives GPT's own state_dict names back). After a backward, only A and B
+have gradients.
+
+Time and memory on this CPU (part 3; 5 steps of 16 questions after one, the
+same batches for both): full 329 ms a step and LoRA (rank 8) 178 ms at load
+about 9 (the long run's own part 3); 398 and 231 ms at load about 10; 655 and
+325 ms at load 36 to 45. What each must keep to train, computed
+exactly: every weight trained, 124,499,021 numbers with a gradient and
+AdamW's two averages, 12 bytes each, 1,494.0 MB; LoRA at rank 8 with the
+head, 354,125 numbers, 4.2 MB; both beside 498 MB of weights. Measured in fresh processes (scratch code: GPT-2 and a head built, then 6
+steps of 16 questions; ru_maxrss; load 18 to 25): 235 MiB before GPT-2,
+1,229 MiB once it is loaded (its random start and load_state_dict hold two
+copies for a moment), and at the peak of training 4,208 MiB with every
+weight trained against 2,270 MiB with LoRA: training added 2,979 MiB against
+1,045, LoRA's 35%, which is the paper's "up to 2/3" saved, held on a CPU.
+The process as a whole peaks at 54% of the whole fine-tune's.
+The paper's saving is on GPUs and very large models ("up to 2/3" of the
+memory, "a 25% speedup" on GPT-3 175B); here LoRA's step is 0.50 to 0.58 of a
+whole step back to back (0.6 to 0.7 in the long run as the load rose): a laptop sees the time saved from not computing the frozen
+weights' gradients and not updating 124 million numbers with AdamW, while
+the forward pass and the backward pass through the activations, most of the
+work for a model this size, are the same.
+
+Learning rates, chosen on validation (mps, 1 seed, 600 steps of 16, the
+head standardised and at 3e-3, warmup 6% then cosine): every weight at 3e-5
+0.888, 5e-5 0.886, 1e-4 0.890 (so Radford et al.'s 6.25e-5 is used); LoRA
+rank 8 (alpha 8) at 1e-3 0.888, 3e-3 0.888, 1e-2 0.808; rank 1 at 3e-3
+0.882, 1e-2 0.794. alpha is 8 at every rank, as the paper says (set to the
+first r tried, not tuned), so rank 1's change is scaled by 8 and rank 8's by
+1; lr 1e-3 was kept for every rank (rank 1 at 3e-3 behaves like rank 8 at
+about 8e-3, the start of the fall). Before the head was standardised (same
+spikes): every weight, 1200 steps, 0.914; LoRA rank 8 and 1, 1200 steps,
+0.901 and 0.899.
+
+The long run, recorded in experiments/recorded/lora/ (a folder per method,
+seed0 to seed2 in each: config.json, log.jsonl with a row every 150 steps,
+summary.json; demo/seed0, part 2's merge check; output.txt, what it
+printed; no weights):
+
+    python3 -m experiments.lora train=True out=experiments/recorded
+
+5 ways of training, each for 3 seeds (the seed sets the head's start, the
+order of the questions, and A's start): the head alone on the frozen body
+(its vectors read once, then 600 steps on them), LoRA at ranks 1, 4 and 8
+(alpha 8, A and B at lr 1e-3), every weight (lr 6.25e-5); the head (and
+every model's) at lr 3e-3, standardised by the vectors of 1,000 training
+questions drawn once (rng 0); 600 steps of 16 questions (9,600, 1.07 passes
+over the 8,997), AdamW without weight decay, warmup 36 steps then cosine to
+0; every 150 steps (0, 150, 300, 450, 599) validation accuracy (1,000
+questions), the bits per character on the first 2,048 tokens of Tiny
+Shakespeare's test text and how far the weights moved; at the end test
+accuracy (3,080), the bits on the whole test text (17,995 tokens) and on
+the first 50 held-out TinyStories, and the distance moved.
+3,804 s by its own clock, 63 min 24 s of wall clock (23:55:55 to
+00:59:20), load 9 at the start and 13 to 25 for most of it: four other
+agents' runs came and went (module 13's scaling, a TinyStories run, a
+spike of module 11's), and the step times show it: LoRA's 228 ms a step
+for its first seed, 384 to 476 ms for the last ones; every weight's 598 to
+742 ms. That is over the hour by 3.4 minutes. At the load it started at
+(LoRA's first seed trained at 228 ms a step, load about 9; a whole step is
+about 1.8 times a LoRA step back to back), the same run is about 1,950 s
+of training plus about 650 s of measuring, loading and reading: about 44
+minutes. Not rerun: a second hour on this machine
+would have measured the other agents again.
+
+Test accuracy (3 seeds; Welch's t against every weight trained):
+
+    method        trained   of all    test accuracy                                      t
+    head           59,213   0.048%    0.8277 +- 0.00248 (min 0.825, max 0.8299)        -34.2
+    LoRA r=1       96,077   0.077%    0.886 +- 0.003097 (min 0.8828, max 0.889)         -5.9
+    LoRA r=4      206,669   0.166%    0.8894 +- 0.003576 (min 0.8857, max 0.8929)       -4.1
+    LoRA r=8      354,125   0.284%    0.8876 +- 0.002604 (min 0.8851, max 0.8903)      -5.8
+    every weight  124,499,021 100%    0.9001 +- 0.002703 (min 0.8971, max 0.9023)
+
+("trained" includes the head's 59,213.) Along the way (validation, the
+mean of 3 seeds, steps 150 / 300 / 450 / 599): head 0.628 / 0.735 / 0.792
+/ 0.800; LoRA r=1 0.721 / 0.822 / 0.867 / 0.882; r=4 0.729 / 0.825 / 0.870
+/ 0.882; r=8 0.725 / 0.822 / 0.870 / 0.886; every weight 0.643 / 0.801 /
+0.880 / 0.899. LoRA learns faster at first (ahead at 150 and 300 steps);
+every weight overtakes it by 450 and ends 1.1 to 1.4 points higher.
+
+Against the paper. Hu et al.'s claim (abstract): "LoRA performs on-par or
+better than fine-tuning in model quality on RoBERTa, DeBERTa, GPT-2, and
+GPT-3, despite having fewer trainable parameters"; on GPT-2 medium their
+table 3 has LoRA (0.35M) above fine-tuning (354.92M), 70.4 against 68.2
+BLEU. Here, on GPT-2 small, Banking77, the same 600 steps, batches and
+seeds, each method's rate chosen on validation: LoRA trains 0.08% to 0.28%
+of the weights and reaches 88.6 to 88.9% against 90.0%: close, and below,
+beyond the noise of 3 seeds (t = -4 to -6). Held: "under one percent of the
+weights" gets most of the way (the head alone, 0.05%, is 7 points behind
+LoRA); the rank barely matters (1, 4 and 8 within 0.4 points of each other,
+inside their spreads), as the paper's table 6 found for W_q and W_v ("a rank
+as small as one suffices"). Did not hold at this size and budget: on-par or
+better. Not run: the paper's GPT-2 setting (E2E generation, 5 epochs, its
+LoRA lr 2e-4 and alpha 32 at rank 4, label smoothing), longer training (in
+this run LoRA was ahead at 300 steps and behind from 450 on, so the budget
+decides which looks better; 1200 steps in the spikes, 1 seed on mps before
+the head was standardised, left every weight 1.3 to 1.5 points ahead),
+other learning rates at 600 steps beyond the spike.
+
+### 12.03 Instructions: a chat template, and a model that answers
+
+data/instructions.py: six tasks made by code, each with its answer computed
+and short: larger (the larger of two numbers 0 to 99, a != b), sort (three
+different digits, answered "3 6 8"), upper (a word in capitals), reverse (a
+word backwards), count (how many times a letter is in a word; the letter is
+the word's own half the time, any of a to z the other half, so that "0" is
+right about half the time, not almost always), and smaller, never trained
+(TRAINED is the other five). Each has 4 wordings; the last of each is never
+trained on. The words: Tiny Shakespeare's (shipped) different words of 3 to
+6 small letters, 6,396; the words and the number tasks' instances (9,900
+pairs, 720 triples of digits) are cut once (WORD_SEED 0) into 80% to train
+on and 20% held out (1,279 words, 1,980 pairs, 144 triples), so a scored
+instance never occurs in training. The template, plain ASCII, each marker on
+a line of its own:
+
+    <|user|>
+    Which is larger, 12 or 57?
+    <|assistant|>
+    57
+    <|end|>
+
+GPT-2's tokenizer cuts the markers as ordinary text: <|user|> 5 tokens ('<',
+'|', 'user', '|', '>'), <|assistant|> 6 ('<', '|', 'ass', 'istant', '|',
+'>'), <|end|> 5; the line break before <|end|> one more. A "larger" example
+is 22 + 7 tokens, the loss on the last 7 (the answer, the line break, the end
+marker). The prompt's tokens and the reply's, encoded apart and joined, are
+the whole example's tokens (the reply starts after a line break, so no piece
+crosses the join: the test checks every task in every wording on 40 held-out
+instances each). tuning.py: answer_loss (the next-token loss at the
+positions whose next token is the reply's, nothing else: the test checks it
+against a direct sum to 1e-10), tune (the loop), answers (greedy; prompts of
+one length go together, since GPT has no mask for padding and left padding
+would let a prompt attend to it; each group stops when every row holds the
+stop tokens).
+
+Departure from the design ("greedy decoding to the end marker"): what is
+scored is the answer's first line, so scoring stops each answer at its first
+line break (or after `longest` = 6 tokens), which every answer of the five
+tasks fits in (the longest, a reversed word of 6 letters, is 4 tokens). The
+end marker is trained on, and the default run decodes six answers on to it
+and counts how many wrote it (6 of 6). Why: generating without a cache of
+keys and values costs a whole forward a token, and going on to the marker
+(6 more tokens) took the default run past a minute (71 s at load 13 to 15
+with 10 tokens and 2 seeds).
+
+The default (LoRA at rank 8 on W_q and W_v, alpha 8, 294,912 trained
+weights; 2,000 examples drawn for each seed from the training instances in
+the trained wordings; 80 steps of 8, AdamW 0.003, warmup 4 then cosine; 2
+seeds; scored on 12 held-out instances of each task, 60 in each row):
+
+    exact match, 60 answers each    GPT-2 as it is    fine-tuned, 2 seeds
+    held-out instances, trained     0.000             0.375 +- 0.0354 (0.35, 0.40)
+    the held-out wording            0.000             0.342 +- 0.0118 (0.333, 0.35)
+    smaller, never trained          0.000             0.108 +- 0.0118 (0.10, 0.117)
+
+By task (held-out instances, trained wordings): larger 0.92, sort 0.42,
+upper 0.04, reverse 0.00, count 0.50. Six answers decoded on to the end
+marker: 6 of 6 wrote it ('Give the larger number: 68 or 17.' -> '68\n<|end|>';
+'Make curtsy all capitals.' -> 'TACHT\n<|end|>'; 'Which is smaller, 47 or
+59?' -> '59\n<|end|>'). 50 s at load 9 to 11; 58 and 56 s at load 18 to 29;
+the same digits each time. The slowest default of the module: if verify
+sees it past 55 s at a load under 6, cut steps to 60 (60 steps of 16 gave
+0.442 / 0.358 / 0.100 in 71 s at load 13 to 15; 60 of 8 not measured).
+
+Spikes (mps, 1 seed, the same scoring but 10 tokens and the marker as the
+stop): 150 steps of 16, 3,000 examples: 0.567 / 0.500 / 0.000 (by task
+larger 0.92, sort 0.92, upper 0.42, reverse 0.00, count 0.58); 300 steps:
+0.617 / 0.467 / 0.000 (larger 1.00, sort 1.00, upper 0.50, reverse 0.00,
+count 0.58). CPU, 60 steps of 16, 2 seeds: 0.442, 0.358, 0.100.
+What held and what did not (no paper: the design's own claims): GPT-2 as it
+is answers nothing right in the template (0 of 180): it goes on with the
+user's turn ("Give the smaller number: 0", "Put 6, 3, 8", "Write chance in
+letters."). Fine-tuned for a minute it answers in the template and stops;
+larger and sort are learned first, count is about half right (the rate at
+which "0" or "1" is right), upper partly, reverse never: a word's letters
+backwards are not GPT-2's tokens backwards ("curtsy" became "TACHT" in
+capitals, a wrong word). Held-out wordings of trained tasks: close to the
+trained wordings. The task never trained: GPT-2 answers "smaller" with the
+larger number ("Which is smaller, 47 or 59?" -> 59): it learned the format
+and the tasks, not to read the instruction. Counted on seed 1 of an earlier
+default run (the same settings): of its 60 answers to "smaller", 51 were the
+larger number, 7 the smaller (right), 2 neither ("Of 94 and 55, which is
+less?" -> 54). With longer training (spikes) the trained tasks rise and
+"smaller" falls to 0.
+
+### 12.04 What fine-tuning forgot: measuring before and after
+
+tuning.py: text_bits (a GPT's bits per character on an untuned text's GPT-2
+tokens: 09.03's window_bits, windows of 1024 read from 64 on, and 09.01's
+per_character, which counts bytes), weights (the weights a GPT computes
+with under GPT's own names, a LoRA layer as W + (alpha / r) B A), moved
+(the length of the change of all weights laid end to end over the length of
+the starting weights). forgetting.py: at_accuracy (the untuned bits on the
+straight line between the two evaluations where a run's validation
+accuracy first reaches a level). The untuned texts: Tiny Shakespeare's test
+text (55,770 characters, 17,995 GPT-2 tokens; GPT-2 as published scores
+1.851 bits per character, 09.03's number, and the recorded head alone gives
+1.8511 again) and the first 50 held-out TinyStories (GPT-2: 0.8257 bits per
+byte: the stories have a few characters that are not ASCII, so the measure
+is per byte; 09.04 had 0.836 on the first 2,000). The recorded run logged
+the first 2,048 tokens of the Shakespeare text at every evaluation (GPT-2:
+1.8152 there).
+
+The classifier (12.02's recorded run; the mean of 3 seeds; GPT-2 before:
+Shakespeare 1.8511, TinyStories 0.8257):
+
+    method        test acc.   Shakespeare           TinyStories          moved
+    head          0.8277      1.8511 (+0)           0.8257 (+0)          0
+    LoRA r=1      0.8860      1.8838 (+0.033)       0.8329 (+0.007)      0.0134
+    LoRA r=4      0.8894      1.8767 (+0.026)       0.8279 (+0.002)      0.0080
+    LoRA r=8      0.8876      1.8747 (+0.024)       0.8287 (+0.003)      0.0066
+    every weight  0.9001      1.8449 (-0.006)       0.8469 (+0.021)      0.0049
+
+Seed by seed, Shakespeare: every weight 1.8825, 1.7833, 1.8690 (one seed
+0.07 bits better than GPT-2 itself, one 0.03 worse); LoRA r=8 1.8803,
+1.8463, 1.8976; so LoRA against every weight is t = +0.9 to +1.2 there,
+within the noise. TinyStories: every weight 0.8590, 0.8351, 0.8467; LoRA
+r=8 0.8294, 0.8248, 0.8318: LoRA forgot less, t = -2.0, -2.7, -2.5 (r = 1,
+4, 8): beyond the noise, not by much. At the same accuracy (validation
+0.80, 0.85, 0.88; the 2,048-token slice, 1.8152 before; 0.88 was reached by
+2 of 3 seeds of each LoRA rank): LoRA r=1 1.842 / 1.845 / 1.840, r=4 1.834 /
+1.837 / 1.833, r=8 1.840 / 1.841 / 1.830, every weight 1.809 / 1.810 /
+1.811. As found: whether LoRA forgets less depends on the text. On held-out
+TinyStories it did (0.002 to 0.007 bits per byte worse than GPT-2, against
+0.021); on Shakespeare's test text it did not (0.024 to 0.033 worse, where
+every weight trained ended 0.006 better on average, with a large spread
+over seeds; at the same validation accuracy on the slice, LoRA 0.02 to
+0.03 worse, every weight about 0.005 better). How far the weights moved
+does not order the forgetting: LoRA moved the weights further than every
+weight trained (0.0066 to 0.0134 of their length, the most at rank 1, whose
+change is scaled by alpha / r = 8, against 0.0049), all of it in the 24
+matrices W_q and W_v, and the whole fine-tune moved least yet forgot most
+on TinyStories. A move of about a percent of the weights' length changes
+the untuned bits by a few hundredths at most: none of these fine-tunes is
+close to forgetting how to write English.
+
+The instruction model (forgetting.py's part 3, run in the default: GPT-2
+tuned on the five trained tasks for 30 steps of 8 examples, LoRA at rank 8
+and lr 3e-3, and every weight at 6.25e-5, 2 seeds each; scored on 4
+held-out instances of each task and on the first 1,024 tokens of
+Shakespeare's test text, where GPT-2 is at 1.8072 and answers 0 of 20):
+
+    method   exact match            Shakespeare, first 1,024 tokens         moved
+    LoRA     0.4 +- 0.0707          1.792 +- 0.02874 (1.772, 1.813)          0.0061
+    every    0.4 +- 0               1.708 +- 0.01123 (1.700, 1.716)          0.0025
+
+At the same exact match, every weight trained made the untuned text more
+likely, not less: 0.10 bits per character below GPT-2 (LoRA 0.015 below;
+t = +3.8). Why is not measured; a guess, not a finding: short lines in a
+template that names the speaker suit a text of short speeches after names
+on lines of their own. A small run (1,024 tokens, 30 steps, 2 seeds);
+TinyStories is left out of the default for time (stories=10 adds it: in an
+earlier run of 40 steps, GPT-2 0.8352 bits per byte on 10 stories, LoRA
+0.8317, every weight 0.8295; Shakespeare 1.787 and 1.752). The classifier's
+whole fine-tune moved Shakespeare's bits by -0.07 to +0.03 depending on the
+seed: a short fine-tune moves the untuned bits by a few hundredths either
+way, and the direction is not a property of the method alone.
+Times: 41 and 41 s at load 12 to 18, the same digits; an earlier version
+with 40 steps and TinyStories took 84 s at load 11 to 16, so it was cut to
+30 steps and stories=0.
+
+### Departures from the design, and why
+
+- The head reads the body's vector standardised (Classifier's center and
+  spread, set from the training questions before any training). Not in the
+  design or the paper: found necessary (12.01: 0.19 against 0.77 at 3,000
+  questions, 0.26 against 0.86 on all of them).
+- The last position is END (GPT-2's <|endoftext|>, appended to every
+  question), not the question's own last token: GPT-2's counterpart of
+  Radford et al.'s end token; 2.5 points better for the frozen body.
+- No auxiliary language-model loss (Radford et al.'s lambda 0.5).
+- 12.01's default runs on 3,000 training questions and 770 test questions,
+  for the minute; the same script on all of it is quoted above (69 s); the
+  fine-tuned body is 12.02's recorded run, as the design allowed.
+- Every method's rate was chosen on validation, the baselines' too.
+- LoRA's A is Gaussian with sd 1 / sqrt(in_features) (the paper gives no
+  sd; the authors' code uses a uniform start); alpha 8 and lr 1e-3 at every
+  rank.
+- The long run is 600 steps (one pass, 9,600 questions), 3 seeds, 5
+  methods; it took 63 min 24 s of wall clock at load 9 to 25, over the hour
+  by 3.4 minutes because of other agents' runs (about 44 minutes at the
+  load it started at). Not rerun.
+- Times are not in the recorded summaries (the convention: summary.json
+  stays byte-identical); the long run printed each run's time a step into
+  output.txt, and lora.py's part 3 measures the two steps back to back.
+- lora.py's 12.04 measures (text_bits, moved, the TinyStories and
+  Shakespeare texts, their settings) are @from 12.04 blocks; the recorded
+  run was made with the final code, so its logs have them from 12.02.
+- 12.03 scores each answer's first line and stops decoding at the line
+  break, not at the end marker (time); six answers are decoded on to the
+  marker and the run counts how many wrote it. LoRA, 80 steps of 8, in the
+  default.
+- 12.04's instruction-model comparison is a small live run (30 steps, 2
+  seeds, 1,024 tokens of Shakespeare, no TinyStories by default); the
+  classifier's comes from the long run.
+
+### What held, in one place
+
+- Radford et al. (2018): fine-tuning a pretrained body with a new linear
+  head beats the same transformer trained from nothing on the labelled set
+  alone: 0.900 against 0.793 (held, at laptop size). The frozen body with a
+  new head, which the paper does not test, is below a tuned bag of words.
+- Hu et al. (2021): under 1% of the weights trained (0.08% to 0.28% with the
+  head) gets within 1.1 to 1.4 points of every weight trained (88.6 to 88.9
+  against 90.0) and far above the head alone (82.8); rank 1 is as good as 8.
+  "On-par or better": did not hold here (t = -4 to -6, 3 seeds, 600 steps);
+  LoRA was ahead early in training. Memory: training added 1,045 MiB with
+  LoRA against 2,979 MiB, the paper's "up to 2/3" saved (held); a LoRA step
+  is 0.50 to 0.58 of a whole step back to back on this CPU.
+- 12.03 (no paper): a minute of LoRA teaches GPT-2 the template, the end
+  marker and the easy tasks; held-out wordings almost as well as trained
+  ones; the untrained "smaller" is answered with the larger number.
+- 12.04 (no paper): whether LoRA forgets less depends on the text
+  (TinyStories yes, t = -2.0 to -2.7; Shakespeare no, within noise and in
+  the other direction); distance moved does not order forgetting.
+
+### Tests (module 12)
+
+`./learn test research 12`: 4 tests, all pass; 12.01 101.8 s, 12.02 72.7 s,
+12.03 90.0 s, 12.04 86.1 s (5 min 15 s for the four, load 12 to 21, other
+agents' runs and check-timelines going). Each runs its exact checks first
+(inside(), no download), then `T.need(t, "gpt2")` (and "banking77" for 12.01
+and 12.02, which fail with "missing:" and the fetch command without them):
+- 12.01: pad; last_states against each text run alone (1e-12, float64),
+  padding changes nothing (exactly); Classifier's start, standardise,
+  scores against the formula, the last token changes a text's scores and
+  no other's; vectors in the texts' order; accuracy on texts and on vectors
+  against a direct count; fit trains only what needs a gradient (a frozen
+  body is unchanged bit for bit, with vectors given the body is not run),
+  logs every `every` steps; words, bag; data/banking77.py on files written
+  by the test (a LEARN_CACHE of its own, DATASETS' sizes patched: the
+  validation cut, test.csv whole with a quoted comma, a training question
+  the same as a test question left out); with the data, the real sizes
+  (8,997, 1,000, 3,080, 40 of each intent in test) and no training question
+  the same as a scored one; then classify's default (the bag of words above
+  0.7 and far above the largest class, standardised more than 0.3 above
+  raw, frozen body and small GPT above 0.65 and 0.6, frozen below the bag of
+  words, fewer questions lower; the lopsided numbers named); a tiny run
+  twice, the same bytes.
+- 12.02: LoRA's shapes, start (exactly the frozen layer), frozen linear, the
+  formula (1e-12), delta; adapt on a small GPT: the model's own scores
+  exactly, trained count = 2 x (2 L) x W x r, only A and B need and get
+  gradients; trained, merge gives the adapter's scores (1e-10, float64) and
+  GPT's own names; the recorded run's files (every method, 3 seeds, the same
+  config but seed and method, the log from 0 to 599 with valid,
+  untuned_bits and moved, no weights) and result (every weight above the
+  head by 3 points, each LoRA rank 2 points above the head and within 2 of
+  every weight, under 1% trained); with GPT-2: rank 1 trains 36,864, the
+  adapted model's scores exactly GPT-2's; the default (counts against the
+  formula, 0 at the start, the merge under 1e-3, a LoRA step quicker than a
+  whole one, the recorded accuracies printed); a tiny train=True twice, the
+  same bytes. LEARN_RERUN_LONG=1 runs the long run again (about an hour).
+- 12.03: every task's answer against a computation written apart (200
+  instances of each part), count's "0" between 20% and 80%, train and held
+  parts disjoint (words, pairs, digits), held-out words only in held
+  instances, the wordings' split, the template's lines; answer_loss against
+  a direct sum (1e-10); tune changes exactly the parameters that need a
+  gradient; answers against greedy steps one prompt at a time, groups by
+  length, the stop; with GPT-2's files the markers' counts (5, 6, 5) and
+  the join of prompt and reply tokens equal to the whole example's tokens
+  (every task, every wording, 40 instances) and decoding back; the default
+  (GPT-2 below 0.1 everywhere; tuned over 0.25 on held-out instances; 60
+  answers a set; "smaller" mostly answered with the larger); a tiny run
+  twice.
+- 12.04: at_accuracy on rows whose answers are known; weights equal to
+  merge's (1e-12), moved 0 and 0.1 exactly; text_bits against window_bits
+  and per_character; the recorded run's head at GPT-2's 1.851 and unmoved,
+  the others moved; the default (the recorded table, two seeds of each
+  instruction model, GPT-2's bits before); a tiny run twice.
+`./learn check-skeleton research 12`: ok, 5 s (12.01 fails at pad, 12.02 at
+LoRA, 12.03 at words, 12.04 at at_accuracy).
+
+### For the harness, and what a page writer meets
+
+- No harness change. track.py's module-12 block (last in the file) keeps
+  module 12's experiments in a table of its own, TWELVE, and wraps
+  timeline_boot: DATASET_OF names one download per experiment and classify
+  and lora need two (GPT-2's files and Banking77); for each, the timeline
+  runs it where both are here, else expects the "is missing" line of the
+  first one missing, in the order the scripts check them. TOOLS gains
+  "banking77" (so a session says needs="torch gpt2 banking77" for 12.01 and
+  12.02, needs="torch gpt2" for 12.03 and 12.04); DATASET_FILES and
+  DATASET_NAMES gain it, so need(t, "banking77") works as for module 09's.
+  FILES_FROM places experiments/lora.py at 12.02 and experiments/instruct.py
+  at 12.03 (no regions of their own) and "experiments/recorded/lora/*" at
+  12.02, first, as the other modules' recorded runs; DATA names it.
+- Region titles that are ordinary words, for lead-ins: words, bag, split,
+  same, classes (data/banking77.py), pad, vectors, accuracy, fit, tune,
+  answers, weights, moved, reply, chat, instances, wordings. split, classes
+  and load exist in earlier lessons' files too (09.02's split, 07.01's
+  split); no lesson has two regions of one name.
+- experiments/tuning.py has regions of all four lessons; at 12.01 a page
+  shows pad, vectors, accuracy and fit only.
+- forgetting.py's and lora.py's defaults read experiments/recorded/lora, which
+  the project has from 12.02.
+
+### For module 13 and after: Banking77, the classifier, LoRA
+
+- The labelled set: `from data import banking77`; `banking77.split("train" |
+  "valid" | "test")` gives (texts, labels), 8,997 / 1,000 / 3,080, 77 classes
+  (`banking77.classes()`), the validation part cut once by SEED 0, training
+  questions that are the same as a scored one (`banking77.same`) left out.
+  Its 77 balanced test classes and its 10-second frozen read make it a good
+  bench for 13.01 to 13.03: the bag of words against the frozen body is
+  already a "baseline tuned as hard as the method" story (12.01: at its
+  untuned rate, 1e-3, the bag of words is behind the frozen body; at its own
+  best, 3e-2, it is ahead at every size), and the duplicates counted here
+  (7 test questions with a twin in train.csv by same(); one of those twins in
+  validation) are 13.03's "duplicates between train and test".
+- A classifier on GPT-2: `Classifier(models.gpt2.load(dev), 77)`, then
+  `model.standardise(vectors(model, seqs, END, dev))` on training questions
+  (seqs: `tok.encode(text) + [gpt2.END]`), then experiments/tuning.py's
+  `fit(model, cfg, run, dev, seqs, labels, END, measure)` (cfg: steps, batch,
+  lr, head_lr, weight_decay, warmup, every) and `accuracy(model, seqs,
+  labels, END, dev)`. Freeze the body (`requires_grad_(False)`) and pass the
+  vectors instead of the texts to train only the head, about 1 ms a step.
+- LoRA: `models.lora.adapt(model.body, r, alpha)` before fit; `merge` after,
+  for a plain GPT again (the same scores to rounding, GPT's own names, so
+  experiments/language.py's save and load take it).
+- No weights are shipped: a module that needs a fine-tuned GPT-2 trains one
+  (LoRA at rank 8, 600 steps of 16: about 2.3 minutes on this CPU, 0.88 to
+  0.89 on test).
+- Times on this CPU (load about 10): GPT-2 small loaded 1.3 to 1.5 s; read
+  at 5,400 to 5,700 tokens a second; a training step of 16 questions 400 ms
+  whole, 230 ms LoRA; peak memory of a whole fine-tune about 4.4 GB.
