@@ -79,6 +79,7 @@ MODULE_DIRS = {
     "03": "03-optimisers",
     "04": "04-deep-networks",
     "05": "05-generalisation",
+    "06": "06-images",
 }
 
 
