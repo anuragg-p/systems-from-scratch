@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 288" fill="none">
+<title>The footnote at four sizes: the spread of the scores and the largest softmax weight over 32 positions, without and with the division by sqrt(d)</title>
+<defs><marker id="scale0801-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="scale0801-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="scale0801-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="50" y1="203.4" x2="200" y2="203.4" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="44" y="206.94" font-size="10.5" text-anchor="end">1</text>
+<line class="m" x1="50" y1="175.1" x2="200" y2="175.1" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="44" y="178.63" font-size="10.5" text-anchor="end">2</text>
+<line class="m" x1="50" y1="146.8" x2="200" y2="146.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="44" y="150.33" font-size="10.5" text-anchor="end">4</text>
+<line class="m" x1="50" y1="118.5" x2="200" y2="118.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="44" y="122.03" font-size="10.5" text-anchor="end">8</text>
+<line class="m" x1="50" y1="90.2" x2="200" y2="90.2" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="44" y="93.72" font-size="10.5" text-anchor="end">16</text>
+<line class="m" x1="50" y1="61.9" x2="200" y2="61.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="44" y="65.42" font-size="10.5" text-anchor="end">32</text>
+<line class="m" x1="61.43" y1="218" x2="61.43" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="61.43" y="234" font-size="10.5" text-anchor="middle">16</text>
+<line class="m" x1="103.74" y1="218" x2="103.74" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="103.74" y="234" font-size="10.5" text-anchor="middle">64</text>
+<line class="m" x1="146.04" y1="218" x2="146.04" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="146.04" y="234" font-size="10.5" text-anchor="middle">256</text>
+<line class="m" x1="188.35" y1="218" x2="188.35" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="188.35" y="234" font-size="10.5" text-anchor="middle">1024</text>
+<rect class="m" x="50" y="48" width="150" height="170" rx="0" stroke-width="1.5"/>
+<text class="tm" x="125" y="250" font-size="11.5" text-anchor="middle">d</text>
+<text class="t" x="44" y="38" font-size="11.5" font-weight="600">the scores&#x27; sd</text>
+<polyline class="s" points="61.4,146.9 103.7,119.0 146.0,90.2 188.4,62.2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="61.43" cy="146.93" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="103.74" cy="118.99" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="146.04" cy="90.25" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="188.35" cy="62.22" r="3" stroke-width="1.5"/>
+<polyline class="a" points="61.4,203.0 103.7,203.4 146.0,203.4 188.4,203.8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="61.43" cy="203.03" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="103.74" cy="203.44" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="146.04" cy="203.44" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="188.35" cy="203.85" r="3" stroke-width="1.5"/>
+<text class="t" x="68.43" y="150.93" font-size="9.5">3.99</text>
+<text class="t" x="98.74" y="113.99" font-size="9.5" text-anchor="end">7.91</text>
+<text class="t" x="141.04" y="85.25" font-size="9.5" text-anchor="end">16</text>
+<text class="t" x="183.35" y="57.22" font-size="9.5" text-anchor="end">31.8</text>
+<text class="tm mono" x="249" y="221.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="255" y1="175.5" x2="405" y2="175.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="249" y="179" font-size="10.5" text-anchor="end">0.25</text>
+<line class="m" x1="255" y1="133.0" x2="405" y2="133.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="249" y="136.5" font-size="10.5" text-anchor="end">0.5</text>
+<line class="m" x1="255" y1="90.5" x2="405" y2="90.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="249" y="94" font-size="10.5" text-anchor="end">0.75</text>
+<text class="tm mono" x="249" y="51.5" font-size="10.5" text-anchor="end">1</text>
+<line class="m" x1="266.43" y1="218" x2="266.43" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="266.43" y="234" font-size="10.5" text-anchor="middle">16</text>
+<line class="m" x1="308.74" y1="218" x2="308.74" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="308.74" y="234" font-size="10.5" text-anchor="middle">64</text>
+<line class="m" x1="351.04" y1="218" x2="351.04" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="351.04" y="234" font-size="10.5" text-anchor="middle">256</text>
+<line class="m" x1="393.35" y1="218" x2="393.35" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="393.35" y="234" font-size="10.5" text-anchor="middle">1024</text>
+<rect class="m" x="255" y="48" width="150" height="170" rx="0" stroke-width="1.5"/>
+<text class="tm" x="330" y="250" font-size="11.5" text-anchor="middle">d</text>
+<text class="t" x="249" y="38" font-size="11.5" font-weight="600">the largest weight (of 32)</text>
+<polyline class="s" points="266.4,110.9 308.7,80.0 351.0,63.0 393.4,56.3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="266.43" cy="110.9" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="308.74" cy="79.96" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="351.04" cy="62.96" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="393.35" cy="56.33" r="3" stroke-width="1.5"/>
+<polyline class="a" points="266.4,189.9 308.7,189.9 351.0,190.3 393.4,190.1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="266.43" cy="189.95" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="308.74" cy="189.95" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="351.04" cy="190.29" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="393.35" cy="190.12" r="3" stroke-width="1.5"/>
+<line class="m" x1="255" y1="212.69" x2="405" y2="212.69" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="401" y="207.69" font-size="10.5" text-anchor="end">equal: 1/32</text>
+<text class="t" x="387.35" y="51.33" font-size="9.5" text-anchor="end">0.951</text>
+<text class="ta" x="387.35" y="184.12" font-size="9.5" text-anchor="end">0.164</text>
+<text class="tm mono" x="454" y="221.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="460" y1="161.3" x2="610" y2="161.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="454" y="164.83" font-size="10.5" text-anchor="end">0.1</text>
+<line class="m" x1="460" y1="104.7" x2="610" y2="104.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="454" y="108.17" font-size="10.5" text-anchor="end">0.2</text>
+<text class="tm mono" x="454" y="51.5" font-size="10.5" text-anchor="end">0.3</text>
+<line class="m" x1="471.43" y1="218" x2="471.43" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="471.43" y="234" font-size="10.5" text-anchor="middle">16</text>
+<line class="m" x1="513.74" y1="218" x2="513.74" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="513.74" y="234" font-size="10.5" text-anchor="middle">64</text>
+<line class="m" x1="556.04" y1="218" x2="556.04" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="556.04" y="234" font-size="10.5" text-anchor="middle">256</text>
+<line class="m" x1="598.35" y1="218" x2="598.35" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="598.35" y="234" font-size="10.5" text-anchor="middle">1024</text>
+<rect class="m" x="460" y="48" width="150" height="170" rx="0" stroke-width="1.5"/>
+<text class="tm" x="535" y="250" font-size="11.5" text-anchor="middle">d</text>
+<text class="t" x="454" y="38" font-size="11.5" font-weight="600">the gradient back</text>
+<polyline class="s" points="471.4,75.8 513.7,120.0 556.0,165.9 598.4,188.9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="471.43" cy="75.77" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="513.74" cy="119.97" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="556.04" cy="165.87" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="598.35" cy="188.93" r="3" stroke-width="1.5"/>
+<polyline class="a" points="471.4,89.4 513.7,86.5 556.0,87.7 598.4,87.1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="471.43" cy="89.37" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="513.74" cy="86.53" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="556.04" cy="87.67" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="598.35" cy="87.1" r="3" stroke-width="1.5"/>
+<text class="t" x="592.35" y="200.93" font-size="9.5" text-anchor="end">0.0513</text>
+<text class="t" x="477.43" y="71.77" font-size="9.5">0.251</text>
+<polyline class="s" points="50.0,270.0 72.0,270.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="78" y="274" font-size="11">without the division: q . k</text>
+<polyline class="a" points="256.4,270.0 278.4,270.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="284.38" y="274" font-size="11">divided by sqrt(d): q . k / sqrt(d)</text>
+</svg>

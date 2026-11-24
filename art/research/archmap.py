@@ -23,7 +23,9 @@ The map is the whole core (modules 00 to 15) as layers, the lab under everything
 (Until module 06 the data was a column beside the experiments and the engine; module 06 gave
 the engine and the experiments a seventh and sixth piece, and the data a fourth, which a column
 had no room for, so the data became a row of its own. Module 07 adds the text to the data, the
-language experiments, and the language models' piece, which its 07.02 to 07.04 share.)
+language experiments, and the language models' piece, which its 07.02 to 07.04 share. Module 08
+adds the GPT, models/gpt.py, the piece of 08.01 to 08.04; its 08.05, the sampler, is the
+language experiments' piece, which modules 07 and 08 share.)
 
 In each lesson's copy, that lesson's piece (LESSONS below: exactly one per lesson) is drawn in
 the accent colour, every piece whose code has arrived by that lesson (PIECES: the lesson it
@@ -63,10 +65,10 @@ PIECES = {
     "13": ("research", "experiments that hold up", "13", None),
     "14": ("research", "the reproduction", "14", None),
     "15": ("research", "your own result", "15", None),
-    # models: models/, one file per network family (06 on); the modules after 06 not built yet
+    # models: models/, one file per network family (06 on); the modules after 08 not built yet
     "06": ("models", "image networks", "06", "06.02"),
     "07": ("models", "language models", "07", "07.02"),
-    "08": ("models", "the GPT", "08", None),
+    "08": ("models", "the GPT", "08", "08.01"),
     "09": ("models", "real weights", "09", None),
     "10": ("models", "today's architecture", "10", None),
     "11": ("models", "fast", "11", None),
@@ -78,7 +80,7 @@ PIECES = {
     "deep": ("experiments", "deep networks", "module 04", "04.01"),
     "general": ("experiments", "generalisation", "module 05", "05.01"),
     "images": ("experiments", "images", "module 06", "06.01"),
-    "text": ("experiments", "language", "module 07", "07.01"),
+    "text": ("experiments", "language", "modules 07-08", "07.01"),
     # the data: data/
     "points": ("data", "points", "made from a seed", "01.04"),
     "mnist": ("data", "MNIST", "fetched once", "03.01"),
@@ -139,6 +141,11 @@ LESSONS = [
     ("07.02", "Embeddings and a network: a neural language model", "07", "embeddings"),
     ("07.03", "A recurrent network, and how it forgets", "07", "a recurrent network"),
     ("07.04", "Attention: looking back at every position", "07", "attention"),
+    ("08.01", "Self-attention with a causal mask", "08", "self-attention"),
+    ("08.02", "Many heads, and the residual stream", "08", "heads, the stream"),
+    ("08.03", "Where am I: position embeddings", "08", "positions"),
+    ("08.04", "Training a GPT on Shakespeare", "08", "training a GPT"),
+    ("08.05", "Sampling: temperature, top-k and top-p", "text", "sampling"),
 ]
 
 MODULE_TITLES = {
@@ -150,6 +157,7 @@ MODULE_TITLES = {
     "05": "Generalisation",
     "06": "Images: convolution and residual networks",
     "07": "Language models, from counting to attention",
+    "08": "The transformer: a GPT",
 }
 
 # The rows, top to bottom: key -> its label over the row.

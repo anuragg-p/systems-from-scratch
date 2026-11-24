@@ -1407,6 +1407,20 @@ threads fighting for cores); 45 s with OMP_NUM_THREADS=1 at load 5 to 8.
 The same digits every way. The slowest default of the module; fewer
 steps or layers=3 would shorten it, with what effect on the table not
 measured.
+Cut to 2 seeds by the lessons agent (the plan's rule: verifying, at load
+10 to 13 with another agent training, the 3-seed default took 82 s, over
+55; 08.01's took 44 s there against its 15 to 17). The default is now
+seeds=2 (heads.py CONFIG): 1 attention layer `3.715 +- 0.02878`, 4 layers
+`4.597 +- 0.007313`, t = +42.0; 1 block `3.503 +- 0.007851`, 4 blocks
+`3.406 +- 0.01263`, t = -9.2; 4 blocks of 1 head `3.43 +- 0.02069` against
+4 heads, t = -1.3 (within the noise at 2 seeds; the 3-seed numbers above
+are `heads seeds=3`, which 08.02's page runs again, trimmed to part 3);
+part 4 is seed 0's and unchanged. 44 s at load about 10 (the same run, 3
+seeds, 82 s); at load 6 not timed (two thirds of 45 s would be 30). The
+test already ran
+heads with seeds=2, so it is unchanged. 08.03's positions.py keeps 3
+seeds: its no-positions row (3.407) is the 3-seed number, not 08.02's
+default any more.
 
 **08.03 Where am I: position embeddings (Vaswani et al. 2017, section
 3.5).** experiments/positions.py, the same settings as 08.02 (4 blocks of
@@ -1732,6 +1746,93 @@ nucleus each below 95% of pure sampling's.
 taking 4 to 5 cores); 72 and 110 s earlier at load 10 to 16 with other
 agents' runs going. The same output each time.
 
+**The pages (module 08's lessons agent, 2026-11-24).** The lessons are in
+lessons/08-transformer/ (slug as 06-images, 07-language-models), with the
+module page, cover and icon (art/outlines/research_art.py now reads
+08.04's recorded run and asserts its numbers) and 18 figures from
+art/research/figs08.py (about four minutes of runs; RESEARCH_FIGS_CACHE
+keeps them). The generator trains three models again in the project at
+their lesson, 08.01's masked OneHead (seed 0), 08.03's GPT with
+positions (seed 0) and 08.05's small model, and stops unless each scores
+what the page's run printed. Every default run printed on the pages gave
+the digits above, run by run (08.02 in 45 s at load 6 to 7; then 82 s
+when verifying at load 10 to 13, so cut to 2 seeds, see 08.02 above).
+Read at the sources for the pages, beyond what is above:
+- Vaswani et al., the PDF of arXiv 1706.03762v7: section 3.1, the norm
+  after the addition, LayerNorm(x + Sublayer(x)); 3.2.2, "Multi-head
+  attention allows the model to jointly attend to information from
+  different representation subspaces at different positions. With a
+  single attention head, averaging inhibits this." and "Due to the
+  reduced dimension of each head, the total computational cost is similar
+  to that of single-head attention with full dimensionality."; 3.3,
+  "applied to each position separately and identically", inner layer
+  2048 for 512; 3.4, "we share the same weight matrix between the two
+  embedding layers and the pre-softmax linear transformation"; 3.5, "The
+  positional encodings have the same dimension d_model as the embeddings,
+  so that the two can be summed." and the sentence on learned positions;
+  5.3, Adam with warmup_steps = 4000, then the rate falls as one over the
+  square root of the step; 5.4, Residual Dropout: "We apply dropout to the
+  output of each sub-layer, before it is added to the sub-layer input and
+  normalized. In addition, we apply dropout to the sums of the embeddings
+  and the positional encodings in both the encoder and decoder stacks."
+  (base rate 0.1); table 3 rows (A), (C) and (E) as quoted above, and row
+  (D): dropout 0.0 5.77 / 24.6, 0.2 4.95 / 25.5, with "dropout is very
+  helpful in avoiding over-fitting" under the table.
+- Radford et al. (2019), section 2.3, in the PDF: "Layer normalization (Ba
+  et al., 2016) was moved to the input of each sub-block, similar to a
+  pre-activation residual network (He et al., 2016) and an additional
+  layer normalization was added after the final self-attention block."
+- Haviv et al. (2022), the paper itself now (arXiv 2203.16634v2, Findings
+  of EMNLP 2022), not only its abstract: table 1, validation perplexity
+  without positions against learned ones, 20.97 against 20.42 on
+  WikiText-103 (a 247M model, 512 tokens) and 13.10 against 13.05 on the
+  Pile (1.3B, 1024 tokens); table 2, 125M to 1.3B; section 5, shuffling
+  the tokens before one token of a model without positions raises its
+  loss "from ~4 to ~11"; section 6 and table 4, a masked language model
+  without positions: perplexity 147.18 against 4.06 with learned ones
+  ("training without positional encodings (NoPos) fails").
+- Holtzman et al. (arXiv 1904.09751v2, ICLR 2020), in the PDF: table 1
+  and figure 9's caption as quoted above; GPT-2 Large, 762M, 5,000
+  passages of up to 200 tokens after 1 to 40 tokens of held-out WebText;
+  temperature is their equation 4; section 3.1, "selecting the highest
+  probability tokens whose cumulative probability mass exceeds the
+  pre-chosen threshold p"; 4.2, "we argue that the optimal generation
+  strategy should produce text which has a perplexity close to that of
+  the gold text".
+- nanoGPT's README: the Shakespeare character model, "a 6-layer
+  Transformer with 6 heads in each layer", "a context size of up to 256
+  characters, 384 feature channels", "the best validation loss is 1.4697"
+  (nats; 2.120 bits, on its own split), about 3 minutes on one A100;
+  model.py: the c_proj scaling by 0.02/math.sqrt(2 * config.n_layer), the
+  decay groups by p.dim() >= 2, generate's temperature and top_k.
+Not checked, so not on the pages: the content of Karpathy's video beyond
+its description, and what chapter 5 of Raschka's book does with sampling.
+The Break its, run on the project at each lesson (same machine):
+- 08.01, `.tril(1)` in causal_mask (each position also sees the next
+  character): "masked" last batch 2.34, test as trained 2.307, past only
+  4.592 (worse than no mask), its text 300 newlines; part 3, one position
+  changed, by 0.811; part 1's trained rows 4.592 and 4.277 (both leak).
+- 08.02, both `x +` out of Block.forward: 1 block 3.639, 4 blocks 4.82 (t
+  = +40.2), 4 blocks of 1 head 4.853; every head of blocks 2 to 4 at 11.1
+  back.
+- 08.03, Positions adding row 0 at every place: learned positions 3.416
+  against none 3.407 (t = +1.0); order test 3.18; the last 32 before each
+  3.430; block 1's heads near equal again.
+- 08.04, load() without load_state_dict: "the same scores, number for
+  number: False", and the text is equal chances (8 of its 500 characters
+  are $).
+- 08.05, top_p without "- chances": a RuntimeError from torch.multinomial
+  at the nucleus (every score -inf where the likeliest has 0.95 or more).
+  Tried first and not used: held_bits without eval(), which changes the
+  training itself (dropout's draws move torch's generator: dropout 0.2
+  test 3.458 instead of 3.474).
+Seen while drawing: 08.01's trained head (seed 0, masked) puts 0.93 to 1
+of a row's weight on its own position for most characters and splits it
+evenly between equal characters (0.49 and 0.49 for two spaces, a third
+each for three, the o of "ho" half on the o of "Not"): equal keys. 08.05's
+small model after prompt 1 gives "t" 0.22, and its nucleus at 0.95 keeps
+18 of the 65 characters.
+
 ## For module 08: what module 07 leaves ready
 
 - The text: `from data import shakespeare`; `shakespeare.split("train")`
@@ -2042,6 +2143,20 @@ with its glob first) and 171 at 08.05; 06.04 still 98 and 07.02 145.
 `./learn selftest` ok (269 tests). `./learn check` reports exactly nine
 problems, `research/07.0N` and `research/08.0N: test has no lesson doc`;
 nothing else.
+With module 08's pages (lessons agent, 2026-11-24; another agent training
+on the machine, load 7 to 13): `./learn verify --fresh research 08` ok in
+534 s (08.01 55 s, 08.02 154 s with its seeds=3 run, 08.03 119, 08.04
+103, 08.05 103); inside it 08.01's default printed 44 s and 08.02's 2-seed
+default 43 s. `./learn test research 08` all 5 pass, 3 min 46 s, after
+the 2-seed cut. `./learn check` ok, no problems; `./learn check-skeleton
+research` ok; `./learn check-timeline research` ok (153 to 171 files at
+08.01 to 08.05, as before); `./learn selftest` ok (269 tests). Two things
+a writer here meets: `./learn verify --static` takes another project's
+file named in backticks (`model.py`, `gpt_train.py`) for this project's,
+so a Go deeper line that names one needs a `mention ... outside`
+annotation; and a transcript pasted by hand can be a character off (a
+line of 300 sampled characters was): check each line against the run's
+saved output before verifying.
 
 ## For the harness work and module 06
 

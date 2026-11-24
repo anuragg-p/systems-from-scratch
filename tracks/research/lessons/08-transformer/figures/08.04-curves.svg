@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 316" fill="none">
+<title>The recorded long run: bits per character of the training batch (dashed) and of the 64 validation windows (solid) every 100 steps, two seeds without dropout and two with 0.2; each seed&#x27;s lowest validation point marked</title>
+<defs><marker id="curves0804-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="curves0804-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="curves0804-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="60" y1="235.0" x2="310" y2="235.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="238.5" font-size="10.5" text-anchor="end">1.4</text>
+<line class="m" x1="60" y1="205.0" x2="310" y2="205.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="208.5" font-size="10.5" text-anchor="end">1.6</text>
+<line class="m" x1="60" y1="175.0" x2="310" y2="175.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="178.5" font-size="10.5" text-anchor="end">1.8</text>
+<line class="m" x1="60" y1="145.0" x2="310" y2="145.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="148.5" font-size="10.5" text-anchor="end">2</text>
+<line class="m" x1="60" y1="115.0" x2="310" y2="115.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="118.5" font-size="10.5" text-anchor="end">2.2</text>
+<line class="m" x1="60" y1="85.0" x2="310" y2="85.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="88.5" font-size="10.5" text-anchor="end">2.4</text>
+<line class="m" x1="60" y1="55.0" x2="310" y2="55.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="58.5" font-size="10.5" text-anchor="end">2.6</text>
+<line class="m" x1="60" y1="250" x2="60" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="60" y="266" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="149.32" y1="250" x2="149.32" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="149.32" y="266" font-size="10.5" text-anchor="middle">1000</text>
+<line class="m" x1="238.64" y1="250" x2="238.64" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="238.64" y="266" font-size="10.5" text-anchor="middle">2000</text>
+<rect class="m" x="60" y="40" width="250" height="210" rx="0" stroke-width="1.5"/>
+<text class="tm" x="185" y="282" font-size="11.5" text-anchor="middle">step</text>
+<text class="t" x="54" y="32" font-size="11.5" font-weight="700">dropout 0.0</text>
+<polyline class="s" points="95.7,56.1 104.7,80.2 113.6,112.2 122.5,111.9 131.5,136.0 140.4,132.0 149.3,153.5 158.2,150.8 167.2,149.8 176.1,176.2 185.0,179.9 194.0,174.3 202.9,180.8 211.8,190.4 220.8,189.9 229.7,195.6 238.6,201.6 247.6,206.0 256.5,217.4 265.4,221.3 274.4,227.2 283.3,220.3 292.2,227.1 301.2,235.8 310.0,227.4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="104.7,54.8 113.6,79.8 122.5,91.6 131.5,101.8 140.4,111.8 149.3,114.5 158.2,123.2 167.2,124.3 176.1,131.3 185.0,133.0 194.0,135.1 202.9,133.8 211.8,138.5 220.8,139.0 229.7,136.8 238.6,138.8 247.6,136.9 256.5,135.6 265.4,134.1 274.4,132.2 283.3,131.6 292.2,132.2 301.2,131.7 310.0,131.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="220.77" cy="138.96" r="3.5" stroke-width="1.5"/>
+<text class="ta" x="306" y="70" font-size="9.5" text-anchor="end">lowest, seed 0: 2.040 at step 1800</text>
+<polyline class="m" points="104.7,69.8 113.6,96.9 122.5,113.0 131.5,135.6 140.4,133.2 149.3,144.9 158.2,161.3 167.2,156.6 176.1,162.7 185.0,173.8 194.0,183.9 202.9,178.7 211.8,185.2 220.8,195.1 229.7,193.6 238.6,209.9 247.6,204.4 256.5,218.2 265.4,215.0 274.4,218.5 283.3,217.5 292.2,223.1 301.2,215.7 310.0,212.3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="104.7,51.4 113.6,71.6 122.5,90.4 131.5,99.9 140.4,110.5 149.3,117.6 158.2,122.4 167.2,123.1 176.1,131.1 185.0,133.8 194.0,135.1 202.9,134.9 211.8,135.8 220.8,137.6 229.7,138.6 238.6,141.0 247.6,138.6 256.5,137.0 265.4,137.1 274.4,136.4 283.3,136.5 292.2,136.6 301.2,136.5 310.0,136.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="238.64" cy="140.97" r="3.5" stroke-width="1.5"/>
+<text class="ta" x="306" y="83" font-size="9.5" text-anchor="end">lowest, seed 1: 2.027 at step 2000</text>
+<text class="tm" x="306" y="54" font-size="9.5" text-anchor="end">gap at the end: 0.64, 0.50</text>
+<line class="m" x1="360" y1="235.0" x2="610" y2="235.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="354" y="238.5" font-size="10.5" text-anchor="end">1.4</text>
+<line class="m" x1="360" y1="205.0" x2="610" y2="205.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="354" y="208.5" font-size="10.5" text-anchor="end">1.6</text>
+<line class="m" x1="360" y1="175.0" x2="610" y2="175.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="354" y="178.5" font-size="10.5" text-anchor="end">1.8</text>
+<line class="m" x1="360" y1="145.0" x2="610" y2="145.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="354" y="148.5" font-size="10.5" text-anchor="end">2</text>
+<line class="m" x1="360" y1="115.0" x2="610" y2="115.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="354" y="118.5" font-size="10.5" text-anchor="end">2.2</text>
+<line class="m" x1="360" y1="85.0" x2="610" y2="85.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="354" y="88.5" font-size="10.5" text-anchor="end">2.4</text>
+<line class="m" x1="360" y1="55.0" x2="610" y2="55.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="354" y="58.5" font-size="10.5" text-anchor="end">2.6</text>
+<line class="m" x1="360" y1="250" x2="360" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="360" y="266" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="449.32" y1="250" x2="449.32" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="449.32" y="266" font-size="10.5" text-anchor="middle">1000</text>
+<line class="m" x1="538.64" y1="250" x2="538.64" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="538.64" y="266" font-size="10.5" text-anchor="middle">2000</text>
+<rect class="m" x="360" y="40" width="250" height="210" rx="0" stroke-width="1.5"/>
+<text class="tm" x="485" y="282" font-size="11.5" text-anchor="middle">step</text>
+<text class="t" x="354" y="32" font-size="11.5" font-weight="700">dropout 0.2</text>
+<polyline class="s" points="413.6,66.6 422.5,71.4 431.5,100.4 440.4,97.8 449.3,121.9 458.2,121.7 467.2,117.4 476.1,144.7 485.0,144.6 494.0,143.2 502.9,145.8 511.8,151.6 520.8,152.9 529.7,155.8 538.6,162.0 547.6,164.6 556.5,167.5 565.4,170.0 574.4,168.0 583.3,159.1 592.2,170.8 601.2,180.9 610.0,170.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="413.6,48.9 422.5,75.1 431.5,84.8 440.4,96.0 449.3,100.4 458.2,107.8 467.2,112.3 476.1,120.8 485.0,122.4 494.0,125.8 502.9,127.3 511.8,132.0 520.8,135.1 529.7,135.3 538.6,138.7 547.6,141.8 556.5,141.7 565.4,143.4 574.4,144.1 583.3,144.3 592.2,145.4 601.2,145.1 610.0,145.3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="592.23" cy="145.37" r="3.5" stroke-width="1.5"/>
+<text class="ta" x="606" y="70" font-size="9.5" text-anchor="end">lowest, seed 0: 1.998 at step 2600</text>
+<polyline class="m" points="413.6,42.7 422.5,66.5 431.5,92.1 440.4,90.8 449.3,105.0 458.2,123.0 467.2,121.3 476.1,127.0 485.0,137.1 494.0,146.4 502.9,144.0 511.8,141.6 520.8,150.8 529.7,150.9 538.6,163.8 547.6,152.4 556.5,168.9 565.4,164.6 574.4,169.0 583.3,167.3 592.2,169.1 601.2,161.9 610.0,158.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="413.6,40.2 422.5,52.2 431.5,70.9 440.4,82.2 449.3,92.6 458.2,99.8 467.2,105.8 476.1,114.5 485.0,120.6 494.0,122.9 502.9,124.9 511.8,128.2 520.8,129.1 529.7,132.6 538.6,135.8 547.6,136.4 556.5,137.7 565.4,138.3 574.4,140.2 583.3,140.1 592.2,140.5 601.2,141.0 610.0,141.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="610" cy="141.01" r="3.5" stroke-width="1.5"/>
+<text class="ta" x="606" y="83" font-size="9.5" text-anchor="end">lowest, seed 1: 2.027 at step 2799</text>
+<text class="tm" x="606" y="54" font-size="9.5" text-anchor="end">gap at the end: 0.17, 0.11</text>
+<polyline class="s" points="60.0,304.0 82.0,304.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<text class="t" x="88" y="308" font-size="11">training batch (seed 0, then seed 1 paler)</text>
+<polyline class="a" points="355.5,304.0 377.5,304.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="383.48" y="308" font-size="11">validation windows</text>
+</svg>
