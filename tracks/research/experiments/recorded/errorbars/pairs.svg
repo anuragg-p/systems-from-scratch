@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+<line x1="64" y1="288.0" x2="490" y2="288.0" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="292.0" font-size="11" text-anchor="end" fill="currentColor">3.4</text>
+<line x1="64" y1="179.8" x2="490" y2="179.8" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="183.8" font-size="11" text-anchor="end" fill="currentColor">3.42</text>
+<line x1="64" y1="71.6" x2="490" y2="71.6" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="75.6" font-size="11" text-anchor="end" fill="currentColor">3.44</text>
+<line x1="64.0" y1="314" x2="64.0" y2="318" stroke="currentColor"/>
+<text x="64.0" y="331" font-size="11" text-anchor="middle" fill="currentColor">1</text>
+<line x1="206.0" y1="314" x2="206.0" y2="318" stroke="currentColor"/>
+<text x="206.0" y="331" font-size="11" text-anchor="middle" fill="currentColor">2</text>
+<line x1="348.0" y1="314" x2="348.0" y2="318" stroke="currentColor"/>
+<text x="348.0" y="331" font-size="11" text-anchor="middle" fill="currentColor">3</text>
+<line x1="490.0" y1="314" x2="490.0" y2="318" stroke="currentColor"/>
+<text x="490.0" y="331" font-size="11" text-anchor="middle" fill="currentColor">4</text>
+<rect x="64" y="34" width="426" height="280" fill="none" stroke="currentColor"/>
+<text x="277.0" y="352" font-size="12" text-anchor="middle" fill="currentColor">heads</text>
+<text x="14" y="174.0" font-size="12" text-anchor="middle" fill="currentColor" transform="rotate(-90 14 174.0)">bits per character, test text</text>
+<polyline points="64.0,49.0 490.0,204.6" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,207.3 490.0,301.3" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,71.5 490.0,240.0" fill="none" stroke="#2ca02c" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,185.3 490.0,274.2" fill="none" stroke="#ff7f0e" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,223.9 490.0,261.2" fill="none" stroke="#9467bd" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,127.7 490.0,228.9" fill="none" stroke="#8c564b" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,104.4 490.0,285.4" fill="none" stroke="#e377c2" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,46.7 490.0,190.3" fill="none" stroke="#17becf" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,89.9 490.0,276.1" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,79.2 490.0,274.2" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="1.0"/>
+<line x1="502" y1="42" x2="522" y2="42" stroke="#1f77b4" stroke-width="2.5"/>
+<text x="528" y="46" font-size="11" fill="currentColor">seed 0</text>
+<line x1="502" y1="60" x2="522" y2="60" stroke="#d62728" stroke-width="2.5"/>
+<text x="528" y="64" font-size="11" fill="currentColor">seed 1</text>
+<line x1="502" y1="78" x2="522" y2="78" stroke="#2ca02c" stroke-width="2.5"/>
+<text x="528" y="82" font-size="11" fill="currentColor">seed 2</text>
+<line x1="502" y1="96" x2="522" y2="96" stroke="#ff7f0e" stroke-width="2.5"/>
+<text x="528" y="100" font-size="11" fill="currentColor">seed 3</text>
+<line x1="502" y1="114" x2="522" y2="114" stroke="#9467bd" stroke-width="2.5"/>
+<text x="528" y="118" font-size="11" fill="currentColor">seed 4</text>
+<line x1="502" y1="132" x2="522" y2="132" stroke="#8c564b" stroke-width="2.5"/>
+<text x="528" y="136" font-size="11" fill="currentColor">seed 5</text>
+<line x1="502" y1="150" x2="522" y2="150" stroke="#e377c2" stroke-width="2.5"/>
+<text x="528" y="154" font-size="11" fill="currentColor">seed 6</text>
+<line x1="502" y1="168" x2="522" y2="168" stroke="#17becf" stroke-width="2.5"/>
+<text x="528" y="172" font-size="11" fill="currentColor">seed 7</text>
+<line x1="502" y1="186" x2="522" y2="186" stroke="#1f77b4" stroke-width="2.5"/>
+<text x="528" y="190" font-size="11" fill="currentColor">seed 8</text>
+<line x1="502" y1="204" x2="522" y2="204" stroke="#d62728" stroke-width="2.5"/>
+<text x="528" y="208" font-size="11" fill="currentColor">seed 9</text>
+</svg>

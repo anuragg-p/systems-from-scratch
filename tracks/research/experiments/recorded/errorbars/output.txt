@@ -1,0 +1,35 @@
+1. 08.02's models: 4 blocks, width 64, no positions, 1 head of 64 against 4 heads of 16;
+   300 steps of 32 windows of 32, seeds 0 to 9. Bits per character on the test text (55,754 positions):
+   1 head    3.431 +- 0.01206 (min 3.412, max 3.445, 10 seeds)
+   4 heads   3.406 +- 0.006721 (min 3.398, max 3.418, 10 seeds)
+   t = -5.7   (one seed starts both arms from the same weights: True; and the same batches)
+
+2 and 3. The means, and the difference:
+                       mean      sem   95% interval, t 2.26   with 1.96 instead     bootstrap
+   1 head            3.4313   0.0038   3.4227 to 3.4400     3.4239 to 3.4388   3.4239 to 3.4379
+   4 heads           3.4064   0.0021   3.4015 to 3.4112     3.4022 to 3.4105   3.4026 to 3.4104
+
+   4 heads minus 1 head: -0.0250 bits per character
+   as two independent sets (Welch):  -0.0343 to -0.0156, width 0.0187
+   as pairs, seed by seed:           -0.0319 to -0.0181, width 0.0138   (bootstrap of the pairs -0.0304 to -0.0191)
+   the two arms' runs move together over seeds: correlation +0.60; the pairs' differences -0.025 +- 0.00964 (min -0.0361, max -0.00689, 10 seeds)
+   4 heads lower on 10 of 10 seeds
+   each seed's two runs, joined, in experiments/recorded/errorbars/pairs.svg
+
+4. The test text as a sample (seed 0's models): the standard error of the mean over the test positions, the positions
+   taken in consecutive batches of so many windows (17 positions a window):
+    windows a batch        1        4       16       64      256
+             1 head   0.0082   0.0088   0.0102   0.0138   0.0123
+            4 heads   0.0082   0.0087   0.0100   0.0134   0.0114
+          4 minus 1   0.0014   0.0014   0.0016   0.0018   0.0022
+   Over seeds, one model's score moves by sd 0.0121 (1 head) and 0.0067 (4 heads); the test text's own sampling error, 0.0138 (batches of 64 windows).
+   For the difference on the same text it is 0.0018, against the spread of the seeds' differences, 0.0096.
+
+5. Seeds a side for a difference to show (its 95% interval clear of 0 four times in five), at this run's spread
+   (each arm's sd 0.0098; the pairs' differences' 0.0096):
+     difference  independent  paired
+          0.010           16      10
+          0.026            4       4
+          0.050            3       3
+
+178 s of training and scoring on cpu
