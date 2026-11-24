@@ -10,7 +10,25 @@ on a key, as a KeyPress function that comes before any the calls make). The gene
 run can be repeated.
 """
 
+import os
 import random
+
+# One report UndefinedBehaviorSanitizer makes that is not module 09's: module 06's
+# editorUpdateSyntax() (upstream kilo's) does memset(row->hl, ..., 0) right after
+# realloc(row->hl, 0), which on glibc frees and returns NULL, and memset() with a NULL pointer
+# is undefined even for 0 bytes. The fuzz reaches it by feeding Backspace until a row is empty;
+# typing does too. Changing it would change module 06's lessons, so it is named here instead
+# (NOTES.md, 09, "Found on the way").
+UBSAN_SUPPRESSIONS = "nonnull-attribute:editorUpdateSyntax\n"
+
+
+def ubsan_options(directory):
+    """UBSAN_OPTIONS for the fuzz: stop at the first report, with its stack, and the one
+    suppression above (written to a file in directory)."""
+    path = os.path.join(directory, "ubsan.supp")
+    with open(path, "w") as f:
+        f.write(UBSAN_SUPPRESSIONS)
+    return f"halt_on_error=1:print_stacktrace=1:suppressions={path}"
 
 SIGS = {
     "line_count": [], "get_lines": ["integer", "integer"], "get_cursor": [], "get_name": [],

@@ -130,7 +130,7 @@ def test(t):
     spec.loader.exec_module(fz)
     exe = tr.asan_build(t, "address,undefined") or tr.asan_build(t)
     leaks = sys.platform.startswith("linux")
-    env = dict(os.environ, ASAN_OPTIONS="detect_leaks=%d" % leaks, UBSAN_OPTIONS="halt_on_error=1:print_stacktrace=1")
+    env = dict(os.environ, ASAN_OPTIONS="detect_leaks=%d" % leaks, UBSAN_OPTIONS=fz.ubsan_options(t.tmp))
     for name, text in (("b.txt", "bee\n"), ("x.txt", "an x\n")):
         with open(os.path.join(t.tmp, name), "w") as f:
             f.write(text)

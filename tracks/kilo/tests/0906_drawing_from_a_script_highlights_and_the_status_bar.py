@@ -88,11 +88,13 @@ def test(t):
             f"{[ed.painted(r) for r in range(4)]}")
     ed.keys(tr.BACKSPACE)
     # At most HIGHLIGHT_MAX.
-    t.check(lua("kilo.api.clear_namespace(other) for i = 1, 10001 do H(0, 0, 1, 'red') end") ==
+    # (Cleared in the same line: a row with 10000 highlights is drawn 10000 times over, a frame
+    # of some 150 KB, slow enough under ASan to outrun the test's wait for a quiet screen.)
+    t.check(lua("kilo.api.clear_namespace(other) local ok, e = pcall(function() for i = 1, 10001 do "
+                "H(0, 0, 1, 'red') end end) kilo.api.clear_namespace(ns) return e") ==
             "init.lua:2: add_highlight: too many highlights (10000)", f"{ed.message!r}")
     t.check(lua("for i = 1, 70 do kilo.api.create_namespace('n' .. i) end") ==
             "lua:1: create_namespace: too many namespaces (64)", f"{ed.message!r}")
-    lua("kilo.api.clear_namespace(ns)")
     t.check(ed.painted(0) == "abcdefgh", f"{ed.painted(0)!r}")
 
     # The status bar: the text on the left, the row count still on the right.

@@ -153,7 +153,7 @@ def test(t):
         f.write(init)
     with open(os.path.join(t.tmp, "f.txt"), "w") as f:
         f.write("".join(f"row {i}\n" for i in range(30)))
-    env = dict(os.environ, ASAN_OPTIONS="detect_leaks=0", UBSAN_OPTIONS="halt_on_error=1:print_stacktrace=1",
+    env = dict(os.environ, ASAN_OPTIONS="detect_leaks=0", UBSAN_OPTIONS=fz.ubsan_options(t.tmp),
                KILO_INIT=os.path.join(t.tmp, "fuzz.lua"), KILO_LSP="")
     ed = tr.Editor(t, ["f.txt"], cwd=t.tmp, exe=exe or os.path.join(t.root, "kilo"), env=env, timeout=60)
     for b in range(10):
