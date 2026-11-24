@@ -955,7 +955,7 @@ def hook0908():
     assert cap["init"] == "kilo.api.set_keymap('<C-t>', function() while true do end end)\n"
     lesson_said("08", f"kilo's runs every {count}, about every 0.2 ms here", "unsaved the first line",
                 "init.lua:1: interrupted", "Ctrl-S says `23 bytes written on disk`",
-                "`lua_sethook(lua,luaMaskCountHook,LUA_MASKCOUNT,100000);`")
+                "lua_sethook(lua,luaMaskCountHook,LUA_MASKCOUNT,100000);")
     ms = 0.2
     f = F9("f09-08a", f"The count hook in kilo at 09.08: every {count} instructions it looks at the keyboard; a Ctrl-C "
            "there raises interrupted, which goes up to the protected call", 338)
@@ -1249,9 +1249,12 @@ def two_doors0909():
     notes(f, rx, 192, "kilo -l skips every line the bracket holds: raw mode, the window's size, the HELP line, "
           "init.lua and its count hook, BufReadPost, and the key loop with the screen.", 34, "ta", 10, 13,
           weight=600)
+    api = subprocess.run([os.path.join(project("09.09"), "kilo"), "--api-info"], check=True,
+                         capture_output=True, text=True).stdout.splitlines()
+    lesson_said("09", f"And the API is {len(api)} functions")
     by = 290
     f.rect(150, by, 340, 24, "a af", 6)
-    f.text(320, by + 16, "kilo.api: the same 24 functions, the same rows", "ta", 11, "middle", 700)
+    f.text(320, by + 16, f"kilo.api: the same {len(api)} functions, the same rows", "ta", 11, "middle", 700)
     f.line(172, 214, 172, by - 3, "s", arrow=True)
     f.line(468, 280, 468, by - 3, "s", arrow=True)
     f.line(mx + 228, bases[2] - 3, rx - 3, bases[2] - 3, "a", arrow=True)
