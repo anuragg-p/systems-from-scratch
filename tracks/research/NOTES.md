@@ -925,6 +925,18 @@ training text has 1,003,853 pairs, 1380 of the 65 x 65 = 4225 possible.
 p of a pair as count / count, -log2 p, the mean, 2 to the mean, log2 65.
 Trailing spaces are stripped from printed sample lines (the summary keeps
 the text exact).
+Changed for the page (lessons agent): the second line printed reads "...;
+of the 65 x 65 = 4225 possible pairs, 1380 occur" (it ran the two clauses
+together). The page derives the grouping of the mean by pair (the mean over
+positions of -log2 p equals Shannon's -sum p(i, j) log2 p_i(j): 3.537 both
+ways on the training text, a fact on the page) and 02.04's cross-entropy of
+equal scores over 65 classes, 4.174 nats = 6.022 bits. Its Break it writes
+pair_counts as `table[ids[:-1], ids[1:]] += 1` (numpy adds once per distinct
+pair): the table holds 1,380 in all, every cell 0 or 1, k = 0.001 is chosen
+(validation 4.9568), pairs score 4.988 on test, worse than single characters
+(4.850), the folded F2 is 4.53. Validation 3.5678 against test 3.599 for
+pairs at k = 0.1. VINCENTIO (Measure for Measure's duke) speaks 193 times in
+the training text, not at all in validation.
 
 **07.02 Longer contexts, and Bengio et al. (2003).** nplm. Counting with
 contexts of 0 to 7 characters (models/ngram.py): contexts seen 1, 65,
@@ -1008,7 +1020,13 @@ steps of 256: 2.75 at 5; h 512, m 24, 10000 steps of 256: 2.46, 9 s;
 4000 of 1024 at lr 0.01: 2.444, 7 s, too slow for 3 seeds and 3
 contexts); a long run without dropout (h 512, 30000 steps of 1024:
 training 1.85, test 2.48, overfit); interpolation with 0 instead of 1 / V
-after an unseen context (2.513 against 2.416 at 5). Times: steps take 1.2
+after an unseen context (2.525 against 2.416 at 5, rerun for the page's
+Break it, which changes that one line of NGram.probabilities: add-k inf
+from 2 characters on, k = 1 chosen since every k is inf on validation, the
+weights at 5 0.002 0.031 0.100 0.258 0.378 0.231, and with `"contexts=[5]"
+seeds=1` the network, 2.482, now 0.043 below interpolation where it was
+0.066 above; numpy prints two RuntimeWarnings, nplm.py lines 125 and 126 of
+the project at 07.02; 8 to 10 s). Times: steps take 1.2
 to 2.4 ms here with 512 units and 4 to 10 threads; with the machine busy,
 10 threads were slower than 4 (oversubscribed: the 2500-step default took
 68 s at load 9 to 13 with 10 threads, as much system time as user time,
@@ -1200,10 +1218,13 @@ the copy, where attention holds.
   (load 9 to 14 here), 10 threads were up to twice as slow as 4 for these
   small layers, with as much system time as user time: time a page's runs
   on a quiet machine, and say what was running.
-- The models/ docstring (06.02) says every model after convnet imports
-  torch; models/ngram.py (07.02) is numpy only. Left as it is: the file
-  comes with 06.02, and a note about 07.02 there would be a later lesson's
-  text in an earlier file.
+- The models/ docstring (06.02) said every model after convnet imports
+  torch, and models/ngram.py (07.02) is numpy only. Its last sentence is now
+  a `# @from 07.02` block with an `# @else` part (as data/fetch.py's
+  docstring has one for 06.03): before 07.02 it reads as it did, from 07.02
+  on it says the count models of ngram.py are not networks and that file is
+  numpy only. A module 08 that adds a numpy-only model keeps it true the
+  same way.
 
 ## Tests
 

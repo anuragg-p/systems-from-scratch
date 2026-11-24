@@ -225,10 +225,233 @@ def ladder0701():
     return f
 
 
+# ------------------------------------------------------------------ 07.02
+
+def nplm_run():
+    return figart.experiment("nplm", at="07.02")
+
+
+def recorded_nplm():
+    """The recorded long run: its folder and its config (context 5, seed 0's)."""
+    d = os.path.join(figlib.TRACK, "experiments", "recorded", "nplm")
+    return d, figart.config(os.path.join(d, "context5", "seed0"))
+
+
+def counts0702():
+    r = nplm_run()
+    rows = figart.read_log(os.path.join(r.runs, "counts", "seed0"))
+    inter = figart.summary(os.path.join(r.runs, "counts", "seed0"))["interpolated"]
+    ns = [row["context"] for row in rows]
+    f = Fig("counts0702", "Counting with longer contexts: bits per character on the training text (k = 0) and on "
+                          "the test text, add-k and deleted interpolation; and how much of the test text has a "
+                          "context the training text never had", 300)
+    series = [figart.Series("", ns, [row["train_bits"] for row in rows], "s", True),
+              figart.Series("", ns, [row["test_bits"] for row in rows], "a"),
+              figart.Series("", [int(k) for k in inter], list(inter.values()), "s")]
+    ax = figart.plot(f, (8, 6, 420, 288), series, xlabel="characters of context", ylabel="bits per character",
+                     ylim=(0, 6.5), xticks=ns, yticks=[0, 1, 2, 3, 4, 5, 6], legend=None)
+    ax.hline(math.log2(65), "equal chances: 6.022", side="right")
+    best = min(rows, key=lambda row: row["test_bits"])
+    ax.dot(best["context"], best["test_bits"], "a fa", 3.5)
+    ax.note(best["context"], best["test_bits"], f"{best['test_bits']:.3f}", "ta", 10.5, "middle", dy=-9)
+    last = rows[-1]
+    end = list(inter.values())[-1]
+    ax.note(last["context"], last["test_bits"], f"test, add-k: {last['test_bits']:.3f}", "ta", 10.5, "end", dx=-8, dy=-6)
+    ax.note(last["context"], end, f"test, interpolation: {end:.3f}", "t", 10.5, "end", dx=-4, dy=-7)
+    ax.note(last["context"], last["train_bits"], f"training text, k = 0: {last['train_bits']:.3f}", "t", 10.5, "end",
+            dx=-4, dy=16)
+    ax2 = figart.Axes(f, 470, 40, 156, 210, (-0.5, len(rows) - 0.5), (0, 40))
+    ax2.draw(xticks=ns, yticks=[0, 10, 20, 30, 40], xlabel="characters of context")
+    f.text(ax2.x - 6, 24, "test text: % of contexts unseen", "tm", 11)
+    for row in rows:
+        v = 100 * row["unseen"]
+        if v > 0:
+            top = ax2.py(v)
+            f.rect(ax2.px(row["context"]) - 7, top, 14, ax2.y + ax2.h - top, "a af", 1)
+        if v >= 2:
+            f.text(ax2.px(row["context"]), ax2.py(v) - 4, f"{v:.1f}", "ta", 9.5, "middle", mono=True)
+    return f
+
+
+NPLM_CODE = """
+import json
+from experiments.nplm import NPLM
+m = NPLM(65, 5, 24, 512)
+shapes = {n: list(p.shape) for n, p in m.named_parameters()}
+shapes["total"] = sum(p.numel() for p in m.parameters())
+print(json.dumps(shapes))
+"""
+
+
+def nplm0702():
+    d = in_project("07.02", NPLM_CODE)
+    cfg = figart.config(os.path.join(nplm_run().runs, "context5", "seed0"))
+    m, h, n = cfg["embed"], cfg["hidden"], 5
+    if d["embed.weight"] != [65, m] or d["hidden.weight"] != [h, n * m]:
+        raise SystemExit(f"the network's shapes are not the page's: {d}")
+    f = Fig("nplm0702", f"Bengio et al.'s network for a context of {n} characters, at the page's sizes: each "
+                        f"character's embedding looked up in one table, the {n} side by side, {h} tanh units, "
+                        f"65 scores", 324)
+    word = "First"
+    cx, cy, cw = 24, 58, 26
+    f.text(cx, 30, f"the context: {n} characters", "t", 11.5, weight=600)
+    for i, c in enumerate(word):
+        f.rect(cx + i * (cw + 4), cy, cw, 24, "s f", 3)
+        f.text(cx + i * (cw + 4) + cw / 2, cy + 16.5, c, "t", 12, "middle", 700, mono=True)
+    f.text(cx + 5 * (cw + 4) + 4, cy + 16.5, "-> ?", "tm", 12, mono=True)
+    tx, ty, tw_, th = 24, 132, 150, 150
+    f.rect(tx, ty, tw_, th, "a af", 4)
+    for k in range(5):                                  # five rows, picked out by the characters' numbers
+        y = ty + 12 + k * 15
+        f.rect(tx + 12, y, tw_ - 24, 10, "a", 1)
+    f.text(tx + tw_ / 2, ty + 102, "the embedding table", "ta", 11.5, "middle", 700)
+    f.text(tx + tw_ / 2, ty + 117, f"65 rows of {m} numbers,", "ta", 10.5, "middle")
+    f.text(tx + tw_ / 2, ty + 131, "learned like any weight", "ta", 10.5, "middle")
+    f.text(tx + tw_ / 2, ty + th + 14, f"{65 * m:,} weights", "tm", 10, "middle")
+    for i in range(n):
+        f.line(cx + i * (cw + 4) + cw / 2, cy + 26, tx + 16 + i * 3, ty + 12 + i * 15 + 5, "m")
+    vx, vy = 214, 132
+    f.text(vx, vy - 10, "side by side", "t", 11, weight=600)
+    for i in range(n):
+        f.rect(vx, vy + i * 30, 26, 26, "a af", 2)
+        f.text(vx + 34, vy + i * 30 + 17, f"{m} from {word[i]}", "ta", 10.5, mono=True)
+        f.line(tx + tw_ - 12, ty + 17 + i * 15, vx - 4, vy + i * 30 + 13, "a")
+    f.text(vx, vy + n * 30 + 6, f"{n * m} numbers in all", "tm", 10.5)
+    hx = 360
+    f.label_box(hx, 150, 92, 96, f"{h} tanh", "s f", "t", 12, False, weight=700, sub="units")
+    f.text(hx + 46, 264, f"{n * m} x {h} + {h}", "tm", 10, "middle", mono=True)
+    f.line(vx + 110, 198, hx - 4, 198, "s", arrow=True)
+    ox = 480
+    f.label_box(ox, 172, 58, 52, "65", "s f", "t", 13, False, weight=700, sub="scores")
+    f.text(ox + 29, 242, f"{h} x 65 + 65", "tm", 10, "middle", mono=True)
+    f.line(hx + 94, 198, ox - 4, 198, "s", arrow=True)
+    f.line(ox + 60, 198, 566, 198, "s", arrow=True)
+    f.text(570, 194, "softmax:", "t", 10.5)
+    f.text(570, 208, "the chances", "t", 10.5)
+    f.text(570, 222, "of the next", "t", 10.5)
+    f.text(24, 318, f"{d['total']:,} weights in all. A character's embedding is the same row wherever it stands "
+                    f"in the context.", "tm", 10.5)
+    return f
+
+
+def scores0702():
+    r = nplm_run()
+    d, cfg = recorded_nplm()
+    short = {n: [figart.summary(x)["test_bits"] for x in figart.seed_dirs(os.path.join(r.runs, f"context{n}"))]
+             for n in (1, 3, 5)}
+    counts = figart.summary(os.path.join(d, "counts", "seed0"))
+    long_, mixed = {}, {}
+    for n in cfg["contexts"]:
+        dirs = figart.seed_dirs(os.path.join(d, f"context{n}"))
+        long_[n] = [figart.summary(x)["test_bits"] for x in dirs]
+        mixed[n] = [figart.summary(x)["mixed_bits"] for x in dirs]
+    page = figart.summary(os.path.join(r.runs, "counts", "seed0"))
+    for n in (1, 3, 5):                                  # the page's run and the recorded one counted alike
+        if abs(page["interpolated"][str(n)] - counts["interpolated"][str(n)]) > 1e-12:
+            raise SystemExit(f"the two runs' interpolation differs at {n}")
+    ns = cfg["contexts"]
+    f = Fig("scores0702", "Bits per character on the test text: the network in the page's one-minute run and in the "
+                          "recorded 20-minute run (a ring per seed), against add-k and deleted interpolation of "
+                          "the same context", 342)
+    styles = ["m", "s", "s", "a", "a"]
+    one = figart.Axes(f, 56, 64, 118, 222, (-0.5, 0.5), (3.585, 3.62))
+    one.draw(xticks=[], yticks=[3.59, 3.60, 3.61, 3.62])
+    rest = figart.Axes(f, 234, 64, 392, 222, (0.5, len(ns) - 0.5), (2.25, 3.05))
+    rest.draw(xticks=[], yticks=[2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0])
+    f.text(one.x - 6, one.y - 8, "bits per character", "tm", 11.5)
+    f.text(rest.x - 6, rest.y - 8, "(a scale of its own: from 2.25 to 3.05)", "tm", 10.5)
+    step = 22
+    for i, n in enumerate(ns):
+        ax = one if i == 0 else rest
+        lo, hi = ax.ylim
+        X0 = ax.px(i) - step * (len(styles) - 1) / 2
+        xs = [X0 + k * step for k in range(len(styles))]
+        f.text(ax.px(i), ax.y + ax.h + 18, f"context {n}", "t", 11.5, "middle", 700)
+        ak, it = counts["add_k"][str(n)], counts["interpolated"][str(n)]
+        f.line(xs[0] - 10, ax.py(it), xs[-1] + 10, ax.py(it), "s", dash=True)
+        if ak <= hi:
+            f.rect(xs[0] - 3.5, ax.py(ak) - 3.5, 7, 7, "m fs", 0)
+        else:
+            f.line(xs[0], ax.py(hi) + 20, xs[0], ax.py(hi) + 3, "m", arrow=True)
+            f.text(xs[0] + 3, ax.py(hi) + 32, f"{ak:.2f}", "tm", 9.5, "middle", mono=True)
+        f.rect(xs[1] - 3.5, ax.py(it) - 3.5, 7, 7, "s fs", 0)
+        for k, vals in ((2, short.get(n)), (3, long_[n]), (4, mixed[n])):
+            for v in vals or []:
+                f.circle(xs[k], ax.py(v), 3, f"{styles[k]} {'fa' if k == 4 else 'f'}")
+        if i:
+            mean = sum(long_[n]) / len(long_[n])
+            f.text(xs[3], ax.py(min(long_[n])) + 14, f"{mean:.3f}", "ta", 9.5, "middle", mono=True)
+            f.text(xs[0] - 10, ax.py(it) + 13, f"{it:.3f}", "t", 9.5, mono=True)
+    items = [("add-k", "m", "sq"), ("deleted interpolation", "s", "sq"), ("network, 1 minute", "s", "ring"),
+             ("network, 20 minutes", "a", "ring"), ("the 20-minute network mixed with interpolation", "a", "dot")]
+    for k, (label, style, shape) in enumerate(items):
+        x = 56 + (k % 3) * 196 if k < 3 else 56 + (k - 3) * 196
+        y = 14 if k < 3 else 30
+        if shape == "sq":
+            f.rect(x, y - 7.5, 7, 7, f"{style} fs", 0)
+        else:
+            f.circle(x + 3.5, y - 4, 3, f"{style} {'fa' if shape == 'dot' else 'f'}")
+        f.text(x + 12, y, label, figart.TEXT[style], 10.5)
+    f.text(56, 334, "Left to right in each context: add-k, interpolation (and its dashed level), the network in 1 minute "
+                    "and in 20, mixed.", "tm", 10.5)
+    return f
+
+
+def near0702():
+    d, cfg = recorded_nplm()
+    n = max(cfg["contexts"])
+    emb = figart.summary(os.path.join(d, f"context{n}", "seed0"))["embedding"]
+    chars = in_project("07.02", "import json; from data import shakespeare; print(json.dumps(shakespeare.chars()))")
+    pick = list(".!?,;:") + list("aeiou") + list("AEIOU") + list("stST")
+    vec = [emb[chars.index(c)] for c in pick]
+    norm = [math.sqrt(sum(x * x for x in v)) for v in vec]
+    sim = [[sum(a * b for a, b in zip(vec[i], vec[j])) / (norm[i] * norm[j]) for j in range(len(pick))]
+           for i in range(len(pick))]
+    if abs(sim[pick.index(".")][pick.index("!")] - 0.81) > 0.005 or abs(sim[pick.index("s")][pick.index("S")] - 0.57) > 0.005:
+        raise SystemExit("the long run's similarities are not the ones its output printed")
+    m = cfg["embed"]
+    f = Fig("near0702", f"Cosine similarity of the embeddings of 20 characters after the recorded long run (context "
+                        f"{n}, seed 0, {m} numbers each): accent above 0, the other colour below 0", 402)
+    cell = 16
+    x0, y0 = 40, 40
+    for i, a in enumerate(pick):
+        f.text(x0 - 6, y0 + i * cell + 11.5, shown(a), "t", 11, "end", mono=True)
+        f.text(x0 + i * cell + cell / 2, y0 - 6, shown(a), "t", 11, "middle", mono=True)
+        for j in range(len(pick)):
+            v = sim[i][j]
+            if i == j:
+                continue
+            op = round(min(1.0, abs(v)), 1)
+            if op >= 0.1:
+                f.add(f'<rect class="{"fa" if v > 0 else "t"}" x="{x0 + j * cell}" y="{y0 + i * cell}" '
+                      f'width="{cell}" height="{cell}" fill-opacity="{op}"/>')
+    f.rect(x0, y0, len(pick) * cell, len(pick) * cell, "m", 0)
+    lo = min(sim[i][j] for i in range(3) for j in range(3) if i != j)
+    hi = max(sim[i][j] for i in range(3) for j in range(3) if i != j)
+    nx = x0 + len(pick) * cell + 24
+    notes = [("ta", f". ! ? together: {lo:.2f} to {hi:.2f}", 600), ("ta", "the marks that end a sentence", None),
+             ("", "", None),
+             ("t", f"s and S {sim[pick.index('s')][pick.index('S')]:.2f}, a and A "
+                   f"{sim[pick.index('a')][pick.index('A')]:.2f}:", 600),
+             ("t", "a few capitals near their", None), ("t", "small letters", None), ("", "", None),
+             ("tm", f"two random vectors of {m} numbers:", None), ("tm", "similarities spread with a standard", None),
+             ("tm", f"deviation of 1/sqrt({m}) = {1 / math.sqrt(m):.2f}; most", None),
+             ("tm", "cells here are within that", None)]
+    for k, (cls, s, w) in enumerate(notes):
+        if s:
+            f.text(nx, y0 + 12 + 15 * k, s, cls, 11, weight=w)
+    f.text(x0, y0 + len(pick) * cell + 22, "the diagonal, each character with itself (1), is left blank", "tm", 10.5)
+    return f
+
+
 FIGS = [
     ("07.01-table", table0701),
     ("07.01-surprise", surprise0701),
     ("07.01-ladder", ladder0701),
+    ("07.02-counts", counts0702),
+    ("07.02-nplm", nplm0702),
+    ("07.02-scores", scores0702),
+    ("07.02-near", near0702),
 ]
 
 
