@@ -25,24 +25,37 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-Modules 06 to 09 are on master whole: code, tests, seventeen lessons,
-module pages, figures and covers; each module's `./learn verify --fresh`
-passed on its lessons' branch (08: 534 s; 09: 315 s). That is 44 of
-the core's 70 lessons. 08.02's default run is 2 seeds (3 took 82 s on a
+Modules 06 to 09 and 14 are on master whole: code, tests, twenty-one
+lessons, module pages, figures and covers; each module's `./learn
+verify --fresh` passed on its lessons' branch (08: 534 s; 09: 315 s;
+14: 201 s). That is 48 of the core's 70 lessons, pushed on 2026-11-24
+up to module 09. 08.02's default run is 2 seeds (3 took 82 s on a
 loaded machine); its heads comparison is inside the noise at 2 seeds
-and the page runs that part at 3 as well. Module 14's code is on master
-too (data/modular.py, the grokking runs and the report); 48 tests and
-four recorded runs in all. In work, each by an agent in its own
-worktree: module 10's code, module 12's code, module 14's lessons.
-Agents that add to track.py and NOTES.md at the same time are merged by
-hand, keeping each block. No more than three agents at once: with more
-the machine's load makes every timing useless.
+and the page runs that part at 3 as well. In work, each by an agent in
+its own worktree: the code of modules 10, 12 and 13. Agents that add to
+track.py, NOTES.md and the art generators at the same time are merged
+by hand, keeping each block; the maps are then drawn again
+(`python3 -B art/research/archmap.py`).
 
-After that, as agents finish: 13's code; 11's code
-after 10's (both change models/gpt.py); each module's lessons after its
-code; 15 last.
+The owner asked for more speed (2026-11-24): the limit of three agents
+is lifted. Timings taken while four or five agents run are not to be
+trusted, so a default run is no longer cut for time by an agent; one
+pass on a quiet machine at the end measures every default run again
+and fixes what is over a minute and the times the pages state. Module
+11 (fast) is all timings: its code is built when nothing else is
+training.
+
+After that, as agents finish: each module's lessons after its code;
+11's code after 10's (both change models/gpt.py); 15 after 13's code
+(it uses 13's tools), its worked example a question the track's own
+results raise (the plan's candidates, or 08.03's: how much of what
+learned positions are worth is left as blocks are added).
 
 Still open, not in work:
+- The worst of the harness quirks below: a recorded run is shown in The
+  code as one block for each file, 13 on 14.03 and 55 on 14.04, whose
+  page is about 50,000 px tall. It needs one collapsed block for a
+  DATA glob, in harness/.
 - Harness quirks the writers met, for whoever next works in harness/: a
   `###` heading in How it works that contains a definition's name is
   pulled into The code; lead-in names match case-insensitively; brackets
