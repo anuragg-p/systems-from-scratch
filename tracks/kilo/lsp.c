@@ -184,7 +184,7 @@ static char *lspUri(const char *path);
 // @from 07.06
 static void lspSetDiagnostics(struct lspDiag *list, int n);
 static void lspDiagnostics(json *params);
-static void lspShowDiagnostic(void);
+static int lspShowDiagnostic(void);
 // @end
 static void lspDefinitionResult(json *result);                  // @from 07.07
 
@@ -1191,8 +1191,10 @@ static void lspDiagnostics(json *params) {
     // line the copy does not have is dropped, and an end before the start
     // is the start. Count each by severity (1 when it has none), keep at
     // most LSP_DIAG_MAX, each with the first line of its message. Make
-    // them the file's; then, if the counts are not the ones said last, say
-    // them: "lsp: 2 errors, 1 warning", or "lsp: no problems".
+    // them the file's, and note the counts as said. Then, if the cursor's
+    // row has one, say what it is (lspShowDiagnostic()); if not, and the
+    // counts are not the ones said last, say them: "lsp: 2 errors, 1
+    // warning", or "lsp: no problems".
     json *list = jsonGet(params,"diagnostics"), *d, *version = jsonGet(params,"version");
     const char *uri = jsonStr(jsonGet(params,"uri"),NULL);
     struct lspDiag *nd;
@@ -1234,8 +1236,10 @@ static void lspDiagnostics(json *params) {
     }
     lspSetDiagnostics(nd,n);
     L.shown = -1;
-    if (memcmp(counts,L.counts,sizeof(counts)) == 0) return;
+    j = memcmp(counts,L.counts,sizeof(counts)) != 0;   /* have they changed? */
     memcpy(L.counts,counts,sizeof(counts));
+    /* The one where the cursor is says more than the counts. */
+    if (lspShowDiagnostic() || !j) return;
     strcpy(msg,"lsp: no problems");
     for (j = 1, mlen = 5; j <= 4; j++) {
         if (counts[j] == 0) continue;
@@ -1247,13 +1251,14 @@ static void lspDiagnostics(json *params) {
     // @end
 }
 
-/* At a pause: if the cursor is on a row with a diagnostic, say what it
- * is, "12: error: ...": the one under the cursor, or the row's first. */
-static void lspShowDiagnostic(void) {
+/* When a list arrives, and at a pause: if the cursor is on a row with a
+ * diagnostic, say what it is, "12: error: ...": the one under the cursor,
+ * or the row's first. Returns 1 if it said something. */
+static int lspShowDiagnostic(void) {
     // @build 07.06 the diagnostic under the cursor
     // Find the cursor (editorCursor()), and the diagnostics that cover its
-    // row; prefer one that covers its column. Say nothing if there is none,
-    // or if it is the one already said for this row.
+    // row; prefer one that covers its column. Say nothing (and return 0)
+    // if there is none, or if it is the one already said for this row.
     int row, col, j, best = -1;
     struct lspDiag *d;
 
@@ -1267,11 +1272,12 @@ static void lspShowDiagnostic(void) {
             break;
         }
     }
-    if (best == -1 || (row == L.shownrow && best == L.shown)) return;
+    if (best == -1 || (row == L.shownrow && best == L.shown)) return 0;
     L.shownrow = row;
     L.shown = best;
     d = L.diag+best;
     lspSay("%d: %s: %s",d->line+1,lspSeverity[d->severity],d->message);
+    return 1;
     // @end
 }
 

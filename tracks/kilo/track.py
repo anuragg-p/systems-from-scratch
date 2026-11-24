@@ -1026,7 +1026,8 @@ def _highlight_steps(k):
 def _lsp_steps(k):
     """Steps for the project at a lesson of module 07, on TIMELINE_C_FILE with the scripted
     server: the message each lesson's code leads to, and from 07.05 what typing does; at
-    07.06 the error underlined and its message at a pause; at 07.07 Ctrl-G and Ctrl-B."""
+    07.06 the error underlined and its message, the cursor on its row; at 07.07 Ctrl-G and
+    Ctrl-B."""
     S, U = "screen", "underline"
     lines = TIMELINE_LSP_TEXT.replace("\t", " " * 8).split("\n")
     text = {i: lines[i] for i in range(6)} | {i: "~" for i in range(6, 22)}
@@ -1057,7 +1058,8 @@ def _lsp_steps(k):
                   ("keys {bs}", SENT), (S, _screen(24, text, cursor=(4, 9)))]
     if k >= (7, 6):
         # The error underlined where the screen shows it, past the tab; the cursor is on its
-        # row, so at the pause the message line says what it is.
+        # row, so the message line says what it is (when the list for the last change came,
+        # and at the pause).
         under = {i: text[i] for i in range(6)} | {3: "        total = total + [_:oops];"}
         steps += [(U, _colors(24, under).replace(r"\[colors\]", r"\[underline\]")),
                   until(re.escape("4: error: use of undeclared identifier 'oops'"), (4, 9))]

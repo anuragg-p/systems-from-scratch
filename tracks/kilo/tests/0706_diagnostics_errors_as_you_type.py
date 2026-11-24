@@ -1,11 +1,12 @@
 """07.06 Diagnostics: errors as you type
 
-The server's diagnostics for the open file are shown three ways: each range
-underlined in the text (drawn over the row: its columns found past tabs, and
-past text that is not ASCII, in UTF-16 or UTF-8 as the server chose), the
-counts in the message line when they change ("lsp: 1 error, 1 warning",
-"lsp: no problems"), and, when the cursor rests on a row with one, its
-message: "4: error: ...". Diagnostics for another file, or for a version
+The server's diagnostics for the open file are shown in the text, each range
+underlined (drawn over the row: its columns found past tabs, and past text
+that is not ASCII, in UTF-16 or UTF-8 as the server chose), and in the
+message line: when a list arrives, the diagnostic on the cursor's row if it
+has one ("4: error: ..."), else the counts if they changed ("lsp: 1 error,
+1 warning", "lsp: no problems"); and at a pause, the diagnostic on the row
+the cursor has come to. Diagnostics for another file, or for a version
 older than the last sent, are ignored; a range past the end of a line ends
 there, one on a line the file has not is dropped; at most 1000 are kept.
 Nothing a server puts in one reaches the terminal raw.
@@ -35,7 +36,7 @@ def test(t):
     tr = t.track
 
     # The tiny language: "oops" is an error, "meh" a warning. After a tab, the underline is
-    # where the screen shows the word.
+    # where the screen shows the word. The cursor's row has none: the counts.
     text = "int a;\n\tx = oops;\n\tint meh;\n"
     ed = tr.edit(t, text, name="t.c", lsp="", asan=True)
     ed.wait_said("lsp: 1 error, 1 warning")
@@ -46,13 +47,35 @@ def test(t):
     ed.wait_message(r"^2: error: use of undeclared identifier 'oops'$")
     ed.keys(tr.DOWN)
     ed.wait_message(r"^3: warning: unused variable 'meh'$")
-    # Fixed as you type: the counts change, and the underline goes.
+    # Fixed as you type: the cursor's row has none now, the counts change, the underline goes.
     ed.keys(tr.UP, *[tr.RIGHT] * 9, *[tr.BACKSPACE] * 4, "y")
     ed.wait_said("lsp: 1 warning")
     t.check(ed.under(1) == "        x = y;", f"the error is gone: {ed.under(1)!r}")
     ed.keys(tr.DOWN, tr.RIGHT, tr.RIGHT, *[tr.BACKSPACE] * 3, "z")
     ed.wait_said("lsp: no problems")
     t.check(ed.underlined(2) == [], f"nothing underlined: {ed.under(2)!r}")
+    # An error typed where the cursor is: its message as soon as the list comes, with no
+    # other key, and not the counts.
+    mark = len(ed.raw)
+    ed.keys(" oops")
+    ed.wait_message(r"^3: error: use of undeclared identifier 'oops'$")
+    t.check(b"\x1b[0Klsp: 1 error\x1b[" not in ed.raw[mark:], "the counts were not said for that list")
+    t.check(ed.under(2) == "        int z [_:oops];", f"{ed.under(2)!r}")
+    # Those counts were noted as said: a later list with the same counts, the cursor on a row
+    # with none, says nothing.
+    ed.keys(tr.UP, tr.UP)
+    sent = len(ed.received("textDocument/didChange"))
+    mark = len(ed.raw)
+    ed.keys("q")
+    ed.wait_received("textDocument/didChange", sent + 1)
+    # The server has sent its initialize reply, a list for didOpen, one for each change.
+    ed.wait_for(lambda: len([e for e in ed.server_log() if e["event"] == "send"]) >= 2 + sent + 1,
+                "the server's list for the change")
+    end = time.monotonic() + 0.5
+    while time.monotonic() < end:
+        ed.pump(0.02)
+    t.check(ed.line(0) == "int a;q", f"typed at the end of row 0: {ed.line(0)!r}")
+    t.check(b"\x1b[0Klsp: 1 error\x1b[" not in ed.raw[mark:], "the same counts are not said again")
     ed.keys(tr.ctrl("s"))
     ed.quit()
 
@@ -78,7 +101,8 @@ def test(t):
              " {'range': RNG(9, 0, 9, 1), 'message': 'no such line'},"
              " {'range': RNG(0, 0, 40, 0), 'message': 'ends on no such line'}]")
     ed = tr.edit(t, text, name="t.c", lsp=publish(diags), asan=True)
-    ed.wait_said("lsp: 3 errors, 1 warning")
+    # The cursor's row (0) has one: its message, the row's first (the cursor is before it).
+    ed.wait_said("1: error: three rows")
     t.check(ed.under(0) == "ab[_:cdef]" and ed.under(1) == "[_:ghij]" and ed.under(2) == "[_:klm]nop",
             f"three rows: {[ed.under(n) for n in range(3)]}")
     t.check(ed.underlined(3) == [1, 3], f"row 3, one cell at 1 and one past the end, at 3: {ed.underlined(3)}")
@@ -106,7 +130,7 @@ def test(t):
             "        srv.notify('textDocument/publishDiagnostics', {'uri': other, 'diagnostics': [d]})\n"
             "        return True\n")
     ed = tr.edit(t, "abcdef\n", name="link/t.c", lsp=scen, asan=True)
-    ed.wait_said("lsp: 1 error")
+    ed.wait_for(lambda: "[_:" in ed.under(0), "an underline")
     t.check(ed.under(0) == "[_:abc]def", f"only the last, through the link: {ed.under(0)!r}")
     ed.quit()
 
@@ -116,9 +140,9 @@ def test(t):
              " 'message': 'first line\\x1b[2J\\nsecond line'}, {'range': RNG(0, 'a', 0, None)},"
              " {'range': RNG(-1, 0, 0, 1)}, {'range': RNG(0, -5, 0, 2), 'message': 7}, 'not an object']")
     ed = tr.edit(t, "abcdef\n", name="t.c", lsp=publish(diags), asan=True)
-    ed.wait_said("lsp: 3 errors")
-    ed.keys(tr.RIGHT)
+    # Three are kept; the one under the cursor (0,0) is said, its first line, the ESC a '?'.
     ed.wait_message(r"^1: error: first line\?\[2J$")
+    t.check(not ed.said("lsp: 3 errors"), "not the counts: the cursor's row has one")
     t.check(b"\x1b[2J" not in ed.raw, "the escape sequence never reached the terminal")
     ed.quit()
     publish_type = ("srv.diagnose = False\n"
@@ -133,12 +157,13 @@ def test(t):
                     "            [{'range': {'start': {'line': 0, 'character': 1}, 'end': {'line': 0, 'character': 2}}}]})\n"
                     "        return True\n")
     ed = tr.edit(t, "abc\n", name="t.c", lsp=publish_type, asan=True)
-    ed.wait_said("lsp: 1 error")
+    ed.wait_for(lambda: "[_:" in ed.under(0), "an underline")
     t.check(ed.under(0) == "a[_:b]c", f"{ed.under(0)!r}")
     ed.quit()
 
-    # 1500 diagnostics, one on each row: all are counted, the first 1000 kept.
-    many = "".join(f"x{i:04d} oops\n" for i in range(1500))
+    # 1500 diagnostics, one on each row after the first: all are counted (the cursor's row has
+    # none), the first 1000 kept.
+    many = "start\n" + "".join(f"x{i:04d} oops\n" for i in range(1500))
     ed = tr.edit(t, many, name="t.c", lsp="", asan=True)
     ed.wait_said("lsp: 1500 errors", timeout=30)
     ed.keys(tr.ctrl("f"), "x0999", tr.ENTER)
@@ -149,7 +174,7 @@ def test(t):
 
     # The view scrolled right: the underline is cut to the columns on the screen.
     ed = tr.edit(t, "x" * 76 + " oops more\n", name="t.c", lsp="", cols=80, asan=True)
-    ed.wait_said("lsp: 1 error")
+    ed.wait_message(r"^1: error: use of undeclared identifier 'oops'$")
     t.check(ed.under(0) == "x" * 76 + " [_:oop]", f"cut at the edge: {ed.under(0)!r}")
     ed.keys(*[tr.RIGHT] * 82)
     # The view starts at column 3 now; the row fills the screen, so its last cell ("m") is
@@ -186,11 +211,10 @@ def test(t):
     ed.keys(*[tr.DOWN] * 5, *[tr.RIGHT] * 20, tr.BACKSPACE)
     ed.wait_for(lambda: "[_:totl]" in ed.under(5), "clangd's underline on totl", timeout=30)
     t.check(ed.under(5) == '        printf("%d\\n", [_:totl]);', f"{ed.under(5)!r}")
-    ed.wait_for(lambda: re.search(rb"\x1b\[0Klsp: 1 error", ed.raw), "clangd's count", timeout=30)
-    # clangd's list comes after the pause that sent the change: the row's message shows at the
-    # next pause (here after Left and Right, the cursor where it was).
-    ed.keys(tr.LEFT, tr.RIGHT)
+    # clangd's list comes after the pause that sent the change; the cursor is on the error's
+    # row, so its message is said when the list arrives, with no other key, not the counts.
     ed.wait_message(r"^6: error: Use of undeclared identifier 'totl'", timeout=30)
+    t.check(not re.search(rb"\x1b\[0Klsp: 1 error", ed.raw), "not the counts")
     ed.keys("a")
     ed.wait_for(lambda: ed.underlined(5) == [], "the underline gone", timeout=30)
     ed.wait_said("lsp: no problems", timeout=30)
