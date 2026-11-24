@@ -485,3 +485,42 @@ throwaway program outside the repository:
 - Next, step 1's lessons and art from NOTES.md; then step 2 (modules 03
   and 04). Before 03.01: same's wrapping of an expression in a main goes,
   and the tests' value() changes with it.
+
+## Step 1's lessons and art as done (2026-11-25)
+
+- 14 lessons and 3 module pages, written in parallel on three branches
+  (one a module) from a lesson design, and the art on a fourth from an art
+  design: the map in every lesson (the compiler's phases in one frame, the
+  assembler, linker, runtime and machine under it, gcc's lane beside), 26
+  figures of the idea, 5 of them stepped (00.02 run, 01.01 scan, 02.01
+  descent, 02.03 registers, 02.06 spill), and a cover and icon for modules
+  00 to 02. Generators: art/cc/ (figlib, archmap, figs00 to figs02) and
+  art/outlines/cc_art.py, which now draws covers 00 to 02 from the built
+  compiler and copies them into the lessons. Every lesson passes ./learn
+  verify; ./learn check has nothing against cc.
+- Each figure runs the project at its lesson and asserts what NOTES.md's
+  transcripts show. Cover 00 was wrong before the code existed (three lines
+  of assembly, no `.globl main`) and is right now.
+- Changed from the lesson design, each for a reason found by running the
+  project: 00.03's real disagreement is `042` (octal to gcc, 42 to us
+  until 01.04), with the fake compiler kept for Break it; 01.02 and its
+  figures use numbers, since names scan only from 01.03; 02.04 shows
+  `1 & 2 == 2` failing and leaves its tree to 02.05; the book note on 1.6
+  no longer says the track builds the phases in the book's order (types
+  come at 06).
+- The read so far: 02.03 whole, the contact sheets of every figure in
+  light, 00.01 and the track page as rendered. Not yet done: every lesson
+  read in order on the site in dark and at 390 px, as kilo's modules had.
+- Not done, and why: README's map, "The book" and "Credits" do not name cc
+  yet (README has another session's uncommitted edits).
+
+## Where the track stops for now (the owner, 2026-11-25)
+
+Asked whether modules 03 to 09 should be reordered to follow the book's
+chapters, the owner said: keep the current structure, finish what remains
+of this step, the rest of the modules need not all be built; and start
+another tutorial that follows the book exactly, chapter by chapter, with
+the code and the steps to run it, in which the reader builds a language of
+their own. So this track stands at module 02, with 03 to 13 planned as
+above and built only on the owner's word. The other tutorial is a track of
+its own; its outline says how the two relate.

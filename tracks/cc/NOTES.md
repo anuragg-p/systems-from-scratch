@@ -820,6 +820,28 @@ Break it:
   (`gen_binary(node, reg[d], reg[d], "t6")`): `./ccrun try.c` exits 12,
   `same` says `ours: status 12`, `gcc: status 4`, `differ`.
 
+## Found while the lessons were written (2026-11-25)
+
+- QEMU's `virt` machine does not begin at 0x80000000. Its own reset code,
+  six instructions at 0x1000 (seen with `-d in_asm`, QEMU 10.2.1), jumps
+  there, whatever the ELF file's entry address is. The lessons and figures
+  say "jumps to 0x80000000", never "starts at".
+- Ctrl-C on a hung run: QEMU prints `terminating on signal 2 from pid N
+  (<unknown process>)` and exits with status 0. 00.02's Break it shows it.
+- From 00.01 to 01.03 the compiler reads `042` as 42 and gcc reads it as
+  octal, 34: `./same` says `differ`. 00.03 uses this as its real
+  disagreement; 01.04 brings C's octal and ends it.
+- At 01.02 names are still invalid tokens, so that lesson and its figures
+  use numbers (`1>>=2`, `1->2`).
+- `1x` is "invalid numeric constant" from 01.01 on. `--1` is "expected an
+  expression" (one `--` token); `- -1` is two negations.
+- At 02.04, `1 & 2 == 2` is "extra token" at the `==`: the comparison levels
+  arrive at 02.05. `(1 << 31) >> 30` gives 2 here and 254 from gcc: where
+  64-bit values and C's `int` part ways, until module 06.
+- `./learn verify`: a `./learn run cc` block ends in QEMU, which prints
+  nothing, so those blocks carry `wait=10`; without it the next typed line
+  can arrive before the prompt.
+
 ## Reads
 
 What other compilers and QEMU do, each read in their source or their output at the version
