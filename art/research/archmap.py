@@ -15,7 +15,7 @@ The map is the whole core (modules 00 to 15) as layers, the lab under everything
     models        06 image networks | 07 language models | 08 the GPT | 09 real weights |
                   10 today's architecture | 11 fast | 12 fine-tuning
     experiments   a curve | two groups | digits | deep networks | generalisation | images | language
-    the data      points | MNIST | augment | CIFAR-10 | Shakespeare
+    the data      points | MNIST | augment | CIFAR-10 | Shakespeare | tokens | TinyStories
     the engine    nudge | values | tensors | losses | layers | optimisers | convolution
     the lab       runs | seeds | plots | checkpoints | checks | devices
     ------------  the current module's lessons, one box each (as dsa's strip)
@@ -25,7 +25,9 @@ the engine and the experiments a seventh and sixth piece, and the data a fourth,
 had no room for, so the data became a row of its own. Module 07 adds the text to the data, the
 language experiments, and the language models' piece, which its 07.02 to 07.04 share. Module 08
 adds the GPT, models/gpt.py, the piece of 08.01 to 08.04; its 08.05, the sampler, is the
-language experiments' piece, which modules 07 and 08 share.)
+language experiments' piece, which modules 07 and 08 share. Module 09 adds two pieces to the data,
+tokens (tokens/: byte pair encoding in 09.01, GPT-2's tokenizer in 09.02) and TinyStories (09.04),
+and lights the models' real weights (models/gpt2.py, 09.03); its experiments are language ones.)
 
 In each lesson's copy, that lesson's piece (LESSONS below: exactly one per lesson) is drawn in
 the accent colour, every piece whose code has arrived by that lesson (PIECES: the lesson it
@@ -65,11 +67,11 @@ PIECES = {
     "13": ("research", "experiments that hold up", "13", None),
     "14": ("research", "the reproduction", "14", None),
     "15": ("research", "your own result", "15", None),
-    # models: models/, one file per network family (06 on); the modules after 08 not built yet
+    # models: models/, one file per network family (06 on); the modules after 09 not built yet
     "06": ("models", "image networks", "06", "06.02"),
     "07": ("models", "language models", "07", "07.02"),
     "08": ("models", "the GPT", "08", "08.01"),
-    "09": ("models", "real weights", "09", None),
+    "09": ("models", "real weights", "09", "09.03"),
     "10": ("models", "today's architecture", "10", None),
     "11": ("models", "fast", "11", None),
     "12": ("models", "fine-tuning", "12", None),
@@ -80,13 +82,15 @@ PIECES = {
     "deep": ("experiments", "deep networks", "module 04", "04.01"),
     "general": ("experiments", "generalisation", "module 05", "05.01"),
     "images": ("experiments", "images", "module 06", "06.01"),
-    "text": ("experiments", "language", "modules 07-08", "07.01"),
+    "text": ("experiments", "language", "modules 07-09", "07.01"),
     # the data: data/
     "points": ("data", "points", "made from a seed", "01.04"),
     "mnist": ("data", "MNIST", "fetched once", "03.01"),
-    "augment": ("data", "augment", "new images every pass", "05.03"),
+    "augment": ("data", "augment", "new every pass", "05.03"),
     "cifar": ("data", "CIFAR-10", "fetched once", "06.03"),
     "shakespeare": ("data", "Shakespeare", "shipped, 1.1 MB", "07.01"),
+    "tokens": ("data", "tokens", "BPE, GPT-2's", "09.01"),
+    "tinystories": ("data", "TinyStories", "fetched once", "09.04"),
     # the engine: engine/
     "nudge": ("engine", "nudge", "gradient check", "01.01"),
     "values": ("engine", "values", "autograd", "01.02"),
@@ -146,6 +150,10 @@ LESSONS = [
     ("08.03", "Where am I: position embeddings", "08", "positions"),
     ("08.04", "Training a GPT on Shakespeare", "08", "training a GPT"),
     ("08.05", "Sampling: temperature, top-k and top-p", "text", "sampling"),
+    ("09.01", "Bytes, UTF-8 and byte pair encoding", "tokens", "bytes and BPE"),
+    ("09.02", "GPT-2's tokenizer: the same ids as tiktoken", "tokens", "GPT-2's tokenizer"),
+    ("09.03", "Loading GPT-2: the same logits as the reference", "09", "loading GPT-2"),
+    ("09.04", "Pretraining on TinyStories: a model that tells a story", "tinystories", "TinyStories"),
 ]
 
 MODULE_TITLES = {
@@ -158,6 +166,7 @@ MODULE_TITLES = {
     "06": "Images: convolution and residual networks",
     "07": "Language models, from counting to attention",
     "08": "The transformer: a GPT",
+    "09": "GPT-2: the tokenizer and the real weights",
 }
 
 # The rows, top to bottom: key -> its label over the row.

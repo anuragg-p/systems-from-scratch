@@ -25,21 +25,20 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-Modules 06, 07 and 08 are on master whole: code, 40 tests, thirteen
-lessons, module pages, figures and covers; `./learn verify --fresh
-research 08` passed on the lessons' branch (534 s) and `./learn check`
-is ok on master. That is 40 of the core's 70 lessons. 08.02's default
-run is 2 seeds (3 took 82 s on a loaded machine); its heads comparison
-is inside the noise at 2 seeds and the page runs that part at 3 as well.
-Module 09's code is on master too (tokens/, models/gpt2.py, TinyStories
-and its recorded run, 44 tests). In work, each by an agent in its own
-worktree: module 09's lessons, module 10's code, and module 14's code
-(grokking, which needs nothing of 09 to 13). All three add to track.py
-and NOTES.md, so the merges keep each block by hand. No more than three
-agents at once: with more the machine's load makes every timing
-useless.
+Modules 06 to 09 are on master whole: code, tests, seventeen lessons,
+module pages, figures and covers; each module's `./learn verify --fresh`
+passed on its lessons' branch (08: 534 s; 09: 315 s). That is 44 of
+the core's 70 lessons. 08.02's default run is 2 seeds (3 took 82 s on a
+loaded machine); its heads comparison is inside the noise at 2 seeds
+and the page runs that part at 3 as well. Module 14's code is on master
+too (data/modular.py, the grokking runs and the report); 48 tests and
+four recorded runs in all. In work, each by an agent in its own
+worktree: module 10's code, module 12's code, module 14's lessons.
+Agents that add to track.py and NOTES.md at the same time are merged by
+hand, keeping each block. No more than three agents at once: with more
+the machine's load makes every timing useless.
 
-After that, as agents finish: 14's lessons; 12 and 13's code; 11's code
+After that, as agents finish: 13's code; 11's code
 after 10's (both change models/gpt.py); each module's lessons after its
 code; 15 last.
 
@@ -285,13 +284,24 @@ Built, as found:
   with the training text than held-out stories do. Whole stories: held.
   Consistent, nearly perfect grammar: did not. GPT-4's grading: not run.
 
+- 14 Power et al. (2022), x/y mod 97, the text's set-up (AdamW, weight
+  decay 1). With models/gpt.py's GPT at the paper's 50% of the
+  equations there is no delay at all: it generalises as it memorises.
+  At 35% the figure appears, 3 seeds: training passes 99% near step
+  400 with validation at chance, validation passes 99% 5.0 to 5.6
+  times later; the paper's figure 1 has about a thousand times (did not
+  hold). What decides it is the start: at 50%, weights started 10 times
+  larger give a delay of 4 to 8 times. Without weight decay no seed
+  generalises in 6000 steps (held); less data is steeply slower (held);
+  the validation loss rises in between, 1.16 times a guess's against
+  the paper's about 9 (direction only).
+
 Still the plan:
 - 10.01 to 10.03 RMSNorm, RoPE, SwiGLU: each against the piece it
   replaced, same parameters, several seeds; 10.05 is the table.
 - 11.03 FlashAttention, 11.04 mixed precision: the same numbers, sooner.
 - 12.02 LoRA: close to full fine-tuning with a small fraction of weights.
 - 13.04 Scaling laws: loss as a power law in size, used to predict.
-- 14 Grokking: the paper's figure, and what weight decay does to it.
 
 ## Decisions after module 08's code (Fable, 2026-11-24)
 
@@ -323,6 +333,19 @@ Still the plan:
   average under 6. (08.02 was cut at a load of 10 to 13; it stays cut.)
 - tiktoken was installed for the tests (pip install --user). The tests
   use it when it imports and transformers' tokenizers either way.
+
+## Decisions after module 14's code (Fable, 2026-11-24)
+
+- The central figure stays at 35% of the equations with the GPT as
+  module 08 built it: one change from the paper's text, and one the
+  paper itself varies. The start is the ablation that explains why 50%
+  shows nothing here; it is the module's lesson about reproduction (a
+  detail the paper's text does not give decides the result).
+- 14.04's default run trains nothing and reads the recorded runs; the
+  page says so.
+- 14.02's default stays at 350 steps (training accuracy 0.96, not yet
+  99%): the recorded seeds pass 99% between steps 354 and 446, so 400
+  would not show it for every seed either.
 
 ## Directions for 07 to 15 (Fable, 2026-11-24)
 

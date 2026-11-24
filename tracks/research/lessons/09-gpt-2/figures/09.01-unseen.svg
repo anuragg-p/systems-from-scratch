@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 346" fill="none">
+<title>The test text&#x27;s words that the training text never had (a word: a run of letters): 381 of its 2,396 different words, 6.9% of its running words; the most frequent of them, and the pieces 09.01&#x27;s 2,048 symbols write them in</title>
+<defs><marker id="unseen0901-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="unseen0901-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="unseen0901-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="20" y="45" font-size="11.5" font-weight="600">the test text&#x27;s different words</text>
+<text class="tm" x="20" y="60" font-size="10.5">2,396 in all</text>
+<rect class="s fs" x="190" y="30" width="353.21" height="22" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="543.21" y="30" width="66.79" height="22" rx="0" stroke-width="1.5"/>
+<text class="t" x="198" y="45" font-size="10.5">in the training text: 84.1%</text>
+<text class="ta" x="537.21" y="67" font-size="10.5" font-weight="600" text-anchor="end">never in it: 15.9%</text>
+<text class="t" x="20" y="91" font-size="11.5" font-weight="600">the test text&#x27;s running words</text>
+<text class="tm" x="20" y="106" font-size="10.5">10,264 in all</text>
+<rect class="s fs" x="190" y="76" width="390.87" height="22" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="580.87" y="76" width="29.13" height="22" rx="0" stroke-width="1.5"/>
+<text class="t" x="198" y="91" font-size="10.5">in the training text: 93.1%</text>
+<text class="ta" x="574.87" y="113" font-size="10.5" font-weight="600" text-anchor="end">never in it: 6.9%</text>
+<text class="ta" x="20" y="136" font-size="11.5" font-weight="700">never in the training text</text>
+<text class="tm" x="214" y="136" font-size="10.5" text-anchor="middle">times in the test text</text>
+<text class="tm" x="290" y="136" font-size="10.5">as 09.01&#x27;s tokens (a vocabulary of 2,048, learned on the training text)</text>
+<text class="t mono" x="20" y="158" font-size="11.5">PROSPERO</text>
+<text class="t mono" x="214" y="158" font-size="11" text-anchor="middle">63</text>
+<rect class="a af" x="290" y="144" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="302.3" y="157.28" font-size="10.5" text-anchor="middle">PR</text>
+<rect class="a af" x="317.6" y="144" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="326.75" y="157.28" font-size="10.5" text-anchor="middle">O</text>
+<rect class="a af" x="338.9" y="144" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="348.05" y="157.28" font-size="10.5" text-anchor="middle">S</text>
+<rect class="a af" x="360.2" y="144" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="369.35" y="157.28" font-size="10.5" text-anchor="middle">P</text>
+<rect class="a af" x="381.5" y="144" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="393.8" y="157.28" font-size="10.5" text-anchor="middle">ER</text>
+<rect class="a af" x="409.1" y="144" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="418.25" y="157.28" font-size="10.5" text-anchor="middle">O</text>
+<text class="t mono" x="20" y="179" font-size="11.5">SEBASTIAN</text>
+<text class="t mono" x="214" y="179" font-size="11" text-anchor="middle">42</text>
+<rect class="a af" x="290" y="165" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="299.15" y="178.28" font-size="10.5" text-anchor="middle">S</text>
+<rect class="a af" x="311.3" y="165" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="320.45" y="178.28" font-size="10.5" text-anchor="middle">E</text>
+<rect class="a af" x="332.6" y="165" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="341.75" y="178.28" font-size="10.5" text-anchor="middle">B</text>
+<rect class="a af" x="353.9" y="165" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="363.05" y="178.28" font-size="10.5" text-anchor="middle">A</text>
+<rect class="a af" x="375.2" y="165" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="387.5" y="178.28" font-size="10.5" text-anchor="middle">ST</text>
+<rect class="a af" x="402.8" y="165" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="411.95" y="178.28" font-size="10.5" text-anchor="middle">I</text>
+<rect class="a af" x="424.1" y="165" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="436.4" y="178.28" font-size="10.5" text-anchor="middle">AN</text>
+<text class="t mono" x="20" y="200" font-size="11.5">ANTONIO</text>
+<text class="t mono" x="214" y="200" font-size="11" text-anchor="middle">38</text>
+<rect class="a af" x="290" y="186" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="299.15" y="199.28" font-size="10.5" text-anchor="middle">A</text>
+<rect class="a af" x="311.3" y="186" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="323.6" y="199.28" font-size="10.5" text-anchor="middle">NT</text>
+<rect class="a af" x="338.9" y="186" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="351.2" y="199.28" font-size="10.5" text-anchor="middle">ON</text>
+<rect class="a af" x="366.5" y="186" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="378.8" y="199.28" font-size="10.5" text-anchor="middle">IO</text>
+<text class="t mono" x="20" y="221" font-size="11.5">GONZALO</text>
+<text class="t mono" x="214" y="221" font-size="11" text-anchor="middle">37</text>
+<rect class="a af" x="290" y="207" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="299.15" y="220.28" font-size="10.5" text-anchor="middle">G</text>
+<rect class="a af" x="311.3" y="207" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="323.6" y="220.28" font-size="10.5" text-anchor="middle">ON</text>
+<rect class="a af" x="338.9" y="207" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="348.05" y="220.28" font-size="10.5" text-anchor="middle">Z</text>
+<rect class="a af" x="360.2" y="207" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="369.35" y="220.28" font-size="10.5" text-anchor="middle">A</text>
+<rect class="a af" x="381.5" y="207" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="393.8" y="220.28" font-size="10.5" text-anchor="middle">LO</text>
+<text class="t mono" x="20" y="242" font-size="11.5">MIRANDA</text>
+<text class="t mono" x="214" y="242" font-size="11" text-anchor="middle">34</text>
+<rect class="a af" x="290" y="228" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="299.15" y="241.28" font-size="10.5" text-anchor="middle">M</text>
+<rect class="a af" x="311.3" y="228" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="320.45" y="241.28" font-size="10.5" text-anchor="middle">I</text>
+<rect class="a af" x="332.6" y="228" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="341.75" y="241.28" font-size="10.5" text-anchor="middle">R</text>
+<rect class="a af" x="353.9" y="228" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="366.2" y="241.28" font-size="10.5" text-anchor="middle">AN</text>
+<rect class="a af" x="381.5" y="228" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="390.65" y="241.28" font-size="10.5" text-anchor="middle">D</text>
+<rect class="a af" x="402.8" y="228" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="411.95" y="241.28" font-size="10.5" text-anchor="middle">A</text>
+<text class="t mono" x="20" y="263" font-size="11.5">ARIEL</text>
+<text class="t mono" x="214" y="263" font-size="11" text-anchor="middle">21</text>
+<rect class="a af" x="290" y="249" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="302.3" y="262.28" font-size="10.5" text-anchor="middle">AR</text>
+<rect class="a af" x="317.6" y="249" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="326.75" y="262.28" font-size="10.5" text-anchor="middle">I</text>
+<rect class="a af" x="338.9" y="249" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="351.2" y="262.28" font-size="10.5" text-anchor="middle">EL</text>
+<text class="t mono" x="20" y="284" font-size="11.5">Boatswain</text>
+<text class="t mono" x="214" y="284" font-size="11" text-anchor="middle">11</text>
+<rect class="a af" x="290" y="270" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="299.15" y="283.28" font-size="10.5" text-anchor="middle">B</text>
+<rect class="a af" x="311.3" y="270" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="320.45" y="283.28" font-size="10.5" text-anchor="middle">o</text>
+<rect class="a af" x="332.6" y="270" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="344.9" y="283.28" font-size="10.5" text-anchor="middle">at</text>
+<rect class="a af" x="360.2" y="270" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="372.5" y="283.28" font-size="10.5" text-anchor="middle">sw</text>
+<rect class="a af" x="387.8" y="270" width="30.9" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="403.25" y="283.28" font-size="10.5" text-anchor="middle">ain</text>
+<text class="t mono" x="20" y="305" font-size="11.5">ALONSO</text>
+<text class="t mono" x="214" y="305" font-size="11" text-anchor="middle">10</text>
+<rect class="a af" x="290" y="291" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="299.15" y="304.28" font-size="10.5" text-anchor="middle">A</text>
+<rect class="a af" x="311.3" y="291" width="24.6" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="323.6" y="304.28" font-size="10.5" text-anchor="middle">LO</text>
+<rect class="a af" x="338.9" y="291" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="348.05" y="304.28" font-size="10.5" text-anchor="middle">N</text>
+<rect class="a af" x="360.2" y="291" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="369.35" y="304.28" font-size="10.5" text-anchor="middle">S</text>
+<rect class="a af" x="381.5" y="291" width="18.3" height="19" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="390.65" y="304.28" font-size="10.5" text-anchor="middle">O</text>
+<text class="tm" x="20" y="330" font-size="10.5">A model with one symbol per training word has none of these; byte pair encoding writes each in pieces it has.</text>
+</svg>

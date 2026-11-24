@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 214" fill="none">
+<title>Reading GPT-2&#x27;s 548 MB file in a fresh python: the most memory the process held at once, with 02.05&#x27;s load_file (the whole file read, then copied out twice) and with 09.03&#x27;s (each tensor read from the file straight into its own array)</title>
+<defs><marker id="memory0903-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="memory0903-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="memory0903-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="200" y="43" font-size="11.5" text-anchor="end">the file on disk</text>
+<rect class="m fs" x="210" y="28" width="74.28" height="24" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="290.28" y="44" font-size="11">548 MB</text>
+<text class="t" x="200" y="89" font-size="11.5" text-anchor="end">02.05&#x27;s load_file</text>
+<rect class="s fs" x="210" y="74" width="300" height="24" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="516" y="90" font-size="11">2,214 MB</text>
+<text class="tm" x="516" y="105" font-size="10">4.0 times the file</text>
+<text class="ta" x="200" y="135" font-size="11.5" font-weight="700" text-anchor="end">09.03&#x27;s load_file</text>
+<rect class="a af" x="210" y="120" width="79.44" height="24" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="295.44" y="136" font-size="11">586 MB</text>
+<text class="tm" x="295.44" y="151" font-size="10">1.07 times the file</text>
+<text class="tm" x="20" y="178" font-size="10.5">The peak of the whole process (ru_maxrss), python and numpy included (37 MB before reading). The arrays are 548 MB:</text>
+<text class="tm" x="20" y="193" font-size="10.5">the file less its header. 1 MB here is a million bytes.</text>
+</svg>

@@ -1,0 +1,24 @@
+{
+ "batch": 512,
+ "betas": [
+  0.9,
+  0.98
+ ],
+ "device": "cpu",
+ "fraction": 0.35,
+ "heads": 4,
+ "label": "",
+ "layers": 2,
+ "lr": 0.001,
+ "name": "grokking",
+ "operation": "/",
+ "out": "experiments/recorded",
+ "p": 97,
+ "per_decade": 20,
+ "seed": 2,
+ "seeds": 3,
+ "steps": 5000,
+ "warmup": 10,
+ "weight_decay": 1.0,
+ "width": 128
+}

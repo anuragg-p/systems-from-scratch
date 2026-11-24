@@ -92,10 +92,14 @@ Ours       The lessons, the order the code is built in and its markers,
            lsp.h, json.c and json.h are ours, and so are the lines in
            kilo.c that call into them, its section "The editor's side of
            the language client", and the Makefile's lines that build
-           lsp.c and json.c. Module 09, another, is an API and Lua on top
-           of it, ours too: api.h, script.c and script.h, kilo.c's section
-           "The API" and the lines that call into it, and the Makefile's
-           lines that build script.c and link Lua's library.
+           lsp.c and json.c. Module 08, undo and redo, is ours too: its
+           block and section in kilo.c and its lines in kilo's functions.
+           It follows the design of Vim's undo (a record keeps a line as
+           it was and is swapped with it), and holds no code of Vim's.
+           Module 09, another, is an API and Lua on top of it, ours too:
+           api.h, script.c and script.h, kilo.c's section "The API" and
+           the lines that call into it, and the Makefile's lines that
+           build script.c and link Lua's library.
 
 Lua        Lua 5.4.9, by R. Ierusalimschy, L. H. de Figueiredo and
            W. Celes, Lua.org, PUC-Rio, https://www.lua.org/ (the release

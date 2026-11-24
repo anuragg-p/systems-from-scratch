@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 318" fill="none">
+<title>Four characters as UTF-8: each code point&#x27;s bits cut into the pattern for its size; the first byte says how many bytes the character takes, and every byte after it starts 10</title>
+<defs><marker id="utf80901-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="utf80901-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="utf80901-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="20" y="22" font-size="11">the character</text>
+<text class="tm" x="178" y="22" font-size="11">its code point in bits</text>
+<text class="tm" x="340" y="22" font-size="11">its UTF-8 bytes (in hex below)</text>
+<text class="t mono" x="20" y="60" font-size="13" font-weight="700">U+0065</text>
+<text class="tm" x="20" y="77" font-size="10">latin small letter e</text>
+<text class="tm" x="20" y="91" font-size="10">1 byte</text>
+<text class="ta mono" x="178" y="60" font-size="10">1100101</text>
+<text class="tm" x="178" y="77" font-size="10">7 bits</text>
+<rect class="s f" x="340" y="46" width="70" height="24" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="351" y="62" font-size="10">0</text>
+<text class="ta mono" x="357" y="62" font-size="10" font-weight="700">1100101</text>
+<text class="t mono" x="375" y="85" font-size="11" text-anchor="middle">65</text>
+<text class="t mono" x="20" y="122" font-size="13" font-weight="700">U+00E9</text>
+<text class="tm" x="20" y="139" font-size="10">latin small letter e with acute</text>
+<text class="tm" x="20" y="153" font-size="10">2 bytes</text>
+<text class="ta mono" x="178" y="122" font-size="10">00011</text>
+<text class="ta mono" x="212" y="122" font-size="10">101001</text>
+<text class="tm" x="178" y="139" font-size="10">11 bits</text>
+<rect class="s f" x="340" y="108" width="70" height="24" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="351" y="124" font-size="10">110</text>
+<text class="ta mono" x="369" y="124" font-size="10" font-weight="700">00011</text>
+<text class="t mono" x="375" y="147" font-size="11" text-anchor="middle">c3</text>
+<rect class="s f" x="413" y="108" width="70" height="24" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="424" y="124" font-size="10">10</text>
+<text class="ta mono" x="436" y="124" font-size="10" font-weight="700">101001</text>
+<text class="t mono" x="448" y="147" font-size="11" text-anchor="middle">a9</text>
+<text class="t mono" x="20" y="184" font-size="13" font-weight="700">U+4F60</text>
+<text class="tm" x="20" y="201" font-size="10">a Chinese character (&#x27;you&#x27;)</text>
+<text class="tm" x="20" y="215" font-size="10">3 bytes</text>
+<text class="ta mono" x="178" y="184" font-size="10">0100</text>
+<text class="ta mono" x="206" y="184" font-size="10">111101</text>
+<text class="ta mono" x="246" y="184" font-size="10">100000</text>
+<text class="tm" x="178" y="201" font-size="10">16 bits</text>
+<rect class="s f" x="340" y="170" width="70" height="24" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="351" y="186" font-size="10">1110</text>
+<text class="ta mono" x="375" y="186" font-size="10" font-weight="700">0100</text>
+<text class="t mono" x="375" y="209" font-size="11" text-anchor="middle">e4</text>
+<rect class="s f" x="413" y="170" width="70" height="24" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="424" y="186" font-size="10">10</text>
+<text class="ta mono" x="436" y="186" font-size="10" font-weight="700">111101</text>
+<text class="t mono" x="448" y="209" font-size="11" text-anchor="middle">bd</text>
+<rect class="s f" x="486" y="170" width="70" height="24" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="497" y="186" font-size="10">10</text>
+<text class="ta mono" x="509" y="186" font-size="10" font-weight="700">100000</text>
+<text class="t mono" x="521" y="209" font-size="11" text-anchor="middle">a0</text>
+<text class="t mono" x="20" y="246" font-size="13" font-weight="700">U+1F44B</text>
+<text class="tm" x="20" y="263" font-size="10">waving hand sign</text>
+<text class="tm" x="20" y="277" font-size="10">4 bytes</text>
+<text class="ta mono" x="178" y="246" font-size="10">000</text>
+<text class="ta mono" x="200" y="246" font-size="10">011111</text>
+<text class="ta mono" x="240" y="246" font-size="10">010001</text>
+<text class="ta mono" x="280" y="246" font-size="10">001011</text>
+<text class="tm" x="178" y="263" font-size="10">21 bits</text>
+<rect class="s f" x="340" y="232" width="70" height="24" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="351" y="248" font-size="10">11110</text>
+<text class="ta mono" x="381" y="248" font-size="10" font-weight="700">000</text>
+<text class="t mono" x="375" y="271" font-size="11" text-anchor="middle">f0</text>
+<rect class="s f" x="413" y="232" width="70" height="24" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="424" y="248" font-size="10">10</text>
+<text class="ta mono" x="436" y="248" font-size="10" font-weight="700">011111</text>
+<text class="t mono" x="448" y="271" font-size="11" text-anchor="middle">9f</text>
+<rect class="s f" x="486" y="232" width="70" height="24" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="497" y="248" font-size="10">10</text>
+<text class="ta mono" x="509" y="248" font-size="10" font-weight="700">010001</text>
+<text class="t mono" x="521" y="271" font-size="11" text-anchor="middle">91</text>
+<rect class="s f" x="559" y="232" width="70" height="24" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="570" y="248" font-size="10">10</text>
+<text class="ta mono" x="582" y="248" font-size="10" font-weight="700">001011</text>
+<text class="t mono" x="594" y="271" font-size="11" text-anchor="middle">8b</text>
+<text class="tm" x="20" y="296" font-size="10.5">The pattern&#x27;s bits muted, the code point&#x27;s in the accent. The four patterns (RFC 3629): 0xxxxxxx to U+007F;</text>
+<text class="tm" x="20" y="311" font-size="10.5">110xxxxx 10xxxxxx to U+07FF; 1110xxxx and two 10xxxxxx to U+FFFF; 11110xxx and three to U+10FFFF.</text>
+</svg>

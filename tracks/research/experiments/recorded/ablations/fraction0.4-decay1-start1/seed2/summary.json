@@ -1,0 +1,6 @@
+{
+ "best_val_acc": 1.0,
+ "last_step": 1000,
+ "train99": 501,
+ "val99": 1000
+}

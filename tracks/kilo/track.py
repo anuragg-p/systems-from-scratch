@@ -51,6 +51,10 @@ Fixtures the lesson tests use:
                         a process's children (state "Z": a zombie), whether a process is
                         there, clangd's path or None, and a line saying part of a test
                         did not run (the harness has no SKIP)
+    undo_env(t, max_bytes=None), undo_counts(log)
+                        module 08: an environment in which kilo counts its undo history
+                        after every key into a log (and stops if the count is wrong), its
+                        bound set to max_bytes; and that log, a dict per key
 
 With ctty=True (the default) the terminal is the editor's controlling terminal, as in a
 real one: Ctrl-C would be SIGINT if raw mode left ISIG on, and a resize sends SIGWINCH.
@@ -65,9 +69,10 @@ starts this file as a program ("relay", at the end) that holds the terminal and 
 and takes commands on its standard input: keys to type, "screen" to print what the
 screen shows, "colors" its colours, "underline" what is underlined, "until REGEX" to wait
 for the screen to match, "size R C" to resize it. At module 07 it runs with the scripted
-server, never clangd, so it is the same on every machine. At module 09 it runs with an
-init.lua of its own (TIMELINE_INIT), and prepare() first copies lua/ into the project, which
-the site does not show (supply_lua).
+server, never clangd, so it is the same on every machine. At module 08 it types the core's
+keys first, then undoes and redoes what they did. At module 09 it runs with an init.lua of
+its own (TIMELINE_INIT), and prepare() first copies lua/ into the project, which the site
+does not show (supply_lua).
 """
 
 import json
@@ -843,6 +848,43 @@ def skipped(t, what):
     print(f"   {t.lesson.id}  skipped: {what}", flush=True)
 
 
+# ---------------------------------------------------------------- the undo history's own count
+#
+# Module 08's test aids are @internal in kilo.c (never in a project a reader sees): with
+# KILO_TEST_UNDO_LOG naming a file, kilo counts its undo history again after every key, from
+# the stacks, appends the counts there, and exits with status 4 if they are not what it kept
+# count of (U.bytes); KILO_TEST_UNDO_MAX sets the bound on the history (UNDO_MAX_BYTES, 8 MB)
+# in bytes; and a record applied to a row that is not in the file exits with status 4 too.
+
+def undo_env(t, max_bytes=None, name="undo"):
+    """(environment, log path) for edit(..., env=...): the undo history counted after every
+    key into the log, and its bound set to max_bytes if given."""
+    env = dict(os.environ)
+    log = os.path.join(t.tmp, f"{name}.log")
+    if os.path.exists(log):
+        os.remove(log)
+    env["KILO_TEST_UNDO_LOG"] = log
+    if max_bytes is None:
+        env.pop("KILO_TEST_UNDO_MAX", None)
+    else:
+        env["KILO_TEST_UNDO_MAX"] = str(max_bytes)
+    return env, log
+
+
+def undo_counts(log):
+    """The undo log: a dict per key, {"bytes", "undo", "redo", "records", "saved", "open"}, the
+    last key last; [] before the first."""
+    out = []
+    try:
+        with open(log) as f:
+            for line in f:
+                words = line.split()
+                out.append({words[i]: int(words[i + 1]) for i in range(0, len(words) - 1, 2)})
+    except OSError:
+        pass
+    return out
+
+
 # ---------------------------------------------------------------- the project at each lesson
 #
 # Internal: ./learn check-timeline kilo builds the project as the site shows it at each
@@ -1022,6 +1064,8 @@ def timeline_boot(lesson_id):
         return _highlight_steps(k)
     if lesson_id.startswith("07."):
         return _lsp_steps(k)
+    if lesson_id.startswith("08."):
+        return timeline_boot("05.02") + _undo_steps(k)
     if lesson_id.startswith("09."):
         return _script_steps(k)
     if k < (1, 1):
@@ -1237,6 +1281,70 @@ def _lsp_steps(k):
     return steps
 
 
+def _undo_steps(k):
+    """Steps for the project at a lesson of module 08, after the core's own (05.02's): those
+    left the history with "a", "b", "c" typed, Enter, Backspace twice (a join, then the c),
+    and learn.txt saved as "ab" and the text. Undo, and from 08.02 redo, walk it back and
+    forth: a key a step at 08.01 and 08.02, with the cursor left where it is; from 08.03 a
+    run of keys of one kind a step ("abc", Enter, the two Backspaces), the cursor put where
+    each step began or ended; at 08.04 "(modified)" only away from the save."""
+    S = "screen"
+    msg = 23
+    a = _file_rows(1, 22) | {0: "abckilo at a lesson"}             # before the last Backspace
+    b = _file_rows(1, 21, top=1) | {0: "abc"}                       # before the join: 41 lines
+    c = _file_rows(1, 22)                                           # the file as it was opened
+    d = _file_rows(1, 22) | {0: "abkilo at a lesson"}               # as it was saved
+
+    def at(rows, lines=40, row=1, modified=True, cursor=(1, 3), said=None):
+        want = dict(rows) | {22: _bar(lines=lines, at=row, modified=modified)}
+        if said is not None:
+            want[msg] = said
+        return (S, _screen(24, want, cursor=cursor))
+    if k < (8, 3):
+        # A key a step, and the cursor stays where it is (on row 1, column 3).
+        steps = [("keys {ctrl-z}", SENT), at(a),
+                 ("keys {ctrl-z}", SENT), at(b, lines=41),
+                 ("keys {ctrl-z}", SENT), at(a),
+                 ("keys {ctrl-z}{ctrl-z}{ctrl-z}", SENT), at(c),
+                 ("keys {ctrl-z}", SENT), at(c, said="Nothing to undo")]
+        if k < (8, 2):
+            # Ctrl-R does nothing yet. Saved: the file as it was opened.
+            return steps + [("keys {ctrl-r}", SENT), at(c),
+                            ("keys {ctrl-s}", SENT),
+                            at(c, modified=False, said=f"{len(TIMELINE_TEXT)} bytes written on disk")]
+        # Redo, a key a step, back to the text as saved; an edit after an undo empties redo.
+        return steps + [("keys {ctrl-r}", SENT), at(c | {0: "akilo at a lesson"}),
+                        ("keys {ctrl-r}{ctrl-r}", SENT), at(a),
+                        ("keys {ctrl-r}", SENT), at(b, lines=41),
+                        ("keys {ctrl-r}{ctrl-r}", SENT), at(d),
+                        ("keys {ctrl-r}", SENT), at(d, said="Nothing to redo"),
+                        ("keys {ctrl-z}X{ctrl-r}", SENT),
+                        at(d | {0: "abXckilo at a lesson"}, cursor=(1, 4), said="Nothing to redo")]
+    if k < (8, 4):
+        # Three steps: "abc", Enter, the two Backspaces. Undo puts the cursor where each began,
+        # redo where it ended.
+        return [("keys {ctrl-z}", SENT), at(b, lines=41, row=2, cursor=(2, 1)),
+                ("keys {ctrl-z}", SENT), at(a, cursor=(1, 4)),
+                ("keys {ctrl-z}", SENT), at(c, cursor=(1, 1)),
+                ("keys {ctrl-z}", SENT), at(c, cursor=(1, 1), said="Nothing to undo"),
+                ("keys {ctrl-r}", SENT), at(a, cursor=(1, 4)),
+                ("keys {ctrl-r}", SENT), at(b, lines=41, row=2, cursor=(2, 1)),
+                ("keys {ctrl-r}", SENT), at(d, cursor=(1, 3)),
+                ("keys {ctrl-r}", SENT), at(d, cursor=(1, 3), said="Nothing to redo"),
+                # A word typed is one step.
+                ("keys xyz", SENT), at(d | {0: "abxyzkilo at a lesson"}, cursor=(1, 6)),
+                ("keys {ctrl-z}", SENT), at(d, cursor=(1, 3))]
+    # The saved point: three steps under the save. Undone below it and redone to it, the
+    # file is not modified; an edit made below it puts it out of reach.
+    return [("keys {ctrl-z}", SENT), at(b, lines=41, row=2, cursor=(2, 1)),
+            ("keys {ctrl-z}{ctrl-z}", SENT), at(c, cursor=(1, 1)),
+            ("keys {ctrl-r}{ctrl-r}", SENT), at(b, lines=41, row=2, cursor=(2, 1)),
+            ("keys {ctrl-r}", SENT), at(d, modified=False, cursor=(1, 3)),
+            ("keys {ctrl-z}X", SENT), at(b | {1: "Xkilo at a lesson"}, lines=41, row=2, cursor=(2, 2)),
+            ("keys {ctrl-z}", SENT), at(b, lines=41, row=2, cursor=(2, 1)),
+            ("keys {ctrl-r}", SENT), at(b | {1: "Xkilo at a lesson"}, lines=41, row=2, cursor=(2, 2))]
+
+
 def _lsp_after(root, lesson_id):
     """At module 07: the C file untouched (nothing saves), and the scripted server's log of
     what kilo sent it, lesson by lesson."""
@@ -1377,6 +1485,13 @@ def timeline_after(root, lesson_id):
         return _lsp_after(root, lesson_id)
     if lesson_id.startswith("09."):
         return _script_after(root, lesson_id)
+    if lesson_id == "08.01":
+        # Every step undone, then saved: the file as it was.
+        with open(os.path.join(root, TIMELINE_FILE)) as f:
+            got = f.read()
+        if got != TIMELINE_TEXT:
+            raise Fail(f"{TIMELINE_FILE} is not as it was after every step undone and a save: {got[:80]!r}")
+        return f"{TIMELINE_FILE} as it was, {len(got)} bytes"
     if lesson_id.startswith("06."):
         with open(os.path.join(root, TIMELINE_C_FILE), encoding="latin-1", newline="") as f:
             got = f.read()

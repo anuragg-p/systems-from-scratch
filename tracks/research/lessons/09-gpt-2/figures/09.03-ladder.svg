@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 216" fill="none">
+<title>Bits per character on Tiny Shakespeare&#x27;s test text: modules 07 and 08&#x27;s ladder, each trained here on the training plays, and GPT-2 small, trained by OpenAI on web pages and never by us on this text</title>
+<defs><marker id="ladder0903-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="ladder0903-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="ladder0903-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="354.55" y1="168" x2="354.55" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="354.55" y="184" font-size="10.5" text-anchor="middle">1.8</text>
+<line class="m" x1="403.64" y1="168" x2="403.64" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="403.64" y="184" font-size="10.5" text-anchor="middle">2.2</text>
+<line class="m" x1="452.73" y1="168" x2="452.73" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="452.73" y="184" font-size="10.5" text-anchor="middle">2.6</text>
+<line class="m" x1="501.82" y1="168" x2="501.82" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="501.82" y="184" font-size="10.5" text-anchor="middle">3</text>
+<line class="m" x1="550.91" y1="168" x2="550.91" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="550.91" y="184" font-size="10.5" text-anchor="middle">3.4</text>
+<line class="m" x1="600" y1="168" x2="600" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="600" y="184" font-size="10.5" text-anchor="middle">3.8</text>
+<rect class="m" x="330" y="30" width="270" height="138" rx="0" stroke-width="1.5"/>
+<text class="tm" x="465" y="200" font-size="11.5" text-anchor="middle">bits per character on the test text</text>
+<text class="t" x="322" y="48" font-size="10.5" text-anchor="end">every character equally likely (07.01)</text>
+<line class="m" x1="570" y1="44" x2="596" y2="44" stroke-width="1.5" stroke-linecap="round" marker-end="url(#ladder0903-am)"/>
+<text class="tm mono" x="566" y="48" font-size="9.5" text-anchor="end">6.022</text>
+<text class="t" x="322" y="66" font-size="10.5" text-anchor="end">pairs (07.01)</text>
+<circle class="s fs" cx="575.33" cy="62" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="584.33" y="66" font-size="10">3.599</text>
+<text class="t" x="322" y="84" font-size="10.5" text-anchor="end">deleted interpolation, contexts up to 7 (07.02)</text>
+<circle class="s fs" cx="429.29" cy="80" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="438.29" y="84" font-size="10">2.409</text>
+<text class="t" x="322" y="102" font-size="10.5" text-anchor="end">07.02&#x27;s network, its long run</text>
+<circle class="s fs" cx="421.55" cy="98" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="430.55" y="102" font-size="10">2.346</text>
+<text class="t" x="322" y="120" font-size="10.5" text-anchor="end">07.02&#x27;s network and interpolation, mixed (long run, 8)</text>
+<circle class="s fs" cx="413.82" cy="116" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="422.82" y="120" font-size="10">2.283</text>
+<text class="t" x="322" y="138" font-size="10.5" text-anchor="end">08.04&#x27;s GPT, its long run (dropout 0.2)</text>
+<circle class="s fs" cx="406.83" cy="134" r="3.5" stroke-width="1.5"/>
+<text class="t mono" x="415.83" y="138" font-size="10">2.226</text>
+<text class="ta" x="322" y="156" font-size="10.5" font-weight="700" text-anchor="end">GPT-2 small, never trained on this text by us</text>
+<circle class="a fa" cx="360.8" cy="152" r="4" stroke-width="1.5"/>
+<text class="ta mono" x="369.8" y="156" font-size="10" font-weight="700">1.851</text>
+</svg>

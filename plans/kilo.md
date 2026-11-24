@@ -284,3 +284,49 @@ teaches only the buffer (plans/dsa.md).
   harness is unchanged.
 - On a phone (390 px) every figure fits and nothing overflows; the
   figures are drawn 640 wide and scale down, as in the core and 06.
+
+## Module 08 as built (code, tests and notes; 2026-11-24)
+
+- In kilo.c, as 06 is: a block "The undo history" at the top (the record
+  types, struct undoRecord, undoStep, undoState and the global U) and a
+  section "Undo and redo" after editorSave. Hooks behind `@from` markers,
+  one line each: undoSave() in editorInsertRow, editorDelRow, the three
+  row-text functions and editorInsertNewline's cut; undoClear() and the
+  recording switched off around editorOpen's read; editorSave sets the
+  saved point (08.04); one call in editorProcessKeypress after the key is
+  read; Ctrl-Z and Ctrl-R. The design (Vim's records and swap, steps as
+  runs of a kind, the saved point, an 8 MB bound) was fixed by the
+  coordinator; tracks/kilo/NOTES.md, "08 Undo and redo", lists where the
+  code departs from it and why.
+- The four lessons are the plan's, in its order, under its titles. 08.01
+  puts rows back (undoPut) a key a step; 08.02's undoApply takes what is
+  there first, so the record becomes its opposite, and adds the redo
+  stack; 08.03 brings steps as runs of a kind, the leave-out rule and the
+  cursor; 08.04 the saved point and the bound. Allocations are checked from
+  08.01 (the history is given up, never the edit).
+- Found against the design, and settled in the code: editorOpen's early
+  return for a new file would have left recording off, so it is off only
+  around the read; the saved point is lost when more steps are dropped
+  than were under it, not whenever one under it is; invariant 4 as written
+  does not hold for edits that cancel out (stated as it holds in NOTES.md);
+  a jump of module 07 is not an edit, it starts a new history; the bound
+  is kept when a record is made, so an undo can pass it until the next
+  record.
+- Independence holds: the project at all 28 lessons of the core, 06 and
+  07 is byte for byte what it was (diff -r); no line of 06 or 07 is in an
+  08 project, and each 08 project builds with -Werror. Test aids are
+  `@internal` (a second count of the history after every key, a smaller
+  bound, a check that a record's row is in the file).
+- Tests: one per lesson; every kind of edit undone and redone with the
+  file saved after; steps; the saved point; the bound; random keys under
+  ASan in five runs (sizes, a .c file, undo and redo in the mix, a small
+  bound); 06's colours after an undo and 07's server sent the text after
+  one. The core's 0101 typed Ctrl-Z and expected it in the text; its last
+  check now takes either, as module 08 is in the tree or not (NOTES.md 08,
+  "Found on the way"). ./learn test kilo (32), check-skeleton and
+  check-timeline pass on macOS; the module's tests and timeline also on
+  Debian and Alpine (the 07 containers), where every 08 project builds with
+  gcc -Werror.
+- The editors' sources (Vim, Neovim, Emacs, Zed, Helix, VS Code) were read
+  at named tags and quoted in NOTES.md, with what could not be confirmed.
+  Lessons and art follow, from NOTES.md.

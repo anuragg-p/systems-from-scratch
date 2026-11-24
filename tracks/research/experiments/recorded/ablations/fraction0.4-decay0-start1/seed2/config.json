@@ -1,0 +1,45 @@
+{
+ "batch": 512,
+ "betas": [
+  0.9,
+  0.98
+ ],
+ "decay_fraction": 0.4,
+ "decays": [
+  0.0,
+  0.3,
+  1.0
+ ],
+ "device": "cpu",
+ "fraction": 0.4,
+ "fraction_decay": 1.0,
+ "fractions": [
+  0.35,
+  0.4,
+  0.5
+ ],
+ "heads": 4,
+ "label": "fraction0.4-decay0-start1",
+ "layers": 2,
+ "lr": 0.001,
+ "name": "ablations",
+ "operation": "/",
+ "out": "experiments/recorded",
+ "p": 97,
+ "per_decade": 10,
+ "runs": "experiments/recorded/ablations",
+ "seed": 2,
+ "seeds": 3,
+ "start": 1.0,
+ "start_decay": 1.0,
+ "start_fraction": 0.5,
+ "starts": [
+  1.0,
+  10.0
+ ],
+ "steps": 6000,
+ "train": true,
+ "warmup": 10,
+ "weight_decay": 0.0,
+ "width": 128
+}
