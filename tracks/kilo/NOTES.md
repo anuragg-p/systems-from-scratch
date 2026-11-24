@@ -6,13 +6,17 @@ M-series Mac (macOS, Darwin 25.6, Apple clang 21), and every "break it"
 was run as the change it describes. Screens are what the tests' terminal
 emulator (Screen in track.py) made of kilo's bytes, rows with trailing
 spaces dropped, `[cursor R,C]` counting from 1; in module 06, each run of
-one colour is written `[c:text]` (see "06 Syntax highlighting"). The same tests, the
+one colour is written `[c:text]` (see "06 Syntax highlighting"); in module
+07, each underlined run `[_:text]` (see "07 A language server client"). The same tests, the
 skeleton check and the timeline check also pass on Linux (Alpine, gcc and
 musl, aarch64, in Docker), and every lesson's project builds there with
 no warnings. On Linux with glibc (Debian trixie, gcc 14, aarch64, in
 Docker) they failed until departure 33, and pass there since, with every
-project built without warnings. Function names are given instead of line
-numbers.
+project built without warnings. Module 07 was run the same way on both,
+with their clangd (Debian 19.1.7, Alpine 20.1.8; Apple clangd 21.0.0 on
+the Mac); the projects at 07.05 to 07.07 did not build on glibc until
+lsp.c asked for X/Open (see there). Function names are given instead of
+line numbers.
 
 ## The upstream, and what this track does with it
 
@@ -41,9 +45,12 @@ and `idx` fields of erow (`idx` is used only by the highlighter), `E.syntax`,
 Module 06, an extension (`optional: true`), puts the highlighting back,
 upstream's own code under upstream's names, in the same kilo.c: it arrives
 only at its own lessons, and the project at every core lesson is byte for
-byte what it was without it. See "06 Syntax highlighting" below. The
-finished kilo.c (`./learn files kilo`, every lesson of every path) is 1472
-lines; at 05.02 it is 1068, as without the module.
+byte what it was without it. See "06 Syntax highlighting" below. Module
+07, the other extension, is ours: a language server client in lsp.c and
+json.c, which kilo.c calls from a few one-line hooks (see "07 A language
+server client"). The finished kilo.c (`./learn files kilo`, every lesson
+of every path) is 1541 lines (1472 with module 06 alone); at 05.02 it is
+1068, as without either.
 
 ## Every departure from upstream, and why
 
@@ -1014,6 +1021,553 @@ Escape leaves
 - `realloc(row->hl,0)` for an empty row may give NULL (glibc frees); the
   search checks `row->hl`, as upstream does.
 
+## 07 A language server client (an extension)
+
+Module 07 (`lessons/07-language-server/`, `optional: true`, started
+2026-11-24 on the owner's word) is ours, not upstream's: a client for a
+language server, clangd for C, in files of its own. At a lesson of the
+module the project is the whole core plus the module's lessons so far;
+module 06 is never in it, and module 07 is in no core lesson and no 06
+lesson (checked: the projects at all 21 lessons written with `./learn
+files` before the module existed and after, compared with `diff -r`:
+identical). The finished project has both: its kilo.c is 1541 lines (1472
+with 06 alone; 1068 at 05.02, as always).
+
+The design (files, hooks, the editor's side, messages, limits) was fixed by
+the coordinator before the code was written; where the code departs from
+it, "Departures from the design" below says where and why.
+
+### The files
+
+| file | lines in tracks/ (markers and instructions in) | what it is |
+|---|---|---|
+| lsp.h | 51 | what kilo.c calls (lspStart, lspPump until 07.04, lspWaitKey, lspDrawRow, lspDefinition, lspBack) and what lsp.c calls in kilo.c (editorSetStatusMessage, editorRefreshScreen, editorRowsToString, abAppend, editorCursor, editorJump); `struct abuf;` as an incomplete type |
+| lsp.c | 1523 | the client: the server table, starting and stopping, frames, the session, poll(), diagnostics, definitions |
+| json.h | 60 | the JSON tree (`struct json`), the reader's and getters' prototypes, jsonQuote |
+| json.c | 424 | the reader (recursive descent, depth cap) and the one writer helper; knows nothing of kilo or LSP |
+| Makefile | | from 07.01 `kilo.c lsp.c`, from 07.02 `kilo.c lsp.c json.c`, same flags |
+
+The project at each lesson (lines, `./learn files kilo --at 07.LL`):
+
+| lesson | kilo.c | lsp.c | lsp.h | json.c | json.h |
+|---|---|---|---|---|---|
+| 07.01 | 1070 | 248 | 15 | - | - |
+| 07.02 | 1071 | 513 | 17 | 59 | 15 |
+| 07.03 | 1071 | 553 | 17 | 370 | 49 |
+| 07.04 | 1071 | 587 | 17 | 370 | 49 |
+| 07.05 | 1071 | 809 | 18 | 370 | 49 |
+| 07.06 | 1085 | 1091 | 28 | 370 | 49 |
+| 07.07 | 1137 | 1239 | 31 | 370 | 49 |
+
+lsp.c in order: the limits; the servers (`struct lspServer`, `LSPDB` with a
+C stanza and a C++ stanza, `lspServerFor`); the state (`struct lspBuf`,
+`struct lspDiag`, `struct lspState L`, a block of prototypes); `lspNow`,
+`lspSay`, the buffer helpers and `lspFormat`; starting and stopping
+(`lspSpawn`, `lspEnd`, `lspGone`, `lspKill`, `lspStart`, `lspStop`);
+messages (`lspHeaderLine`, `lspFrame`, `lspFlush`, `lspSend`,
+`lspRequest`, `lspNotify`, `lspHandle`, `lspRead`, `lspPump`,
+`lspInitialize`, `lspInitialized`); keys and the server (`lspWaitKey`);
+the text on the server (`lspAbsolute`, `lspUri`, `lspOpen`,
+`lspSendChange`, `lspSendText`, `lspPause`, `lspNotFound`,
+`lspWaitServer`); diagnostics (`lspLine`, `lspCharLen`, `lspColumn`,
+`lspSetDiagnostics`, `lspPath`, `lspSameFile`, `lspDiagnostics`,
+`lspShowDiagnostic`, `lspDrawRow`); definitions (`lspUnits`, `lspSwitch`,
+`lspGoTo`, `lspDefinition`, `lspDefinitionResult`, `lspBack`). Everything
+but the six kilo.c calls is static. json.c: `jsonSpace`, `jsonNew`,
+`jsonUtf8`, `jsonHex4`, `jsonString`, `jsonNumber`, `jsonList`,
+`jsonValue`, `jsonParse`, `jsonFree`, `jsonGet`, `jsonIs`, `jsonInt`,
+`jsonStr`, `jsonQuote`.
+
+### The lessons, and how they divide the code
+
+The plan's seven, in its order. Two titles changed to fit the code: 07.01
+"fork, exec and three pipes" (the third brings back execvp's errno), and
+07.05 "didOpen and didChange" (initialize is sent at 07.02; 07.05 brings
+initialized, didOpen, didChange, the replies to the server's requests and
+shutdown/exit). Regions (`./learn solution kilo 07.LL`):
+
+| lesson | regions (file: title) |
+|---|---|
+| 07.01 | lsp.c: a server chosen by the file's name; fork, exec and the pipes; stop the server (lspEnd); start the server; at exit (lspStop) |
+| 07.02 | json.c: quote a string; lsp.c: take a message off the input (lspFrame); write what the pipe takes (lspFlush); write a message (lspSend); read what the server wrote (lspRead); send initialize |
+| 07.03 | json.c: a string; a number; arrays and objects; one value; the whole message; free a tree; the getters; lsp.c: the server is ready (lspInitialized) |
+| 07.04 | lsp.c: a server that does not read (in lspSend); the keyboard and the server at once (lspWaitKey) |
+| 07.05 | lsp.c: shutdown, then exit (in lspStop); tell the server what is open (in lspInitialized); a path as a URI; open the file on the server; a newer change replaces one still waiting; send the text, if it changed; answer the server's requests |
+| 07.06 | kilo.c: where the cursor is (editorCursor); lsp.c: a line of the copy; from the server's columns to bytes; a URI as a path; the server's diagnostics; the diagnostic under the cursor; underline the diagnostics (lspDrawRow) |
+| 07.07 | kilo.c: read another file in place of this one; move the cursor there (both editorJump); lsp.c: from bytes to the server's columns; another file (lspSwitch); jump (lspGoTo); ask for the definition; where it is; back |
+
+Not in regions, arriving with `@from`: the limits, each with its lesson;
+the state's fields, by lesson; `lspSay`, `lspNow`, the buffer helpers and
+`lspFormat` (07.01, 07.02); `lspHeaderLine`, `lspRequest`, `lspGone`,
+`lspKill`, `lspPump`, `lspHandle` (07.02; lspHandle is an `@else` at 07.02,
+which says "lsp: N bytes from NAME: " and the first 50 bytes of the body,
+and the JSON dispatch from 07.03, a line per lesson after); `lspNotify`,
+`lspAbsolute`, `lspPause`, `lspWaitServer` (07.05); `lspCharLen`,
+`lspSetDiagnostics`, `lspSameFile` (07.06); the initialize params, a line
+of the capabilities per lesson (`{}` at 07.02, `textDocument.synchronization`
+from 07.05, `general.positionEncodings` and `publishDiagnostics` from 07.06,
+`definition` from 07.07); in lspWaitKey the pause (07.05) and the line
+that cancels a jump (07.07); the ready line's key help (07.07); the Linux
+feature macro (`_POSIX_C_SOURCE 200809L`, then `_XOPEN_SOURCE 700` from
+07.05, for realpath()).
+
+### Hooks in core code
+
+Each is one marked line or a small marked block; none is inside module
+06's blocks.
+
+- `#include "lsp.h"` with the other includes (07.01).
+- `main`: `lspStart(argv[1]);` after the HELP message, before the loop
+  (07.01).
+- `editorReadKey` (inside 01.02's region): at 07.02 and 07.03 the core's
+  `while ((nread = read(fd,&c,1)) == 0);` becomes `while (...) lspPump();`
+  (a nested `@from 07.02` / `@from 07.04` with `@else` parts); from 07.04
+  the core's line is back as it was, with `lspWaitKey(fd);` before it.
+- `editorRefreshScreen` (inside 03.01's "draw a row of the file"):
+  `lspDrawRow(&ab,filerow,r->chars,r->size,r->render,r->rsize,
+  E.coloff,E.screencols);` after the row's `ESC [ 0 K` and before its
+  "\r\n" (07.06). It is outside 06's blocks, so it is the same two lines on
+  core + 07 and in the finished file; core and core + 06 are unchanged
+  (the diff above).
+- `enum KEY_ACTION`: `CTRL_B = 2`, `CTRL_G = 7` (07.07, one-line markers).
+- `editorProcessKeypress`: `case CTRL_G: lspDefinition();` and
+  `case CTRL_B: lspBack();` after Ctrl-F's case (07.07).
+- A section "The editor's side of the language client" just above
+  `main()`: `editorCursor` (07.06) and `editorJump` (07.07), the two things
+  lsp.c needs of E. editorJump frees every row itself and calls
+  `editorOpen` (which, called a second time, frees and replaces
+  E.filename and sets E.dirty to 0, but exits on a file it cannot read:
+  editorJump tries `fopen` first).
+
+There is no hook in the edit functions, editorSave, editorAtExit or the
+status bar: the text goes to the server at the pause, by comparing
+`editorRowsToString()` with the copy; atexit(lspStop) is registered by
+lspStart. atexit runs its functions last registered first, so lspStop
+runs before editorAtExit puts the terminal back: at most LSP_STOP_MS
+(500 ms) later. Measured, Ctrl-Q to kilo's exit, 5 runs each: a server
+that never reads, 0.504 to 0.510 s (killed); one that answered initialize
+and then stops reading (its shutdown never answered), 0.502 to 0.503 s;
+the scripted server answering shutdown, 0.013 s; clangd 21, 0.026 s.
+
+### Limits and timeouts
+
+| name | value | why |
+|---|---|---|
+| LSP_STOP_MS | 500 ms | at exit: shutdown, its answer, exit and the process's end must fit, then SIGKILL; the terminal waits for it |
+| (lspGone) | 100 ms | a server that closed its output is exiting; one that has not after 100 ms is killed |
+| LSP_HEADER_MAX | 4096 bytes | a header that long without its empty line is not a header |
+| LSP_BODY_MAX | 16 MB | a Content-Length over it is absurd; exactly 16 MB is read (0702) |
+| LSP_READ_MAX | 1 MB | read from the server in one lspRead, so a flood cannot hold the keys |
+| LSP_QUEUE_MAX | 8 MB | waiting for a server before a new message is queued: it is not reading |
+| LSP_PAUSE_MS | 300 ms | no key this long: the keys have paused; send the text, show the row's diagnostic |
+| LSP_DIAG_MAX | 1000 | diagnostics kept for the file (all are counted) |
+| JSON_MAX_DEPTH | 64 | nesting; the reader recurses once a level |
+| JSON_MAX_VALUES | 1000000 | values in one message: a 16 MB array of zeros would be about 450 MB of nodes |
+| numbers | 63 characters | copied to a buffer for strtod(); longer is an error |
+| the message | 79 bytes | lspSay's buffer, then the screen's width |
+
+### Departures from the design, and why
+
+- **lspDrawRow takes chars and size too** (eight arguments). Diagnostics
+  are byte columns of chars; turning them into columns of render needs the
+  tabs, which render no longer shows.
+- **ESC [ n C counts cells, not render columns.** n is the bytes of render
+  before the range less the UTF-8 continuation bytes (0x80 to 0xBF): on
+  `printf("e-acute t e-acute: %d\n", totl);` totl is at render column 30
+  and cell 28, and `ESC [ 28 C` lands on it on a real terminal (and in
+  Screen with utf8=True); `ESC [ 30 C` would draw "totl" two cells right,
+  over ");". A character two cells wide (CJK, emoji) still counts as one,
+  so the underline lands a cell left per such character before it.
+- **KILO_LSP set and empty means no server**, nothing said. The design
+  said only what a non-empty value does. The tests of the core and of 06
+  run the finished editor on .c files; they set KILO_LSP= so none of them
+  starts clangd (edit(..., lsp=None), the default).
+- **Two stanzas, C and C++**, both clangd, so languageId is "c" or "cpp".
+- **Ctrl-G with no server at all says "lsp: no server"**; "lsp: not ready"
+  is for a server that has not answered initialize.
+- **editorJump says "Unsaved changes: save first (Ctrl-S), then try
+  again"**, not "... then Ctrl-G again": Ctrl-B goes through it too.
+- **The version in the ready line** is the first word of serverInfo.version
+  that starts with a digit ("Apple clangd version 21.0.0 (...)" gives
+  "21.0.0"), else its first word.
+- **07.02 says "lsp: N bytes from NAME: ..." and the body's first 50
+  bytes**, not "reply to request 1": without a JSON reader the id cannot be
+  read.
+- **The output queue starts at 07.02.** The pipe is non-blocking from
+  07.01, so even initialize may be written in part; 07.02 queues and writes
+  what the pipe takes, 07.04 adds POLLOUT and the 8 MB bound, 07.05 the
+  didChange replacement. **lspPump stays** after 07.04: lspWaitKey calls it
+  when poll() wakes; only the read every 0.1 s goes.
+- **The 8 MB bound is checked before a new message is queued**, so one
+  large didOpen is allowed; the didChange replacement never adds to the
+  queue.
+- Added for safety: SIGWINCH is held back while the diagnostics list
+  changes (the resize handler draws rows); every function that talks to
+  the server returns at once when none is running (see "Found on the way",
+  the first). And SIGWINCH is held back across fork() (07.01, below).
+
+Two rules of the design changed after the first review, and are the
+design now:
+
+- **The message line when a list arrives** (07.06): if the cursor's row
+  has a diagnostic, it is said ("6: error: ..."), the one under the
+  cursor or the row's first, and not the counts; otherwise the counts,
+  only when they differ from the ones last said. Either way the counts are
+  noted as said, so a later list with the same counts says nothing. The
+  pause still says the diagnostic of the row the cursor has come to. With
+  clangd a list comes about 60 ms after the pause that sent the change; so
+  an error typed where the cursor is is said at once, with no other key.
+- **SIGWINCH across fork()** (07.01): see there.
+
+### How the screens below were captured
+
+With a scratch driver around track.py's `Editor` (no changes to the
+track): the project at the lesson (`./learn files kilo --at 07.LL`, built
+with make), on a 12x72 pseudo-terminal, KILO_LSP not set (so the table
+starts clangd: Apple clangd 21.0.0 on the Mac), on this sample in a
+directory named `sam ple` (a space, so the uri has %20):
+
+```
+sum.c                                  add.h
+#include <stdio.h>                     /* add.h: the one function sum.c calls. */
+#include "add.h"                       static inline int add(int a, int b) {
+                                           return a + b;
+int main(void) {                       }
+    int total = add(2, 3);
+    printf("%d\n", total);
+    return 0;
+}
+```
+
+(tabs for indentation). Rows with an underlined run are written `[_:text]`
+(`ed.under(n)`); the two `~` rows are left out. The error is the `a` of
+`total` deleted in the printf line (`totl`); the fix types it back. The
+traffic came through a logging proxy between kilo and clangd (a scratch
+script that relays both pipes and writes each frame with its time).
+
+### 07.01 Starting a server: fork, exec and three pipes
+
+```
+    |sam ple/sum.c - 8 lines                                              1/8
+    |lsp: started clangd (pid 91348)
+```
+
+A file with no server in the table (any .txt) is edited as without the
+module, to the byte: the 00.02 screen, compared in 0701. KILO_LSP naming a
+missing program: `lsp: cannot start no-such-server: No such file or
+directory`; a file that is not a program: `... Permission denied`.
+
+The descriptors, from a scratch build of the project at 07.01 with a line
+after each step that lists the open descriptors (`c`: close-on-exec) into
+a file (opened and closed by that line, so it is not in its own list):
+
+```
+kilo   before                             0 1 2
+kilo   pipe(in)                           0 1 2 3 4
+kilo   pipe(out)                          0 1 2 3 4 5 6
+kilo   pipe(err)                          0 1 2 3 4 5 6 7 8
+kilo   FD_CLOEXEC on all six              0 1 2 3c 4c 5c 6c 7c 8c
+kilo   after fork                         0 1 2 3c 4c 5c 6c 7c 8c
+kilo   closed in[0] out[1] err[1]         0 1 2 4c 5c 7c
+child  after fork, open(/dev/null)        0 1 2 3c 4c 5c 6c 7c 8c 9c
+child  dup2(in[0],0)                      0 1 2 3c 4c 5c 6c 7c 8c 9c
+child  dup2(out[1],1)                     0 1 2 3c 4c 5c 6c 7c 8c 9c
+child  dup2(null,2), then execvp          0 1 2 3c 4c 5c 6c 7c 8c 9c
+kilo   read(err) gave 0 bytes             0 1 2 4c 5c 7c
+kilo   closed err[0]                      0 1 2 4c 5c
+server after exec: 0 pipe, 1 pipe, 2 /dev/null (the scripted server's own list)
+```
+
+So in[0]=3, in[1]=4, out[0]=5, out[1]=6, err[0]=7, err[1]=8, /dev/null 9
+in the child; kilo keeps 4 (to the server) and 5 (from it). When exec
+fails (KILO_LSP a missing path): `read(err) gave 4 bytes, an errno`,
+errno 2 (No such file or directory), sizeof(int) = 4; then the child
+(exit 127) is reaped at once. (Taken again on the final code, with the
+change below: the same.)
+
+Between fork() and exec the child runs kilo's code, its SIGWINCH handler
+too, which would draw a screen from the child: so lspSpawn blocks SIGWINCH
+with sigprocmask() before fork(); the child sets it to SIG_DFL and then
+restores the mask (a mask still blocking it is inherited across exec), and
+the parent restores the mask once fork() has returned, when a resize that
+came meanwhile is drawn as usual. The scripted server logs the signals it
+starts with blocked; 0701 checks SIGWINCH is not one (with the child's
+restore left out, the test fails: `signals blocked in the server: [28]`,
+macOS).
+
+### 07.02 Messages: Content-Length and JSON-RPC
+
+The first message at 07.02, as the scripted server read it, to the byte:
+
+```
+Content-Length: 108\r\n
+\r\n
+{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"processId":88879,"rootUri":null,"capabilities":{}}}
+```
+
+(270 bytes of body at 07.07, with the capabilities.) With clangd the
+project at 07.02 shows the raw reply, 2008 bytes (2060 to 07.07's
+request); clangd writes `id` first:
+
+```
+    |lsp: 2008 bytes from clangd: {"id":1,"jsonrpc":"2.0","result":{"capabili
+```
+
+The reply in pieces (a scratch build at 07.02 with a line after each
+read; the scripted server writing 10 bytes, 30, then the rest, 0.255 s
+apart): kilo read 10 (the buffer holds 10), 0.202 s later 30 (40), 0.303 s
+later 85 (125), and then took the whole message off, 125 bytes with a body
+of 102. The gaps are the 0.1 s read: kilo looks at the server only when
+read() on the keyboard times out.
+
+### 07.03 Reading JSON: just enough of a parser
+
+```
+    |lsp: clangd 21.0.0 ready
+```
+
+clangd 21's initialize result is 2060 bytes; the members kilo reads:
+`serverInfo` {"name": "clangd", "version": "Apple clangd version 21.0.0
+(clang-2100.1.1.101) mac+xpc arm64-apple-darwin25.6.0"}, and in
+`capabilities`: `positionEncoding` "utf-8" (when kilo offers
+["utf-8","utf-16"]; "utf-16" when it offers only that), `textDocumentSync`
+{"change": 2, "openClose": true, "save": true}, `definitionProvider` true.
+
+What the reader makes of escapes (printed and checked by tests/lsp_fuzz.c):
+`"\n"` 0a; `"\u00e9"` c3 a9; `"\ud83d\ude00"` f0 9f 98 80 (the pair is one
+character); `"\ud83d"` ef bf bd (U+FFFD); `"\ud83dx"` ef bf bd 78;
+`"\udc00"` ef bf bd; `"\u0000"` ef bf bd. Depth 64 parses; 65, and 300000,
+do not (an error, at once).
+
+### 07.04 Keys and the server at once: poll()
+
+Measured with scratch builds that count: at 07.03, calls to lspPump (one
+per read() that times out); at 07.04, returns from poll(); written at exit.
+Idle for 5 s with the scripted server running: **53 wakeups at 07.03
+(10.6 a second), 2 at 07.04** (the pause, and the server's answer). The
+delay from the server writing its answer to kilo's frame with it reaching
+the terminal (the server's log of its write and the test's read of the
+pseudo-terminal, both on Python's monotonic clock), 20 runs each, two
+sets: **07.03 min 1.4 ms, median 45.5 ms, max 100.3 ms (and 12.4, 56.4,
+101.9); 07.04 min 0.1 ms, median 0.2 ms, max 0.7 ms (and 0.1, 0.2,
+1.2)**. The wakeup counts were the same both times.
+
+### 07.05 Telling the server what you see: didOpen and didChange
+
+A session with clangd on the project at 07.07 (the proxy adds its own
+start-up, so the first frames are about 0.7 s after kilo starts; the
+intervals after that are kilo's). `>` kilo to clangd, `<` back; times from
+kilo's start:
+
+```
+  0.712s > initialize                     id=1   270 bytes
+  0.730s < reply                          id=1  2060 bytes
+  0.730s > initialized                            52 bytes
+  0.731s > textDocument/didOpen                  361 bytes   version 1
+  0.752s < textDocument/publishDiagnostics       214 bytes   none
+  5.070s   (key) Backspace: totl
+  5.371s > textDocument/didChange                366 bytes   version 2
+  5.431s < textDocument/publishDiagnostics       691 bytes   an error and a note
+  6.999s   (key) a: total again
+  7.301s > textDocument/didChange                367 bytes   version 3
+  7.362s < textDocument/publishDiagnostics       214 bytes   none
+  8.578s   (keys) " /* ok */", 9 keys, the last at 8.834s
+  9.136s > textDocument/didChange                376 bytes   version 4: one for the 9
+  9.198s < textDocument/publishDiagnostics       214 bytes
+ 12.478s > textDocument/definition        id=2   238 bytes   (07.07)
+ 12.480s < reply                          id=2   226 bytes
+ 14.195s > textDocument/definition        id=3   238 bytes
+ 14.195s < reply                          id=3   227 bytes
+ 14.196s > textDocument/didClose                 192 bytes   sum.c
+ 14.196s > textDocument/didOpen                  333 bytes   add.h, version 1
+ 14.945s > textDocument/didClose                 192 bytes   (Ctrl-B) add.h
+ 14.945s > textDocument/didOpen                  370 bytes   sum.c, version 1
+ 15.803s > shutdown                       id=4    44 bytes   (Ctrl-Q)
+ 15.804s < reply                          id=4    38 bytes   result null
+ 15.804s > exit                                   33 bytes
+```
+
+Each didChange left 301 to 302 ms after the last key. Ctrl-Q to kilo's
+exit: 0.026 s (clangd 21 exits 0 at once on shutdown and exit). The
+didOpen, uri and all:
+
+```
+{"jsonrpc":"2.0","method":"textDocument/didOpen","params":{"textDocument":{"uri":"file:///private/var/folders/.../sam%20ple/sum.c","languageId":"c","version":1,"text":"#include <stdio.h>\n#include \"add.h\"\n\nint main(void) {\n\tint total = add(2, 3);\n..."}}}
+```
+
+clangd publishes an empty list, without a version, for a file closed with
+didClose; after a switch that is the other file's uri, so it is ignored.
+
+### 07.06 Diagnostics: errors as you type
+
+On the project at 07.06, 2 s after the Backspace that makes `totl`, with
+no other key (the cursor is on the error's row, so its message is said as
+the list arrives, and the counts are not):
+
+```
+    |#include <stdio.h>
+    |#include "add.h"
+    |
+    |int main(void) {
+    |        int [_:total] = add(2, 3);
+    |        printf("%d\n", [_:totl]);
+    |        return 0;
+    |}
+    |sam ple/sum.c - 8 lines (modified)                                   6/8
+    |6: error: Use of undeclared identifier 'totl'; did you mean 'total'? (fi
+    [cursor 6,27]
+```
+
+(The message is cut at the screen's 72 columns.) clangd 21 sends two
+diagnostics: the error, range line 5 characters 16 to 20 (`totl`),
+severity 1, message "Use of undeclared identifier 'totl'; did you mean
+'total'? (fix available)\n\nsum.c:5:6: note: 'total' declared here"; and
+its note as a diagnostic of its own, line 4 characters 5 to 10 (`total` in
+`int total`), severity 3, "'total' declared here\n\n...". So `total` is
+underlined too, and the counts noted as said are 1 error, 1 info. With the
+cursor on a row without one when such a list comes (sum.c opened with
+`totl` already in it, the cursor on row 1), the message line says
+`lsp: 1 error, 1 info`.
+
+The fix (`a` typed back): no underline, `lsp: no problems` (the cursor's
+row has none, and the counts went to none). The bytes kilo writes for the
+error's row, in the frame above (core + 07, at 07.06):
+
+```
+        printf("%d\n", totl);ESC[0K \r ESC[23C ESC[4m totl ESC[0m \r\n
+```
+
+and in the finished project, with module 06's colours (the string in
+magenta; the overlay is the same, so `totl` is drawn over in the default
+colour, accepted: the two extensions do not know each other):
+
+```
+        printf(ESC[35m"%d\n"ESC[39m, totl);ESC[0K \r ESC[23C ESC[4m totl ESC[0m
+```
+
+Positions, with the printf line as `printf("e-acute t e-acute: %d\n",
+totl);` (written with \u escapes by the capture; the repo stays ASCII):
+under utf-8 (kilo offers utf-8 first) clangd 21 says characters 23 to 27;
+with utf-8 left out of the offer (the proxy took it out), utf-16 and
+characters 21 to 25 (each e-acute is 2 bytes and 1 unit). Both become
+bytes 23 to 27 of the row, render columns 30 to 34 (the tab is 8), and the
+overlay `\r ESC[28C ESC[4m totl ESC[0m`: cells 28 to 31, where the
+terminal shows `totl`.
+
+### 07.07 Go to definition
+
+```
+    |lsp: clangd 21.0.0 ready | Ctrl-G = definition | Ctrl-B = back
+```
+
+Ctrl-G with the cursor on `total` in the printf line (byte 18 of the row):
+request position line 5 character 18; reply `[{"range":{"end":{"character":10,"line":4},
+"start":{"character":5,"line":4}},"uri":"file:///.../sam%20ple/sum.c"}]`;
+the cursor goes to 5,13 (the `t` of `int total`, after the tab). Then nine
+Rights and Ctrl-G on `add`: position line 4 character 14; reply range line
+1 characters 18 to 21 in `file:///.../sam%20ple/add.h`; kilo reads add.h
+in place of sum.c (didClose sum.c, didOpen add.h version 1):
+
+```
+    |/* add.h: the one function sum.c calls. */
+    |static inline int add(int a, int b) {
+    |        return a + b;
+    |}
+    |sam ple/add.h - 4 lines                                              2/4
+    [cursor 2,19]
+```
+
+Ctrl-B: sum.c again, cursor 5,22 (where Ctrl-G was pressed); a second
+Ctrl-B would go to add.h. With a space typed on the empty row 3 (unsaved),
+Ctrl-G on `add`: `Unsaved changes: save first (Ctrl-S), then try again`,
+and sum.c stays. The status bar shows the path from the current directory
+(`sam ple/add.h`) when the file is under it.
+
+### Hostile input, and what kilo does
+
+Every case below is run by the module's tests against the scripted server
+(the test in brackets), under AddressSanitizer where the compiler has it.
+The editor keeps editing and saving after each.
+
+| input | kilo |
+|---|---|
+| a header with no Content-Length, a bad number, a sign, two that differ, no colon, over 16 MB, 26 digits, 5000 bytes with no line end, a line of 5000 bytes, "\n" for "\r\n" (0702) | `lsp: bad message from NAME; stopped`, the server killed and reaped |
+| a body of exactly 16 MB (0702) | read, and the next message too |
+| a reply in pieces of 10/30/rest, or a byte at a time (0702) | read whole |
+| two messages in one write (0702) | both acted on |
+| a body that is not JSON, bytes after the value, a bad escape, a raw newline in a string, nesting 100000 or 65 deep, a trailing comma, an empty body, a leading zero, bytes FF FE (0703) | dropped; the server goes on |
+| lone surrogates, \u0000, an ESC in serverInfo.name (0703) | U+FFFD; the ESC shown as '?' |
+| ids never sent: 99, "1", 1.5, 1e400, null (0703) | ignored; 1.0 is 1 |
+| an initialize result that is a string, null, or an error (0703) | `lsp: NAME did not initialize; stopped` |
+| a server that dies in a message (status 5), by SIGSEGV in a message, or idle (status 7) (0702, 0704) | `lsp: NAME exited (status 5)`, `(signal 11)`, `(status 7)`; reaped |
+| a server that closes its input and stays (0702) | the next write fails with EPIPE (SIGPIPE is ignored); `exited (signal 9)` |
+| a server that writes without end (0704) | each key answered in well under a second |
+| a server that stops reading, with a 5 MB file (0704) | keys answered; once over 8 MB waits, `lsp: NAME is not reading; stopped` |
+| a server that never reads, at Ctrl-Q (0701) | killed after 0.5 s; the terminal put back |
+| a slow server (0705) | a waiting didChange replaced: versions 2 and 4 arrive, 3 never |
+| requests from the server, ids "abc" and 9 (0705) | error -32601 "method not found", same id |
+| diagnostic ranges: past a line's end, on no line, ending on no line, backwards, negative, of the wrong type; severity 9; a message that is a number, or has newlines and ESC [ 2 J (0706) | clamped, dropped, empty, made the start, ignored; severity 1; ""; its first line, '?' for the ESC |
+| 1500 diagnostics (0706) | all counted, the first 1000 kept |
+| diagnostics for another uri, an older version, http://, file://t.c, %zz, %00, a uri that is a number (0706) | ignored; the same file through a link and with letters escaped is not |
+| definition results: null, [], http://, %00, no range, line -1, a character that is a string, a string, a missing file (0707) | `lsp: no definition found`; `Can't open ...: No such file or directory` |
+| a LocationLink; a line past the end; a character past a line's end (0707) | its targetSelectionRange; the last row; the line's end |
+| an answer after a key (0707) | ignored: the key cancelled the jump |
+
+tests/lsp_fuzz.c (see "The tests and the timeline") ran 3 s of each mode
+under ASan and UBSan on the Mac: 250497 frame runs, 942145 JSON runs,
+36324 message runs, no error.
+
+### Found on the way
+
+1. **A second stop after the server was gone.** When a write failed with
+   EPIPE inside lspInitialized, lspGone stopped the server, and lspOpen,
+   called next, wrote again: lspEnd ran a second time with `L.pid` 0, and
+   `waitpid(0, ...)` and `kill(0, SIGKILL)` mean every process in kilo's
+   group, kilo too. It showed as "exited (status 0)" over the real
+   message, in 0702's EPIPE case. Fixed before the first commit: lspEnd,
+   lspGone, lspSend, lspFlush and lspSendChange return at once with no
+   server.
+2. **editorJump's message was not drawn.** It calls
+   editorSetStatusMessage, which does not ask lsp.c to redraw, so "save
+   first" appeared only at the next key (0707). lspGoTo now asks for the
+   redraw whatever happens.
+3. **realpath() on glibc** is declared only with POSIX's X/Open part, and
+   gcc 14 makes an implicit declaration an error: the projects at 07.05 to
+   07.07 did not build on Debian. `_XOPEN_SOURCE 700` from 07.05
+   (commit "ask for X/Open on Linux from 07.05").
+4. A terminal nobody reads blocks kilo in its frame's write(): a capture
+   that typed nine keys and slept without reading saw no didChange until
+   it read again. A real terminal always reads; the tests' `wait_for`
+   reads while it waits.
+5. On macOS, Python's `time.monotonic()` and C's `CLOCK_MONOTONIC` are
+   different clocks (one stops in sleep): compare times on one of them.
+
+No bug in the core or in module 06 was found.
+
+### Kept simple
+
+- One server, started once, for the file kilo opened; a jump to a file of
+  another language keeps it (languageId from the table, or "plaintext").
+- The whole text in every didChange; `rootUri` null (clangd looks for a
+  compile_commands.json from the file's directory up).
+- In the finished project a jump to another file keeps E.syntax, chosen
+  for the first file (07 cannot call 06's editorSelectSyntaxHighlight).
+- One place to go back to.
+- During a search, a message from the server can replace the "Search:"
+  prompt until the next key.
+- Positions under the core's model: a control character (drawn by the
+  terminal as nothing in a file module 06 does not colour) and a
+  double-width character still count as one cell.
+- clangd's notes come as diagnostics of their own (kilo declares no
+  relatedInformation), with severity 3.
+
+### clangd versions
+
+Apple clangd 21.0.0 (macOS): everything above. Debian clangd 19.1.7
+(trixie, in Docker) and Alpine clangd 20.1.8 (in Docker): the clangd parts
+of 0706 and 0707 pass (the message starts "Use of undeclared identifier
+'totl'", the jumps land on the same rows and columns).
+
 ## Other behaviour of the original, kept
 
 - kilo does not clear the screen on exit: the shell prompt appears where
@@ -1091,3 +1645,67 @@ included (with ASan), and every lesson's project builds without
 warnings. To run them in a container, copy the tree in without the
 host's `tracks/kilo/kilo`: a macOS binary newer than kilo.c is kept by
 make, and every test then fails at once.
+
+For module 07 (all of this in track.py and tests/, none of it in a
+project a reader sees):
+
+- `edit(..., lsp=None)`, the default, sets KILO_LSP to the empty string,
+  so the 21 earlier tests run the finished editor with no server even on
+  .c files, as before the module. `lsp="..."` runs the scripted server,
+  `lsp="table"` leaves KILO_LSP out (clangd for a C file), `lsp="env"`
+  takes it from the test.
+- tests/lsp_server.py, the scripted server (Python, standard library
+  only): kilo runs it through a one-line script track.py writes
+  (`scripted-lsp`, a `#!` line naming this Python, so nothing sits between
+  them). By default it is a tiny language server: "oops" is an error,
+  "meh" a warning, the definition of a name is its first `int NAME`,
+  positions in the encoding it chose (utf-8 when offered first, as
+  clangd; a scenario can force utf-16 or leave it out). A scenario is a
+  Python file the test writes: `on_message(srv, msg)` and `srv` settings,
+  with `srv.raw`, `srv.pieces`, `srv.frame`, `srv.reply`, `srv.notify`,
+  `srv.die`. It logs every message it gets, with times, and the
+  descriptors it was started with, and the signals it started with
+  blocked; it exits on end of input, and on its
+  own when kilo has gone or after 120 s.
+- Screen keeps underline (ESC [ 4 m, 24 m and 0 m end it) per cell:
+  `ed.under(n)` paints underlined runs `[_:text]`, `ed.underlined(n)` lists
+  the underlined columns (a space past the end of a line too). With
+  `utf8=True` a UTF-8 character is one cell, as on a real terminal (only
+  module 07's tests of non-ASCII text use it).
+- Replies come when they come: `ed.wait_for(cond, what)` reads the screen
+  until cond holds (at most 10 s), `ed.wait_said(text)` waits for a
+  message line that may since have been replaced; there is no sleep
+  standing in for an answer.
+- `edit(..., asan=True)` compiles kilo.c with lsp.c and json.c when they
+  are there. The hostile cases of 0702 to 0707 run under it; on musl (no
+  ASan for gcc) they run the plain build.
+- tests/lsp_fuzz.c: 0702 runs its "frames" mode, 0703 "json", 0706
+  "messages", 3 s each, built with `-fsanitize=address,undefined` (and
+  leak checks on Linux), or ASan alone, or no sanitizer, whichever the
+  compiler takes: on Alpine with gcc, none.
+- clangd: 0706 and 0707 end with clangd on the sample program where
+  `clangd` is on PATH. Where it is not, the test prints a line before its
+  PASS, `   07.06  skipped: with clangd (not installed): ...`: the harness
+  has no SKIP, so the lesson reads PASS for the parts that ran. clangd was
+  installed on every machine these were run on (macOS, Debian, Alpine);
+  with it deleted from the Debian container, 0706 and 0707 printed
+  `   07.06  skipped: with clangd (not installed): an error typed,
+  underlined, fixed` and `   07.07  skipped: with clangd (not installed):
+  definitions in the same file and in add.h`, and passed.
+- The timeline at 07.01 to 07.07 runs the project on learn.c
+  (TIMELINE_LSP_TEXT) with the scripted server, never clangd, so it is the
+  same on any machine: the message each lesson's code leads to (started,
+  the raw reply, ready, the counts), the cursor past a tab, typing and
+  Backspace from 07.05, the error underlined and its message with the
+  cursor on its row from 07.06 (the first screen, the cursor on a row with
+  none, shows the counts), Ctrl-G, Ctrl-B and Ctrl-B again at 07.07. The relay's
+  `until REGEX` waits for what the server causes (under four parallel jobs
+  the scripted server can take longer than the 0.4 s of quiet "screen"
+  waits for). timeline_after checks learn.c untouched and the scripted
+  server's log: nothing received at 07.01, initialize alone to 07.04, then
+  initialized, didOpen with the text, version 1, and a didChange at each
+  pause, versions 2 and 3, whole.
+- Running in a container as above: the module's tests, the skeleton and
+  timeline checks pass on Debian trixie (glibc 2.41, gcc 14.2, clangd
+  19.1.7) and Alpine 3.22 (musl, gcc 14.2, clangd 20.1.8), and every 07
+  project and the finished one builds there with `-Werror`.

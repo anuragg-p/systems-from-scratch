@@ -70,6 +70,7 @@
 #include <stdarg.h>     // @from 03.04
 #include <fcntl.h>      // @from 04.04
 #include <signal.h>     // @from 02.01
+#include "lsp.h"        // @from 07.01
 
 // @from 06.01
 /* What each character of a row is, for its colour: its highlight class.
@@ -163,9 +164,11 @@ static struct editorConfig E;
  * return, and Backspace sends 127, DEL. */
 enum KEY_ACTION{
         KEY_NULL = 0,       /* NULL */
+        CTRL_B = 2,         /* Ctrl-b */ // @from 07.07
         CTRL_C = 3,         /* Ctrl-c */
         CTRL_D = 4,         /* Ctrl-d */
         CTRL_F = 6,         /* Ctrl-f */
+        CTRL_G = 7,         /* Ctrl-g */ // @from 07.07
         CTRL_H = 8,         /* Ctrl-h */
         TAB = 9,            /* Tab */
         CTRL_L = 12,        /* Ctrl+l */
@@ -340,7 +343,17 @@ int editorReadKey(int fd) {
     // read() fails.
     int nread;
     char c, seq[3];
+    lspWaitKey(fd);     /* the keyboard and the language server at once */ // @from 07.04
+    // @from 07.02
+    // @from 07.04
     while ((nread = read(fd,&c,1)) == 0);
+    // @else
+    // while ((nread = read(fd,&c,1)) == 0)
+    //     lspPump();      /* the language server, every 0.1 s */
+    // @end
+    // @else
+    // while ((nread = read(fd,&c,1)) == 0);
+    // @end
     if (nread == -1) exit(1);
 
     while(1) {
@@ -1337,6 +1350,10 @@ void editorRefreshScreen(void) {
         if (current_color != -1) abAppend(&ab,"\x1b[39m",5);
         // @end
         abAppend(&ab,"\x1b[0K",4);
+        // @from 07.06
+        lspDrawRow(&ab,filerow,r->chars,r->size,r->render,r->rsize,
+                   E.coloff,E.screencols);
+        // @end
         abAppend(&ab,"\r\n",2);
         // @end
     }
@@ -1729,6 +1746,14 @@ void editorProcessKeypress(int fd) {
     case CTRL_F:                    // @from 04.01
         editorFind(fd);             // @from 05.01
         break;                      // @from 04.01
+    // @from 07.07
+    case CTRL_G:        /* Ctrl-g: go to the definition */
+        lspDefinition();
+        break;
+    case CTRL_B:        /* Ctrl-b: and back */
+        lspBack();
+        break;
+    // @end
     case BACKSPACE:     /* Backspace */ // @from 04.01
     case CTRL_H:        /* Ctrl-h */ // @from 04.01
     case DEL_KEY:                   // @from 04.01
@@ -1871,6 +1896,87 @@ void initEditor(void) {
     // @end
 }
 
+// @from 07.06
+/* ================ The editor's side of the language client ================ */
+
+// @from 07.07
+/* lsp.c knows what the server says, but not E, which only this file can
+ * see: these two are its way to the cursor, to find it and to move it. */
+// @else
+// /* lsp.c knows what the server says, but not E, which only this file can
+//  * see: this is its way to the cursor. */
+// @end
+
+/* Where the cursor is in the file: its row, and its byte in that row's
+ * chars. */
+void editorCursor(int *row, int *col) {
+    // @build 07.06 where the cursor is
+    // The screen's row and column of the cursor, plus the view's offsets.
+    *row = E.rowoff+E.cy;
+    *col = E.coloff+E.cx;
+    // @end
+}
+
+// @end
+// @from 07.07
+/* Move the cursor to row, col (a byte of that row's chars), clamped to the
+ * file, and scroll so it shows. path NULL, or the open file's name: in the
+ * open file; another path: that file is read in place of the open one,
+ * unless the open one has unsaved changes. Returns 0, or -1 with a
+ * message when the other file is not opened. */
+int editorJump(const char *path, int row, int col) {
+    // @build 07.07 read another file in place of this one
+    // With unsaved changes, say to save first, and return -1. editorOpen()
+    // exits when a file is there but cannot be read: try fopen() first,
+    // and if it fails say why and return -1. Then free every row, empty
+    // the file and the view, and editorOpen() the path (it sets
+    // E.filename and E.dirty itself).
+    if (path && strcmp(path,E.filename) != 0) {
+        FILE *fp;
+        int j;
+
+        if (E.dirty) {
+            editorSetStatusMessage("Unsaved changes: save first (Ctrl-S), then try again");
+            return -1;
+        }
+        if ((fp = fopen(path,"r")) == NULL) {
+            editorSetStatusMessage("Can't open %s: %s",path,strerror(errno));
+            return -1;
+        }
+        fclose(fp);
+        for (j = 0; j < E.numrows; j++) editorFreeRow(E.row+j);
+        free(E.row);
+        E.row = NULL;
+        E.numrows = 0;
+        E.cx = E.cy = E.rowoff = E.coloff = 0;
+        editorOpen((char *)path);
+    }
+    // @end
+    // @build 07.07 move the cursor there
+    // Clamp row to the rows there are, and col to that row's bytes. A row
+    // off the screen goes to the top of it, as a search puts its match;
+    // then the cursor goes on it, the view scrolled right if col is past
+    // the screen's width.
+    int size;
+
+    if (row >= E.numrows) row = E.numrows-1;
+    if (row < 0) row = 0;
+    size = row < E.numrows ? E.row[row].size : 0;
+    if (col > size) col = size;
+    if (col < 0) col = 0;
+    if (row < E.rowoff || row >= E.rowoff+E.screenrows) E.rowoff = row;
+    E.cy = row-E.rowoff;
+    E.coloff = 0;
+    E.cx = col;
+    if (E.cx >= E.screencols) {
+        E.coloff = E.cx-E.screencols+1;
+        E.cx = E.screencols-1;
+    }
+    return 0;
+    // @end
+}
+
+// @end
 int main(int argc, char **argv) {
     if (argc != 2) {
         fprintf(stderr,"Usage: kilo <filename>\n");
@@ -1907,6 +2013,7 @@ int main(int argc, char **argv) {
     // editorSetStatusMessage("HELP: Ctrl-Q = quit");
     // @end
     // @end
+    lspStart(argv[1]);              // @from 07.01
     while(1) {
         editorRefreshScreen();      // @from 02.01
         editorProcessKeypress(STDIN_FILENO);

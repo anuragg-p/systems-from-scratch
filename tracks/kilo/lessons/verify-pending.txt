@@ -1,3 +1,10 @@
 # Lessons ./learn verify does not hold to their annotations yet: one id per line.
 # Annotate a lesson (README.md, "Verifying a lesson"), make ./learn verify kilo <id> pass,
 # then delete its line here. ./learn check runs the static checks on every lesson not listed.
+07.01
+07.02
+07.03
+07.04
+07.05
+07.06
+07.07
