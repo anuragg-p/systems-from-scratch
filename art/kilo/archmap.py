@@ -310,8 +310,12 @@ EXTENSIONS = {
 # in 08), highlights -> frame up the right margin (the frame gives up 12, as in 07). API <-> rows is
 # an elbow in the gap between rows 3 and 4 with a head at each end (a script reads the rows and
 # changes them: a fourth item "both" in a link), and no screen -> Lua one in the gap between rows 5
-# and 6. The labels are cut to what a piece holds: "key -> a function" for keymaps, "save, change,
-# key" for events, "typed functions" for the API.
+# and 6; API -> highlights is a short horizontal between the two neighbours. API -> prompt (input()
+# runs the editor's prompt) is not drawn: events sits between them in row 4, and every way round
+# crosses a line of events' column (save -> events above it, events -> Lua below). 09.08 highlights
+# read a key with the guards: keys typed while a script runs are kept for editorReadKey(). The
+# labels are cut to what a piece holds: "key -> a function" for keymaps, "save, change, key" for
+# events, "typed functions" for the API.
 _GAP34 = _BOT[3] + 11                    # half way between rows 3 and 4
 _GAP56 = _R5 + H + (_R6 - _R5 - H) / 2   # half way between rows 5 and 6
 _KEYMAP_MID = (COLS[0] + _IN + COLS[0] + W) / 2
@@ -340,9 +344,12 @@ EXTENSIONS["09"] = {
                                 (_MARGIN_L, _R4 + H / 2), (COLS[0] + _IN - 2, _R4 + H / 2)]),
         # a save fires BufWritePre and BufWritePost
         ("save", "events", _down(cx(2), ROWS[3], _R4)),
-        # the API reads the rows and changes them
-        ("api", "rows", [(cx(3) + 22, _R4 - 2), (cx(3) + 22, _GAP34), (cx(4), _GAP34), (cx(4), _BOT[3] + 2)],
-         "both"),
+        # the API reads the rows and changes them: landing at the rows' left end, so that it runs over
+        # the gap between the columns and not along the top of highlights
+        ("api", "rows", [(cx(3) + 30, _R4 - 2), (cx(3) + 30, _GAP34), (COLS[4] + 14, _GAP34),
+                         (COLS[4] + 14, _BOT[3] + 2)], "both"),
+        # a script's highlights are put through the API (add_highlight): its neighbour in row 4
+        ("api", "highlights", [(COLS[3] + W + 1, _R4 + H / 2), (COLS[4] - 2, _R4 + H / 2)]),
         # the frame draws the highlights: up the right margin
         ("highlights", "frame", [(RIGHT + 1, _R4 + H / 2), (_MARGIN_R, _R4 + H / 2), (_MARGIN_R, _MID1),
                                  (RIGHT - _IN + 2, _MID1)]),
@@ -368,7 +375,7 @@ EXTENSIONS["09"] = {
         ("09.05", "Events: autocommands", {"events"}),
         ("09.06", "Drawing from a script: highlights and the status bar", {"highlights"}),
         ("09.07", "Asking, opening, leaving: input(), open(), quit()", {"prompt", "api"}),
-        ("09.08", "Scripts that go wrong", {"guards"}),
+        ("09.08", "Scripts that go wrong", {"guards", "key"}),     # keys typed while a script runs are kept
         ("09.09", "The editor without its screen", {"noscreen"}),
         ("09.10", "Features as scripts", {"scripts"}),
     ],
