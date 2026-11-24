@@ -17,6 +17,13 @@ the reference) engine, and `torch` is PyTorch, the reference.
                         (08.02 on) models/gpt.py's GPT computed again in float64 numpy from its own
                         weights, attention written out position by position (layer_norm,
                         attention_numpy, gelu_numpy and block_numpy are its pieces)
+    bpe_reference(text, size), bpe_replay(text, merges)
+                        (09.01 on) byte pair encoding the slow, obvious way, written apart from
+                        tokens/bpe.py: every pair of the whole text counted for every merge; and a
+                        text's symbols made by applying every merge in the order learned
+    unicode_strings(rng, n, length)
+                        (09.01 on) strings of characters drawn from every part of Unicode but the
+                        surrogates, and some that come in runs (spaces, marks, digits)
 """
 
 import numpy as np
@@ -139,3 +146,84 @@ def gpt_numpy(model, ids, heads):
     for i in range(layers):
         x = block_numpy(x, p, f"blocks.{i}.", heads)
     return layer_norm(x, p["norm.weight"], p.get("norm.bias")) @ p["tokens.weight"].T
+
+
+# ---------------------------------------------------------------- module 09: byte pair encoding, the slow way
+
+BPE_SPLIT = r" ?\w+| ?[^\w\s]+|\s+"
+
+
+def _merged(w, pair, new):
+    out, i = [], 0
+    while i < len(w):
+        if w[i:i + 2] == pair:
+            out.append(new)
+            i += 2
+        else:
+            out.append(w[i])
+            i += 1
+    return tuple(out)
+
+
+def bpe_reference(text, size):
+    """The merges of a vocabulary of size symbols, learned from text the slow, obvious way: the text cut into
+    pieces (tokens/bpe.py's pattern), each piece its UTF-8 bytes; for each merge every pair of every piece
+    counted, the most frequent taken (ties: the smallest pair) and merged everywhere."""
+    import re
+    words = [tuple(m.group().encode("utf-8")) for m in re.finditer(BPE_SPLIT, text)]
+    merges = {}
+    for new in range(256, size):
+        counts = {}
+        for w in words:
+            for i in range(len(w) - 1):
+                counts[w[i], w[i + 1]] = counts.get((w[i], w[i + 1]), 0) + 1
+        if not counts:
+            break
+        best = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))[0][0]
+        merges[best] = new
+        words = [_merged(w, best, new) for w in words]
+    return merges
+
+
+def bpe_replay(text, merges):
+    """text's symbols made as training made them: each piece's bytes, and every merge applied to it in the order
+    the merges were learned."""
+    import re
+    out = []
+    for m in re.finditer(BPE_SPLIT, text):
+        w = tuple(m.group().encode("utf-8"))
+        for pair, new in merges.items():
+            w = _merged(w, pair, new)
+        out.extend(w)
+    return out
+
+
+def unicode_pool():
+    """Characters from every part of Unicode but the surrogates: up to 40 of every general category Python's
+    unicodedata knows (unassigned code points among them), and the categories themselves, {category: chars}."""
+    import unicodedata
+    by = {}
+    for c in range(0x110000):
+        if not 0xD800 <= c <= 0xDFFF:
+            by.setdefault(unicodedata.category(chr(c)), []).append(chr(c))
+    rng = np.random.default_rng(0)
+    pool = []
+    for cat, chars in sorted(by.items()):
+        pool += [chars[int(i)] for i in rng.integers(0, len(chars), min(len(chars), 40))]
+    return pool, by
+
+
+def unicode_strings(rng, n, length, pool=None):
+    """n strings of 1 to length characters: runs of ASCII letters, of spaces and line breaks, of digits, of
+    punctuation, and of characters from pool (unicode_pool()'s when not given), mixed."""
+    pool = pool if pool is not None else unicode_pool()[0]
+    kinds = ["abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", " ", "\n", " \t\r\x0b\x0c", "0123456789",
+             ".,;:!?'\"-()[]{}", "".join(pool)]
+    out = []
+    for _ in range(n):
+        s = []
+        while len(s) < length:
+            k = kinds[int(rng.integers(0, len(kinds)))]
+            s += [k[int(i)] for i in rng.integers(0, len(k), int(rng.integers(1, 6)))]
+        out.append("".join(s[:int(rng.integers(1, length + 1))]))
+    return out

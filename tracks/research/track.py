@@ -465,6 +465,15 @@ def need_cifar10(t):
                    f"python3 -m data.fetch cifar10, run in tracks/research/")
 
 
+def _have_torch():
+    import importlib.util
+    return importlib.util.find_spec("torch") is not None
+
+
+# The empty programs pytorch_era_tools writes, and what says this machine has each.
+TOOLS = {"torch": _have_torch, "cifar10": lambda: have_dataset("cifar10")}
+
+
 def pytorch_era_tools():
     """What verify_tools adds for the lessons from 06.02 on. verify_tools cannot name a tool for
     some lessons only, and a session's needs= looks for a program on PATH, not for a Python package
@@ -473,11 +482,11 @@ def pytorch_era_tools():
     torch, "cifar10" when CIFAR-10 is in the cache (a stale one is removed). A session from 06.02 on
     says needs="torch", from 06.03 on needs="torch cifar10": on a machine without them its lesson is
     "missing", as a missing QEMU makes an xv6 lesson, while every lesson before 06.02 still replays.
-    Each program is written only when it is not there already, so verify's cache stays valid."""
-    import importlib.util
+    Each program is written only when it is not there already, so verify's cache stays valid.
+    Later modules add their downloads to TOOLS (module 09: gpt2, tinystories)."""
     from harness.core import ROOT
     where = os.path.join(ROOT, "build", "tools", "research")
-    have = {"torch": importlib.util.find_spec("torch") is not None, "cifar10": have_dataset("cifar10")}
+    have = {name: check() for name, check in TOOLS.items()}
     out = {}
     for name, ok in have.items():
         path = os.path.join(where, name)
@@ -555,3 +564,74 @@ DATA["experiments/recorded/gpt/*"] = "the long run of experiments/gpt.py (08.04)
 # The run writes its checkpoint beside the record; a learner who runs it again gets one there. It is weights, not
 # part of the record: never shown or materialized, and not committed.
 HIDDEN.append("experiments/recorded/*/model.safetensors")
+
+
+# ---------------------------------------------------------------- module 09: GPT-2, the tokenizer and the real weights
+#
+# Kept apart from the tables above, as modules 06 to 08's parts are. tokens/ (09.01 on) is a package of its own, as
+# models/ is: byte pair encoding (bpe.py) and GPT-2's tokenizer (gpt2.py). Not "tokenizers", which would hide the
+# installed library of that name. 09.01 needs no download; 09.02 and 09.03 need GPT-2's files (python3 -m data.fetch
+# gpt2), 09.04 TinyStories (python3 -m data.fetch tinystories).
+
+SOURCES.append("tokens/*.py")
+FILES_FROM["tokens/__init__.py"] = "09.01"
+FILES_FROM["experiments/tokenizer.py"] = "09.02"          # no regions: its lesson's code is tokens/gpt2.py
+PACKAGES = PACKAGES + ("tokens",)
+
+EXPERIMENTS.update({
+    "bpe": ("09.01", ["seeds=1", "steps=5", "layers=1", "width=16", "context=16", "sizes=[256,300]", "vocab=300",
+                      "windows=10", "simple_merges=1"], r"s of counting, training and scoring on cpu"),
+    "tokenizer": ("09.02", ["repeats=1", "size=300"], r"s of reading, training and encoding on cpu"),
+    "gpt2": ("09.03", ["test_tokens=300", "warm=16", "wrong_windows=1", "prompts=2", "prompt_tokens=8", "length=6",
+                       "seeds=1", "greedy=4"], r"s of loading, scoring and sampling on cpu"),
+    "tinystories": ("09.04", ["seeds=1", "steps=5", "layers=1", "width=16", "heads=2", "context=16", "every=2", "held=4",
+                              "held_stories=20", "samples=2", "length=20", "checkpoint=none"],
+                    r"s of tokenising, training, scoring and telling on cpu"),
+})
+DATASET_OF.update({"bpe": None, "tokenizer": "gpt2", "gpt2": "gpt2", "tinystories": "tinystories"})
+
+# The downloads of module 09 (data/fetch.py has their SHA-256s too), file by file with their sizes, and their names
+# in a test's line.
+DATASET_FILES = {
+    "gpt2": {"vocab.json": 1042301, "merges.txt": 456318, "model.safetensors": 548105171},
+    "tinystories": {"train.txt": 67108864, "valid.txt": 19447282},
+}
+DATASET_NAMES = {"gpt2": "GPT-2 (its vocabulary, merges and weights)",
+                 "tinystories": "TinyStories (64 MiB of its training stories, and its validation stories)"}
+_have_before_09, _need_before_09 = have_dataset, need
+
+
+def have_dataset(name):
+    """Is the dataset in the cache, every file at its size? Module 09's downloads, then those before it."""
+    if name not in DATASET_FILES:
+        return _have_before_09(name)
+    d = os.path.join(cache_dir(), name)
+    return all(os.path.isfile(os.path.join(d, f)) and os.path.getsize(os.path.join(d, f)) == n
+               for f, n in DATASET_FILES[name].items())
+
+
+def need(t, dataset="mnist", skip=False):
+    """As before for MNIST and CIFAR-10 (a test fails with "missing: ..."). For module 09's downloads, with skip, a
+    test that lacks one prints a line saying so and is told False (it then skips the checks that need it); else
+    True."""
+    if dataset not in DATASET_FILES:
+        return _need_before_09(t, dataset)
+    if have_dataset(dataset):
+        return True
+    message = (f"{DATASET_NAMES[dataset]} is not in {os.path.join(cache_dir(), dataset)}. Fetch it once with "
+               f"python3 -m data.fetch {dataset}, run in tracks/research/")
+    if not skip:
+        raise Fail(f"missing: {message}")
+    print(f"      skipped what needs it: {message}")
+    return False
+
+
+TOOLS["gpt2"] = lambda: have_dataset("gpt2")
+TOOLS["tinystories"] = lambda: have_dataset("tinystories")
+
+# The long run of 09.04, recorded as 08.04's is (experiments/tinystories.py with out=experiments/recorded): every
+# config.json, log.jsonl and summary.json, the curves, what it printed (its stories with it); not its checkpoint. The
+# first glob that matches a file places it, so this narrower one goes first too.
+FILES_FROM = {"experiments/recorded/tinystories/*": "09.04", **FILES_FROM}
+DATA["experiments/recorded/tinystories/*"] = ("the long run of experiments/tinystories.py (09.04), recorded on the "
+                                              "machine in NOTES.md")

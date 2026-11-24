@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+<text x="64" y="20" font-size="14" font-weight="bold" fill="currentColor">bits per token on held-out windows</text>
+<line x1="64" y1="272.3" x2="490" y2="272.3" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="276.3" font-size="11" text-anchor="end" fill="currentColor">4</text>
+<line x1="64" y1="216.0" x2="490" y2="216.0" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="220.0" font-size="11" text-anchor="end" fill="currentColor">6</text>
+<line x1="64" y1="159.6" x2="490" y2="159.6" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="163.6" font-size="11" text-anchor="end" fill="currentColor">8</text>
+<line x1="64" y1="103.2" x2="490" y2="103.2" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="107.2" font-size="11" text-anchor="end" fill="currentColor">10</text>
+<line x1="64" y1="46.8" x2="490" y2="46.8" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="50.8" font-size="11" text-anchor="end" fill="currentColor">12</text>
+<line x1="64.0" y1="314" x2="64.0" y2="318" stroke="currentColor"/>
+<text x="64.0" y="331" font-size="11" text-anchor="middle" fill="currentColor">0</text>
+<line x1="170.5" y1="314" x2="170.5" y2="318" stroke="currentColor"/>
+<text x="170.5" y="331" font-size="11" text-anchor="middle" fill="currentColor">1000</text>
+<line x1="277.1" y1="314" x2="277.1" y2="318" stroke="currentColor"/>
+<text x="277.1" y="331" font-size="11" text-anchor="middle" fill="currentColor">2000</text>
+<line x1="383.6" y1="314" x2="383.6" y2="318" stroke="currentColor"/>
+<text x="383.6" y="331" font-size="11" text-anchor="middle" fill="currentColor">3000</text>
+<rect x="64" y="34" width="426" height="280" fill="none" stroke="currentColor"/>
+<text x="277.0" y="352" font-size="12" text-anchor="middle" fill="currentColor">step</text>
+<text x="14" y="174.0" font-size="12" text-anchor="middle" fill="currentColor" transform="rotate(-90 14 174.0)">bits per token</text>
+<polyline points="64.0,46.7 90.6,241.5 117.3,262.1 143.9,272.4 170.5,278.4 197.2,282.9 223.8,287.0 250.4,289.9 277.1,292.8 303.7,294.7 330.3,296.5 356.9,298.1 383.6,299.2 410.2,300.1 436.8,300.8 463.5,301.1 490.0,301.2" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="0.8"/>
+<polyline points="64.0,47.2 90.6,240.4 117.3,261.3 143.9,271.4 170.5,278.1 197.2,283.0 223.8,286.7 250.4,290.2 277.1,292.6 303.7,294.6 330.3,296.6 356.9,297.9 383.6,299.3 410.2,300.3 436.8,300.9 463.5,301.2 490.0,301.3" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="0.8"/>
+<line x1="502" y1="42" x2="522" y2="42" stroke="#1f77b4" stroke-width="2.5"/>
+<text x="528" y="46" font-size="11" fill="currentColor">seed 0, held-out windows</text>
+<line x1="502" y1="60" x2="522" y2="60" stroke="#d62728" stroke-width="2.5"/>
+<text x="528" y="64" font-size="11" fill="currentColor">seed 1, held-out windows</text>
+</svg>

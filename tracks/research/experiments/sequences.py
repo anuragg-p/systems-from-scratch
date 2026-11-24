@@ -100,3 +100,15 @@ def window_bits(predict, ids, span, warm, batch=64):
             count += y.numel()
     return total / count
 # @end
+
+
+# @build 09.01 per_character
+# A model's bits per token on a text of tokens ids, made into bits per
+# character: window_bits scores every token from the warm-th on, so the
+# bits of all of those tokens over the characters they stand for (table
+# gives each token's bytes: a character is a byte in Tiny Shakespeare,
+# which is ASCII). With characters for tokens it changes nothing.
+def per_character(bits_per_token, ids, table, warm):
+    scored = ids[warm:]
+    return bits_per_token * len(scored) / sum(len(table[int(i)]) for i in scored)
+# @end

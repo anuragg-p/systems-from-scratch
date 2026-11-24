@@ -283,6 +283,42 @@ Data       Tiny Shakespeare: a selection of Shakespeare's plays, 1,115,394
 Licence    As read at the source on 2026-11-24: the plays are in the public
            domain; the char-rnn repository's Readme gives its licence as
            MIT. The file is redistributed here unchanged.
+Weights    GPT-2 small, by OpenAI (Radford, Wu, Child, Luan, Amodei and
+           Sutskever, "Language Models are Unsupervised Multitask
+           Learners", 2019): its weights (model.safetensors, 548,105,171
+           bytes) and its tokenizer's vocabulary and merges (vocab.json
+           and merges.txt, byte for byte OpenAI's encoder.json and
+           vocab.bpe). Not in this repository, and never downloaded by a
+           build, a test or a lesson: the learner fetches them once, with
+           python3 -m data.fetch gpt2, from the openai-community/gpt2
+           repository on Hugging Face at commit
+           607a30d783dfa663caf39e06633721c8d4cfcd7e, into a cache outside
+           the project; each file is kept only if its size and SHA-256
+           match the ones pinned in fetch.py. Lessons from 09.02 on read
+           them; the internal tests compare the track's tokenizer and
+           model with tiktoken's and transformers', built from the same
+           files.
+Licence    As read at the source on 2026-11-24: the Hugging Face model card
+           gives MIT; OpenAI's own repository (github.com/openai/gpt-2)
+           gives a Modified MIT License, Copyright (c) 2019 OpenAI, which
+           asks that GPT-2 be used responsibly and that content made with
+           it say so. Nothing of it is redistributed here.
+Data       TinyStories, by Ronen Eldan and Yuanzhi Li ("TinyStories: How
+           Small Can Language Models Be and Still Speak Coherent
+           English?", 2023): short stories written by GPT-3.5 and GPT-4.
+           Not in this repository, and never downloaded by a build, a test
+           or a lesson: the learner fetches a part of it once, with
+           python3 -m data.fetch tinystories, from the
+           roneneldan/TinyStories dataset on Hugging Face at commit
+           f54c09fd23315a6f9c86f9dc80f725de7d8f9c64: the first 64 MiB of
+           TinyStories-train.txt (one range of bytes) and the whole of
+           TinyStories-valid.txt, each kept only if its size and SHA-256
+           match the ones pinned in fetch.py.
+Licence    As read at the source on 2026-11-24: the dataset card gives
+           CDLA-Sharing-1.0. Nothing of it is redistributed here but a
+           phrase or two quoted in the track's recorded run
+           (tracks/research/experiments/recorded/tinystories/output.txt),
+           beside stories written by a model trained on it.
 Generated  The two groups of points (data/points.py) are made from a seed
            when a script runs; none is stored.
 
