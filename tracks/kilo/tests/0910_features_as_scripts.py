@@ -63,6 +63,19 @@ def test(t):
         ed.keys(tr.ctrl("e"), line, tr.ENTER)
         return ed.message
 
+    paste = "".join(chr(97 + i % 26) for i in range(60))
+
+    def pasted(ed, rest, what):
+        """Sixty letters in one write, as a paste arrives, in vi's insert mode: colour.lua runs
+        on each, its count hook reads the letters that arrive meanwhile, and they are kept for
+        the editor: all sixty arrive, in order."""
+        ed.keys("i")
+        before = ed.screen.frames
+        ed.s.send(paste)
+        ed.wait_frame(before)
+        got = ed.lines[0][:-len(rest)] if ed.lines[0].endswith(rest) else ed.lines[0]
+        t.check(ed.lines[0] == paste + rest, f"{what}: a paste of 60 letters, {len(got)} arrive: {got!r}")
+
     # vi.lua: normal mode, then insert mode, the mode in the status bar.
     ed = editor(t, exe, "alpha beta\ngamma\ndelta epsilon\n", "v.txt", loader(root, "vi"))
     t.check(ed.status.startswith("-- NORMAL -- v.txt ") and ed.status.endswith("1/3"), f"{ed.status!r}")
@@ -114,6 +127,12 @@ def test(t):
     t.check(ed.painted(0) == "[c:inside 39]" and ed.line(0) == "inside 39", f"{ed.painted(0)!r}")
     t.check(ed.painted(21) == "[c:*/] [g:int] y = [r:1];", f"the comment's end: {ed.painted(21)!r}")
     ed.quit()
+
+    # A paste with colour.lua loaded (the lesson's run found 5 of 60 arriving).
+    ed = editor(t, exe, c, "p.c", loader(root, "colour", "find", "vi"))
+    pasted(ed, "int x = 42; /* a", "at 09.10")
+    ed.keys(tr.ESC, tr.ctrl("s"))
+    t.check(ed.quit() == 0, "Ctrl-Q quits")
 
     # find.lua: find as you type, next and previous, Escape back; go to a line.
     ed = editor(t, exe, tr.lines_of(40), "f.txt", loader(root, "find"))
@@ -206,3 +225,10 @@ def test(t):
         t.check(ed.painted(0) == want, f"{order}: {ed.painted(0)!r}, not {want!r}")
         ed.keys(tr.ESC)
         ed.quit()
+    # The paste in the finished project, with the server: keys kept are taken without waiting
+    # on the keyboard and the server (lspWaitKey()) first.
+    ed = tr.edit(t, c, name="paste.c", lsp="", init=loader(t.root, "colour", "find", "vi"), asan=True)
+    ed.wait_for(lambda: "[_:" in ed.under(2), "07's underline")
+    pasted(ed, "int total = 0;", "finished")
+    ed.keys(tr.ESC, tr.ctrl("s"))
+    t.check(ed.quit() == 0, "Ctrl-Q quits")

@@ -20,6 +20,7 @@
 // @from 09.08
 #define SCRIPT_MAX_MEMORY (64*1024*1024)    /* bytes Lua may hold */
 #define SCRIPT_HOOK_COUNT 100000    /* instructions between looks at the keyboard */
+#define SCRIPT_KEYS_MAX 4096        /* bytes of keys the hook keeps for the editor */
 // @end
 
 /* What kilo.c calls. */
@@ -28,6 +29,10 @@ void scriptEval(const char *line);
 // @from 09.04
 int scriptCall(int ref, const char *arg);
 void scriptUnref(int ref);
+// @end
+// @from 09.08
+int scriptKey(int fd, char *c);
+int scriptKeysWaiting(void);
 // @end
 int scriptRun(const char *path);                            // @from 09.09
 

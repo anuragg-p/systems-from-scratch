@@ -421,16 +421,28 @@ int editorReadKey(int fd) {
     // read() fails.
     int nread;
     char c, seq[3];
-    lspWaitKey(fd);     /* the keyboard and the language server at once */ // @from 07.04
+    // @from 07.04
+    // @from 09.08
+    /* The keyboard and the language server at once, unless keys a script's
+     * count hook kept are waiting. */
+    if (!scriptKeysWaiting()) lspWaitKey(fd);
+    // @else
+    // lspWaitKey(fd);     /* the keyboard and the language server at once */
+    // @end
+    // @end
+    // @from 09.08
+    while ((nread = scriptKey(fd,&c)) == 0);    /* kept keys first */
+    // @else
     // @from 07.02
     // @from 07.04
-    while ((nread = read(fd,&c,1)) == 0);
+    // while ((nread = read(fd,&c,1)) == 0);
     // @else
-    // while ((nread = read(fd,&c,1)) == 0)
-    //     lspPump();      /* the language server, every 0.1 s */
+    // // while ((nread = read(fd,&c,1)) == 0)
+    // //     lspPump();      /* the language server, every 0.1 s */
     // @end
     // @else
-    // while ((nread = read(fd,&c,1)) == 0);
+    // // while ((nread = read(fd,&c,1)) == 0);
+    // @end
     // @end
     if (nread == -1) exit(1);
 
@@ -438,14 +450,23 @@ int editorReadKey(int fd) {
         switch(c) {
         case ESC:    /* escape sequence */
             /* A lone Escape key: the next read() times out. */
-            if (read(fd,seq,1) == 0) return ESC;
-            if (read(fd,seq+1,1) == 0) return ESC;
+            // @from 09.08
+            if (scriptKey(fd,seq) == 0) return ESC;
+            if (scriptKey(fd,seq+1) == 0) return ESC;
+            // @else
+            // if (read(fd,seq,1) == 0) return ESC;
+            // if (read(fd,seq+1,1) == 0) return ESC;
+            // @end
 
             /* ESC [ sequences. */
             if (seq[0] == '[') {
                 if (seq[1] >= '0' && seq[1] <= '9') {
                     /* ESC [ digit ~: one more byte to read. */
-                    if (read(fd,seq+2,1) == 0) return ESC;
+                    // @from 09.08
+                    if (scriptKey(fd,seq+2) == 0) return ESC;
+                    // @else
+                    // if (read(fd,seq+2,1) == 0) return ESC;
+                    // @end
                     if (seq[2] == '~') {
                         switch(seq[1]) {
                         case '3': return DEL_KEY;

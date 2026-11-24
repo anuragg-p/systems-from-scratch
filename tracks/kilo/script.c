@@ -46,6 +46,10 @@ static struct {
     int screen;         /* 1: the editor; 0: kilo -l, no screen and no keys @from 09.09 */
     size_t used;        /* bytes Lua holds now @from 09.08 */
     int interrupted;    /* Ctrl-C was typed while a script ran @from 09.08 */
+    // @from 09.08
+    char keys[SCRIPT_KEYS_MAX]; /* bytes of keys the count hook read, kept */
+    int nkeys, nextkey; /* how many are kept; the next for editorReadKey() */
+    // @end
     int panic;          /* @internal the test aid kilo.test_panic() asked for a panic */
 } S;
 
@@ -547,19 +551,35 @@ static const char SCRIPT_LUA[] =
 // @from 09.08
 /* ========================== Scripts that go wrong ========================= */
 
+/* Keep a byte of a key the count hook read, after those kept before it,
+ * for editorReadKey(). With SCRIPT_KEYS_MAX bytes waiting already, it is
+ * dropped: the one way a typed key is lost. */
+static void scriptKeep(char c) {
+    if (S.nextkey > 0) {        /* the bytes still waiting to the front */
+        memmove(S.keys,S.keys+S.nextkey,S.nkeys-S.nextkey);
+        S.nkeys -= S.nextkey;
+        S.nextkey = 0;
+    }
+    if (S.nkeys < SCRIPT_KEYS_MAX) S.keys[S.nkeys++] = c;
+}
+
 /* The count hook: Lua calls it every SCRIPT_HOOK_COUNT instructions of a
  * script, in the editor. It looks at the keyboard without waiting: a Ctrl-C
  * among the bytes there stops the script with the error "interrupted".
- * Other keys typed while a script runs are dropped. Once interrupted, the
- * error is raised again at every instruction until the script is back in
- * the editor, so a pcall() in it cannot catch the error and carry on. */
+ * Every other byte is kept, in order, and editorReadKey() takes it before
+ * the terminal's (scriptKey()): a paste that arrives while a script runs
+ * is all there after it. A Ctrl-C throws away the bytes kept before it.
+ * Once interrupted, the error is raised again at every instruction until
+ * the script is back in the editor, so a pcall() in it cannot catch the
+ * error and carry on. */
 static void scriptHook(lua_State *L, lua_Debug *ar) {
     // @build 09.08 Ctrl-C stops a script
     // Unless already interrupted: while poll() with no wait says standard
-    // input has bytes, read() them, and note a 3 among them in
-    // S.interrupted. None: return. Then lua_sethook() to a count of 1. Raise
-    // "interrupted", with where the script was in front: a hook runs inside
-    // the function it stops, so that is level 0 for luaL_where().
+    // input has bytes, read() them. A 3 among them: note it in
+    // S.interrupted, and throw away the bytes kept so far; any other byte:
+    // scriptKeep() it. No 3: return. Then lua_sethook() to a count of 1.
+    // Raise "interrupted", with where the script was in front: a hook runs
+    // inside the function it stops, so that is level 0 for luaL_where().
     struct pollfd pfd;
     char buf[64];
     ssize_t n, i;
@@ -570,8 +590,14 @@ static void scriptHook(lua_State *L, lua_Debug *ar) {
         pfd.events = POLLIN;
         while (poll(&pfd,1,0) == 1 && (pfd.revents & POLLIN) &&
                (n = read(STDIN_FILENO,buf,sizeof(buf))) > 0)
-            for (i = 0; i < n; i++)
-                if (buf[i] == 3) S.interrupted = 1;
+            for (i = 0; i < n; i++) {
+                if (buf[i] != 3) {
+                    scriptKeep(buf[i]);
+                    continue;
+                }
+                S.interrupted = 1;
+                S.nkeys = S.nextkey = 0;    /* typed before it: gone with it */
+            }
         if (!S.interrupted) return;
         lua_sethook(L,scriptHook,LUA_MASKCOUNT,1);
     }
@@ -588,6 +614,22 @@ static int scriptNoExit(lua_State *L) {
     return luaL_error(L,"os.exit is taken away in the editor: kilo.api.quit() leaves");
 }
 
+/* Read one byte of a key into *c for editorReadKey(): the first the hook
+ * kept, if any, else one from fd with read(). Returns what read() does: 1,
+ * 0 when nothing came within VTIME, or -1. */
+int scriptKey(int fd, char *c) {
+    if (S.nextkey == S.nkeys) return read(fd,c,1);
+    *c = S.keys[S.nextkey++];
+    if (S.nextkey == S.nkeys) S.nkeys = S.nextkey = 0;
+    return 1;
+}
+
+/* 1 if bytes the hook kept are waiting: then the keyboard must not be
+ * waited for before the next key. */
+int scriptKeysWaiting(void) {
+    return S.nextkey < S.nkeys;
+}
+
 // @end
 // @internal
 /* The test aid: ask for an error outside any protected call (raised in
@@ -597,6 +639,13 @@ static int scriptTestPanic(lua_State *L) {
     (void)L;
     S.panic = 1;
     return 0;
+}
+
+/* The test aid kilo.test_keys(): how many bytes the hook kept are waiting,
+ * so that a test can tell when a key has been read into them. */
+static int scriptTestKeys(lua_State *L) {
+    lua_pushinteger(L,S.nkeys-S.nextkey);
+    return 1;
 }
 
 // @end
@@ -632,6 +681,8 @@ static int scriptOpen(lua_State *L) {
     // @internal
     lua_pushcfunction(L,scriptTestPanic);
     lua_setfield(L,-2,"test_panic");
+    lua_pushcfunction(L,scriptTestKeys);
+    lua_setfield(L,-2,"test_keys");
     // @end
     // @build 09.04 the Lua on top
     // Load SCRIPT_LUA, kilo's functions written in Lua, as the chunk

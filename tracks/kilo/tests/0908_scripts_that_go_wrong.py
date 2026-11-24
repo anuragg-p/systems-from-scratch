@@ -3,8 +3,12 @@
 Module 07's standard: never a crash, a hang, or a lost file. A script that
 never ends is stopped by Ctrl-C: a count hook looks at the keyboard every
 100000 instructions, and raises "interrupted", again at every instruction
-until the script is back in the editor, so a pcall() cannot swallow it;
-other keys typed meanwhile are dropped. Lua's memory is counted by an
+until the script is back in the editor, so a pcall() cannot swallow it.
+Other keys the hook reads are kept, in order, and the editor takes them
+before the terminal's: a paste that arrives while a script runs is all
+there after it, an escape sequence split between the kept bytes and the
+terminal is still one key, a Ctrl-C throws away the bytes typed before it,
+and past 4096 bytes waiting the rest are dropped. Lua's memory is counted by an
 allocator of kilo's and refused past 64 MB ("not enough memory"), and a
 full collection follows. Control bytes never reach the terminal. os.exit is
 taken away in the editor. Ctrl-Q is never offered to a script. Lua's panic
@@ -14,6 +18,7 @@ Ctrl-C ends it. And thousands of random calls of every API function, in
 the editor under AddressSanitizer, change nothing of that.
 """
 
+import errno
 import importlib.util
 import os
 import signal
@@ -44,7 +49,7 @@ def test(t):
         return ed.message
 
     def stop(what, said):
-        """The script is running (no screen comes); keys typed now are dropped; Ctrl-C stops it."""
+        """The script is running (no screen comes); keys typed now go with the Ctrl-C that stops it."""
         time.sleep(0.4)
         t.check(ed.s.proc.poll() is None, f"{what}: kilo is still there")
         ed.s.send("abc")
@@ -53,7 +58,7 @@ def test(t):
         ed.keys(tr.ctrl("c"))
         took = time.monotonic() - t0
         t.check(ed.message == said, f"{what}: {ed.message!r}, not {said!r}")
-        t.check(ed.lines[0] == "safe text", f"{what}: the keys typed meanwhile were dropped: {ed.lines[0]!r}")
+        t.check(ed.lines[0] == "safe text", f"{what}: the keys typed before Ctrl-C went with it: {ed.lines[0]!r}")
         return took
 
     # A loop on a key, at the prompt, one that catches errors, one in a coroutine, in KeyPress.
@@ -131,6 +136,85 @@ def test(t):
     rc = ed.s.wait_exit(10)
     t.check(rc == -signal.SIGINT, f"Ctrl-C ended it: {rc}")
 
+    # Keys typed while a script runs are kept: the hook keeps every byte but Ctrl-C, and
+    # editorReadKey() takes those before the terminal's. The aid kilo.test_keys() says how
+    # many bytes are kept.
+    keep = ("kilo.api.set_keymap('<C-k>', function() local t = os.clock() while os.clock() - t < 0.5 do end end)\n"
+            "kilo.api.set_keymap('<C-t>', function() while true do end end)\n"
+            "kilo.api.set_keymap('<C-w>', function()\n"
+            "  while kilo.test_keys() == 0 do end\n"
+            "  kilo.api.message('kept ' .. kilo.test_keys())\n"
+            "end)\n")
+    ed = tr.edit(t, "one\ntwo\n", init=keep, asan=True)
+    # A paste in two writes during a script that runs half a second: all of it, in order.
+    paste = "pack my box with five dozen liquor jugs, sphinx of black quartz"
+    before = ed.screen.frames
+    ed.s.send(tr.ctrl("k"))
+    time.sleep(0.1)
+    ed.s.send(paste[:30])
+    time.sleep(0.1)
+    ed.s.send(paste[30:])
+    ed.wait_frame(before)
+    t.check(ed.lines[:2] == [paste + "one", "two"], f"the keys typed during a script: {ed.lines[:2]}")
+    # An escape sequence split between the kept bytes and the terminal is one key: ESC kept
+    # during a script (it ends then, "kept 1"), "[A" from the terminal 50 ms later, within
+    # VTIME: Up. Nothing after the kept ESC within VTIME: the Escape key, and "[A" is text.
+    ed.keys(tr.DOWN)
+    t.check(ed.cursor == (1, 3), f"{ed.cursor}")
+    for gap, want, row, said in ((0.05, ["two", (0, 3)], 0, "Up"), (0.4, ["two[A", (1, 5)], 1, "Escape, then text")):
+        if row == 1:
+            ed.keys(tr.DOWN)
+        ed.s.send(tr.ctrl("w"))
+        time.sleep(0.1)
+        ed.s.send(tr.ESC)
+        time.sleep(gap)
+        ed.keys("[A")
+        t.check(ed.said("kept 1"), f"{said}: the ESC was kept alone: {ed.message!r}")
+        t.check([ed.lines[1], ed.cursor] == want and ed.lines[0] == paste + "one",
+                f"{said}: {ed.lines[:2]} {ed.cursor}")
+    # Ctrl-C in the middle of a paste, in one write, after keys typed earlier in the script:
+    # the bytes before it go with it, those after it are kept.
+    ed.s.send(tr.ctrl("t"))
+    time.sleep(0.2)
+    ed.s.send("abc")
+    time.sleep(0.1)
+    before = ed.screen.frames
+    ed.s.send("def\x03ghi")
+    ed.wait_frame(before)
+    t.check(ed.message == "init.lua:2: interrupted", f"{ed.message!r}")
+    t.check(ed.lines[1] == "two[Aghi", f"only the keys after Ctrl-C: {ed.lines[1]!r}")
+    ed.keys(tr.ctrl("s"))
+    t.check(ed.saved() == paste + "one\ntwo[Aghi\n", f"{ed.saved()!r}")
+    t.check(ed.quit() == 0, "Ctrl-Q quits")
+    # Past SCRIPT_KEYS_MAX (4096) bytes kept, the rest are dropped: 5000 typed during a
+    # script, the first 4096 arrive (a small window: a frame a key). A Ctrl-C after 5000 is
+    # still seen, and throws them all away.
+    over = ("kilo.api.set_keymap('<C-k>', function()\n"
+            "  while kilo.test_keys() < 4096 do end\n"
+            "  local t = os.clock() while os.clock() - t < 0.5 do end\n"
+            "  kilo.api.message('kept ' .. kilo.test_keys())\n"
+            "end)\n"
+            "kilo.api.set_keymap('<C-t>', function() while true do end end)\n")
+    ed = tr.edit(t, "x\n", rows=4, cols=20, init=over, asan=True)
+    big = "".join(str(i % 10) for i in range(5000))
+    before = ed.screen.frames
+    ed.s.send(tr.ctrl("k"))
+    time.sleep(0.1)
+    ed.s.send(big)
+    ed.wait_frame(before, timeout=60)
+    t.check(ed.said("kept 4096"), f"4096 kept: {ed.message!r}")
+    ed.keys(tr.ctrl("s"))
+    t.check(ed.saved() == big[:4096] + "x\n", f"{len(ed.saved()) - 2} of 5000 arrive, not 4096")
+    before = ed.screen.frames
+    ed.s.send(tr.ctrl("t"))
+    time.sleep(0.1)
+    ed.s.send(big + "\x03z")
+    ed.wait_frame(before, timeout=30)
+    t.check(ed.message.startswith("init.lua:6: interr"), f"{ed.message!r}")
+    ed.keys(tr.ctrl("s"))
+    t.check(ed.saved() == big[:4096] + "zx\n", f"only the z after Ctrl-C: {ed.saved()[4090:]!r}")
+    t.check(ed.quit() == 0, "Ctrl-Q quits")
+
     # Random calls of every function in the editor, a block of 300 a key, the screen drawn
     # after each, under AddressSanitizer (and UndefinedBehaviorSanitizer where there is one).
     fz = fuzz_module()
@@ -162,8 +246,18 @@ def test(t):
         except Exception as e:
             raise tr.Fail(f"seed {seed}, block {b + 1}: {e}")
     t.check(ed.s.proc.poll() is None, f"seed {seed}: kilo is still there")
+    # Ctrl-Q until kilo leaves: once with nothing unsaved, four times with a change. No press
+    # once it has gone: the write would land on a closed terminal (EIO), as it can in the
+    # moment between its exit and poll() seeing it.
     for _ in range(4):
-        ed.s.send(tr.ctrl("q"))
+        if ed.s.proc.poll() is not None:
+            break
+        try:
+            ed.s.send(tr.ctrl("q"))
+        except OSError as e:
+            if e.errno != errno.EIO:
+                raise
+            break
         time.sleep(0.1)
     rc = ed.s.wait_exit(20)
     t.check(rc == 0, f"seed {seed}: Ctrl-Q left after the fuzz, status {rc}: {ed.tail()}")
