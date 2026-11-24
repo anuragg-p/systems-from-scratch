@@ -84,8 +84,8 @@ def table(rows):
     print(f"   {'':6s} {'trained':>12s} {'of all':>9s}   {'test accuracy':48s} {'t':>6s}")
     for method, r in rows.items():
         t = f"{lab.welch_t(r['test'], full['test']):+6.1f}" if full and method != "full" else "      "
-        print(f"   {method:6s} {r['trained']:>12,d} {100 * r['trained'] / r['total']:8.3f}%   {lab.spread(r['test'], 4):48s} "
-              f"{t}" + (f"   {r['ms']:4.0f} ms a step" if "ms" in r else ""))
+        print(f"   {method:6s} {r['trained']:>12,d} {100 * r['trained'] / r['total']:8.3f}%   "
+              f"{lab.spread(r['test'], 4):48s} {t}" + (f"   {r['ms']:4.0f} ms a step" if "ms" in r else ""))
 
 
 def recorded(path):
@@ -132,8 +132,8 @@ def main():
     adapted = adapt(copy.deepcopy(body), max(cfg.ranks), cfg.alpha)
     with torch.no_grad():
         before = (adapted(ids) - body(ids)).abs().max().item()
-    center = vectors(Classifier(body, classes), [seqs[i] for i in rng.choice(len(seqs), cfg.standardise_from, replace=False)],
-                     gpt2.END, dev)
+    some = rng.choice(len(seqs), cfg.standardise_from, replace=False)
+    center = vectors(Classifier(body, classes), [seqs[i] for i in some], gpt2.END, dev)
     center = (center.mean(0), center.std(0))
     torch.manual_seed(0)
     model = build(f"lora{max(cfg.ranks)}", dev, center, cfg.alpha)
@@ -169,20 +169,22 @@ def main():
             opt.step()
         ms = 1000 * (lab.clock(torch, dev) - tick) / cfg.timed
         kept = sum(p.numel() for p in params)
+        weights_mb = 4 * sum(p.numel() for p in model.parameters()) / 1e6
         print(f"   {method:6s} {ms:6.0f} ms a step; trains {kept:,} weights: their gradients and AdamW's two averages "
-              f"are {12 * kept / 1e6:,.1f} MB\n          beside the {4 * sum(p.numel() for p in model.parameters()) / 1e6:,.0f}"
-              f" MB of the weights themselves")
+              f"are {12 * kept / 1e6:,.1f} MB\n          beside the {weights_mb:,.0f} MB of the weights themselves")
 
     print(f"\n4. Banking77, GPT-2's body with a new head: the head alone (frozen body), LoRA, and every weight trained;"
-          f"\n   test accuracy over seeds, Welch's t against every weight trained, and the time a step took.")
+          f"\n   test accuracy over seeds and Welch's t against every weight trained (with train=True, the time a step "
+          f"took too).")
     if not cfg.train:
         if not os.path.isdir(cfg.recorded):
             print(f"   No recorded run in {cfg.recorded}: train=True makes the runs.")
         else:
             with open(os.path.join(cfg.recorded, "full", "seed0", "config.json")) as f:
                 c = json.load(f)
-            print(f"   The run recorded in {cfg.recorded}: {c['steps']} steps of {c['batch']} questions, AdamW (every weight "
-                  f"{c['lr']}, LoRA {c['lora_lr']},\n   the head {c['head_lr']}), alpha {c['alpha']}, {c['seeds']} seeds:\n")
+            print(f"   The run recorded in {cfg.recorded}: {c['steps']} steps of {c['batch']} questions, AdamW (every "
+                  f"weight {c['lr']}, LoRA {c['lora_lr']},\n   the head {c['head_lr']}), alpha {c['alpha']}, {c['seeds']} "
+                  f"seeds:\n")
             table(recorded(cfg.recorded))
     else:
         valid_texts, valid_labels = banking77.split("valid")

@@ -44,7 +44,8 @@ def test(t):
     tiny = ["train=300", "test_per_class=1", "seeds=2", "head_steps=20", "small_steps=4", "small_width=16",
             "sizes=[100]"]
     a, b = T.experiment(t, "classify", *tiny), T.experiment(t, "classify", *tiny)
-    for run in ("bag/seed1/summary.json", "small/seed1/log.jsonl", "frozen/seed1/log.jsonl", "frozen-100/seed0/summary.json"):
+    for run in ("bag/seed1/summary.json", "small/seed1/log.jsonl", "frozen/seed1/log.jsonl",
+                "frozen-100/seed0/summary.json"):
         t.check(read(os.path.join(a.runs, run)) == read(os.path.join(b.runs, run)),
                 f"the same settings twice gave two different {run}")
 

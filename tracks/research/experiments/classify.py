@@ -43,7 +43,7 @@ from tokens import gpt2
 
 CONFIG = dict(train=3000, test_per_class=10, seeds=3, batch=64, head_steps=500, bag_lr=0.03, head_lr=0.003,
               weight_decay=0.0, small_layers=2, small_heads=4, small_width=64, small_dropout=0.0, small_steps=600,
-              small_batch=32, small_lr=0.003, sizes=[100, 300, 1000], tune_steps=0, tune_batch=16, tune_lr=5e-5,
+              small_batch=32, small_lr=0.003, sizes=[100, 300, 1000], tune_steps=0, tune_batch=16, tune_lr=6.25e-5,
               tune_head_lr=0.003, warmup=0.06, every=100, device="cpu")
 
 
@@ -124,9 +124,11 @@ def main():
     test_seqs = [tok.encode(t) + [gpt2.END] for t in test_texts]
     counts = np.bincount(labels, minlength=len(names))
     largest = int(counts.argmax())
+    short = next(i for i, t in enumerate(texts) if len(t) < 50)
     print(f"1. Banking77: {len(texts):,} training questions, {len(test_texts):,} test questions, {len(names)} intents; "
-          f"{np.mean([len(s) for s in seqs]):.1f} GPT-2 tokens a question\n   with END (longest {max(len(s) for s in seqs)}). "
-          f"{texts[0]!r} is {names[labels[0]]}.")
+          f"{np.mean([len(s) for s in seqs]):.1f} GPT-2 tokens a question\n   with END (longest "
+          f"{max(len(s) for s in seqs)}). "
+          f"For example {texts[short]!r}: {names[labels[short]]}")
     print(f"   The largest class in training, {names[largest]}, is {counts[largest] / len(labels):.2%} of it; always "
           f"guessing it scores {np.mean(test_labels == largest):.2%} on test.")
     vocab = {}
@@ -150,9 +152,9 @@ def main():
         small.append(accuracy(model, test_seqs, test_labels, gpt2.END, dev))
         run.finish(test_accuracy=small[-1])
     size = sum(p.numel() for p in model.parameters())
-    print(f"\n2. 08's GPT trained from nothing on these questions alone: {cfg.small_layers} blocks of {cfg.small_heads} heads, "
-          f"width {cfg.small_width}\n   ({size:,} weights, {cfg.small_width * 50257:,} of them the embedding of GPT-2's "
-          f"tokens), dropout {cfg.small_dropout}, {cfg.small_steps} steps of {cfg.small_batch}, AdamW {cfg.small_lr}:\n"
+    print(f"\n2. 08's GPT trained from nothing on these questions alone: {cfg.small_layers} blocks of {cfg.small_heads} "
+          f"heads, width {cfg.small_width}\n   ({size:,} weights, {cfg.small_width * 50257:,} of them the embedding of "
+          f"GPT-2's tokens), dropout {cfg.small_dropout}, {cfg.small_steps} steps of {cfg.small_batch}, AdamW {cfg.small_lr}:\n"
           f"   test accuracy {lab.spread(small, 4)}")
 
     body = M.load(dev)
@@ -199,8 +201,8 @@ def main():
     print(f"   {len(labels):9,d}   {lab.spread(bags, 3):50s}   {lab.spread(tuned, 3)}   (parts 1 and 3)")
 
     if cfg.tune_steps:
-        print(f"\n5. GPT-2's body fine-tuned with the head: every weight trained, {cfg.tune_steps} steps of {cfg.tune_batch} "
-              f"questions, AdamW {cfg.tune_lr} (the head {cfg.tune_head_lr}):")
+        print(f"\n5. GPT-2's body fine-tuned with the head: every weight trained, {cfg.tune_steps} steps of "
+              f"{cfg.tune_batch} questions, AdamW {cfg.tune_lr} (the head {cfg.tune_head_lr}):")
         whole = []
         for seed in range(cfg.seeds):
             run = lab.Run(cfg, seed, label="fine-tuned")
@@ -211,7 +213,8 @@ def main():
                 labels, gpt2.END)
             whole.append(accuracy(model, test_seqs, test_labels, gpt2.END, dev))
             run.finish(test_accuracy=whole[-1])
-        print(f"   test accuracy {lab.spread(whole, 4)}; against the frozen body, Welch's t {lab.welch_t(whole, tuned):+.1f}")
+        print(f"   test accuracy {lab.spread(whole, 4)}; against the frozen body, Welch's t "
+              f"{lab.welch_t(whole, tuned):+.1f}")
     else:
         print("\n5. GPT-2's body fine-tuned with the head is not in this run (tune_steps=0): see 12.02's recorded run.")
     print(f"\n{lab.clock(torch, dev) - start:.0f} s of reading, training and scoring on {dev.type}")

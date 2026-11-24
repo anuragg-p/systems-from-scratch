@@ -93,8 +93,9 @@ def main():
         print(f"   {'':6s} {'test accuracy':16s} {'Shakespeare':13s} {'TinyStories':13s} {'moved':10s}")
         for method, seeds in runs.items():
             s = [x for x, _ in seeds]
+            stories_bits = lab.mean([x.get("stories_bits", float("nan")) for x in s])
             print(f"   {method:6s} {lab.mean([x['test_accuracy'] for x in s]):<16.4f} "
-                  f"{lab.mean([x['shakespeare_bits'] for x in s]):<13.4f} {lab.mean([x.get('stories_bits', float('nan')) for x in s]):<13.4f} "
+                  f"{lab.mean([x['shakespeare_bits'] for x in s]):<13.4f} {stories_bits:<13.4f} "
                   f"{lab.mean([x['moved'] for x in s]):<10.3g} ({len(s)} seeds)")
         if "full" in runs and "head" in runs:
             for method in [m for m in runs if m.startswith("lora")]:
@@ -128,7 +129,8 @@ def main():
 
     def exact(model):
         drawn = answers(model, [p for p, _ in scored], cfg.longest, stop, dev)
-        return float(np.mean([tok.decode(d).split(I.END)[0].split("\n")[0].strip() == a for d, (_, a) in zip(drawn, scored)]))
+        given = [tok.decode(d).split(I.END)[0].split("\n")[0].strip() for d in drawn]
+        return float(np.mean([g == a for g, (_, a) in zip(given, scored)]))
 
     model = M.load(dev)
     before = {"exact": exact(model), "shakespeare": text_bits(model, untuned, tok.table)}
@@ -159,12 +161,12 @@ def main():
                 got["stories"] = text_bits(model, stories, tok.table)
             run.finish(**got)
             results[method].append(got)
-    print(f"   {'':6s} {'exact match':38s} {'Shakespeare':38s} {'moved'}")
+    print(f"   {'':6s} {'exact match':46s} {'Shakespeare':50s} {'moved'}")
     for method, got in results.items():
-        print(f"   {method:6s} {lab.spread([g['exact'] for g in got], 3):38s} "
-              f"{lab.spread([g['shakespeare'] for g in got], 4):38s} {lab.mean([g['moved'] for g in got]):.3g}")
+        print(f"   {method:6s} {lab.spread([g['exact'] for g in got], 3):46s} "
+              f"{lab.spread([g['shakespeare'] for g in got], 4):50s} {lab.mean([g['moved'] for g in got]):.3g}")
         if have_stories:
-            print(f"   {'':6s} {'':38s} TinyStories {lab.spread([g['stories'] for g in got], 4)}")
+            print(f"   {'':6s} {'':46s} TinyStories {lab.spread([g['stories'] for g in got], 4)}")
     if len(results) == 2 and cfg.seeds > 1:
         a, b = ([g["shakespeare"] for g in results[m]] for m in cfg.methods)
         print(f"   Shakespeare's bits, {cfg.methods[0]} against {cfg.methods[1]}: Welch's t {lab.welch_t(a, b):+.1f}")

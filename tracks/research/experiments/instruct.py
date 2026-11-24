@@ -133,8 +133,8 @@ def main():
                    answers={name: [g for _, g, _ in got[name][1]] for name in sets})
     method = (f"LoRA at rank {cfg.rank} on W_q and W_v ({trained(model):,} weights trained of {total:,})"
               if cfg.method == "lora" else f"every weight trained ({total:,})")
-    print(f"\n3. Fine-tuned: {method};\n   {len(examples):,} examples of the {len(I.TRAINED)} trained tasks, {cfg.steps} steps "
-          f"of {cfg.batch}, AdamW {cfg.lr}, the loss on the reply's tokens only. Exact match after:")
+    print(f"\n3. Fine-tuned: {method};\n   {len(examples):,} examples of the {len(I.TRAINED)} trained tasks, "
+          f"{cfg.steps} steps of {cfg.batch}, AdamW {cfg.lr}, the loss on the reply's tokens only. Exact match after:")
     for name in sets:
         print(f"   {WHAT[name]:42s} {lab.spread(after[name], 3)}")
     print("   By task, held-out instances, trained wordings: " + ", ".join(f"{t} {lab.mean(v):.2f}"
