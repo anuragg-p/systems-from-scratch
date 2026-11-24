@@ -7,9 +7,11 @@ attention divides query heads into G groups, each of which shares a
 single key head and value head." Their reason is speed when writing:
 each new token reads every key and value kept so far, and fewer heads
 of them is less to read ("reducing the size of the key-value cache and
-therefore amount of data that needs to be loaded"); their claim, "GQA
-achieves quality close to multi-head attention with comparable speed to
-MQA" (one key head for all, multi-query). Then a model of today that
+therefore amount of data that needs to be loaded"); their claim, for a
+multi-head model given grouped heads and trained a little more, "uptrained
+GQA achieves quality close to multi-head attention with comparable speed
+to MQA" (one key head for all, multi-query). Here the heads are grouped
+from the start. Then a model of today that
 has every piece of module 10: SmolLM2-135M (Allal et al. 2025), its
 published weights in our GPT (models/smollm.py) and its tokenizer
 (tokens/smollm.py).
