@@ -25,7 +25,8 @@ No figure's text names NOTES.md, a test, or how the figure was made.
                         at the mark, at each return from Lua, before exit() and in scriptStop(), to
                         check the order the frames show; each frame shows the line of kilo's code
   09.08-hook            09.08 on the lesson's notes.txt and init.lua, 8 x 60: unsaved, Ctrl-T, abc,
-                        Ctrl-C, then Ctrl-S
+                        Ctrl-C, then Ctrl-S, in a copy that writes a line for each byte the hook
+                        keeps and for what the Ctrl-C throws away
   09.08-allocator       the lesson's lines at the prompt at 09.08, and the 200 MB line at 09.07
   09.08-trust           Neovim, VS Code, Zed: NOTES.md's confirmed facts only, not run
   09.09-two-doors       09.09: the editor on the lesson's notes.txt, then its upper.lua with kilo -l;
@@ -395,13 +396,29 @@ def capture0907quit():
 
 # ---------------------------------------------------------------- 09.08: captures
 
+HOOK_PATCH = [
+    ("script.c", "static void scriptKeep(char c) {\n",
+     "static void scriptKeep(char c) {\n" + tracer("kept %c", "c") + "\n"),
+    ("script.c", "                S.nkeys = S.nextkey = 0;    /* typed before it: gone with it */\n",
+     tracer("Ctrl-C: %d kept thrown away", "S.nkeys-S.nextkey") + "\n"
+     "                S.nkeys = S.nextkey = 0;    /* typed before it: gone with it */\n"),
+]
+
+
 @functools.cache
 def capture0908hook():
-    """kilo at 09.08 on the lesson's notes.txt with its init.lua, a terminal 8 x 60: "unsaved " typed,
-    Ctrl-T (while true do end), "abc" while it runs, then Ctrl-C: the screen; then Ctrl-S."""
+    """kilo at 09.08 on the lesson's notes.txt with its init.lua, a terminal 8 x 60, in a copy that
+    writes a line for each byte the hook keeps and for what a Ctrl-C throws away: "unsaved " typed,
+    Ctrl-T (while true do end), "abc" while it runs, then Ctrl-C: the lines and the screen; then
+    Ctrl-S."""
     init = lesson_file("08", "init.lua")
-    with scratch("09.08") as (t, tr):
-        ed = tr.edit(t, lesson_file("08", "notes.txt"), name="notes.txt", rows=8, cols=60, init=init)
+    with scratch("09.08", HOOK_PATCH) as (t, tr):
+        trace = os.path.join(t.tmp, "trace")
+        ipath = os.path.join(t.tmp, "init.lua")
+        with open(ipath, "w") as f:
+            f.write(init)
+        env = dict(os.environ, KILO_TRACE=trace, KILO_INIT=ipath, KILO_LSP="")
+        ed = tr.edit(t, lesson_file("08", "notes.txt"), name="notes.txt", rows=8, cols=60, init="env", env=env)
         ed.keys("unsaved ")
         ed.s.send(ctrl("t"))
         time.sleep(1.0)
@@ -413,7 +430,8 @@ def capture0908hook():
         ed.keys(ctrl("s"))
         saved_msg = ed.message
         ed.quit()
-    return {"init": init, "alive": alive, "shot": shot, "saved_msg": saved_msg}
+        lines = read_lines(trace)
+    return {"init": init, "alive": alive, "shot": shot, "saved_msg": saved_msg, "trace": lines}
 
 
 GROW = "local t = {} while true do t[#t + 1] = {} end"
@@ -947,8 +965,9 @@ def hook0908():
     for needle in ("lua_sethook(L,scriptHook,LUA_MASKCOUNT,1);", "luaL_where(L,0);", 'lua_pushliteral(L,"interrupted");',
                    "if (S.depth == 0 && status != LUA_OK) lua_gc(L,LUA_GCCOLLECT);",
                    "lua_sethook(L,scriptHook,LUA_MASKCOUNT,SCRIPT_HOOK_COUNT);", "poll(&pfd,1,0) == 1",
-                   "if (buf[i] == 3) S.interrupted = 1;"):
+                   "scriptKeep(buf[i]);", "S.nkeys = S.nextkey = 0;"):
         assert needle in c, needle
+    assert cap["trace"] == ["kept a", "kept b", "kept c", "Ctrl-C: 3 kept thrown away"], cap["trace"]
     shot = cap["shot"]
     assert cap["alive"] and shot.lines[0] == "unsaved the first line" and shot.lines[-1] == "init.lua:1: interrupted"
     assert cap["saved_msg"] == "23 bytes written on disk", cap["saved_msg"]
@@ -980,9 +999,10 @@ def hook0908():
         f.text(looks[look], y - 40, label, "ta" if hot else "t", 10.5, "middle", 700, mono=not hot)
         f.line(looks[look], y - 34, looks[look], y - 10, "a" if hot else "s", arrow=True)
     f.text(x1 + 8, y - 4, "a b c: read by a look,", "t", 10)
-    f.text(x1 + 8, y + 9, "and dropped", "t", 10)
+    f.text(x1 + 8, y + 9, "and kept for the editor", "t", 10)
     f.text(x1 + 8, y + 26, "Ctrl-C: the last look", "ta", 10, weight=700)
-    f.text(x1 + 8, y + 39, "finds a 3", "ta", 10, weight=700)
+    f.text(x1 + 8, y + 39, "finds a 3, and throws", "ta", 10, weight=700)
+    f.text(x1 + 8, y + 52, "away the a b c kept", "ta", 10, weight=700)
     f.text(24, 50, f"Lua's instructions (not to scale: a second is some {int(round(1000 / ms, -2))} looks)", "tm", 10)
     f.text(24, 172, "then the error goes up the stack, to the protected call", "tm", 10.5)
     boxes = [("scriptHook: the count set to 1; where + \"interrupted\"; lua_error", "hot"),

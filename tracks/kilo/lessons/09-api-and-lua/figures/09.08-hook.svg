@@ -128,9 +128,10 @@
 <text class="ta" x="442" y="56" font-size="10.5" font-weight="700" text-anchor="middle">Ctrl-C</text>
 <line class="a" x1="442" y1="62" x2="442" y2="86" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-08a-aa)"/>
 <text class="t" x="478" y="92" font-size="10">a b c: read by a look,</text>
-<text class="t" x="478" y="105" font-size="10">and dropped</text>
+<text class="t" x="478" y="105" font-size="10">and kept for the editor</text>
 <text class="ta" x="478" y="122" font-size="10" font-weight="700">Ctrl-C: the last look</text>
-<text class="ta" x="478" y="135" font-size="10" font-weight="700">finds a 3</text>
+<text class="ta" x="478" y="135" font-size="10" font-weight="700">finds a 3, and throws</text>
+<text class="ta" x="478" y="148" font-size="10" font-weight="700">away the a b c kept</text>
 <text class="tm" x="24" y="50" font-size="10">Lua&#x27;s instructions (not to scale: a second is some 5000 looks)</text>
 <text class="tm" x="24" y="172" font-size="10.5">then the error goes up the stack, to the protected call</text>
 <rect class="a af" x="24" y="182" width="330" height="19" rx="3" stroke-width="1.5"/>
