@@ -12,6 +12,10 @@
     trained(...)        one arm trained (08.01's loop) and scored, its numbers written to its run
     judge(rule, ...)    "held", "did not hold" or "not settled", by a prediction's rule
     budget(...)         the minutes a plan of runs will take, from the seconds runs took
+    read_runs(dir)      the runs a script wrote, read back: settings and numbers of every seed
+    choose(found)       each arm's rate at each depth, from the search's validation bits    # @from 15.02
+    gaps(bits, depths)  the gap at each depth, its paired interval and Welch's              # @from 15.02
+    results(dir)        depth.py's runs read back: the search, the runs, the control        # @from 15.02
 
 08.03 found that a GPT of one block without positions cannot tell one
 order of its window from another, that from the second block on the
@@ -27,6 +31,8 @@ logs; the numbers here are other people's, each with where it was
 published, and 08.03's.
 """
 
+import json
+import os
 from collections import namedtuple
 
 import torch
@@ -223,6 +229,76 @@ def budget(seconds, depths, runs, arms=len(ARMS)):
     slope = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / sum((x - mx) ** 2 for x in xs)
     per = {d: seconds[d] if d in seconds else my + slope * (d - mx) for d in depths}
     return sum(per[d] * arms * runs for d in depths) / 60, per
+# @end
+
+
+# @build 15.01 read_runs
+# Every run a script wrote under directory, read back from the files 00.02's
+# Run leaves: {label: [(settings, summary) of each seed, in seed order]},
+# the settings from config.json (every setting the run used, its seed among
+# them) and the numbers from summary.json.
+def read_runs(directory):
+    out = {}
+    for label in sorted(os.listdir(directory)):
+        d = os.path.join(directory, label)
+        if not os.path.isdir(d):
+            continue
+        for seed in sorted(int(s[4:]) for s in os.listdir(d) if s.startswith("seed")):
+            with open(os.path.join(d, f"seed{seed}", "config.json")) as f:
+                settings = json.load(f)
+            with open(os.path.join(d, f"seed{seed}", "summary.json")) as f:
+                out.setdefault(label, []).append((settings, json.load(f)))
+    return out
+# @end
+
+
+# @build 15.02 choose
+# Each arm's rate at each depth: the one whose run scored the lowest
+# validation bits in the search, found {(depth, arm): {rate: validation
+# bits}}. Nothing else is read, so the test text cannot move a choice.
+# Returns {(depth, arm): rate}.
+def choose(found):
+    return {key: min(scores, key=scores.get) for key, scores in found.items()}
+# @end
+
+
+# @build 15.02 gaps
+# The comparison at each depth, from bits {(depth, arm): [bits of each
+# seed]} of paired runs: the gap of each seed (none minus learned), its
+# mean, the paired interval (13.02's difference with paired=True) and
+# Welch's (the same runs taken as two independent sets), and on how many
+# seeds learned positions were lower. Returns {depth: (gaps, mean,
+# (low, high) paired, (low, high) Welch, lower)}.
+def gaps(bits, depths, level=LEVEL):
+    out = {}
+    for d in depths:
+        none, learned = bits[d, "none"], bits[d, "learned"]
+        each = [a - b for a, b in zip(none, learned, strict=True)]
+        mean, plo, phi = lab.difference(none, learned, paired=True, level=level)
+        _, wlo, whi = lab.difference(none, learned, level=level)
+        out[d] = (each, mean, (plo, phi), (wlo, whi), sum(g > 0 for g in each))
+    return out
+# @end
+
+
+# @from 15.02
+def results(directory):
+    """depth.py's runs read back by their labels: the search {(depth, arm): {rate: validation bits}}, the runs
+    {(depth, arm): [summary of each seed, with its rate and seed]}, the control {depth: [the same]}, and the settings
+    of one run (the first of the runs)."""
+    found, runs, control, cfg = {}, {}, {}, None
+    for label, seeds in read_runs(directory).items():
+        parts = label.split("-")
+        for settings, summary in seeds:
+            row = dict(summary, lr=settings["lr"], seed=settings["seed"])
+            if parts[0] == "search":
+                found.setdefault((int(parts[1][6:]), parts[2]), {})[settings["lr"]] = summary["val_bits"]
+            elif parts[0] == "control":
+                control.setdefault(int(parts[1][6:]), []).append(row)
+            else:
+                runs.setdefault((int(parts[0][6:]), parts[1]), []).append(row)
+                cfg = cfg or lab.Config(settings)
+    return found, runs, control, cfg
 # @end
 
 
