@@ -672,3 +672,34 @@ DATA["experiments/recorded/grokking/*"] = ("the long run of experiments/grokking
                                            "NOTES.md")
 DATA["experiments/recorded/ablations/*"] = ("the runs of experiments/ablations.py (14.04), recorded on the machine in "
                                             "NOTES.md")
+
+
+# ---------------------------------------------------------------- module 13: experiments that hold up
+#
+# Kept apart from the tables above, in one block at the end of the file, so that the parts other modules add at the
+# same time stay whole when they are merged. Module 13's statistics are regions of lab/stats.py (13.01 to 13.04; lab/
+# __init__.py re-exports them with one-line @from markers); its experiments are baseline (13.01, MNIST), errorbars
+# (13.02, Tiny Shakespeare: nothing to fetch), fooled (13.03: MNIST; CIFAR-10 and TinyStories when fetched, each part
+# skipped with a line naming the fetch command when not) and scaling (13.04, TinyStories). 13.02 and 13.04 have
+# recorded runs (13.04's is the module's long run); their defaults read them.
+
+EXPERIMENTS.update({
+    "baseline": ("13.01", ["n_train=500", "n_val=500", "trials=2", "seeds=1", "epochs=1", "hidden=16"],
+                 r"s of training and scoring on cpu"),
+    "errorbars": ("13.02", ["seeds=2", "steps=4", "layers=1", "width=16", "context=16", "every=2", "resamples=100"],
+                  r"s of training and scoring on cpu"),
+    "fooled": ("13.03", ["runs=3", "ks=[1,3]", "n_train=300", "hidden=8", "epochs=1", "n_test=500"],
+               r"s of training, searching and counting on cpu"),
+    "scaling": ("13.04", ["widths=[8,16]", "largest=24", "steps=4", "every=2", "held=4", "held_stories=10", "context=16"],
+                r"s of training, scoring and fitting on cpu"),
+})
+DATASET_OF.update({"baseline": "mnist", "errorbars": None, "fooled": "mnist", "scaling": "tinystories"})
+
+# The recorded runs, as 08.04's and 14.03's are (each script with out=experiments/recorded): every config.json,
+# log.jsonl and summary.json, the curves and what it printed; no weights. The first glob that matches a file places it
+# (module 07's part says why), so these narrower ones go first.
+FILES_FROM = {"experiments/recorded/errorbars/*": "13.02", "experiments/recorded/scaling/*": "13.04", **FILES_FROM}
+DATA["experiments/recorded/errorbars/*"] = ("the runs of experiments/errorbars.py at 10 seeds a side (13.02), recorded "
+                                            "on the machine in NOTES.md")
+DATA["experiments/recorded/scaling/*"] = ("the long run of experiments/scaling.py (13.04), recorded on the machine in "
+                                          "NOTES.md")
