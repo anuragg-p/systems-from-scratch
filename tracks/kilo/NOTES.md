@@ -1042,7 +1042,7 @@ it, "Departures from the design" below says where and why.
 | file | lines in tracks/ (markers and instructions in) | what it is |
 |---|---|---|
 | lsp.h | 51 | what kilo.c calls (lspStart, lspPump until 07.04, lspWaitKey, lspDrawRow, lspDefinition, lspBack) and what lsp.c calls in kilo.c (editorSetStatusMessage, editorRefreshScreen, editorRowsToString, abAppend, editorCursor, editorJump); `struct abuf;` as an incomplete type |
-| lsp.c | 1523 | the client: the server table, starting and stopping, frames, the session, poll(), diagnostics, definitions |
+| lsp.c | 1524 | the client: the server table, starting and stopping, frames, the session, poll(), diagnostics, definitions |
 | json.h | 60 | the JSON tree (`struct json`), the reader's and getters' prototypes, jsonQuote |
 | json.c | 424 | the reader (recursive descent, depth cap) and the one writer helper; knows nothing of kilo or LSP |
 | Makefile | | from 07.01 `kilo.c lsp.c`, from 07.02 `kilo.c lsp.c json.c`, same flags |
@@ -1052,12 +1052,12 @@ The project at each lesson (lines, `./learn files kilo --at 07.LL`):
 | lesson | kilo.c | lsp.c | lsp.h | json.c | json.h |
 |---|---|---|---|---|---|
 | 07.01 | 1070 | 248 | 15 | - | - |
-| 07.02 | 1071 | 513 | 17 | 59 | 15 |
+| 07.02 | 1071 | 513 | 17 | 59 | 14 |
 | 07.03 | 1071 | 553 | 17 | 370 | 49 |
 | 07.04 | 1071 | 587 | 17 | 370 | 49 |
 | 07.05 | 1071 | 809 | 18 | 370 | 49 |
-| 07.06 | 1085 | 1091 | 28 | 370 | 49 |
-| 07.07 | 1137 | 1239 | 31 | 370 | 49 |
+| 07.06 | 1085 | 1092 | 28 | 370 | 49 |
+| 07.07 | 1137 | 1240 | 31 | 370 | 49 |
 
 lsp.c in order: the limits; the servers (`struct lspServer`, `LSPDB` with a
 C stanza and a C++ stanza, `lspServerFor`); the state (`struct lspBuf`,
@@ -1170,7 +1170,11 @@ the scripted server answering shutdown, 0.013 s; clangd 21, 0.026 s.
 
 - **lspDrawRow takes chars and size too** (eight arguments). Diagnostics
   are byte columns of chars; turning them into columns of render needs the
-  tabs, which render no longer shows.
+  tabs, which render no longer shows. Its signature is the only one in the
+  track that takes two lines, so its opening brace is on a line of its own
+  at column 0: the site finds the function around a region by the nearest
+  column-0 line above it that ends in "{", and the signature's indented
+  second line is not one.
 - **ESC [ n C counts cells, not render columns.** n is the bytes of render
   before the range less the UTF-8 continuation bytes (0x80 to 0xBF): on
   `printf("e-acute t e-acute: %d\n", totl);` totl is at render column 30
@@ -1314,11 +1318,14 @@ request); clangd writes `id` first:
 ```
 
 The reply in pieces (a scratch build at 07.02 with a line after each
-read; the scripted server writing 10 bytes, 30, then the rest, 0.255 s
-apart): kilo read 10 (the buffer holds 10), 0.202 s later 30 (40), 0.303 s
-later 85 (125), and then took the whole message off, 125 bytes with a body
-of 102. The gaps are the 0.1 s read: kilo looks at the server only when
-read() on the keyboard times out.
+read, figs07.py's READ_PATCH; the scripted server writing its 171-byte
+answer, a header of 23 bytes and a body of 148, as 10 bytes, 30, then the
+other 131, 0.255 s apart): kilo read 10 (the buffer holds 10), then 30
+(40), then 131 (171), and then took the whole message off, 171 bytes with
+a body of 148. The reads came 0.202 and 0.303 s apart in one run, 0.303
+and 0.202 in the next (the figure's run: 0.203 and 0.306): the gaps are
+the 0.1 s read, since kilo looks at the server only when read() on the
+keyboard times out.
 
 ### 07.03 Reading JSON: just enough of a parser
 
@@ -1344,8 +1351,15 @@ do not (an error, at once).
 Measured with scratch builds that count: at 07.03, calls to lspPump (one
 per read() that times out); at 07.04, returns from poll(); written at exit.
 Idle for 5 s with the scripted server running: **53 wakeups at 07.03
-(10.6 a second), 2 at 07.04** (the pause, and the server's answer). The
-delay from the server writing its answer to kilo's frame with it reaching
+(about 10 a second, one per 0.1 s timeout), 2 at 07.04**, counted over
+the whole run, from kilo's start to the Ctrl-Q that ends it. The 2 are
+not idle ones. Taken again for the read through (each wake-up logged
+with its time and revents): they are the server's answer to initialize
+(the server's output readable) and the Ctrl-Q that ended the run (the
+keyboard), and there are none in the 5 idle seconds between; at 07.03
+that run had 54 in all, 49 of them in the 5 idle seconds. With clangd,
+idle for 10 s: 07.03 98 in the idle seconds (101 in all), 07.04 none (2
+in all, clangd's answer and the Ctrl-Q). The delay from the server writing its answer to kilo's frame with it reaching
 the terminal (the server's log of its write and the test's read of the
 pseudo-terminal, both on Python's monotonic clock), 20 runs each, two
 sets: **07.03 min 1.4 ms, median 45.5 ms, max 100.3 ms (and 12.4, 56.4,

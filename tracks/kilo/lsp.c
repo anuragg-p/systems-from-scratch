@@ -1297,7 +1297,8 @@ static int lspShowDiagnostic(void) {
  * (chars, size bytes; render, rsize bytes; from column coloff, cols wide):
  * underline the parts of it that diagnostics cover, by drawing over them. */
 void lspDrawRow(struct abuf *ab, int filerow, const char *chars, int size,
-                const char *render, int rsize, int coloff, int cols) {
+                const char *render, int rsize, int coloff, int cols)
+{
     // @build 07.06 underline the diagnostics
     // For each diagnostic that covers the row: the bytes of chars it
     // covers on this row, as columns of render (a tab reaches the next

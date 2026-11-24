@@ -1,12 +1,12 @@
 /* json.h: just enough JSON for kilo's language server client.
  *
- * One writer helper, which quotes a string so it can go inside a message,
  // @from 07.03
+ * One writer helper, which quotes a string so it can go inside a message,
  * and a reader, which turns a message into a tree of values. Nothing here
  * knows of kilo or of the protocol the messages belong to.
  // @else
- // * so it can go inside a message. Nothing here knows of kilo or of the
- // * protocol the messages belong to.
+ // * One writer helper, which quotes a string so it can go inside a message.
+ // * Nothing here knows of kilo or of the protocol the messages belong to.
  // @end
  */
 
