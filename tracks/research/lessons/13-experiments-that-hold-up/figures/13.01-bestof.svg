@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>What a search of n trials buys, worked out from the 8 each search made: the expected best validation error of n trials drawn at random (solid), and the test error of the trial so chosen (dashed)</title>
+<defs><marker id="bestof1301-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="bestof1301-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="bestof1301-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="26.6" y="231.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="32.6" y1="180.9" x2="445.44" y2="180.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="26.6" y="184.44" font-size="10.5" text-anchor="end">4</text>
+<line class="m" x1="32.6" y1="133.9" x2="445.44" y2="133.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="26.6" y="137.38" font-size="10.5" text-anchor="end">8</text>
+<line class="m" x1="32.6" y1="86.8" x2="445.44" y2="86.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="26.6" y="90.32" font-size="10.5" text-anchor="end">12</text>
+<line class="m" x1="32.6" y1="39.8" x2="445.44" y2="39.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="26.6" y="43.26" font-size="10.5" text-anchor="end">16</text>
+<line class="m" x1="32.6" y1="228" x2="32.6" y2="232" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="32.6" y="244" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="91.58" y1="228" x2="91.58" y2="232" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="91.58" y="244" font-size="10.5" text-anchor="middle">2</text>
+<line class="m" x1="150.55" y1="228" x2="150.55" y2="232" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="150.55" y="244" font-size="10.5" text-anchor="middle">3</text>
+<line class="m" x1="209.53" y1="228" x2="209.53" y2="232" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="209.53" y="244" font-size="10.5" text-anchor="middle">4</text>
+<line class="m" x1="268.51" y1="228" x2="268.51" y2="232" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="268.51" y="244" font-size="10.5" text-anchor="middle">5</text>
+<line class="m" x1="327.49" y1="228" x2="327.49" y2="232" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="327.49" y="244" font-size="10.5" text-anchor="middle">6</text>
+<line class="m" x1="386.46" y1="228" x2="386.46" y2="232" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="386.46" y="244" font-size="10.5" text-anchor="middle">7</text>
+<line class="m" x1="445.44" y1="228" x2="445.44" y2="232" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="445.44" y="244" font-size="10.5" text-anchor="middle">8</text>
+<rect class="m" x="32.6" y="28" width="412.84" height="200" rx="0" stroke-width="1.5"/>
+<text class="tm" x="239.02" y="260" font-size="11.5" text-anchor="middle">trials in the search (n)</text>
+<text class="tm" x="26.6" y="20" font-size="11.5">error, %</text>
+<polyline class="s" points="32.6,51.3 91.6,109.4 150.6,126.0 209.5,132.0 268.5,135.3 327.5,136.9 386.5,137.5 445.4,138.1" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="s" points="32.6,40.0 91.6,99.2 150.6,116.1 209.5,122.1 268.5,125.2 327.5,126.5 386.5,127.0 445.4,127.5" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="32.6,128.0 91.6,155.0 150.6,162.4 209.5,164.5 268.5,165.4 327.5,166.1 386.5,166.6 445.4,167.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="32.6,120.5 91.6,147.7 150.6,155.4 209.5,157.7 268.5,159.0 327.5,160.0 386.5,160.8 445.4,161.4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="s" points="459.4,34.0 481.4,34.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="487.44" y="38" font-size="11">SGD, validation</text>
+<polyline class="s" points="459.4,51.0 481.4,51.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<text class="t" x="487.44" y="55" font-size="11">SGD, test of the chosen</text>
+<polyline class="a" points="459.4,68.0 481.4,68.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="487.44" y="72" font-size="11">Adam, validation</text>
+<polyline class="a" points="459.4,85.0 481.4,85.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<text class="ta" x="487.44" y="89" font-size="11">Adam, test of the chosen</text>
+<line class="m" x1="42.6" y1="128.01" x2="42.6" y2="51.31" stroke-width="1.5" stroke-linecap="round" marker-end="url(#bestof1301-am)" marker-start="url(#bestof1301-am)"/>
+<text class="t" x="38.6" y="202.12" font-size="10.5" font-weight="600">n = 1: SGD 6.52 behind</text>
+<line class="m" x1="435.44" y1="167.18" x2="435.44" y2="138.12" stroke-width="1.5" stroke-linecap="round" marker-end="url(#bestof1301-am)" marker-start="url(#bestof1301-am)"/>
+<text class="t" x="439.44" y="202.12" font-size="10.5" font-weight="600" text-anchor="end">n = 8: SGD 2.47 behind</text>
+<text class="tm" x="16" y="292" font-size="10.5">A search of 1 trial is a rate picked at random in the range; most of what 8 buy comes in the first 3 or 4.</text>
+</svg>

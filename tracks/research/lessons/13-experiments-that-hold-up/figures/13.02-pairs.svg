@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 408" fill="none">
+<title>The two arms as clouds of runs (left: a ring per seed, a line joining one seed&#x27;s two runs), and their difference (right): Welch&#x27;s interval, which treats the clouds as independent, against the interval of the seed-by-seed differences (dots)</title>
+<defs><marker id="pairs1302-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="pairs1302-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="pairs1302-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="16" y="22" font-size="12" font-weight="700">the page&#x27;s 3 seeds</text>
+<text class="tm mono" x="54" y="175.5" font-size="10.5" text-anchor="end">3.39</text>
+<line class="m" x1="60" y1="132.0" x2="230" y2="132.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="135.5" font-size="10.5" text-anchor="end">3.41</text>
+<line class="m" x1="60" y1="92.0" x2="230" y2="92.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="95.5" font-size="10.5" text-anchor="end">3.43</text>
+<text class="tm mono" x="54" y="55.5" font-size="10.5" text-anchor="end">3.45</text>
+<rect class="m" x="60" y="52" width="170" height="120" rx="0" stroke-width="1.5"/>
+<text class="tm" x="54" y="44" font-size="11.5">bits per character</text>
+<line class="m" x1="106.36" y1="63.64" x2="183.64" y2="121.18" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="106.36" y1="122.17" x2="183.64" y2="156.91" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="106.36" y1="71.98" x2="183.64" y2="134.27" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="106.36" cy="63.64" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="106.36" cy="122.17" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="106.36" cy="71.98" r="3" stroke-width="1.5"/>
+<text class="t" x="106.36" y="187" font-size="11" font-weight="600" text-anchor="middle">1 head</text>
+<circle class="a f" cx="183.64" cy="121.18" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="183.64" cy="156.91" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="183.64" cy="134.27" r="3" stroke-width="1.5"/>
+<text class="ta" x="183.64" y="187" font-size="11" font-weight="600" text-anchor="middle">4 heads</text>
+<text class="tm" x="238" y="64" font-size="10">correlation</text>
+<text class="t mono" x="238" y="78" font-size="11" font-weight="700">+0.97</text>
+<line class="m" x1="357.62" y1="172" x2="357.62" y2="176" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="357.62" y="188" font-size="10.5" text-anchor="middle">-0.06</text>
+<line class="m" x1="412.86" y1="172" x2="412.86" y2="176" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="412.86" y="188" font-size="10.5" text-anchor="middle">-0.04</text>
+<line class="m" x1="468.1" y1="172" x2="468.1" y2="176" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="468.1" y="188" font-size="10.5" text-anchor="middle">-0.02</text>
+<line class="m" x1="523.33" y1="172" x2="523.33" y2="176" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="523.33" y="188" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="578.57" y1="172" x2="578.57" y2="176" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="578.57" y="188" font-size="10.5" text-anchor="middle">+0.02</text>
+<rect class="m" x="330" y="52" width="290" height="120" rx="0" stroke-width="1.5"/>
+<line class="s" x1="523.33" y1="52" x2="523.33" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="362.59" y1="84" x2="541.84" y2="84" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="362.59" y1="80" x2="362.59" y2="88" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="541.84" y1="80" x2="541.84" y2="88" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="356.59" y="88" font-size="10.5" font-weight="600" text-anchor="end">Welch</text>
+<text class="tm" x="547.84" y="88" font-size="10" font-weight="600">0.0649 wide</text>
+<line class="a" x1="401.53" y1="132" x2="502.62" y2="132" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="401.53" y1="128" x2="401.53" y2="136" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="502.62" y1="128" x2="502.62" y2="136" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="395.53" y="136" font-size="10.5" font-weight="600" text-anchor="end">pairs</text>
+<text class="ta" x="508.62" y="136" font-size="10" font-weight="600">0.0366 wide</text>
+<circle class="a fa" cx="443.88" cy="146" r="2.6" stroke-width="1.5"/>
+<circle class="a fa" cx="475.36" cy="146" r="2.6" stroke-width="1.5"/>
+<circle class="a fa" cx="437.31" cy="146" r="2.6" stroke-width="1.5"/>
+<text class="t" x="16" y="214" font-size="12" font-weight="700">the recorded 10 seeds</text>
+<text class="tm mono" x="54" y="367.5" font-size="10.5" text-anchor="end">3.39</text>
+<line class="m" x1="60" y1="324.0" x2="230" y2="324.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="327.5" font-size="10.5" text-anchor="end">3.41</text>
+<line class="m" x1="60" y1="284.0" x2="230" y2="284.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="287.5" font-size="10.5" text-anchor="end">3.43</text>
+<text class="tm mono" x="54" y="247.5" font-size="10.5" text-anchor="end">3.45</text>
+<rect class="m" x="60" y="244" width="170" height="120" rx="0" stroke-width="1.5"/>
+<text class="tm" x="54" y="236" font-size="11.5">bits per character</text>
+<line class="m" x1="106.36" y1="255.64" x2="183.64" y2="313.18" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="106.36" y1="314.17" x2="183.64" y2="348.91" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="106.36" y1="263.98" x2="183.64" y2="326.27" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="106.36" y1="306.02" x2="183.64" y2="338.89" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="106.36" y1="320.31" x2="183.64" y2="334.08" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="106.36" y1="284.73" x2="183.64" y2="322.16" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="106.36" y1="276.12" x2="183.64" y2="343.05" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="106.36" y1="254.81" x2="183.64" y2="307.88" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="106.36" y1="270.77" x2="183.64" y2="339.62" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="106.36" y1="266.8" x2="183.64" y2="338.92" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="106.36" cy="255.64" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="106.36" cy="314.17" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="106.36" cy="263.98" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="106.36" cy="306.02" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="106.36" cy="320.31" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="106.36" cy="284.73" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="106.36" cy="276.12" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="106.36" cy="254.81" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="106.36" cy="270.77" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="106.36" cy="266.8" r="3" stroke-width="1.5"/>
+<text class="t" x="106.36" y="379" font-size="11" font-weight="600" text-anchor="middle">1 head</text>
+<circle class="a f" cx="183.64" cy="313.18" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="183.64" cy="348.91" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="183.64" cy="326.27" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="183.64" cy="338.89" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="183.64" cy="334.08" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="183.64" cy="322.16" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="183.64" cy="343.05" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="183.64" cy="307.88" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="183.64" cy="339.62" r="3" stroke-width="1.5"/>
+<circle class="a f" cx="183.64" cy="338.92" r="3" stroke-width="1.5"/>
+<text class="ta" x="183.64" y="379" font-size="11" font-weight="600" text-anchor="middle">4 heads</text>
+<text class="tm" x="238" y="256" font-size="10">correlation</text>
+<text class="t mono" x="238" y="270" font-size="11" font-weight="700">+0.60</text>
+<line class="m" x1="357.62" y1="364" x2="357.62" y2="368" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="357.62" y="380" font-size="10.5" text-anchor="middle">-0.06</text>
+<line class="m" x1="412.86" y1="364" x2="412.86" y2="368" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="412.86" y="380" font-size="10.5" text-anchor="middle">-0.04</text>
+<line class="m" x1="468.1" y1="364" x2="468.1" y2="368" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="468.1" y="380" font-size="10.5" text-anchor="middle">-0.02</text>
+<line class="m" x1="523.33" y1="364" x2="523.33" y2="368" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="523.33" y="380" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="578.57" y1="364" x2="578.57" y2="368" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="578.57" y="380" font-size="10.5" text-anchor="middle">+0.02</text>
+<rect class="m" x="330" y="244" width="290" height="120" rx="0" stroke-width="1.5"/>
+<text class="tm" x="475" y="396" font-size="11.5" text-anchor="middle">4 heads minus 1 head, bits</text>
+<line class="s" x1="523.33" y1="244" x2="523.33" y2="364" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="428.6" y1="276" x2="480.25" y2="276" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="428.6" y1="272" x2="428.6" y2="280" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="480.25" y1="272" x2="480.25" y2="280" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="422.6" y="280" font-size="10.5" font-weight="600" text-anchor="end">Welch</text>
+<text class="tm" x="486.25" y="280" font-size="10" font-weight="600">0.0187 wide</text>
+<line class="a" x1="435.23" y1="324" x2="473.34" y2="324" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="435.23" y1="320" x2="435.23" y2="328" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="473.34" y1="320" x2="473.34" y2="328" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="429.23" y="328" font-size="10.5" font-weight="600" text-anchor="end">pairs</text>
+<text class="ta" x="479.34" y="328" font-size="10" font-weight="600">0.0138 wide</text>
+<circle class="a fa" cx="443.88" cy="338" r="2.6" stroke-width="1.5"/>
+<circle class="a fa" cx="475.36" cy="338" r="2.6" stroke-width="1.5"/>
+<circle class="a fa" cx="437.31" cy="338" r="2.6" stroke-width="1.5"/>
+<circle class="a fa" cx="477.95" cy="338" r="2.6" stroke-width="1.5"/>
+<circle class="a fa" cx="504.31" cy="338" r="2.6" stroke-width="1.5"/>
+<circle class="a fa" cx="471.64" cy="338" r="2.6" stroke-width="1.5"/>
+<circle class="a fa" cx="430.91" cy="338" r="2.6" stroke-width="1.5"/>
+<circle class="a fa" cx="450.04" cy="338" r="2.6" stroke-width="1.5"/>
+<circle class="a fa" cx="428.26" cy="338" r="2.6" stroke-width="1.5"/>
+<circle class="a fa" cx="423.74" cy="338" r="2.6" stroke-width="1.5"/>
+</svg>

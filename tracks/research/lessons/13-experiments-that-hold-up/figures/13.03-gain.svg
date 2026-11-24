@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The gain from choosing: how far the best of k runs, chosen by half A, is below the average run, on A where it was chosen and on B where it was not (dots); dashed, what the runs&#x27; spread predicts for each</title>
+<defs><marker id="gain1303-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="gain1303-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="gain1303-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="39.2" y="233.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="45.2" y1="187.9" x2="451.38" y2="187.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="191.42" font-size="10.5" text-anchor="end">0.25</text>
+<line class="m" x1="45.2" y1="145.8" x2="451.38" y2="145.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="149.33" font-size="10.5" text-anchor="end">0.5</text>
+<line class="m" x1="45.2" y1="103.8" x2="451.38" y2="103.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="107.25" font-size="10.5" text-anchor="end">0.75</text>
+<line class="m" x1="45.2" y1="61.7" x2="451.38" y2="61.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="65.17" font-size="10.5" text-anchor="end">1</text>
+<line class="m" x1="45.2" y1="230" x2="45.2" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="45.2" y="246" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="126.44" y1="230" x2="126.44" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="126.44" y="246" font-size="10.5" text-anchor="middle">2</text>
+<line class="m" x1="207.67" y1="230" x2="207.67" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="207.67" y="246" font-size="10.5" text-anchor="middle">4</text>
+<line class="m" x1="288.91" y1="230" x2="288.91" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="288.91" y="246" font-size="10.5" text-anchor="middle">8</text>
+<line class="m" x1="370.14" y1="230" x2="370.14" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="370.14" y="246" font-size="10.5" text-anchor="middle">16</text>
+<line class="m" x1="451.38" y1="230" x2="451.38" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="451.38" y="246" font-size="10.5" text-anchor="middle">32</text>
+<rect class="m" x="45.2" y="28" width="406.18" height="202" rx="0" stroke-width="1.5"/>
+<text class="tm" x="248.29" y="262" font-size="11.5" text-anchor="middle">runs chosen among (k; log scale)</text>
+<text class="tm" x="39.2" y="20" font-size="11.5">points of error below the average run</text>
+<polyline class="s" points="45.2,230.0 126.4,196.6 207.7,174.9 288.9,160.4 370.1,140.0 451.4,99.0" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="s" points="45.2,230.0 126.4,197.3 207.7,170.3 288.9,147.5 370.1,127.6 451.4,110.0" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="45.2,230.0 126.4,180.5 207.7,139.4 288.9,101.0 370.1,66.8 451.4,42.5" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="45.2,230.0 126.4,180.6 207.7,139.9 288.9,105.4 370.1,75.4 451.4,48.8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="465.4,34.0 487.4,34.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="493.38" y="38" font-size="11">gain on A, where chosen</text>
+<polyline class="a" points="465.4,51.0 487.4,51.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<text class="ta" x="493.38" y="55" font-size="11">A, predicted</text>
+<polyline class="s" points="465.4,68.0 487.4,68.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="493.38" y="72" font-size="11">gain on B, held back</text>
+<polyline class="s" points="465.4,85.0 487.4,85.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<text class="t" x="493.38" y="89" font-size="11">B, predicted</text>
+<circle class="a fa" cx="126.44" cy="180.48" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="126.44" cy="196.61" r="3.2" stroke-width="1.5"/>
+<circle class="a fa" cx="207.67" cy="139.44" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="207.67" cy="174.9" r="3.2" stroke-width="1.5"/>
+<circle class="a fa" cx="288.91" cy="101" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="288.91" cy="160.41" r="3.2" stroke-width="1.5"/>
+<circle class="a fa" cx="370.14" cy="66.81" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="370.14" cy="140.02" r="3.2" stroke-width="1.5"/>
+<circle class="a fa" cx="451.38" cy="42.52" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="451.38" cy="99.02" r="3.2" stroke-width="1.5"/>
+<line class="m" x1="443.38" y1="42.52" x2="443.38" y2="99.02" stroke-width="1.5" stroke-linecap="round" marker-end="url(#gain1303-am)" marker-start="url(#gain1303-am)"/>
+<text class="t" x="437.38" y="86.92" font-size="10.5" font-weight="600" text-anchor="end">0.34: luck</text>
+<text class="tm" x="16" y="292" font-size="10.5">The best of 32 looks 1.11 points better than the average run where it was chosen, and is 0.78 better where it was not.</text>
+</svg>

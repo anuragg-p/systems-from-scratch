@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 276" fill="none">
+<title>Accuracy on the test images that have a twin in training and on the rest: a classifier that only remembers (the nearest training image&#x27;s label), and on MNIST also part 1&#x27;s networks</title>
+<defs><marker id="accuracy1303-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="accuracy1303-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="accuracy1303-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="200" y1="210" x2="200" y2="214" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="200" y="226" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="260" y1="210" x2="260" y2="214" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="260" y="226" font-size="10.5" text-anchor="middle">20</text>
+<line class="m" x1="320" y1="210" x2="320" y2="214" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="320" y="226" font-size="10.5" text-anchor="middle">40</text>
+<line class="m" x1="380" y1="210" x2="380" y2="214" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="380" y="226" font-size="10.5" text-anchor="middle">60</text>
+<line class="m" x1="440" y1="210" x2="440" y2="214" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="440" y="226" font-size="10.5" text-anchor="middle">80</text>
+<line class="m" x1="500" y1="210" x2="500" y2="214" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="500" y="226" font-size="10.5" text-anchor="middle">100</text>
+<rect class="m" x="200" y="30" width="300" height="180" rx="0" stroke-width="1.5"/>
+<text class="tm" x="350" y="242" font-size="11.5" text-anchor="middle">right, %</text>
+<text class="t" x="190" y="60" font-size="11.5" font-weight="700" text-anchor="end">CIFAR-10</text>
+<text class="tm" x="190" y="74" font-size="10.5" text-anchor="end">the nearest image&#x27;s label</text>
+<rect class="a af" x="200" y="50" width="300" height="13" rx="1" stroke-width="1.5"/>
+<text class="ta" x="505" y="60.5" font-size="10">100.0  with a twin (346)</text>
+<rect class="s fs" x="200" y="67" width="123.9" height="13" rx="1" stroke-width="1.5"/>
+<text class="t" x="328.9" y="77.5" font-size="10">41.3  the rest</text>
+<text class="t" x="190" y="120" font-size="11.5" font-weight="700" text-anchor="end">MNIST</text>
+<text class="tm" x="190" y="134" font-size="10.5" text-anchor="end">the nearest image&#x27;s label</text>
+<rect class="a af" x="200" y="110" width="300" height="13" rx="1" stroke-width="1.5"/>
+<text class="ta" x="505" y="120.5" font-size="10">100.0  with a twin (41)</text>
+<rect class="s fs" x="200" y="127" width="291.6" height="13" rx="1" stroke-width="1.5"/>
+<text class="t" x="496.6" y="137.5" font-size="10">97.2  the rest</text>
+<text class="t" x="190" y="180" font-size="11.5" font-weight="700" text-anchor="end">MNIST</text>
+<text class="tm" x="190" y="194" font-size="10.5" text-anchor="end">part 1&#x27;s 32 networks</text>
+<rect class="a af" x="200" y="170" width="289.2" height="13" rx="1" stroke-width="1.5"/>
+<text class="ta" x="494.2" y="180.5" font-size="10">96.4  with a twin (41)</text>
+<rect class="s fs" x="200" y="187" width="280.5" height="13" rx="1" stroke-width="1.5"/>
+<text class="t" x="485.5" y="197.5" font-size="10">93.5  the rest</text>
+<text class="tm" x="16" y="266" font-size="10.5">CIFAR-10&#x27;s twins lift the remembering classifier&#x27;s score by 2.03 points; MNIST&#x27;s by 0.01.</text>
+</svg>

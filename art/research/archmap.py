@@ -31,7 +31,8 @@ and lights the models' real weights (models/gpt2.py, 09.03); its experiments are
 Module 10 lights today's architecture, the pieces models/gpt.py gains as arguments of GPT (RMSNorm,
 rotary positions, SwiGLU, grouped heads), the piece of all five of its lessons: SmolLM2's loading
 (10.04) is that piece in use, and its ablation (10.05) compares them; its experiments are language
-ones too.)
+ones too. Module 13 lights experiments that hold up, the piece of its four lessons: its tools are
+lab/stats.py's and its experiments re-run results of modules 03 and 08 and the data's held-out parts.)
 
 In each lesson's copy, that lesson's piece (LESSONS below: exactly one per lesson) is drawn in
 the accent colour, every piece whose code has arrived by that lesson (PIECES: the lesson it
@@ -67,8 +68,8 @@ ROOT = figlib.ROOT
 # one can still bring a piece's code (00.03 brings the plots, 02.05 the checkpoint file, 03.01
 # the optimisers' first one): that piece is solid from then on, never in the accent for it.
 PIECES = {
-    # research (13 and 15 not built yet)
-    "13": ("research", "experiments that hold up", "13", None),
+    # research (15 not built yet)
+    "13": ("research", "experiments that hold up", "13", "13.01"),
     "14": ("research", "the reproduction", "14", "14.01"),
     "15": ("research", "your own result", "15", None),
     # models: models/, one file per network family (06 on); the modules after 09 not built yet
@@ -163,6 +164,10 @@ LESSONS = [
     ("10.03", "A gated MLP: SwiGLU", "10", "SwiGLU"),
     ("10.04", "Grouped-query attention, and loading a current open model", "10", "grouped heads, SmolLM2"),
     ("10.05", "Which change paid: an ablation table", "10", "the ablation table"),
+    ("13.01", "A hypothesis, and a baseline tuned as hard as your method", "13", "a fair baseline"),
+    ("13.02", "Error bars: is the difference real?", "13", "error bars"),
+    ("13.03", "An evaluation you tried to fool", "13", "a fooled evaluation"),
+    ("13.04", "Scaling: predicting a model you have not trained", "13", "scaling"),
     ("14.01", "Reading a paper for what it claims", "14", "reading for claims"),
     ("14.02", "The experiment from the text: modular arithmetic", "14", "the experiment"),
     ("14.03", "The figure: memorise first, generalise much later", "14", "the figure"),
@@ -181,6 +186,7 @@ MODULE_TITLES = {
     "08": "The transformer: a GPT",
     "09": "GPT-2: the tokenizer and the real weights",
     "10": "Today's architecture",
+    "13": "Experiments that hold up",
     "14": "Reproduce a paper: grokking",
 }
 
