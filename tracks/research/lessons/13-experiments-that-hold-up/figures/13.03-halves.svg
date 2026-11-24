@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>The 32 runs that differ only by seed, each scored on half A and half B of MNIST&#x27;s test images (drawn at random before any run): the one chosen by its score on A, and where it lands on B</title>
+<defs><marker id="halves1303-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="halves1303-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="halves1303-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="70" y1="262.1" x2="370" y2="262.1" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="265.64" font-size="10.5" text-anchor="end">5.5</text>
+<line class="m" x1="70" y1="217.5" x2="370" y2="217.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="221" font-size="10.5" text-anchor="end">6</text>
+<line class="m" x1="70" y1="172.9" x2="370" y2="172.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="176.36" font-size="10.5" text-anchor="end">6.5</text>
+<line class="m" x1="70" y1="128.2" x2="370" y2="128.2" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="131.71" font-size="10.5" text-anchor="end">7</text>
+<line class="m" x1="70" y1="83.6" x2="370" y2="83.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="87.07" font-size="10.5" text-anchor="end">7.5</text>
+<line class="m" x1="70" y1="38.9" x2="370" y2="38.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="42.43" font-size="10.5" text-anchor="end">8</text>
+<line class="m" x1="91.43" y1="280" x2="91.43" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="91.43" y="296" font-size="10.5" text-anchor="middle">5.5</text>
+<line class="m" x1="145" y1="280" x2="145" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="145" y="296" font-size="10.5" text-anchor="middle">6</text>
+<line class="m" x1="198.57" y1="280" x2="198.57" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="198.57" y="296" font-size="10.5" text-anchor="middle">6.5</text>
+<line class="m" x1="252.14" y1="280" x2="252.14" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="252.14" y="296" font-size="10.5" text-anchor="middle">7</text>
+<line class="m" x1="305.71" y1="280" x2="305.71" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="305.71" y="296" font-size="10.5" text-anchor="middle">7.5</text>
+<line class="m" x1="359.29" y1="280" x2="359.29" y2="284" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="359.29" y="296" font-size="10.5" text-anchor="middle">8</text>
+<rect class="m" x="70" y="30" width="300" height="250" rx="0" stroke-width="1.5"/>
+<text class="tm" x="220" y="312" font-size="11.5" text-anchor="middle">test error on half A, % (chosen on)</text>
+<text class="tm" x="64" y="22" font-size="11.5">on half B, % (held back)</text>
+<line class="m" x1="70" y1="280" x2="370" y2="30" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="297.14" y="59.25" font-size="10">A = B</text>
+<circle class="s f" cx="138.57" cy="210.36" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="250" cy="153.21" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="286.43" cy="180" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="183.57" cy="253.21" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="117.14" cy="222.86" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="160" cy="203.21" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="340" cy="149.64" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="211.43" cy="215.71" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="194.29" cy="235.36" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="312.14" cy="87.14" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="220" cy="244.29" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="241.43" cy="172.86" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="228.57" cy="185.36" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="213.57" cy="203.21" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="226.43" cy="162.14" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="166.43" cy="215.71" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="235" cy="172.86" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="198.57" cy="226.43" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="241.43" cy="192.5" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="213.57" cy="192.5" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="162.14" cy="217.5" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="250" cy="178.21" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="207.14" cy="178.21" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="211.43" cy="185.36" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="241.43" cy="196.07" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="288.57" cy="121.07" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="213.57" cy="183.57" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="181.43" cy="224.64" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="239.29" cy="188.93" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="320.71" cy="106.79" r="3.2" stroke-width="1.5"/>
+<circle class="s f" cx="290.71" cy="188.93" r="3.2" stroke-width="1.5"/>
+<circle class="a fa" cx="102.14" cy="260.36" r="5" stroke-width="1.5"/>
+<line class="a" x1="108.14" y1="260.36" x2="242.79" y2="246.07" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="246.79" y="246.07" font-size="10.5" font-weight="700">the best on A: seed 22</text>
+<text class="ta" x="246.79" y="260.07" font-size="10.5">5.60 on A, 5.52 on B</text>
+<line class="s" x1="221.47" y1="30" x2="221.47" y2="280" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="70" y1="190.88" x2="370" y2="190.88" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="t" x="400" y="50" font-size="12" font-weight="700">the 32 runs</text>
+<text class="t mono" x="400" y="72" font-size="10.5">on A: 6.71 +- 0.52</text>
+<text class="t mono" x="400" y="88" font-size="10.5">on B: 6.30 +- 0.44</text>
+<text class="tm" x="400" y="104" font-size="10.5">(dashed: the means)</text>
+<text class="t" x="400" y="132" font-size="10.5">B is easier for every run alike,</text>
+<text class="t" x="400" y="146" font-size="10.5">by chance; and a run good on A</text>
+<text class="t" x="400" y="160" font-size="10.5">tends to be good on B: the runs</text>
+<text class="t" x="400" y="174" font-size="10.5">really differ.</text>
+<text class="tm" x="400" y="202" font-size="10.5">Of A&#x27;s variance, 0.2705,</text>
+<text class="tm" x="400" y="216" font-size="10.5">0.0914 is the luck of A&#x27;s</text>
+<text class="tm" x="400" y="230" font-size="10.5">own 5,000 images.</text>
+</svg>
