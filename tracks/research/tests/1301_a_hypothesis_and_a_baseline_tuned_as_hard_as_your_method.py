@@ -31,10 +31,10 @@ def test(t):
             f"the hurried gap should be far wider than the fair one: {gaps}\n{r.out[-2500:]}")
     hurried_t = T.value(r.out, r"3\. The hurried comparison.*\n.*t = ([+-][\d.]+)")
     t.check(hurried_t >= 3, f"the hurried comparison should come out beyond the noise: t = {hurried_t}")
-    docs = T.summaries(r, "nesterov-lr0.01")
-    tuned = [label for label in os.listdir(r.runs) if label.startswith("nesterov-lr") and label != "nesterov-lr0.01"]
-    t.check(len(tuned) == 1, f"one tuned SGD arm: {os.listdir(r.runs)}")
-    t.check(sum(s["test_error"] for s in docs) > sum(s["test_error"] for s in T.summaries(r, tuned[0])),
+    docs, tuned = T.summaries(r, "nesterov-docs"), T.summaries(r, "nesterov-tuned")
+    t.check(len(docs) == len(tuned) == 3 and all(s["lr"] == 0.01 for s in docs),
+            f"three fresh seeds of each arm: {os.listdir(r.runs)}")
+    t.check(sum(s["test_error"] for s in docs) > sum(s["test_error"] for s in tuned),
             "SGD at the docs' rate should be worse than SGD at its own tuned rate")
     table = re.findall(r"^\s+(\d+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)$", r.out, re.M)
     t.check(len(table) == 4, f"the best-of-n table should have a row for n = 1 to 4:\n{r.out[-1500:]}")

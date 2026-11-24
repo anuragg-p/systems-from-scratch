@@ -114,15 +114,15 @@ def main():
               f"validation)")
 
     fresh = range(1, cfg.seeds + 1)
-    arms = {"adam, tuned": ("adam", best["adam"]["lr"]),
-            f"nesterov, lr {cfg.default_lr:g} (the docs' example)": ("nesterov", cfg.default_lr),
-            "nesterov, tuned": ("nesterov", best["nesterov"]["lr"])}
-    errors = {arm: [run_one(cfg, name, lr, s, f"{arm.split(',')[0]}-lr{lr:.3g}", data, dev)["test_error"] for s in fresh]
-              for arm, (name, lr) in arms.items()}
+    arms = {"adam, tuned": ("adam", best["adam"]["lr"], "adam-tuned"),
+            f"nesterov, lr {cfg.default_lr:g} (the docs' example)": ("nesterov", cfg.default_lr, "nesterov-docs"),
+            "nesterov, tuned": ("nesterov", best["nesterov"]["lr"], "nesterov-tuned")}
+    errors = {arm: [run_one(cfg, name, lr, s, label, data, dev)["test_error"] for s in fresh]
+              for arm, (name, lr, label) in arms.items()}
     adam, hurried, fair = (errors[a] for a in arms)
-    print(f"\n   Test error, %, on {cfg.seeds} fresh seeds (1 to {cfg.seeds}):")
-    for arm, (name, lr) in arms.items():
-        print(f"   {arm:34s} lr {lr:<8.3g} {lab.spread([100 * e for e in errors[arm]])}")
+    print(f"\n   Test error, %, on {cfg.seeds} fresh seed{'s' * (cfg.seeds > 1)} (1 to {cfg.seeds}):")
+    for arm, (name, lr, _) in arms.items():
+        print(f"   {arm:38s} lr {lr:<8.3g} {lab.spread([100 * e for e in errors[arm]])}")
     print("   The chosen trials' own test error, seed 0 (chosen for being best there, so not reported): " +
           ", ".join(f"{name} {100 * t['test_error']:.2f}" for name, t in best.items()))
     for k, (other, words) in enumerate(((hurried, "3. The hurried comparison: Adam tuned, SGD at the docs' rate"),

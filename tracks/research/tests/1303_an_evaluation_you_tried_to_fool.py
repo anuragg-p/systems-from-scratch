@@ -39,7 +39,7 @@ def test(t):
     t.check(T.value(r.out, r"a tenth of them drawn for testing: ([\d.]+)%") > 80, "overlapping windows share")
     found = T.value(r.out, r"of the [\d,]+ held-out stories, (\d+) are word for word")
     t.check(found >= 10, f"TinyStories' held-out stories found in training: {found}")
-    tiny = ["runs=3", "ks=[1,3]", "n_train=300", "hidden=8", "epochs=1"]
+    tiny = ["runs=3", "ks=[1,3]", "n_train=300", "hidden=8", "epochs=1", "n_test=500"]
     a, b = T.experiment(t, "fooled", *tiny), T.experiment(t, "fooled", *tiny)
     for run in ("runs/seed2/log.jsonl", "runs/seed2/summary.json", "chosen/seed0/summary.json",
                 "twins-cifar10/seed0/summary.json"):

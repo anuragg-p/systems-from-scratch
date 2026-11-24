@@ -33,7 +33,8 @@ from experiments.images import evaluate, tensors, train_epoch
 from experiments.loop import mlp
 
 CONFIG = dict(n_train=10000, hidden=256, epochs=2, batch=128, lr=0.004, runs=32, ks=[1, 2, 4, 8, 16, 32],
-              ratio=0.5, pools={"mnist": 1, "cifar10": 4}, grams=[8, 16, 32], window=256, shown=16, device="cpu")
+              ratio=0.5, pools={"mnist": 1, "cifar10": 4}, n_test=10000, grams=[8, 16, 32], window=256, shown=16,
+              device="cpu")
 
 
 # @build 13.03 hold_back
@@ -188,6 +189,8 @@ def choose_by_test(cfg, dev):
 def twins(cfg, name, right_by_runs):
     """Part 2 for one dataset: exact copies, twins, and accuracy on the test images with a twin and without."""
     (x, y), (tx, ty) = raw(name)
+    tx, ty = tx[:cfg.n_test], ty[:cfg.n_test]
+    right_by_runs = None if right_by_runs is None else right_by_runs[:cfg.n_test]
     copies = exact_copies(x.reshape(len(x), -1), tx.reshape(len(tx), -1))
     nearest, d1, d2 = two_nearest(shrink(x, cfg.pools[name]), shrink(tx, cfg.pools[name]))
     twin = d1 < cfg.ratio * d2
