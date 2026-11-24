@@ -45,8 +45,10 @@ def test(t):
     ed.keys(tr.ctrl("s"))
     t.check("bytes written on disk" in ed.message, f"Ctrl-S should save; the message line: {ed.message!r}")
     # Ctrl-Z and Ctrl-\ reached kilo as the bytes 26 and 28, and went into the text as
-    # any byte without a key of its own does (kilo ignores only Ctrl-C).
-    t.check(ed.saved() == "\x1a\x1cxy\none\ntwo\n", f"saved {ed.saved()!r}")
+    # any byte without a key of its own does (kilo ignores only Ctrl-C). With module 08 in
+    # the tree Ctrl-Z has a key of its own, undo, and with nothing done yet it said so.
+    ctrl_z = "" if ed.said("Nothing to undo") else "\x1a"
+    t.check(ed.saved() == ctrl_z + "\x1cxy\none\ntwo\n", f"saved {ed.saved()!r}")
     # So does Ctrl-Q: kilo exits with status 0, and the terminal is as it was.
     rc = ed.quit()
     t.check(rc == 0, f"Ctrl-Q should exit with status 0, not {rc}")
