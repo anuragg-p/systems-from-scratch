@@ -1,0 +1,7 @@
+# What make builds, next to its source (and, on macOS, its debug symbols).
+/cc
+/cc.dSYM/
+# What ccrun and same build.
+build/
+.test-logs/
+__pycache__/
