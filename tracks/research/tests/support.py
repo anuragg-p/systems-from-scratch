@@ -24,6 +24,10 @@ the reference) engine, and `torch` is PyTorch, the reference.
     unicode_strings(rng, n, length)
                         (09.01 on) strings of characters drawn from every part of Unicode but the
                         surrogates, and some that come in runs (spaces, marks, digits)
+    gpt10_numpy(model, ids, heads, kv_heads, norm, rotary, mlp)
+                        (10.01 on) models/gpt.py's GPT with module 10's pieces, computed again in float64
+                        numpy: rms_norm, rotate_numpy (each pair's 2 x 2 turn written out), silu_numpy,
+                        attention10_numpy (each query head reading its group's key and value head)
 """
 
 import numpy as np
@@ -227,3 +231,76 @@ def unicode_strings(rng, n, length, pool=None):
             s += [k[int(i)] for i in rng.integers(0, len(k), int(rng.integers(1, 6)))]
         out.append("".join(s[:int(rng.integers(1, length + 1))]))
     return out
+
+
+# ---------------------------------------------------------------- module 10: today's pieces, again in numpy
+
+def rms_norm(x, weight, eps=1e-5):
+    """Each row of x over the root of the mean of its squares plus eps, times weight: RMSNorm."""
+    return x / np.sqrt((x ** 2).mean(-1, keepdims=True) + eps) * weight
+
+
+def rotate_numpy(x, base=10000.0):
+    """x (T, d) turned as rotary positions turn it, written out: at place m, numbers i and i + d / 2 (i < d / 2) are
+    a point in the plane, turned through m * base^(-2i / d) radians."""
+    T, d = x.shape
+    out = np.empty_like(x)
+    for m in range(T):
+        for i in range(d // 2):
+            a = m * base ** (-2 * i / d)
+            u, v = x[m, i], x[m, i + d // 2]
+            out[m, i], out[m, i + d // 2] = np.cos(a) * u - np.sin(a) * v, np.sin(a) * u + np.cos(a) * v
+    return out
+
+
+def silu_numpy(x):
+    return x / (1 + np.exp(-x))
+
+
+def attention10_numpy(x, p, prefix, heads, kv_heads, base=None):
+    """SelfAttention with kv_heads heads of keys and values (the query heads in groups of heads / kv_heads, head h
+    reading key and value head h // group) and, with base, rotary positions; written out position by position."""
+    B, T, W = x.shape
+    d, group = W // heads, heads // kv_heads
+    q, k, v = (x @ p[prefix + n + ".weight"].T + p.get(prefix + n + ".bias", 0) for n in ("query", "key", "value"))
+    y = np.zeros_like(q)
+    for b in range(B):
+        for h in range(heads):
+            g = h // group
+            qs, ks, vs = q[b, :, h * d:(h + 1) * d], k[b, :, g * d:(g + 1) * d], v[b, :, g * d:(g + 1) * d]
+            if base:
+                qs, ks = rotate_numpy(qs, base), rotate_numpy(ks, base)
+            for i in range(T):
+                scores = np.array([qs[i] @ ks[j] for j in range(i + 1)]) / np.sqrt(d)
+                w = np.exp(scores - scores.max())
+                w /= w.sum()
+                y[b, i, h * d:(h + 1) * d] = w @ vs[:i + 1]
+    return y @ p[prefix + "out.weight"].T + p.get(prefix + "out.bias", 0)
+
+
+def gpt10_numpy(model, ids, heads, kv_heads=None, norm="layer", rotary=None, mlp="gelu"):
+    """A GPT with module 10's pieces, its scores for ids (B, T) again in float64 numpy from its own weights: norm
+    "layer" or "rms", rotary a base (or None), mlp "gelu" or "swiglu", kv_heads heads of keys and values."""
+    p = {k: v.detach().double().numpy() for k, v in model.state_dict().items()}
+    kv_heads = kv_heads or heads
+
+    def normed(x, name):
+        if norm == "rms":
+            return rms_norm(x, p[name + ".weight"])
+        return layer_norm(x, p[name + ".weight"], p.get(name + ".bias"))
+
+    x = p["tokens.weight"][ids]
+    if "positions.weight" in p:
+        x = x + p["positions.weight"][:ids.shape[1]]
+    layers = len({k.split(".")[1] for k in p if k.startswith("blocks.")})
+    for i in range(layers):
+        b = f"blocks.{i}."
+        x = x + attention10_numpy(normed(x, b + "norm1"), p, b + "attention.", heads, kv_heads, rotary)
+        h = normed(x, b + "norm2")
+        up = h @ p[b + "mlp.up.weight"].T + p.get(b + "mlp.up.bias", 0)
+        if mlp == "swiglu":
+            inner = silu_numpy(h @ p[b + "mlp.gate.weight"].T + p.get(b + "mlp.gate.bias", 0)) * up
+        else:
+            inner = gelu_numpy(up)
+        x = x + inner @ p[b + "mlp.down.weight"].T + p.get(b + "mlp.down.bias", 0)
+    return normed(x, "norm") @ p["tokens.weight"].T

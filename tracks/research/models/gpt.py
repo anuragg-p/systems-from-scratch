@@ -8,6 +8,9 @@
     Block(width, heads, dropout, bias)   layer norm, attention, add; layer norm, MLP, add               # @from 08.02
     Positions(context, width)            a learned vector for each place, added to each embedding       # @from 08.03
     GPT(vocab, context, ...)             embeddings, blocks, a last layer norm, scores tied to the embeddings  # @from 08.02
+    RMSNorm(width, eps)                  each vector over the root of its mean square, times a learned gain  # @from 10.01
+    Rotary(d, base)                      queries and keys turned by angles that grow with their place       # @from 10.02
+    SwiGLU(width, hidden, bias)          a gated MLP: down(silu(gate(x)) * up(x))                          # @from 10.03
 
 07.04's attention looked from one sequence (the decoder's) at another
 (the encoder's states). Self-attention looks from a sequence at itself:
@@ -22,6 +25,12 @@ that a later module can swap one: module 11 swaps self_attend for
 PyTorch's fused F.scaled_dot_product_attention, which computes the same
 numbers.
 Module 10 swaps the layer norm, the MLP and the positions.                # @from 08.03
+Each piece module 10 brings is chosen by an argument of GPT whose         # @from 10.01
+default is module 08's piece, so a model of 08 or 09 is built as it was:  # @from 10.01
+    norm="rms"           RMSNorm for every layer norm (10.01)             # @from 10.01
+    positions="rotary"   Rotary inside attention, no Positions (10.02)    # @from 10.02
+    mlp="swiglu"         SwiGLU for the MLP (10.03)                       # @from 10.03
+    kv_heads=k           k heads of keys and values for all heads (10.04) # @from 10.04
 The shapes are chosen so that GPT-2 small's published weights load into   # @from 08.02
 GPT without changing it (09.03).                                          # @from 08.02
 """
@@ -74,14 +83,27 @@ def self_attend(q, k, v, mask=True, scale=True):
 # keys and values, (batch, heads, T, width / heads) from 08.02 on.
 class SelfAttention(nn.Module):
     # @from 08.02
-    def __init__(self, width, heads=1, bias=True, mask=True, scale=True):
+    # @from 10.02
+    def __init__(self, width, heads=1, bias=True, mask=True, scale=True,
+                 rotary=None,
+                 kv_heads=None,                                               # @from 10.04
+                 ):
+    # @else
+    # def __init__(self, width, heads=1, bias=True, mask=True, scale=True):
+    # @end
     # @else
     # def __init__(self, width, bias=True, mask=True, scale=True):
     # @end
         super().__init__()
         self.query = nn.Linear(width, width, bias=bias)
-        self.key = nn.Linear(width, width, bias=bias)
-        self.value = nn.Linear(width, width, bias=bias)
+        # @from 10.04
+        kv_heads = kv_heads or heads
+        self.key = nn.Linear(width, width // heads * kv_heads, bias=bias)
+        self.value = nn.Linear(width, width // heads * kv_heads, bias=bias)
+        # @else
+        # self.key = nn.Linear(width, width, bias=bias)
+        # self.value = nn.Linear(width, width, bias=bias)
+        # @end
         self.out = nn.Linear(width, width, bias=bias)
         self.mask, self.scale = mask, scale
         # @from 08.02
@@ -89,12 +111,32 @@ class SelfAttention(nn.Module):
             raise ValueError(f"a width of {width} does not cut into {heads} heads")
         self.heads = heads
         # @end
+        # @from 10.02
+        self.rotary = Rotary(width // heads, rotary) if rotary else None
+        # @end
+        # @from 10.04
+        if heads % kv_heads:
+            raise ValueError(f"{heads} query heads do not share {kv_heads} key and value heads evenly")
+        self.kv_heads = kv_heads
+        # @end
 
     def qkv(self, x):
         q, k, v = self.query(x), self.key(x), self.value(x)
         # @from 08.02
         B, T, width = x.shape
-        q, k, v = (t.view(B, T, self.heads, width // self.heads).transpose(1, 2) for t in (q, k, v))
+        # @from 10.04
+        q, k, v = (t.view(B, T, -1, width // self.heads).transpose(1, 2) for t in (q, k, v))
+        # @else
+        # q, k, v = (t.view(B, T, self.heads, width // self.heads).transpose(1, 2) for t in (q, k, v))
+        # @end
+        # @end
+        # @from 10.02
+        if self.rotary is not None:
+            q, k = self.rotary(q), self.rotary(k)
+        # @end
+        # @from 10.04
+        if self.kv_heads < self.heads:
+            k, v = (t.repeat_interleave(self.heads // self.kv_heads, dim=1) for t in (k, v))
         # @end
         return q, k, v
 
@@ -139,12 +181,40 @@ class MLP(nn.Module):
 # the output, can read what the embeddings put there. With dropout (05.02)
 # each result is dropped before it is added, in training only.
 class Block(nn.Module):
-    def __init__(self, width, heads, dropout=0.0, bias=True):
+    # @from 10.01
+    def __init__(self, width, heads, dropout=0.0, bias=True,
+                 norm="layer",
+                 rotary=None,                                                 # @from 10.02
+                 mlp="gelu", hidden=None,                                     # @from 10.03
+                 kv_heads=None,                                               # @from 10.04
+                 ):
+    # @else
+    # def __init__(self, width, heads, dropout=0.0, bias=True):
+    # @end
         super().__init__()
-        self.norm1 = nn.LayerNorm(width, bias=bias)
-        self.attention = SelfAttention(width, heads, bias)
-        self.norm2 = nn.LayerNorm(width, bias=bias)
-        self.mlp = MLP(width, bias)
+        # @from 10.01
+        self.norm1 = RMSNorm(width) if norm == "rms" else nn.LayerNorm(width, bias=bias)
+        # @else
+        # self.norm1 = nn.LayerNorm(width, bias=bias)
+        # @end
+        # @from 10.02
+        self.attention = SelfAttention(width, heads, bias,
+                                       rotary=rotary,
+                                       kv_heads=kv_heads,                     # @from 10.04
+                                       )
+        # @else
+        # self.attention = SelfAttention(width, heads, bias)
+        # @end
+        # @from 10.01
+        self.norm2 = RMSNorm(width) if norm == "rms" else nn.LayerNorm(width, bias=bias)
+        # @else
+        # self.norm2 = nn.LayerNorm(width, bias=bias)
+        # @end
+        # @from 10.03
+        self.mlp = SwiGLU(width, hidden or 8 * width // 3, bias) if mlp == "swiglu" else MLP(width, bias)
+        # @else
+        # self.mlp = MLP(width, bias)
+        # @end
         self.dropout = dropout
 
     def forward(self, x):
@@ -173,6 +243,68 @@ class Positions(nn.Module):
 # @end
 
 
+# @build 10.01 RMSNorm
+# Zhang and Sennrich's (2019) root mean square layer normalisation: each
+# vector of x (..., width) divided by the root of the mean of its squares
+# (eps added under the root, as layer norm adds it to the variance), then
+# times a learned gain for each of its numbers, which starts at 1. Layer
+# norm (04.04) without its first step, taking the mean away, and without
+# its bias. torch.nn.RMSNorm computes the same.
+class RMSNorm(nn.Module):
+    def __init__(self, width, eps=1e-5):
+        super().__init__()
+        self.weight = nn.Parameter(torch.ones(width))
+        self.eps = eps
+
+    def forward(self, x):
+        return x * torch.rsqrt(x.pow(2).mean(-1, keepdim=True) + self.eps) * self.weight
+# @end
+
+
+# @build 10.02 Rotary
+# Su et al.'s (2021) rotary positions, for queries or keys x of shape
+# (..., T, d), d even: the d numbers of each vector are d / 2 pairs, and
+# pair i of the vector at place m is turned through the angle m theta_i,
+# theta_i = base^(-2i / d): the first pair by a radian a place, the last
+# by about a ten-thousandth of one (base 10000). A query turned for place
+# m and a key turned for place n then have a dot product that depends on
+# their places only through n - m, and each keeps its length. A pair is
+# numbers i and i + d / 2, as transformers' Llama has it, so SmolLM2's
+# weights load as they are (10.04); the paper pairs neighbours, 2i and
+# 2i + 1, the same turning with a projection's rows in another order.
+# start is the place of x's first vector.
+class Rotary(nn.Module):
+    def __init__(self, d, base=10000.0):
+        super().__init__()
+        self.d, self.base = d, base
+
+    def forward(self, x, start=0):
+        half = self.d // 2
+        theta = 1.0 / self.base ** (torch.arange(0, self.d, 2, device=x.device).to(x.dtype) / self.d)
+        angles = (torch.arange(start, start + x.shape[-2], device=x.device).to(x.dtype)[:, None] * theta).repeat(1, 2)
+        return x * angles.cos() + torch.cat([-x[..., half:], x[..., :half]], dim=-1) * angles.sin()
+# @end
+
+
+# @build 10.03 SwiGLU
+# Shazeer's (2020) gated MLP, as Llama and SmolLM2 have it: two Linear
+# layers from width up to `hidden` numbers, gate and up; the gate's
+# numbers through SiLU (x times the sigmoid of x: Swish with beta 1,
+# F.silu) multiply up's, number by number, a gated linear unit (Dauphin
+# et al. 2017); a Linear layer down back to width. Three matrices where
+# MLP has two, so with hidden = 2/3 x 4 x width the weights are as many.
+class SwiGLU(nn.Module):
+    def __init__(self, width, hidden, bias=True):
+        super().__init__()
+        self.gate = nn.Linear(width, hidden, bias=bias)
+        self.up = nn.Linear(width, hidden, bias=bias)
+        self.down = nn.Linear(hidden, width, bias=bias)
+
+    def forward(self, x):
+        return self.down(F.silu(self.gate(x)) * self.up(x))
+# @end
+
+
 # @build 08.02 GPT
 # The whole model of the next symbol, for ids of shape (batch, T). embed:
 # each symbol's embedding, a learned vector of width numbers (with
@@ -187,7 +319,16 @@ class Positions(nn.Module):
 # down) by sqrt(2 x layers) smaller, so the stream does not grow with depth.
 class GPT(nn.Module):
     # @from 08.03
-    def __init__(self, vocab, context, layers=4, heads=4, width=128, dropout=0.0, bias=True, positions=True):
+    # @from 10.01
+    def __init__(self, vocab, context, layers=4, heads=4, width=128, dropout=0.0, bias=True, positions=True,
+                 norm="layer",
+                 base=10000.0,                                                # @from 10.02
+                 mlp="gelu", hidden=None,                                     # @from 10.03
+                 kv_heads=None,                                               # @from 10.04
+                 ):
+    # @else
+    # def __init__(self, vocab, context, layers=4, heads=4, width=128, dropout=0.0, bias=True, positions=True):
+    # @end
     # @else
     # def __init__(self, vocab, context, layers=4, heads=4, width=128, dropout=0.0, bias=True):
     # @end
@@ -195,10 +336,24 @@ class GPT(nn.Module):
         self.context, self.dropout = context, dropout
         self.tokens = nn.Embedding(vocab, width)
         # @from 08.03
-        self.positions = Positions(context, width) if positions else None
+        # @from 10.02
+        self.positions = Positions(context, width) if positions is True else None
+        # @else
+        # self.positions = Positions(context, width) if positions else None
         # @end
-        self.blocks = nn.ModuleList(Block(width, heads, dropout, bias) for _ in range(layers))
-        self.norm = nn.LayerNorm(width, bias=bias)
+        # @end
+        # @from 10.01
+        self.blocks = nn.ModuleList(Block(width, heads, dropout, bias,
+                                          norm=norm,
+                                          rotary=base if positions == "rotary" else None,  # @from 10.02
+                                          mlp=mlp, hidden=hidden,                          # @from 10.03
+                                          kv_heads=kv_heads,                               # @from 10.04
+                                          ) for _ in range(layers))
+        self.norm = RMSNorm(width) if norm == "rms" else nn.LayerNorm(width, bias=bias)
+        # @else
+        # self.blocks = nn.ModuleList(Block(width, heads, dropout, bias) for _ in range(layers))
+        # self.norm = nn.LayerNorm(width, bias=bias)
+        # @end
         for name, p in self.named_parameters():
             if name.endswith("bias"):
                 nn.init.zeros_(p)

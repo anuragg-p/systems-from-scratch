@@ -16,6 +16,7 @@ import torch.nn.functional as F                                       # @from 08
 
 import lab
 from experiments.sequences import bits, windows
+from experiments.sequences import window_bits                         # @from 10.01
 from lab import safetensors                                           # @from 08.04
 from models.gpt import self_attend                                    # @from 08.02
 from models.gpt import GPT                                            # @from 08.04
@@ -201,4 +202,45 @@ def generate(model, prompts, n, generator, temperature=1.0, k=None, p=None):
 # phrase of 2 or more symbols repeated at least 3 times in a row.
 def loops(ids):
     return any(ids[-L:] == ids[-2 * L:-L] == ids[-3 * L:-2 * L] for L in range(2, len(ids) // 3 + 1))
+# @end
+
+
+# @build 10.01 compare
+# GPTs that differ in one piece, trained and scored alike: for each of
+# cfg.seeds seeds, each of `variants` (a dict, name -> GPT's arguments
+# beyond `common`) built from that seed, trained by train on the training
+# text ids for cfg.steps steps (with held, its held-out windows logged),
+# its training timed with lab.clock, and scored on test by window_bits,
+# each character with cfg.context // 4 or more before it. The variants
+# take turns seed by seed, so a change in the machine's load falls on all
+# of them alike, and each first takes one step of AdamW untimed (a
+# process's first step is slow, about half a second here, while memory
+# and the optimiser are set up; the seed is set again after it). Each
+# run's summary.json has its test bits and weights. Returns {name:
+# {"bits": [...], "ms": [...] (a step), "weights": n, "models": [...]}},
+# the lists by seed.
+def compare(variants, common, cfg, dev, ids, test, held=None):
+    out = {name: {"bits": [], "ms": [], "models": []} for name in variants}
+    for changes in variants.values():
+        model, x = GPT(**common, **changes).to(dev), ids[:cfg.batch * cfg.context].view(cfg.batch, cfg.context)
+        bits(model(x), x).backward()
+        torch.optim.AdamW(model.parameters()).step()
+    for seed in range(cfg.seeds):
+        for name, changes in variants.items():
+            run = lab.Run(cfg, seed, label=name)
+            torch.manual_seed(seed)
+            model = GPT(**common, **changes).to(dev)
+            start = lab.clock(torch, dev)
+            train(model, cfg, run, dev, ids, held)
+            ms = 1000 * (lab.clock(torch, dev) - start) / cfg.steps
+            model.eval()
+            got = window_bits(model, test, cfg.context - cfg.context // 4 + 1, cfg.context // 4)
+            weights = sum(p.numel() for p in model.parameters())
+            run.finish(test_bits=got, weights=weights)
+            r = out[name]
+            r["bits"].append(got)
+            r["ms"].append(ms)
+            r["models"].append(model)
+            r["weights"] = weights
+    return out
 # @end
