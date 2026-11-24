@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 276" fill="none">
+<title>The escapes the scanner knows, and the byte each one becomes</title>
+<defs><marker id="f0104b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0104b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0104b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="18" font-size="11.5">a character constant for each, through ./cc --tokens at 01.04</text>
+<text class="tm" x="32" y="42" font-size="11">written</text>
+<text class="tm" x="134" y="42" font-size="11" text-anchor="end">byte</text>
+<text class="tm" x="174" y="42" font-size="11" text-anchor="end">hex</text>
+<text class="tm" x="190" y="42" font-size="11">what it is</text>
+<rect class="fs" x="24" y="50" width="282" height="23" rx="4"/>
+<text class="t mono" x="32" y="66.5" font-size="13.5" font-weight="700">&#x27;\a&#x27;</text>
+<text class="ta mono" x="134" y="66.5" font-size="13.5" font-weight="700" text-anchor="end">7</text>
+<text class="tm mono" x="174" y="66.5" font-size="12" text-anchor="end">07</text>
+<text class="t" x="190" y="66" font-size="12">alert</text>
+<text class="t mono" x="32" y="93.5" font-size="13.5" font-weight="700">&#x27;\b&#x27;</text>
+<text class="ta mono" x="134" y="93.5" font-size="13.5" font-weight="700" text-anchor="end">8</text>
+<text class="tm mono" x="174" y="93.5" font-size="12" text-anchor="end">08</text>
+<text class="t" x="190" y="93" font-size="12">backspace</text>
+<rect class="fs" x="24" y="104" width="282" height="23" rx="4"/>
+<text class="t mono" x="32" y="120.5" font-size="13.5" font-weight="700">&#x27;\t&#x27;</text>
+<text class="ta mono" x="134" y="120.5" font-size="13.5" font-weight="700" text-anchor="end">9</text>
+<text class="tm mono" x="174" y="120.5" font-size="12" text-anchor="end">09</text>
+<text class="t" x="190" y="120" font-size="12">tab</text>
+<text class="t mono" x="32" y="147.5" font-size="13.5" font-weight="700">&#x27;\n&#x27;</text>
+<text class="ta mono" x="134" y="147.5" font-size="13.5" font-weight="700" text-anchor="end">10</text>
+<text class="tm mono" x="174" y="147.5" font-size="12" text-anchor="end">0a</text>
+<text class="t" x="190" y="147" font-size="12">newline</text>
+<rect class="fs" x="24" y="158" width="282" height="23" rx="4"/>
+<text class="t mono" x="32" y="174.5" font-size="13.5" font-weight="700">&#x27;\v&#x27;</text>
+<text class="ta mono" x="134" y="174.5" font-size="13.5" font-weight="700" text-anchor="end">11</text>
+<text class="tm mono" x="174" y="174.5" font-size="12" text-anchor="end">0b</text>
+<text class="t" x="190" y="174" font-size="12">vertical tab</text>
+<text class="t mono" x="32" y="201.5" font-size="13.5" font-weight="700">&#x27;\f&#x27;</text>
+<text class="ta mono" x="134" y="201.5" font-size="13.5" font-weight="700" text-anchor="end">12</text>
+<text class="tm mono" x="174" y="201.5" font-size="12" text-anchor="end">0c</text>
+<text class="t" x="190" y="201" font-size="12">form feed</text>
+<rect class="fs" x="24" y="212" width="282" height="23" rx="4"/>
+<text class="t mono" x="32" y="228.5" font-size="13.5" font-weight="700">&#x27;\r&#x27;</text>
+<text class="ta mono" x="134" y="228.5" font-size="13.5" font-weight="700" text-anchor="end">13</text>
+<text class="tm mono" x="174" y="228.5" font-size="12" text-anchor="end">0d</text>
+<text class="t" x="190" y="228" font-size="12">carriage return</text>
+<text class="tm" x="342" y="42" font-size="11">written</text>
+<text class="tm" x="444" y="42" font-size="11" text-anchor="end">byte</text>
+<text class="tm" x="484" y="42" font-size="11" text-anchor="end">hex</text>
+<text class="tm" x="500" y="42" font-size="11">what it is</text>
+<rect class="fs" x="334" y="50" width="282" height="23" rx="4"/>
+<text class="t mono" x="342" y="66.5" font-size="13.5" font-weight="700">&#x27;\\&#x27;</text>
+<text class="ta mono" x="444" y="66.5" font-size="13.5" font-weight="700" text-anchor="end">92</text>
+<text class="tm mono" x="484" y="66.5" font-size="12" text-anchor="end">5c</text>
+<text class="t" x="500" y="66" font-size="12">backslash</text>
+<text class="t mono" x="342" y="93.5" font-size="13.5" font-weight="700">&#x27;\&#x27;&#x27;</text>
+<text class="ta mono" x="444" y="93.5" font-size="13.5" font-weight="700" text-anchor="end">39</text>
+<text class="tm mono" x="484" y="93.5" font-size="12" text-anchor="end">27</text>
+<text class="t" x="500" y="93" font-size="12">single quote</text>
+<rect class="fs" x="334" y="104" width="282" height="23" rx="4"/>
+<text class="t mono" x="342" y="120.5" font-size="13.5" font-weight="700">&#x27;\&quot;&#x27;</text>
+<text class="ta mono" x="444" y="120.5" font-size="13.5" font-weight="700" text-anchor="end">34</text>
+<text class="tm mono" x="484" y="120.5" font-size="12" text-anchor="end">22</text>
+<text class="t" x="500" y="120" font-size="12">double quote</text>
+<text class="t mono" x="342" y="147.5" font-size="13.5" font-weight="700">&#x27;\?&#x27;</text>
+<text class="ta mono" x="444" y="147.5" font-size="13.5" font-weight="700" text-anchor="end">63</text>
+<text class="tm mono" x="484" y="147.5" font-size="12" text-anchor="end">3f</text>
+<text class="t" x="500" y="147" font-size="12">question mark</text>
+<rect class="fs" x="334" y="158" width="282" height="23" rx="4"/>
+<text class="t mono" x="342" y="174.5" font-size="13.5" font-weight="700">&#x27;\0&#x27;</text>
+<text class="ta mono" x="444" y="174.5" font-size="13.5" font-weight="700" text-anchor="end">0</text>
+<text class="tm mono" x="484" y="174.5" font-size="12" text-anchor="end">00</text>
+<text class="t" x="500" y="174" font-size="12">octal, one digit</text>
+<text class="t mono" x="342" y="201.5" font-size="13.5" font-weight="700">&#x27;\101&#x27;</text>
+<text class="ta mono" x="444" y="201.5" font-size="13.5" font-weight="700" text-anchor="end">65</text>
+<text class="tm mono" x="484" y="201.5" font-size="12" text-anchor="end">41</text>
+<text class="t" x="500" y="201" font-size="12">octal, three digits</text>
+<rect class="fs" x="334" y="212" width="282" height="23" rx="4"/>
+<text class="t mono" x="342" y="228.5" font-size="13.5" font-weight="700">&#x27;\x41&#x27;</text>
+<text class="ta mono" x="444" y="228.5" font-size="13.5" font-weight="700" text-anchor="end">65</text>
+<text class="tm mono" x="484" y="228.5" font-size="12" text-anchor="end">41</text>
+<text class="t" x="500" y="228" font-size="12">hexadecimal</text>
+<rect class="m f" x="24" y="251" width="592" height="28" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="34" y="270" font-size="13.5" font-weight="700">&#x27;\e&#x27;</text>
+<text class="tm" x="84" y="270" font-size="12">anything else is refused: ./cc says unknown escape sequence, at the backslash</text>
+</svg>

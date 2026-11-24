@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>6 % 4 &lt;&lt; 2 | 1: three levels of the ladder in one tree</title>
+<defs><marker id="f0204b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0204b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0204b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="252.8" y="30" font-size="16" font-weight="700">6 % 4 &lt;&lt; 2 | 1</text>
+<line class="s" x1="184.91" y1="217.43" x2="161.09" y2="250.57" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="207.09" y1="217.43" x2="230.91" y2="250.57" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="251.07" y1="150.92" x2="209.93" y2="189.08" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="278.93" y1="150.92" x2="320.07" y2="189.08" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="330.63" y1="85.82" x2="279.87" y2="126.18" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="360.37" y1="85.82" x2="411.13" y2="126.18" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="150" cy="266" r="19" stroke-width="1.5"/>
+<text class="t mono" x="150" y="271.4" font-size="15" font-weight="600" text-anchor="middle">6</text>
+<circle class="s f" cx="242" cy="266" r="19" stroke-width="1.5"/>
+<text class="t mono" x="242" y="271.4" font-size="15" font-weight="600" text-anchor="middle">4</text>
+<circle class="s f" cx="196" cy="202" r="19" stroke-width="1.5"/>
+<text class="t mono" x="196" y="207.4" font-size="15" font-weight="600" text-anchor="middle">%</text>
+<circle class="s f" cx="334" cy="202" r="19" stroke-width="1.5"/>
+<text class="t mono" x="334" y="207.4" font-size="15" font-weight="600" text-anchor="middle">2</text>
+<circle class="s f" cx="265" cy="138" r="19" stroke-width="1.5"/>
+<text class="t mono" x="265" y="143.4" font-size="15" font-weight="600" text-anchor="middle">&lt;&lt;</text>
+<circle class="s f" cx="426" cy="138" r="19" stroke-width="1.5"/>
+<text class="t mono" x="426" y="143.4" font-size="15" font-weight="600" text-anchor="middle">1</text>
+<circle class="s f" cx="345.5" cy="74" r="19" stroke-width="1.5"/>
+<text class="t mono" x="345.5" y="79.4" font-size="15" font-weight="600" text-anchor="middle">|</text>
+<text class="ta mono" x="224" y="207" font-size="13" font-weight="700">mul</text>
+<text class="ta mono" x="293" y="143" font-size="13" font-weight="700">shift</text>
+<text class="ta mono" x="373.5" y="79" font-size="13" font-weight="700">bitor</text>
+<text class="tm" x="24" y="316" font-size="11.5">Looser levels sit higher in the tree: | is the last operator done, and ./ccrun gives 9.</text>
+</svg>

@@ -4,18 +4,19 @@
 <path class="s f" d="M24 72 H58 L68 82 V120 H24 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <path class="s" d="M58 72 V82 H68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <text class="t mono" x="46" y="101" font-size="15" font-weight="700" text-anchor="middle">42</text>
-<line class="s" x1="70" y1="96" x2="98" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
-<rect class="s f" x="100" y="76" width="72" height="40" rx="8" stroke-width="1.5"/>
-<text class="t" x="136" y="93" font-size="11.5" font-weight="600" text-anchor="middle">your</text>
-<text class="t" x="136" y="107" font-size="11.5" font-weight="600" text-anchor="middle">compiler</text>
-<line class="s" x1="174" y1="96" x2="202" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
-<rect class="s fs" x="204" y="70" width="88" height="52" rx="6" stroke-width="1.5"/>
-<text class="t mono" x="214" y="87" font-size="10.5">main:</text>
-<text class="t mono" x="214" y="101" font-size="10.5"><tspan x="226.6">li a0, 42</tspan></text>
-<text class="t mono" x="214" y="115" font-size="10.5"><tspan x="226.6">ret</tspan></text>
-<line class="s" x1="294" y1="96" x2="322" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
-<rect class="s f" x="324" y="80" width="58" height="32" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="353" y="100" font-size="11.5" text-anchor="middle">as + ld</text>
+<line class="s" x1="70" y1="96" x2="92" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
+<rect class="s f" x="94" y="76" width="72" height="40" rx="8" stroke-width="1.5"/>
+<text class="t" x="130" y="93" font-size="11.5" font-weight="600" text-anchor="middle">your</text>
+<text class="t" x="130" y="107" font-size="11.5" font-weight="600" text-anchor="middle">compiler</text>
+<line class="s" x1="168" y1="96" x2="186" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
+<rect class="s fs" x="188" y="62" width="108" height="68" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="196" y="82.0" font-size="10.5"><tspan x="208.6">.globl main</tspan></text>
+<text class="t mono" x="196" y="95.5" font-size="10.5">main:</text>
+<text class="t mono" x="196" y="109.0" font-size="10.5"><tspan x="208.6">li a0, 42</tspan></text>
+<text class="t mono" x="196" y="122.5" font-size="10.5"><tspan x="208.6">ret</tspan></text>
+<line class="s" x1="298" y1="96" x2="318" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
+<rect class="s f" x="320" y="80" width="62" height="32" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="351" y="100" font-size="11.5" text-anchor="middle">as + ld</text>
 <line class="s" x1="384" y1="96" x2="412" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
 <rect class="s f" x="414" y="70" width="80" height="52" rx="8" stroke-width="1.5"/>
 <text class="t" x="454" y="88" font-size="11" font-weight="600" text-anchor="middle">bare RISC-V</text>

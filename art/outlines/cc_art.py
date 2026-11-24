@@ -6,6 +6,21 @@ Writes, under outlines/cc/:
     icon.svg        20x20 currentColor line icon for the top bar
     NN/cover.svg    640x300 teaching diagram for module NN (00 to 13; 10 to 13 are the extensions)
     NN/icon.svg     20x20 currentColor line icon for module NN
+and the same two module files into tracks/cc/lessons/NN-*/ for every module that has a lessons
+folder there (00 to 02 now), so a built module's art and the outline's never drift apart.
+The track's own art.svg and icon.svg (tracks/cc/) are copies the track keeps; not written here.
+
+The covers of the built modules say only what the built compiler does: each is drawn from a run
+of the project as the site shows it at a lesson (./learn files cc --at NN.LL, make -s), and what
+it prints is asserted, so a change to the track that moves it stops this script:
+    00  ./cc try.c at 00.01: the four lines it writes, drawn as written; ./ccrun try.c at 00.02
+        exits 42; ./same try.c at 00.03 prints "same: status 42"
+    01  ./cc --tokens at 01.05 on the cover's line: each token's kind and column; the error line's
+        two lines are ./cc's standard error at 01.05, byte for byte
+    02  ./cc --tree and ./cc at 02.03 on 1 + 2 * 3: the tree, the five instructions, and the
+        registers after the third (the deepest point), read from the li lines
+Drawing 00 to 02 needs the RISC-V toolchain and QEMU (for ccrun and same); without them the
+script stops with one line. The other modules need neither.
 
 Covers style themselves only through the .art classes in harness/web/app.css:
     s m a        stroke: foreground, muted, accent
@@ -33,19 +48,59 @@ The Art class is the one from research_art.py, repeated so this file stands alon
         write every file (or only modules NN), then check each one is ASCII and survives
         harness/web/art.py's sanitizer unchanged
 """
+import functools
+import glob
 import html
 import os
+import shutil
+import subprocess
 import sys
+import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 OUT = os.path.join(ROOT, "outlines", "cc")
+LESSONS = os.path.join(ROOT, "tracks", "cc", "lessons")
 SW = 'stroke-width="1.5"'
 EM = 0.6            # the monospace advance, in em (Geist Mono, SF Mono, Menlo)
 
 
 def esc(s):
     return html.escape(s, quote=True)
+
+
+# =================================================================== the built track, run
+
+_TMP = []
+
+
+@functools.lru_cache(None)
+def project(at):
+    """The cc project as the site shows it at lesson `at`, written by ./learn files and built."""
+    if not _TMP:
+        _TMP.append(tempfile.mkdtemp(prefix="cc-covers-"))
+    d = os.path.join(_TMP[0], at)
+    subprocess.run([os.path.join(ROOT, "learn"), "files", "cc", "--at", at, d], check=True, stdout=subprocess.DEVNULL)
+    r = subprocess.run(["make", "-s"], cwd=d, capture_output=True, text=True)
+    if r.returncode:
+        raise SystemExit(f"cc_art: make failed at {at}: {r.stderr.strip()}")
+    return d
+
+
+def run(at, args, src=None, name="t.c"):
+    """Run args (./cc, ./ccrun, ./same and their arguments) in the project at `at`, src written to
+    name first: (stdout, stderr, status)."""
+    if args[0] in ("./ccrun", "./same"):
+        if not any(shutil.which(p + "gcc") for p in ("riscv64-elf-", "riscv64-unknown-elf-", "riscv64-linux-gnu-")):
+            raise SystemExit("cc_art: covers 00 to 02 need the RISC-V toolchain (riscv64-elf-gcc): install it")
+        if not shutil.which("qemu-system-riscv64"):
+            raise SystemExit("cc_art: covers 00 to 02 need qemu-system-riscv64: install QEMU")
+    d = project(at)
+    if src is not None:
+        with open(os.path.join(d, name), "w") as f:
+            f.write(src)
+    r = subprocess.run(args, cwd=d, capture_output=True, text=True)
+    return r.stdout, r.stderr, r.returncode
 
 
 class Art:
@@ -201,22 +256,31 @@ TRACK_ICON = ('<path d="M6.5 3C5 3 4.5 3.75 4.5 5.25V8c0 1.25-.75 2-2 2 1.25 0 2
 # =================================================================== 00 the smallest compiler
 
 def cc_smallest():
+    src = "42\n"
+    out, err, st = run("00.01", ["./cc", "try.c"])
+    lines = out.splitlines()
+    assert st == 0 and lines == ["  .globl main", "main:", "  li a0, 42", "  ret"], (out, err)
+    assert run("00.02", ["./ccrun", "try.c"])[2] == 42
+    same = run("00.03", ["./same", "try.c"])
+    assert same[0] == "same: status 42\n" and same[2] == 0, same
+    with open(os.path.join(project("00.01"), "try.c")) as f:
+        assert f.read() == src
     a = Art("c00", "One number becomes a running program, and gcc must agree")
     ty, by = 96, 204
     # top lane: your compiler, and every step after it
     page(a, 24, ty - 24, 44, 48, "s f")
-    a.text(46, ty + 5, "42", size=15, anchor="middle", weight=700, mono=True)
-    a.line(70, ty, 98, ty, arrow=True)
-    a.box(100, ty - 20, 72, 40, "s f", rx=8)
-    a.text(136, ty - 3, "your", size=11.5, anchor="middle", weight=600)
-    a.text(136, ty + 11, "compiler", size=11.5, anchor="middle", weight=600)
-    a.line(174, ty, 202, ty, arrow=True)
-    a.box(204, ty - 26, 88, 52, "s fs", rx=6)
-    for k, l in enumerate(["main:", "  li a0, 42", "  ret"]):
-        code(a, 214, ty - 9 + k * 14, l, 10.5)
-    a.line(294, ty, 322, ty, arrow=True)
-    a.box(324, ty - 16, 58, 32, "s f", rx=8)
-    a.text(353, ty + 4, "as + ld", size=11.5, anchor="middle", mono=True)
+    a.text(46, ty + 5, src.strip(), size=15, anchor="middle", weight=700, mono=True)
+    a.line(70, ty, 92, ty, arrow=True)
+    a.box(94, ty - 20, 72, 40, "s f", rx=8)
+    a.text(130, ty - 3, "your", size=11.5, anchor="middle", weight=600)
+    a.text(130, ty + 11, "compiler", size=11.5, anchor="middle", weight=600)
+    a.line(168, ty, 186, ty, arrow=True)
+    a.box(188, ty - 34, 108, 68, "s fs", rx=6)
+    for k, l in enumerate(lines):
+        code(a, 196, ty - 14 + k * 13.5, l, 10.5)
+    a.line(298, ty, 318, ty, arrow=True)
+    a.box(320, ty - 16, 62, 32, "s f", rx=8)
+    a.text(351, ty + 4, "as + ld", size=11.5, anchor="middle", mono=True)
     a.line(384, ty, 412, ty, arrow=True)
     a.box(414, ty - 26, 80, 52, "s f", rx=8)
     for k, l in enumerate(["bare RISC-V", "machine", "in QEMU"]):
@@ -226,7 +290,7 @@ def cc_smallest():
     a.text(570, ty + 4, "exit status 42", "ta", 11, "middle", 600)
     # bottom lane: the same source, built by gcc for the same machine
     page(a, 24, by - 24, 44, 48, "m f", dash=True)
-    a.text(46, by + 5, "42", "tm", 15, "middle", 700, mono=True)
+    a.text(46, by + 5, src.strip(), "tm", 15, "middle", 700, mono=True)
     a.line(70, by, 164, by, "m", arrow=True, dash=True)
     a.box(166, by - 16, 152, 32, "m f", rx=8, dash=True)
     a.text(242, by + 4, "gcc, for the same machine", "tm", 11, "middle")
@@ -250,6 +314,14 @@ def cc_smallest():
 def cc_tokens():
     a = Art("c01", "Characters grouped into tokens, and an error that points at its column")
     src = "x = y1 >= 42; // n"
+    out, err, st = run("01.05", ["./cc", "--tokens", "t.c"], src + "\n")
+    assert st == 0, err
+    tokens = []
+    for ln in out.splitlines():
+        pos, kind, *rest = ln.split(" ")
+        if kind != "eof":
+            tokens.append((rest[0], int(pos.split(":")[1]) - 1, kind))
+    assert [t[0] for t in tokens] == ["x", "=", "y1", ">=", "42", ";"], out   # the comment is skipped
     n, w = len(src), 30
     x0 = (640 - n * w) / 2
     cy, ch = 50, 30
@@ -258,8 +330,6 @@ def cc_tokens():
         a.box(X(i), cy, w, ch, "s f", rx=0)
         if chr_ != " ":
             a.text(X(i) + w / 2, cy + 20, chr_, size=14, anchor="middle", mono=True)
-    tokens = [("x", 0, "ident"), ("=", 2, "punct"), ("y1", 4, "ident"), (">=", 7, "punct"), ("42", 10, "num"),
-              (";", 12, "punct")]
     for t, i, kind in tokens:
         assert src[i:i + len(t)] == t
         j = i + len(t)
@@ -281,12 +351,13 @@ def cc_tokens():
     a.text((X(skipped[-1][0]) + X(n)) / 2, cy - 18, "skipped", "tm", 10.5, "middle")
     gx = (X(7) + X(9)) / 2
     a.text(gx, cy + ch + 82, "longest match: one token, not > then =", "ta", 11, "middle", 600)
-    # the error, as the compiler prints it: the caret under the column of the @
-    err = "t.c:1: x = 1 @ 2;"
+    # the error, as the compiler prints it at 01.05: the caret under the column of the @
+    out, msg, st = run("01.05", ["./cc", "t.c"], "x = 1 @ 2;\n")
+    assert st == 1 and not out, (out, msg)
+    err, caret = msg.splitlines()
     col = err.index("@")
-    assert col == 13, col
+    assert err == "t.c:1: x = 1 @ 2;" and caret == " " * col + "^ invalid token", msg
     size = 12
-    caret = " " * col + "^ invalid token"
     wcard = max(len(err), len(caret)) * cw(size) + 28
     ex = round(320 - wcard / 2, 1)
     a.box(ex, 200, round(wcard, 1), 58, "s fs", rx=8)
@@ -299,6 +370,15 @@ def cc_tokens():
 
 def cc_expr():
     a = Art("c02", "1 + 2 * 3: tokens, the tree, and code that uses registers as a stack")
+    tree, _, st = run("02.03", ["./cc", "--tree", "t.c"], "1 + 2 * 3\n")
+    assert st == 0 and tree.splitlines() == ["+", "  num 1", "  *", "    num 2", "    num 3"], tree
+    asm, _, st = run("02.03", ["./cc", "t.c"], "1 + 2 * 3\n")
+    body = [l.strip() for l in asm.splitlines()[2:-2]]
+    assert st == 0 and asm.splitlines()[-2:] == ["  mv a0, t0", "  ret"], asm
+    lines = ["li t0, 1", "li t1, 2", "li t2, 3", "mul t1, t1, t2", "add t0, t0, t1"]
+    assert body == lines, body
+    deepest = [(l.split()[1].rstrip(","), l.split()[2]) for l in body[:3]]     # after the third li
+    assert deepest == [("t0", "1"), ("t1", "2"), ("t2", "3")], deepest
     # tokens
     for k, t in enumerate("1+2*3"):
         cell(a, 24 + k * 27, 127, 22, 26, t, "s fs", "t", 13, rx=5)
@@ -319,11 +399,10 @@ def cc_expr():
     a.text(326, 267, "so it sits deeper", "ta", 11, "middle", 600)
     a.line(400, 140, 426, 140, "m", arrow=True)
     # the code, and the registers at its deepest point
-    lines = ["li t0, 1", "li t1, 2", "li t2, 3", "mul t1, t1, t2", "add t0, t0, t1"]
     a.box(430, 82, 116, 116, "s fs", rx=8)
     for k, l in enumerate(lines):
         code(a, 442, 104 + k * 20, l, 11.5)
-    for k, (reg, v) in enumerate((("t0", "1"), ("t1", "2"), ("t2", "3"))):
+    for k, (reg, v) in enumerate(deepest):
         cell(a, 576, 101 + k * 26, 40, 26, v, "s f", "t", 12, rx=0)
         a.text(568, 118 + k * 26, reg, "tm", 11, "end", mono=True)
     a.text(616, 202, "deepest point:", "tm", 10.5, "end")
@@ -922,17 +1001,30 @@ def check(out):
     return bad
 
 
+def built(mid):
+    """The lessons folder of module mid in tracks/cc, or None while the module is not built."""
+    found = sorted(p for p in glob.glob(os.path.join(LESSONS, f"{mid}-*")) if os.path.isdir(p))
+    return found[0] if found else None
+
+
 def main(argv):
     out = files(set(argv) or None)
+    paths = {}
     for rel, text in out.items():
-        path = os.path.join(OUT, rel)
+        paths[os.path.join(OUT, rel)] = text
+        if "/" in rel:
+            mid, name = rel.split("/")
+            if built(mid):                       # a built module's copy, so the two never drift
+                paths[os.path.join(built(mid), name)] = text
+    for path, text in paths.items():
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w") as f:
             f.write(text)
     bad = check(out)
     for b in bad:
         print("problem:", b)
-    print("wrote", len(out), "files under", os.path.relpath(OUT, ROOT))
+    print("wrote", len(out), "files under", os.path.relpath(OUT, ROOT), "and", len(paths) - len(out), "under",
+          os.path.relpath(LESSONS, ROOT))
     return 1 if bad else 0
 
 

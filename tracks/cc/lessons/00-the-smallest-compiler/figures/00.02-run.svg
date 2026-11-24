@@ -1,0 +1,273 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 404" fill="none">
+<title>From the first instruction to QEMU&#x27;s exit, one step at a time</title>
+<defs><marker id="f0002b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0002b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0002b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="24" y="18" font-size="11.5">riscv64-elf-objdump -d prog.elf</text>
+<text class="t mono" x="24" y="46" font-size="12" font-weight="700">_start:</text>
+<text class="t mono" x="24" y="314.5" font-size="12" font-weight="700">main:</text>
+<rect class="m" x="18" y="30" width="356" height="331" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="38" y="64" font-size="11">80000000</text>
+<text class="t mono" x="114" y="64" font-size="12"><tspan x="114">auipc</tspan><tspan x="171.6">sp,0x10</tspan></text>
+<text class="tm mono" x="38" y="81.5" font-size="11">80000004</text>
+<text class="t mono" x="114" y="81.5" font-size="12"><tspan x="114">addi</tspan><tspan x="171.6">sp,sp,64</tspan></text>
+<text class="tm mono" x="38" y="99" font-size="11">80000008</text>
+<text class="t mono" x="114" y="99" font-size="12"><tspan x="114">jal</tspan><tspan x="171.6">80000038 &lt;main&gt;</tspan></text>
+<text class="tm mono" x="38" y="116.5" font-size="11">8000000c</text>
+<text class="t mono" x="114" y="116.5" font-size="12"><tspan x="114">zext.b</tspan><tspan x="171.6">a0,a0</tspan></text>
+<text class="tm mono" x="38" y="134" font-size="11">80000010</text>
+<text class="t mono" x="114" y="134" font-size="12"><tspan x="114">lui</tspan><tspan x="171.6">t0,0x5</tspan></text>
+<text class="tm mono" x="38" y="151.5" font-size="11">80000014</text>
+<text class="t mono" x="114" y="151.5" font-size="12"><tspan x="114">addiw</tspan><tspan x="171.6">t0,t0,1365</tspan></text>
+<text class="tm mono" x="38" y="169" font-size="11">80000018</text>
+<text class="t mono" x="114" y="169" font-size="12"><tspan x="114">beqz</tspan><tspan x="171.6">a0,8000002c &lt;_start+0x2c&gt;</tspan></text>
+<text class="tm mono" x="38" y="186.5" font-size="11">8000001c</text>
+<text class="t mono" x="114" y="186.5" font-size="12"><tspan x="114">slli</tspan><tspan x="171.6">a0,a0,0x10</tspan></text>
+<text class="tm mono" x="38" y="204" font-size="11">80000020</text>
+<text class="t mono" x="114" y="204" font-size="12"><tspan x="114">lui</tspan><tspan x="171.6">t1,0x3</tspan></text>
+<text class="tm mono" x="38" y="221.5" font-size="11">80000024</text>
+<text class="t mono" x="114" y="221.5" font-size="12"><tspan x="114">addiw</tspan><tspan x="171.6">t1,t1,819</tspan></text>
+<text class="tm mono" x="38" y="239" font-size="11">80000028</text>
+<text class="t mono" x="114" y="239" font-size="12"><tspan x="114">or</tspan><tspan x="171.6">t0,a0,t1</tspan></text>
+<text class="tm mono" x="38" y="256.5" font-size="11">8000002c</text>
+<text class="t mono" x="114" y="256.5" font-size="12"><tspan x="114">lui</tspan><tspan x="171.6">t1,0x100</tspan></text>
+<text class="tm mono" x="38" y="274" font-size="11">80000030</text>
+<text class="t mono" x="114" y="274" font-size="12"><tspan x="114">sw</tspan><tspan x="171.6">t0,0(t1)</tspan></text>
+<text class="tm mono" x="38" y="291.5" font-size="11">80000034</text>
+<text class="t mono" x="114" y="291.5" font-size="12"><tspan x="114">j</tspan><tspan x="171.6">80000034 &lt;_start+0x34&gt;</tspan></text>
+<text class="tm mono" x="38" y="332.5" font-size="11">80000038</text>
+<text class="t mono" x="114" y="332.5" font-size="12"><tspan x="114">li</tspan><tspan x="171.6">a0,42</tspan></text>
+<text class="tm mono" x="38" y="350" font-size="11">8000003c</text>
+<text class="t mono" x="114" y="350" font-size="12">ret</text>
+<text class="tm" x="410" y="28" font-size="11.5">registers</text>
+<rect class="s f" x="410" y="40" width="206" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="420" y="56.5" font-size="12.5">pc</text>
+<rect class="s f" x="410" y="68" width="206" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="420" y="84.5" font-size="12.5">sp</text>
+<rect class="s f" x="410" y="96" width="206" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="420" y="112.5" font-size="12.5">ra</text>
+<rect class="s f" x="410" y="124" width="206" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="420" y="140.5" font-size="12.5">a0</text>
+<rect class="s f" x="410" y="152" width="206" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="420" y="168.5" font-size="12.5">t0</text>
+<rect class="s f" x="410" y="180" width="206" height="24" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="420" y="196.5" font-size="12.5">t1</text>
+<text class="tm" x="410" y="222" font-size="11.5">the test device, 0x100000</text>
+<rect class="s f" x="410" y="230" width="206" height="30" rx="4" stroke-width="1.5"/>
+<text class="tm" x="410" y="280" font-size="11.5">the shell</text>
+<rect class="s fs" x="410" y="288" width="206" height="46" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="420" y="306" font-size="12">$ echo $?</text>
+<g class="step"><title>QEMU's own reset code, 6 instructions at 0x1000, jumps to 0x80000000: _start's first instruction, the first of the program. No register the program uses has been set yet.</title>
+<text class="tm" x="24" y="377" font-size="11">before this: QEMU&#x27;s reset code at 0x1000 (6 instructions, not shown) jumped here</text>
+<rect class="a af" x="411" y="41" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="56.5" font-size="12.5">pc</text>
+<text class="ta mono" x="462" y="56.5" font-size="12.5" font-weight="700">0x80000000</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">-</text>
+</g>
+<g class="step"><title>auipc: sp is this instruction's address plus 0x10 &lt;&lt; 12, 0x80010000.</title>
+<rect class="a af" x="24" y="51.5" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="64" font-size="11">80000000</text>
+<text class="ta mono" x="114" y="64" font-size="12"><tspan x="114">auipc</tspan><tspan x="171.6">sp,0x10</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x80000004</text>
+<rect class="a af" x="411" y="69" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="84.5" font-size="12.5">sp</text>
+<text class="ta mono" x="462" y="84.5" font-size="12.5" font-weight="700">0x80010000</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">-</text>
+</g>
+<g class="step"><title>addi: sp goes up by 64 to 0x80010040, stack_top, the top of the stack. The two make start.S's la sp, stack_top.</title>
+<rect class="a af" x="24" y="69" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="81.5" font-size="11">80000004</text>
+<text class="ta mono" x="114" y="81.5" font-size="12"><tspan x="114">addi</tspan><tspan x="171.6">sp,sp,64</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x80000008</text>
+<rect class="a af" x="411" y="69" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="84.5" font-size="12.5">sp</text>
+<text class="ta mono" x="462" y="84.5" font-size="12.5" font-weight="700">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">-</text>
+</g>
+<g class="step"><title>jal, which call main became: ra keeps the return address, 0x8000000c, and pc goes to main at 0x80000038.</title>
+<rect class="a af" x="24" y="86.5" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="99" font-size="11">80000008</text>
+<text class="ta mono" x="114" y="99" font-size="12"><tspan x="114">jal</tspan><tspan x="171.6">80000038 &lt;main&gt;</tspan></text>
+<rect class="a af" x="411" y="41" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="56.5" font-size="12.5">pc</text>
+<text class="ta mono" x="462" y="56.5" font-size="12.5" font-weight="700">0x80000038</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<rect class="a af" x="411" y="97" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="112.5" font-size="12.5">ra</text>
+<text class="ta mono" x="462" y="112.5" font-size="12.5" font-weight="700">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">-</text>
+</g>
+<g class="step"><title>li a0, 42: the compiler's one line of work. main's result is in a0.</title>
+<rect class="a af" x="24" y="320" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="332.5" font-size="11">80000038</text>
+<text class="ta mono" x="114" y="332.5" font-size="12"><tspan x="114">li</tspan><tspan x="171.6">a0,42</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x8000003c</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<rect class="a af" x="411" y="125" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="140.5" font-size="12.5">a0</text>
+<text class="ta mono" x="462" y="140.5" font-size="12.5" font-weight="700">42</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">-</text>
+</g>
+<g class="step"><title>ret: pc goes back to ra, 0x8000000c, the instruction after the call.</title>
+<rect class="a af" x="24" y="337.5" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="350" font-size="11">8000003c</text>
+<text class="ta mono" x="114" y="350" font-size="12">ret</text>
+<rect class="a af" x="411" y="41" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="56.5" font-size="12.5">pc</text>
+<text class="ta mono" x="462" y="56.5" font-size="12.5" font-weight="700">0x8000000c</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">42</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">-</text>
+</g>
+<g class="step"><title>andi a0, a0, 0xff, shown as zext.b: only the low 8 bits of main's result count. 42 stays 42.</title>
+<rect class="a af" x="24" y="104" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="116.5" font-size="11">8000000c</text>
+<text class="ta mono" x="114" y="116.5" font-size="12"><tspan x="114">zext.b</tspan><tspan x="171.6">a0,a0</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x80000010</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">42</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">-</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">-</text>
+</g>
+<g class="step"><title>lui: t0 = 0x5000, the upper bits of a constant.</title>
+<rect class="a af" x="24" y="121.5" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="134" font-size="11">80000010</text>
+<text class="ta mono" x="114" y="134" font-size="12"><tspan x="114">lui</tspan><tspan x="171.6">t0,0x5</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x80000014</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">42</text>
+<rect class="a af" x="411" y="153" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="168.5" font-size="12.5">t0</text>
+<text class="ta mono" x="462" y="168.5" font-size="12.5" font-weight="700">0x5000</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">-</text>
+</g>
+<g class="step"><title>addiw: t0 = 0x5555. With the lui before it, this is li t0, 0x5555.</title>
+<rect class="a af" x="24" y="139" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="151.5" font-size="11">80000014</text>
+<text class="ta mono" x="114" y="151.5" font-size="12"><tspan x="114">addiw</tspan><tspan x="171.6">t0,t0,1365</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x80000018</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">42</text>
+<rect class="a af" x="411" y="153" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="168.5" font-size="12.5">t0</text>
+<text class="ta mono" x="462" y="168.5" font-size="12.5" font-weight="700">0x5555</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">-</text>
+</g>
+<g class="step"><title>beqz: a0 is not 0, so no jump: the status is not 0, and start.S builds a word that says so.</title>
+<rect class="a af" x="24" y="156.5" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="169" font-size="11">80000018</text>
+<text class="ta mono" x="114" y="169" font-size="12"><tspan x="114">beqz</tspan><tspan x="171.6">a0,8000002c &lt;_start+0x2c&gt;</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x8000001c</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">42</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">0x5555</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">-</text>
+</g>
+<g class="step"><title>slli: a0 shifted 16 bits left, 0x2a0000: the status moves to the word's upper half.</title>
+<rect class="a af" x="24" y="174" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="186.5" font-size="11">8000001c</text>
+<text class="ta mono" x="114" y="186.5" font-size="12"><tspan x="114">slli</tspan><tspan x="171.6">a0,a0,0x10</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x80000020</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<rect class="a af" x="411" y="125" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="140.5" font-size="12.5">a0</text>
+<text class="ta mono" x="462" y="140.5" font-size="12.5" font-weight="700">0x2a0000</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">0x5555</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">-</text>
+</g>
+<g class="step"><title>lui: t1 = 0x3000, the upper bits of a constant.</title>
+<rect class="a af" x="24" y="191.5" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="204" font-size="11">80000020</text>
+<text class="ta mono" x="114" y="204" font-size="12"><tspan x="114">lui</tspan><tspan x="171.6">t1,0x3</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x80000024</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">0x2a0000</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">0x5555</text>
+<rect class="a af" x="411" y="181" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="196.5" font-size="12.5">t1</text>
+<text class="ta mono" x="462" y="196.5" font-size="12.5" font-weight="700">0x3000</text>
+</g>
+<g class="step"><title>addiw: t1 = 0x3333. With the lui before it, this is li t1, 0x3333.</title>
+<rect class="a af" x="24" y="209" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="221.5" font-size="11">80000024</text>
+<text class="ta mono" x="114" y="221.5" font-size="12"><tspan x="114">addiw</tspan><tspan x="171.6">t1,t1,819</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x80000028</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">0x2a0000</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">0x5555</text>
+<rect class="a af" x="411" y="181" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="196.5" font-size="12.5">t1</text>
+<text class="ta mono" x="462" y="196.5" font-size="12.5" font-weight="700">0x3333</text>
+</g>
+<g class="step"><title>or: t0 = a0 | t1 = 0x2a3333, the status over 0x3333.</title>
+<rect class="a af" x="24" y="226.5" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="239" font-size="11">80000028</text>
+<text class="ta mono" x="114" y="239" font-size="12"><tspan x="114">or</tspan><tspan x="171.6">t0,a0,t1</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x8000002c</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">0x2a0000</text>
+<rect class="a af" x="411" y="153" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="168.5" font-size="12.5">t0</text>
+<text class="ta mono" x="462" y="168.5" font-size="12.5" font-weight="700">0x2a3333</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">0x3333</text>
+</g>
+<g class="step"><title>lui: t1 = 0x100000, the test device's address (li t1, 0x100000 is this one instruction).</title>
+<rect class="a af" x="24" y="244" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="256.5" font-size="11">8000002c</text>
+<text class="ta mono" x="114" y="256.5" font-size="12"><tspan x="114">lui</tspan><tspan x="171.6">t1,0x100</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x80000030</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">0x2a0000</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">0x2a3333</text>
+<rect class="a af" x="411" y="181" width="204" height="22" rx="3"/>
+<text class="ta mono" x="420" y="196.5" font-size="12.5">t1</text>
+<text class="ta mono" x="462" y="196.5" font-size="12.5" font-weight="700">0x100000</text>
+</g>
+<g class="step"><title>sw: the word 0x2a3333 is stored at 0x100000, the test device. QEMU reads it: 0x3333 in the low half says stop, failing, and the upper half, 0x2a, is the code to exit with.</title>
+<rect class="a af" x="24" y="261.5" width="344" height="17.5" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="274" font-size="11">80000030</text>
+<text class="ta mono" x="114" y="274" font-size="12"><tspan x="114">sw</tspan><tspan x="171.6">t0,0(t1)</tspan></text>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x80000034</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">0x2a0000</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">0x2a3333</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">0x100000</text>
+<rect class="a af" x="411" y="231" width="204" height="28" rx="3"/>
+<text class="ta mono" x="420" y="249.5" font-size="12.5" font-weight="700">0x2a3333 written</text>
+</g>
+<g class="step"><title>QEMU has exited with code 42: the shell's $? is 42. The loop at the end of _start never runs.</title>
+<text class="t mono" x="462" y="56.5" font-size="12.5">0x80000034</text>
+<text class="t mono" x="462" y="84.5" font-size="12.5">0x80010040</text>
+<text class="t mono" x="462" y="112.5" font-size="12.5">0x8000000c</text>
+<text class="t mono" x="462" y="140.5" font-size="12.5">0x2a0000</text>
+<text class="t mono" x="462" y="168.5" font-size="12.5">0x2a3333</text>
+<text class="t mono" x="462" y="196.5" font-size="12.5">0x100000</text>
+<rect class="a af" x="411" y="231" width="204" height="28" rx="3"/>
+<text class="ta mono" x="420" y="249.5" font-size="12.5" font-weight="700">0x2a3333 written</text>
+<text class="ta mono" x="420" y="324" font-size="13" font-weight="700">42</text>
+</g>
+</svg>
