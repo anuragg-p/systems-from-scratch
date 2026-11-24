@@ -116,7 +116,7 @@ def main():
           f"train {len(train):,}, validation {len(val):,}, test {len(test):,}")
     table = pair_counts(train, V)
     first = table.sum(axis=1)
-    print(f"pairs in the training text: {int(table.sum()):,}, of {V} x {V} = {V * V} possible pairs "
+    print(f"pairs in the training text: {int(table.sum()):,}; of the {V} x {V} = {V * V} possible pairs, "
           f"{int((table > 0).sum())} occur")
 
     print(f"\n1. The pair model on the first {cfg.show} characters of the test text: p = count of the pair / "

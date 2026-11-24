@@ -1,0 +1,1569 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 316" fill="none">
+<title>The recurrent network of the page&#x27;s run (seed 0) reading the first line of the training text a character at a time: the same cell at every step, its state carried to the next</title>
+<defs><marker id="unroll0703-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="unroll0703-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="unroll0703-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="22" y="20" font-size="11">the characters, read one at a time</text>
+<text class="tm" x="22" y="136" font-size="11">the state after each: the first 32 of its 256 numbers (accent above 0, the other colour below)</text>
+<text class="tm" x="22" y="238" font-size="11">its chances for the next character, the three highest</text>
+<rect class="m f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<rect class="m f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<rect class="m f" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="129" y="48" font-size="12" text-anchor="middle">r</text>
+<rect class="m f" x="160" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="175" y="48" font-size="12" text-anchor="middle">s</text>
+<rect class="m f" x="206" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="221" y="48" font-size="12" text-anchor="middle">t</text>
+<rect class="m f" x="252" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="267" y="48" font-size="12" text-anchor="middle">_</text>
+<rect class="m f" x="298" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="313" y="48" font-size="12" text-anchor="middle">C</text>
+<rect class="m f" x="344" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="359" y="48" font-size="12" text-anchor="middle">i</text>
+<rect class="m f" x="390" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="405" y="48" font-size="12" text-anchor="middle">t</text>
+<rect class="m f" x="436" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="451" y="48" font-size="12" text-anchor="middle">i</text>
+<rect class="m f" x="482" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="497" y="48" font-size="12" text-anchor="middle">z</text>
+<rect class="m f" x="528" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="543" y="48" font-size="12" text-anchor="middle">e</text>
+<rect class="m f" x="574" y="30" width="30" height="26" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="589" y="48" font-size="12" text-anchor="middle">n</text>
+<g class="step"><title>Reads 'F', from a state of zeros: the most likely next is a space (0.56); what came, 'i', is not among its three best. 83 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="a af" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="37" y="48" font-size="12" font-weight="700" text-anchor="middle">F</text>
+<circle class="a af" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="37" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="fa" x="22" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="146" width="17" height="17" fill-opacity="0.3"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="60" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="98" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="146" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="146" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="193" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="212" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="288" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="22" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="165" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="165" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="174" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="231" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="165" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="288" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">83 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="s fs" x="22" y="248" width="61.65" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="22" y="280" font-size="11.5">&#x27;_&#x27; 0.56</text>
+<rect class="s fs" x="172" y="248" width="6.96" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;r&#x27; 0.06</text>
+<rect class="s fs" x="322" y="248" width="6.47" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;F&#x27; 0.06</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;i&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads 'i': the most likely next is 'r' (0.69); what came, 'r', is among its three best (0.69). 155 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="83" y="48" font-size="12" font-weight="700" text-anchor="middle">i</text>
+<circle class="a af" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="83" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="t" x="22" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="146" width="17" height="17" fill-opacity="0.2"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="117" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="155" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="174" y="146" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="231" y="146" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="146" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="288" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="22" y="165" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="60" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="117" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="155" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="193" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">155 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="a af" x="22" y="248" width="75.5" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="22" y="280" font-size="11.5" font-weight="700">&#x27;r&#x27; 0.69</text>
+<rect class="s fs" x="172" y="248" width="5.48" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;n&#x27; 0.05</text>
+<rect class="s fs" x="322" y="248" width="5.31" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;l&#x27; 0.05</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;r&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads 'r': the most likely next is 's' (0.61); what came, 's', is among its three best (0.61). 140 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="129" y="48" font-size="12" font-weight="700" text-anchor="middle">r</text>
+<circle class="a af" cx="129" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="129" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="129" y1="58" x2="129" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="95" y1="88" x2="116" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="129" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="fa" x="22" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="212" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="288" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="146" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="22" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="165" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="117" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="155" y="165" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="165" width="17" height="17" fill-opacity="0.3"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="193" y="165" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="231" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="250" y="165" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="288" y="165" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="165" width="17" height="17" fill-opacity="0.2"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">140 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="a af" x="22" y="248" width="67.25" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="22" y="280" font-size="11.5" font-weight="700">&#x27;s&#x27; 0.61</text>
+<rect class="s fs" x="172" y="248" width="6.72" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;m&#x27; 0.06</text>
+<rect class="s fs" x="322" y="248" width="4.98" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;,&#x27; 0.05</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;s&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads 's': the most likely next is 't' (0.97); what came, 't', is among its three best (0.97). 139 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="129" y="48" font-size="12" text-anchor="middle">r</text>
+<circle class="s f" cx="129" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="129" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="129" y1="58" x2="129" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="95" y1="88" x2="116" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="160" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="175" y="48" font-size="12" font-weight="700" text-anchor="middle">s</text>
+<circle class="a af" cx="175" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="175" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="175" y1="58" x2="175" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="141" y1="88" x2="162" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="175" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="fa" x="22" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="146" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="193" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="146" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="146" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="22" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="60" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="98" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="165" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="212" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="231" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="165" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">139 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="a af" x="22" y="248" width="106.34" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="22" y="280" font-size="11.5" font-weight="700">&#x27;t&#x27; 0.97</text>
+<rect class="s fs" x="172" y="248" width="2" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;_&#x27; 0.01</text>
+<rect class="s fs" x="322" y="248" width="2" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;h&#x27; 0.00</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;t&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads 't': the most likely next is a space (0.92); what came, a space, is among its three best (0.92). 161 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="129" y="48" font-size="12" text-anchor="middle">r</text>
+<circle class="s f" cx="129" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="129" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="129" y1="58" x2="129" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="95" y1="88" x2="116" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="160" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="175" y="48" font-size="12" text-anchor="middle">s</text>
+<circle class="s f" cx="175" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="175" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="175" y1="58" x2="175" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="141" y1="88" x2="162" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="206" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="221" y="48" font-size="12" font-weight="700" text-anchor="middle">t</text>
+<circle class="a af" cx="221" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="221" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="221" y1="58" x2="221" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="187" y1="88" x2="208" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="221" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="fa" x="22" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="0.2"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="98" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="146" width="17" height="17" fill-opacity="0.3"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="146" width="17" height="17" fill-opacity="0.3"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="22" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="98" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="174" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="231" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">161 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="a af" x="22" y="248" width="101.41" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="22" y="280" font-size="11.5" font-weight="700">&#x27;_&#x27; 0.92</text>
+<rect class="s fs" x="172" y="248" width="2.73" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;,&#x27; 0.02</text>
+<rect class="s fs" x="322" y="248" width="2.42" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;:&#x27; 0.02</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;_&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads a space: the most likely next is 'I' (0.11); what came, 'C', is among its three best (0.10). 189 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="129" y="48" font-size="12" text-anchor="middle">r</text>
+<circle class="s f" cx="129" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="129" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="129" y1="58" x2="129" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="95" y1="88" x2="116" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="160" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="175" y="48" font-size="12" text-anchor="middle">s</text>
+<circle class="s f" cx="175" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="175" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="175" y1="58" x2="175" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="141" y1="88" x2="162" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="206" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="221" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="221" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="221" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="221" y1="58" x2="221" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="187" y1="88" x2="208" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="252" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="267" y="48" font-size="12" font-weight="700" text-anchor="middle">_</text>
+<circle class="a af" cx="267" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="267" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="267" y1="58" x2="267" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="233" y1="88" x2="254" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="267" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="117" y="146" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="155" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="174" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="193" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="250" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="288" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="22" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="60" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="98" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="165" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="155" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="212" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="165" width="17" height="17" fill-opacity="0.3"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="165" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">189 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="s fs" x="22" y="248" width="12.11" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="22" y="280" font-size="11.5">&#x27;I&#x27; 0.11</text>
+<rect class="a af" x="172" y="248" width="10.99" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="172" y="280" font-size="11.5" font-weight="700">&#x27;C&#x27; 0.10</text>
+<rect class="s fs" x="322" y="248" width="9.23" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;S&#x27; 0.08</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;C&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads 'C': the most likely next is 'a' (0.22); what came, 'i', is not among its three best. 141 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="129" y="48" font-size="12" text-anchor="middle">r</text>
+<circle class="s f" cx="129" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="129" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="129" y1="58" x2="129" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="95" y1="88" x2="116" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="160" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="175" y="48" font-size="12" text-anchor="middle">s</text>
+<circle class="s f" cx="175" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="175" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="175" y1="58" x2="175" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="141" y1="88" x2="162" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="206" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="221" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="221" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="221" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="221" y1="58" x2="221" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="187" y1="88" x2="208" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="252" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="267" y="48" font-size="12" text-anchor="middle">_</text>
+<circle class="s f" cx="267" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="267" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="267" y1="58" x2="267" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="233" y1="88" x2="254" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="298" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="313" y="48" font-size="12" font-weight="700" text-anchor="middle">C</text>
+<circle class="a af" cx="313" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="313" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="313" y1="58" x2="313" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="279" y1="88" x2="300" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="313" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="fa" x="22" y="146" width="17" height="17" fill-opacity="0.3"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="146" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="212" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="288" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="22" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="60" y="165" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="165" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="117" y="165" width="17" height="17" fill-opacity="0.2"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="155" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="193" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="231" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">141 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="s fs" x="22" y="248" width="23.9" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="22" y="280" font-size="11.5">&#x27;a&#x27; 0.22</text>
+<rect class="s fs" x="172" y="248" width="21.85" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;o&#x27; 0.20</text>
+<rect class="s fs" x="322" y="248" width="21.75" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;l&#x27; 0.20</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;i&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads 'i': the most likely next is 't' (0.76); what came, 't', is among its three best (0.76). 159 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="129" y="48" font-size="12" text-anchor="middle">r</text>
+<circle class="s f" cx="129" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="129" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="129" y1="58" x2="129" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="95" y1="88" x2="116" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="160" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="175" y="48" font-size="12" text-anchor="middle">s</text>
+<circle class="s f" cx="175" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="175" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="175" y1="58" x2="175" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="141" y1="88" x2="162" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="206" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="221" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="221" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="221" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="221" y1="58" x2="221" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="187" y1="88" x2="208" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="252" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="267" y="48" font-size="12" text-anchor="middle">_</text>
+<circle class="s f" cx="267" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="267" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="267" y1="58" x2="267" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="233" y1="88" x2="254" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="298" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="313" y="48" font-size="12" text-anchor="middle">C</text>
+<circle class="s f" cx="313" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="313" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="313" y1="58" x2="313" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="279" y1="88" x2="300" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="344" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="359" y="48" font-size="12" font-weight="700" text-anchor="middle">i</text>
+<circle class="a af" cx="359" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="359" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="359" y1="58" x2="359" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="325" y1="88" x2="346" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="359" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="t" x="22" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="98" y="146" width="17" height="17" fill-opacity="0.2"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="155" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="193" y="146" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="212" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="22" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="117" y="165" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="193" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="165" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">159 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="a af" x="22" y="248" width="84.13" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="22" y="280" font-size="11.5" font-weight="700">&#x27;t&#x27; 0.76</text>
+<rect class="s fs" x="172" y="248" width="4.94" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;l&#x27; 0.04</text>
+<rect class="s fs" x="322" y="248" width="3.82" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;f&#x27; 0.03</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;t&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads 't': the most likely next is 'i' (0.67); what came, 'i', is among its three best (0.67). 152 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="129" y="48" font-size="12" text-anchor="middle">r</text>
+<circle class="s f" cx="129" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="129" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="129" y1="58" x2="129" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="95" y1="88" x2="116" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="160" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="175" y="48" font-size="12" text-anchor="middle">s</text>
+<circle class="s f" cx="175" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="175" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="175" y1="58" x2="175" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="141" y1="88" x2="162" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="206" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="221" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="221" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="221" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="221" y1="58" x2="221" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="187" y1="88" x2="208" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="252" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="267" y="48" font-size="12" text-anchor="middle">_</text>
+<circle class="s f" cx="267" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="267" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="267" y1="58" x2="267" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="233" y1="88" x2="254" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="298" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="313" y="48" font-size="12" text-anchor="middle">C</text>
+<circle class="s f" cx="313" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="313" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="313" y1="58" x2="313" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="279" y1="88" x2="300" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="344" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="359" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="359" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="359" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="359" y1="58" x2="359" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="325" y1="88" x2="346" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="390" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="405" y="48" font-size="12" font-weight="700" text-anchor="middle">t</text>
+<circle class="a af" cx="405" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="405" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="405" y1="58" x2="405" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="371" y1="88" x2="392" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="405" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="fa" x="22" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="146" width="17" height="17" fill-opacity="0.2"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="146" width="17" height="17" fill-opacity="0.3"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="212" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="250" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="288" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="146" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="22" y="165" width="17" height="17" fill-opacity="0.3"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="165" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="231" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="250" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">152 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="a af" x="22" y="248" width="74.01" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="22" y="280" font-size="11.5" font-weight="700">&#x27;i&#x27; 0.67</text>
+<rect class="s fs" x="172" y="248" width="8.07" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;y&#x27; 0.07</text>
+<rect class="s fs" x="322" y="248" width="5.71" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;e&#x27; 0.05</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;i&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads 'i': the most likely next is 'z' (0.87); what came, 'z', is among its three best (0.87). 155 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="129" y="48" font-size="12" text-anchor="middle">r</text>
+<circle class="s f" cx="129" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="129" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="129" y1="58" x2="129" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="95" y1="88" x2="116" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="160" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="175" y="48" font-size="12" text-anchor="middle">s</text>
+<circle class="s f" cx="175" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="175" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="175" y1="58" x2="175" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="141" y1="88" x2="162" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="206" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="221" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="221" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="221" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="221" y1="58" x2="221" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="187" y1="88" x2="208" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="252" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="267" y="48" font-size="12" text-anchor="middle">_</text>
+<circle class="s f" cx="267" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="267" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="267" y1="58" x2="267" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="233" y1="88" x2="254" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="298" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="313" y="48" font-size="12" text-anchor="middle">C</text>
+<circle class="s f" cx="313" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="313" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="313" y1="58" x2="313" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="279" y1="88" x2="300" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="344" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="359" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="359" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="359" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="359" y1="58" x2="359" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="325" y1="88" x2="346" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="390" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="405" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="405" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="405" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="405" y1="58" x2="405" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="371" y1="88" x2="392" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="436" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="451" y="48" font-size="12" font-weight="700" text-anchor="middle">i</text>
+<circle class="a af" cx="451" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="451" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="451" y1="58" x2="451" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="417" y1="88" x2="438" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="451" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="t" x="22" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="117" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="155" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="146" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="146" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="146" width="17" height="17" fill-opacity="0.2"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="22" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="60" y="165" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="155" y="165" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">155 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="a af" x="22" y="248" width="96.1" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="22" y="280" font-size="11.5" font-weight="700">&#x27;z&#x27; 0.87</text>
+<rect class="s fs" x="172" y="248" width="3.7" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;n&#x27; 0.03</text>
+<rect class="s fs" x="322" y="248" width="2" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;o&#x27; 0.01</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;z&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads 'z': the most likely next is 'e' (0.85); what came, 'e', is among its three best (0.85). 150 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="129" y="48" font-size="12" text-anchor="middle">r</text>
+<circle class="s f" cx="129" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="129" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="129" y1="58" x2="129" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="95" y1="88" x2="116" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="160" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="175" y="48" font-size="12" text-anchor="middle">s</text>
+<circle class="s f" cx="175" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="175" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="175" y1="58" x2="175" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="141" y1="88" x2="162" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="206" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="221" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="221" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="221" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="221" y1="58" x2="221" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="187" y1="88" x2="208" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="252" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="267" y="48" font-size="12" text-anchor="middle">_</text>
+<circle class="s f" cx="267" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="267" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="267" y1="58" x2="267" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="233" y1="88" x2="254" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="298" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="313" y="48" font-size="12" text-anchor="middle">C</text>
+<circle class="s f" cx="313" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="313" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="313" y1="58" x2="313" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="279" y1="88" x2="300" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="344" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="359" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="359" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="359" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="359" y1="58" x2="359" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="325" y1="88" x2="346" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="390" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="405" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="405" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="405" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="405" y1="58" x2="405" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="371" y1="88" x2="392" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="436" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="451" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="451" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="451" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="451" y1="58" x2="451" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="417" y1="88" x2="438" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="482" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="497" y="48" font-size="12" font-weight="700" text-anchor="middle">z</text>
+<circle class="a af" cx="497" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="497" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="497" y1="58" x2="497" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="463" y1="88" x2="484" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="497" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="fa" x="22" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="146" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="117" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="146" width="17" height="17" fill-opacity="0.2"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="155" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="288" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="22" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="117" y="165" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="174" y="165" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="165" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">150 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="a af" x="22" y="248" width="93.86" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="22" y="280" font-size="11.5" font-weight="700">&#x27;e&#x27; 0.85</text>
+<rect class="s fs" x="172" y="248" width="6.09" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;i&#x27; 0.06</text>
+<rect class="s fs" x="322" y="248" width="4.62" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;y&#x27; 0.04</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;e&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads 'e': the most likely next is 'n' (0.90); what came, 'n', is among its three best (0.90). 159 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="129" y="48" font-size="12" text-anchor="middle">r</text>
+<circle class="s f" cx="129" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="129" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="129" y1="58" x2="129" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="95" y1="88" x2="116" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="160" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="175" y="48" font-size="12" text-anchor="middle">s</text>
+<circle class="s f" cx="175" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="175" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="175" y1="58" x2="175" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="141" y1="88" x2="162" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="206" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="221" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="221" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="221" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="221" y1="58" x2="221" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="187" y1="88" x2="208" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="252" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="267" y="48" font-size="12" text-anchor="middle">_</text>
+<circle class="s f" cx="267" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="267" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="267" y1="58" x2="267" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="233" y1="88" x2="254" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="298" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="313" y="48" font-size="12" text-anchor="middle">C</text>
+<circle class="s f" cx="313" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="313" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="313" y1="58" x2="313" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="279" y1="88" x2="300" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="344" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="359" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="359" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="359" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="359" y1="58" x2="359" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="325" y1="88" x2="346" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="390" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="405" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="405" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="405" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="405" y1="58" x2="405" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="371" y1="88" x2="392" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="436" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="451" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="451" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="451" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="451" y1="58" x2="451" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="417" y1="88" x2="438" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="482" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="497" y="48" font-size="12" text-anchor="middle">z</text>
+<circle class="s f" cx="497" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="497" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="497" y1="58" x2="497" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="463" y1="88" x2="484" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="528" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="543" y="48" font-size="12" font-weight="700" text-anchor="middle">e</text>
+<circle class="a af" cx="543" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="543" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="543" y1="58" x2="543" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="509" y1="88" x2="530" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="543" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="fa" x="22" y="146" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="98" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="117" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="136" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="155" y="146" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="193" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="146" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="146" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="146" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="22" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="41" y="165" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="165" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="212" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="231" y="165" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">159 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="a af" x="22" y="248" width="98.93" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="22" y="280" font-size="11.5" font-weight="700">&#x27;n&#x27; 0.90</text>
+<rect class="s fs" x="172" y="248" width="2.6" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;d&#x27; 0.02</text>
+<rect class="s fs" x="322" y="248" width="2.37" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;s&#x27; 0.02</text>
+<text class="t mono" x="472" y="260" font-size="11.5" font-weight="600">what came: &#x27;n&#x27;</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+<g class="step"><title>Reads 'n': the most likely next is ':' (0.52). 149 of the 256 numbers of its state are beyond 0.9 in size.</title>
+<rect class="s f" x="22" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="37" y="48" font-size="12" text-anchor="middle">F</text>
+<circle class="s f" cx="37" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="37" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="37" y1="58" x2="37" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="68" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="83" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="83" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="83" y1="58" x2="83" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="49" y1="88" x2="70" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="114" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="129" y="48" font-size="12" text-anchor="middle">r</text>
+<circle class="s f" cx="129" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="129" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="129" y1="58" x2="129" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="95" y1="88" x2="116" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="160" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="175" y="48" font-size="12" text-anchor="middle">s</text>
+<circle class="s f" cx="175" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="175" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="175" y1="58" x2="175" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="141" y1="88" x2="162" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="206" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="221" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="221" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="221" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="221" y1="58" x2="221" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="187" y1="88" x2="208" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="252" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="267" y="48" font-size="12" text-anchor="middle">_</text>
+<circle class="s f" cx="267" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="267" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="267" y1="58" x2="267" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="233" y1="88" x2="254" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="298" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="313" y="48" font-size="12" text-anchor="middle">C</text>
+<circle class="s f" cx="313" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="313" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="313" y1="58" x2="313" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="279" y1="88" x2="300" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="344" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="359" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="359" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="359" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="359" y1="58" x2="359" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="325" y1="88" x2="346" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="390" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="405" y="48" font-size="12" text-anchor="middle">t</text>
+<circle class="s f" cx="405" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="405" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="405" y1="58" x2="405" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="371" y1="88" x2="392" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="436" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="451" y="48" font-size="12" text-anchor="middle">i</text>
+<circle class="s f" cx="451" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="451" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="451" y1="58" x2="451" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="417" y1="88" x2="438" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="482" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="497" y="48" font-size="12" text-anchor="middle">z</text>
+<circle class="s f" cx="497" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="497" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="497" y1="58" x2="497" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="463" y1="88" x2="484" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="s f" x="528" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="543" y="48" font-size="12" text-anchor="middle">e</text>
+<circle class="s f" cx="543" cy="88" r="11" stroke-width="1.5"/>
+<text class="t mono" x="543" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="s" x1="543" y1="58" x2="543" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<line class="s" x1="509" y1="88" x2="530" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-ah)"/>
+<rect class="a af" x="574" y="30" width="30" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="589" y="48" font-size="12" font-weight="700" text-anchor="middle">n</text>
+<circle class="a af" cx="589" cy="88" r="11" stroke-width="1.5"/>
+<text class="ta mono" x="589" y="92" font-size="11" font-weight="600" text-anchor="middle">h</text>
+<line class="a" x1="589" y1="58" x2="589" y2="75" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<line class="a" x1="555" y1="88" x2="576" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#unroll0703-aa)"/>
+<text class="ta" x="589" y="116" font-size="10" text-anchor="middle">the same cell</text>
+<rect class="t" x="22" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="22" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="146" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="41" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="79" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="98" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="98" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="146" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="117" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="146" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="136" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="146" width="17" height="17" fill-opacity="0.6"/>
+<rect class="m" x="155" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="174" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="174" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="146" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="193" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="212" y="146" width="17" height="17" fill-opacity="0.7"/>
+<rect class="m" x="212" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="231" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="231" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="146" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="250" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="269" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="269" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="146" width="17" height="17" fill-opacity="0.1"/>
+<rect class="m" x="288" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="307" y="146" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="307" y="146" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="22" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="22" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="41" y="165" width="17" height="17" fill-opacity="0.8"/>
+<rect class="m" x="41" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="60" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="60" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="79" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="79" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="98" y="165" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="98" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="117" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="117" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="136" y="165" width="17" height="17" fill-opacity="0.5"/>
+<rect class="m" x="136" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="155" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="155" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="174" y="165" width="17" height="17" fill-opacity="0.4"/>
+<rect class="m" x="174" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="193" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="193" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="212" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="212" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="231" y="165" width="17" height="17" fill-opacity="0.2"/>
+<rect class="m" x="231" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="250" y="165" width="17" height="17" fill-opacity="0.2"/>
+<rect class="m" x="250" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="269" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="269" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="t" x="288" y="165" width="17" height="17" fill-opacity="0.9"/>
+<rect class="m" x="288" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<rect class="fa" x="307" y="165" width="17" height="17" fill-opacity="1.0"/>
+<rect class="m" x="307" y="165" width="17" height="17" rx="0" stroke-width="1.5"/>
+<text class="ta" x="346" y="160" font-size="13" font-weight="700">149 of 256</text>
+<text class="tm" x="346" y="176" font-size="10.5">beyond 0.9 in size:</text>
+<text class="tm" x="346" y="190" font-size="10.5">tanh&#x27;s flat ends</text>
+<rect class="s fs" x="22" y="248" width="57.13" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="22" y="280" font-size="11.5">&#x27;:&#x27; 0.52</text>
+<rect class="s fs" x="172" y="248" width="15.29" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="172" y="280" font-size="11.5">&#x27;_&#x27; 0.14</text>
+<rect class="s fs" x="322" y="248" width="14.09" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="322" y="280" font-size="11.5">&#x27;s&#x27; 0.13</text>
+<text class="tm" x="22" y="304" font-size="10.5">accent: the character that came next; _ is a space</text>
+</g>
+</svg>

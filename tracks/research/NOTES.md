@@ -925,6 +925,18 @@ training text has 1,003,853 pairs, 1380 of the 65 x 65 = 4225 possible.
 p of a pair as count / count, -log2 p, the mean, 2 to the mean, log2 65.
 Trailing spaces are stripped from printed sample lines (the summary keeps
 the text exact).
+Changed for the page (lessons agent): the second line printed reads "...;
+of the 65 x 65 = 4225 possible pairs, 1380 occur" (it ran the two clauses
+together). The page derives the grouping of the mean by pair (the mean over
+positions of -log2 p equals Shannon's -sum p(i, j) log2 p_i(j): 3.537 both
+ways on the training text, a fact on the page) and 02.04's cross-entropy of
+equal scores over 65 classes, 4.174 nats = 6.022 bits. Its Break it writes
+pair_counts as `table[ids[:-1], ids[1:]] += 1` (numpy adds once per distinct
+pair): the table holds 1,380 in all, every cell 0 or 1, k = 0.001 is chosen
+(validation 4.9568), pairs score 4.988 on test, worse than single characters
+(4.850), the folded F2 is 4.53. Validation 3.5678 against test 3.599 for
+pairs at k = 0.1. VINCENTIO (Measure for Measure's duke) speaks 193 times in
+the training text, not at all in validation.
 
 **07.02 Longer contexts, and Bengio et al. (2003).** nplm. Counting with
 contexts of 0 to 7 characters (models/ngram.py): contexts seen 1, 65,
@@ -1008,7 +1020,13 @@ steps of 256: 2.75 at 5; h 512, m 24, 10000 steps of 256: 2.46, 9 s;
 4000 of 1024 at lr 0.01: 2.444, 7 s, too slow for 3 seeds and 3
 contexts); a long run without dropout (h 512, 30000 steps of 1024:
 training 1.85, test 2.48, overfit); interpolation with 0 instead of 1 / V
-after an unseen context (2.513 against 2.416 at 5). Times: steps take 1.2
+after an unseen context (2.525 against 2.416 at 5, rerun for the page's
+Break it, which changes that one line of NGram.probabilities: add-k inf
+from 2 characters on, k = 1 chosen since every k is inf on validation, the
+weights at 5 0.002 0.031 0.100 0.258 0.378 0.231, and with `"contexts=[5]"
+seeds=1` the network, 2.482, now 0.043 below interpolation where it was
+0.066 above; numpy prints two RuntimeWarnings, nplm.py lines 125 and 126 of
+the project at 07.02; 8 to 10 s). Times: steps take 1.2
 to 2.4 ms here with 512 units and 4 to 10 threads; with the machine busy,
 10 threads were slower than 4 (oversubscribed: the 2500-step default took
 68 s at load 9 to 13 with 10 threads, as much system time as user time,
@@ -1098,6 +1116,28 @@ rnn, default:
    the gradient underflows float32 before 60 steps.
 5. 300 characters, the state carried from one character to the next (a
    small Reader object as next_scores for sequences.sample), seed 0.
+For the page (lessons agent), all with the code as committed:
+- The longer run the page shows, `rnn steps=5000 seeds=1`: test 2.375 (not
+  the spike's 2.369 above), 5 of 5000 steps clipped; what it uses: w = 8
+  2.526, 16 2.388, 32 and 64 2.387 (still about 16 characters); the trained
+  network's radius 6.35, its gradient 3.75e-03 at k = 0 to 5.74e-09 at 60
+  (vanishing, more slowly); recall seed 0 at T = 20 0.115. 129 s of
+  training and scoring (130 s wall) with another agent's runs going (load 9).
+- The gradient's fall per step for the recall network as it starts: 0.46
+  a step from k = 0 to 20, 0.49 from 20 to 40 (a fact on the page).
+- Saturation in the trained text network (seed 0, the page's run, reading
+  "First Citizen" from a zero state; the stepped figure): 83 of the 256
+  state numbers beyond 0.9 in size after the first character, 139 to 189
+  after each of the others, where tanh's slope 1 - h^2 is below 0.19.
+- The page's Break it takes clipping out of train_recall only (the text
+  network keeps its clip): T = 2 and 5 still 1; T = 10 0.13 +- 0.00404
+  (every seed at chance); T = 20 0.249 +- 0.135; T = 40 0.249 +- 0.224 (0.115
+  to 0.508). Seed 0's log at T = 10: loss 2.08 at steps 0 and 50, 12.6 at
+  step 100 (gradient length 6.54), 2.25 at the end; clipped, the same seed's
+  loss is 0.499 at step 100 and 0.0012 at step 299.
+- torch.nn.RNN with our weights copied in gives the same states to 1e-12 in
+  float64, and one step's backward equals (g * (1 - h_new^2)) @ hh.weight
+  (the page's session, a check of its derivation).
 
 **07.04 Attention (Bahdanau, Cho and Bengio 2015, figure 2).** models/
 attention.py: attend(scores, values) = softmax over the last axis, then
@@ -1156,6 +1196,23 @@ well (1.00 at 5, 0.80 at 10, 0.41 at 20, 0.26 at 40) while attention gives
 1.00, 0.99, 0.87, 0.42: it holds less well than on the copy (a one-way
 encoder's states know less of what comes after them); the default stays
 the copy, where attention holds.
+For the page (lessons agent): attention.py's table now pads each spread to
+48 characters (they ran to 48 and broke the columns at 38); no number
+changed. The default run took 69 s once with another agent's runs going
+(37 to 38 s before). Seed 0's length-30 example: the largest weight is on
+input i for steps 0 to 12, then on positions 28, 20, 29, 9, 17, ...; 15 of
+30 written wrong (step 11 is wrong on the diagonal too). attend() on scores
+0, 1, 2 over values 1, 2, 3: weights 0.09, 0.2447, 0.6652, sum 2.5752 (a
+session on the page). The page's Break it makes attend's weights equal
+(`torch.full_like(scores, 1 / scores.shape[-1])`): the attention models'
+last batch 1.0 to 1.5 nats; symbols right 1 at 2, 0.804 at 5 (t = +14.1
+against no attention: the mean of the encoder states is more than its last
+state), 0.3 at 10, then no better than without (0.154 at 20, 0.119 at 40);
+whole rows 0.595 at 5, 0.001 at 10. Seed 0 writes 2 8 0 5 6 0 3 8 0 1 for 8
+6 5 2 3 0 0 0 1 8: the input's symbols, each as often, in another order.
+43 s. models/rnn.py's docstring no longer mentions the test (the site
+shows it): it says that copying one's weights into the other gives the
+same states.
 
 ## For module 08: what module 07 leaves ready
 
@@ -1189,7 +1246,8 @@ the copy, where attention holds.
   2.409; 07.02's network at 5 characters 2.474 (short run) and 2.346 (long
   run), mixed with interpolation 2.294 (long, 5) and 2.283 (long, 8);
   07.03's RNN 2.540 (short run, 600 steps; 800 steps 2.487; 5000 steps, 1
-  seed, 2.369).
+  seed, 2.375 as its page runs it with the committed code, where an earlier
+  spike printed 2.369).
 - Shared loops: module 07 has none like images.train_epoch (each script's
   train is its own: random positions, streams, or tasks); 08 may write one
   in sequences.py or its own file, never in an experiment.
@@ -1200,10 +1258,13 @@ the copy, where attention holds.
   (load 9 to 14 here), 10 threads were up to twice as slow as 4 for these
   small layers, with as much system time as user time: time a page's runs
   on a quiet machine, and say what was running.
-- The models/ docstring (06.02) says every model after convnet imports
-  torch; models/ngram.py (07.02) is numpy only. Left as it is: the file
-  comes with 06.02, and a note about 07.02 there would be a later lesson's
-  text in an earlier file.
+- The models/ docstring (06.02) said every model after convnet imports
+  torch, and models/ngram.py (07.02) is numpy only. Its last sentence is now
+  a `# @from 07.02` block with an `# @else` part (as data/fetch.py's
+  docstring has one for 06.03): before 07.02 it reads as it did, from 07.02
+  on it says the count models of ngram.py are not networks and that file is
+  numpy only. A module 08 that adds a numpy-only model keeps it true the
+  same way.
 
 ## Tests
 
@@ -1275,6 +1336,15 @@ run), 147 at 07.03 and 150 at 07.04; 06.04 still has 98 (track.py puts
 selftest` ok (269 tests). `./learn check` reports exactly eight problems,
 `research/06.0N` and `research/07.0N: test has no lesson doc`; nothing
 else.
+With module 07's pages (lessons agent, 2026-11-24): `./learn check` ok, no
+problems; `./learn check-timeline research` ok (101, 145, 147 and 150
+files at 07.01 to 07.04); `./learn check-skeleton research` ok; `./learn
+selftest` ok (269 tests). Module 07's figures come from
+art/research/figs07.py (about four minutes of runs; RESEARCH_FIGS_CACHE
+keeps them while drawing), its cover from art/outlines/research_art.py,
+which now counts the pair model's 3.599 again and reads 07.02's recorded
+run. Verifying 07.01 to 07.04 replays nplm, rnn and attention twice each,
+the 5000-step rnn once (about 130 s) and the Break its: about ten minutes.
 
 ## For the harness work and module 06
 

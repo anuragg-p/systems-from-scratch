@@ -117,11 +117,11 @@ def main():
             run.finish(symbols_right={str(k): v[0] for k, v in got.items()},
                        wholes_right={str(k): v[1] for k, v in got.items()}, **examples)
             print(f"   {kind}, seed {seed}: trained, the last batch's cross-entropy {run.rows[-1]['loss']:.3f} (nats)")
-    print(f"\n{'length':>6s}  {'no attention':38s}  {'attention':38s}  t")
+    print(f"\n{'length':>6s}  {'no attention':48s}  {'attention':48s}  t")
     for length in cfg.lengths:
         a, b = ([r[0] for r in results[kind, length]] for kind in KINDS)
         longer = "  (longer than any trained on)" if length > cfg.longest else ""
-        print(f"{length:6d}  {lab.spread(a):38s}  {lab.spread(b):38s}  {lab.welch_t(b, a):+.1f}{longer}")
+        print(f"{length:6d}  {lab.spread(a):48s}  {lab.spread(b):48s}  {lab.welch_t(b, a):+.1f}{longer}")
     print(f"\nWhole outputs right (mean over seeds):")
     print(f"{'length':>6s}  " + "  ".join(f"{kind:>12s}" for kind in KINDS))
     for length in cfg.lengths:

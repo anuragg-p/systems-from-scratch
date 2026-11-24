@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" fill="none">
+<title>An encoder and a decoder, both 07.03&#x27;s recurrent cell with a state of 64. Without attention the decoder starts from the encoder&#x27;s last state and has nothing else; with attention, every step also takes a weighted sum of all the encoder&#x27;s states</title>
+<defs><marker id="seq2seq0704-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="seq2seq0704-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="seq2seq0704-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="20" y="20" font-size="12.5" font-weight="700">without attention</text>
+<circle class="s f" cx="120" cy="102" r="13" stroke-width="1.5"/>
+<text class="t mono" x="120" y="106" font-size="10.5" font-weight="600" text-anchor="middle">h1</text>
+<circle class="s f" cx="174" cy="102" r="13" stroke-width="1.5"/>
+<text class="t mono" x="174" y="106" font-size="10.5" font-weight="600" text-anchor="middle">h2</text>
+<line class="s" x1="134" y1="102" x2="159" y2="102" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<circle class="s f" cx="228" cy="102" r="13" stroke-width="1.5"/>
+<text class="t mono" x="228" y="106" font-size="10.5" font-weight="600" text-anchor="middle">h3</text>
+<line class="s" x1="188" y1="102" x2="213" y2="102" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<circle class="s f" cx="282" cy="102" r="13" stroke-width="1.5"/>
+<text class="t mono" x="282" y="106" font-size="10.5" font-weight="600" text-anchor="middle">h4</text>
+<line class="s" x1="242" y1="102" x2="267" y2="102" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<circle class="s f" cx="410" cy="102" r="13" stroke-width="1.5"/>
+<text class="t mono" x="410" y="106" font-size="10.5" font-weight="600" text-anchor="middle">s1</text>
+<circle class="s f" cx="464" cy="102" r="13" stroke-width="1.5"/>
+<text class="t mono" x="464" y="106" font-size="10.5" font-weight="600" text-anchor="middle">s2</text>
+<line class="s" x1="424" y1="102" x2="449" y2="102" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<circle class="s f" cx="518" cy="102" r="13" stroke-width="1.5"/>
+<text class="t mono" x="518" y="106" font-size="10.5" font-weight="600" text-anchor="middle">s3</text>
+<line class="s" x1="478" y1="102" x2="503" y2="102" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<circle class="s f" cx="572" cy="102" r="13" stroke-width="1.5"/>
+<text class="t mono" x="572" y="106" font-size="10.5" font-weight="600" text-anchor="middle">s4</text>
+<line class="s" x1="532" y1="102" x2="557" y2="102" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<text class="t" x="98" y="106" font-size="11" font-weight="600" text-anchor="end">encoder</text>
+<text class="t" x="594" y="106" font-size="11" font-weight="600">decoder</text>
+<rect class="s fs" x="108" y="42" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="120" y="56" font-size="11" text-anchor="middle">8</text>
+<line class="s" x1="120" y1="63" x2="120" y2="87" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="s f" x="398" y="42" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="410" y="56" font-size="11" text-anchor="middle">8</text>
+<line class="s" x1="410" y1="88" x2="410" y2="64" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="s fs" x="162" y="42" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="174" y="56" font-size="11" text-anchor="middle">6</text>
+<line class="s" x1="174" y1="63" x2="174" y2="87" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="s f" x="452" y="42" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="464" y="56" font-size="11" text-anchor="middle">6</text>
+<line class="s" x1="464" y1="88" x2="464" y2="64" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="s fs" x="216" y="42" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="228" y="56" font-size="11" text-anchor="middle">5</text>
+<line class="s" x1="228" y1="63" x2="228" y2="87" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="s f" x="506" y="42" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="518" y="56" font-size="11" text-anchor="middle">5</text>
+<line class="s" x1="518" y1="88" x2="518" y2="64" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="s fs" x="270" y="42" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="282" y="56" font-size="11" text-anchor="middle">2</text>
+<line class="s" x1="282" y1="63" x2="282" y2="87" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="s f" x="560" y="42" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="572" y="56" font-size="11" text-anchor="middle">2</text>
+<line class="s" x1="572" y1="88" x2="572" y2="64" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<text class="tm" x="98" y="56" font-size="10.5" text-anchor="end">reads</text>
+<text class="tm" x="594" y="56" font-size="10.5">writes</text>
+<line class="s" x1="296" y1="102" x2="395" y2="102" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<text class="tm" x="346" y="94" font-size="10.5" text-anchor="middle">one vector of 64</text>
+<text class="ta" x="20" y="190" font-size="12.5" font-weight="700">with attention</text>
+<circle class="s f" cx="120" cy="272" r="13" stroke-width="1.5"/>
+<text class="t mono" x="120" y="276" font-size="10.5" font-weight="600" text-anchor="middle">h1</text>
+<circle class="s f" cx="174" cy="272" r="13" stroke-width="1.5"/>
+<text class="t mono" x="174" y="276" font-size="10.5" font-weight="600" text-anchor="middle">h2</text>
+<line class="s" x1="134" y1="272" x2="159" y2="272" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<circle class="s f" cx="228" cy="272" r="13" stroke-width="1.5"/>
+<text class="t mono" x="228" y="276" font-size="10.5" font-weight="600" text-anchor="middle">h3</text>
+<line class="s" x1="188" y1="272" x2="213" y2="272" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<circle class="s f" cx="282" cy="272" r="13" stroke-width="1.5"/>
+<text class="t mono" x="282" y="276" font-size="10.5" font-weight="600" text-anchor="middle">h4</text>
+<line class="s" x1="242" y1="272" x2="267" y2="272" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<circle class="a af" cx="410" cy="272" r="13" stroke-width="1.5"/>
+<text class="ta mono" x="410" y="276" font-size="10.5" font-weight="600" text-anchor="middle">s1</text>
+<circle class="a af" cx="464" cy="272" r="13" stroke-width="1.5"/>
+<text class="ta mono" x="464" y="276" font-size="10.5" font-weight="600" text-anchor="middle">s2</text>
+<line class="s" x1="424" y1="272" x2="449" y2="272" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<circle class="a af" cx="518" cy="272" r="13" stroke-width="1.5"/>
+<text class="ta mono" x="518" y="276" font-size="10.5" font-weight="600" text-anchor="middle">s3</text>
+<line class="s" x1="478" y1="272" x2="503" y2="272" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<circle class="a af" cx="572" cy="272" r="13" stroke-width="1.5"/>
+<text class="ta mono" x="572" y="276" font-size="10.5" font-weight="600" text-anchor="middle">s4</text>
+<line class="s" x1="532" y1="272" x2="557" y2="272" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<text class="t" x="98" y="276" font-size="11" font-weight="600" text-anchor="end">encoder</text>
+<text class="ta" x="594" y="276" font-size="11" font-weight="600">decoder</text>
+<rect class="s fs" x="108" y="212" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="120" y="226" font-size="11" text-anchor="middle">8</text>
+<line class="s" x1="120" y1="233" x2="120" y2="257" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="a af" x="398" y="212" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="410" y="226" font-size="11" text-anchor="middle">8</text>
+<line class="s" x1="410" y1="258" x2="410" y2="234" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="s fs" x="162" y="212" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="174" y="226" font-size="11" text-anchor="middle">6</text>
+<line class="s" x1="174" y1="233" x2="174" y2="257" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="a af" x="452" y="212" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="464" y="226" font-size="11" text-anchor="middle">6</text>
+<line class="s" x1="464" y1="258" x2="464" y2="234" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="s fs" x="216" y="212" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="228" y="226" font-size="11" text-anchor="middle">5</text>
+<line class="s" x1="228" y1="233" x2="228" y2="257" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="a af" x="506" y="212" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="518" y="226" font-size="11" text-anchor="middle">5</text>
+<line class="s" x1="518" y1="258" x2="518" y2="234" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="s fs" x="270" y="212" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="282" y="226" font-size="11" text-anchor="middle">2</text>
+<line class="s" x1="282" y1="233" x2="282" y2="257" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<rect class="a af" x="560" y="212" width="24" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="572" y="226" font-size="11" text-anchor="middle">2</text>
+<line class="s" x1="572" y1="258" x2="572" y2="234" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<text class="tm" x="98" y="226" font-size="10.5" text-anchor="end">reads</text>
+<text class="tm" x="594" y="226" font-size="10.5">writes</text>
+<line class="s" x1="296" y1="272" x2="395" y2="272" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seq2seq0704-ah)"/>
+<text class="tm" x="346" y="264" font-size="10.5" text-anchor="middle">one vector of 64</text>
+<path class="m" d="M120 286 C 120 334, 518 334, 518 288" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="m" d="M174 286 C 174 334, 518 334, 518 288" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="a" d="M228 286 C 228 334, 518 334, 518 288" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#seq2seq0704-aa)"/>
+<path class="m" d="M282 286 C 282 334, 518 334, 518 288" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<text class="ta" x="108" y="342" font-size="10.5">step 3: a score for every encoder state, a softmax over the scores, and the states&#x27; weighted sum</text>
+<text class="tm" x="20" y="372" font-size="10.5">Training gives the decoder the right symbol before each step; writing, it is given the symbol it wrote last.</text>
+</svg>

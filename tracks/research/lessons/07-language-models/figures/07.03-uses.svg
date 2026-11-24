@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 290" fill="none">
+<title>What the trained network uses (seed 0): bits per character on the test text when only the last w characters it read are the real ones before each character, the rest from another place</title>
+<defs><marker id="uses0703-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="uses0703-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="uses0703-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="54" y="233.5" font-size="10.5" text-anchor="end">2</text>
+<line class="m" x1="60" y1="182.9" x2="620" y2="182.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="186.44" font-size="10.5" text-anchor="end">4</text>
+<line class="m" x1="60" y1="135.9" x2="620" y2="135.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="139.38" font-size="10.5" text-anchor="end">6</text>
+<line class="m" x1="60" y1="88.8" x2="620" y2="88.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="92.32" font-size="10.5" text-anchor="end">8</text>
+<line class="m" x1="60" y1="41.8" x2="620" y2="41.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="45.26" font-size="10.5" text-anchor="end">10</text>
+<rect class="m" x="60" y="30" width="560" height="200" rx="0" stroke-width="1.5"/>
+<text class="tm" x="340" y="262" font-size="11.5" text-anchor="middle">w, the real characters at the end of the 64 it read</text>
+<text class="tm" x="54" y="22" font-size="11.5">bits per character</text>
+<text class="tm mono" x="95" y="246" font-size="10.5" text-anchor="middle">0</text>
+<text class="tm mono" x="165" y="246" font-size="10.5" text-anchor="middle">1</text>
+<text class="tm mono" x="235" y="246" font-size="10.5" text-anchor="middle">2</text>
+<text class="tm mono" x="305" y="246" font-size="10.5" text-anchor="middle">4</text>
+<text class="tm mono" x="375" y="246" font-size="10.5" text-anchor="middle">8</text>
+<text class="tm mono" x="445" y="246" font-size="10.5" text-anchor="middle">16</text>
+<text class="tm mono" x="515" y="246" font-size="10.5" text-anchor="middle">32</text>
+<text class="tm mono" x="585" y="246" font-size="10.5" text-anchor="middle">64</text>
+<line class="m" x1="60" y1="135.36" x2="620" y2="135.36" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="616" y="130.36" font-size="10.5" text-anchor="end">equal chances 6.022</text>
+<line class="m" x1="60" y1="192.38" x2="620" y2="192.38" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="616" y="187.38" font-size="10.5" text-anchor="end">07.01&#x27;s pairs 3.599</text>
+<polyline class="a" points="95.0,40.9 165.0,139.0 235.0,175.0 305.0,203.6 375.0,215.1 445.0,216.7 515.0,216.7 585.0,216.7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="95" cy="40.89" r="3.5" stroke-width="1.5"/>
+<text class="ta mono" x="103" y="32.89" font-size="10">10.037</text>
+<circle class="a fa" cx="165" cy="139.01" r="3.5" stroke-width="1.5"/>
+<text class="ta mono" x="173" y="131.01" font-size="10">5.867</text>
+<circle class="a fa" cx="235" cy="175.01" r="3.5" stroke-width="1.5"/>
+<text class="ta mono" x="243" y="167.01" font-size="10">4.337</text>
+<circle class="a fa" cx="305" cy="203.62" r="3.5" stroke-width="1.5"/>
+<text class="ta mono" x="313" y="195.62" font-size="10">3.121</text>
+<circle class="a fa" cx="375" cy="215.11" r="3.5" stroke-width="1.5"/>
+<text class="ta mono" x="375" y="207.11" font-size="10" text-anchor="middle">2.633</text>
+<circle class="a fa" cx="445" cy="216.68" r="3.5" stroke-width="1.5"/>
+<text class="ta mono" x="445" y="208.68" font-size="10" text-anchor="middle">2.566</text>
+<circle class="a fa" cx="515" cy="216.66" r="3.5" stroke-width="1.5"/>
+<text class="ta mono" x="515" y="208.66" font-size="10" text-anchor="middle">2.567</text>
+<circle class="a fa" cx="585" cy="216.66" r="3.5" stroke-width="1.5"/>
+<text class="ta mono" x="585" y="208.66" font-size="10" text-anchor="middle">2.567</text>
+<rect class="af" x="433.0" y="31" width="164.0" height="198" fill-opacity="0.6"/>
+<text class="ta" x="441" y="55.88" font-size="11" font-weight="600">past 16 characters, nothing it</text>
+<text class="ta" x="441" y="69.88" font-size="11">reads changes the score</text>
+</svg>

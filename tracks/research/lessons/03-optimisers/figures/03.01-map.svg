@@ -4,7 +4,7 @@
 <text class="tm" x="14" y="17" font-size="11.5"><tspan font-weight="600">research</tspan></text>
 <text class="tm" x="14" y="82" font-size="11.5"><tspan font-weight="600">models</tspan>: the networks experiments share</text>
 <text class="tm" x="14" y="157" font-size="11.5"><tspan font-weight="600">experiments</tspan>: one script per lesson</text>
-<text class="tm" x="14" y="226" font-size="11.5"><tspan font-weight="600">the data</tspan>: fetched once, or made</text>
+<text class="tm" x="14" y="226" font-size="11.5"><tspan font-weight="600">the data</tspan>: fetched once, shipped, or made</text>
 <text class="tm" x="14" y="289" font-size="11.5"><tspan font-weight="600">the engine</tspan>: PyTorch&#x27;s names, in numpy (PyTorch itself from 06.02 on)</text>
 <text class="tm" x="14" y="358" font-size="11.5"><tspan font-weight="600">the lab</tspan>: under every run</text>
 <rect class="m f" x="14" y="23" width="200" height="36" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
@@ -41,36 +41,42 @@
 <rect class="m f" x="543.71" y="88" width="82.29" height="46" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
 <text class="tm mono" x="584.86" y="101" font-size="10" text-anchor="middle">12</text>
 <text class="tm" x="584.86" y="119" font-size="12" font-weight="500" text-anchor="middle">fine-tuning</text>
-<rect class="s f" x="14" y="163" width="97" height="40" rx="7" stroke-width="1.5"/>
-<text class="t" x="62.5" y="180" font-size="12.5" font-weight="600" text-anchor="middle">a curve</text>
-<text class="tm" x="62.5" y="194" font-size="10.5" text-anchor="middle">module 00</text>
-<rect class="s f" x="117" y="163" width="97" height="40" rx="7" stroke-width="1.5"/>
-<text class="t" x="165.5" y="180" font-size="12.5" font-weight="600" text-anchor="middle">two groups</text>
-<text class="tm" x="165.5" y="194" font-size="10.5" text-anchor="middle">modules 01-02</text>
-<rect class="s f" x="220" y="163" width="97" height="40" rx="7" stroke-width="1.5"/>
-<text class="t" x="268.5" y="180" font-size="12.5" font-weight="600" text-anchor="middle">digits</text>
-<text class="tm" x="268.5" y="194" font-size="10.5" text-anchor="middle">module 03</text>
-<rect class="m f" x="323" y="163" width="97" height="40" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
-<text class="tm" x="371.5" y="180" font-size="12" font-weight="500" text-anchor="middle">deep networks</text>
-<text class="tm" x="371.5" y="194" font-size="10.5" text-anchor="middle">module 04</text>
-<rect class="m f" x="426" y="163" width="97" height="40" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
-<text class="tm" x="474.5" y="180" font-size="11.5" font-weight="500" text-anchor="middle">generalisation</text>
-<text class="tm" x="474.5" y="194" font-size="10.5" text-anchor="middle">module 05</text>
-<rect class="m f" x="529" y="163" width="97" height="40" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
-<text class="tm" x="577.5" y="180" font-size="12.5" font-weight="500" text-anchor="middle">images</text>
-<text class="tm" x="577.5" y="194" font-size="10.5" text-anchor="middle">module 06</text>
-<rect class="s f" x="14" y="232" width="148.5" height="34" rx="7" stroke-width="1.5"/>
-<text class="t" x="88.25" y="247.5" font-size="12.5" font-weight="600" text-anchor="middle">points</text>
-<text class="tm" x="88.25" y="259.5" font-size="10" text-anchor="middle">made from a seed</text>
-<rect class="a af" x="168.5" y="232" width="148.5" height="34" rx="7" stroke-width="1.5"/>
-<text class="ta" x="242.75" y="247.5" font-size="12.5" font-weight="700" text-anchor="middle">MNIST</text>
-<text class="ta" x="242.75" y="259.5" font-size="10" text-anchor="middle">fetched once</text>
-<rect class="m f" x="323" y="232" width="148.5" height="34" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
-<text class="tm" x="397.25" y="247.5" font-size="12.5" font-weight="500" text-anchor="middle">augment</text>
-<text class="tm" x="397.25" y="259.5" font-size="10" text-anchor="middle">new images every pass</text>
-<rect class="m f" x="477.5" y="232" width="148.5" height="34" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
-<text class="tm" x="551.75" y="247.5" font-size="12.5" font-weight="500" text-anchor="middle">CIFAR-10</text>
-<text class="tm" x="551.75" y="259.5" font-size="10" text-anchor="middle">fetched once</text>
+<rect class="s f" x="14" y="163" width="82.29" height="40" rx="7" stroke-width="1.5"/>
+<text class="t" x="55.14" y="180" font-size="12.5" font-weight="600" text-anchor="middle">a curve</text>
+<text class="tm" x="55.14" y="194" font-size="10.5" text-anchor="middle">module 00</text>
+<rect class="s f" x="102.29" y="163" width="82.29" height="40" rx="7" stroke-width="1.5"/>
+<text class="t" x="143.43" y="180" font-size="12.5" font-weight="600" text-anchor="middle">two groups</text>
+<text class="tm" x="143.43" y="194" font-size="10" text-anchor="middle">modules 01-02</text>
+<rect class="s f" x="190.57" y="163" width="82.29" height="40" rx="7" stroke-width="1.5"/>
+<text class="t" x="231.71" y="180" font-size="12.5" font-weight="600" text-anchor="middle">digits</text>
+<text class="tm" x="231.71" y="194" font-size="10.5" text-anchor="middle">module 03</text>
+<rect class="m f" x="278.86" y="163" width="82.29" height="40" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="320" y="180" font-size="10.5" font-weight="500" text-anchor="middle">deep networks</text>
+<text class="tm" x="320" y="194" font-size="10.5" text-anchor="middle">module 04</text>
+<rect class="m f" x="367.14" y="163" width="82.29" height="40" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="408.29" y="180" font-size="10.5" font-weight="500" text-anchor="middle">generalisation</text>
+<text class="tm" x="408.29" y="194" font-size="10.5" text-anchor="middle">module 05</text>
+<rect class="m f" x="455.43" y="163" width="82.29" height="40" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="496.57" y="180" font-size="12.5" font-weight="500" text-anchor="middle">images</text>
+<text class="tm" x="496.57" y="194" font-size="10.5" text-anchor="middle">module 06</text>
+<rect class="m f" x="543.71" y="163" width="82.29" height="40" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="584.86" y="180" font-size="12.5" font-weight="500" text-anchor="middle">language</text>
+<text class="tm" x="584.86" y="194" font-size="10.5" text-anchor="middle">module 07</text>
+<rect class="s f" x="14" y="232" width="117.6" height="34" rx="7" stroke-width="1.5"/>
+<text class="t" x="72.8" y="247.5" font-size="12.5" font-weight="600" text-anchor="middle">points</text>
+<text class="tm" x="72.8" y="259.5" font-size="10" text-anchor="middle">made from a seed</text>
+<rect class="a af" x="137.6" y="232" width="117.6" height="34" rx="7" stroke-width="1.5"/>
+<text class="ta" x="196.4" y="247.5" font-size="12.5" font-weight="700" text-anchor="middle">MNIST</text>
+<text class="ta" x="196.4" y="259.5" font-size="10" text-anchor="middle">fetched once</text>
+<rect class="m f" x="261.2" y="232" width="117.6" height="34" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="320" y="247.5" font-size="12.5" font-weight="500" text-anchor="middle">augment</text>
+<text class="tm" x="320" y="259.5" font-size="9.5" text-anchor="middle">new images every pass</text>
+<rect class="m f" x="384.8" y="232" width="117.6" height="34" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="443.6" y="247.5" font-size="12.5" font-weight="500" text-anchor="middle">CIFAR-10</text>
+<text class="tm" x="443.6" y="259.5" font-size="10" text-anchor="middle">fetched once</text>
+<rect class="m f" x="508.4" y="232" width="117.6" height="34" rx="7" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="567.2" y="247.5" font-size="12.5" font-weight="500" text-anchor="middle">Shakespeare</text>
+<text class="tm" x="567.2" y="259.5" font-size="10" text-anchor="middle">shipped, 1.1 MB</text>
 <rect class="s f" x="14" y="295" width="82.29" height="40" rx="7" stroke-width="1.5"/>
 <text class="t" x="55.14" y="312" font-size="12.5" font-weight="600" text-anchor="middle">nudge</text>
 <text class="tm" x="55.14" y="326" font-size="9.5" text-anchor="middle">gradient check</text>

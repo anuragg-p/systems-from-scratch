@@ -7,8 +7,8 @@ The state h is all the network keeps of what it has read: each step mixes
 the new input into it and squashes the sum with tanh. torch.nn.RNN
 computes the same thing; its weights are named weight_ih_l0, bias_ih_l0,
 weight_hh_l0 and bias_hh_l0 where these are cell.ih.weight, cell.ih.bias,
-cell.hh.weight and cell.hh.bias (the test copies one's into the other and
-compares). It starts its weights differently: every one uniform in
+cell.hh.weight and cell.hh.bias (copy one's into the other and the two give
+the same states). It starts its weights differently: every one uniform in
 +-1/sqrt(hidden_size), where nn.Linear uses 1/sqrt of its own inputs.
 """
 

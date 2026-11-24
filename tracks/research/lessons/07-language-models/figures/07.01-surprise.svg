@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Surprise, -log2 p, against the chance p a model gave the character that came; and the pair model&#x27;s surprise at each of the first 12 characters of the test text</title>
+<defs><marker id="surprise0701-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="surprise0701-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="surprise0701-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="46" y="253.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="52" y1="206.0" x2="282" y2="206.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="46" y="209.5" font-size="10.5" text-anchor="end">2</text>
+<line class="m" x1="52" y1="162.0" x2="282" y2="162.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="46" y="165.5" font-size="10.5" text-anchor="end">4</text>
+<line class="m" x1="52" y1="118.0" x2="282" y2="118.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="46" y="121.5" font-size="10.5" text-anchor="end">6</text>
+<line class="m" x1="52" y1="74.0" x2="282" y2="74.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="46" y="77.5" font-size="10.5" text-anchor="end">8</text>
+<text class="tm mono" x="46" y="33.5" font-size="10.5" text-anchor="end">10</text>
+<line class="m" x1="52" y1="250" x2="52" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="52" y="266" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="109.5" y1="250" x2="109.5" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="109.5" y="266" font-size="10.5" text-anchor="middle">0.25</text>
+<line class="m" x1="167" y1="250" x2="167" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="167" y="266" font-size="10.5" text-anchor="middle">0.5</text>
+<line class="m" x1="224.5" y1="250" x2="224.5" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="224.5" y="266" font-size="10.5" text-anchor="middle">0.75</text>
+<line class="m" x1="282" y1="250" x2="282" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="282" y="266" font-size="10.5" text-anchor="middle">1</text>
+<rect class="m" x="52" y="30" width="230" height="220" rx="0" stroke-width="1.5"/>
+<text class="tm" x="167" y="282" font-size="11.5" text-anchor="middle">p, the chance of the character that came</text>
+<text class="tm" x="46" y="22" font-size="11">bits: -log2 p</text>
+<polyline class="a" points="52.6,59.8 53.1,81.8 53.7,94.7 54.3,103.8 54.9,110.9 55.5,116.7 56.0,121.6 56.6,125.8 57.2,129.6 57.8,132.9 58.3,135.9 58.9,138.7 59.5,141.2 60.0,143.6 60.6,145.8 61.2,147.8 61.8,149.8 62.4,151.6 62.9,153.3 63.5,154.9 64.1,156.5 64.7,157.9 65.2,159.4 65.8,160.7 66.4,162.0 67.0,163.2 67.5,164.4 68.1,165.6 68.7,166.7 69.2,167.8 69.8,168.8 70.4,169.8 71.0,170.8 71.5,171.8 72.1,172.7 72.7,173.6 73.3,174.4 73.8,175.3 74.4,176.1 75.0,176.9 75.6,177.7 76.2,178.5 76.7,179.2 77.3,179.9 77.9,180.7 78.5,181.4 79.0,182.0 79.6,182.7 80.2,183.4 80.8,184.0 81.3,184.6 81.9,185.2 82.5,185.8 83.0,186.4 83.6,187.0 84.2,187.6 84.8,188.2 85.3,188.7 85.9,189.3 86.5,189.8 87.1,190.3 87.7,190.8 88.2,191.3 88.8,191.8 89.4,192.3 90.0,192.8 90.5,193.3 91.1,193.8 91.7,194.2 92.2,194.7 92.8,195.1 93.4,195.6 94.0,196.0 94.5,196.4 95.1,196.9 95.7,197.3 96.3,197.7 96.8,198.1 97.4,198.5 98.0,198.9 98.6,199.3 99.2,199.7 99.7,200.1 100.3,200.5 100.9,200.8 101.4,201.2 102.0,201.6 102.6,201.9 103.2,202.3 103.8,202.7 104.3,203.0 104.9,203.4 105.5,203.7 106.0,204.0 106.6,204.4 107.2,204.7 107.8,205.0 108.3,205.4 108.9,205.7 109.5,206.0 110.1,206.3 110.7,206.6 111.2,206.9 111.8,207.2 112.4,207.5 113.0,207.8 113.5,208.1 114.1,208.4 114.7,208.7 115.2,209.0 115.8,209.3 116.4,209.6 117.0,209.9 117.5,210.2 118.1,210.4 118.7,210.7 119.3,211.0 119.8,211.3 120.4,211.5 121.0,211.8 121.6,212.1 122.1,212.3 122.7,212.6 123.3,212.8 123.9,213.1 124.5,213.3 125.0,213.6 125.6,213.8 126.2,214.1 126.8,214.3 127.3,214.6 127.9,214.8 128.5,215.1 129.1,215.3 129.6,215.5 130.2,215.8 130.8,216.0 131.3,216.2 131.9,216.5 132.5,216.7 133.1,216.9 133.6,217.1 134.2,217.4 134.8,217.6 135.4,217.8 135.9,218.0 136.5,218.2 137.1,218.4 137.7,218.7 138.2,218.9 138.8,219.1 139.4,219.3 140.0,219.5 140.6,219.7 141.1,219.9 141.7,220.1 142.3,220.3 142.9,220.5 143.4,220.7 144.0,220.9 144.6,221.1 145.2,221.3 145.7,221.5 146.3,221.7 146.9,221.9 147.4,222.1 148.0,222.3 148.6,222.5 149.2,222.7 149.8,222.8 150.3,223.0 150.9,223.2 151.5,223.4 152.1,223.6 152.6,223.8 153.2,223.9 153.8,224.1 154.4,224.3 154.9,224.5 155.5,224.7 156.1,224.8 156.7,225.0 157.2,225.2 157.8,225.4 158.4,225.5 158.9,225.7 159.5,225.9 160.1,226.0 160.7,226.2 161.2,226.4 161.8,226.5 162.4,226.7 163.0,226.9 163.6,227.0 164.1,227.2 164.7,227.4 165.3,227.5 165.8,227.7 166.4,227.8 167.0,228.0 167.6,228.2 168.2,228.3 168.7,228.5 169.3,228.6 169.9,228.8 170.4,228.9 171.0,229.1 171.6,229.2 172.2,229.4 172.8,229.5 173.3,229.7 173.9,229.8 174.5,230.0 175.1,230.1 175.6,230.3 176.2,230.4 176.8,230.6 177.4,230.7 177.9,230.9 178.5,231.0 179.1,231.2 179.7,231.3 180.2,231.5 180.8,231.6 181.4,231.7 181.9,231.9 182.5,232.0 183.1,232.2 183.7,232.3 184.2,232.4 184.8,232.6 185.4,232.7 186.0,232.8 186.5,233.0 187.1,233.1 187.7,233.3 188.3,233.4 188.8,233.5 189.4,233.7 190.0,233.8 190.6,233.9 191.2,234.1 191.7,234.2 192.3,234.3 192.9,234.4 193.4,234.6 194.0,234.7 194.6,234.8 195.2,235.0 195.8,235.1 196.3,235.2 196.9,235.3 197.5,235.5 198.1,235.6 198.6,235.7 199.2,235.8 199.8,236.0 200.3,236.1 200.9,236.2 201.5,236.3 202.1,236.4 202.7,236.6 203.2,236.7 203.8,236.8 204.4,236.9 205.0,237.1 205.5,237.2 206.1,237.3 206.7,237.4 207.2,237.5 207.8,237.6 208.4,237.8 209.0,237.9 209.6,238.0 210.1,238.1 210.7,238.2 211.3,238.3 211.8,238.5 212.4,238.6 213.0,238.7 213.6,238.8 214.1,238.9 214.7,239.0 215.3,239.1 215.9,239.2 216.4,239.4 217.0,239.5 217.6,239.6 218.2,239.7 218.8,239.8 219.3,239.9 219.9,240.0 220.5,240.1 221.0,240.2 221.6,240.3 222.2,240.4 222.8,240.6 223.3,240.7 223.9,240.8 224.5,240.9 225.1,241.0 225.7,241.1 226.2,241.2 226.8,241.3 227.4,241.4 228.0,241.5 228.5,241.6 229.1,241.7 229.7,241.8 230.2,241.9 230.8,242.0 231.4,242.1 232.0,242.2 232.6,242.3 233.1,242.4 233.7,242.5 234.3,242.6 234.9,242.7 235.4,242.8 236.0,242.9 236.6,243.0 237.2,243.1 237.7,243.2 238.3,243.3 238.9,243.4 239.4,243.5 240.0,243.6 240.6,243.7 241.2,243.8 241.8,243.9 242.3,244.0 242.9,244.1 243.5,244.2 244.0,244.3 244.6,244.4 245.2,244.5 245.8,244.6 246.3,244.7 246.9,244.7 247.5,244.8 248.1,244.9 248.7,245.0 249.2,245.1 249.8,245.2 250.4,245.3 250.9,245.4 251.5,245.5 252.1,245.6 252.7,245.7 253.2,245.8 253.8,245.9 254.4,245.9 255.0,246.0 255.6,246.1 256.1,246.2 256.7,246.3 257.3,246.4 257.9,246.5 258.4,246.6 259.0,246.7 259.6,246.7 260.1,246.8 260.7,246.9 261.3,247.0 261.9,247.1 262.5,247.2 263.0,247.3 263.6,247.4 264.2,247.4 264.8,247.5 265.3,247.6 265.9,247.7 266.5,247.8 267.1,247.9 267.6,248.0 268.2,248.0 268.8,248.1 269.4,248.2 269.9,248.3 270.5,248.4 271.1,248.5 271.6,248.5 272.2,248.6 272.8,248.7 273.4,248.8 273.9,248.9 274.5,249.0 275.1,249.0 275.7,249.1 276.2,249.2 276.8,249.3 277.4,249.4 278.0,249.4 278.5,249.5 279.1,249.6 279.7,249.7 280.3,249.8 280.9,249.8 281.4,249.9 282.0,250.0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="282" cy="250" r="3.5" stroke-width="1.5"/>
+<text class="t" x="275.1" y="201.6" font-size="10.5" text-anchor="end">sure and right: 0 bits</text>
+<line class="m" x1="278" y1="245" x2="263.1" y2="205.6" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="167" cy="228" r="3.5" stroke-width="1.5"/>
+<text class="t" x="171.6" y="170.8" font-size="10.5">a fair coin: 1 bit</text>
+<line class="m" x1="167" y1="223" x2="175.6" y2="174.8" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="55.54" cy="117.51" r="3.5" stroke-width="1.5"/>
+<text class="t" x="70.4" y="104.8" font-size="10.5">1 of 65 equally likely: 6.022</text>
+<text class="ta" x="60" y="42" font-size="10.5">p -&gt; 0: no limit; at p = 0, infinite</text>
+<text class="tm mono" x="336" y="253.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="342" y1="206.0" x2="572" y2="206.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="336" y="209.5" font-size="10.5" text-anchor="end">2</text>
+<line class="m" x1="342" y1="162.0" x2="572" y2="162.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="336" y="165.5" font-size="10.5" text-anchor="end">4</text>
+<line class="m" x1="342" y1="118.0" x2="572" y2="118.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="336" y="121.5" font-size="10.5" text-anchor="end">6</text>
+<line class="m" x1="342" y1="74.0" x2="572" y2="74.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="336" y="77.5" font-size="10.5" text-anchor="end">8</text>
+<text class="tm mono" x="336" y="33.5" font-size="10.5" text-anchor="end">10</text>
+<rect class="m" x="342" y="30" width="230" height="220" rx="0" stroke-width="1.5"/>
+<text class="tm" x="336" y="22" font-size="11">the pair model on the test text, character by character</text>
+<rect class="s fs" x="345.64" y="157.16" width="11.88" height="92.84" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="351.58" y="153.16" font-size="9.5" text-anchor="middle">4.2</text>
+<text class="tm mono" x="351.58" y="264" font-size="10" text-anchor="middle">r</text>
+<text class="t mono" x="351.58" y="277" font-size="11" font-weight="700" text-anchor="middle">a</text>
+<rect class="s fs" x="364.81" y="196.25" width="11.88" height="53.75" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="370.75" y="192.25" font-size="9.5" text-anchor="middle">2.4</text>
+<text class="tm mono" x="370.75" y="264" font-size="10" text-anchor="middle">a</text>
+<text class="t mono" x="370.75" y="277" font-size="11" font-weight="700" text-anchor="middle">n</text>
+<rect class="s fs" x="383.98" y="148.87" width="11.88" height="101.13" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="389.92" y="144.87" font-size="9.5" text-anchor="middle">4.6</text>
+<text class="tm mono" x="389.92" y="264" font-size="10" text-anchor="middle">n</text>
+<text class="t mono" x="389.92" y="277" font-size="11" font-weight="700" text-anchor="middle">c</text>
+<rect class="s fs" x="403.14" y="201.56" width="11.88" height="48.44" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="409.08" y="197.56" font-size="9.5" text-anchor="middle">2.2</text>
+<text class="tm mono" x="409.08" y="264" font-size="10" text-anchor="middle">c</text>
+<text class="t mono" x="409.08" y="277" font-size="11" font-weight="700" text-anchor="middle">e</text>
+<rect class="s fs" x="422.31" y="210.99" width="11.88" height="39.01" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="428.25" y="206.99" font-size="9.5" text-anchor="middle">1.8</text>
+<text class="tm mono" x="428.25" y="264" font-size="10" text-anchor="middle">e</text>
+<text class="t mono" x="428.25" y="277" font-size="11" font-weight="700" text-anchor="middle">_</text>
+<rect class="s fs" x="441.47" y="187.78" width="11.88" height="62.22" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="447.42" y="183.78" font-size="9.5" text-anchor="middle">2.8</text>
+<text class="tm mono" x="447.42" y="264" font-size="10" text-anchor="middle">_</text>
+<text class="t mono" x="447.42" y="277" font-size="11" font-weight="700" text-anchor="middle">t</text>
+<rect class="s fs" x="460.64" y="137.43" width="11.88" height="112.57" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="466.58" y="133.43" font-size="9.5" text-anchor="middle">5.1</text>
+<text class="tm mono" x="466.58" y="264" font-size="10" text-anchor="middle">t</text>
+<text class="t mono" x="466.58" y="277" font-size="11" font-weight="700" text-anchor="middle">a</text>
+<rect class="s fs" x="479.81" y="35.65" width="11.88" height="214.35" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="485.75" y="31.65" font-size="9.5" text-anchor="middle">9.7</text>
+<text class="tm mono" x="485.75" y="264" font-size="10" text-anchor="middle">a</text>
+<text class="t mono" x="485.75" y="277" font-size="11" font-weight="700" text-anchor="middle">&#x27;</text>
+<rect class="s fs" x="498.98" y="147.04" width="11.88" height="102.96" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="504.92" y="143.04" font-size="9.5" text-anchor="middle">4.7</text>
+<text class="tm mono" x="504.92" y="264" font-size="10" text-anchor="middle">&#x27;</text>
+<text class="t mono" x="504.92" y="277" font-size="11" font-weight="700" text-anchor="middle">e</text>
+<rect class="s fs" x="518.14" y="170.05" width="11.88" height="79.95" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="524.08" y="166.05" font-size="9.5" text-anchor="middle">3.6</text>
+<text class="tm mono" x="524.08" y="264" font-size="10" text-anchor="middle">e</text>
+<text class="t mono" x="524.08" y="277" font-size="11" font-weight="700" text-anchor="middle">n</text>
+<rect class="s fs" x="537.31" y="101.57" width="11.88" height="148.43" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="543.25" y="97.57" font-size="9.5" text-anchor="middle">6.7</text>
+<text class="tm mono" x="543.25" y="264" font-size="10" text-anchor="middle">n</text>
+<text class="t mono" x="543.25" y="277" font-size="11" font-weight="700" text-anchor="middle">\n</text>
+<rect class="s fs" x="556.48" y="175.22" width="11.88" height="74.78" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="562.42" y="171.22" font-size="9.5" text-anchor="middle">3.4</text>
+<text class="tm mono" x="562.42" y="264" font-size="10" text-anchor="middle">\n</text>
+<text class="t mono" x="562.42" y="277" font-size="11" font-weight="700" text-anchor="middle">A</text>
+<line class="a" x1="342" y1="155.8" x2="572" y2="155.8" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="ta" x="578" y="153.8" font-size="10.5">mean</text>
+<text class="ta mono" x="578" y="166.8" font-size="10.5">4.282</text>
+<text class="tm" x="578" y="264" font-size="10">before</text>
+<text class="t" x="578" y="277" font-size="10">came</text>
+</svg>
