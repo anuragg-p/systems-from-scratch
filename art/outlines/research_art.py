@@ -28,6 +28,11 @@ Computed, for the built modules, from the formulas and settings of the track's o
     06  a 3 by 3 kernel on a 6 by 6 image, and 06.04's recorded long run read from
         tracks/research/experiments/recorded/resnet/: the training error of each network at the
         end, the mean of its seeds' summaries
+    07  the pair model's bits on the test text, counted here from the shipped text as 07.01 counts
+        it (k = 0.1), and 07.02's recorded long run at a context of 5 (the network's mean over seeds,
+        deleted interpolation) read from tracks/research/experiments/recorded/nplm/; the rows of
+        what each model looks back at are a schematic (the attention row is 07.04's copying, the
+        decoder's weight on the position it writes)
 Where a cover prints a number the lessons print, the script asserts it is the same number, so a
 change to the track that moves it stops this script instead of leaving the cover wrong.
 Also computed: the double-descent curve in 05 (random ReLU features, least squares), the
@@ -794,17 +799,44 @@ def res_conv():
 
 # =================================================================== 07 language models
 
+def lm_numbers():
+    """07's numbers as its lessons print them: the pair model's bits on the test text, counted here from
+    tracks/research/data/tinyshakespeare.txt with 07.01's split and smoothing (k = 0.1), and 07.02's
+    recorded long run at a context of 5, the network's mean over seeds and deleted interpolation, read
+    from its summaries."""
+    import numpy as np
+    with open(os.path.join(ROOT, "tracks", "research", "data", "tinyshakespeare.txt"), encoding="ascii") as f:
+        text = f.read()
+    vocab = sorted(set(text))
+    number = {c: i for i, c in enumerate(vocab)}
+    V, n = len(vocab), len(text)
+    train = np.array([number[c] for c in text[:int(0.9 * n)]])
+    test = np.array([number[c] for c in text[int(0.95 * n):]])
+    table = np.zeros((V, V))
+    np.add.at(table, (train[:-1], train[1:]), 1)
+    table += 0.1
+    pairs = float(-np.log2((table / table.sum(axis=1, keepdims=True))[test[:-1], test[1:]]).mean())
+    rec = os.path.join(ROOT, "tracks", "research", "experiments", "recorded", "nplm")
+    nets = [json.load(open(p))["test_bits"] for p in sorted(glob.glob(os.path.join(rec, "context5", "seed*", "summary.json")))]
+    inter = json.load(open(os.path.join(rec, "counts", "seed0", "summary.json")))["interpolated"]["5"]
+    got = {"blind": f"{math.log2(V):.3f}", "pairs": f"{pairs:.3f}", "network": f"{sum(nets) / len(nets):.3f}",
+           "interpolation": f"{inter:.3f}"}
+    assert got == {"blind": "6.022", "pairs": "3.599", "network": "2.346", "interpolation": "2.416"}, got  # 07.01, 07.02
+    return got
+
+
 def res_lm():
-    a = Art("r07", "Language models from counting to attention: each guesses the next character from more of the past, "
-                   "scored in bits of surprise")
+    a = Art("r07", "Language models from counting to attention: what each model can look back at, and the bits per "
+                   "character the lessons measure")
+    got = lm_numbers()
     txt = "to be or not to b"
     nxt = "e"
     cw, ch, sx = 15, 20, 150
-    a.text(sx, 30, "what each model can use to guess the next character", "tm", 10.5)
-    rows = [("counts", "a bigram table", "how often each character", "follows 'b'"),
-            ("embeddings", "and a network", "a fixed window: the last", "few characters"),
-            ("recurrent", "network", "one state carried along:", "the far past fades"),
-            ("attention", "", "looks back at every", "position, near or far")]
+    a.text(sx, 30, "what each model looks back at", "tm", 10.5)
+    rows = [("counts", "of pairs", "what followed 'b', counted;", f"test text: {got['pairs']} bits"),
+            ("embeddings", "and a network", "a window of the last 5;", f"test text: {got['network']} bits"),
+            ("recurrent", "network", "one state carried along;", "it uses about the last 16"),
+            ("attention", "", "copying the row, it weighs", "every position at every step")]
     n = len(txt)
     for r, (name, sub, d1, d2) in enumerate(rows):
         y = 44 + r * 50
@@ -817,31 +849,31 @@ def res_lm():
             if r == 0:
                 use = 1.0 if back == 0 else 0
             elif r == 1:
-                use = 1.0 if back < 3 else 0
+                use = 1.0 if back < 5 else 0
             elif r == 2:
                 use = 0.85 ** back
             else:
-                use = 0.35
+                use = 0.9 if i == 7 else 0.12         # writing its 8th symbol, the weight is on input 8
             if use:
                 shade(a, x, y, cw, ch, 0.5 * use)          # at most half strength, so the letter stays readable
-            a.box(x, y, cw, ch, "a" if use == 1.0 else "m", rx=0)
-            if not (r == 3 and i == txt.index("be") + 1):       # that cell is drawn below, in bold
-                a.text(x + cw / 2, y + 14, "_" if c == " " else c, "t", 11, "middle", mono=True)
-        cell(a, sx + n * cw + 6, y, cw + 2, ch, nxt, "a af", "ta", 11, rx=3, weight=700)
+            a.box(x, y, cw, ch, "a" if use >= 0.9 else "m", rx=0)
+            a.text(x + cw / 2, y + 14, "_" if c == " " else c, "t", 11, "middle", 700 if r == 3 and i == 7 else None,
+                   mono=True)
+        out = txt[7] if r == 3 else nxt
+        cell(a, sx + n * cw + 6, y, cw + 2, ch, "_" if out == " " else out, "a af", "ta", 11, rx=3, weight=700)
         a.text(452, y + 9, d1, "tm", 10.5)
         a.text(452, y + 23, d2, "tm", 10.5)
         if r == 3:
-            i0 = txt.index("be") + 1                   # the 'e' that followed the first 'b'
-            x0, x1 = sx + i0 * cw + cw / 2, sx + (n - 1) * cw + cw / 2
-            a.path(f"M{x1} {y + ch + 2} C {x1} {y + ch + 18}, {x0} {y + ch + 18}, {x0} {y + ch + 4}", "a", arrow=True)
-            a.text((x0 + x1) / 2, y + ch + 26, "last time 'b' came, 'e' followed", "ta", 10, "middle")
-            shade(a, sx + i0 * cw, y, cw, ch, 0.5)
-            a.add(f'<rect class="a" x="{sx + i0 * cw}" y="{y}" width="{cw}" height="{ch}" stroke-width="2"/>')
-            a.text(sx + i0 * cw + cw / 2, y + 14, "e", "t", 11, "middle", 700, mono=True)
+            x0 = sx + 7 * cw + cw / 2
+            a.path(f"M{sx + n * cw + 15} {y + ch + 2} C {sx + n * cw + 15} {y + ch + 18}, {x0} {y + ch + 18}, "
+                   f"{x0} {y + ch + 4}", "a", arrow=True)
+            a.text((x0 + sx + n * cw + 15) / 2, y + ch + 27, "the 8th symbol it writes: most weight on input 8",
+                   "ta", 10, "middle")
     a.text(sx + n * cw + 14, 30, "next", "ta", 10.5, "middle")
-    a.text(24, 270, "score: -log2 p(the true next character), in bits, averaged; lower is better. '_' is a space.", "tm", 11)
-    a.text(24, 286, f"Guessing evenly among Tiny Shakespeare's 65 characters scores log2 65 = {math.log2(65):.2f} bits.",
-           "tm", 11)
+    a.text(24, 270, "Scored in bits per character on the test text, -log2 p of the character that came, averaged; "
+                    "'_' is a space.", "tm", 10.5)
+    a.text(24, 286, f"Blind guess {got['blind']}; pairs {got['pairs']}; deleted interpolation of 5 characters "
+                    f"{got['interpolation']}; the network of 5, in a 20-minute run, {got['network']}.", "tm", 10.5)
     return a
 
 
