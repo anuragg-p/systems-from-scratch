@@ -31,7 +31,10 @@ and lights the models' real weights (models/gpt2.py, 09.03); its experiments are
 Module 10 lights today's architecture, the pieces models/gpt.py gains as arguments of GPT (RMSNorm,
 rotary positions, SwiGLU, grouped heads), the piece of all five of its lessons: SmolLM2's loading
 (10.04) is that piece in use, and its ablation (10.05) compares them; its experiments are language
-ones too. Module 13 lights experiments that hold up, the piece of its four lessons: its tools are
+ones too. Module 12 lights fine-tuning, the piece of all four of its lessons: models/classifier.py's
+head and models/lora.py's adapter on 09.03's GPT-2, with what they train on, Banking77 (fetched) and
+the instruction tasks (made by code), and the loop they share, experiments/tuning.py.
+Module 13 lights experiments that hold up, the piece of its four lessons: its tools are
 lab/stats.py's and its experiments re-run results of modules 03 and 08 and the data's held-out parts.)
 
 In each lesson's copy, that lesson's piece (LESSONS below: exactly one per lesson) is drawn in
@@ -79,7 +82,7 @@ PIECES = {
     "09": ("models", "real weights", "09", "09.03"),
     "10": ("models", "today's architecture", "10", "10.01"),
     "11": ("models", "fast", "11", None),
-    "12": ("models", "fine-tuning", "12", None),
+    "12": ("models", "fine-tuning", "12", "12.01"),
     # experiments: experiments/<name>.py, one per lesson, here by module
     "curve": ("experiments", "a curve", "module 00", "00.01"),
     "groups": ("experiments", "two groups", "modules 01-02", "01.01"),
@@ -164,6 +167,10 @@ LESSONS = [
     ("10.03", "A gated MLP: SwiGLU", "10", "SwiGLU"),
     ("10.04", "Grouped-query attention, and loading a current open model", "10", "grouped heads, SmolLM2"),
     ("10.05", "Which change paid: an ablation table", "10", "the ablation table"),
+    ("12.01", "A new head on a pretrained body", "12", "a new head"),
+    ("12.02", "LoRA: training under one percent of the weights", "12", "LoRA"),
+    ("12.03", "Instructions: a chat template, and a model that answers", "12", "instructions"),
+    ("12.04", "What fine-tuning forgot: measuring before and after", "12", "what it forgot"),
     ("13.01", "A hypothesis, and a baseline tuned as hard as your method", "13", "a fair baseline"),
     ("13.02", "Error bars: is the difference real?", "13", "error bars"),
     ("13.03", "An evaluation you tried to fool", "13", "a fooled evaluation"),
@@ -186,6 +193,7 @@ MODULE_TITLES = {
     "08": "The transformer: a GPT",
     "09": "GPT-2: the tokenizer and the real weights",
     "10": "Today's architecture",
+    "12": "Fine-tuning",
     "13": "Experiments that hold up",
     "14": "Reproduce a paper: grokking",
 }

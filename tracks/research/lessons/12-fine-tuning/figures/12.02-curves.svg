@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>The recorded run on its 1,000 validation questions every 150 steps: each method&#x27;s accuracy (the mean of 3 seeds, the band min to max), and each LoRA rank&#x27;s less every weight&#x27;s, seed by seed (the same seed: the same head, the same batches): ahead early, behind from step 450</title>
+<defs><marker id="curves1202-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="curves1202-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="curves1202-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="32.9" y="265.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="38.9" y1="213.6" x2="316" y2="213.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="32.9" y="217.08" font-size="10.5" text-anchor="end">0.2</text>
+<line class="m" x1="38.9" y1="165.2" x2="316" y2="165.2" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="32.9" y="168.66" font-size="10.5" text-anchor="end">0.4</text>
+<line class="m" x1="38.9" y1="116.7" x2="316" y2="116.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="32.9" y="120.24" font-size="10.5" text-anchor="end">0.6</text>
+<line class="m" x1="38.9" y1="68.3" x2="316" y2="68.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="32.9" y="71.82" font-size="10.5" text-anchor="end">0.8</text>
+<line class="m" x1="38.9" y1="262" x2="38.9" y2="266" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="38.9" y="278" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="108.29" y1="262" x2="108.29" y2="266" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="108.29" y="278" font-size="10.5" text-anchor="middle">150</text>
+<line class="m" x1="177.68" y1="262" x2="177.68" y2="266" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="177.68" y="278" font-size="10.5" text-anchor="middle">300</text>
+<line class="m" x1="247.07" y1="262" x2="247.07" y2="266" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="247.07" y="278" font-size="10.5" text-anchor="middle">450</text>
+<line class="m" x1="316.46" y1="262" x2="316.46" y2="266" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="316.46" y="278" font-size="10.5" text-anchor="middle">600</text>
+<rect class="m" x="38.9" y="32" width="277.1" height="230" rx="0" stroke-width="1.5"/>
+<text class="tm" x="177.45" y="294" font-size="11.5" text-anchor="middle">step (16 questions each)</text>
+<text class="tm" x="32.9" y="24" font-size="11.5">validation accuracy</text>
+<polygon class="af" points="38.9,261.0 108.3,89.9 177.7,64.4 247.1,55.5 316.0,51.4 316.0,45.6 247.1,48.9 177.7,60.3 108.3,83.3 38.9,258.4"/>
+<polygon class="fs" points="38.9,260.3 108.3,120.4 177.7,74.1 247.1,49.4 316.0,44.6 316.0,44.3 247.1,48.0 177.7,64.9 108.3,97.6 38.9,257.9" fill-opacity="0.75"/>
+<polyline class="m" points="38.9,260.3 108.3,120.4 177.7,74.1 247.1,49.4 316.0,44.6" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="m" points="38.9,257.9 108.3,97.6 177.7,64.9 247.1,48.0 316.0,44.3" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="m" points="38.9,259.3 108.3,109.9 177.7,84.1 247.1,70.3 316.0,68.3" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="s" points="38.9,259.1 108.3,106.3 177.7,68.1 247.1,48.9 316.0,44.4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="38.9,259.3 108.3,87.5 177.7,62.9 247.1,52.0 316.0,48.5" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+<polyline class="a" points="38.9,259.3 108.3,85.6 177.7,62.3 247.1,51.3 316.0,48.4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 3"/>
+<polyline class="a" points="38.9,259.3 108.3,86.6 177.7,63.0 247.1,51.4 316.0,47.6" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="s" points="196.0,164.0 218.0,164.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="224" y="168" font-size="11">every weight</text>
+<polyline class="a" points="196.0,179.0 218.0,179.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="224" y="183" font-size="11">LoRA r = 8</text>
+<polyline class="a" points="196.0,194.0 218.0,194.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 3"/>
+<text class="ta" x="224" y="198" font-size="11">LoRA r = 4</text>
+<polyline class="a" points="196.0,209.0 218.0,209.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"/>
+<text class="ta" x="224" y="213" font-size="11">LoRA r = 1</text>
+<polyline class="m" points="196.0,224.0 218.0,224.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm" x="224" y="228" font-size="11">the head alone</text>
+<line class="m" x1="404" y1="245.5" x2="620" y2="245.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="398" y="249.03" font-size="10.5" text-anchor="end">-0.04</text>
+<line class="m" x1="404" y1="219.6" x2="620" y2="219.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="398" y="223.15" font-size="10.5" text-anchor="end">-0.02</text>
+<line class="m" x1="404" y1="193.8" x2="620" y2="193.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="398" y="197.26" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="404" y1="167.9" x2="620" y2="167.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="398" y="171.38" font-size="10.5" text-anchor="end">0.02</text>
+<line class="m" x1="404" y1="142.0" x2="620" y2="142.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="398" y="145.5" font-size="10.5" text-anchor="end">0.04</text>
+<line class="m" x1="404" y1="116.1" x2="620" y2="116.1" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="398" y="119.62" font-size="10.5" text-anchor="end">0.06</text>
+<line class="m" x1="404" y1="90.2" x2="620" y2="90.2" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="398" y="93.74" font-size="10.5" text-anchor="end">0.08</text>
+<line class="m" x1="404" y1="64.4" x2="620" y2="64.4" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="398" y="67.85" font-size="10.5" text-anchor="end">0.1</text>
+<line class="m" x1="404" y1="38.5" x2="620" y2="38.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="398" y="41.97" font-size="10.5" text-anchor="end">0.12</text>
+<line class="m" x1="426.74" y1="252" x2="426.74" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="426.74" y="268" font-size="10.5" text-anchor="middle">150</text>
+<line class="m" x1="483.58" y1="252" x2="483.58" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="483.58" y="268" font-size="10.5" text-anchor="middle">300</text>
+<line class="m" x1="540.42" y1="252" x2="540.42" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="540.42" y="268" font-size="10.5" text-anchor="middle">450</text>
+<line class="m" x1="596.88" y1="252" x2="596.88" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="596.88" y="268" font-size="10.5" text-anchor="middle">599</text>
+<rect class="m" x="404" y="32" width="216" height="220" rx="0" stroke-width="1.5"/>
+<text class="tm" x="512" y="284" font-size="11.5" text-anchor="middle">step</text>
+<text class="tm" x="398" y="24" font-size="11.5">LoRA less every weight, by seed</text>
+<line class="s" x1="404" y1="193.76" x2="620" y2="193.76" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="414.74" cy="110.94" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="414.74" cy="48.82" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="414.74" cy="120" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="410.74" y1="93.25" x2="418.74" y2="93.25" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="471.58" cy="107.06" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="471.58" cy="205.41" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="471.58" cy="186" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="467.58" y1="166.16" x2="475.58" y2="166.16" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="528.42" cy="204.12" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="528.42" cy="204.12" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="528.42" cy="222.24" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="524.42" y1="210.16" x2="532.42" y2="210.16" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="584.88" cy="211.88" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="584.88" cy="206.71" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="584.88" cy="227.41" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="580.88" y1="215.33" x2="588.88" y2="215.33" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="426.74" cy="107.06" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="426.74" cy="19.06" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="426.74" cy="122.59" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="422.74" y1="82.9" x2="430.74" y2="82.9" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="483.58" cy="105.76" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="483.58" cy="205.41" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="483.58" cy="178.24" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="479.58" y1="163.14" x2="487.58" y2="163.14" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="540.42" cy="191.18" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="540.42" cy="200.24" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="540.42" cy="227.41" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="536.42" y1="206.27" x2="544.42" y2="206.27" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="596.88" cy="206.71" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="596.88" cy="196.35" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="596.88" cy="241.65" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="592.88" y1="214.9" x2="600.88" y2="214.9" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="438.74" cy="134.24" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="438.74" cy="12.59" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="438.74" cy="117.41" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="434.74" y1="88.08" x2="442.74" y2="88.08" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="495.58" cy="120" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="495.58" cy="191.18" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="495.58" cy="188.59" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="491.58" y1="166.59" x2="499.58" y2="166.59" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="552.42" cy="196.35" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="552.42" cy="198.94" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="552.42" cy="226.12" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="548.42" y1="207.14" x2="556.42" y2="207.14" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="608.88" cy="200.24" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="608.88" cy="200.24" r="2.2" stroke-width="1.5"/>
+<circle class="a f" cx="608.88" cy="231.29" r="2.2" stroke-width="1.5"/>
+<line class="a" x1="604.88" y1="210.59" x2="612.88" y2="210.59" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="426.74" y="3.59" font-size="10" font-weight="600" text-anchor="middle">+0.082</text>
+<text class="ta" x="483.58" y="96.76" font-size="10" font-weight="600" text-anchor="middle">+0.022</text>
+<text class="ta" x="540.42" y="244.41" font-size="10" font-weight="600" text-anchor="middle">-0.011</text>
+<text class="ta" x="596.88" y="258.65" font-size="10" font-weight="600" text-anchor="middle">-0.015</text>
+<text class="tm" x="614" y="46" font-size="10" text-anchor="end">above 0: LoRA ahead</text>
+<text class="tm" x="404" y="306" font-size="10">at each step ranks 1, 4, 8 left to right;</text>
+<text class="tm" x="404" y="320" font-size="10">the number: all nine seeds&#x27; mean</text>
+</svg>

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 316" fill="none">
+<title>The merge as arithmetic, on a Linear layer of 4 inputs and 3 outputs with a LoRA of rank 1 and alpha 2: W + (alpha / r) B A is one matrix, and it gives the adapter&#x27;s outputs; in GPT-2, trained 10 steps at rank 8, the same up to float32 rounding</title>
+<defs><marker id="merge1202-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="merge1202-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="merge1202-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="20" y="39" font-size="12" font-weight="600">W</text>
+<rect class="s f" x="20" y="46" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="34" y="60.96" font-size="11" text-anchor="middle">1</text>
+<rect class="s f" x="48" y="46" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="62" y="60.96" font-size="11" text-anchor="middle">0</text>
+<rect class="s f" x="76" y="46" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="90" y="60.96" font-size="11" text-anchor="middle">2</text>
+<rect class="s f" x="104" y="46" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="118" y="60.96" font-size="11" text-anchor="middle">-1</text>
+<rect class="s f" x="20" y="68" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="34" y="82.96" font-size="11" text-anchor="middle">0</text>
+<rect class="s f" x="48" y="68" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="62" y="82.96" font-size="11" text-anchor="middle">1</text>
+<rect class="s f" x="76" y="68" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="90" y="82.96" font-size="11" text-anchor="middle">0</text>
+<rect class="s f" x="104" y="68" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="118" y="82.96" font-size="11" text-anchor="middle">1</text>
+<rect class="s f" x="20" y="90" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="34" y="104.96" font-size="11" text-anchor="middle">2</text>
+<rect class="s f" x="48" y="90" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="62" y="104.96" font-size="11" text-anchor="middle">-1</text>
+<rect class="s f" x="76" y="90" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="90" y="104.96" font-size="11" text-anchor="middle">1</text>
+<rect class="s f" x="104" y="90" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="118" y="104.96" font-size="11" text-anchor="middle">0</text>
+<text class="t" x="140" y="84" font-size="16" font-weight="700" text-anchor="middle">+</text>
+<text class="t mono" x="160" y="84" font-size="12">2 x</text>
+<text class="t mono" x="192" y="39" font-size="12" font-weight="600">B</text>
+<rect class="a af" x="192" y="46" width="34" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="209" y="60.96" font-size="11" text-anchor="middle">0.5</text>
+<rect class="a af" x="192" y="68" width="34" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="209" y="82.96" font-size="11" text-anchor="middle">0</text>
+<rect class="a af" x="192" y="90" width="34" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="209" y="104.96" font-size="11" text-anchor="middle">-1</text>
+<text class="t mono" x="236" y="84" font-size="12" text-anchor="middle">x</text>
+<text class="t mono" x="248" y="61" font-size="12" font-weight="600">A</text>
+<rect class="a af" x="248" y="68" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="262" y="82.96" font-size="11" text-anchor="middle">1</text>
+<rect class="a af" x="276" y="68" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="290" y="82.96" font-size="11" text-anchor="middle">2</text>
+<rect class="a af" x="304" y="68" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="318" y="82.96" font-size="11" text-anchor="middle">0</text>
+<rect class="a af" x="332" y="68" width="28" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="346" y="82.96" font-size="11" text-anchor="middle">-1</text>
+<text class="t" x="372" y="84" font-size="16" font-weight="700" text-anchor="middle">=</text>
+<text class="t mono" x="390" y="39" font-size="12" font-weight="600">W&#x27; (merged)</text>
+<rect class="a af" x="390" y="46" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="405" y="60.96" font-size="11" text-anchor="middle">2</text>
+<rect class="a af" x="420" y="46" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="435" y="60.96" font-size="11" text-anchor="middle">2</text>
+<rect class="s f" x="450" y="46" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="465" y="60.96" font-size="11" text-anchor="middle">2</text>
+<rect class="a af" x="480" y="46" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="495" y="60.96" font-size="11" text-anchor="middle">-2</text>
+<rect class="s f" x="390" y="68" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="405" y="82.96" font-size="11" text-anchor="middle">0</text>
+<rect class="s f" x="420" y="68" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="435" y="82.96" font-size="11" text-anchor="middle">1</text>
+<rect class="s f" x="450" y="68" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="465" y="82.96" font-size="11" text-anchor="middle">0</text>
+<rect class="s f" x="480" y="68" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="495" y="82.96" font-size="11" text-anchor="middle">1</text>
+<rect class="a af" x="390" y="90" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="405" y="104.96" font-size="11" text-anchor="middle">0</text>
+<rect class="a af" x="420" y="90" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="435" y="104.96" font-size="11" text-anchor="middle">-5</text>
+<rect class="s f" x="450" y="90" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="465" y="104.96" font-size="11" text-anchor="middle">1</text>
+<rect class="a af" x="480" y="90" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="495" y="104.96" font-size="11" text-anchor="middle">2</text>
+<text class="tm" x="520" y="60" font-size="10">lit: what</text>
+<text class="tm" x="520" y="74" font-size="10">B A changed</text>
+<text class="t mono" x="20" y="150" font-size="11.5" font-weight="700">x = [1, 1, 1, 1]</text>
+<text class="t mono" x="20" y="174" font-size="11">the adapter:  W x + 2 B (A x)</text>
+<text class="tm mono" x="330" y="174" font-size="11">= [2, 2, 2] + 2 B [2]</text>
+<text class="ta mono" x="20" y="196" font-size="11" font-weight="700">merged:       W&#x27; x</text>
+<text class="ta mono" x="330" y="196" font-size="11" font-weight="700">= [4, 2, -2]</text>
+<text class="tm" x="330" y="174" font-size="11"></text>
+<text class="tm" x="20" y="218" font-size="10.5">the adapter&#x27;s output: [4, 2, -2], the same.</text>
+<text class="t" x="20" y="270" font-size="10.5">GPT-2, adapted at rank 8: before training the scores differ from GPT-2&#x27;s by 0 (B is 0).</text>
+<text class="t" x="20" y="288" font-size="10.5">Trained 10 steps, then merged: class scores differ by 2.41e-05, next-token scores (up to a few hundred) by 0.000237.</text>
+<text class="tm" x="20" y="304" font-size="10.5">Rounding: float32 keeps about 7 digits, and the merged weight adds in another order.</text>
+</svg>

@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 246" fill="none">
+<title>One example through the chat template, token by token in GPT-2&#x27;s tokenizer: 22 tokens of prompt, read and not scored, and 7 of reply, each scored by the model&#x27;s guess at the position before it; the markers are ordinary text to GPT-2</title>
+<defs><marker id="template1203-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="template1203-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="template1203-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s fs" x="20" y="40" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="29" y="55" font-size="10.5" text-anchor="middle">&lt;</text>
+<text class="tm mono" x="29" y="76" font-size="9" text-anchor="middle">0</text>
+<rect class="s fs" x="42" y="40" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="51" y="55" font-size="10.5" text-anchor="middle">|</text>
+<text class="tm mono" x="51" y="76" font-size="9" text-anchor="middle">1</text>
+<rect class="s fs" x="64" y="40" width="35.2" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="81.6" y="55" font-size="10.5" text-anchor="middle">user</text>
+<text class="tm mono" x="81.6" y="76" font-size="9" text-anchor="middle">2</text>
+<rect class="s fs" x="103.2" y="40" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="112.2" y="55" font-size="10.5" text-anchor="middle">|</text>
+<text class="tm mono" x="112.2" y="76" font-size="9" text-anchor="middle">3</text>
+<rect class="s fs" x="125.2" y="40" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="134.2" y="55" font-size="10.5" text-anchor="middle">&gt;</text>
+<text class="tm mono" x="134.2" y="76" font-size="9" text-anchor="middle">4</text>
+<rect class="s fs" x="147.2" y="40" width="22.6" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="158.5" y="55" font-size="10.5" text-anchor="middle">\n</text>
+<text class="tm mono" x="158.5" y="76" font-size="9" text-anchor="middle">5</text>
+<rect class="s fs" x="173.8" y="40" width="41.5" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="194.55" y="55" font-size="10.5" text-anchor="middle">Which</text>
+<text class="tm mono" x="194.55" y="76" font-size="9" text-anchor="middle">6</text>
+<rect class="s fs" x="219.3" y="40" width="28.9" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.75" y="55" font-size="10.5" text-anchor="middle">_is</text>
+<text class="tm mono" x="233.75" y="76" font-size="9" text-anchor="middle">7</text>
+<rect class="s fs" x="252.2" y="40" width="54.1" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="279.25" y="55" font-size="10.5" text-anchor="middle">_larger</text>
+<text class="tm mono" x="279.25" y="76" font-size="9" text-anchor="middle">8</text>
+<rect class="s fs" x="310.3" y="40" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="319.3" y="55" font-size="10.5" text-anchor="middle">,</text>
+<text class="tm mono" x="319.3" y="76" font-size="9" text-anchor="middle">9</text>
+<rect class="s fs" x="332.3" y="40" width="28.9" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="346.75" y="55" font-size="10.5" text-anchor="middle">_62</text>
+<text class="tm mono" x="346.75" y="76" font-size="9" text-anchor="middle">10</text>
+<rect class="s fs" x="365.2" y="40" width="28.9" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="379.65" y="55" font-size="10.5" text-anchor="middle">_or</text>
+<text class="tm mono" x="379.65" y="76" font-size="9" text-anchor="middle">11</text>
+<rect class="s fs" x="398.1" y="40" width="28.9" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="412.55" y="55" font-size="10.5" text-anchor="middle">_74</text>
+<text class="tm mono" x="412.55" y="76" font-size="9" text-anchor="middle">12</text>
+<rect class="s fs" x="431" y="40" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="440" y="55" font-size="10.5" text-anchor="middle">?</text>
+<text class="tm mono" x="440" y="76" font-size="9" text-anchor="middle">13</text>
+<rect class="s fs" x="453" y="40" width="22.6" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="464.3" y="55" font-size="10.5" text-anchor="middle">\n</text>
+<text class="tm mono" x="464.3" y="76" font-size="9" text-anchor="middle">14</text>
+<rect class="s fs" x="479.6" y="40" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="488.6" y="55" font-size="10.5" text-anchor="middle">&lt;</text>
+<text class="tm mono" x="488.6" y="76" font-size="9" text-anchor="middle">15</text>
+<rect class="s fs" x="501.6" y="40" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="510.6" y="55" font-size="10.5" text-anchor="middle">|</text>
+<text class="tm mono" x="510.6" y="76" font-size="9" text-anchor="middle">16</text>
+<rect class="s fs" x="523.6" y="40" width="28.9" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="538.05" y="55" font-size="10.5" text-anchor="middle">ass</text>
+<text class="tm mono" x="538.05" y="76" font-size="9" text-anchor="middle">17</text>
+<rect class="s fs" x="556.5" y="40" width="47.8" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="580.4" y="55" font-size="10.5" text-anchor="middle">istant</text>
+<text class="tm mono" x="580.4" y="76" font-size="9" text-anchor="middle">18</text>
+<rect class="s fs" x="20" y="96" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="29" y="111" font-size="10.5" text-anchor="middle">|</text>
+<text class="tm mono" x="29" y="132" font-size="9" text-anchor="middle">19</text>
+<rect class="s fs" x="42" y="96" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="51" y="111" font-size="10.5" text-anchor="middle">&gt;</text>
+<text class="tm mono" x="51" y="132" font-size="9" text-anchor="middle">20</text>
+<rect class="s fs" x="64" y="96" width="22.6" height="22" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="75.3" y="111" font-size="10.5" text-anchor="middle">\n</text>
+<text class="tm mono" x="75.3" y="132" font-size="9" text-anchor="middle">21</text>
+<rect class="a af" x="90.6" y="96" width="22.6" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="101.9" y="111" font-size="10.5" font-weight="700" text-anchor="middle">74</text>
+<text class="tm mono" x="101.9" y="132" font-size="9" text-anchor="middle">22</text>
+<path class="a" d="M86.6 92 Q 97.9 80 101.9 94" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#template1203-aa)"/>
+<rect class="a af" x="117.2" y="96" width="22.6" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="128.5" y="111" font-size="10.5" font-weight="700" text-anchor="middle">\n</text>
+<text class="tm mono" x="128.5" y="132" font-size="9" text-anchor="middle">23</text>
+<path class="a" d="M113.2 92 Q 124.5 80 128.5 94" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#template1203-aa)"/>
+<rect class="a af" x="143.8" y="96" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="152.8" y="111" font-size="10.5" font-weight="700" text-anchor="middle">&lt;</text>
+<text class="tm mono" x="152.8" y="132" font-size="9" text-anchor="middle">24</text>
+<path class="a" d="M139.8 92 Q 148.8 80 152.8 94" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#template1203-aa)"/>
+<rect class="a af" x="165.8" y="96" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="174.8" y="111" font-size="10.5" font-weight="700" text-anchor="middle">|</text>
+<text class="tm mono" x="174.8" y="132" font-size="9" text-anchor="middle">25</text>
+<path class="a" d="M161.8 92 Q 170.8 80 174.8 94" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#template1203-aa)"/>
+<rect class="a af" x="187.8" y="96" width="28.9" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="202.25" y="111" font-size="10.5" font-weight="700" text-anchor="middle">end</text>
+<text class="tm mono" x="202.25" y="132" font-size="9" text-anchor="middle">26</text>
+<path class="a" d="M183.8 92 Q 198.2 80 202.2 94" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#template1203-aa)"/>
+<rect class="a af" x="220.7" y="96" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="229.7" y="111" font-size="10.5" font-weight="700" text-anchor="middle">|</text>
+<text class="tm mono" x="229.7" y="132" font-size="9" text-anchor="middle">27</text>
+<path class="a" d="M216.7 92 Q 225.7 80 229.7 94" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#template1203-aa)"/>
+<rect class="a af" x="242.7" y="96" width="18" height="22" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="251.7" y="111" font-size="10.5" font-weight="700" text-anchor="middle">&gt;</text>
+<text class="tm mono" x="251.7" y="132" font-size="9" text-anchor="middle">28</text>
+<path class="a" d="M238.7 92 Q 247.7 80 251.7 94" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#template1203-aa)"/>
+<text class="tm" x="20" y="24" font-size="10">_ is a space, \n a line break</text>
+<rect class="s fs" x="20" y="149" width="14" height="14" rx="3" stroke-width="1.5"/>
+<text class="t" x="40" y="160" font-size="10.5">the prompt: the user&#x27;s marker, the question, the assistant&#x27;s marker</text>
+<rect class="a af" x="20" y="167" width="14" height="14" rx="3" stroke-width="1.5"/>
+<text class="ta" x="40" y="178" font-size="10.5">the reply: the answer, a line break, the end marker; the loss is the mean of -ln p of these 7,</text>
+<text class="ta" x="40" y="194" font-size="10.5">each guessed from every token before it (the arrows): answer_loss</text>
+</svg>

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Fine-tuning GPT-2: its weights frozen and a little trained beside them, a new head and a LoRA update W + B A of low rank; on Banking77, LoRA with under 0.3% of the weights against every weight trained</title>
+<defs><marker id="r12-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="r12-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="30" font-size="11.5" font-weight="700">GPT-2, pretrained</text>
+<rect class="a af" x="36" y="44" width="120" height="24" rx="5" stroke-width="1.5"/>
+<text class="ta" x="96.0" y="59.7" font-size="10.5" font-weight="700" text-anchor="middle">new head: 77 intents</text>
+<line class="s" x1="96.0" y1="84" x2="96.0" y2="70" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r12-ah)"/>
+<rect class="s fs" x="36" y="86" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="86" width="12" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="36" y="98" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="98" width="12" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="36" y="110" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="110" width="12" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="36" y="122" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="122" width="12" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="36" y="134" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="134" width="12" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="36" y="146" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="146" width="12" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="36" y="158" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="158" width="12" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="36" y="170" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="170" width="12" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="36" y="182" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="182" width="12" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="36" y="194" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="194" width="12" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="36" y="206" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="206" width="12" height="9" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="36" y="218" width="120" height="9" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="160" y="218" width="12" height="9" rx="2" stroke-width="1.5"/>
+<text class="tm" x="96.0" y="248" font-size="10.5" text-anchor="middle">12 blocks, frozen</text>
+<text class="ta" x="178" y="140" font-size="10.5" font-weight="600">LoRA</text>
+<text class="ta" x="178" y="154" font-size="10.5">beside</text>
+<text class="ta" x="178" y="168" font-size="10.5">W_q, W_v</text>
+<text class="ta" x="96.0" y="264" font-size="10.5" font-weight="600" text-anchor="middle">only the accent trains</text>
+<text class="t" x="246" y="30" font-size="11.5" font-weight="700">LoRA, one weight</text>
+<text class="t mono" x="322" y="248" font-size="12" text-anchor="middle">x</text>
+<path class="s" d="M322 236 V 226 H 286 V 212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r12-ah)"/>
+<path class="s" d="M322 226 H 372 V 212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r12-ah)"/>
+<rect class="s fs" x="246" y="104" width="80" height="106" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="286" y="146" font-size="14" font-weight="700" text-anchor="middle">W</text>
+<text class="tm" x="286" y="164" font-size="10.5" text-anchor="middle">frozen</text>
+<text class="tm mono" x="286" y="180" font-size="9.5" text-anchor="middle">768 x 768</text>
+<rect class="a af" x="346" y="182" width="52" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="372" y="195" font-size="12" font-weight="700" text-anchor="middle">A</text>
+<text class="ta mono" x="372" y="206" font-size="8" text-anchor="middle">8 x 768</text>
+<line class="a" x1="372" y1="182" x2="372" y2="154" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r12-aa)"/>
+<rect class="a af" x="346" y="124" width="52" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="372" y="137" font-size="12" font-weight="700" text-anchor="middle">B</text>
+<text class="ta mono" x="372" y="148" font-size="8" text-anchor="middle">768 x 8</text>
+<path class="s" d="M286 104 V 76 H 311" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r12-ah)"/>
+<path class="a" d="M372 124 V 76 H 333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#r12-aa)"/>
+<circle class="s f" cx="322" cy="76" r="9" stroke-width="1.5"/>
+<path class="s" d="M317.5 76 H 326.5 M322 71.5 V 80.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="s" x1="322" y1="67" x2="322" y2="46" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r12-ah)"/>
+<text class="t mono" x="332" y="54" font-size="12">h</text>
+<text class="tm" x="246" y="262" font-size="10">B starts at 0. Rank 8: 12,288 a weight,</text>
+<text class="ta" x="246" y="276" font-size="10" font-weight="600">294,912 in all, 0.237% of GPT-2</text>
+<text class="t" x="422" y="30" font-size="11.5" font-weight="700">Banking77, test accuracy</text>
+<text class="tm" x="422" y="46" font-size="10">(the recorded run, 3 seeds a row)</text>
+<text class="t" x="422" y="72" font-size="10.5" font-weight="600">the head alone</text>
+<text class="tm" x="616" y="72" font-size="9.5" text-anchor="end">0.048% trained</text>
+<rect class="s fs" x="422" y="78" width="44.2" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="471.2" y="90" font-size="10.5" font-weight="700">0.828</text>
+<text class="ta" x="422" y="116" font-size="10.5" font-weight="600">LoRA, r = 1</text>
+<text class="tm" x="616" y="116" font-size="9.5" text-anchor="end">0.077% trained</text>
+<rect class="a af" x="422" y="122" width="135.9" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="562.9" y="134" font-size="10.5" font-weight="700">0.886</text>
+<text class="ta" x="422" y="160" font-size="10.5" font-weight="600">LoRA, r = 8</text>
+<text class="tm" x="616" y="160" font-size="9.5" text-anchor="end">0.284% trained</text>
+<rect class="a af" x="422" y="166" width="139.0" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="566.0" y="178" font-size="10.5" font-weight="700">0.888</text>
+<text class="t" x="422" y="204" font-size="10.5" font-weight="600">every weight</text>
+<text class="tm" x="616" y="204" font-size="9.5" text-anchor="end">100% trained</text>
+<rect class="s f" x="422" y="210" width="158.0" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="585.0" y="222" font-size="10.5" font-weight="700">0.900</text>
+<line class="m" x1="422" y1="236" x2="580" y2="236" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="422.0" y1="236" x2="422.0" y2="240" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="422.0" y="252" font-size="9.5" text-anchor="middle">0.80</text>
+<line class="m" x1="501.0" y1="236" x2="501.0" y2="240" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="501.0" y="252" font-size="9.5" text-anchor="middle">0.85</text>
+<line class="m" x1="580.0" y1="236" x2="580.0" y2="240" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="580.0" y="252" font-size="9.5" text-anchor="middle">0.90</text>
+<text class="tm" x="24" y="296" font-size="11">Each fine-tune measured before and after: on its task, and on text it was not tuned on.</text>
+</svg>

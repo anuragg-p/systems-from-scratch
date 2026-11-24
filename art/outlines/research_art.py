@@ -47,6 +47,9 @@ Computed, for the built modules, from the formulas and settings of the track's o
         weights, checked against what the run printed; SmolLM2-135M's heads from models/smollm.py and its and
         GPT-2's bits per character as 10.04's page prints them; the rotary pair turned through four places is a
         schematic of 10.02's turning
+    12  LoRA's count by the paper's formula (2 x 24 x 768 x r) and GPT-2 small's by models/gpt.py's, and 12.02's
+        recorded run read from tracks/research/experiments/recorded/lora/: each method's weights trained and mean
+        test accuracy, checked against its output.txt and 12.02's page; the stack of blocks is a schematic
     13  13.01's three arms and two gaps and 13.03's best-of-k table and twins, read from those pages' Run it (no
         recorded run); 13.02's recorded runs (tracks/research/experiments/recorded/errorbars/: every seed's
         difference, the two intervals checked against its output.txt); 13.04's recorded long run (.../scaling/:
@@ -57,7 +60,7 @@ Computed, for the built modules, from the formulas and settings of the track's o
 Where a cover prints a number the lessons print, the script asserts it is the same number, so a
 change to the track that moves it stops this script instead of leaving the cover wrong.
 Also computed: the double-descent curve in 05 (random ReLU features, least squares), the
-convolution in 06, the LoRA counts in 12, the DDPM noising in 17 and the
+convolution in 06, the DDPM noising in 17 and the
 PPO objective in 18. Schematic (the true shape, no measured numbers): 11's loss curves, 15's
 paper, 20's over-optimisation and 21's four phenomena.
 
@@ -1243,26 +1246,64 @@ def res_fast():
 
 # =================================================================== 12 fine-tuning
 
+def finetune_numbers():
+    """12's numbers as its lessons print them. LoRA's count by the paper's formula, 2 x (W_q and W_v of 12 blocks) x
+    768 x r, and GPT-2 small's by models/gpt.py's (as 09's cover counts it); and 12.02's recorded run, read from
+    tracks/research/experiments/recorded/lora/: each method's weights trained and the mean test accuracy of its seeds,
+    checked against the table in its output.txt and against what 12.02's page says."""
+    import re
+    track = os.path.join(ROOT, "tracks", "research")
+    rec = os.path.join(track, "experiments", "recorded", "lora")
+    methods = ("head", "lora1", "lora4", "lora8", "full")
+    runs = {m: [json.load(open(p)) for p in sorted(glob.glob(os.path.join(rec, m, "seed*", "summary.json")))]
+            for m in methods}
+    with open(os.path.join(rec, "output.txt")) as f:
+        printed = f.read()
+    for m, seeds in runs.items():
+        acc = sum(s["test_accuracy"] for s in seeds) / len(seeds)
+        line = re.search(rf"^   {m} +([\d,]+) +([\d.]+)% +([\d.]+) \+-", printed, re.M)
+        assert line.group(1) == f"{seeds[0]['trained']:,}" and float(line.group(3)) == float(f"{acc:.4g}"), (m, line)
+    V, ctx, L, W, head = 50257, 1024, 12, 768, 768 * 77 + 77
+    gpt2 = V * W + ctx * W + L * (12 * W * W + 13 * W) + 2 * W
+    lora8 = 2 * (2 * L) * W * 8
+    assert runs["lora8"][0]["trained"] == lora8 + head and runs["full"][0]["total"] == gpt2 + head
+    page = os.path.join(LESSONS, "12-fine-tuning", "12.02-lora-training-under-one-percent-of-the-weights.md")
+    with open(page) as f:
+        lesson = " ".join(f.read().split())
+    acc = {m: f"{sum(s['test_accuracy'] for s in runs[m]) / 3:.3f}" for m in methods}
+    pct = {m: f"{100 * runs[m][0]['trained'] / runs[m][0]['total']:.3f}%".replace("100.000%", "100%") for m in methods}
+    assert f"reaches {acc['lora1']} to {acc['lora4']}" in lesson and f"reaches {acc['full']}" in lesson, acc
+    got = {"gpt2": f"{gpt2:,}", "one": 2 * W * 8, "lora8": f"{lora8:,}", "of_gpt2": f"{100 * lora8 / gpt2:.3f}%",
+           "acc": acc, "pct": pct, "seeds": len(runs["full"])}
+    assert got == {"gpt2": "124,439,808", "one": 12288, "lora8": "294,912", "of_gpt2": "0.237%",
+                   "acc": {"head": "0.828", "lora1": "0.886", "lora4": "0.889", "lora8": "0.888", "full": "0.900"},
+                   "pct": {"head": "0.048%", "lora1": "0.077%", "lora4": "0.166%", "lora8": "0.284%", "full": "100%"},
+                   "seeds": 3}, got  # 12.02
+    return got
+
+
 def res_finetune():
-    a = Art("r12", "Fine-tuning: keep the pretrained weights frozen and train a little beside them, a new head or a "
-                   "LoRA update W + B A of low rank")
+    a = Art("r12", "Fine-tuning GPT-2: its weights frozen and a little trained beside them, a new head and a LoRA "
+                   "update W + B A of low rank; on Banking77, LoRA with under 0.3% of the weights against every "
+                   "weight trained")
+    got = finetune_numbers()
     a.text(24, 30, "GPT-2, pretrained", size=11.5, weight=700)
-    x, w = 40, 150
-    cell(a, x, 44, w, 24, "new head: classes", "a af", "ta", 10.5, rx=5, weight=700, mono=False)
+    x, w = 36, 120
+    cell(a, x, 44, w, 24, "new head: 77 intents", "a af", "ta", 10.5, rx=5, weight=700, mono=False)
     a.line(x + w / 2, 84, x + w / 2, 70, "s", arrow=True)
     for k in range(12):
         y = 86 + k * 12
         a.box(x, y, w, 9, "s fs", rx=2)
-        a.box(x + w + 4, y, 14, 9, "a af", rx=2)
+        a.box(x + w + 4, y, 12, 9, "a af", rx=2)
     a.text(x + w / 2, 248, "12 blocks, frozen", "tm", 10.5, "middle")
-    a.text(x + w + 26, 140, "LoRA", "ta", 10.5, weight=600)
-    a.text(x + w + 26, 154, "adapters", "ta", 10.5)
+    a.text(x + w + 22, 140, "LoRA", "ta", 10.5, weight=600)
+    a.text(x + w + 22, 154, "beside", "ta", 10.5)
+    a.text(x + w + 22, 168, "W_q, W_v", "ta", 10.5)
     a.text(x + w / 2, 264, "only the accent trains", "ta", 10.5, "middle", 600)
 
     d, rk = 768, 8
-    frozen, trained = d * d, 2 * rk * d
-    cx = 330
-    a.text(cx, 30, "LoRA, one weight matrix", size=11.5, weight=700)
+    cx = 246
+    a.text(cx, 30, "LoRA, one weight", size=11.5, weight=700)
     a.text(cx + 76, 248, "x", size=12, anchor="middle", mono=True)
     a.path(f"M{cx + 76} 236 V 226 H {cx + 40} V 212", "s", arrow=True)
     a.path(f"M{cx + 76} 226 H {cx + 126} V 212", "s", arrow=True)
@@ -1282,16 +1323,28 @@ def res_finetune():
     plus(a, cx + 76, 76)
     a.line(cx + 76, 67, cx + 76, 46, arrow=True)
     a.text(cx + 86, 54, "h", size=12, mono=True)
-    rx0 = 498
-    a.text(rx0, 64, "h = W x + B A x", size=11, mono=True, weight=600)
-    a.text(rx0, 84, "B starts at zero, so at", "tm", 10.5)
-    a.text(rx0, 98, "step 0 it is the model", "tm", 10.5)
-    a.text(rx0, 112, "you started from", "tm", 10.5)
-    a.text(rx0, 140, f"W: {frozen:,} frozen", size=10.5, mono=True)
-    a.text(rx0, 156, f"A, B: {trained:,}", "ta", 10.5, mono=True, weight=600)
-    a.text(rx0, 172, f"trained, {100 * trained / frozen:.1f}% of W", "ta", 10.5)
-    a.text(rx0, 196, f"rank r = {rk} here", "tm", 10.5)
-    a.text(24, 288, "Evaluate before and after: on the new task, and on what the model could already do.", "tm", 11)
+    a.text(cx, 262, f"B starts at 0. Rank {rk}: {got['one']:,} a weight,", "tm", 10)
+    a.text(cx, 276, f"{got['lora8']} in all, {got['of_gpt2']} of GPT-2", "ta", 10, weight=600)
+
+    rx0, rx1 = 422, 580
+    a.text(rx0, 30, "Banking77, test accuracy", size=11.5, weight=700)
+    a.text(rx0, 46, f"(the recorded run, {got['seeds']} seeds a row)", "tm", 10)
+    lo, hi = 0.80, 0.90
+    X = lambda v: rx0 + (v - lo) / (hi - lo) * (rx1 - rx0)
+    rows = [("head", "the head alone", "s fs", "t"), ("lora1", "LoRA, r = 1", "a af", "ta"),
+            ("lora8", "LoRA, r = 8", "a af", "ta"), ("full", "every weight", "s f", "t")]
+    for k, (m, name, cls, tcls) in enumerate(rows):
+        y = 62 + k * 44
+        v = float(got["acc"][m])
+        a.text(rx0, y + 10, name, tcls, 10.5, weight=600)
+        a.text(616, y + 10, f"{got['pct'][m]} trained", "tm", 9.5, "end")
+        a.box(rx0, y + 16, round(X(v) - rx0, 1), 16, cls, rx=2)
+        a.text(round(X(v) + 5, 1), y + 28, got["acc"][m], tcls, 10.5, weight=700, mono=True)
+    a.line(rx0, 236, rx1, 236, "m")
+    for v in (0.80, 0.85, 0.90):
+        a.line(round(X(v), 1), 236, round(X(v), 1), 240, "m")
+        a.text(round(X(v), 1), 252, f"{v:.2f}", "tm", 9.5, "middle", mono=True)
+    a.text(24, 296, "Each fine-tune measured before and after: on its task, and on text it was not tuned on.", "tm", 11)
     return a
 
 
