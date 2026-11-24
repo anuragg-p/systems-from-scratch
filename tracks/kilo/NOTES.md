@@ -1314,11 +1314,14 @@ request); clangd writes `id` first:
 ```
 
 The reply in pieces (a scratch build at 07.02 with a line after each
-read; the scripted server writing 10 bytes, 30, then the rest, 0.255 s
-apart): kilo read 10 (the buffer holds 10), 0.202 s later 30 (40), 0.303 s
-later 85 (125), and then took the whole message off, 125 bytes with a body
-of 102. The gaps are the 0.1 s read: kilo looks at the server only when
-read() on the keyboard times out.
+read, figs07.py's READ_PATCH; the scripted server writing its 171-byte
+answer, a header of 23 bytes and a body of 148, as 10 bytes, 30, then the
+other 131, 0.255 s apart): kilo read 10 (the buffer holds 10), then 30
+(40), then 131 (171), and then took the whole message off, 171 bytes with
+a body of 148. The reads came 0.202 and 0.303 s apart in one run, 0.303
+and 0.202 in the next (the figure's run: 0.203 and 0.306): the gaps are
+the 0.1 s read, since kilo looks at the server only when read() on the
+keyboard times out.
 
 ### 07.03 Reading JSON: just enough of a parser
 
