@@ -367,8 +367,10 @@ class RMSNorm(nn.Module):
 # 2i + 1, the same turning with a projection's rows in another order.
 # start is the place of x's first vector.
 class Rotary(nn.Module):
-    keep = True                                                               # @from 11.02
+    # @from 11.02
+    keep = True
 
+    # @end
     def __init__(self, d, base=10000.0):
         super().__init__()
         self.d, self.base = d, base
