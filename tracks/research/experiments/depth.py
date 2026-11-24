@@ -146,6 +146,8 @@ def table(found, runs, control, cfg, out=None):
     verdicts = {}
     for p in q.PREDICTIONS:
         try:
+            if len(depths) < 2:                       # every prediction is about how the gap goes with depth
+                raise KeyError(p.key)
             verdicts[p.key] = q.judge(p.rule, *results)
         except (KeyError, ZeroDivisionError):
             verdicts[p.key] = ("not run here", None)

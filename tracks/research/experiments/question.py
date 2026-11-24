@@ -304,8 +304,10 @@ def results(directory):
 
 def rule_text(rule):
     """A rule in words, for a table."""
-    kind, args = rule[0], rule[1:]
-    return {"largest": lambda d: f"held if the mean gap at {d} block{'s' * (d != 1)} is the largest",
+    kind = rule[0]
+    args = ["the deepest" if a == "deepest" else (f"{a} block{'s' * (a != 1)}" if isinstance(a, int) else a)
+            for a in rule[1:]]
+    return {"largest": lambda d: f"held if the mean gap at {d} is the largest",
             "falls": lambda: "held if the mean gap falls at every step of depth",
             "above": lambda d, x: f"held if the gap's interval at {d} is all above {x:g}",
             "clear": lambda d: f"held if the gap's interval at {d} is all above 0",

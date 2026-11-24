@@ -96,7 +96,7 @@ def main():
     print(f"\n4. The budget: {cfg.plan_rates} rates on one seed and {n} fresh seeds, both arms, at depths "
           f"{', '.join(map(str, cfg.plan_depths))},\n   and {n} runs of the control at 4 blocks: about {minutes:.0f} "
           f"minutes at the times measured now (a run: " +
-          ", ".join(f"{d} blocks {s:.0f} s" for d, s in per.items()) + ")")
+          ", ".join(f"{d} block{'s' * (d > 1)} {s:.0f} s" for d, s in per.items()) + ")")
 
     recorded = os.path.join(cfg.recorded, "pilot")
     if os.path.isdir(recorded) and os.path.abspath(recorded) != os.path.abspath(f"{cfg.out}/{cfg.name}"):

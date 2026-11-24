@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+<line x1="64" y1="309.7" x2="490" y2="309.7" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="313.7" font-size="11" text-anchor="end" fill="currentColor">3.1</text>
+<line x1="64" y1="242.5" x2="490" y2="242.5" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="246.5" font-size="11" text-anchor="end" fill="currentColor">3.2</text>
+<line x1="64" y1="175.4" x2="490" y2="175.4" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="179.4" font-size="11" text-anchor="end" fill="currentColor">3.3</text>
+<line x1="64" y1="108.2" x2="490" y2="108.2" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="112.2" font-size="11" text-anchor="end" fill="currentColor">3.4</text>
+<line x1="64" y1="41.0" x2="490" y2="41.0" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="45.0" font-size="11" text-anchor="end" fill="currentColor">3.5</text>
+<line x1="124.9" y1="314" x2="124.9" y2="318" stroke="currentColor"/>
+<text x="124.9" y="331" font-size="11" text-anchor="middle" fill="currentColor">2</text>
+<line x1="246.6" y1="314" x2="246.6" y2="318" stroke="currentColor"/>
+<text x="246.6" y="331" font-size="11" text-anchor="middle" fill="currentColor">4</text>
+<line x1="368.3" y1="314" x2="368.3" y2="318" stroke="currentColor"/>
+<text x="368.3" y="331" font-size="11" text-anchor="middle" fill="currentColor">6</text>
+<line x1="490.0" y1="314" x2="490.0" y2="318" stroke="currentColor"/>
+<text x="490.0" y="331" font-size="11" text-anchor="middle" fill="currentColor">8</text>
+<rect x="64" y="34" width="426" height="280" fill="none" stroke="currentColor"/>
+<text x="277.0" y="352" font-size="12" text-anchor="middle" fill="currentColor">blocks</text>
+<text x="14" y="174.0" font-size="12" text-anchor="middle" fill="currentColor" transform="rotate(-90 14 174.0)">bits per character, test text</text>
+<polyline points="64.0,51.5 124.9,84.9 246.6,113.4 368.3,114.5 490.0,119.2" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,56.1 64.0,46.7" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="124.9,96.2 124.9,73.2" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="246.6,133.9 246.6,91.5" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="368.3,129.6 368.3,96.8" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="490.0,134.0 490.0,102.6" fill="none" stroke="#1f77b4" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,245.0 124.9,266.8 246.6,248.6 368.3,209.3 490.0,202.5" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="64.0,281.2 64.0,213.9" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="124.9,301.3 124.9,200.9" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="246.6,281.4 246.6,224.0" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="368.3,231.9 368.3,185.1" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="1.0"/>
+<polyline points="490.0,229.4 490.0,172.1" fill="none" stroke="#d62728" stroke-width="1.6" stroke-opacity="1.0"/>
+<line x1="502" y1="42" x2="522" y2="42" stroke="#1f77b4" stroke-width="2.5"/>
+<text x="528" y="46" font-size="11" fill="currentColor">none positions</text>
+<line x1="502" y1="60" x2="522" y2="60" stroke="#d62728" stroke-width="2.5"/>
+<text x="528" y="64" font-size="11" fill="currentColor">learned positions</text>
+</svg>

@@ -779,9 +779,11 @@ FILES_FROM["experiments/pilot.py"] = "15.01"
 # log.jsonl and summary.json, the figures and what it printed; and the paper as paper.py wrote it from them. No weights.
 # The first glob that matches a file places it (module 07's part says why), so these narrower ones go first.
 FILES_FROM = {"experiments/recorded/pilot/*": "15.01", "experiments/recorded/depth/*": "15.02",
-              "experiments/recorded/paper/*": "15.03", **FILES_FROM}
+              "experiments/recorded/followup/*": "15.02", "experiments/recorded/paper/*": "15.03", **FILES_FROM}
 DATA["experiments/recorded/pilot/*"] = ("the pilot of experiments/pilot.py (15.01), recorded on the machine in "
                                         "NOTES.md")
 DATA["experiments/recorded/depth/*"] = ("the experiment of experiments/depth.py (15.02), recorded on the machine in "
                                         "NOTES.md")
-DATA["experiments/recorded/paper/*"] = "the paper experiments/paper.py (15.03) wrote from the two recorded runs"
+DATA["experiments/recorded/followup/*"] = ("the follow-up of experiments/depth.py past the top of its search (15.02), "
+                                           "recorded on the machine in NOTES.md")
+DATA["experiments/recorded/paper/*"] = "the paper experiments/paper.py (15.03) wrote from the recorded runs"

@@ -32,7 +32,8 @@ import textwrap
 import lab
 from experiments import question as q
 
-CONFIG = dict(pilot="experiments/recorded/pilot", depth="experiments/recorded/depth", width=100)
+CONFIG = dict(pilot="experiments/recorded/pilot", depth="experiments/recorded/depth",
+              followup="experiments/recorded/followup/depth", width=100)
 
 TITLE = "What learned positions are worth to a small GPT, block by block"
 # Keys a run's config.json holds that are not settings to give again: what the runner adds, where it ran.
@@ -77,9 +78,19 @@ def command(settings, root="."):
 # @end
 
 
-def gather(pilot_dir, depth_dir):
-    """Everything the paper says, read from the two recorded folders: r, a dict."""
-    r = {}
+def gather(pilot_dir, depth_dir, followup_dir=None):
+    """Everything the paper says, read from the recorded folders: r, a dict. The follow-up (a run of depth.py past
+    the top of the search) only when followup_dir is a folder."""
+    r = {"followup": None}
+    if followup_dir and os.path.isdir(followup_dir):
+        found, runs, _, cfg = q.results(followup_dir)
+        test = {k: [s["test_bits"] for s in v] for k, v in runs.items()}
+        depths = sorted({d for d, _ in runs})
+        settings = next(c for label, seeds in q.read_runs(followup_dir).items()
+                        if not label.startswith(("search", "control")) for c, _ in seeds)
+        r["followup"] = dict(found=found, cfg=cfg, depths=depths, chosen=q.choose(found), test=test,
+                             gaps=q.gaps(test, depths), settings=settings,
+                             seconds=seconds(os.path.join(os.path.dirname(followup_dir), "output.txt")))
     found, runs, control, cfg = q.results(depth_dir)
     r.update(found=found, runs=runs, control=control, cfg=cfg, chosen=q.choose(found))
     r["depths"] = sorted({d for d, _ in runs})
@@ -143,29 +154,71 @@ def first_inside(r):
     return next((d for d in r["depths"] if r["gaps"][d][2][0] <= 0), None)
 
 
+def means(r, arm):
+    return {d: lab.mean(r["test"][d, arm]) for d in r["depths"]}
+
+
+def matching(r):
+    """How many blocks without positions match learned positions: the best depth without them, its bits, and the
+    fewest blocks with positions it beats (None: it beats none)."""
+    none, learned = means(r, "none"), means(r, "learned")
+    best = min(none, key=none.get)
+    beaten = [d for d in r["depths"] if none[best] <= learned[d]]
+    return best, none[best], (min(beaten) if beaten else None)
+
+
+def matching_text(r):
+    best, bits, beaten = matching(r)
+    learned = means(r, "learned")
+    if beaten is None:
+        return (f"How many blocks without positions match one with them: none of 1 to {r['depths'][-1]}. The best "
+                f"without, {blocks(best)}, scores {bits:.3f} bits; the worst with, "
+                f"{blocks(max(learned, key=learned.get))}, {max(learned.values()):.3f}")
+    return f"Without positions {blocks(best)} score {bits:.3f} bits, as well as {blocks(beaten)} with them"
+
+
+def searched_gap(r, d):
+    """The gap on validation, seed 0, between the two models at the rates their searches chose."""
+    return r["found"][d, "none"][r["chosen"][d, "none"]] - r["found"][d, "learned"][r["chosen"][d, "learned"]]
+
+
+def control_text(r, d=4):
+    """What the control did: the share of the gap it closed, in words chosen by its sign."""
+    share = r["verdicts"]["not_weights"][1]
+    diff = lab.mean(r["control_bits"][d]) - lab.mean(r["test"][d, "none"])
+    if share <= 0:
+        return f"close none of it ({diff:+.3f} bits)"
+    return f"close {share:.0%} of it"
+
+
 # @build 15.03 abstract
 # The abstract in four sentences, as Peyton Jones's structure has it: the
 # problem, what was done, what was found with its interval, and what
 # follows. Every number from r, the results read back; the words that
-# depend on a number (whether the gap closed, and where) are chosen by it.
+# depend on a number (whether the gap closed, whether a depth without
+# positions caught up) are chosen by it.
 def abstract(r):
     d0, d1 = r["depths"][0], r["depths"][-1]
     shut = first_inside(r)
     closes = (f"its interval reaches 0 from {blocks(shut)} on" if shut else
-              "at every depth tried its interval stays above 0")
-    deep, four = lab.mean(r["test"][d1, "none"]), lab.mean(r["test"][4, "learned"])
+              "its interval stays above 0 at every depth")
+    best, bits, beaten = matching(r)
+    caught = (f"no depth without positions reaches even one block with them ({bits:.3f} bits at best, against "
+              f"{means(r, 'learned')[d0]:.3f})" if beaten is None else
+              f"without positions {blocks(best)} reach {blocks(beaten)} with them")
     return [f"Without position embeddings a GPT of one block cannot tell one order of its window from another, and "
             f"from the second block on its causal mask lets order in; at {q.BEFORE['blocks']} blocks learned "
-            f"positions were worth {q.BEFORE['gap']} bits per character in an earlier run.",
+            f"positions were worth {q.BEFORE['gap']} bits per character in an earlier run, at one learning rate "
+            f"for both models.",
             f"We measure what they are worth at {', '.join(map(str, r['depths'][:-1]))} and {d1} blocks of a "
             f"character-level GPT {r['cfg'].width} wide on Tiny Shakespeare, each model's learning rate chosen by "
             f"the same search on held-out text, each depth on {len(r['seeds'])} pairs of runs that share their "
             f"batches and starting weights, a number fixed by a pilot before the experiment ran.",
-            f"The gap falls from {gap_text(r, d0)} at one block to {gap_text(r, d1)} at {d1} (95% intervals), and "
-            f"{closes}.",
-            f"Without positions {d1} blocks score {deep:.3f} bits against {four:.3f} for 4 blocks with them, and "
-            f"the weights positions add, given to the model without them, close "
-            f"{r['verdicts']['not_weights'][1]:.0%} of the gap at 4 blocks."]
+            f"The gap falls from {gap_text(r, d0)} at one block to {gap_text(r, d1)} at {d1} (95% intervals), "
+            f"{closes}, and {caught}.",
+            f"At 4 blocks it is {r['gaps'][4][1]:.3f}, {r['gaps'][4][1] / q.BEFORE['gap']:.1f} times the earlier "
+            f"run's, because the model with positions gains most from a larger rate; and the weights positions add, "
+            f"given to the model without them, {control_text(r)}."]
 # @end
 
 
@@ -219,13 +272,17 @@ def paper(r, cfg):
         f"The gap at {', '.join(map(str, r['depths']))} blocks, each on {len(r['seeds'])} pairs of runs, each "
         f"model's rate searched alike (section 4): {gap_text(r, d0)} at one block, {gap_text(r, d1)} at {d1}; "
         f"{closes}.",
-        f"Blocks against positions: without positions {d1} blocks score {lab.mean(r['test'][d1, 'none']):.3f} bits, "
-        f"with them 4 blocks {lab.mean(r['test'][4, 'learned']):.3f} (section 4).",
+        matching_text(r) + " (section 4).",
+        f"The rate matters as much as the depth: at {q.BEFORE['lr']:g}, the earlier run's rate, the search put the "
+        f"gap at 4 blocks at {r['found'][4, 'none'][q.BEFORE['lr']] - r['found'][4, 'learned'][q.BEFORE['lr']]:.3f} "
+        f"on validation, at the rates it chose at {searched_gap(r, 4):.3f} (sections 4 and 6)."
+        if q.BEFORE["lr"] in r["cfg"].rates else "",
         f"Not the weights: the {r['weights'][4, 'learned'] - r['weights'][4, 'none']} weights positions add at 4 "
-        f"blocks, put into the MLPs of the model without them instead, close "
-        f"{r['verdicts']['not_weights'][1]:.0%} of the gap (section 4).",
-        "Seven predictions written before any run, and which held (section 5)."]:
-        out.append(para(line, w, "- "))
+        f"blocks, put into the MLPs of the model without them instead, {control_text(r)} (section 4).",
+        f"Seven predictions written before any run: {sum(v[0] == 'held' for v in r['verdicts'].values())} held "
+        f"(section 5)."]:
+        if line:
+            out.append(para(line, w, "- "))
     out.append("")
 
     extra = r["control_weights"][4] - r["weights"][4, "none"]
@@ -281,15 +338,36 @@ def paper(r, cfg):
     out += [para(f"Figures: {cfg.depth}/bits.svg, each model's bits against blocks; {cfg.depth}/gap.svg, the gap "
                  f"with both intervals.", w), ""]
 
-    out += ["5. The predictions, written before any run", ""] + verdicts(r)
+    out += ["5. The predictions, written before any run", ""]
+    for line in verdicts(r):
+        lead = len(line) - len(line.lstrip())
+        out.append(para(line.strip(), w, " " * lead) if line else "")
 
     out += ["6. What was not expected", ""]
     missed = [p for p in q.PREDICTIONS if r["verdicts"][p.key][0] != "held"]
-    if not missed:
-        out += [para("Every prediction held by its rule.", w), ""]
-    for p in missed:
-        out += [para(f"{p.key} ({r['verdicts'][p.key][0]}): {p.says}", w, "- ")]
-    out += [""] + [para(line, w) + "\n" for line in surprises(r)]
+    out += [para("Every prediction held by its rule." if not missed else
+                 "The predictions that did not hold: " + "; ".join(f"{p.key} ({r['verdicts'][p.key][0]})"
+                                                                     for p in missed) + ".", w), ""]
+    out += [para("What follows was seen in the numbers after the runs; no rule was written for it before.", w), ""]
+    out += [para(line, w) + "\n" for line in surprises(r)]
+    fu = r["followup"]
+    for d in (fu["depths"] if fu else []):
+        rates = sorted(fu["cfg"].rates)
+        each, mean, (lo, hi), _, _ = fu["gaps"][d]
+        bits = {arm: ", ".join(f"{fu['found'][d, arm][x]:.3f}" for x in rates) for arm in q.ARMS}
+        same = fu["chosen"][d, "none"] == r["chosen"][d, "none"] and fu["chosen"][d, "learned"] == r["chosen"][d,
+                                                                                                         "learned"]
+        out += [para(
+            f"A follow-up past the top of the search, at {blocks(d)}: both models at "
+            f"{', '.join(f'{x:g}' for x in rates)} on seed 0, validation bits {bits['none']} without positions and "
+            f"{bits['learned']} with them, so the search keeps {fu['chosen'][d, 'none']:g} and "
+            f"{fu['chosen'][d, 'learned']:g}" + (", the experiment's own: there its edge was the best rate, not a "
+            f"limit." if same else ", other rates than the experiment's.") + f" Its {len(each)} pairs give a gap of "
+            f"{mean:.3f} ({lo:.3f} to {hi:.3f}), against {r['gaps'][d][1]:.3f} in the experiment"
+            + (f"; run at the same rates and seeds by another command, they are the experiment's seeds 1 to "
+               f"{len(each)} again, to the last digit" if all(fu["test"][d, arm] == r["test"][d, arm][:len(each)]
+                                                             for arm in q.ARMS) else "")
+            + f". It took {took(fu['seconds'])}.", w), ""]
 
     out += ["7. What others found", ""]
     for rel in q.RELATED:
@@ -313,6 +391,7 @@ def paper(r, cfg):
     out += ["9. To make every number again", ""]
     out += [para(f"The text: {TEXT}, {r['text'][0]:,} bytes, SHA-256 {r['text'][1]}. From the project's top:", w), ""]
     out += ["   " + command(r["settings"]["pilot"]), "   " + command(r["settings"]["depth"]),
+            *(["   " + command(r["followup"]["settings"])] if r["followup"] else []),
             "   python3 -m experiments.paper", ""]
     out.append(para("Each run's config.json holds every setting it used and its seed; the commands above are made "
                     "from them.", w))
@@ -320,30 +399,60 @@ def paper(r, cfg):
 
 
 def surprises(r):
-    """What the numbers say that no prediction asked about: words chosen by the numbers, every number from r."""
+    """What the numbers say that the predictions did not: each a paragraph whose words the numbers choose, every
+    number from r. Written after the runs, and said so in the section."""
     out = []
-    gaps = {d: r["gaps"][d][1] for d in r["depths"]}
-    order = sorted(r["depths"])
-    rises = [(a, b) for a, b in zip(order, order[1:]) if gaps[b] > gaps[a]]
-    if rises:
-        out.append("The gap does not fall at every step: " + "; ".join(
-            f"{gaps[a]:.3f} at {blocks(a)}, {gaps[b]:.3f} at {blocks(b)}" for a, b in rises) + ".")
-    edges = [(d, arm) for (d, arm), rate in r["chosen"].items() if rate in (min(r["cfg"].rates), max(r["cfg"].rates))]
+    rates, lo_rate = sorted(r["cfg"].rates), q.BEFORE["lr"]
+    if lo_rate in rates and 4 in r["depths"]:
+        g = {x: r["found"][4, "none"][x] - r["found"][4, "learned"][x] for x in rates}
+        gain = {arm: r["found"][4, arm][lo_rate] - r["found"][4, arm][r["chosen"][4, arm]] for arm in q.ARMS}
+        out.append(
+            f"The rate, more than the depth. At 4 blocks the gap on validation (seed 0, the search) is "
+            + ", ".join(f"{g[x]:.3f} at {x:g}" for x in rates)
+            + f". From the earlier run's {lo_rate:g} to the rate each model's search chose, the model with positions "
+            f"gained {gain['learned']:.3f} bits and the model without them {gain['none']:.3f}. One rate for both, "
+            f"chosen for neither, measured {g[lo_rate] / searched_gap(r, 4):.0%} of the gap at the rates the "
+            f"searches chose; the prediction 'again' failed for that reason.")
+    none, learned = means(r, "none"), means(r, "learned")
+    top = min(learned, key=learned.get)
+    deep = r["depths"][-1]
+    if top < deep:
+        fall = r["gaps"][top][1] - r["gaps"][deep][1]
+        worse, better = learned[deep] - learned[top], none[top] - none[deep]
+        out.append(
+            f"Why the gap shrinks. With positions the best depth is {blocks(top)} ({learned[top]:.3f} bits); from "
+            f"there to {blocks(deep)} the model with positions gets worse by {worse:.3f}, and the model without "
+            f"gets better by {better:.3f}. Of the gap's fall of {fall:.3f}, {worse / fall:.0%} is the deeper model "
+            f"with positions doing worse in {r['cfg'].steps} steps, not the deeper model without them catching up: "
+            f"'shrinks' held by its rule, and not for the reason it gave.")
+    corr = {d: correlation(r["test"][d, "none"], r["test"][d, "learned"]) for d in r["depths"]}
+    ratio = [(r["gaps"][d][2][1] - r["gaps"][d][2][0]) / (r["gaps"][d][3][1] - r["gaps"][d][3][0])
+             for d in r["depths"]]
+    out.append(
+        f"Pairing bought nothing. The paired intervals are {min(ratio):.2f} to {max(ratio):.2f} times as wide as "
+        f"Welch's on the same runs: the two models of a seed do not move together (their correlation over seeds is "
+        f"{min(corr.values()):+.2f} to {max(corr.values()):+.2f}), though they share their batches and every "
+        f"weight but the table of positions.")
+    vt = max(abs(r["gaps"][d][1] - r["val_gaps"][d][1]) for d in r["depths"])
+    out.append(f"Validation and test agree: at no depth do the two texts' gaps differ by more than {vt:.3f} bits, so "
+               f"the test text's own sampling is not what the numbers show.")
+    edges = sorted((d, arm) for (d, arm), rate in r["chosen"].items() if rate in (rates[0], rates[-1]))
     if edges:
-        out.append("The search chose a rate at an end of its range for " + ", ".join(
-            f"{arm} at {blocks(d)} ({r['chosen'][d, arm]:g})" for d, arm in sorted(edges)) +
-            ": a wider range might have found a better one.")
-    for d in r["depths"]:
-        each, mean, paired, welch, lower = r["gaps"][d]
-        if paired[0] > 0 >= welch[0]:
-            out.append(f"At {blocks(d)} the pairs decide what Welch's interval does not: {paired[0]:.3f} to "
-                       f"{paired[1]:.3f} against {welch[0]:.3f} to {welch[1]:.3f}.")
+        out.append(f"{len(edges)} of the {len(r['chosen'])} choices of the search are an end of its range ("
+                   + ", ".join(f"{arm} at {blocks(d)}" for d, arm in edges)
+                   + "): a search whose best is at its edge may have stopped short of the best.")
     return out
+
+
+def correlation(xs, ys):
+    mx, my = lab.mean(xs), lab.mean(ys)
+    sxy = sum((x - mx) * (y - my) for x, y in zip(xs, ys))
+    return sxy / (sum((x - mx) ** 2 for x in xs) * sum((y - my) ** 2 for y in ys)) ** 0.5
 
 
 def main():
     cfg = lab.config(CONFIG)
-    r = gather(cfg.pilot, cfg.depth)
+    r = gather(cfg.pilot, cfg.depth, cfg.followup)
     text = "\n".join(paper(r, cfg))
     print(text)
     path = os.path.join(cfg.out, cfg.name, "paper.txt")
