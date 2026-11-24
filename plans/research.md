@@ -25,8 +25,9 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-In work, by an agent in its own worktree: module 06's code, with spike
-3. Its lessons follow as soon as it is merged.
+Module 06's code and tests are on master (31 tests; spike 3 is in
+NOTES.md). In work, each by an agent in its own worktree: module 06's
+lessons, and module 07's code.
 
 After that, in this order: 07, 08 and 09, one module's code at a time,
 each module's lessons written while the next module's code is built
@@ -187,8 +188,22 @@ Built, as found:
 - 05.04 Double descent: held strongly, on the random-features model the
   paper cites, not on a network trained by gradient descent.
 
+- 06.01 Convolution: the network with a ninth of the weights is better
+  and loses less when digits move, but is far from shift-proof: the
+  convolutions move their features with the digit exactly, and the last
+  layer reads each place with its own weights.
+- 06.02 The switch: on this laptop's CPU PyTorch is only about twice as
+  fast as the engine. The case for it is the GPU and what the next
+  lessons need, not speed on a CPU.
+- 06.04 ResNet on CIFAR-10 (He et al., figure 6), the recorded run: 20
+  against 56 layers, 4000 images, 8 passes, 3 seeds, 40 minutes of CPU,
+  at a tenth of the paper's rate (at the paper's 0.1 the deeper
+  residual network does not get going in so few steps; the paper warms
+  its 110 layers up at 0.01 too). Plain: 56 layers train worse than 20
+  (held). Residual: 56 train better than 20 (held). The page's short
+  run, 8 against 20 layers, shows only the plain half beyond noise.
+
 Still the plan:
-- 06.04 ResNet on CIFAR-10: plain against residual, with convolutions.
 - 07.02 Neural language model: beats the count-based model in perplexity.
 - 07.04 Attention (Bahdanau): quality no longer falls with length.
 - 08 Transformer; 08.05 nucleus sampling against plain and top-k.
