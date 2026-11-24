@@ -4545,3 +4545,809 @@ further from the rule's line, on a log scale, than ours (the factor
 against 1.17, more_decay the middle of 2 to 4, 1.04, against 1.38,
 near_chance 1.61 against 0.73; decay's "about 0" has no log). It is a
 reading made after the runs, said so on the page, and changes no verdict.
+
+## Module 13: experiments that hold up
+
+Built by one agent on 2026-11-24 and 25, on the reference machine above
+(Apple M4 Pro, Python 3.12.7, numpy 2.4.3, PyTorch 2.10.0, 10 threads by
+default, scipy 1.17.1 installed and used by the tests only), shared all
+the while with three other agents' work: load average 10 to 21, most of
+it 14 to 19. Every time below says its load; times at a load under 6 were
+not seen. Every lesson takes a result the track already reported and tries
+to break it.
+
+### The files
+
+```
+lab/stats.py             13.01   best_of: the expected best of n trials, worked out from N
+                         13.02   sem, t_density, t_cdf, t_quantile, interval, difference (paired or Welch's),
+                                 bootstrap, seeds_needed, batch_sem
+                         13.03   normal_best: the expected largest of k normal draws
+                         13.04   power_law, power_interval: a line through (ln x, ln y), and its prediction
+lab/__init__.py          13.01-04 the new names re-exported, one @from line a lesson
+experiments/baseline.py  13.01   draw_rates, run_one (regions); HYPOTHESIS, RULE, verdict, main
+experiments/errorbars.py 13.02   position_bits (region); build, read, describe, main
+experiments/fooled.py    13.03   hold_back, shrink, two_nearest, exact_copies, shared_grams (regions); raw,
+                                 choose_by_test, twins, text, main
+experiments/scaling.py   13.04   counted, predict (regions); table, plot, read, main
+experiments/recorded/errorbars/  13.02's runs at 10 seeds a side (output.txt, pairs.svg)
+experiments/recorded/scaling/    13.04's long run (output.txt, curves.svg, fit.svg, fit/seed0/summary.json)
+tests/1301_... to 1304_...       one a lesson
+```
+
+Nothing earlier changes: models/gpt.py, experiments/language.py,
+lab/safetensors.py and data/fetch.py are untouched (other agents were
+changing them); lab/stats.py's earlier regions are as they were, and its
+new imports and docstring lines carry @from markers. errorbars.py
+reproduces 08.02's heads comparison to the last digit (seeds 0 to 2: `3.433
++- 0.01583` and `3.407 +- 0.009038`, t = -2.4): the same models, data and
+draws.
+
+### What was read, at the source
+
+Each paper fetched from arXiv on 2026-11-25 (the PDF; its text extracted
+with pdftotext and read section by section; every quote here was found in
+that text again by search). The playbook's README.md from its
+repository's main branch, whose latest commit was 7554a51f5d30
+(2024-06-13).
+
+- Henderson, Islam, Bachman, Pineau, Precup and Meger, "Deep Reinforcement
+  Learning that Matters", arXiv 1709.06560v3 (AAAI 2018). Read: the
+  sections on hyperparameters, random seeds and trials, and reporting
+  evaluation metrics, the conclusion, figure 5. The experiment 13.02's
+  part 6 mirrors: "We perform 10 experiment trials, for the same
+  hyperparameter configuration, only varying the random seed across all 10
+  trials. We then split the trials into two sets of 5 and average these two
+  groupings together", figure 5: "TRPO on HalfCheetah-v1 ... The average
+  2-sample t-test across entire training distribution resulted in t =
+  -9.0916, p = 0.0016", and "We demonstrate that the variance between runs
+  is enough to create statistically different distributions just from
+  varying random seeds." On baselines (13.01): "poor hyperparameter
+  selection can be detrimental to a fair comparison against baseline
+  algorithms", and the conclusion: "it is important to find the working set
+  which at least matches the original reported performance of baseline
+  algorithms through standard hyperparameter searches". On reporting: they
+  run five seeds; bootstrap intervals with "10k bootstrap iterations and
+  the pivotal method"; the 2-sample t-test, Kolmogorov-Smirnov and
+  bootstrapped percent differences; a bootstrap power analysis ("If there
+  is a small percentage of significant values, a larger sample size is
+  needed"); "While there can be no specific number of trials specified as a
+  recommendation". Not found: a rule that the baseline gets the same
+  search budget as the new method (13.01 takes that from the playbook).
+- Bouthillier et al., "Accounting for Variance in Machine Learning
+  Benchmarks", arXiv 2103.03098 (MLSys 2021). Read: sections 1 to 5 and
+  appendix C. The sources of variance they vary: "i) the data sampling, ii)
+  data augmentation procedures, iii) model initialization, iv) dropout,
+  and v) data visit order in stochastic gradient descent", plus the
+  hyperparameter search and numerical noise; "Bootstrapping data stands out
+  as the most important source of variance. In contrast, model
+  initialization generally is less than 50% of the variance of bootstrap,
+  on par with the visit order of stochastic gradient descent"; the test set
+  as a sample: "a simple binomial can be used to model the sampling noise
+  in the measure of the prediction accuracy ... If errors are correlated,
+  not i.i.d., the degrees of freedom are smaller and the distribution is
+  wider"; "The three hyperparameter optimization methods induce on average
+  as much variance as the commonly studied weights initialization"; their
+  first recommendation, "As many sources of variation as possible should
+  be randomized whenever possible"; the decision by P(A > B), "a threshold
+  of 0.75"; "29 trainings" for 5% false negatives at that threshold
+  (appendix C); pairing, "highly recommended to increase statistical
+  power ... re-using the same seed for A and B in each pairs"; in their
+  simulation "The single point comparison ... suffers from both high false
+  positives (~10%) and high false negatives (~75%)". Not used: their
+  out-of-bootstrap resampling of the data splits (our splits are fixed).
+- Miller, "Adding Error Bars to Evals: A Statistical Approach to Language
+  Model Evaluations", arXiv 2411.00640. Read: sections 1 to 5. The test
+  set as a sample: "Suppose that the questions in an eval do not represent
+  all possible questions, but instead were drawn at random from a
+  (hypothetical, infinite, unseen) super-population of questions"; the
+  standard error sqrt(Var(s) / n) and "sbar +/- 1.96 x SE"; clustered
+  standard errors when questions come in groups ("clustered standard
+  errors can be over 3X larger than naive standard errors"; 13.02's
+  batch_sem is that idea with consecutive windows as the groups); paired
+  differences, Var(A - B) with "- 2 Cov(s_A, s_B)", "paired differences
+  represent a 'free' reduction in estimator variance", "We therefore
+  recommend using the paired version of the standard error estimate
+  wherever practicable"; the power analysis, n = (z_alpha/2 + z_beta)^2
+  (omega^2 + ...) / delta^2 (seeds_needed is the same with t's for z's,
+  since seeds are few); the variance of a score split into "the variance
+  associated with choosing questions from the super-population, and the
+  mean conditional variance" (resampling answers). Miller's paper treats
+  questions and sampled answers, not training seeds: "Not found": any
+  treatment of training-seed variance.
+- Recht, Roelofs, Schmidt and Shankar, "Do ImageNet Classifiers Generalize
+  to ImageNet?", arXiv 1902.10811v2 (ICML 2019). Read: abstract, sections 1
+  to 3.3, 5.1, 5.2, appendix B.1 and B.2 (CIFAR-10), C.1.1 (near-duplicates
+  for ImageNet). What they did: "We build new test sets for the CIFAR-10 and
+  ImageNet datasets ... By closely following the original dataset creation
+  processes" (2,000 images for CIFAR-10, 10,000 for ImageNet), and "find
+  accuracy drops of 3% - 15% on CIFAR-10 and 11% - 14% on ImageNet". What
+  they concluded: "Our results suggest that the accuracy drops are not
+  caused by adaptivity, but by the models' inability to generalize to
+  slightly 'harder' images than those found in the original test sets";
+  the new accuracies are a line in the old (acc_new = 1.69 acc_orig -
+  72.7% on CIFAR-10), "neither dataset sees diminishing returns"; with a
+  caveat, "it could be that any test set adaptivity leads to a roughly
+  constant drop in accuracy". Near-duplicates (appendix B.2.2): "we found
+  about 800 images in the original CIFAR-10 test set that we would
+  classify as near-duplicates (8% of the entire test set). Moreover, most
+  classifiers have accuracy between 99% and 100% on these near-duplicates",
+  and the arithmetic "acc = 0.92 acc_true + 0.08 acc_nd" giving at most
+  0.6 points; found by "the top-10 nearest neighbors in both l2-distance
+  and the SSIM (structural similarity) metric", a pair counted when "both
+  images have the same object in the same pose", "different zoom, color
+  scale, stretch ... or small shifts" included. Sampling error: "With
+  10,000 data points ... a Clopper-Pearson 95% confidence interval for the
+  test accuracy has size of at most +-1%".
+- Kaplan et al., "Scaling Laws for Neural Language Models", arXiv
+  2001.08361v1. Read: sections 1.1, 1.2, 1.3, 2 to 2.3, 3.1 to 3.2 (figures
+  5 and 6), 4.1 and 4.2, 5.2 (equation 1.6 and table 3), appendix A, D.6 and
+  D.7. The law (equation 1.1): "For models with a limited number of
+  parameters, trained to convergence on sufficiently large datasets: L(N) =
+  (N_c / N)^alpha_N; alpha_N ~ 0.076, N_c ~ 8.8 x 10^13 (non-embedding
+  parameters)". L is "the cross entropy loss in nats", "averaged over a
+  1024-token context", on WebText2's test text. What N counts (equation
+  2.1): "N ~ 2 d_model n_layer (2 d_attn + d_ff) = 12 n_layer d_model^2 ...
+  where we have excluded biases and other sub-leading terms. Our models
+  also have n_vocab d_model parameters in an embedding matrix, and use
+  n_ctx d_model parameters for positional embeddings, but we do not
+  include these when discussing the 'model size' N; we will see that this
+  produces significantly cleaner scaling laws"; figure 6: "When we exclude
+  embedding parameters, the performance of models with different depths
+  converge to a single trend. Only models with fewer than 2 layers or with
+  extreme depth-to-width ratios deviate significantly from the trend". The
+  conditions: "a fixed 2.5 x 10^5 steps with a batch size of 512 sequences
+  of 1024 tokens", "a 3000 step linear warmup followed by a cosine decay
+  to zero" (section 2.2); WebText2 has 2.29 x 10^10 tokens (section 2.3);
+  "Here we have trained to near convergence on the full WebText2 dataset
+  and observe no overfitting (except possibly for the very largest
+  models)", over sizes from "(n_layer, d_model) = (2, 128)" to billions
+  (section 3.2), "768 to 1.5 billion non-embedding parameters" in all.
+  Appendix D.7: "For L(N) we also do not include very small models with
+  only 1 layer in the fit, and we exclude the largest models that have not
+  trained fully to convergence". Training for a fixed number of steps is
+  equation 1.6, L(N, S) = (N_c / N)^alpha_N + (S_c / S_min(S))^alpha_S:
+  at a fixed S a power law plus a constant. On precision: "The precise
+  numerical values of N_c, C_c^min, and D_c depend on the vocabulary size
+  and tokenization and hence do not have a fundamental meaning"; the loss
+  from seed to seed "is roughly 0.02" (section 4.2); no standard error is
+  given for alpha_N. Larger models are "more sample-efficient than small
+  models, reaching the same level of performance with fewer optimization
+  steps (Figure 2)". Their learning rate fell with size by a rule of thumb
+  (D.1), LR(N) ~ 0.003239 - 0.0001395 log(N); not used here (one rate for
+  every size; the paper does not say which logarithm).
+- The Deep Learning Tuning Playbook (Godbole, Dahl, Gilmer, Shallue,
+  Nado). Read: "Identifying scientific, nuisance, and fixed
+  hyperparameters", "Creating a set of studies", "Striking a balance ...",
+  "Why use quasi-random search ...", "How many trials are needed ...",
+  "Detecting whether a change is useful with isolation plots", "Determining
+  whether to adopt a training pipeline change". 13.01's rule: "Nuisance
+  hyperparameters are those that need to be optimized over in order to
+  fairly compare different values of the scientific hyperparameters"; the
+  learning rate of each optimiser is a different hyperparameter ("the
+  conditional hyperparameter called learning_rate is a different
+  hyperparameter for optimizer="Nesterov_momentum" versus
+  optimizer="Adam""); "For a fair comparison, the baseline should also have
+  its learning rate equally well tuned"; "We would compare the two
+  optimizers by selecting the best performing trial from each study"; on
+  seeds, "before adopting a candidate change, consider running the best
+  trial N times to characterize the run-to-run trial variance". It
+  recommends quasi-random search ("jittered, shuffled grid search"); in
+  "1-2 dimensions, grid search is also acceptable"; plain random search is
+  "likely to be slightly less efficient". 13.01 draws plain random
+  log-uniform rates, so that any n of them is a fair sample for best_of.
+- PyTorch's documentation of torch.optim (2.10, "Constructing it"):
+  `optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)`, the
+  hurried arm of 13.01.
+- Not read: Schulman's "An Opinionated Guide to ML Research" (the outline
+  lists it; nothing in the code uses it); Barz and Denzler's paper on
+  CIFAR's duplicates (no comparison with its count is made); MNIST's own
+  page (yann.lecun.com refused the connection on 2026-11-25; nothing about
+  MNIST's writers or the order of its test file is claimed from it).
+
+### 13.01 A hypothesis, and a baseline tuned as hard as your method
+
+experiments/baseline.py: 03.03's network (784-256-256-10, relu, the
+paper's 0..1 pixels), Adam against SGD with Nesterov momentum 0.9 (03.03's
+pair), on the PyTorch-era loop (images.train_epoch and evaluate; loop.mlp
+builds the network). Data: the first 10,000 training images to train on,
+the last 10,000 of the 60,000 as validation (never trained on), the 10,000
+test images only ever reported; 2 passes, batches of 128. Error in %.
+1. HYPOTHESIS and RULE (module constants, printed first by every run):
+   "Adam reaches a lower test error than SGD with Nesterov momentum 0.9 on
+   this network after the same passes, when each optimiser's learning
+   rate is found by the same search"; held if Adam is lower with Welch's t
+   of 3 or more over the fresh seeds, the reverse if SGD is, a tie
+   otherwise.
+2. The search: draw_rates draws 8 numbers u in [0, 1) once (rng 0) and
+   puts the same u's into each range, log-uniform: Adam 1e-4 to 1e-2, SGD
+   3e-3 to 3e-1 (two decades each, about where 03.03's grids found each
+   one's best). Every trial on seed 0; chosen on validation. Validation /
+   test error of each trial, by rate: Adam 0.00011: 15.51/16.15, 0.00012:
+   14.36/15.03, 0.00035: 9.36/10.15, 0.0016: 6.50/6.98, 0.0019: 5.96/6.50,
+   0.0029: 5.54/6.08, 0.0042: 5.17/5.66, 0.0067: 5.59/6.56: chosen 0.00423;
+   SGD 0.0032: 30.36/31.65, 0.0036: 28.93/29.96, 0.01: 12.42/13.57, 0.049:
+   12.43/13.55, 0.056: 12.12/12.91, 0.086: 8.21/8.77, 0.13: 7.64/8.54,
+   0.2: 8.04/8.92: chosen 0.127. Neither choice is at the edge of its range.
+3. Fresh seeds 1 to 5, test error: Adam at 0.00423 `6.25 +- 0.488` (min
+   5.77, max 6.94); SGD at the docs' 0.01 `14.6 +- 0.741`; SGD at its
+   chosen 0.127 `7.06 +- 0.454`. The hurried comparison (Adam tuned, SGD at
+   the docs' rate): SGD 8.37 points worse, t = +21.1, "held". The fair
+   one: 0.81 points, t = +2.7, "a tie" by the rule written first (Adam
+   lower on average, not by 3 standard errors). The winners' own trials
+   (seed 0) on test: Adam 5.66 against 6.25 on fresh seeds, SGD 8.54
+   against 7.06: one seed is not the setting's score, either way.
+4. best_of over the 8 trials, n = 1 to 8, the expected best validation
+   error and the test error of the one chosen: Adam 8.50 / 9.14, 6.21 /
+   6.83, 5.57 / 6.17, 5.40 / 5.98, 5.32 / 5.87, 5.26 / 5.78, 5.22 / 5.71,
+   5.17 / 5.66; SGD 15.02 / 15.98, 10.08 / 10.95, 8.67 / 9.51, 8.16 /
+   9.00, 7.88 / 8.74, 7.75 / 8.63, 7.69 / 8.59, 7.64 / 8.54. A search of
+   one trial (a rate picked at random in a sensible range) leaves SGD 6.5
+   points behind on validation; of 8 trials, 2.5 (2.9 on test). Most of
+   what 8 trials buy comes in the first 3 or 4 for both. best_of.svg draws
+   it.
+Tried before settling (all at load 14 to 15, the scaling run going):
+trials=8 seeds=3 (the first default): the fair gap 0.81, t = +2.7 (Adam
+6.53 +- 0.41, SGD 7.34 +- 0.325), 14 s. trials=16 seeds=5: the 8 extra
+draws put SGD's choice at 0.222, near where it stops being stable: on
+fresh seeds `8.84 +- 2.78` (one seed 13.5): the fair gap 2.27, t = +1.8. A
+search on one seed rewards a rate that was lucky on that seed; the
+playbook's "consider running the best trial N times" is the cure (not
+built: the page can say it). trials=12 seeds=5 chose the same 0.222. The
+default stays at 8 trials and 5 seeds.
+
+### 13.02 Error bars: is the difference real?
+
+experiments/errorbars.py: 08.02's part 3, 4 blocks of width 64 without
+positions, 1 head of 64 against 4 heads of 16, windows of 32, 300 steps of
+32, AdamW 0.003, the same seeds. The tools are lab/stats.py's (above) and
+position_bits (window_bits' score position by position, so its spread can
+be measured; its mean is window_bits to 1e-5).
+1. Seeds 0 to 2 (the default): 1 head `3.433 +- 0.01583` (min 3.415, max
+   3.444), 4 heads `3.407 +- 0.009038` (3.398 to 3.415), t = -2.4: 08.02's
+   numbers to the last digit. One seed starts both arms from the same
+   weights (torch.equal on every tensor: the heads change how q, k and v
+   are cut, not their shapes) and the same batches (run.rng): 08.02's
+   comparison was paired all along without saying so.
+2. Each mean, its sem, and three intervals (95%): 1 head 3.4330, sem 0.0091:
+   with Student's t at 2 degrees of freedom (4.30) 3.3937 to 3.4724; with
+   the normal's 1.96 3.4151 to 3.4509; the bootstrap (10,000 resamples)
+   3.4149 to 3.4442. 4 heads 3.4073, sem 0.0052: 3.3848 to 3.4297; 3.3970
+   to 3.4175; 3.3975 to 3.4154. At 3 seeds the honest interval is 2.2 times
+   the 1.96 one, and the bootstrap's is narrower still (3 numbers have 10
+   distinct resamples: it knows only the spread they show).
+3. The difference, 4 heads minus 1: -0.0258 bits per character. As two
+   independent sets (Welch, its own degrees of freedom): -0.0582 to
+   +0.0067, width 0.0649, not decided. As pairs (the interval of the three
+   seeds' differences): -0.0441 to -0.0075, width 0.0366, decided: 4 heads
+   lower. The runs of one seed move together: correlation +0.97 over the
+   three seeds; the differences `-0.0258 +- 0.00736` (-0.0311 to -0.0174);
+   4 heads lower on 3 of 3 seeds. Bootstrap of the pairs: -0.0311 to
+   -0.0174 (too narrow again).
+4. The test text as a sample. Seed 0's models scored position by position
+   (55,754 positions, 17 a window), the standard error of the mean with the
+   positions taken in batches of 1, 4, 16, 64 and 256 windows: 1 head
+   0.0082, 0.0088, 0.0102, 0.0138, 0.0123; 4 heads 0.0082, 0.0087, 0.0100,
+   0.0134, 0.0114; their difference, position by position, 0.0014, 0.0014,
+   0.0016, 0.0018, 0.0022. Neighbouring windows are alike (a scene, its
+   names): the error grows from one window to batches of 64 by 1.7 times,
+   then the 12 batches of 256 are too few to say more. Taken at 64 windows:
+   the test text's own sampling error of one model's score is 0.0138 bits,
+   as large as the spread over seeds (sd 0.0158 and 0.0090): Bouthillier et
+   al.'s finding that the data's sampling is a source as large as any. For
+   the difference of two models on the same text it is 0.0018, against the
+   spread of the seeds' differences, 0.0074: the comparison is limited by
+   the seeds, not by the test text. (Miller's paired differences, on test
+   positions instead of questions.)
+5. seeds_needed at this run's spread (each arm's sd 0.0129, the pairs'
+   0.0074), 95% and four times in five: a difference of 0.010 needs 28
+   seeds a side independent, 7 paired; 0.026 (the one measured) 6 and 3;
+   0.050 3 and 3.
+6. The recorded run, read by the default (experiments/recorded/errorbars/:
+   heads1/ and heads4/, seed0 to seed9, config.json, log.jsonl and
+   summary.json with test_bits and test_sem; pairs.svg; output.txt):
+
+       python3 -m experiments.errorbars seeds=10 out=experiments/recorded
+
+   178 s by its own clock (01:02:11 to 01:05:10 on 2026-11-25, load 12 to
+   19). Seeds 0 to 2 are the default's to the last digit. 1 head `3.431 +-
+   0.01206` (3.412 to 3.445), 4 heads `3.406 +- 0.006721` (3.398 to
+   3.418), t = -5.7; sems 0.0038 and 0.0021, intervals (t at 9 df, 2.26)
+   3.4227 to 3.4400 and 3.4015 to 3.4112. The difference -0.0250: Welch
+   -0.0343 to -0.0156 (width 0.0187), pairs -0.0319 to -0.0181 (width
+   0.0138, 26% narrower), the bootstrap of the pairs -0.0304 to -0.0191; 4
+   heads lower on 10 of 10 seeds. The verdict, as found: four heads of 16
+   are better than one head of 64 at equal weights, by 0.025 bits per
+   character (0.7%), beyond doubt at 10 seeds, either way of counting. The
+   arms' correlation over seeds is +0.60, not the +0.97 three seeds showed:
+   three points made pairing look worth far more than it is here (the
+   3-seed paired interval, -0.044 to -0.0075, still held the 10-seed
+   difference). Henderson et al.'s test on each arm, seeds 0 to 4 against 5
+   to 9: 1 head t = -1.5, 4 heads t = -0.2: no split of these seeds looks
+   like two methods (theirs, in RL, gave t = -9.1). seeds_needed for 0.025
+   at the pairs' sd 0.0096: 4; drawn from the 10 (2000 draws each), n
+   seeds gave a paired interval clear of 0 in 0.26 of draws at n = 2, 0.62
+   at 3, 1.00 at 5 (draws of 5 from 10 overlap heavily: rough). At the
+   10-seed spread, seeds_needed: 0.010 needs 16 a side independent and 10
+   paired; 0.026 4 and 4; 0.050 3 and 3. With the test-set error of the
+   difference (0.0018) beside the seeds' sd of it (0.0096), more test text
+   would not have decided it sooner; more seeds did.
+The default, seeds 0 to 2 trained and the record read: 56 s by its own
+clock (57.5 s of wall clock) at load 11 to 12, timed back to back with the
+other three defaults; 77 s at load 15 to 16 earlier (the scaling run going).
+It trains 6 models of 4 blocks; 08.02's 3-seed default (15 runs, 9 of
+them 4 deep) took 47 s at load 5 to 6, so a quiet machine should take
+about 25 to 30 s. Not cut: the planner's rule cuts at 55 s with the load
+under 6, not seen.
+
+### 13.03 An evaluation you tried to fool
+
+experiments/fooled.py, three parts.
+1. Choosing by the test set. hold_back(10000, rng 0) cuts MNIST's test
+   images into two random halves of 5,000 before anything runs. Drawn, not
+   cut: in file order the first 5,000 are 8.21% wrong and the last 5,000
+   4.80% (the 32 runs' average), so a cut would make the held-back half
+   a different test. (MNIST's page, said to describe the two blocks, was
+   not reachable to read; nothing here rests on it.) 32 runs of 13.01's
+   network with Adam at 0.004 (its search's choice, rounded), 2 passes
+   over the first 10,000 training images, differing only by seed (a
+   search over a setting that does nothing is this). Test error, %: A
+   `6.71 +- 0.52` (min 5.6, max 7.82), B `6.3 +- 0.438` (5.52 to 7.46):
+   the halves differ by 0.4 points for
+   every run alike (B is easier by chance). Of A's variance over the runs
+   (0.2705), B shares 0.1791 (their covariance: the runs really differ);
+   the rest, 0.0914 (sd 0.302), is the luck of A's images. A coin for each
+   image at 6.7% wrong would give sd 0.354: the runs err on many of the
+   same images, so a run's own luck on a test half is a little less than
+   the binomial's. The best of k by A, expected over every way of drawing
+   k of the 32 (best_of), against the average run: k = 2, 4, 8, 16, 32:
+   gain on A 0.294, 0.538, 0.766, 0.969, 1.114 points; predicted from A's
+   spread alone (normal_best(k) sd_A) 0.293, 0.535, 0.740, 0.918, 1.076;
+   the same run's gain on B 0.198, 0.327, 0.413, 0.535, 0.778; lost 0.096,
+   0.211, 0.353, 0.435, 0.336, against the luck's share predicted (gain
+   times 0.0914 / 0.2705) 0.099, 0.181, 0.250, 0.310, 0.364. So the best
+   of 32 looks 1.1 points better than the average run where it was chosen
+   and is 0.78 better where it was not: about a third of a point of its
+   lead is the test half's luck. As measured, k = 32's loss (0.336) is
+   below k = 16's (0.435): at k = 32 every draw holds the single best run
+   on A, which happens to be good on B too; the largest k rest on a few
+   runs, the predicted column on all 32.
+2. Leakage in images. exact_copies (a set of the training rows' bytes):
+   MNIST 0 of 10,000, CIFAR-10 0 of 10,000. Twins: shrink (each channel
+   averaged over pool x pool squares, centred, scaled to length 1;
+   MNIST at full size, CIFAR-10 at 8 x 8), two_nearest (cosine distance,
+   the nearest and second nearest training image), and the ratio test: a
+   twin when the nearest is under half as far as the second nearest. A
+   distance alone did not work: on raw pixels the nearest pairs in
+   CIFAR-10 are no closer than ordinary ones (no test image within an RMS
+   difference of 0.05 of a training image, 0..1 pixels; spike: a shifted
+   copy is far in pixels), and in MNIST the nearest training digit of a
+   test digit is at 0.030 at the least, 0.085 for the nearest tenth, 0.15
+   for half, with no gap that marks copies off from look-alikes. The
+   ratio asks for a training image far nearer than every other one.
+   Found: MNIST 41 test digits with a twin (0.41%), CIFAR-10 346 (3.46%).
+   By eye (spike: pairs drawn side by side): CIFAR-10's 53 with a ratio
+   under 0.1 are every one the same photograph, shifted, cropped or
+   re-coloured; of 48 drawn between 0.3 and 0.5 nearly all are (a few are
+   two photographs of one model of car, or two ships), and between 0.5 and
+   0.6 about half are. MNIST's are digits whose strokes match closely (the
+   same shape of 2, 4 or 7), not copies of one scan; whether one person
+   wrote both is not known here. With pool 4 on MNIST every test digit has
+   near look-alikes (265 under 0.5, digits that are only similar): the
+   pooling is chosen per data set, and the page should say so.
+   Accuracy, the nearest training image's label (a classifier that only
+   remembers): CIFAR-10 100.0% on the 346 with a twin, 41.3% on the rest,
+   43.4% overall, of which 2.03 points come from the twins (Recht et al.'s
+   arithmetic); MNIST 100.0% against 97.2% (0.01 points). Part 1's 32
+   networks on MNIST: 96.4% on the 41 against 93.5% on the rest; they
+   trained on the first 10,000 training images, so most twins' training
+   copies were never seen: MNIST's twins are easy digits, and that is most
+   of their lead. No network was trained on CIFAR-10 here (a minute of CPU
+   does not fit beside the rest); Recht et al. report 99 to 100% for
+   trained classifiers on their 800.
+3. Leakage in text. Tiny Shakespeare split by position (data/
+   shakespeare.py): of the test text's runs of k characters the training
+   text has 47.59% at k = 8, 1.22% at 16, 0.00% at 32: no 32 characters of
+   The Tempest are anywhere in the training plays. Cut instead into
+   windows of 256 every 128 characters and a tenth drawn at random for
+   testing (rng 0), 91.0% of a test window's characters are inside some
+   training window: a model scored that way is scored on text it trained
+   on. TinyStories: 100 of the 21,990 held-out stories are word for word
+   among our 74,394 training stories (none of the first 2,000, which 09.04
+   and 13.04 score on, so neither number moves), and the training stories
+   repeat themselves 300 times. Our training stories are the first 64 MiB
+   of a 1.9 GB file; the whole file was not searched.
+Recht et al., the same and different. They built a second test set for
+CIFAR-10 (and ImageNet) by the first one's recipe and scored dozens of
+published models on both: the drops were large (3 to 15 points) and
+followed a line in the original accuracy, which they read as a shift to
+harder images, not as adaptive overfitting. Here the second set is a half
+of the same test set drawn at random (no shift by construction), the
+models are 32 seeds of one method, and the choice among them is made by
+the test set on purpose: what is measured is the adaptive part alone, and
+it is about a third of a point. Their near-duplicates were judged by eye
+(same object, same pose; about 800 in CIFAR-10's test set) and the
+models were trained classifiers (99 to 100% right on them); ours are the
+ratio test's 346 and a classifier that only remembers. By their
+arithmetic the twins are worth at most 0.6 points to a 93% model; to our
+43% remembering classifier, which gets the rest right far less often,
+2.0 points.
+
+### 13.04 Scaling: predicting a model you have not trained
+
+experiments/scaling.py: 08's GPT at one depth, 4 blocks of 4 heads, the
+width varied (so N is about 48 W^2), on TinyStories with 09.04's tokens (a
+vocabulary of 4096); every size trained for the same number of tokens by
+language.train (AdamW, weight decay 0.1 on the matrices and embeddings,
+warmup then cosine to 0, clipped to 1; one learning rate for every size),
+the same seeds (so one seed draws the same batches for every width), and
+scored on the first held-out stories with window_bits (each token with a
+quarter of the window or more before it), in bits per token, with bits per
+byte beside it (09.04's per_character). counted gives N as Kaplan et al.
+count it: every weight but tokens.weight and positions.weight (biases and
+layer norms are counted: 3.4% of N at width 32, 0.9% at 128, 0.4% at
+256); 12 L W^2 is printed beside it. predict fits lab.power_law through
+every run of every width but the largest (bits against N, seeds as points)
+and gives power_interval's 95% range for the mean of as many runs as the
+largest has; then the largest's runs beside it. Both ways of counting:
+weights as the paper counts them, and every weight (the vocabulary's
+4096 x W embedding included).
+
+Spike, what I tried (load 10 to 13). Step times on this CPU, windows of 256,
+batches of 32, 4 blocks: width 32 82 ms (1 head of 32), 48 88, 64 119, 96
+174, 128 219, 192 302, 256 408 (heads = width / 32); windows of 128,
+batches of 64 (the same tokens): 32 64, 64 93, 128 163, 192 253. The small
+widths cost nearly as much as the larger ones: the vocabulary's 4096 scores
+and the attention's T x T tables do not shrink with the width. Then 300
+steps of each, one seed, lr 0.002 (5 to 74 s each): bits per token 6.554,
+5.926, 5.729, 5.386, 5.214, 4.814 at widths 32, 48, 64, 96, 128, 192: a
+fair straight line on log-log axes (slope -0.08 to -0.10). From those the
+recorded run's settings: widths 32 to 128 to fit, 256 to predict (4 times
+the largest fitted N), 800 steps (6.55 million tokens each, 0.39 passes
+over the 16.7 million: no token seen twice by any model, so not limited by
+repetition), 3 seeds of each fitted size, 2 of the largest, an estimated
+37 minutes at load 11. Not tried: other learning rates per size (the
+paper's own rule, its D.1, gives smaller rates to larger models; it does
+not say which logarithm), other depths, windows of 128, more steps.
+
+(That spike gave each width width / 32 heads; the recorded run has 4 heads
+at every width, which costs the small widths more: width 32 took 100 to
+110 s for 800 steps at load 15, about 130 ms a step.)
+
+The long run, recorded in experiments/recorded/scaling/ (width<W>/seed<k>/
+config.json, log.jsonl with the held-out windows' curve every 50 steps,
+summary.json; fit/seed0/summary.json, both fits and predictions;
+curves.svg, every run's held-out bits against the tokens seen, log axes;
+fit.svg, the runs, the line, the interval and the largest's runs;
+output.txt, what it printed). No weights are written by scaling.py.
+
+    python3 -m experiments.scaling "widths=[32,48,64,96,128]" largest=256 context=256 batch=32 steps=800 lr=0.002 warmup=50 every=50 seeds=3 largest_seeds=2 held=64 held_stories=2000 out=experiments/recorded
+
+3054 s by its own clock (00:11:00 to 01:01:55 on 2026-11-25), load 10 to
+21 (three other agents training; the run's 10 threads fighting for
+cores): widths 32 and 48 100 to 135 s a run, 64 114 to 167, 96 176 to 199,
+128 181 to 228, 256 356 and 417. At the spike's load of 11 the estimate
+was 37 minutes. fit.svg was drawn again afterwards from the summaries,
+after plot() was changed to draw the line a little past the largest (the
+held-back points sat on the frame's edge); nothing else was touched.
+
+Bits per token on the first 2,000 held-out stories (395,221 tokens; bits
+per byte beside them):
+- width 32, N 50,880 (all weights 190,144): `5.803 +- 0.03711` (5.763 to
+  5.836); 1.445 per byte
+- 48, N 113,184 (322,080): `5.392 +- 0.02255`; 1.342
+- 64, N 200,064 (478,592): `5.146 +- 0.04659`; 1.281
+- 96, N 447,552 (865,344): `4.726 +- 0.04093`; 1.177
+- 128, N 793,344 (1,350,400): `4.441 +- 0.01043`; 1.106
+- 256, N 3,159,552 (4,273,664), held back: `3.925 +- 0.01081` (3.917,
+  3.933, 2 seeds); 0.977 per byte (09.04's long run, 4 blocks of 8 heads
+  at width 256 for 4000 steps: 0.7367).
+The fit, weights counted as the paper counts them, 15 runs: alpha =
+0.0971, standard error 0.0021; N_c = 10^12.6 (bits, our tokens: no
+meaning beside the paper's 8.8 x 10^13, as the paper says of its own);
+scatter about the line 0.0078 in ln bits. The prediction for width 256,
+made from the five smaller widths (and computed by hand at 00:49:25, while
+width 256's first seed was training: 3.9038): 3.904 bits per token, 95%
+interval for the mean of 2 runs 3.836 to 3.973. Trained: 3.925, inside,
+0.5% above the prediction. The local exponents between neighbouring
+widths, 0.092, 0.082, 0.106, 0.109 and, from 128 to 256, 0.089: no bend
+either way, the last a little flatter than the fit, which is the 0.5%.
+Every weight counted (the 4096 x W embedding too): alpha 0.1360 (standard
+error 0.0024), scatter 0.0064 (closer to its points than the paper's way),
+predicted 3.803 (3.746 to 3.861) and trained 3.925: outside, 3.2% above.
+The embedding is 73% of all weights at width 32 and 26% at width 256, so
+counted in, it makes the small models look larger than they compute and
+bends the line: the paper's figure 6 reason for leaving it out, held here
+by the prediction it spoils, not by the fit's scatter (which is smaller).
+Every curve in curves.svg is still falling at the end: no size was
+trained to convergence. The training batch and the held-out windows end
+level (width 256: 3.895 and 3.920 bits; every token seen once).
+
+What held of the paper, and what a laptop does not meet:
+- A power law in N fits at this scale: five sizes over 1.2 decades
+  (Kaplan et al.: six decades), scatter under 1%, and it predicted a model
+  4 times larger than any it was fitted to, within its interval.
+- The exponent is 0.097 against the paper's 0.076, and the two are not the
+  same measurement: theirs is for models "trained to convergence on
+  sufficiently large datasets" (2.5 x 10^5 steps of 512 x 1024 tokens,
+  on 22 billion tokens, early-stopped), ours for every size stopped at the
+  same 6.55 million tokens, far from convergence (every curve still
+  falling), on 16.7 million tokens of children's stories with a vocabulary
+  of 4096. At a fixed number of steps the paper's own law is equation
+  1.6, L(N, S) = (N_c / N)^alpha_N + (S_c / S_min)^alpha_S: a power law
+  plus a constant, which on log-log axes flattens at large N (not seen
+  over our range); and larger models are "more sample-efficient", so at
+  equal tokens they are further ahead early in training than at
+  convergence. Not data limited as the paper means it (nothing was seen
+  twice, so nothing could be overfitted; their rule for training to
+  convergence without overfitting, D >~ 5 x 10^3 N^0.74, asks for 3.2 x
+  10^8 tokens at our largest N, 19 times the 16.7 million we have). One
+  learning rate for every size (theirs fell with size, their D.1), one
+  depth (theirs varied both), windows of 256 (theirs 1024).
+- The paper's precise exponent is not checked (it says its constants
+  "depend on the vocabulary size and tokenization"); what is checked is
+  the use: a line through small models predicts a larger one.
+
+The default run (no download beyond TinyStories): widths 16, 24 and 32 to
+fit and 48 to predict, windows of 64, 120 steps of 32 (245,760 tokens), lr
+0.003, 2 seeds each; scored on the first 200 held-out stories.
+
+The default's own sizes at 120 steps barely leave the start (bits per
+token 8.59, 8.41, 8.13 at widths 16, 24, 32; 2 seeds each, sds up to
+0.14): alpha 0.0399 (standard error 0.0090) the paper's way, 0.0648 with
+every weight; width 48 predicted 7.909 (7.559 to 8.275) and trained
+`7.865 +- 0.1937`, inside either way: the interval is wide because two
+seeds of so short a run scatter by 0.1 to 0.2 bits. It shows the method;
+the law is the recorded run's, which the default reads and prints (part
+3). 44 s by its own clock (45.1 s of wall clock) at load 12, back to back
+with the other defaults; reading the record adds about a second.
+
+### Recorded runs, and the hour
+
+- 13.04, experiments/recorded/scaling: 3054 s (50 min 54 s), 00:11:00 to
+  01:01:55 on 2026-11-25, load 10 to 21.
+- 13.02, experiments/recorded/errorbars: 178 s, 01:02:11 to 01:05:10, load
+  12 to 19.
+Together 3232 s, 53 min 52 s of wall clock, inside the hour, most of it
+13.04's as the design asked. 13.01 and 13.03 have none (their defaults
+are the whole experiment). Both records ship their config, log and
+summary for every run, their figures and output.txt; no weights (neither
+script writes any). 228 KB and 252 KB.
+
+### The defaults' times
+
+Back to back at 01:05 to 01:07 on 2026-11-25, load 11 to 12.5 (three other
+agents' work), by their own clocks (wall clock in brackets): baseline 9 s
+(9.9), errorbars 56 s (57.5), fooled 16 s (16.8), scaling 44 s (45.1).
+Earlier, at load 14 to 16 with the scaling run going: baseline 14 to 26
+s (8 or 16 trials), errorbars 77 s, fooled 23 s, scaling 37 s (load 10).
+On a quiet machine errorbars and scaling should take about half of these;
+both are under the planner's rule (a cut at 55 s with the load under 6).
+The same digits on every run of each.
+
+### What held, and what did not
+
+- 13.01: the design's point held at this size: the hurried comparison
+  (Adam's rate searched, SGD's taken from the docs) makes a clear win, 8.4
+  points of test error, t = +21; the same search for both leaves 0.81
+  points, t = +2.7, a tie by the rule written first. Most of the hurried
+  gap is the baseline's missing search: a search of 1 trial leaves SGD 6.5
+  points behind on validation, of 8 trials 2.5 (best_of). 03.03's tie
+  (training cost, 3 passes over 60,000) is not contradicted: Adam leads by
+  0.8 points here after 2 passes over 10,000 images, without 3 standard
+  errors. Henderson et al. ask for "standard hyperparameter searches" of
+  baselines and the playbook that "the baseline should also have its
+  learning rate equally well tuned": both held.
+- 13.02: 08.02's doubtful result is real: four heads beat one at equal
+  weights by 0.025 bits per character, t = -5.7 at 10 seeds, the paired
+  interval -0.032 to -0.018, lower on every seed. 08.02's t = -2.4 at 3
+  seeds was a true difference that 3 seeds could not show unpaired; paired,
+  3 seeds already showed it (seeds_needed: 3 to 4 paired, 4 to 6
+  independent). Bouthillier et al.'s order of the sources held for one
+  model's score (the test text's sampling error, 0.0138, as large as the
+  seeds' spread, 0.007 to 0.016) and Miller's pairing for a difference
+  (0.0018 against 0.0096); Henderson et al.'s split of one method's seeds
+  into "different" halves did not appear here (t = -1.5 and -0.2).
+- 13.03: choosing by the test set moves a score by about a third of a
+  point of MNIST error among 32 runs that differ only by seed, as their
+  own spread predicts: small beside Recht et al.'s 3 to 15% drops on
+  CIFAR-10, which they put down to harder images, not to adaptivity; at
+  this scale ours agrees that test-set reuse alone costs little.
+  Near-duplicates: CIFAR-10 has 346 test images (3.5%) with a twin in
+  training by our rule (Recht et al., by eye and a looser rule: about 800,
+  8%); they inflate a remembering classifier's accuracy by 2.0 points;
+  MNIST 41 (0.4%), and no exact copies in either. TinyStories' held-out
+  file has 100 stories word for word in our training stories, none among
+  the 2,000 our scores use.
+- 13.04: a power law in N held at laptop scale, and its prediction of a
+  model four times larger landed inside the interval (3.925 against 3.904,
+  +0.5%); counted with the embeddings it missed by 3.2% (the paper's figure
+  6 held, by prediction). The exponent, 0.097, is not the paper's 0.076,
+  and is not the same quantity (fixed tokens, far from convergence; the
+  paper's equation 1.6 is the law for that case).
+
+### Departures from the design, and why
+
+- 13.01 searches each optimiser's learning rate only (SGD's momentum at
+  0.9 and Nesterov's form, Adam's betas at their defaults, as 03.03 had
+  them), with plain random draws, not the playbook's quasi-random ones (in
+  one dimension it allows a grid; random draws keep any n of the trials a
+  fair sample for best_of). The hurried baseline is the rate of PyTorch's
+  own example, lr 0.01, momentum 0.9 (with Nesterov's form, as every SGD
+  arm here). The comparison is test error after 2 passes over 10,000
+  images, not 03.03's training cost after 3 over 60,000: a minute holds 31
+  runs of this. 03.03's own claim stays where 03.03 left it.
+- 13.01 and 13.03 use MNIST as designed; no claim of module 08 was used
+  instead (08.02's heads go to 13.02, which needs them).
+- 13.02's verdict rests on a recorded run of 10 seeds a side, not more:
+  the hour was 13.04's (see Recorded runs). The default trains seeds 0 to
+  2 (08.02's page ran 3) and reads the record.
+- 13.02's test-set error is measured by batches of consecutive windows
+  (batch_sem), Miller's clustered errors with the clusters made from the
+  text's order, since the test text has no questions to group.
+- 13.03's second held-out set is half of MNIST's test images drawn at
+  random before any run, not images held back from training (the design
+  allowed either; this keeps the training set 13.01's).
+- 13.03's near-duplicates are found by the ratio test on shrunk, centred
+  images, not by Recht et al.'s l2 and SSIM neighbours checked by eye;
+  plain distances did not separate copies from look-alikes (spike, above).
+  No network was trained on CIFAR-10 for the twins' accuracy (a remembering
+  classifier, the nearest image's label, stands in); MNIST's twins are
+  scored by part 1's networks too. The text part adds TinyStories' repeated
+  stories, which the design did not name.
+- 13.04 varies the width only (4 blocks of 4 heads), one learning rate for
+  every size, 800 steps; it took 51 minutes at load 10 to 21, against an
+  estimate of 37 at load 11; with 13.02's recorded run the module's
+  recorded runs took 53 min 52 s, inside the hour, with less to spare than
+  planned. 13.02's record is 10 seeds a side for that reason.
+- lab/stats.py's t_quantile keeps its answers (functools.lru_cache): the
+  same few quantiles are asked for thousands of times by a test's
+  simulations and by seeds_needed, and each costs a Newton's method over
+  Simpson's rule (5 to 30 ms).
+
+### Tests (module 13)
+
+`./learn test research 13`: all 4 pass (13.01 12.7 s, 13.02 53.1, 13.03
+12.4, 13.04 40.0 in the whole suite's run, load 11 to 14). Each runs its
+exact checks first (inside()), then its experiment:
+- 13.01: best_of against every draw of n of N counted by hand (N up to 7,
+  with and without a reported number); draw_rates seeded, every rate in
+  its range, the same u's in each range; run_one the same twice, another
+  optimiser other numbers, errors a share of the images, a log row a pass;
+  verdict's three outcomes. Then (MNIST) baseline with seeds=3: the
+  hypothesis printed first; the hurried gap over 3 points and over twice
+  the fair one, with t of 3 or more; the docs' rate worse than SGD's tuned
+  one; the best-of table's 8 rows, validation never rising with n; a tiny
+  run twice, the same bytes.
+- 13.02: sem; t_quantile against the t table (seven values) and, with
+  scipy, t_density, t_cdf and t_quantile at whole and fractional degrees of
+  freedom, interval against t.interval, difference against ttest_ind
+  (Welch) and ttest_rel's intervals; Welch's degrees of freedom written
+  out; a paired difference of unequal arms refused; bootstrap against the
+  same draws taken by hand, and against mean +- 1.96 sem on 4,000 normal
+  numbers; seeds_needed against 20,000 simulated experiments at n and at
+  n - 1, four cases (two of them this lesson's spreads); batch_sem on an
+  AR(1) series of known correlation; position_bits' length and mean against
+  window_bits at three spans. The recorded run's files (both arms, 10
+  seeds, configs equal but the seed, logs, output.txt) and its verdict (the
+  paired interval clear of 0). Then the default: 08.02's 3.433 and 3.407
+  within 0.01, the same start for both arms, the paired interval narrower
+  than Welch's, the difference's test-text error under a third of one
+  model's, neighbouring windows moving together; a tiny run twice.
+- 13.03: normal_best against 0, 1 / sqrt(pi), 3 / (2 sqrt(pi)) and 200,000
+  draws of 10; hold_back disjoint, covering, seeded; shrink's length-1 rows
+  and a brighter copy the same, against pooling written out; two_nearest
+  against a full search; exact_copies and the twin rule on 500 blocky
+  images with 3 planted copies, 4 shifted by a pixel and 20 strangers (the
+  7 found, the 20 not); shared_grams against a set of tuples. Then (MNIST,
+  CIFAR-10 and TinyStories: "missing:" without each) fooled with 8 runs:
+  the best of 8 by A ahead on A by more than on B; no exact copies; CIFAR-
+  10's twins between 100 and 800; twins right more often than the rest;
+  no shared run of 32 in Tiny Shakespeare, over 80% shared by overlapping
+  windows; held-out stories found in training; a tiny run twice.
+- 13.04: power_law exact on made points, alpha's standard error the
+  spread of 3,000 noisy fits' alphas (within 10%), power_interval covering
+  the law's value and the mean of 2 new runs 95% of the time (within 1.5
+  points), a narrower level inside a wider one; counted for GPTs with and
+  without positions, equal to 3 (12 W^2 + 13 W) + 2 W, and within 1% of 12
+  L W^2 at width 256; predict on made rows (inside, and outside when the
+  largest is 20% worse); read giving back what lab.Run wrote. The recorded
+  run (every width and seed, configs, curves, summaries with the tokens,
+  the loss falling with width, the fit re-made from the summaries, the
+  prediction inside and nearer than with every weight). Then (TinyStories)
+  the default: both predictions printed, the record read; a tiny run
+  twice. LEARN_RERUN_LONG=1 reruns 13.02's and 13.04's records from their
+  configs (about 3 and 50 minutes).
+`./learn check-skeleton research 13` ok, 6 s (13.01 fails at best_of,
+13.02 at sem, 13.03 at normal_best, 13.04 at power_law).
+The whole track (modules 00 to 09, 13 and 14; three other agents
+training): `./learn test research` 52 tests, all pass, 18 min 29 s at load
+11 to 27 (01:15:21 to 01:33:50). `./learn check-timeline research` ok, 5
+min 51 s at load 10 to 11; the project has 195 files at 13.01, 258 at
+13.02 (63 of them the recorded errorbars run), 259 at 13.03 and 317 at
+13.04 (57 the recorded scaling run), 320 to 392 at 14.01 to 14.04; 06.04
+still 98, 07.02 145, 08.04 170, 09.04 194. At each lesson from 13.01 on
+the timeline runs the module's short settings (fooled with n_test=500, so
+its twin search reads 500 test images). `./learn selftest` ok (269 tests).
+`./learn check` reports exactly twelve problems, `research/13.0N` and
+`research/14.0N: test has no lesson doc` and four `kilo/08.0N` of the
+same kind (another track's, on master); nothing else.
+
+### For the harness, and what a page writer meets
+
+- No harness change. track.py's module-13 part is the last block of the
+  file: the four experiments in EXPERIMENTS with short settings for the
+  timeline, DATASET_OF (baseline and fooled MNIST, errorbars none, scaling
+  tinystories), and the two recorded folders first in FILES_FROM with
+  their DATA lines.
+- Session needs=: 13.01 needs="torch" (MNIST is a download, as for 03.01 to
+  06.01, not a tool); 13.02 needs="torch"; 13.03 needs="torch cifar10
+  tinystories" (without them fooled.py prints a line per part it skips,
+  so the page's output would differ); 13.04 needs="torch tinystories".
+- lab/stats.py gains numpy (bootstrap) and statistics.NormalDist
+  (seeds_needed, normal_best) as one-line @from 13.02 imports, and
+  functools for t_quantile's cache; its docstring gains one line per
+  lesson, each with its marker, so at 00.03 the file is as it was.
+- Region titles that are ordinary words (lead-ins match them, case
+  aside): interval, difference, bootstrap (13.02), shrink (13.03),
+  counted, predict (13.04). A `### ` heading in How it works that says
+  "the difference" or "an interval" is pulled into The code; word such
+  headings without them.
+- 13.02's and 13.04's defaults read their recorded runs, which the project
+  has from their lessons (FILES_FROM), so verify replays them; 13.04's
+  default also trains its small sizes. Neither recorded run is rerun by a
+  test unless LEARN_RERUN_LONG=1.
+
+### For module 15: the tools on a learner's own experiment
+
+- The fair search (13.01): write the hypothesis and the rule that decides
+  it before any run (baseline.py's HYPOTHESIS and RULE). Give every arm the
+  same search: draw_rates(ranges, trials, rng) with one range per arm, as
+  wide on a log scale for each, every trial on one seed, chosen on
+  validation; then the chosen setting of each arm on fresh seeds, reported
+  on test. best_of(val_errors, n, test_errors) says what n trials bought
+  each arm, so a reader can see whether the search was enough.
+- The paired comparison (13.02): run both arms with the same seed for
+  each pair (torch.manual_seed(seed) before building, run.rng for the
+  data order: models of the same shapes start from the same weights), then
+  lab.difference(a, b, paired=True) for the interval, beside
+  lab.difference(a, b) to show what pairing bought. Report the interval,
+  not only t: with 3 seeds the t to beat is 4.30.
+- How many seeds (13.02): from a pilot of 3 to 5 seeds, the sd of the
+  paired differences and the smallest difference worth finding,
+  lab.seeds_needed(size, sd, paired=True); run that many before deciding,
+  and say in the write-up that the number was fixed first.
+- The second held-out set (13.03): hold_back(n, rng) on the test set (or
+  on the validation set) before any run; choose on one half, report on
+  the other. If many runs were compared, the gain the chosen one shows on
+  the half it was chosen on is lab.normal_best(k) times the runs' sd, and
+  part of it is luck the other half will not repeat.
+- Leakage (13.03): before reporting a score on a new data set, count
+  exact copies (exact_copies) and twins (shrink, two_nearest, the ratio
+  test) between its training and test parts, and the shared runs of a
+  text split (shared_grams); report the score with and without them.
+- Scaling (13.04): for a claim that "bigger is better", train three or
+  more sizes for the same tokens, several seeds each, and say which
+  weights are counted; power_law and power_interval give the exponent with
+  its error and what the next size should score, before it is trained.
+
+### Checked, and not checked
+
+Checked: every statistic against scipy 1.17.1 (sem, the t density,
+distribution and quantiles at whole and fractional degrees of freedom,
+Student's and Welch's intervals, the paired interval) and against the t
+table and the formulas written out, so the tests mean something without
+scipy; best_of against every draw counted by hand; seeds_needed against
+20,000 simulated experiments at its n and one fewer; power_interval's
+coverage over 3,000 made experiments (95.0% within 1.5 points); batch_sem
+on a series of known correlation; the twin rule on planted copies and
+shifted copies; position_bits against window_bits; every quote above
+found again in the source's text. CIFAR-10's twins were looked at by eye
+(spike: pairs drawn side by side at three bands of the ratio).
+Not checked: quasi-random search (the playbook's) against the random
+draws used; a trained network's accuracy on CIFAR-10's twins; the whole
+TinyStories file for held-out stories (only our 64 MiB); per-size learning
+rates or other depths for 13.04, and whether its exponent moves with the
+steps (one budget, 800 steps, was run); the paper's precise exponent at
+convergence (not reachable on a laptop); Linux. Schulman's guide was not
+read.

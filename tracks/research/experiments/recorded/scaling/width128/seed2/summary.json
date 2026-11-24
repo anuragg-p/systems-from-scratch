@@ -1,0 +1,10 @@
+{
+ "all_weights": 1350400,
+ "bits_per_byte": 1.1086588028641038,
+ "bits_per_token": 4.45307652544358,
+ "end_held_bits": 4.443001747131348,
+ "seed": 2,
+ "tokens": 6553600,
+ "weights": 793344,
+ "width": 128
+}
