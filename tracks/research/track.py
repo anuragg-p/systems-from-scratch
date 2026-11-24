@@ -138,13 +138,14 @@ VERIFY_SETTLE = 60.0
 
 def verify_tools():
     """What replaying a lesson needs: python3 with numpy. (MNIST, from 03.01 on, is a download, not a
-    tool: see NOTES.md.)"""
+    tool: see NOTES.md.) Lessons from 06.02 on need PyTorch too, and 06.03 on CIFAR-10: see
+    pytorch_era_tools() below."""
     try:
         import numpy  # noqa: F401
         have_numpy = sys.executable
     except ImportError:
         have_numpy = None
-    return {"python3": sys.executable, "numpy": have_numpy}
+    return {"python3": sys.executable, "numpy": have_numpy, **pytorch_era_tools()}
 
 
 # ---------------------------------------------------------------- the shared fixtures
@@ -259,6 +260,8 @@ def have_mnist():
 
 
 def need(t, dataset="mnist"):
+    if dataset == "cifar10":
+        return need_cifar10(t)                  # module 06's part of this file, at the end
     if dataset != "mnist":
         raise Fail(f"no dataset {dataset!r}")
     if not have_mnist():
@@ -371,8 +374,9 @@ def timeline_boot(lesson_id):
             continue
         settings = SHORT_BEFORE.get(name, {}).get(lesson_id, settings) if k < (0, 3) else settings
         command = _python("-m", f"experiments.{name}", *settings)
-        if lesson_key(lid) >= lesson_key(MNIST_FROM) and not have_mnist():
-            steps.append(sh_step(command + " 2>&1", r"mnist is missing: .*python3 -m data\.fetch mnist", 1))
+        data = DATASET_OF.get(name, "mnist" if lesson_key(lid) >= lesson_key(MNIST_FROM) else None)
+        if data and not have_dataset(data):
+            steps.append(sh_step(command + " 2>&1", rf"{data} is missing: .*python3 -m data\.fetch {data}", 1))
             continue
         steps.append(sh_step(command, last))
     if k >= (2, 1):
@@ -416,6 +420,76 @@ def timeline_boot(lesson_id):
 EXPERIMENTS.update({
     "conv": ("06.01", ["seeds=1", "n_train=1000", "epochs=1", "n_test=400", "shifts=[0,2]"],
              r"convolutional +\S+ .*unshuffled, t = "),
+    "switch": ("06.02", ["seeds=1", "steps=2", "width=8", "batch=16"], r"one pass over 50,000 images would take: "),
 })
 NAMES["nn"]["06.01"] = "Conv2d MaxPool2d Flatten"
 NAMES["F"]["06.01"] = "conv2d max_pool2d"
+
+# models/ (06.02 on): the networks experiments share. Its files hold regions; its __init__.py none.
+SOURCES.append("models/*.py")
+FILES_FROM["models/__init__.py"] = "06.02"
+PACKAGES = PACKAGES + ("models",)
+
+# The dataset each experiment needs, where it is not MNIST (every experiment from 03.01 on is MNIST's
+# unless named here): check-timeline expects the "missing" line instead of a run without it.
+DATASET_OF = {"switch": None, "cifar": "cifar10", "resnet": "cifar10"}
+
+# The long run of 06.04, recorded: experiments/resnet.py's runs, written with out=experiments/recorded
+# (config.json, log.jsonl and summary.json for every network and seed, and the curves). No regions;
+# shown as data (the first lines of each), whole in the project's files.
+FILES_FROM["experiments/recorded/*"] = "06.04"
+DATA = {"experiments/recorded/*": "the long run of experiments/resnet.py (06.04), recorded on the machine in NOTES.md"}
+
+CIFAR10_FILES = {"data_batch_1.bin": 30730000, "data_batch_2.bin": 30730000, "data_batch_3.bin": 30730000,
+                 "data_batch_4.bin": 30730000, "data_batch_5.bin": 30730000, "test_batch.bin": 30730000,
+                 "batches.meta.txt": 61}
+
+
+def have_dataset(name):
+    """Is the dataset in the cache, every file at its size? (data/fetch.py checks the SHA-256 too.)"""
+    if name == "mnist":
+        return have_mnist()
+    files = {"cifar10": CIFAR10_FILES}[name]
+    d = os.path.join(cache_dir(), name)
+    return all(os.path.isfile(os.path.join(d, f)) and os.path.getsize(os.path.join(d, f)) == n for f, n in files.items())
+
+
+def need_cifar10(t):
+    if not have_dataset("cifar10"):
+        raise Fail(f"missing: CIFAR-10 is not in {os.path.join(cache_dir(), 'cifar10')}. Fetch it once with "
+                   f"python3 -m data.fetch cifar10, run in tracks/research/")
+
+
+def pytorch_era_tools():
+    """What verify_tools adds for the lessons from 06.02 on. verify_tools cannot name a tool for
+    some lessons only, and a session's needs= looks for a program on PATH, not for a Python package
+    or a download. So, for each of these that this machine has, an empty program of that name in
+    build/tools/research/, whose folder verify then puts on PATH: "torch" when this python imports
+    torch, "cifar10" when CIFAR-10 is in the cache (a stale one is removed). A session from 06.02 on
+    says needs="torch", from 06.03 on needs="torch cifar10": on a machine without them its lesson is
+    "missing", as a missing QEMU makes an xv6 lesson, while every lesson before 06.02 still replays.
+    Each program is written only when it is not there already, so verify's cache stays valid."""
+    import importlib.util
+    from harness.core import ROOT
+    where = os.path.join(ROOT, "build", "tools", "research")
+    have = {"torch": importlib.util.find_spec("torch") is not None, "cifar10": have_dataset("cifar10")}
+    out = {}
+    for name, ok in have.items():
+        path = os.path.join(where, name)
+        if not ok:
+            if os.path.exists(path):
+                os.remove(path)
+            continue
+        text = f"#!/bin/sh\n# {name} is on this machine: written by tracks/research/track.py for ./learn verify\nexit 0\n"
+        try:
+            with open(path) as f:
+                same = f.read() == text
+        except OSError:
+            same = False
+        if not same:
+            os.makedirs(where, exist_ok=True)
+            with open(path, "w") as f:
+                f.write(text)
+            os.chmod(path, 0o755)
+        out[name] = path
+    return out
