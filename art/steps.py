@@ -21,10 +21,12 @@ and Next, and without scripts or in print all of them, one under another.
     # or from markup of your own
     body = base + "".join(steps.group(caption, markup) for caption, markup in frames)
 
-Use one only where the idea is a process (a sort, a heap fixing itself, a table being filled), at
-most one per lesson, with frames made from a real run of the reference code so they cannot
-disagree with it. Each frame should draw the whole state at that step, not what changed since the
-last one: a reader without scripts sees every frame on its own. Steps do not nest.
+Use one only where the idea is a process (a sort, a heap fixing itself, a table being filled),
+as a rule one per lesson (two where a lesson's idea is two processes, as kilo's 08.02: a record's
+swap, then the two stacks; the page steps each on its own), with frames made from a real run of
+the reference code so they cannot disagree with it. Each frame should draw the whole state at that
+step, not what changed since the last one: a reader without scripts sees every frame on its own.
+Steps do not nest.
 """
 import contextlib
 import html
