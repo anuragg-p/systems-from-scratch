@@ -47,6 +47,10 @@ Computed, for the built modules, from the formulas and settings of the track's o
         weights, checked against what the run printed; SmolLM2-135M's heads from models/smollm.py and its and
         GPT-2's bits per character as 10.04's page prints them; the rotary pair turned through four places is a
         schematic of 10.02's turning
+    13  13.01's three arms and two gaps and 13.03's best-of-k table and twins, read from those pages' Run it (no
+        recorded run); 13.02's recorded runs (tracks/research/experiments/recorded/errorbars/: every seed's
+        difference, the two intervals checked against its output.txt); 13.04's recorded long run (.../scaling/:
+        every run's summary, the fit's slope made again here, the prediction and its interval)
     14  the recorded long run of 14.03 (tracks/research/experiments/recorded/grokking/): every seed's accuracy
         curves and its two 99% steps; 14.04's recorded ablations: the start's and no weight decay's results;
         the paper's span is figure 1's caption (under 1e3, close to 1e6)
@@ -54,7 +58,7 @@ Where a cover prints a number the lessons print, the script asserts it is the sa
 change to the track that moves it stops this script instead of leaving the cover wrong.
 Also computed: the double-descent curve in 05 (random ReLU features, least squares), the
 convolution in 06, the LoRA counts in 12, the DDPM noising in 17 and the
-PPO objective in 18. Schematic (the true shape, no measured numbers): 11's loss curves, 13's panels, 15's
+PPO objective in 18. Schematic (the true shape, no measured numbers): 11's loss curves, 15's
 paper, 20's over-optimisation and 21's four phenomena.
 
 Module 15 keeps the cover first drawn for the older outline in outline_art.py (its module 07),
@@ -1293,88 +1297,153 @@ def res_finetune():
 
 # =================================================================== 13 experiments
 
+def rigour_numbers():
+    """13's numbers as its pages print them. 13.01 and 13.03 have no recorded run, so their numbers are read from
+    each page's Run it (13.01: the three arms' spreads and the two gaps; 13.03: the best-of-k table and CIFAR-10's
+    twins); 13.02's from experiments/recorded/errorbars/ (every seed's summary, the paired interval made again here
+    and checked against its output.txt); 13.04's from experiments/recorded/scaling/ (every run's summary, the slope
+    fitted again here by least squares and checked against fit/seed0/summary.json)."""
+    import re
+    rec = os.path.join(ROOT, "tracks", "research", "experiments", "recorded")
+    folder = os.path.join(LESSONS, "13-experiments-that-hold-up")
+
+    def page(prefix):
+        with open(glob.glob(os.path.join(folder, prefix + "-*.md"))[0]) as f:
+            return f.read()
+
+    def mean(xs):
+        return sum(xs) / len(xs)
+
+    def sd(xs):
+        m = mean(xs)
+        return math.sqrt(sum((x - m) ** 2 for x in xs) / (len(xs) - 1))
+
+    def seeds(d):
+        found = glob.glob(os.path.join(d, "seed*", "summary.json"))
+        return [json.load(open(f)) for f in sorted(found, key=lambda f: int(os.path.basename(os.path.dirname(f))[4:]))]
+    p1 = page("13.01")
+    arms = {}
+    for key, label in (("adam", "adam, tuned"), ("docs", r"nesterov, lr 0\.01 \(the docs' example\)"),
+                       ("tuned", "nesterov, tuned")):
+        m = re.search(rf"^   {label} +lr \S+ +(\S+) \+- \S+ \(min (\S+), max (\S+), 5 seeds\)", p1, re.M)
+        arms[key] = tuple(float(v) for v in m.groups())
+    gaps = re.findall(r"SGD's test error minus Adam's: ([+-][\d.]+) points, t = ([+-][\d.]+)", p1)[:2]
+    one, four = ([s["test_bits"] for s in seeds(os.path.join(rec, "errorbars", f"heads{h}"))] for h in (1, 4))
+    diffs = [b - a for a, b in zip(one, four)]
+    with open(os.path.join(rec, "errorbars", "output.txt")) as f:
+        printed = f.read()
+    welch = [float(v) for v in re.search(r"\(Welch\): +(\S+) to (\S+),", printed).groups()]
+    paired = [float(v) for v in re.search(r"seed by seed: +(\S+) to (\S+),", printed).groups()]
+    half = 2.2622 * sd(diffs) / math.sqrt(len(diffs))            # t at 9 degrees of freedom, 97.5%
+    assert abs(mean(diffs) - half - paired[0]) < 1e-4 and abs(mean(diffs) + half - paired[1]) < 1e-4, (diffs, paired)
+    p3 = page("13.03")
+    table = [tuple(float(v) for v in row) for row in
+             re.findall(r"^ +(\d+)" + r" +([\d.]+)" * 7 + "$", p3, re.M)][:6]
+    twins = int(re.search(r"cifar10: .* (\d+) with a twin", p3).group(1))
+    rows = []
+    for w in sorted(int(n[5:]) for n in os.listdir(os.path.join(rec, "scaling")) if n.startswith("width")):
+        rows += [(w, s["weights"], s["bits_per_token"]) for s in seeds(os.path.join(rec, "scaling", f"width{w}"))]
+    fit = [r for r in rows if r[0] != 256]
+    u, v = [math.log(r[1]) for r in fit], [math.log(r[2]) for r in fit]
+    mu, mv = mean(u), mean(v)
+    slope = sum((x - mu) * (y - mv) for x, y in zip(u, v)) / sum((x - mu) ** 2 for x in u)
+    law = json.load(open(os.path.join(rec, "scaling", "fit", "seed0", "summary.json")))
+    assert abs(-slope - law["weights"]["law"]["alpha"]) < 1e-9, (slope, law["weights"]["law"]["alpha"])
+    got = {"gaps": gaps, "diff": f"{mean(diffs):+.4f}", "lower": sum(d < 0 for d in diffs),
+           "narrower": f"{1 - (paired[1] - paired[0]) / (welch[1] - welch[0]):.0%}", "k32": (table[-1][3], table[-1][5]),
+           "twins": twins, "alpha": f"{-slope:.4f}",
+           "pred": tuple(round(law["weights"][k], 3) for k in ("predicted", "low", "high")),
+           "every": round(law["all_weights"]["predicted"], 3), "trained": round(law["weights"]["got"], 3)}
+    assert got == {"gaps": [("+8.37", "+21.1"), ("+0.81", "+2.7")], "diff": "-0.0250", "lower": 10, "narrower": "26%",
+                   "k32": (1.114, 0.778), "twins": 346, "alpha": "0.0971", "pred": (3.904, 3.836, 3.973),
+                   "every": 3.803, "trained": 3.925}, got  # 13.01 to 13.04
+    return got, arms, welch, paired, diffs, table, rows, law
+
+
 def res_rigour():
-    a = Art("r13", "A result that holds up survives four attacks: a baseline tuned as hard, the spread over seeds, "
-                   "a cheat the evaluation must catch, and a prediction made before the run")
+    a = Art("r13", "Experiments that hold up: results of the track attacked four ways, and what held; a baseline "
+                   "searched as hard as the method, ten seeds paired, the test set's luck and leaks, a model "
+                   "predicted before it was trained")
+    got, arms, welch, paired, diffs, table, rows, law = rigour_numbers()
     pw, py0, py1 = 132, 46, 166
     xs = [24, 178, 332, 486]
-    heads = ["a fair baseline", "error bars", "an evaluation", "predict, then run"]
-    descs = [["tune the baseline's", "learning rate as hard", "as your own method's"],
-             ["is the gap bigger", "than the spread", "between seeds?"],
-             ["a cheat that should", "fail, such as the most", "common answer, must"],
-             ["fit loss against size", "on small models, then", "train a bigger one"]]
+    heads = ["a fair baseline", "error bars", "a fooled evaluation", "predict, then run"]
+    (g1, t1), (g2, t2) = got["gaps"]
+    descs = [["SGD at the docs' rate:", f"{g1} points, t {t1};", f"the same search: {g2},", f"t {t2}, a tie"],
+             ["08.02's heads, 10 seeds:", f"4 heads lower by {got['diff'][1:]},", f"on {got['lower']} of 10; the paired",
+              f"interval {got['narrower']} narrower"],
+             ["best of 32 by half A:", f"{got['k32'][0]:.2f} ahead there, {got['k32'][1]:.2f}", "on half B; CIFAR-10:",
+              f"{got['twins']} test images twinned"],
+             ["width 256 predicted", f"{got['pred'][0]:.3f} ({got['pred'][1]:.3f} to {got['pred'][2]:.3f}),",
+              f"trained {got['trained']:.3f}: inside;", f"counting all, {got['every']:.3f}: out"]]
     for x0, head, ds in zip(xs, heads, descs):
-        a.text(x0, py1 + 30, head, size=12, weight=700)
+        a.text(x0, py1 + 38, head, size=12, weight=700)
         for k, ln in enumerate(ds):
-            a.text(x0, py1 + 47 + k * 14, ln, "tm", 10.5)
-    a.text(xs[2], py1 + 47 + 3 * 14, "score near chance", "tm", 10.5)
+            a.text(x0, py1 + 55 + k * 14, ln, "tm", 10.5)
 
-    # 1: two learning-rate sweeps, U shapes; at your method's best lr the baseline looks bad
+    # 1: the three arms of 13.01, test error % on 5 fresh seeds: the mean, the whisker min to max
     x0 = xs[0]
     axes(a, x0, py0 - 6, x0 + pw, py1)
-    X = lambda t: x0 + 6 + t * (pw - 12)
-    Y = lambda L: py1 - 8 - L * (py1 - py0 - 16)                     # loss: lower is better, drawn lower
-    base = lambda t: min(1.0, 0.20 + 2.6 * (t - 0.36) ** 2)
-    mine = lambda t: min(1.0, 0.14 + 2.6 * (t - 0.66) ** 2)
-    poly(a, [(X(k / 60), Y(base(k / 60))) for k in range(61)], "s")
-    poly(a, [(X(k / 60), Y(mine(k / 60))) for k in range(61)], "a")
-    a.line(X(0.66), py0 - 4, X(0.66), py1, "m", dash=True)
-    dot(a, X(0.66), Y(base(0.66)), 3, "s f")
-    dot(a, X(0.36), Y(base(0.36)), 3, "s fs")
-    dot(a, X(0.66), Y(mine(0.66)), 3, "a fa")
-    a.text(x0 + 4, py0 - 10, "loss", "tm", 10)
-    a.text(x0 + pw, py1 + 12, "learning rate", "tm", 9.5, "end")
-    a.text(X(0.36), Y(base(0.36)) + 16, "baseline", size=9.5, anchor="middle")
-    a.text(X(0.66) + 7, Y(mine(0.66)) + 14, "yours", "ta", 9.5)
+    Y = lambda v: py1 - 6 - (v - 4) / 13 * (py1 - py0 - 6)               # noqa: E731  4% to 17%
+    for k, (key, label, sub, cls) in enumerate((("adam", "Adam", "searched", "a"), ("docs", "SGD", "docs'", "s"),
+                                                ("tuned", "SGD", "searched", "s"))):
+        m, lo, hi = arms[key]
+        cx = x0 + 22 + k * 44
+        a.line(cx, round(Y(lo), 1), cx, round(Y(hi), 1), cls)
+        dot(a, cx, Y(m), 3.5, "a fa" if cls == "a" else ("s f" if key == "docs" else "s fs"))
+        a.text(cx, round(Y(hi) - 7, 1), f"{m:g}", "ta" if cls == "a" else "t", 9.5, "middle", mono=True)
+        a.text(cx, py1 + 11, label, "ta" if cls == "a" else "t", 9.5, "middle", 600)
+        a.text(cx, py1 + 21, sub, "ta" if cls == "a" else "tm", 8.5, "middle")
+    a.text(x0 + 4, py0 - 10, "test error, %, 5 seeds", "tm", 10)
 
-    # 2: five seeds each, mean and spread
+    # 2: the recorded difference of 13.02: Welch's interval, the paired one, the ten seeds' differences
     x0 = xs[1]
     axes(a, x0, py0 - 6, x0 + pw, py1)
-    Yv = lambda v: py1 - 10 - v * (py1 - py0 - 20)
-    groups = [("baseline", [0.32, 0.45, 0.52, 0.40, 0.58], "s"), ("yours", [0.44, 0.60, 0.50, 0.72, 0.55], "a")]
-    for g, (lab, vals, cls) in enumerate(groups):
-        cx = x0 + 36 + g * 60
-        m = sum(vals) / len(vals)
-        sd = math.sqrt(sum((v - m) ** 2 for v in vals) / (len(vals) - 1))
-        for j, v in enumerate(vals):
-            dot(a, cx - 14 + j * 5, Yv(v), 2.6, "a af" if cls == "a" else "s f")
-        bx = cx + 16
-        a.line(bx, Yv(m - sd), bx, Yv(m + sd), cls)
-        a.line(bx - 4, Yv(m - sd), bx + 4, Yv(m - sd), cls)
-        a.line(bx - 4, Yv(m + sd), bx + 4, Yv(m + sd), cls)
-        dot(a, bx, Yv(m), 3.2, "a fa" if cls == "a" else "s fs")
-        a.text(cx, py1 + 12, lab, "ta" if cls == "a" else "t", 9.5, "middle")
-    a.text(x0 + 4, py0 - 10, "score, 5 seeds", "tm", 10)
+    X = lambda d: x0 + 6 + (d + 0.045) / 0.05 * (pw - 12)                # noqa: E731  -0.045 to +0.005
+    a.line(round(X(0), 1), py0 - 6, round(X(0), 1), py1, "s")
+    for k, ((lo, hi), cls, label) in enumerate(((welch, "m", "Welch"), (paired, "a", "paired"))):
+        y = py0 + 22 + k * 32
+        a.line(round(X(lo), 1), y, round(X(hi), 1), y, cls)
+        a.line(round(X(lo), 1), y - 4, round(X(lo), 1), y + 4, cls)
+        a.line(round(X(hi), 1), y - 4, round(X(hi), 1), y + 4, cls)
+        a.text(round(X(lo), 1) - 4, y + 4, label, "ta" if cls == "a" else "tm", 9.5, "end")
+    for d in diffs:
+        dot(a, X(d), py0 + 82, 2.4, "a fa")
+    a.text(x0 + 4, py0 - 10, "4 heads minus 1, bits", "tm", 10)
+    a.text(round(X(0), 1), py1 + 12, "0", "tm", 9.5, "middle", mono=True)
 
-    # 3: the cheat scores near chance, or the evaluation is broken
+    # 3: the gain of the best of k runs in 13.03, on half A where chosen and on half B
     x0 = xs[2]
     axes(a, x0, py0 - 6, x0 + pw, py1)
-    bars = [("yours", 0.78, "a af"), ("cheat", 0.16, "m fs")]
-    for k, (lab, v, cls) in enumerate(bars):
-        bx = x0 + 22 + k * 56
-        h = v * (py1 - py0 - 10)
-        a.box(bx, py1 - h, 34, h, cls, rx=2, dash=lab == "cheat")
-        a.text(bx + 17, py1 + 12, lab, "ta" if k == 0 else "tm", 9.5, "middle")
-    chance = py1 - 0.16 * (py1 - py0 - 10)
-    a.line(x0, chance, x0 + pw, chance, "m", dash=True)
-    a.text(x0 + pw, chance - 5, "chance", "tm", 9.5, "end")
-    a.text(x0 + 4, py0 - 10, "score", "tm", 10)
+    LK = lambda k: x0 + 8 + math.log2(k) / 5 * (pw - 16)                 # noqa: E731
+    GY = lambda g: py1 - 6 - g / 1.2 * (py1 - py0 - 6)                    # noqa: E731
+    for col, cls in ((3, "a"), (5, "s")):
+        poly(a, [(LK(r[0]), GY(r[col])) for r in table], cls)
+        for r in table[1:]:
+            dot(a, LK(r[0]), GY(r[col]), 2.4, "a fa" if cls == "a" else "s f")
+    a.text(LK(32) - 6, round(GY(table[-1][3]) - 6, 1), "on A", "ta", 9.5, "end")
+    a.text(LK(4) + 4, round(GY(table[2][5]) + 16, 1), "on B", "t", 9.5)
+    a.text(x0 + 4, py0 - 10, "points gained by choosing", "tm", 10)
+    a.text(x0 + pw, py1 + 12, "k, 1 to 32", "tm", 9.5, "end")
 
-    # 4: a power law is a straight line on log-log axes; fit the small ones, predict the next
+    # 4: 13.04's recorded fit on log-log axes, the interval for width 256, and its trained runs
     x0 = xs[3]
     axes(a, x0, py0 - 6, x0 + pw, py1)
-    LX = lambda t: x0 + 8 + t * (pw - 16)
-    LY = lambda t: py0 + 8 + t * (py1 - py0 - 16)
-    fit = [0.06, 0.22, 0.38, 0.54]
-    for t in fit:
-        dot(a, LX(t), LY(t * 0.9), 3, "s fs")
-    a.line(LX(0.0), LY(0.0), LX(0.95), LY(0.95 * 0.9), "s", dash=True)
-    dot(a, LX(0.9), LY(0.9 * 0.9), 4.5, "s f")
-    dot(a, LX(0.9), LY(0.9 * 0.9) + 3, 3, "a fa")
-    a.text(LX(0.9) - 10, LY(0.81) + 6, "predicted, then run", "ta", 9.5, "end")
-    a.text(x0 + 4, py0 - 10, "loss, log", "tm", 10)
-    a.text(x0 + pw, py1 + 12, "parameters, log", "tm", 9.5, "end")
-    a.text(24, 288, "Schematics, no measured numbers. A power law L = (N_c / N)^alpha is a straight line on log-log axes.",
+    w = law["weights"]
+    NX = lambda n: x0 + 6 + (math.log(n) - math.log(4e4)) / (math.log(4.5e6) - math.log(4e4)) * (pw - 12)  # noqa: E731
+    BY = lambda b: py1 - 6 - (math.log(b) - math.log(3.7)) / (math.log(6.0) - math.log(3.7)) * (py1 - py0 - 6)  # noqa: E731
+    ends = [4.2e4, 4.3e6]
+    a.line(round(NX(ends[0]), 1), round(BY(w["law"]["a"] * ends[0] ** -w["law"]["alpha"]), 1), round(NX(ends[1]), 1),
+           round(BY(w["law"]["a"] * ends[1] ** -w["law"]["alpha"]), 1), "s", dash=True)
+    for width, n, b in rows:
+        dot(a, NX(n), BY(b), 2.8 if width != 256 else 3.4, "s f" if width != 256 else "a fa")
+    xi = round(NX(w["n"]) - 9, 1)
+    a.line(xi, round(BY(w["low"]), 1), xi, round(BY(w["high"]), 1), "s")
+    dot(a, xi, BY(w["predicted"]), 3.2, "s fs")
+    a.text(xi - 6, round(BY(w["low"]) + 10, 1), "predicted", "t", 9.5, "end")
+    a.text(x0 + 4, py0 - 10, "bits per token, log", "tm", 10)
+    a.text(x0 + pw, py1 + 12, "weights, log", "tm", 9.5, "end")
+    a.text(24, 288, "Drawn from the module's own runs: 13.01's and 13.03's pages, 13.02's and 13.04's recorded runs.",
            "tm", 10.5)
     return a
 
