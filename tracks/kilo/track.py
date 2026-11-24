@@ -1393,7 +1393,7 @@ def _script_steps(k):
     S = "screen"
     rows = _file_rows(1, 22)
     bar = {22: re.compile(r"learn\.txt - 40 lines +1/40")}
-    count = 24 if k >= (9, 7) else 21 if k >= (9, 6) else 15 if k >= (9, 5) else 12 if k >= (9, 4) \
+    count = 25 if k >= (9, 7) else 22 if k >= (9, 6) else 15 if k >= (9, 5) else 12 if k >= (9, 4) \
         else 9 if k >= (9, 3) else 6 if k >= (9, 2) else 0
     steps = [(S, _screen(24, rows | bar | {23: f"init.lua: {count} functions"}, cursor=(1, 1))),
              ("keys {ctrl-e}1+1{enter}", SENT), (S, _screen(24, rows | {23: "2"}, cursor=(1, 1))),
@@ -1455,7 +1455,7 @@ def _script_after(root, lesson_id):
     if k >= (9, 2):
         r = subprocess.run(["./kilo", "--api-info"], cwd=root, capture_output=True, text=True, timeout=20,
                            stdin=subprocess.DEVNULL)
-        want = 24 if k >= (9, 7) else 21 if k >= (9, 6) else 15 if k >= (9, 5) else 12 if k >= (9, 4) \
+        want = 25 if k >= (9, 7) else 22 if k >= (9, 6) else 15 if k >= (9, 5) else 12 if k >= (9, 4) \
             else 9 if k >= (9, 3) else 6
         lines = r.stdout.splitlines()
         if r.returncode != 0 or len(lines) != want or not lines[1].startswith("get_lines(start: integer, end: integer)"):

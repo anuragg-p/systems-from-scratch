@@ -2401,6 +2401,73 @@ Not confirmed (could not be seen in the sources read, so not for a lesson):
   persistent undo, were not read. VS Code's undo across file reloads was
   not looked for.
 
+### Added by the lesson writer (2026-11-24)
+
+Facts the lessons needed that the notes above lacked, each run or read
+for them.
+
+**The bound in Vim and Emacs** (for 08.04's boundary), read as above, with
+curl, at the same tags:
+
+- Vim, `runtime/doc/options.txt` 9970-9976: `'undolevels' 'ul' number
+  (default 100, 1000 for Unix, VMS and Win32)`, "Maximum number of changes
+  that can be undone. Since undo information is kept in memory, higher
+  numbers will cause more memory to be used. Nevertheless, a single change
+  can already use a large amount of memory." A bound in changes.
+- Emacs, `doc/lispref/text.texi` 1580-1604 (node Maintaining Undo): "garbage
+  collection trims them back to size limits you can set"; "size is counted
+  as the number of bytes occupied, which includes both saved text and other
+  data"; `undo-limit` "the soft limit ... The change group at which this
+  size is exceeded is the last one kept"; `undo-outer-limit`: "If at
+  garbage collection time the undo info for the current command exceeds
+  this limit, Emacs discards the info and displays a warning." A bound in
+  bytes, and a command too big to keep, as kilo's.
+
+**The Break its as the lessons have them**, each run on the project at its
+lesson (`./learn files`, make), on notes.txt, 10x44, with the driver above:
+
+- 08.01, the records applied first to last (`for (j = 0; j < s.numrec;
+  j++)` in editorUndo): Run it's keys and eight Ctrl-Z give the same
+  screens as unbroken. Enter's two records (U_INS(r+1), U_CHG(r)) and a
+  join's (U_CHG(r-1), U_DEL(r)) are of two rows and neither moves the
+  other, so either order puts them back: the design's "Enter leaves the
+  wrong rows" does not happen. At a key a step the one step whose records
+  are of one row is a character typed on the row under the last (U_INS(r),
+  then U_CHG(r)): Ctrl-Z there stops kilo, killed by signal 5 (SIGTRAP) on
+  this Mac (macOS's crash report: EXC_BREAKPOINT, libsystem_malloc's "BUG
+  IN CLIENT OF LIBMALLOC: not an allocated block", in undoPut), `./learn
+  run` exiting 251, the terminal left in raw mode
+  (`reset` puts it right, in bash and zsh). A build with
+  `-fsanitize=address` says `attempting double-free` in undoPut (its
+  `free(row->chars)`), of 2 bytes editorFreeRow freed from editorDelRow
+  the moment before.
+- 08.02, the redo stack kept after a new edit: Run it's keys, Ctrl-Z
+  (`and what each line was`), X (`andX what ...`), Ctrl-R: `andwhat each
+  line was`, the X and the space gone, nothing said; Ctrl-Z brings
+  `andX what ...` back.
+- 08.03, other keys not ending a step: taking `kind == UNDO_OTHER ||` out of
+  undoKey changes nothing for "type, arrow, type": the arrow is still of
+  another kind than the typing, and the typing after it of another kind
+  than the arrow. The nearest one-line change is `if (kind == UNDO_OTHER)
+  return;` after `int kind = undoKind(c);`: Down, `so `, Down, Left three
+  times, `and `, Ctrl-Z: both runs go at once, the cursor at 2,1; a second
+  Ctrl-Z says `Nothing to undo`.
+- 08.04, the saved point kept after an edit below it: a letter typed after
+  the Ctrl-Z shows "(modified)", the core's count, not a clean file (the
+  design expected clean there). It takes an undo or redo back to the save's
+  height: Down, `so `, Ctrl-S (`51 bytes written on disk`), Ctrl-Z, `if `,
+  Ctrl-Z, Ctrl-R: `if what each line was` and `notes.txt - 3 lines`, no
+  "(modified)"; Ctrl-Q quits at once, and the file holds `so what each
+  line was`.
+
+**Screens the lessons show beyond the ones above** (same terminal and
+file): at 08.03, after Run it's three Ctrl-Z, `so `, Down, Left three
+times, `and ` gives `so what each line was` and `and before it changed`;
+Ctrl-Z, `before it changed` again, cursor 3,1; Ctrl-Z, `what each line
+was`, cursor 2,1; Ctrl-R, cursor 2,4; Ctrl-R, cursor 3,5. At 08.04, a
+letter typed and deleted (`a`, Backspace) leaves the text the file and
+the status bar "(modified)"; two Ctrl-Z, and it is not.
+
 ## 09 An API, and Lua on top of it (an extension)
 
 Module 09 (`lessons/09-api-and-lua/`, `optional: true`, started 2026-11-24
@@ -2476,7 +2543,7 @@ them). `make clean` removes Lua's build too (from 09.01).
 | script.h | 43 | the limits, all of them; what kilo.c calls (scriptStart, scriptEval, scriptCall, scriptUnref, scriptRun) and what script.c calls in kilo.c (editorMessage, editorScriptReturned, disableRawMode) |
 | script.c | 743 | everything that includes lua.h: the state, the protected way in, errors, print, the dispatcher, references, the Lua on top, the count hook, the allocator, the panic function, kilo -l |
 | api.h | 79 | the API's types (ApiType, ApiString, ApiValue, ApiError, ApiFn, ApiFunc) and the table's declaration |
-| kilo.c | 3647 | the hooks below, and the section "The API" above main(): the 24 functions, the table, --api-info, the prompt, keys by name, autocommands, highlights, the status line, kilo -l. No Lua header. |
+| kilo.c | 3647 | the hooks below, and the section "The API" above main(): the 25 functions, the table, --api-info, the prompt, keys by name, autocommands, highlights, the status line, kilo -l. No Lua header. |
 | Makefile | | from 09.01 `kilo.c script.c` and Lua's library |
 
 The project at each lesson (lines, `./learn files kilo --at 09.LL`):
@@ -2505,7 +2572,7 @@ The coordinator's revised list, in its order (09.10 later). Regions
 | 09.03 | kilo.c: set_lines: check everything first; set_lines: the change; set_lines: the cursor afterwards; set_cursor; save; the cursor after a script |
 | 09.04 | kilo.c: a name to a key; set_keymap; del_keymap; feed_key; a mapped key; script.c: call a function kept as a reference; the Lua on top |
 | 09.05 | kilo.c: KeyPress; create_autocmd; del_autocmd; an event's functions; TextChanged and CursorMoved |
-| 09.06 | kilo.c: create_namespace; add_highlight; clear_namespace; draw the highlights; the status bar |
+| 09.06 | kilo.c: create_namespace; add_highlight; clear_namespace; draw the highlights; the status bar; set_view |
 | 09.07 | kilo.c: leave, once back from the script; input; open; quit |
 | 09.08 | script.c: count the memory; a panic; back from a script that went wrong; Ctrl-C stops a script; no os.exit in the editor |
 | 09.09 | kilo.c: with no screen (in editorMessage); the editor with no screen; script.c: run a script with no screen |
@@ -2629,6 +2696,7 @@ typing before it go together).
     set_statusline(text: string)  -- the status bar's left part; "" for the editor's own
     get_view() -> position  -- the file's {row, col} at the screen's top left
     get_size() -> position  -- the {rows, cols} of text the screen shows
+    set_view(pos: position)  -- put the file's {row, col} at the screen's top left
     input(prompt: string) -> string  -- a line typed at the prompt; nil for Escape
     open(path: string)  -- edit the file at path in place of this one
     quit(force: boolean)  -- leave the editor; force: even with unsaved changes
@@ -2660,6 +2728,7 @@ when the caller is pcall, a C function):
 | create_autocmd, del_autocmd | `unknown event "NAME"`; `too many autocommands (64)`; `no autocommand ID` |
 | create_namespace | `too many namespaces (64)`; `not enough memory` |
 | add_highlight, clear_namespace | `no namespace N`; `row R is outside the file (it has N rows)`; `[S, E) is not a range of bytes`; `unknown style "X": red, green, yellow, blue, magenta, cyan, bold, underline or reverse`; `too many highlights (10000)` |
+| set_view | `row R is outside the file (it has N rows)`; `column C is negative`; `column C is past every row (the longest has N bytes)` |
 | input | `no keyboard` (kilo -l) |
 | open | `a save is going on`; `unsaved changes`; `"X" is not a file name` (empty, or with a NUL); `cannot read PATH: REASON` |
 | quit | `unsaved changes (quit(true) leaves anyway)` |
@@ -3100,6 +3169,15 @@ On the Mac (Apple M-series, Apple clang 21):
   follows only as little as shows it), and putting the match's row at the
   top of the screen as the core's find does. A `set_view(position)` would
   close it.
+- **set_view** was added to 09.06 after this was written (the pair of
+  get_view): with it a script puts back the exact view on Escape and puts
+  a match's row at the top of the screen. The cursor, if the new view
+  would leave it off the screen, is moved into it as little as that takes:
+  to the view's first or last row, its first or last column, cut to its
+  row; and if its row ends left of the view's column, the view's column
+  goes back to that end (the core's rule for an arrow onto a short row).
+  Errors: a row not in the file (0 in an empty file), a negative column, a
+  column past every row. Tested in 0906; in the fuzz.
 
 ### The notable editors
 
@@ -3280,7 +3358,7 @@ URLs are `https://raw.githubusercontent.com/neovim/neovim/v0.12.6/PATH`.
 
 | editor | extension language | where it runs | what the API is |
 |---|---|---|---|
-| kilo (09) | Lua 5.4 | in the editor's process | 24 C functions in a table, given to Lua by one dispatcher |
+| kilo (09) | Lua 5.4 | in the editor's process | 25 C functions in a table, given to Lua by one dispatcher |
 | Neovim | Lua 5.1 (LuaJIT), Vimscript; any, as a remote plugin | Lua and Vimscript in the editor's process; remote plugins and the UI in other processes | C functions with typed Objects, a generated table serving Lua, msgpack-RPC and --api-info |
 | Vim | Vimscript | in the editor's process (not read in a source) | the language's functions and commands |
 | Emacs | Emacs Lisp | in the editor's process, by its own interpreter | a Lisp: most of the editor is Lisp, C primitives by DEFUN |
@@ -3296,6 +3374,358 @@ source and the open issue, not run; which of TextChanged and CursorMoved
 Neovim checks first; Vim's process model (no Vim source read for it); VS
 Code's pages do not say "separate process from the window" in those words;
 Zed's github.wit was not read.
+
+#### The research for module 09 (another agent's, read 2026-11-24 and 25)
+
+It used Neovim v0.12.6 (779c36969e31080503be2dfccbcc3f999e289606), Vim
+v9.2.1400, GNU Emacs emacs-31.1, Zed v0.233.10, vscode-docs at a6b59615,
+Helix 25.07.1, Redis 8.12.0 (and 7.0.0 for one header), antirez/kilo at
+323d93b and the Lua 5.4 manual revised for 5.4.9. Where it and the answers
+above differ, both are kept:
+
+- Ctrl-C on a busy Lua loop: it could not confirm how Neovim stops one (no
+  lua_sethook in src/nvim/lua/*.c); above, issue #6800 ("Lua: interrupt /
+  ctrl-c / cancel Lua code") was found open, saying such a loop "can't be
+  interrupted".
+- VS Code: it confirms the Extension Host is a process ("we run extensions
+  in an Extension Host process", overview.md line 125), which above is
+  listed as not confirmed in those words.
+- Zed: read at v1.29.3 above and v0.233.10 here (both find the newest WIT
+  at since_v0.8.0); the table above says "a sandbox", a word this research
+  found nowhere in Zed's docs (it confirms wasmtime with WASI, a preopened
+  work directory and capabilities).
+- Vim: v9.2.1398 above, v9.2.1400 here; the same usr_41.txt sentence.
+
+Every claim below was read in the named file at the named tag or commit (fetched 2026-11-24/25).
+Line numbers are for that tag. Quotes are verbatim, trimmed with "...".
+
+#### Sources and tags
+
+| Project | Tag / commit | Raw base URL |
+|---|---|---|
+| Neovim | `v0.12.6` (latest stable; the `stable` tag points to the same commit 779c36969e31080503be2dfccbcc3f999e289606) | https://raw.githubusercontent.com/neovim/neovim/v0.12.6/ |
+| Vim | `v9.2.1400` (commit 358544f83b34742ef1eae02a1c0a4f891f51fb2c) | https://raw.githubusercontent.com/vim/vim/v9.2.1400/ |
+| GNU Emacs | `emacs-31.1` (commit 1f9518d22ae0fe4490ea9761ea7d39fbb970a890), GitHub mirror emacs-mirror/emacs | https://raw.githubusercontent.com/emacs-mirror/emacs/emacs-31.1/ |
+| Zed | `v0.233.10` (commit 350f33871e84d5ed83a403523e9490b9bf014a94) | https://raw.githubusercontent.com/zed-industries/zed/v0.233.10/ |
+| VS Code docs | microsoft/vscode-docs `main` at a6b59615f6457541632681ab396493e933b585ae | https://raw.githubusercontent.com/microsoft/vscode-docs/a6b59615f6457541632681ab396493e933b585ae/ |
+| Helix | `25.07.1` (latest release); wiki FAQ at wiki commit 523b4e4e9d402bb781db58ab9a781cca5da4cfbc (2026-11-13) | https://github.com/helix-editor/helix.wiki.git |
+| Redis | `8.12.0` (commit 215f2e33da9dfb2e0783cdd3a7acd29f8f6e9dd2); `7.0.0` (d375595d5e3ae2e5c29e6c00a2dc3d60578fd9fc) for one copyright header | https://raw.githubusercontent.com/redis/redis/8.12.0/ |
+| kilo | antirez/kilo `master` at 323d93b29bd89a2cb446de90c4ed4fea1764176e | https://raw.githubusercontent.com/antirez/kilo/323d93b29bd89a2cb446de90c4ed4fea1764176e/ |
+| Lua 5.4 manual | lua.org, page footer "revised for Lua 5.4.9" | https://www.lua.org/manual/5.4/manual.html |
+
+Below, "N:" means the Neovim base URL above plus the path.
+
+---
+
+#### Neovim (v0.12.6)
+
+##### 1. nvim_buf_get_lines / nvim_buf_set_lines (src/nvim/api/buffer.c)
+
+URL: N:src/nvim/api/buffer.c
+
+- Signatures (lines 262-269, 328-330). `channel_id`, `arena`, `lstate`, `err` are filled by the generated wrapper, not by the caller:
+  - `ArrayOf(String) nvim_buf_get_lines(uint64_t channel_id, Buffer buf, Integer start, Integer end, Boolean strict_indexing, Arena *arena, lua_State *lstate, Error *err)`
+  - `void nvim_buf_set_lines(uint64_t channel_id, Buffer buf, Integer start, Integer end, Boolean strict_indexing, ArrayOf(String) replacement, Arena *arena, Error *err)`
+  - Both carry `FUNC_API_SINCE(1)`.
+- Indexing rule (doc comment, lines 309-317):
+  > "Indexing is zero-based, end-exclusive. Negative indices are interpreted as length+1+index: -1 refers to the index past the end. So to change or delete the last line use start=-2 and end=-1."
+  > "To insert lines at a given index, set `start` and `end` to the same index. To delete a range of lines, set `replacement` to an empty array."
+  > "Out-of-bounds indices are clamped to the nearest valid value, unless `strict_indexing` is set."
+- The strict check (lines 344-349): `VALIDATE((!strict_indexing || !oob), "%s", "Index out of bounds", {` and `VALIDATE((start <= end), "%s", "'start' is higher than 'end'", {`.
+- Clamping and negative indexes: `normalize_index()` in src/nvim/api/private/helpers.c line 450: `// A negative index counts from the bottom.` ... `// Convert the index to a 1-based line number.`
+- Newline refused. buffer.c lines 351-352: `bool disallow_nl = (channel_id != VIML_INTERNAL_CALL);` / `if (!check_string_array(replacement, "replacement string", disallow_nl, err)) {`. The check is `check_string_array()` in src/nvim/api/private/validate.c line 85 (URL N:src/nvim/api/private/validate.c):
+  > `// Disallow newlines in the middle of the line.`
+  > `VALIDATE(!memchr(l.data, NL, l.size), "'%s' item contains newlines", name, {`
+  So the message is `'replacement string' item contains newlines`. Calls from Vimscript (`VIML_INTERNAL_CALL`) are exempt.
+- Before the change (lines 371-379): modifiable check, then undo save:
+  > `api_set_error(err, kErrorTypeException, "Buffer is not 'modifiable'");`
+  > `if (u_save_buf(b, (linenr_T)(start - 1), (linenr_T)end) == FAIL) {`
+  > `api_set_error(err, kErrorTypeException, "Failed to save undo information");`
+- The change itself uses `ml_delete_buf`, `ml_replace_buf`, `ml_append_buf` (lines 388, 410, 426).
+- After the change (lines 436-453):
+  > `// Adjust marks. Invalidate any which lie in the`
+  > `mark_adjust_buf(b, (linenr_T)start, (linenr_T)(end - 1), adjust, (linenr_T)extra,`
+  > `extmark_splice(b, (int)start - 1, 0, (int)(end - start), 0,`
+  > `changed_lines(b, (linenr_T)start, 0, (linenr_T)end, (linenr_T)extra, true);`
+  then `fix_cursor()` for every window showing the buffer (line 457).
+- Changed tick: `changed_lines()` (src/nvim/change.c line 571) calls `changed_common()` (line 593), which calls `changed(buf)` (line 240); `changed()` (line 112) ends with `buf_inc_changedtick(buf);` (line 143). URL: N:src/nvim/change.c
+- nvim_buf_set_text is separate, not built on nvim_buf_set_lines: it has its own body (`void nvim_buf_set_text(...)`, line 488) with its own `u_save_buf` (line 610), `mark_adjust_buf` (673), `extmark_splice` (682) and `changed_lines` (687). Its doc says (lines 466-468, 477): "This is recommended over |nvim_buf_set_lines()| when only modifying parts of a line, as extmarks will be preserved on non-modified parts of the touched lines." and "@note Prefer |nvim_buf_set_lines()| (for performance) to add or delete entire lines." Neither function calls the other.
+
+##### 2. The types (src/nvim/api/private/defs.h, types_defs.h, helpers.c)
+
+URL: N:src/nvim/api/private/defs.h
+
+- `Error` (lines 66-69): `typedef struct { ErrorType type; char *msg; } Error;` with `kErrorTypeNone = -1, kErrorTypeException, kErrorTypeValidation`. `#define ERROR_SET(e) ((e)->type != kErrorTypeNone)`.
+- `typedef int64_t Integer;` (line 72); `typedef bool Boolean;`; `typedef double Float;`.
+- `String` (lines 81-84): `typedef struct { char *data; size_t size; } String;` (length-counted, not NUL-terminated by type).
+- `typedef kvec_t(Object) Array;` (line 91); `typedef kvec_t(KeyValuePair) Dict;`.
+- `Object` (line 125): `struct object { ObjectType type; union { Boolean boolean; Integer integer; Float floating; String string; Array array; Dict dict; LuaRef luaref; } data; };` Types: `kObjectTypeNil ... kObjectTypeLuaRef, kObjectTypeBuffer, kObjectTypeWindow, kObjectTypeTabpage`.
+- `ArrayOf(...)` is only a marker for the generator: `#define ArrayOf(...) Array`.
+- `LuaRef` is in src/nvim/types_defs.h line 27 (URL N:src/nvim/types_defs.h): `typedef int LuaRef;` with the comment "Opaque handle to a lua value. Must be free with `api_free_luaref` when not needed anymore! LUA_NOREF represents missing reference".
+- Reporting an error: `api_set_error()` in src/nvim/api/private/helpers.c line 686 (URL N:src/nvim/api/private/helpers.c): `void api_set_error(Error *err, ErrorType errType, const char *format, ...)`; it formats with `vsnprintf` into `err->msg = xmalloc(bufsize);` ("Limit error message to 1 MB.") and sets `err->type = errType;`. The API function returns normally; the caller checks `ERROR_SET`.
+- api.txt "Basic types" (lines 102-111) gives the same mapping: "Integer (signed 64-bit integer)  int64_t", "String  {char* data, size_t size} struct", "Array  kvec", "Object  any of the above".
+
+##### 3. The generator (src/gen/gen_api_dispatch.lua)
+
+URL: N:src/gen/gen_api_dispatch.lua (the old path src/nvim/generators/gen_api_dispatch.lua does not exist at v0.12.6; fetch returned 404).
+
+- Reads: the API headers given on the command line (lines 170-178, `local input = assert(io.open(full_path, 'rb'))`, parsed with `c_grammar`). src/nvim/CMakeLists.txt line 370: `file(GLOB API_HEADERS CONFIGURE_DEPENDS api/*.h)`, passed to the generator (lines 602-614).
+- Writes (lines 9-16):
+  > `-- output h file with generated dispatch functions (dispatch_wrappers.generated.h)`
+  > `-- output file with exported functions metadata`
+  > `-- output mpack file with raw metadata, for use by gen_eval.lua (funcs_metadata.mpack)`
+  > `local lua_c_bindings_outputf = arg[4] -- lua_api_c_bindings.generated.c`
+- Dispatch wrappers check argument count and types (lines 438-443, 482-484): `"Wrong number of arguments: expecting ' .. #fn.parameters .. ' but got %zu"` and `"Wrong type for argument ' .. j .. ' when calling ' .. fn.name .. ', expecting ' .. param[1] .. '"`, both via `api_set_error(error, kErrorTypeException, ...)`.
+- The RPC table: line 666 `output:write('const MsgpackRpcRequestHandler method_handlers[] = {\n')`, looked up by a generated hash `msgpack_rpc_get_handler_for` (line 662).
+- The Lua table: lines 957-975 generate `void nlua_add_api_functions(lua_State *lstate)` that does `lua_pushcfunction(lstate, &%s); lua_setfield(lstate, -2, "%s");` per function and ends `lua_setfield(lstate, -2, "api");`. Each Lua binding is named `nlua_api_<name>` (line 726).
+- Metadata for `--api-info`: the exported metadata mpack (`EXPORTED_FUNCS_METADATA`) feeds `gen_api_metadata.lua`, which writes `api/private/api_metadata.generated.h` (CMakeLists.txt lines 299, 312, 333, 623-625).
+- One parse, three consumers. api.txt `*api-metadata*` (lines 173-176): "The Nvim C API is automatically exposed to RPC by the build system, which parses headers in src/nvim/api/* and generates dispatch-functions mapping RPC API method names to public C API functions, converting/validating arguments and return values." api.txt line 9: "Nvim exposes a powerful API that can be used by plugins and external processes via |RPC|, |Lua| and Vimscript (|eval-api|)." starting.txt line 379: "--api-info      Print msgpack-encoded |api-metadata| and exit."
+
+##### 4. Lua embedding (src/nvim/lua/executor.c, converter.c)
+
+URLs: N:src/nvim/lua/executor.c, N:src/nvim/lua/converter.c, N:runtime/doc/lua.txt, N:cmake.deps/deps.txt
+
+- Which Lua. lua.txt line 14: "The Lua 5.1 script engine is builtin and always available." Line 31: "Lua 5.1 is the permanent interface for Nvim Lua." `*lua-luajit*` lines 37-38: "While Nvim officially only requires Lua 5.1 support, it should be built with LuaJIT or a compatible fork on supported platforms for performance reasons." cmake.deps/deps.txt line 4: `LUAJIT_URL https://github.com/luajit/luajit/archive/fbb36bb6....tar.gz`.
+- State creation: `void nlua_init(char **argv, int argc, int lua_arg0)` (line 878): `lua_State *lstate = luaL_newstate();` then `luaL_openlibs(lstate);` then `if (!nlua_state_init(lstate)) {` (lines 886-892); on failure `"E970: Failed to initialize Lua interpreter\n"` and `os_exit(1)`. Then `global_lstate = lstate;`.
+- vim.api filled: `static bool nlua_state_init(lua_State *const lstate)` (line 790): `// vim` `lua_newtable(lstate);` `// vim.api` `nlua_add_api_functions(lstate);` (lines 810-814). `nlua_add_api_functions` is the generated function from finding 3.
+- Calling a Lua function from C by reference: `Object nlua_call_ref(LuaRef ref, const char *name, Array args, LuaRetMode mode, Arena *arena, Error *err)` (line 1637), which calls `nlua_call_ref_ctx` (line 1648): `nlua_pushref(lstate, ref);` pushes args with `nlua_push_Object`, then `} else if (nlua_pcall(lstate, nargs, mode_ret(mode))) {` and on error `api_set_error(err, kErrorTypeException, "Lua: %.*s", (int)len, errstr);` or, with no `err`, `nlua_error(lstate, _("Lua callback: %.*s"));`.
+- Error catching: `int nlua_pcall(lua_State *lstate, int nargs, int nresults)` (line 176), doc "Like lua_pcall, but use debug.traceback as errfunc." It does `lua_getglobal(lstate, "debug"); lua_getfield(lstate, -1, "traceback");` then `lua_pcall(lstate, nargs, nresults, -2 - nargs);`.
+- converter.c in one line: converts between Lua values and API `Object`s / Vimscript `typval_T` (`void nlua_push_Object(...)` line 740, "Convert given Object to Lua value"; `Object nlua_pop_Object(...)` line 1058, "Convert Lua table to object"; also `nlua_push_typval` / `nlua_pop_typval`).
+
+##### 5. LuaRef: keeping and releasing a Lua function
+
+URL: N:src/nvim/lua/executor.c, N:src/nvim/lua/converter.c
+
+- A Lua function argument becomes a LuaRef in converter.c line 1215: `LuaRef nlua_pop_LuaRef(lua_State *const lstate, Arena *arena, Error *err)` -> `LuaRef rv = nlua_ref_global(lstate, -1);`.
+- Kept: executor.c line 1362 `LuaRef nlua_ref(lua_State *lstate, nlua_ref_state_t *ref_state, int index)`, doc "add the value to the registry": `lua_pushvalue(lstate, index); LuaRef ref = luaL_ref(lstate, LUA_REGISTRYINDEX);` and `ref_state->ref_count++;`.
+- Pushed back for a call: `void nlua_pushref(lua_State *lstate, LuaRef ref)` (line 1412): `lua_rawgeti(lstate, LUA_REGISTRYINDEX, ref);`.
+- Released: `void api_free_luaref(LuaRef ref)` (line 1406) -> `nlua_unref_global(global_lstate, ref);` -> `nlua_unref` (line 1387, "remove the value from the registry"): `luaL_unref(lstate, LUA_REGISTRYINDEX, ref);`. Copy: `LuaRef api_new_luaref(LuaRef original_ref)` (line 1421), "It does not copy the value, it creates a new ref to the lua object."
+
+##### 6. vim.keymap.set is Lua over nvim_set_keymap / nvim_buf_set_keymap
+
+URL: N:runtime/lua/vim/keymap.lua
+
+- Line 57: `function keymap.set(modes, lhs, rhs, opts)`.
+- Lines 96-103:
+  > `if buf then for _, m in ipairs(modes) do vim.api.nvim_buf_set_keymap(buf, m, lhs, rhs, opts) end`
+  > `else for _, m in ipairs(modes) do vim.api.nvim_set_keymap(m, lhs, rhs, opts) end`
+- Line 4 (doc): "Same as |nvim_set_keymap()| {opts}, except:".
+
+##### 7. Autocommands
+
+URLs: N:runtime/doc/api.txt, N:runtime/doc/autocmd.txt
+
+- api.txt line 2105: `nvim_create_autocmd({event}, {opts})` "Creates an |autocommand| event handler, defined by `callback` (Lua function or Vimscript function name string) or `command` (Ex command string)." Option (lines 2160-2161): "nested (`boolean?`, default: false) Run nested autocommands |autocmd-nested|."
+- autocmd.txt `*autocmd-nested*` (lines 1806-1812): "By default, autocommands do not nest. For example, if you use ":e" or ":w" in an autocommand, Vim does not execute the BufRead and BufWrite autocommands for those commands. If you do want this, use the "++nested" flag ..." and "The nesting is limited to 10 levels to get out of recursive loops."
+- Events exist in autocmd.txt: `*BufRead* *BufReadPost*` (line 314, "after reading the file into the buffer, before processing modelines"), `*BufWrite* *BufWritePre*` (385, "Before writing the whole buffer to a file."), `*BufWritePost*` (400, "After writing the whole buffer to a file"), `*CursorMoved*` (581, "After the cursor was moved in Normal or Visual mode or to another window."), `*TextChanged*` (1247, "After a change was made to the text in the current buffer in Normal mode. That is after |b:changedtick| has changed").
+
+##### 8. b:changedtick and nvim_buf_get_changedtick
+
+- runtime/doc/vimeval.txt line 1697 (URL N:runtime/doc/vimeval.txt): "b:changedtick	The total number of changes to the current buffer. It is incremented for each change. An undo command is also a change in this case. Resetting 'modified' when writing the buffer is also counted."
+- buffer.c line 854: `Integer nvim_buf_get_changedtick(Buffer buf, Error *err)` `FUNC_API_SINCE(2)`, "@return `b:changedtick` value.", body `return buf_get_changedtick(b);`. api.txt line 2506: "Gets a changed tick of a buffer", "Since: 0.2.0".
+- Where it is bumped: see finding 1 (`changed()` -> `buf_inc_changedtick`).
+
+##### 9. api-indexing
+
+URL: N:runtime/doc/api.txt, lines 136-155
+
+- "Most of the API uses 0-based indices, and ranges are end-exclusive. For the end of a range, -1 denotes the last line/column."
+- "Exception: the following API functions use "mark-like" indexing (1-based lines, 0-based columns):" `nvim_get_mark()`, `nvim_buf_get_mark()`, `nvim_buf_set_mark()`, `nvim_win_get_cursor()`, `nvim_win_set_cursor()`.
+- A second exception: "the following API functions use |extmarks| indexing (0-based indices, end-inclusive):" `nvim_buf_del_extmark()`, `nvim_buf_get_extmark_by_id()`, `nvim_buf_get_extmarks()`, `nvim_buf_set_extmark()`.
+- The words "(1,0)-indexed" appear in the mark function docs, e.g. api.txt line 1012 (`nvim_get_mark`): "Marks are (1,0)-indexed. |api-indexing|".
+- Note for lesson writers: the doc sentence "-1 denotes the last line/column" and the buffer.c comment "-1 refers to the index past the end" (finding 1) describe the same end-exclusive range end from two angles; quote the buffer.c one for nvim_buf_set_lines.
+
+##### 10. vim.on_key
+
+URLs: N:runtime/doc/lua.txt, N:runtime/doc/news-0.11.txt
+
+- lua.txt line 1372: `vim.on_key({fn}, {ns_id}, {opts})` "Adds Lua function {fn} with namespace id {ns_id} as a listener to every, yes every, input key." {fn} is "invoked for every input key, after mappings have been applied but before further processing."
+- Discarding: lua.txt line 1393: "If {fn} returns an empty string, {key} is discarded/ignored".
+- Since 0.11: news-0.11.txt line 248, under NEW FEATURES > EVENTS: "|vim.on_key()| callbacks can consume the key by returning an empty string."
+
+##### 11. nvim_feedkeys modes
+
+- api.txt line 783: `nvim_feedkeys({keys}, {mode}, {escape_ks})` "Sends input-keys to Nvim, subject to various quirks controlled by `mode` flags. This is a blocking call, unlike |nvim_input()|." Parameter: "{mode} (`string`) behavior flags, see |feedkeys()|".
+- runtime/doc/vimfn.txt lines 2279-2281 (URL N:runtime/doc/vimfn.txt): "'m'	Remap keys. This is default. If {mode} is absent, keys are remapped." and "'n'	Do not remap keys." Other flags include 't' (as if typed), 'i' (insert instead of append), 'x' (execute until typeahead is empty).
+
+##### 12. Extmarks and namespaces
+
+URLs: N:runtime/doc/api.txt, N:src/nvim/marktree.c, N:src/nvim/extmark.c
+
+- api.txt line 462: "Extended marks (extmarks) represent buffer annotations that track text changes in the buffer."
+- `nvim_create_namespace({name})` (line 3350): "Creates a new namespace or gets an existing one." "Namespaces are used for buffer highlights and virtual text".
+- `nvim_buf_set_extmark({buf}, {ns_id}, {line}, {col}, {opts})` (line 3199): "Creates or updates an |extmark|." "it is possible to use this to highlight a range of text, and also to associate virtual text to the mark."
+- `nvim_buf_clear_namespace({buf}, {ns_id}, {line_start}, {line_end})` (line 3071): "Clears |namespace|d objects (highlights, |extmarks|, virtual text) from a region." "To clear the namespace in the entire buffer, specify line_start=0 and line_end=-1."
+- Moving with edits: src/nvim/extmark.c line 7: "Marks are moved by calls to extmark_splice."; `extmark_splice` (line 531) calls `marktree_splice(buf->b_marktree, ...)` (line 578). nvim_buf_set_lines calls `extmark_splice` (finding 1).
+- marktree.c lines 1-5: "Tree data structure for storing marks at (row, col) positions and updating them to arbitrary text changes. Derivative work of kbtree in klib ... Also inspired by the design of the marker tree data structure of the Atom editor".
+
+##### 13. vim.ui.input vs vim.fn.input
+
+- lua.txt line 5119: `vim.ui.input({opts}, {on_confirm})` "Prompts the user for input, allowing arbitrary (potentially asynchronous) work until `on_confirm`." Example passes `function(input) ... end` as the callback.
+- vimfn.txt line 5106 (`input()`): "Prompts the user to enter text on the command-line, and returns the text as a String." api.txt `*api-fast*` (lines 158-161): "If the editor is waiting for user input in a "modal" fashion (e.g. an |input()| prompt), a deferred request will block."
+
+##### 14. Interrupting running Lua with Ctrl-C (partial)
+
+- No count hook in Neovim's Lua glue at v0.12.6: a grep for `lua_sethook`, `sethook` and `LUA_MASK` over every src/nvim/lua/*.c file (api_wrappers.c, base64.c, converter.c, executor.c, secure.c, spell.c, stdlib.c, treesitter.c, xdiff.c) finds nothing.
+- What does exist: `static int nlua_wait(lua_State *lstate)` (executor.c line 468, `vim.wait`) polls `got_int` while waiting: `got_int || (is_function ? nlua_wait_condition(...)` (line 536) and `} else if (got_int) { got_int = false; vgetc(); lua_pushboolean(lstate, 0);` (lines 557-560). lua.txt line 900 (`vim.wait` return): "On interrupt: `false, -2`". lua.txt line 4628 says `vim.regex` "Does not check for interrupts (CTRL-C)".
+- Contrast for the lesson (Redis, finding 24): Redis does install a count hook, src/script_lua.c line 1670: `lua_sethook(lua,luaMaskCountHook,LUA_MASKCOUNT,100000);`, and the hook (line 1597) handles `SCRIPT KILL`: "Lua script killed by user with SCRIPT KILL."
+- How Neovim stops an arbitrary busy Lua loop on Ctrl-C: not confirmed (see list).
+
+##### 15. nvim -l, --headless, --embed; the TUI as an RPC client
+
+URLs: N:runtime/doc/starting.txt, N:runtime/doc/tui.txt, N:runtime/doc/news-0.9.txt, N:runtime/doc/vim_diff.txt
+
+- `-l` (starting.txt line 218): "-l {script} [args]  Executes Lua {script} non-interactively (no UI) with optional [args] after processing any preceding Nvim |cli-arguments|, then exits. Exits 1 on Lua error." Args go to `_G.arg`, "The {script} name is stored at `_G.arg[0]`." lua.txt line 28: `nvim -l foo.lua [args...]`.
+- `--headless` (line 406): "Start without UI, and do not wait for `nvim_ui_attach`. The builtin TUI is not used, so stdio works as an arbitrary communication channel."
+- `--embed` (line 382): "Use stdin/stdout as a msgpack-RPC channel, so applications can embed and control Nvim via the RPC |API|. If the channel is closed (except by |:detach|), Nvim exits." "Non-UI embedders must pass |--headless|".
+- TUI as a client: tui.txt lines 18-20: "Nvim has a client-server architecture: by default when you run `nvim`, this starts the builtin UI client, which starts a `nvim --embed` server (child) process that the UI client connects to." vim_diff.txt line 283: "The Nvim UI is "decoupled" from the core editor: all UIs, including the builtin |TUI| are just plugins that connect to a Nvim server (via |--server| or |--embed|)."
+- Since 0.9: news-0.9.txt line 203 (CHANGED FEATURES): "The |TUI| is changed to run in a separate process (previously, a separate thread was used)."
+
+##### 16. Event loop, vim.uv, timers, LSP client in Lua
+
+- libuv: vim_diff.txt line 293: "Platform and I/O facilities are built upon libuv." luvref.txt lines 7-8 (N:runtime/doc/luvref.txt): "Lua bindings for the LibUV library which is used for Nvim's event-loop and is accessible from Lua via |vim.uv|".
+- vim.uv / vim.loop: lua.txt line 473: "`vim.uv` exposes the "luv" Lua bindings for the libUV library that Nvim uses for networking, filesystem, and process management". deprecated.txt line 165 (N:runtime/doc/deprecated.txt): "*vim.loop*  Use |vim.uv| instead." lua.txt `*E5560*`: "It is an error to directly invoke `vim.api` functions (except |api-fast|) in `vim.uv` callbacks."
+- Timers: lua.txt line 1276: `vim.defer_fn({fn}, {timeout})` "Defers calling {fn} until {timeout} ms passes." "Note: The {fn} is |schedule|d automatically, so API functions are safe to call." Returns "(`uv.uv_timer_t`) timer luv timer object".
+- LSP in Lua: lsp.txt lines 9-10 (N:runtime/doc/lsp.txt): "Nvim supports the Language Server Protocol (LSP), which means it acts as a client to LSP servers and includes a Lua framework `vim.lsp`". The client code is a Lua file in the runtime: N:runtime/lua/vim/lsp/client.lua (HTTP 200 at v0.12.6).
+
+##### 17. init.lua and initialization order
+
+URL: N:runtime/doc/starting.txt, `*initialization*` line 432
+
+- Step 3 (line 447): "Buffers are created for all files (but not loaded yet)."
+- Step 8 (line 462): "Load user config (execute Ex commands from files, environment, ...)." Location (lines 467-472): "It can be Vimscript ("init.vim") or Lua ("init.lua"), but not both." "Unix ~/.config/nvim/init.vim (or init.lua)", "$XDG_CONFIG_HOME/nvim/init.vim (or init.lua)".
+- Step 18 (line 560): "Buffers for all windows will be loaded, without triggering |BufAdd|." So init.lua (step 8) runs before the files named on the command line are read (step 18). Step 19 runs `-c` commands and then `VimEnter`.
+
+##### 18. Does a plugin's os.exit() quit Neovim?
+
+- Not confirmed. No Neovim doc at v0.12.6 states it: a grep for `os.exit` over runtime/doc/*.txt finds only a luv example in luvref.txt line 1256.
+
+---
+
+#### Other editors
+
+##### 19. Vim (v9.2.1400)
+
+- Vimscript: runtime/doc/usr_41.txt lines 7-10 (URL https://raw.githubusercontent.com/vim/vim/v9.2.1400/runtime/doc/usr_41.txt): "Write a Vim script" / "The Vim script language is used for the startup vimrc file, syntax files, and many other things." Line 62: "Vim script comes in two flavors: legacy and |Vim9|."
+- if_lua: runtime/doc/if_lua.txt (same base URL): "The Lua Interface to Vim" and line 20: "{only available when Vim was compiled with the |+lua| feature}". Line 529 mentions dynamic loading: "|:version| output then includes |+lua/dyn|."
+
+##### 20. Emacs (emacs-31.1)
+
+Base: https://raw.githubusercontent.com/emacs-mirror/emacs/emacs-31.1/
+
+- Mostly Lisp: doc/lispref/intro.texi lines 8-9: "Most of the GNU Emacs text editor is written in the programming language called Emacs Lisp." doc/emacs/emacs.texi lines 1629-1631: "Most of the editing commands in Emacs are written in Lisp; the few exceptions could have been written in Lisp but use C instead for efficiency."
+- Primitives in C by DEFUN: doc/lispref/internals.texi, node "Writing Emacs Primitives" (line 649): "Lisp primitives are Lisp functions implemented in C@. The details of interfacing the C function so that Lisp can call it are handled by a few C macros." The macro: src/lisp.h line 3434 `#define DEFUN(lname, fnname, sname, minargs, maxargs, intspec, doc)`. Example: src/editfns.c line 188 `DEFUN ("point", Fpoint, Spoint, 0, 0, 0, doc: /* Return value of point, as an integer.`
+- Hooks: doc/lispref/modes.texi node "Hooks" (line 39): "A @dfn{hook} is a variable where you can store a function or functions ... to be called on a particular occasion by an existing program."
+- Advice: doc/lispref/functions.texi node "Advising Functions" (line 1923): "The @dfn{advice} feature lets you add to the existing definition of a function, by @dfn{advising the function}." lisp/emacs-lisp/nadvice.el line 1: ";;; nadvice.el --- Light-weight advice primitives for Elisp functions".
+
+##### 21. Zed (v0.233.10) (partial)
+
+Base: https://raw.githubusercontent.com/zed-industries/zed/v0.233.10/
+
+- WebAssembly: crates/extension_api/README.md: "Zed extensions are packaged as WebAssembly files." and the dev target is "`wasm32-wasip2`". docs/src/extensions/developing-extensions.md line 71: "Procedural parts of extensions are written in Rust and compiled to WebAssembly."
+- WIT: crates/extension_api/wit/ holds versioned directories `since_v0.0.1` ... `since_v0.8.0`. crates/extension_api/src/extension_api.rs line 356-358: `wit_bindgen::generate!({ skip: ["init-extension"], path: "./wit/since_v0.8.0", });`. wit/since_v0.8.0/extension.wit line 3: `world extension {` with imports (`import process;`, `import http-client;`, `import github;`, `import nodejs;` ...) and exports such as `export language-server-command: func(...)`, `export run-slash-command: func(...)`, `export context-server-command: func(...)`, `export get-dap-binary: func(...)`.
+- What an extension may provide: developing-extensions.md line 7: "They can provide languages, themes, debuggers, snippets, and MCP servers." The "Extension Features" list adds Icon Themes. (Slash commands appear as WIT exports, not in that docs list.)
+- Confinement: the host runs the module with wasmtime in Zed's process: crates/extension_host/src/wasm_host.rs uses `wasmtime::Engine` / `wasmtime::Store::new(` and `fn build_wasi_ctx` (line 729), which gives file access only to the extension's own work dir: `ctx.preopened_dir(&path, ".", dir_perms, file_perms)?;` where `path` is `self.work_dir.join(manifest.id...)`. docs/src/extensions/capabilities.md: "The operations that Zed extensions are able to perform are governed by a capability system." (kinds shown: `process:exec`, `download_file`, `npm:install`). The word "sandbox" does not appear in these docs.
+
+##### 22. VS Code (vscode-docs a6b59615)
+
+- api/advanced-topics/extension-host.md: "The **Extension Host** is responsible for running extensions." Hosts: "local - A Node.js extension host running locally, on the same machine as the user interface", "web - A web extension host running in the browser", "remote - A Node.js extension host running remotely in a container or a remote location."
+- Why a separate process: api/extension-capabilities/overview.md line 125: "To ensure that extensions cannot interfere with the stability and performance of VS Code, and that we can continue to improve the DOM of VS Code without breaking existing extensions, we run extensions in an [Extension Host](/api/advanced-topics/extension-host) process and prevent direct access to the DOM."
+- Not a sandbox: docs/configure/extensions/extension-runtime-security.md line 14: "The extension host has the same permissions as {% data variables.product.prodname_vscode_shortname %} itself." (the template variable renders as the product name) and line 16: "an extension can read and write files on your machine, make network requests, run external processes, and modify workspace settings."
+
+##### 23. Helix (25.07.1; wiki FAQ)
+
+- No plugin system yet: wiki FAQ.asciidoc line 130 "How to write plugins / Is there a plugin system in place yet?" and line 207: "Extensions to the LSP spec should be implemented in language-specific plugins once the plugin system is available." The 25.07.1 book (book/src/SUMMARY.md) has no plugin chapter.
+- Planned: FAQ line 139: "As of February 2024, this is being worked on in https://github.com/helix-editor/helix/pull/8675". GitHub API for PR 8675: title "Add Steel as an optional plugin system", state "open", merged_at null (checked 2026-11-24). FAQ lines 132-134 (December 2022 status) mention "a typed list/ML-like implementation for scripting and a Rust based interface".
+- docs/vision.md at 25.07.1: "**Extensible**, within reason."
+
+##### 24. Redis and antirez
+
+- Lua embedded: Redis 8.12.0 README.md line 188: "**Programmability:** Upload and execute Lua scripts on the server." src/eval.c line 644: `void evalCommand(client *c) {`; line 177 `lua_State *lua = createLuaState();`.
+- Under deps/lua, version 5.1: deps/README.md line 7: "**lua** is Lua 5.1 with minor changes for security and additional libraries." Line 86: "We use Lua 5.1 and no upgrade is planned currently". deps/lua/src/lua.h lines 19-20: `#define LUA_VERSION "Lua 5.1"`, `#define LUA_RELEASE "Lua 5.1.5"`.
+- Count hook for script timeouts: src/script_lua.c line 1670 `lua_sethook(lua,luaMaskCountHook,LUA_MASKCOUNT,100000);` (see finding 14).
+- antirez wrote Redis: Redis 7.0.0 src/server.c lines 1-2 (https://raw.githubusercontent.com/redis/redis/7.0.0/src/server.c): "Copyright (c) 2009-2016, Salvatore Sanfilippo <antirez at gmail dot com>". (The 8.12.0 headers no longer carry the name.)
+- antirez wrote kilo: kilo README.md: "Kilo was written by Salvatore Sanfilippo aka antirez and is released under the BSD 2 clause license." kilo.c: "Copyright (C) 2016 Salvatore Sanfilippo <antirez at gmail dot com>". The README also says it was written "taking code from my other two projects, load81 and linenoise".
+
+##### 25. Lua 5.4 reference manual (https://www.lua.org/manual/5.4/manual.html, revised for 5.4.9)
+
+- `lua_pcall` (section 4.6 API list): "Calls a function (or a callable object) in protected mode." "if there is any error, lua_pcall catches it, pushes a single value on the stack (the error object), and returns an error code."
+- `luaL_ref`: "Creates and returns a reference, in the table at index t, for the object on the top of the stack (and pops the object)." "The function luaL_unref frees a reference."
+- `lua_sethook`: "Sets the debugging hook function." Count hook: "The count hook: is called after the interpreter executes every count instructions. This event only happens while Lua is executing a Lua function."
+- `lua_newstate (lua_Alloc f, void *ud)`: "Creates a new independent state and returns its main thread." "The argument f is the allocator function; Lua will do all memory allocation for this state through this function".
+- Registry (section 4.3): "Lua provides a registry, a predefined table that can be used by any C code to store whatever Lua values it needs to store. The registry table is always accessible at pseudo-index LUA_REGISTRYINDEX."
+
+---
+
+#### Summary table
+
+| Editor | Extension language | Where extension code runs | What the API is |
+|---|---|---|---|
+| Neovim | Lua 5.1 (LuaJIT build) [4]; Vimscript too [3] | Lua: inside the Nvim process, one global `lua_State` [4]; UIs and RPC clients: other processes over msgpack-RPC [15] | C functions in `src/nvim/api/*.h`, turned by a generator into one RPC handler table, the `vim.api` Lua table and the metadata for `--api-info` [3] |
+| Vim | Vimscript (legacy and Vim9) [19]; Lua only if built with `+lua` [19] | Inside the Vim process (if_lua runs Lua chunks via `:lua`) [19] | Vimscript functions and commands; the `vim` Lua module for if_lua [19] |
+| Emacs | Emacs Lisp [20] | Inside the Emacs process; most of the editor itself is Lisp [20] | A Lisp: primitives in C via `DEFUN`, the rest Lisp; hooks and advice to extend [20] |
+| Zed | Rust compiled to WebAssembly [21] | A wasmtime/WASI instance inside Zed's process, file access limited to the extension's work dir, operations gated by capabilities [21] | WIT interfaces (`crates/extension_api/wit`) [21] |
+| VS Code | JavaScript/TypeScript on Node.js or a browser Web Worker [22] | A separate Extension Host process (local, web or remote), same permissions as VS Code [22] | The extension host API; no DOM access [22] |
+| Helix | none in stable releases [23] | n/a [23] | n/a; a Steel-based plugin system is an open PR [23] |
+| Redis (not an editor) | Lua 5.1 [24] | Inside the server process, with a count hook for timeouts [24] | Commands like `EVAL` [24] |
+
+#### Not confirmed
+
+1. How Neovim interrupts an arbitrary busy Lua loop on Ctrl-C. No `lua_sethook` / count hook appears in src/nvim/lua/*.c at v0.12.6; only `vim.wait` is shown to check `got_int` (finding 14). Do not claim Neovim uses a count hook or `os_breakcheck` inside Lua.
+2. Whether a plugin calling `os.exit()` quits Neovim (finding 18). No doc states it.
+3. That Zed calls its extension runtime a "sandbox". The docs at v0.233.10 do not use the word; only the WASI preopened-dir setup and the capability system are confirmed (finding 21).
+4. VS Code's exact transport between the UI and the extension host (not looked for; the docs say only that extensions run in an Extension Host process).
+5. Helix's plugin plan beyond "PR #8675, Add Steel as an optional plugin system, open". Nothing on when or whether it lands.
+
+### 09.04 to 09.06: what the lessons ran
+
+Run for the lessons on the Mac, with the projects at 09.04, 09.05 and 09.06
+(written out, Lua supplied, `make`), on an 8 x 72 pseudo-terminal with
+track.py's `Editor`, KILO_INIT naming the lesson's init.lua.
+
+- **09.04, the registry's integers.** With the lesson's three mappings,
+  the registry's keys that hold functions are `4 5 6`; mapping Ctrl-D again
+  gives `5 6 7` (the new reference is made, by the dispatcher, before the
+  old is given back); mapping Ctrl-T again gives `4 6 7` (luaL_unref put 4
+  on the free list, `#define freelist (LUA_RIDX_LAST + 1)` in lauxlib.c).
+- **09.04, a fed key consulting the mappings** (the `editorFed == -1 &&`
+  taken out; a Ctrl-S mapping that counts and feeds Ctrl-S): `C stack
+  overflow`, the count 99, nothing saved. Lua's limit is LUAI_MAXCCALLS,
+  200 (llimits.h), two C calls a round.
+- **09.04, the leak** (`if (*slot) scriptUnref(*slot);` deleted): 100000
+  mappings of one key, each a new closure, then a full collection:
+  collectgarbage('count') up 9856.59 KB (-3.71 KB unchanged), the same in
+  three runs.
+- **09.04, calls at the prompt** (no count hook before 09.08): a million
+  calls of an empty Lua function 5.7 to 6.2 ms, of line_count() 36.8 to
+  45.7 ms, three runs.
+- **09.05, the save message.** "09.05" above says Ctrl-S writes 25 bytes;
+  `a hello world\nsecond line\n` is 26, and a second Ctrl-S (nothing to
+  trim, no TextChanged) says `26 bytes written on disk`. The first save's
+  message never reaches the screen: the frame after it has `5 words`.
+- **09.05, the nesting check alone.** With `if (editorRunning) return 0;`
+  taken out, a TextChanged function that appends a `!` to row 0 behaves
+  exactly as before (one `!` per changing key): TextChanged is fired by
+  editorAfterKey's look at the tick, noted after the functions, never from
+  inside a change, so the check has nothing to stop there; at 09.05 it
+  matters for a save inside TextChanged (no BufWritePre then, 0905).
+- **09.05, TextChanged until the tick holds still** (the `if` in
+  editorAfterKey made `while (...) { tick = E.changedtick;
+  editorEvent("TextChanged"); }`): with only the lesson's two functions the
+  editor works as before; with the `!` function, one typed letter and no
+  frame is drawn again, Ctrl-C and Ctrl-Q do nothing, ps shows 77 to 93 %
+  CPU and RSS 4016 KB rising to 5184 KB in 3 s; SIGTERM ends it, the file is
+  as last saved, the terminal left raw (ICANON and ECHO off).
+- **09.06, the bytes.** For `\tpixels = 307200` with `307200` yellow:
+  the row, `ESC[0K`, then `\r ESC[17C ESC[33m 307200 ESC[0m`. With the tab
+  counted as one column: `\r ESC[10C ESC[33m xels = ESC[0m`, the screen row
+  `        pi[y:xels =] 307200`; no warning.
+- **09.06, set_view is not an event.** On 12 rows (`row N of 12`) with the
+  lesson's init.lua: set_view({6, 0}) with the cursor on row 0 moves it to
+  row 6, CursorMoved repaints, rows 7 to 12 all yellow; then
+  set_view({4, 0}) leaves the cursor (row 6 is in the view), nothing fires,
+  and rows 5 and 6 are drawn with no highlight until a key moves the
+  cursor.
 
 ### Figures 09.06 to 09.10 (art/kilo/figs09b.py)
 
@@ -3323,34 +3753,6 @@ Run for the figures (each run is in the generator, on the lesson's project):
   through a key mapped to `dofile('upper.lua')`, both leave HELLO / WORLD /
   123 and say `2 lines upper-cased` (on standard output; in the message line).
 
-Read for the figures (the coordinator's research of 2026-11-24/25; quotes
-exact, at the tags named):
-
-- Neovim v0.12.6, runtime/doc/vim_diff.txt: "The Nvim UI is "decoupled" from
-  the core editor: all UIs, including the builtin |TUI| are just plugins that
-  connect to a Nvim server (via |--server| or |--embed|)." and "Platform and
-  I/O facilities are built upon libuv." starting.txt, --embed: "Use
-  stdin/stdout as a msgpack-RPC channel, so applications can embed and
-  control Nvim via the RPC |API|." lua.txt: "`vim.uv` exposes the "luv" Lua
-  bindings for the libUV library that Nvim uses for networking, filesystem,
-  and process management". src/nvim/extmark.c: "Marks are moved by calls to
-  extmark_splice."; src/nvim/marktree.c: "Tree data structure for storing
-  marks at (row, col) positions and updating them to arbitrary text
-  changes."
-- VS Code (microsoft/vscode-docs at a6b59615f645):
-  api/extension-capabilities/overview.md: "we run extensions in an [Extension
-  Host](/api/advanced-topics/extension-host) process and prevent direct
-  access to the DOM."; docs/configure/extensions/extension-runtime-security.md:
-  "The extension host has the same permissions as" the product "itself", and
-  "an extension can read and write files on your machine, make network
-  requests, run external processes, and modify workspace settings."
-- Zed v0.233.10: crates/extension_host/src/wasm_host.rs runs an extension
-  with wasmtime (`wasmtime::Engine`, `wasmtime::Store::new(`) inside Zed's
-  process, and build_wasi_ctx gives it one directory, the extension's own
-  work dir: `ctx.preopened_dir(&path, ".", dir_perms, file_perms)?;`.
-  docs/src/extensions/capabilities.md: "The operations that Zed extensions
-  are able to perform are governed by a capability system." Its docs do not
-  say "sandbox": read the table's "a sandbox" above as these two facts.
 
 ## Other behaviour of the original, kept
 
@@ -3549,7 +3951,7 @@ and tests/):
   and back, 09.05 the words counted on TextChanged, 09.06 the numbers in
   red and the status bar set, 09.07 Ctrl-O asking for a line, 09.08 a loop
   stopped by Ctrl-C. timeline_after: learn.txt untouched; `--api-info` has
-  the lesson's count of functions (6, 9, 12, 15, 21, 24); at 09.09 `kilo
+  the lesson's count of functions (6, 9, 12, 15, 22, 25); at 09.09 `kilo
   -l` upper-cases a copy of learn.txt. prepare() copies lua/ into the
   project first (supply_lua).
 - On Linux (in Docker, aarch64): Debian trixie (glibc 2.41, gcc 14.2),
