@@ -88,7 +88,7 @@ def _number(rng):
 
 
 def gen(rng, depth):
-    if depth <= 0 or rng.random() < 0.2:
+    if depth <= 0 or rng.random() < 0.1:
         return ("num", _number(rng))
     if rng.random() < 0.15:
         return ("un", rng.choice(UNARY), gen(rng, depth - 1))
@@ -131,17 +131,32 @@ def bin(op, a, b):
     return ("bin", op, a if isinstance(a, tuple) else num(a), b if isinstance(b, tuple) else num(b))
 
 
-def sample(seed, n, depth=8):
+def sample_trees(seed, n, depth=8):
+    """n (tree, text, value) triples from a seed, the undefined ones left out."""
     rng = random.Random(seed)
     out = []
     while len(out) < n:
-        t = gen(rng, rng.randint(1, depth))
+        t = gen(rng, rng.randint(2, depth))
         try:
             v = value(t)
         except Undefined:
             continue
-        out.append((show(t, rng), v))
+        out.append((t, show(t, rng), v))
     return out
+
+
+def sample(seed, n, depth=8):
+    return [(s, v) for _, s, v in sample_trees(seed, n, depth)]
+
+
+def registers(t):
+    """How many registers this compiler's gen_expr wants for t, with the left operand at d and
+    the right one at d + 1: past 6 (t0 to t5), it spills."""
+    if t[0] == "num":
+        return 1
+    if t[0] == "un":
+        return registers(t[2])
+    return max(registers(t[2]), 1 + registers(t[3]))
 
 
 def right_nested(n, op="-", first=1):

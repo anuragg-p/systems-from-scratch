@@ -57,7 +57,9 @@ def main():
     tr.tools()
 
     t0 = time.time()
-    exprs = g.sample(a.seed, a.n, a.depth)
+    trees = g.sample_trees(a.seed, a.n, a.depth)
+    exprs = [(e, v) for _, e, v in trees]
+    spills = sum(1 for t, _, _ in trees if g.registers(t) > 6)
     batches = [exprs[i:i + a.batch] for i in range(0, len(exprs), a.batch)]
     tmp = tempfile.mkdtemp(prefix="cc-fuzz-")
     free = queue.Queue()
@@ -81,7 +83,9 @@ def main():
                     tr.value(ctx, e, v)
                 except tr.Fail as err:
                     bad.append(f"{e}\n    want {v}: {err}")
-            return bad or [f"a batch failed but each of its expressions passed alone:\n{prog}"]
+            # Each passed alone, but the batch, itself one expression whose terms sit a register
+            # deeper, did not: that is a failure too.
+            return bad or [f"the batch as one expression (each of its expressions passed alone):\n{prog}"]
         finally:
             free.put(ctx)
 
@@ -97,9 +101,8 @@ def main():
     shutil.rmtree(tmp, ignore_errors=True)
     for f in failures[:20]:
         print("FAIL", f)
-    deep = sum(1 for e, _ in exprs if e.count("(") >= 6)
-    print(f"{len(exprs)} expressions (seed {a.seed}, depth {a.depth}, {deep} with six or more parentheses), "
-          f"{len(failures)} failed, in {time.time() - t0:.1f} s")
+    print(f"{len(exprs)} expressions (seed {a.seed}, depth {a.depth}; {spills} need more than six registers, "
+          f"so spill), {len(failures)} failed, in {time.time() - t0:.1f} s")
     return 1 if failures else 0
 
 
