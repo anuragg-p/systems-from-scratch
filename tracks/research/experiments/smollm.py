@@ -47,7 +47,7 @@ from models.gpt import GPT
 from tokens import smollm as tokens
 
 CONFIG = dict(layers=4, heads=4, width=64, context=64, batch=32, steps=150, lr=0.003, warmup=50, weight_decay=0.1,
-              clip=1.0, every=50, seeds=3, kv=[4, 2], prompt="To be, or not to be,", shown=5, greedy=16, warm=64,
+              clip=1.0, every=50, seeds=2, kv=[4, 2], prompt="To be, or not to be,", shown=5, greedy=16, warm=64,
               span=961, test_tokens=0, prompt_tokens=16, length=40,
               methods=[["greedy", 0.0, 0, None], ["top-k=40", 1.0, 40, None], ["nucleus, p=0.95", 1.0, 0, 0.95]],
               device="cpu")
