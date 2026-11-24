@@ -3677,6 +3677,56 @@ Base: https://raw.githubusercontent.com/zed-industries/zed/v0.233.10/
 4. VS Code's exact transport between the UI and the extension host (not looked for; the docs say only that extensions run in an Extension Host process).
 5. Helix's plugin plan beyond "PR #8675, Add Steel as an optional plugin system, open". Nothing on when or whether it lands.
 
+### 09.04 to 09.06: what the lessons ran
+
+Run for the lessons on the Mac, with the projects at 09.04, 09.05 and 09.06
+(written out, Lua supplied, `make`), on an 8 x 72 pseudo-terminal with
+track.py's `Editor`, KILO_INIT naming the lesson's init.lua.
+
+- **09.04, the registry's integers.** With the lesson's three mappings,
+  the registry's keys that hold functions are `4 5 6`; mapping Ctrl-D again
+  gives `5 6 7` (the new reference is made, by the dispatcher, before the
+  old is given back); mapping Ctrl-T again gives `4 6 7` (luaL_unref put 4
+  on the free list, `#define freelist (LUA_RIDX_LAST + 1)` in lauxlib.c).
+- **09.04, a fed key consulting the mappings** (the `editorFed == -1 &&`
+  taken out; a Ctrl-S mapping that counts and feeds Ctrl-S): `C stack
+  overflow`, the count 99, nothing saved. Lua's limit is LUAI_MAXCCALLS,
+  200 (llimits.h), two C calls a round.
+- **09.04, the leak** (`if (*slot) scriptUnref(*slot);` deleted): 100000
+  mappings of one key, each a new closure, then a full collection:
+  collectgarbage('count') up 9856.59 KB (-3.71 KB unchanged), the same in
+  three runs.
+- **09.04, calls at the prompt** (no count hook before 09.08): a million
+  calls of an empty Lua function 5.7 to 6.2 ms, of line_count() 36.8 to
+  45.7 ms, three runs.
+- **09.05, the save message.** "09.05" above says Ctrl-S writes 25 bytes;
+  `a hello world\nsecond line\n` is 26, and a second Ctrl-S (nothing to
+  trim, no TextChanged) says `26 bytes written on disk`. The first save's
+  message never reaches the screen: the frame after it has `5 words`.
+- **09.05, the nesting check alone.** With `if (editorRunning) return 0;`
+  taken out, a TextChanged function that appends a `!` to row 0 behaves
+  exactly as before (one `!` per changing key): TextChanged is fired by
+  editorAfterKey's look at the tick, noted after the functions, never from
+  inside a change, so the check has nothing to stop there; at 09.05 it
+  matters for a save inside TextChanged (no BufWritePre then, 0905).
+- **09.05, TextChanged until the tick holds still** (the `if` in
+  editorAfterKey made `while (...) { tick = E.changedtick;
+  editorEvent("TextChanged"); }`): with only the lesson's two functions the
+  editor works as before; with the `!` function, one typed letter and no
+  frame is drawn again, Ctrl-C and Ctrl-Q do nothing, ps shows 77 to 93 %
+  CPU and RSS 4016 KB rising to 5184 KB in 3 s; SIGTERM ends it, the file is
+  as last saved, the terminal left raw (ICANON and ECHO off).
+- **09.06, the bytes.** For `\tpixels = 307200` with `307200` yellow:
+  the row, `ESC[0K`, then `\r ESC[17C ESC[33m 307200 ESC[0m`. With the tab
+  counted as one column: `\r ESC[10C ESC[33m xels = ESC[0m`, the screen row
+  `        pi[y:xels =] 307200`; no warning.
+- **09.06, set_view is not an event.** On 12 rows (`row N of 12`) with the
+  lesson's init.lua: set_view({6, 0}) with the cursor on row 0 moves it to
+  row 6, CursorMoved repaints, rows 7 to 12 all yellow; then
+  set_view({4, 0}) leaves the cursor (row 6 is in the view), nothing fires,
+  and rows 5 and 6 are drawn with no highlight until a key moves the
+  cursor.
+
 ## Other behaviour of the original, kept
 
 - kilo does not clear the screen on exit: the shell prompt appears where
