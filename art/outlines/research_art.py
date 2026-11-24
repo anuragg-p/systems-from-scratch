@@ -37,10 +37,15 @@ Computed, for the built modules, from the formulas and settings of the track's o
         and that run's results read from tracks/research/experiments/recorded/gpt/: its weight count (checked
         against what it printed), each dropout's mean test bits, the turn-up without dropout; and module 07's
         best, 07.02's recorded network mixed with interpolation at 8 characters
+    09  the merges 09.01 learns on the shipped text's training part, made by the track's own tokens/bpe.py
+        (what they make of ' heavens' and ' Prospero'), GPT-2 small's weight count from models/gpt.py's
+        formula, and 09.04's recorded long run read from tracks/research/experiments/recorded/tinystories/
+        (its weights, its seeds' bits per byte, its stories that ended); the tokenizer and logits column is
+        what 09.02 and 09.03 found, with no number on it
 Where a cover prints a number the lessons print, the script asserts it is the same number, so a
 change to the track that moves it stops this script instead of leaving the cover wrong.
 Also computed: the double-descent curve in 05 (random ReLU features, least squares), the
-convolution in 06, the BPE merges in 09, the LoRA counts in 12, the DDPM noising in 17 and the
+convolution in 06, the LoRA counts in 12, the DDPM noising in 17 and the
 PPO objective in 18. Schematic (the true shape, no measured numbers): 11's loss curves, 13's panels, 14's grokking curves (after Power et al. 2022, Figure 1), 15's
 paper, 20's over-optimisation and 21's four phenomena.
 
@@ -968,75 +973,97 @@ def res_gpt():
 
 # =================================================================== 09 GPT-2
 
-def bpe(text, merges):
-    """minbpe's training loop on the bytes of text: merge the most frequent pair, merges times."""
-    ids = list(text.encode())
-    vocab = {i: bytes([i]) for i in range(256)}
-    steps = [list(ids)]
-    rules = []
-    for k in range(merges):
-        counts = {}
-        for p in zip(ids, ids[1:]):
-            counts[p] = counts.get(p, 0) + 1
-        pair = max(counts, key=counts.get)
-        new = 256 + k
-        out, i = [], 0
-        while i < len(ids):
-            if i < len(ids) - 1 and (ids[i], ids[i + 1]) == pair:
-                out.append(new)
-                i += 2
-            else:
-                out.append(ids[i])
-                i += 1
-        ids = out
-        vocab[new] = vocab[pair[0]] + vocab[pair[1]]
-        steps.append(list(ids))
-        rules.append((pair, new, counts[pair]))
-    return steps, rules, vocab
+def gpt2_numbers():
+    """09's numbers as its lessons print them. The merges 09.01 learns on the shipped text's training part (the
+    first 90%) to a vocabulary of 2,048, made by the track's own tokens/bpe.py, and what they make of a word the
+    training plays have and of one they never had; GPT-2 small's weight count by models/gpt.py's formula (V W +
+    context W + L (12 W^2 + 13 W) + 2 W); and 09.04's recorded long run, read from
+    tracks/research/experiments/recorded/tinystories/: its weights (as it printed them), its two seeds' bits per byte
+    on 2,000 held-out stories, and how many of its 16 stories ended on their own."""
+    import importlib.util
+    track = os.path.join(ROOT, "tracks", "research")
+    spec = importlib.util.spec_from_file_location("research_bpe", os.path.join(track, "tokens", "bpe.py"))
+    bpe = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(bpe)
+    with open(os.path.join(track, "data", "tinyshakespeare.txt"), encoding="ascii") as f:
+        text = f.read()
+    merges = bpe.train(text[:int(0.9 * len(text))], 2048)
+    table = bpe.vocab(merges)
+
+    def merged(word):
+        """Each state of word as encode() merges it: [(the merge's number, its symbols)]."""
+        ids = list(word.encode())
+        out = [(0, [table[i].decode() for i in ids])]
+        while len(ids) > 1:
+            pair = min(zip(ids, ids[1:]), key=lambda p: merges.get(p, float("inf")))
+            if pair not in merges:
+                break
+            ids = bpe.merge(ids, pair, merges[pair])
+            out.append((merges[pair] - 255, [table[i].decode() for i in ids]))
+        return out
+    words = {w: merged(w) for w in (" heavens", " Prospero")}
+    rec = os.path.join(track, "experiments", "recorded", "tinystories")
+    with open(os.path.join(rec, "output.txt")) as f:
+        printed = f.read()
+    bpb = [json.load(open(p))["bits_per_byte"] for p in sorted(glob.glob(os.path.join(rec, "seed*", "summary.json")))]
+    told = json.load(open(os.path.join(rec, "stories-trained-here", "seed0", "summary.json")))
+    V, ctx, L, W = 50257, 1024, 12, 768
+    got = {"heavens": words[" heavens"][-1], "prospero": words[" Prospero"][-1][1],
+           "in_training": text[:int(0.9 * len(text))].count(" Prospero"),
+           "gpt2": f"{V * W + ctx * W + L * (12 * W * W + 13 * W) + 2 * W:,}",
+           "tiny": "4,273,664" if "4,273,664 weights" in printed else None,
+           "bpb": f"{sum(bpb) / len(bpb):.4f}", "seeds": len(bpb), "ended": f"{told['ended']} of {told['samples']}"}
+    assert got == {"heavens": (1790, [" heavens"]), "prospero": [" P", "ro", "s", "per", "o"], "in_training": 0,
+                   "gpt2": "124,439,808", "tiny": "4,273,664", "bpb": "0.7367", "seeds": 2, "ended": "16 of 16"}, got
+    return got, words      # 09.01, 09.03, 09.04
 
 
 def res_gpt2():
-    a = Art("r09", "The same tokens in, the same numbers out: byte pair encoding merges frequent pairs into new ids, "
-                   "and the published GPT-2 weights run in your model")
-    text = "the theme then"
-    steps, rules, vocab = bpe(text, 3)
-    show = lambda i: vocab[i].decode().replace(" ", "_")
-    assert [show(i) for i in steps[-1]] == ["the", "_the", "m", "e", "_the", "n"]
-    a.text(24, 30, "byte pair encoding, trained on one line", "tm", 10.5)
-    cw, ch = 17, 22
-    for r, ids in enumerate(steps):
-        y = 44 + r * 46
+    a = Art("r09", "The same tokens in, the same numbers out: byte pair encoding learned on bytes, GPT-2's tokenizer "
+                   "and published weights run in your GPT, and a small GPT pretrained on TinyStories that tells a story")
+    got, words = gpt2_numbers()
+    show = lambda s: s.replace(" ", "_")
+    a.text(24, 30, "byte pair encoding, learned on Shakespeare's training plays", "tm", 10.5)
+    y = 44
+    for word, note in ((" heavens", "35 times in the training plays"), (" Prospero", "never in the training plays")):
+        steps = words[word]
+        a.text(24, y + 12, f"'{show(word)}'", size=11.5, weight=700, mono=True)
+        a.text(24 + 7.2 * (len(word) + 3), y + 12, note, "tm", 10)
         x = 24
-        new = rules[r - 1][1] if r else None
-        for i in ids:
-            w = len(vocab[i]) * cw
-            hot = i == new
-            cell(a, x, y, w, ch, show(i), "a af" if hot else ("s f" if i < 256 else "s fs"), "ta" if hot else "t", 11,
-                 rx=3, weight=700 if hot else None)
+        for s in steps[0][1]:
+            cell(a, x, y + 20, 17, 22, show(s), "s f", "t", 11, rx=3)
+            x += 20
+        a.text(x + 6, y + 35, f"{len(steps[0][1])} bytes", "tm", 10)
+        x = 24
+        for s in steps[-1][1]:
+            w = 11 + 8 * len(s)
+            cell(a, x, y + 50, w, 22, show(s), "a af", "ta", 11, rx=3, weight=700)
             x += w + 3
-        if r:
-            (p0, p1), new, cnt = rules[r - 1]
-            a.text(x + 8, y + 15, f"{show(p0)} + {show(p1)} -> {new}", "ta", 10.5, weight=600, mono=True)
-        else:
-            a.text(x + 8, y + 15, f"{len(ids)} bytes", "tm", 10.5)
-        if r < len(steps) - 1:
-            a.text(24, y + ch + 15, f"merge {r + 1}: the most frequent pair becomes id {256 + r}", "tm", 10)
-    a.text(24, 44 + 3 * 46 + ch + 16, f"{len(steps[0])} bytes -> {len(steps[-1])} tokens.  '_' is a space.", "tm", 10.5)
+        last = steps[-1][0]
+        a.text(x + 6, y + 65, f"{len(steps[-1][1])} token{'s' * (len(steps[-1][1]) > 1)}" +
+               (f", made by merge {last:,}" if len(steps[-1][1]) == 1 else ", pieces it had"), "ta", 10, weight=600)
+        y += 86
+    a.text(24, y + 4, "Merges of 1,792, learned first, applied first; '_' is a space.", "tm", 10)
 
-    px, pw = 440, 160
-    stages = [("text", "s f", None, None), ("your GPT-2 tokenizer", "s fs", "ids", "= tiktoken's ids"),
-              ("your GPT + GPT-2's weights", "s fs", "logits", "= the reference's"), ("logits  [T, 50257]", "s f", None, None)]
+    px, pw = 404, 212
+    stages = [("text", "s f", None), ("your GPT-2 tokenizer", "s fs", "ids = tiktoken's *"),
+              ("your GPT, GPT-2's weights", "s fs", "logits = transformers'"), ("the next token", "s f", None)]
     a.text(px, 30, "held to the real thing", size=11.5, weight=700)
-    for k, (name, cls, what, check) in enumerate(stages):
-        y = 44 + k * 56
-        cell(a, px, y, pw, 26, name, cls, "t", 10.5, rx=6, weight=600, mono=False)
+    for k, (name, cls, check) in enumerate(stages):
+        yy = 40 + k * 46
+        cell(a, px, yy, pw, 24, name, cls, "t", 10.5, rx=6, weight=600, mono=False)
         if k < len(stages) - 1:
-            a.line(px + 40, y + 26, px + 40, y + 54, "s", arrow=True)
+            a.line(px + 30, yy + 24, px + 30, yy + 44, "s", arrow=True)
         if check:
-            a.text(px + 48, y + 44, what, "tm", 10, mono=True)
-            a.text(px + 48 + 7 * len(what), y + 44, check, "ta", 10.5, weight=600)
-    a.text(24, 270, "GPT-2's vocabulary: 256 bytes + 50,000 merges + 1 end-of-text token = 50,257 ids.", "tm", 11)
-    a.text(24, 286, "Its weights load from the published model.safetensors, GPT-2 small, 124M parameters.", "tm", 11)
+            a.text(px + 40, yy + 39, check, "ta", 10.5, weight=600)
+    a.text(px, 234, "* but for a letter newer than your Python's", "tm", 10)
+    a.text(px, 247, "Unicode tables, followed by 's", "tm", 10)
+    a.text(24, 258, f"GPT-2: 256 bytes + 50,000 merges + <|endoftext|> = 50,257 ids; GPT-2 small, {got['gpt2']} "
+                    f"weights, from its published file.", "tm", 10.5)
+    a.text(24, 274, f"TinyStories: a GPT of {got['tiny']} weights, 45 minutes of a laptop's CPU, {got['seeds']} seeds: "
+                    f"{got['bpb']} bits per byte on held-out", "tm", 10.5)
+    a.text(24, 290, f"stories. Its stories end on their own ({got['ended']}), in paragraphs, and share less with the "
+                    f"training text than real unseen stories do.", "tm", 10.5)
     assert 256 + 50000 + 1 == 50257
     return a
 

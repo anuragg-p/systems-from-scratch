@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" fill="none">
+<title>After &#x27;The meaning of life is&#x27;, GPT-2&#x27;s eight likeliest next tokens: loaded right, and with the square attn.c_proj of every block left as the file has it</title>
+<defs><marker id="expects0903-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="expects0903-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="expects0903-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="ta" x="20" y="22" font-size="11.5" font-weight="700">loaded right (transposed)</text>
+<text class="ta mono" x="112" y="50" font-size="11" text-anchor="end">&#x27; not&#x27;</text>
+<rect class="a af" x="118" y="39" width="170" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="294" y="51" font-size="10.5">0.109</text>
+<text class="ta mono" x="112" y="74" font-size="11" text-anchor="end">&#x27; to&#x27;</text>
+<rect class="a af" x="118" y="63" width="129.54" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="253.54" y="75" font-size="10.5">0.083</text>
+<text class="ta mono" x="112" y="98" font-size="11" text-anchor="end">&#x27; the&#x27;</text>
+<rect class="a af" x="118" y="87" width="80.13" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="204.13" y="99" font-size="10.5">0.051</text>
+<text class="ta mono" x="112" y="122" font-size="11" text-anchor="end">&#x27; that&#x27;</text>
+<rect class="a af" x="118" y="111" width="75.38" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="199.38" y="123" font-size="10.5">0.048</text>
+<text class="ta mono" x="112" y="146" font-size="11" text-anchor="end">&#x27; a&#x27;</text>
+<rect class="a af" x="118" y="135" width="61.84" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="185.84" y="147" font-size="10.5">0.040</text>
+<text class="ta mono" x="112" y="170" font-size="11" text-anchor="end">&#x27; in&#x27;</text>
+<rect class="a af" x="118" y="159" width="30.19" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="154.19" y="171" font-size="10.5">0.019</text>
+<text class="ta mono" x="112" y="194" font-size="11" text-anchor="end">&#x27; one&#x27;</text>
+<rect class="a af" x="118" y="183" width="18.66" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="142.66" y="195" font-size="10.5">0.012</text>
+<text class="ta mono" x="112" y="218" font-size="11" text-anchor="end">&#x27;,&#x27;</text>
+<rect class="a af" x="118" y="207" width="16.6" height="16" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="140.6" y="219" font-size="10.5">0.011</text>
+<text class="t" x="332" y="22" font-size="11.5" font-weight="700">attn.c_proj left as it is: it loads, no complaint</text>
+<text class="t mono" x="424" y="50" font-size="11" text-anchor="end">&#x27; the&#x27;</text>
+<rect class="s fs" x="430" y="39" width="38.95" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="474.95" y="51" font-size="10.5">0.025</text>
+<text class="t mono" x="424" y="74" font-size="11" text-anchor="end">&#x27;.&#x27;</text>
+<rect class="s fs" x="430" y="63" width="29.4" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="465.4" y="75" font-size="10.5">0.019</text>
+<text class="t mono" x="424" y="98" font-size="11" text-anchor="end">&#x27;\n&#x27;</text>
+<rect class="s fs" x="430" y="87" width="25.98" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="461.98" y="99" font-size="10.5">0.017</text>
+<text class="t mono" x="424" y="122" font-size="11" text-anchor="end">&#x27;,&#x27;</text>
+<rect class="s fs" x="430" y="111" width="17.07" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="453.07" y="123" font-size="10.5">0.011</text>
+<text class="t mono" x="424" y="146" font-size="11" text-anchor="end">&#x27; a&#x27;</text>
+<rect class="s fs" x="430" y="135" width="15.29" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="451.29" y="147" font-size="10.5">0.010</text>
+<text class="t mono" x="424" y="170" font-size="11" text-anchor="end">&#x27;-&#x27;</text>
+<rect class="s fs" x="430" y="159" width="12.56" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="448.56" y="171" font-size="10.5">0.008</text>
+<text class="t mono" x="424" y="194" font-size="11" text-anchor="end">&quot;&#x27;s&quot;</text>
+<rect class="s fs" x="430" y="183" width="8.37" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="444.37" y="195" font-size="10.5">0.005</text>
+<text class="t mono" x="424" y="218" font-size="11" text-anchor="end">&#x27; is&#x27;</text>
+<rect class="s fs" x="430" y="207" width="8.1" height="16" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="444.1" y="219" font-size="10.5">0.005</text>
+<text class="tm" x="20" y="240" font-size="10.5">Chances after the softmax, on one scale for both. Loaded wrong, the model still writes, and still says words; it has lost the sense.</text>
+</svg>
