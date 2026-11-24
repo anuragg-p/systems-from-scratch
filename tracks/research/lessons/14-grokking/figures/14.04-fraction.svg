@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Steps to 99% by the fraction of the equations trained on, weight decay 1, 3 seeds each, on a log scale both ways: rings training, dots held out, the line through the held-out medians at 35% and 50%</title>
+<defs><marker id="fraction1404-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="fraction1404-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="fraction1404-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="70" y1="240.2" x2="450" y2="240.2" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="243.71" font-size="10.5" text-anchor="end">200</text>
+<line class="m" x1="70" y1="196.3" x2="450" y2="196.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="199.8" font-size="10.5" text-anchor="end">500</text>
+<line class="m" x1="70" y1="163.1" x2="450" y2="163.1" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="166.58" font-size="10.5" text-anchor="end">1000</text>
+<line class="m" x1="70" y1="129.9" x2="450" y2="129.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="133.37" font-size="10.5" text-anchor="end">2000</text>
+<line class="m" x1="70" y1="86.0" x2="450" y2="86.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="89.46" font-size="10.5" text-anchor="end">5000</text>
+<line class="m" x1="70" y1="52.7" x2="450" y2="52.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="56.24" font-size="10.5" text-anchor="end">10000</text>
+<line class="m" x1="109.65" y1="254" x2="109.65" y2="258" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="109.65" y="270" font-size="10.5" text-anchor="middle">35%</text>
+<line class="m" x1="199.63" y1="254" x2="199.63" y2="258" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="199.63" y="270" font-size="10.5" text-anchor="middle">40%</text>
+<line class="m" x1="349.99" y1="254" x2="349.99" y2="258" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="349.99" y="270" font-size="10.5" text-anchor="middle">50%</text>
+<rect class="m" x="70" y="44" width="380" height="210" rx="0" stroke-width="1.5"/>
+<text class="tm" x="260" y="286" font-size="11.5" text-anchor="middle">fraction of the equations (log scale)</text>
+<text class="tm" x="64" y="36" font-size="11.5">step (log scale)</text>
+<line class="m" x1="70" y1="77.22" x2="450" y2="77.22" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="74" y="72.22" font-size="10.5">the budget: 6000 steps</text>
+<circle class="s f" cx="100.65" cy="207.24" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="106.65" cy="118.96" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="106.65" cy="207.24" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="112.65" cy="129.99" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="112.65" cy="196.21" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="118.65" cy="118.96" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="190.63" cy="196.21" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="196.63" cy="152.08" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="196.63" cy="196.21" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="202.63" cy="163.08" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="202.63" cy="196.21" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="208.63" cy="163.08" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="340.99" cy="185.23" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="346.99" cy="185.23" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="346.99" cy="185.23" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="352.99" cy="174.14" r="3.5" stroke-width="1.5"/>
+<line class="a" x1="358.99" y1="95.22" x2="358.99" y2="69.22" stroke-width="1.5" stroke-linecap="round" marker-end="url(#fraction1404-aa)"/>
+<line class="a" x1="109.65" y1="118.96" x2="349.99" y2="174.14" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="ta" x="117.65" y="112.96" font-size="10">median 2511</text>
+<text class="ta" x="359.99" y="178.14" font-size="10">median 794</text>
+<text class="t" x="480" y="76" font-size="10.5" font-weight="600">held-out steps grow as</text>
+<text class="t" x="480" y="92" font-size="10.5" font-weight="600">1 / fraction^k:</text>
+<text class="ta mono" x="480" y="110" font-size="11" font-weight="700">k = 3.23 here</text>
+<text class="t" x="480" y="128" font-size="10.5">about 4 in figure 1 (center)</text>
+<text class="tm" x="480" y="142" font-size="10.5">(S5, 30% to 50%)</text>
+<text class="t" x="480" y="170" font-size="10.5">training 99%, median:</text>
+<text class="tm" x="480" y="184" font-size="10.5">398 at 35%, 630 at 50%</text>
+</svg>

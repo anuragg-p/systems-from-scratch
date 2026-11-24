@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Accuracy on the training equations (dashed) and on the held-out ones (solid), 3 seeds, a dot where each first reached 99%: the page&#x27;s run at 35% of the equations, and the recorded runs of 14.04 at the paper&#x27;s 50%</title>
+<defs><marker id="short1402-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="short1402-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="short1402-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="50" y="251.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="56" y1="198.0" x2="306" y2="198.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="50" y="201.5" font-size="10.5" text-anchor="end">0.25</text>
+<line class="m" x1="56" y1="148.0" x2="306" y2="148.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="50" y="151.5" font-size="10.5" text-anchor="end">0.5</text>
+<line class="m" x1="56" y1="98.0" x2="306" y2="98.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="50" y="101.5" font-size="10.5" text-anchor="end">0.75</text>
+<text class="tm mono" x="50" y="51.5" font-size="10.5" text-anchor="end">1</text>
+<line class="m" x1="56" y1="248" x2="56" y2="252" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="56" y="264" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="154.27" y1="248" x2="154.27" y2="252" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="154.27" y="264" font-size="10.5" text-anchor="middle">10</text>
+<line class="m" x1="252.54" y1="248" x2="252.54" y2="252" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="252.54" y="264" font-size="10.5" text-anchor="middle">100</text>
+<line class="m" x1="306" y1="248" x2="306" y2="252" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="306" y="264" font-size="10.5" text-anchor="middle">350</text>
+<rect class="m" x="56" y="48" width="250" height="200" rx="0" stroke-width="1.5"/>
+<text class="tm" x="181" y="280" font-size="11.5" text-anchor="middle">step (log scale)</text>
+<text class="tm" x="50" y="40" font-size="11.5">accuracy</text>
+<text class="ta" x="56" y="26" font-size="11.5" font-weight="700">35% of the equations, 350 steps: the page&#x27;s run</text>
+<line class="m" x1="56" y1="245.94" x2="306" y2="245.94" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<polyline class="s" points="56.0,248.0 85.6,245.9 102.9,245.5 132.5,243.3 154.3,244.6 171.6,242.5 193.4,242.8 212.4,241.4 232.8,236.0 252.5,225.5 272.1,197.7 291.8,108.9 306.0,51.1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="56.0,248.0 85.6,246.1 102.9,246.1 132.5,244.4 154.3,246.6 171.6,244.6 193.4,244.9 212.4,245.2 232.8,245.8 252.5,245.9 272.1,245.8 291.8,245.5 306.0,245.2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="s" points="56.0,248.0 85.6,245.6 102.9,245.4 132.5,245.8 154.3,245.9 171.6,245.3 193.4,242.7 212.4,240.8 232.8,236.1 252.5,223.8 272.1,186.0 291.8,94.9 306.0,49.8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="56.0,248.0 85.6,246.1 102.9,246.1 132.5,246.0 154.3,246.0 171.6,246.2 193.4,244.5 212.4,245.2 232.8,245.6 252.5,246.0 272.1,245.4 291.8,244.7 306.0,243.3" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="306" cy="50" r="3.5" stroke-width="1.5"/>
+<polyline class="s" points="56.0,246.3 85.6,245.5 102.9,245.6 132.5,244.7 154.3,245.7 171.6,245.1 193.4,242.7 212.4,240.7 232.8,239.2 252.5,231.9 272.1,211.7 291.8,127.2 306.0,64.7" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="56.0,246.4 85.6,246.1 102.9,246.1 132.5,246.4 154.3,246.1 171.6,245.9 193.4,244.6 212.4,245.4 232.8,245.9 252.5,246.0 272.1,246.0 291.8,244.2 306.0,243.3" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="73.3" y="124" font-size="10">at step 350: training 0.92 to 0.99,</text>
+<text class="ta" x="73.3" y="144" font-size="10">held out 0.014 to 0.023</text>
+<text class="tm mono" x="374" y="251.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="380" y1="198.0" x2="630" y2="198.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="374" y="201.5" font-size="10.5" text-anchor="end">0.25</text>
+<line class="m" x1="380" y1="148.0" x2="630" y2="148.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="374" y="151.5" font-size="10.5" text-anchor="end">0.5</text>
+<line class="m" x1="380" y1="98.0" x2="630" y2="98.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="374" y="101.5" font-size="10.5" text-anchor="end">0.75</text>
+<text class="tm mono" x="374" y="51.5" font-size="10.5" text-anchor="end">1</text>
+<line class="m" x1="380" y1="248" x2="380" y2="252" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="380" y="264" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="446.17" y1="248" x2="446.17" y2="252" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="446.17" y="264" font-size="10.5" text-anchor="middle">10</text>
+<line class="m" x1="512.34" y1="248" x2="512.34" y2="252" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="512.34" y="264" font-size="10.5" text-anchor="middle">100</text>
+<line class="m" x1="578.51" y1="248" x2="578.51" y2="252" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="578.51" y="264" font-size="10.5" text-anchor="middle">1000</text>
+<rect class="m" x="380" y="48" width="250" height="200" rx="0" stroke-width="1.5"/>
+<text class="tm" x="505" y="280" font-size="11.5" text-anchor="middle">step (log scale)</text>
+<text class="t" x="380" y="26" font-size="11.5" font-weight="700">50%, the paper&#x27;s fraction: 14.04&#x27;s runs</text>
+<line class="m" x1="380" y1="245.94" x2="630" y2="245.94" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<polyline class="s" points="380.0,247.9 399.9,245.7 411.6,245.6 426.3,243.8 431.5,245.5 435.9,245.6 446.2,245.7 451.4,245.9 457.8,243.7 464.6,243.7 472.5,243.4 478.7,243.0 485.3,243.4 492.4,243.0 499.1,243.0 505.6,242.9 512.3,242.5 518.8,241.5 525.5,239.7 532.1,237.1 538.8,228.5 545.4,201.0 552.0,165.5 558.6,86.6 565.2,48.2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="380.0,248.0 399.9,246.0 411.6,245.9 426.3,243.9 431.5,245.7 435.9,246.2 446.2,246.2 451.4,246.2 457.8,244.0 464.6,244.3 472.5,244.0 478.7,244.8 485.3,244.1 492.4,244.8 499.1,244.8 505.6,244.8 512.3,244.9 518.8,245.3 525.5,245.4 532.1,245.2 538.8,243.3 545.4,233.4 552.0,209.1 558.6,119.3 565.2,48.6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="565.23" cy="50" r="3.5" stroke-width="1.5"/>
+<circle class="a fa" cx="565.23" cy="50" r="3.5" stroke-width="1.5"/>
+<polyline class="s" points="380.0,247.4 399.9,245.6 411.6,245.9 426.3,245.4 431.5,245.6 435.9,245.6 446.2,245.7 451.4,245.7 457.8,245.7 464.6,245.6 472.5,244.7 478.7,244.0 485.3,243.7 492.4,243.4 499.1,243.5 505.6,242.7 512.3,241.4 518.8,240.2 525.5,238.7 532.1,234.1 538.8,229.7 545.4,220.9 552.0,205.9 558.6,93.3 565.2,49.1 571.9,48.0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="380.0,247.7 399.9,246.2 411.6,246.1 426.3,246.4 431.5,246.3 435.9,246.3 446.2,246.2 451.4,246.2 457.8,246.2 464.6,246.2 472.5,245.0 478.7,243.8 485.3,244.1 492.4,244.3 499.1,244.3 505.6,244.9 512.3,245.0 518.8,245.0 525.5,245.6 532.1,245.4 538.8,245.0 545.4,243.9 552.0,242.0 558.6,130.2 565.2,52.5 571.9,48.1" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="565.23" cy="50" r="3.5" stroke-width="1.5"/>
+<circle class="a fa" cx="571.88" cy="50" r="3.5" stroke-width="1.5"/>
+<polyline class="s" points="380.0,246.6 399.9,246.0 411.6,245.4 426.3,245.6 431.5,245.7 435.9,245.8 446.2,245.6 451.4,245.8 457.8,246.2 464.6,245.8 472.5,243.4 478.7,243.3 485.3,243.2 492.4,243.1 499.1,242.6 505.6,243.0 512.3,242.1 518.8,241.9 525.5,241.3 532.1,239.8 538.8,236.7 545.4,232.1 552.0,206.5 558.6,144.0 565.2,124.7 571.9,120.0 578.5,114.4 585.1,112.5 591.7,114.7 598.4,109.7 605.0,112.9 611.6,113.8 618.2,113.4 624.8,102.3 630.0,87.9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="380.0,246.4 399.9,246.2 411.6,246.4 426.3,246.2 431.5,246.2 435.9,246.1 446.2,246.3 451.4,246.2 457.8,245.9 464.6,246.1 472.5,244.6 478.7,245.2 485.3,244.6 492.4,244.6 499.1,245.1 505.6,244.7 512.3,245.5 518.8,245.8 525.5,246.1 532.1,246.2 538.8,246.0 545.4,245.7 552.0,235.7 558.6,190.8 565.2,175.6 571.9,174.3 578.5,178.2 585.1,182.9 591.7,179.0 598.4,181.2 605.0,179.8 611.6,180.9 618.2,190.4 624.8,186.5 630.0,194.2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="391.65" y="76" font-size="10">99% on both:</text>
+<text class="t" x="391.65" y="89" font-size="10">630/630, 630/794</text>
+<text class="tm" x="391.65" y="124" font-size="10">one seed stuck:</text>
+<text class="tm" x="391.65" y="137" font-size="10">0.80, 0.27 at 6000</text>
+<polyline class="s" points="56.0,288.0 78.0,288.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<text class="t" x="84" y="292" font-size="11">training equations</text>
+<polyline class="a" points="208.9,288.0 230.9,288.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="236.92" y="292" font-size="11">held-out equations</text>
+</svg>

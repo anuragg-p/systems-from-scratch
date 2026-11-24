@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>One pass over the 3259 training equations, cut into batches of 512 (the paper&#x27;s) and of 543; and the training accuracy each gives, 3 seeds</title>
+<defs><marker id="batches1402-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="batches1402-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="batches1402-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="110" y="45" font-size="11" font-weight="600" text-anchor="end">batches of 512</text>
+<rect class="s fs" x="120" y="30" width="57.7" height="20" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="179.7" y="30" width="57.7" height="20" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="239.4" y="30" width="57.7" height="20" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="299.1" y="30" width="57.7" height="20" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="358.8" y="30" width="57.7" height="20" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="418.5" y="30" width="57.7" height="20" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="478.2" y="30" width="19.8" height="20" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="506" y="45" font-size="10.5">6 x 512 + 187</text>
+<text class="tm" x="500" y="64" font-size="10" text-anchor="end">the last: 187 equations</text>
+<text class="ta" x="110" y="91" font-size="11" font-weight="600" text-anchor="end">batches of 543</text>
+<rect class="a af" x="120" y="76" width="61.31" height="20" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="183.31" y="76" width="61.31" height="20" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="246.63" y="76" width="61.31" height="20" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="309.94" y="76" width="61.31" height="20" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="373.26" y="76" width="61.31" height="20" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="436.57" y="76" width="61.31" height="20" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="499.88" y="76" width="2.5" height="20" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="506" y="91" font-size="10.5">6 x 543 + 1</text>
+<text class="ta" x="500" y="110" font-size="10" text-anchor="end">the last: 1 equation</text>
+<text class="tm mono" x="114" y="253.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="120" y1="190.0" x2="460" y2="190.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="114" y="193.5" font-size="10.5" text-anchor="end">0.5</text>
+<text class="tm mono" x="114" y="133.5" font-size="10.5" text-anchor="end">1</text>
+<line class="m" x1="120" y1="250" x2="120" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="120" y="266" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="253.64" y1="250" x2="253.64" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="253.64" y="266" font-size="10.5" text-anchor="middle">10</text>
+<line class="m" x1="387.29" y1="250" x2="387.29" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="387.29" y="266" font-size="10.5" text-anchor="middle">100</text>
+<line class="m" x1="460" y1="250" x2="460" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="460" y="266" font-size="10.5" text-anchor="middle">350</text>
+<rect class="m" x="120" y="130" width="340" height="120" rx="0" stroke-width="1.5"/>
+<text class="tm" x="290" y="282" font-size="11.5" text-anchor="middle">step (log scale)</text>
+<text class="tm" x="114" y="122" font-size="11.5">training accuracy</text>
+<polyline class="s" points="120.0,250.0 160.2,248.7 183.8,248.5 224.0,247.2 253.6,248.0 277.2,246.7 306.8,246.9 332.6,246.1 360.5,242.8 387.3,236.5 413.8,219.8 440.7,166.6 460.0,131.9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="s" points="120.0,250.0 160.2,248.6 183.8,248.5 224.0,248.7 253.6,248.7 277.2,248.4 306.8,246.8 332.6,245.7 360.5,242.9 387.3,235.5 413.8,212.8 440.7,158.1 460.0,131.1" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="s" points="120.0,249.0 160.2,248.5 183.8,248.6 224.0,248.0 253.6,248.6 277.2,248.2 306.8,246.8 332.6,245.6 360.5,244.7 387.3,240.3 413.8,228.2 440.7,177.5 460.0,140.0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="120.0,250.0 160.2,248.7 183.8,248.5 224.0,248.4 253.6,248.7 277.2,248.7 306.8,247.6 332.6,248.6 360.5,248.5 387.3,247.2 413.8,247.6 440.7,247.6 460.0,246.8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="120.0,250.0 160.2,248.6 183.8,248.3 224.0,248.7 253.6,248.9 277.2,248.9 306.8,248.6 332.6,247.3 360.5,247.3 387.3,247.3 413.8,247.5 440.7,247.1 460.0,247.1" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="120.0,249.0 160.2,248.3 183.8,248.4 224.0,248.4 253.6,248.7 277.2,248.7 306.8,248.6 332.6,248.8 360.5,248.6 387.3,247.2 413.8,247.2 440.7,247.2 460.0,246.9" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="476" y="150" font-size="10.5" font-weight="600">after 350 steps:</text>
+<text class="t mono" x="476" y="168" font-size="10.5">512: 0.964</text>
+<text class="ta mono" x="476" y="184" font-size="10.5">543: 0.0256</text>
+<text class="tm" x="476" y="200" font-size="10">(mean of 3 seeds)</text>
+</svg>

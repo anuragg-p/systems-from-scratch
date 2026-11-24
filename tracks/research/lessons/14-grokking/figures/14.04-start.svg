@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 352" fill="none">
+<title>At the paper&#x27;s 50% of the equations, weight decay 1, 3 seeds each: the GPT as it starts (every weight with sd 0.02, as GPT-2&#x27;s) against every weight but the layer norms&#x27; 10 times larger; dashed training, solid held out, a dot at each 99%</title>
+<defs><marker id="start1404-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="start1404-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="start1404-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="50" y="253.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="56" y1="200.0" x2="306" y2="200.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="50" y="203.5" font-size="10.5" text-anchor="end">0.25</text>
+<line class="m" x1="56" y1="150.0" x2="306" y2="150.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="50" y="153.5" font-size="10.5" text-anchor="end">0.5</text>
+<line class="m" x1="56" y1="100.0" x2="306" y2="100.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="50" y="103.5" font-size="10.5" text-anchor="end">0.75</text>
+<text class="tm mono" x="50" y="53.5" font-size="10.5" text-anchor="end">1</text>
+<line class="m" x1="56" y1="250" x2="56" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="56" y="266" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="122.17" y1="250" x2="122.17" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="122.17" y="266" font-size="10.5" text-anchor="middle">10</text>
+<line class="m" x1="188.34" y1="250" x2="188.34" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="188.34" y="266" font-size="10.5" text-anchor="middle">100</text>
+<line class="m" x1="254.51" y1="250" x2="254.51" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="254.51" y="266" font-size="10.5" text-anchor="middle">1000</text>
+<rect class="m" x="56" y="50" width="250" height="200" rx="0" stroke-width="1.5"/>
+<text class="tm" x="181" y="282" font-size="11.5" text-anchor="middle">step (log scale)</text>
+<text class="tm" x="50" y="42" font-size="11.5">accuracy</text>
+<text class="t" x="56" y="28" font-size="11.5" font-weight="700">the GPT&#x27;s own start</text>
+<line class="m" x1="56" y1="247.94" x2="306" y2="247.94" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<polyline class="s" points="56.0,249.9 75.9,247.7 87.6,247.6 102.3,245.8 107.5,247.5 111.9,247.6 122.2,247.7 127.4,247.9 133.8,245.7 140.6,245.7 148.5,245.4 154.7,245.0 161.3,245.4 168.4,245.0 175.1,245.0 181.6,244.9 188.3,244.5 194.8,243.5 201.5,241.7 208.1,239.1 214.8,230.5 221.4,203.0 228.0,167.5 234.6,88.6 241.2,50.2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="56.0,250.0 75.9,248.0 87.6,247.9 102.3,245.9 107.5,247.7 111.9,248.2 122.2,248.2 127.4,248.2 133.8,246.0 140.6,246.3 148.5,246.0 154.7,246.8 161.3,246.1 168.4,246.8 175.1,246.8 181.6,246.8 188.3,246.9 194.8,247.3 201.5,247.4 208.1,247.2 214.8,245.3 221.4,235.4 228.0,211.1 234.6,121.3 241.2,50.6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="241.23" cy="52" r="3.5" stroke-width="1.5"/>
+<circle class="a fa" cx="241.23" cy="52" r="3.5" stroke-width="1.5"/>
+<polyline class="s" points="56.0,249.4 75.9,247.6 87.6,247.9 102.3,247.4 107.5,247.6 111.9,247.6 122.2,247.7 127.4,247.7 133.8,247.7 140.6,247.6 148.5,246.7 154.7,246.0 161.3,245.7 168.4,245.4 175.1,245.5 181.6,244.7 188.3,243.4 194.8,242.2 201.5,240.7 208.1,236.1 214.8,231.7 221.4,222.9 228.0,207.9 234.6,95.3 241.2,51.1 247.9,50.0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="56.0,249.7 75.9,248.2 87.6,248.1 102.3,248.4 107.5,248.3 111.9,248.3 122.2,248.2 127.4,248.2 133.8,248.2 140.6,248.2 148.5,247.0 154.7,245.8 161.3,246.1 168.4,246.3 175.1,246.3 181.6,246.9 188.3,247.0 194.8,247.0 201.5,247.6 208.1,247.4 214.8,247.0 221.4,245.9 228.0,244.0 234.6,132.2 241.2,54.5 247.9,50.1" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="241.23" cy="52" r="3.5" stroke-width="1.5"/>
+<circle class="a fa" cx="247.88" cy="52" r="3.5" stroke-width="1.5"/>
+<polyline class="s" points="56.0,248.6 75.9,248.0 87.6,247.4 102.3,247.6 107.5,247.7 111.9,247.8 122.2,247.6 127.4,247.8 133.8,248.2 140.6,247.8 148.5,245.4 154.7,245.3 161.3,245.2 168.4,245.1 175.1,244.6 181.6,245.0 188.3,244.1 194.8,243.9 201.5,243.3 208.1,241.8 214.8,238.7 221.4,234.1 228.0,208.5 234.6,146.0 241.2,126.7 247.9,122.0 254.5,116.4 261.1,114.5 267.7,116.7 274.4,111.7 281.0,114.9 287.6,115.8 294.2,115.4 300.8,104.3 306.0,89.9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="56.0,248.4 75.9,248.2 87.6,248.4 102.3,248.2 107.5,248.2 111.9,248.1 122.2,248.3 127.4,248.2 133.8,247.9 140.6,248.1 148.5,246.6 154.7,247.2 161.3,246.6 168.4,246.6 175.1,247.1 181.6,246.7 188.3,247.5 194.8,247.8 201.5,248.1 208.1,248.2 214.8,248.0 221.4,247.7 228.0,237.7 234.6,192.8 241.2,177.6 247.9,176.3 254.5,180.2 261.1,184.9 267.7,181.0 274.4,183.2 281.0,181.8 287.6,182.9 294.2,192.4 300.8,188.5 306.0,196.2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="374" y="253.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="380" y1="200.0" x2="630" y2="200.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="374" y="203.5" font-size="10.5" text-anchor="end">0.25</text>
+<line class="m" x1="380" y1="150.0" x2="630" y2="150.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="374" y="153.5" font-size="10.5" text-anchor="end">0.5</text>
+<line class="m" x1="380" y1="100.0" x2="630" y2="100.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="374" y="103.5" font-size="10.5" text-anchor="end">0.75</text>
+<text class="tm mono" x="374" y="53.5" font-size="10.5" text-anchor="end">1</text>
+<line class="m" x1="380" y1="250" x2="380" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="380" y="266" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="446.17" y1="250" x2="446.17" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="446.17" y="266" font-size="10.5" text-anchor="middle">10</text>
+<line class="m" x1="512.34" y1="250" x2="512.34" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="512.34" y="266" font-size="10.5" text-anchor="middle">100</text>
+<line class="m" x1="578.51" y1="250" x2="578.51" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="578.51" y="266" font-size="10.5" text-anchor="middle">1000</text>
+<rect class="m" x="380" y="50" width="250" height="200" rx="0" stroke-width="1.5"/>
+<text class="tm" x="505" y="282" font-size="11.5" text-anchor="middle">step (log scale)</text>
+<text class="ta" x="380" y="28" font-size="11.5" font-weight="700">10 times larger</text>
+<line class="m" x1="380" y1="247.94" x2="630" y2="247.94" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<polyline class="s" points="380.0,248.0 399.9,247.8 411.6,247.5 426.3,247.8 431.5,247.8 435.9,247.3 446.2,247.3 451.4,246.9 457.8,245.9 464.6,245.7 472.5,245.5 478.7,244.9 485.3,244.8 492.4,244.2 499.1,244.6 505.6,243.9 512.3,243.2 518.8,241.3 525.5,234.4 532.1,214.9 538.8,168.5 545.4,107.9 552.0,60.8 558.6,50.2 565.2,50.1 571.9,50.0 578.5,50.0 585.1,50.0 591.7,50.6 598.4,50.1 605.0,51.4 611.6,50.0 618.2,50.1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="380.0,248.2 399.9,247.9 411.6,247.6 426.3,247.7 431.5,248.0 435.9,248.4 446.2,248.3 451.4,247.5 457.8,246.7 464.6,246.3 472.5,245.9 478.7,246.4 485.3,246.2 492.4,246.2 499.1,246.5 505.6,246.8 512.3,246.9 518.8,247.1 525.5,247.2 532.1,247.6 538.8,247.7 545.4,247.8 552.0,247.7 558.6,247.5 565.2,247.2 571.9,247.1 578.5,247.0 585.1,246.7 591.7,247.1 598.4,246.4 605.0,241.2 611.6,56.3 618.2,50.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="558.65" cy="52" r="3.5" stroke-width="1.5"/>
+<circle class="a fa" cx="618.21" cy="52" r="3.5" stroke-width="1.5"/>
+<polyline class="s" points="380.0,248.1 399.9,248.4 411.6,247.8 426.3,247.6 431.5,247.6 435.9,247.3 446.2,247.6 451.4,247.7 457.8,247.6 464.6,247.7 472.5,247.4 478.7,247.6 485.3,247.3 492.4,245.8 499.1,245.9 505.6,244.9 512.3,244.3 518.8,244.5 525.5,241.6 532.1,237.8 538.8,227.9 545.4,196.7 552.0,138.3 558.6,77.8 565.2,51.8 571.9,50.4 578.5,50.0 585.1,50.0 591.7,50.3 598.4,51.6 605.0,51.4 611.6,50.0 618.2,50.0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="380.0,247.6 399.9,247.7 411.6,247.8 426.3,248.0 431.5,248.0 435.9,248.4 446.2,247.9 451.4,248.2 457.8,248.4 464.6,248.3 472.5,247.5 478.7,247.5 485.3,248.3 492.4,246.3 499.1,245.9 505.6,246.4 512.3,247.0 518.8,246.4 525.5,247.3 532.1,247.3 538.8,247.3 545.4,247.5 552.0,247.7 558.6,247.3 565.2,247.6 571.9,247.3 578.5,247.6 585.1,247.3 591.7,247.3 598.4,246.5 605.0,243.9 611.6,52.5 618.2,50.0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="565.23" cy="52" r="3.5" stroke-width="1.5"/>
+<circle class="a fa" cx="618.21" cy="52" r="3.5" stroke-width="1.5"/>
+<polyline class="s" points="380.0,248.3 399.9,247.7 411.6,248.1 426.3,248.2 431.5,248.0 435.9,248.0 446.2,247.9 451.4,247.7 457.8,247.9 464.6,247.2 472.5,245.7 478.7,245.6 485.3,245.0 492.4,244.7 499.1,245.2 505.6,244.9 512.3,244.7 518.8,243.7 525.5,242.1 532.1,239.0 538.8,228.6 545.4,201.7 552.0,147.8 558.6,87.4 565.2,55.4 571.9,51.3 578.5,50.4 585.1,50.2 591.7,54.6 598.4,55.3 605.0,51.9 611.6,50.0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="380.0,247.9 399.9,247.8 411.6,248.4 426.3,248.3 431.5,248.3 435.9,248.3 446.2,247.7 451.4,248.0 457.8,247.7 464.6,247.8 472.5,247.4 478.7,246.5 485.3,246.9 492.4,247.0 499.1,246.5 505.6,247.1 512.3,246.6 518.8,247.3 525.5,247.6 532.1,247.9 538.8,248.1 545.4,247.8 552.0,248.1 558.6,247.9 565.2,248.1 571.9,247.6 578.5,247.6 585.1,247.4 591.7,247.6 598.4,246.9 605.0,241.8 611.6,50.0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="571.88" cy="52" r="3.5" stroke-width="1.5"/>
+<circle class="a fa" cx="611.59" cy="52" r="3.5" stroke-width="1.5"/>
+<text class="t" x="56" y="306" font-size="10.5" font-weight="600">times later: 1.0, 1.3, never</text>
+<text class="tm" x="56" y="324" font-size="10.5">the norm: 27.4 at the start,</text>
+<text class="tm" x="56" y="340" font-size="10.5">22.4, 22.8, - at the held-out 99%</text>
+<text class="ta" x="380" y="306" font-size="10.5" font-weight="600">times later: 7.9, 6.3, 4.0</text>
+<text class="tm" x="380" y="324" font-size="10.5">the norm: 109.4 at the start,</text>
+<text class="tm" x="380" y="340" font-size="10.5">23.5, 27.2, 33.6 at the held-out 99%</text>
+</svg>

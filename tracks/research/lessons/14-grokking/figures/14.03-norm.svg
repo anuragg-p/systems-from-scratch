@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 294" fill="none">
+<title>The weights&#x27; norm over the same run, 3 seeds, a dot where the held-out accuracy reached 99%; most of it, from the start, is the layer norms&#x27; 640 ones</title>
+<defs><marker id="norm1403-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="norm1403-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="norm1403-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="60" y1="207.6" x2="490" y2="207.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="211.15" font-size="10.5" text-anchor="end">22</text>
+<line class="m" x1="60" y1="162.9" x2="490" y2="162.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="166.44" font-size="10.5" text-anchor="end">24</text>
+<line class="m" x1="60" y1="118.2" x2="490" y2="118.2" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="121.74" font-size="10.5" text-anchor="end">26</text>
+<line class="m" x1="60" y1="73.5" x2="490" y2="73.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="77.03" font-size="10.5" text-anchor="end">28</text>
+<line class="m" x1="60" y1="230" x2="60" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="60" y="246" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="176.25" y1="230" x2="176.25" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="176.25" y="246" font-size="10.5" text-anchor="middle">10</text>
+<line class="m" x1="292.5" y1="230" x2="292.5" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="292.5" y="246" font-size="10.5" text-anchor="middle">100</text>
+<line class="m" x1="408.75" y1="230" x2="408.75" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="408.75" y="246" font-size="10.5" text-anchor="middle">1000</text>
+<line class="m" x1="490" y1="230" x2="490" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="490" y="246" font-size="10.5" text-anchor="middle">5000</text>
+<rect class="m" x="60" y="40" width="430" height="190" rx="0" stroke-width="1.5"/>
+<text class="tm" x="275" y="262" font-size="11.5" text-anchor="middle">step (log scale)</text>
+<text class="tm" x="54" y="32" font-size="11.5">the weights&#x27; norm</text>
+<line class="m" x1="60" y1="133.92" x2="490" y2="133.92" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="64" y="128.92" font-size="10.5">the layer norms&#x27; 640 ones alone: 25.3</text>
+<polyline class="a" points="60.0,86.0 95.0,86.1 115.5,86.2 130.0,86.5 141.3,86.7 150.5,87.1 158.2,87.4 165.0,87.8 176.2,88.7 181.1,89.2 185.5,89.7 193.2,90.5 196.7,90.9 203.0,91.6 208.7,92.3 216.1,93.5 222.5,94.5 228.2,95.7 233.4,96.9 239.5,98.4 245.0,99.9 251.0,101.7 257.5,103.9 263.2,105.8 269.2,107.7 274.5,109.3 280.6,111.2 286.6,112.7 292.5,113.7 298.2,114.1 303.8,114.6 309.8,114.2 315.6,112.5 321.3,109.9 327.2,106.9 333.0,103.2 339.0,98.3 344.7,93.3 350.6,88.8 356.3,86.7 362.2,87.3 368.0,91.3 373.9,97.4 379.7,90.1 385.4,104.5 391.2,127.7 397.1,104.2 402.9,137.7 408.7,108.2 414.6,108.8 420.3,124.0 426.2,89.0 432.0,83.2 437.8,117.1 443.6,117.2 449.4,128.8 455.2,130.2 461.1,140.4 466.9,112.6 472.7,149.9 478.5,120.1 484.3,133.0 490.0,114.8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="449.42" cy="128.83" r="3.5" stroke-width="1.5"/>
+<polyline class="a" points="60.0,85.7 95.0,85.8 115.5,86.0 130.0,86.2 141.3,86.5 150.5,86.9 158.2,87.2 165.0,87.6 176.2,88.6 181.1,89.1 185.5,89.6 193.2,90.5 196.7,91.0 203.0,91.9 208.7,92.7 216.1,93.8 222.5,94.9 228.2,96.2 233.4,97.4 239.5,99.0 245.0,100.5 251.0,102.4 257.5,104.5 263.2,106.5 269.2,108.5 274.5,110.3 280.6,112.4 286.6,114.1 292.5,115.1 298.2,115.5 303.8,115.2 309.8,114.3 315.6,113.1 321.3,111.6 327.2,108.4 333.0,104.4 339.0,99.7 344.7,95.6 350.6,92.3 356.3,91.2 362.2,92.8 368.0,98.9 373.9,106.7 379.7,96.1 385.4,113.6 391.2,136.0 397.1,116.3 402.9,143.0 408.7,128.4 414.6,159.8 420.3,145.4 426.2,136.0 432.0,180.1 437.8,184.4 443.6,163.4 449.4,170.1 455.2,160.9 461.1,175.6 466.9,193.6 472.7,173.2 478.5,164.6 484.3,173.9 490.0,170.6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="437.8" cy="184.38" r="3.5" stroke-width="1.5"/>
+<polyline class="a" points="60.0,86.0 95.0,86.1 115.5,86.3 130.0,86.5 141.3,86.8 150.5,87.2 158.2,87.6 165.0,88.0 176.2,89.0 181.1,89.5 185.5,90.0 193.2,91.0 196.7,91.5 203.0,92.5 208.7,93.3 216.1,94.5 222.5,95.4 228.2,96.0 233.4,96.8 239.5,98.1 245.0,99.4 251.0,101.2 257.5,103.6 263.2,106.0 269.2,108.4 274.5,110.5 280.6,112.8 286.6,114.7 292.5,116.5 298.2,117.6 303.8,118.0 309.8,118.0 315.6,116.9 321.3,115.2 327.2,113.1 333.0,111.6 339.0,108.5 344.7,104.8 350.6,101.1 356.3,97.9 362.2,95.6 368.0,94.7 373.9,95.3 379.7,95.6 385.4,93.7 391.2,95.3 397.1,112.8 402.9,104.3 408.7,110.1 414.6,122.6 420.3,100.9 426.2,91.6 432.0,91.7 437.8,79.1 443.6,60.2 449.4,73.6 455.2,92.2 461.1,101.8 466.9,115.7 472.7,168.5 478.5,171.1 484.3,138.6 490.0,171.4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="a fa" cx="455.23" cy="92.23" r="3.5" stroke-width="1.5"/>
+<text class="t" x="504" y="56" font-size="11" font-weight="700">the norm</text>
+<text class="t" x="504" y="76" font-size="10.5">at the start 27.4:</text>
+<text class="tm" x="504" y="90" font-size="10.5">layer norms 25.3,</text>
+<text class="tm" x="504" y="104" font-size="10.5">the rest 10.6</text>
+<text class="t" x="504" y="126" font-size="10.5">at the held-out 99%:</text>
+<text class="ta" x="504" y="140" font-size="10.5">25.5, 23.0, 27.2</text>
+<text class="tm" x="504" y="154" font-size="10.5">of its highest before:</text>
+<text class="ta" x="504" y="168" font-size="10.5">0.93, 0.84, 0.95</text>
+<text class="tm" x="60" y="286" font-size="10.5">The norm is the square root of a sum of squares: 25.3^2 + 10.6^2 = 27.4^2, so a change in the rest moves it little.</text>
+</svg>
