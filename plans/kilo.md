@@ -184,7 +184,8 @@ teaches only the buffer (plans/dsa.md).
   in one poll(); writes queued and written as the pipe takes them; the
   whole text sent 300 ms after the last key, a waiting change replaced by
   a newer one; diagnostics underlined by drawing over the row, counted in
-  the message line, and the cursor row's message at a pause; Ctrl-G to a
+  the message line when they change, or, when the cursor's row has one, its
+  message instead (as the list arrives, and at a pause); Ctrl-G to a
   definition (another file only with no unsaved changes), Ctrl-B back.
 - Independence holds: the project at all 16 core lessons and the 5 of 06
   is byte for byte what it was (diff -r); at a 07 lesson module 06 is not

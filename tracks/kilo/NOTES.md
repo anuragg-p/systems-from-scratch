@@ -1042,7 +1042,7 @@ it, "Departures from the design" below says where and why.
 | file | lines in tracks/ (markers and instructions in) | what it is |
 |---|---|---|
 | lsp.h | 51 | what kilo.c calls (lspStart, lspPump until 07.04, lspWaitKey, lspDrawRow, lspDefinition, lspBack) and what lsp.c calls in kilo.c (editorSetStatusMessage, editorRefreshScreen, editorRowsToString, abAppend, editorCursor, editorJump); `struct abuf;` as an incomplete type |
-| lsp.c | 1505 | the client: the server table, starting and stopping, frames, the session, poll(), diagnostics, definitions |
+| lsp.c | 1523 | the client: the server table, starting and stopping, frames, the session, poll(), diagnostics, definitions |
 | json.h | 60 | the JSON tree (`struct json`), the reader's and getters' prototypes, jsonQuote |
 | json.c | 424 | the reader (recursive descent, depth cap) and the one writer helper; knows nothing of kilo or LSP |
 | Makefile | | from 07.01 `kilo.c lsp.c`, from 07.02 `kilo.c lsp.c json.c`, same flags |
@@ -1051,13 +1051,13 @@ The project at each lesson (lines, `./learn files kilo --at 07.LL`):
 
 | lesson | kilo.c | lsp.c | lsp.h | json.c | json.h |
 |---|---|---|---|---|---|
-| 07.01 | 1070 | 237 | 15 | - | - |
-| 07.02 | 1071 | 502 | 17 | 59 | 15 |
-| 07.03 | 1071 | 542 | 17 | 370 | 49 |
-| 07.04 | 1071 | 576 | 17 | 370 | 49 |
-| 07.05 | 1071 | 798 | 18 | 370 | 49 |
-| 07.06 | 1085 | 1076 | 28 | 370 | 49 |
-| 07.07 | 1137 | 1224 | 31 | 370 | 49 |
+| 07.01 | 1070 | 248 | 15 | - | - |
+| 07.02 | 1071 | 513 | 17 | 59 | 15 |
+| 07.03 | 1071 | 553 | 17 | 370 | 49 |
+| 07.04 | 1071 | 587 | 17 | 370 | 49 |
+| 07.05 | 1071 | 809 | 18 | 370 | 49 |
+| 07.06 | 1085 | 1091 | 28 | 370 | 49 |
+| 07.07 | 1137 | 1239 | 31 | 370 | 49 |
 
 lsp.c in order: the limits; the servers (`struct lspServer`, `LSPDB` with a
 C stanza and a C++ stanza, `lspServerFor`); the state (`struct lspBuf`,
@@ -1183,14 +1183,6 @@ the scripted server answering shutdown, 0.013 s; clangd 21, 0.026 s.
   run the finished editor on .c files; they set KILO_LSP= so none of them
   starts clangd (edit(..., lsp=None), the default).
 - **Two stanzas, C and C++**, both clangd, so languageId is "c" or "cpp".
-- **The counts are said when they change**, not on every list: with
-  clangd a list comes after every change, the same counts each time while
-  you type on an error's row, and saying them every time would replace the
-  row's message. "lsp: no problems" is said when they go to none.
-- **The row's message shows at the pause after the list arrives.** As
-  designed; but clangd's list for a change comes about 60 ms after the
-  pause that sent the change, so the message of an error just typed shows
-  only at the next pause (an arrow, Left then Right). Worth revisiting.
 - **Ctrl-G with no server at all says "lsp: no server"**; "lsp: not ready"
   is for a server that has not answered initialize.
 - **editorJump says "Unsaved changes: save first (Ctrl-S), then try
@@ -1209,11 +1201,23 @@ the scripted server answering shutdown, 0.013 s; clangd 21, 0.026 s.
 - **The 8 MB bound is checked before a new message is queued**, so one
   large didOpen is allowed; the didChange replacement never adds to the
   queue.
-- Added for safety: the child resets SIGWINCH to the default before exec
-  (until exec it runs kilo's handler, which would draw a frame into the
-  pipe); SIGWINCH is held back while the diagnostics list changes (the
-  handler draws rows); every function that talks to the server returns at
-  once when none is running (see "Found on the way", the first).
+- Added for safety: SIGWINCH is held back while the diagnostics list
+  changes (the resize handler draws rows); every function that talks to
+  the server returns at once when none is running (see "Found on the way",
+  the first). And SIGWINCH is held back across fork() (07.01, below).
+
+Two rules of the design changed after the first review, and are the
+design now:
+
+- **The message line when a list arrives** (07.06): if the cursor's row
+  has a diagnostic, it is said ("6: error: ..."), the one under the
+  cursor or the row's first, and not the counts; otherwise the counts,
+  only when they differ from the ones last said. Either way the counts are
+  noted as said, so a later list with the same counts says nothing. The
+  pause still says the diagnostic of the row the cursor has come to. With
+  clangd a list comes about 60 ms after the pause that sent the change; so
+  an error typed where the cursor is is said at once, with no other key.
+- **SIGWINCH across fork()** (07.01): see there.
 
 ### How the screens below were captured
 
@@ -1278,7 +1282,18 @@ So in[0]=3, in[1]=4, out[0]=5, out[1]=6, err[0]=7, err[1]=8, /dev/null 9
 in the child; kilo keeps 4 (to the server) and 5 (from it). When exec
 fails (KILO_LSP a missing path): `read(err) gave 4 bytes, an errno`,
 errno 2 (No such file or directory), sizeof(int) = 4; then the child
-(exit 127) is reaped at once.
+(exit 127) is reaped at once. (Taken again on the final code, with the
+change below: the same.)
+
+Between fork() and exec the child runs kilo's code, its SIGWINCH handler
+too, which would draw a screen from the child: so lspSpawn blocks SIGWINCH
+with sigprocmask() before fork(); the child sets it to SIG_DFL and then
+restores the mask (a mask still blocking it is inherited across exec), and
+the parent restores the mask once fork() has returned, when a resize that
+came meanwhile is drawn as usual. The scripted server logs the signals it
+starts with blocked; 0701 checks SIGWINCH is not one (with the child's
+restore left out, the test fails: `signals blocked in the server: [28]`,
+macOS).
 
 ### 07.02 Messages: Content-Length and JSON-RPC
 
@@ -1332,9 +1347,10 @@ Idle for 5 s with the scripted server running: **53 wakeups at 07.03
 (10.6 a second), 2 at 07.04** (the pause, and the server's answer). The
 delay from the server writing its answer to kilo's frame with it reaching
 the terminal (the server's log of its write and the test's read of the
-pseudo-terminal, both on Python's monotonic clock), 20 runs each: **07.03
-min 1.4 ms, median 45.5 ms, max 100.3 ms; 07.04 min 0.1 ms, median 0.2
-ms, max 0.7 ms**.
+pseudo-terminal, both on Python's monotonic clock), 20 runs each, two
+sets: **07.03 min 1.4 ms, median 45.5 ms, max 100.3 ms (and 12.4, 56.4,
+101.9); 07.04 min 0.1 ms, median 0.2 ms, max 0.7 ms (and 0.1, 0.2,
+1.2)**. The wakeup counts were the same both times.
 
 ### 07.05 Telling the server what you see: didOpen and didChange
 
@@ -1384,31 +1400,38 @@ didClose; after a switch that is the other file's uri, so it is ignored.
 
 ### 07.06 Diagnostics: errors as you type
 
-On the project at 07.06, the error typed:
+On the project at 07.06, 2 s after the Backspace that makes `totl`, with
+no other key (the cursor is on the error's row, so its message is said as
+the list arrives, and the counts are not):
 
 ```
+    |#include <stdio.h>
+    |#include "add.h"
+    |
+    |int main(void) {
     |        int [_:total] = add(2, 3);
     |        printf("%d\n", [_:totl]);
     |        return 0;
     |}
     |sam ple/sum.c - 8 lines (modified)                                   6/8
-    |lsp: 1 error, 1 info
+    |6: error: Use of undeclared identifier 'totl'; did you mean 'total'? (fi
+    [cursor 6,27]
 ```
 
-clangd 21 sends two: the error, range line 5 characters 16 to 20 (`totl`),
+(The message is cut at the screen's 72 columns.) clangd 21 sends two
+diagnostics: the error, range line 5 characters 16 to 20 (`totl`),
 severity 1, message "Use of undeclared identifier 'totl'; did you mean
 'total'? (fix available)\n\nsum.c:5:6: note: 'total' declared here"; and
 its note as a diagnostic of its own, line 4 characters 5 to 10 (`total` in
-`int total`), severity 3, "'total' declared here\n\n...". Hence "1 error,
-1 info", and `total` underlined too. Left, Right (the cursor rests on the
-row):
+`int total`), severity 3, "'total' declared here\n\n...". So `total` is
+underlined too, and the counts noted as said are 1 error, 1 info. With the
+cursor on a row without one when such a list comes (sum.c opened with
+`totl` already in it, the cursor on row 1), the message line says
+`lsp: 1 error, 1 info`.
 
-```
-    |6: error: Use of undeclared identifier 'totl'; did you mean 'total'? (fi
-```
-
-The fix: no underline, `lsp: no problems`. The bytes kilo writes for the
-error's row, at 07.06 (core + 07):
+The fix (`a` typed back): no underline, `lsp: no problems` (the cursor's
+row has none, and the counts went to none). The bytes kilo writes for the
+error's row, in the frame above (core + 07, at 07.06):
 
 ```
         printf("%d\n", totl);ESC[0K \r ESC[23C ESC[4m totl ESC[0m \r\n
@@ -1641,7 +1664,8 @@ project a reader sees):
   Python file the test writes: `on_message(srv, msg)` and `srv` settings,
   with `srv.raw`, `srv.pieces`, `srv.frame`, `srv.reply`, `srv.notify`,
   `srv.die`. It logs every message it gets, with times, and the
-  descriptors it was started with; it exits on end of input, and on its
+  descriptors it was started with, and the signals it started with
+  blocked; it exits on end of input, and on its
   own when kilo has gone or after 120 s.
 - Screen keeps underline (ESC [ 4 m, 24 m and 0 m end it) per cell:
   `ed.under(n)` paints underlined runs `[_:text]`, `ed.underlined(n)` lists
@@ -1672,8 +1696,9 @@ project a reader sees):
   (TIMELINE_LSP_TEXT) with the scripted server, never clangd, so it is the
   same on any machine: the message each lesson's code leads to (started,
   the raw reply, ready, the counts), the cursor past a tab, typing and
-  Backspace from 07.05, the error underlined and its message at the pause
-  from 07.06, Ctrl-G, Ctrl-B and Ctrl-B again at 07.07. The relay's
+  Backspace from 07.05, the error underlined and its message with the
+  cursor on its row from 07.06 (the first screen, the cursor on a row with
+  none, shows the counts), Ctrl-G, Ctrl-B and Ctrl-B again at 07.07. The relay's
   `until REGEX` waits for what the server causes (under four parallel jobs
   the scripted server can take longer than the 0.4 s of quiet "screen"
   waits for). timeline_after checks learn.c untouched and the scripted
