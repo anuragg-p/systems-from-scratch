@@ -28,7 +28,7 @@
  "out": "experiments/recorded",
  "seed": 0,
  "seeds": 2,
- "steps": 1500,
+ "steps": 2800,
  "warmup": 100,
  "weight_decay": 0.1,
  "width": 192

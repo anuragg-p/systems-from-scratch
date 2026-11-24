@@ -1,7 +1,7 @@
 {
- "end_held_bits": 2.18984055519104,
- "lowest_held_bits": 2.18984055519104,
- "lowest_step": 1499,
- "test_bits": 2.37059665518903,
- "val_bits": 2.1849702439547674
+ "end_held_bits": 1.9981883764266968,
+ "lowest_held_bits": 1.9975101947784424,
+ "lowest_step": 2600,
+ "test_bits": 2.2155624126157942,
+ "val_bits": 2.001613836731341
 }

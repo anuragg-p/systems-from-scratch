@@ -12,36 +12,36 @@
    07.03's recurrent network, 5000 steps (1 seed)             2.369
 
 2. The GPT: 6 blocks of 6 heads, width 192, windows of 256: 2,731,200 weights.
-   1500 steps of 32 windows (12.2 passes over the training text), AdamW 0.002 (weight decay 0.1),
+   2800 steps of 32 windows (22.8 passes over the training text), AdamW 0.002 (weight decay 0.1),
    100 steps of warmup then a cosine to 0; 2 seeds each. Bits per character (each character with 64 or more before it):
-   dropout 0.0: test 2.257 +- 0.005479 (min 2.253, max 2.261, 2 seeds)
-                validation 2.052 +- 0.004654 (min 2.049, max 2.055, 2 seeds)
-                validation curve (64 windows) lowest at step 1499 (2.044, end 2.044), 1499 (2.054, end 2.054)
-   dropout 0.2: test 2.378 +- 0.01022 (min 2.371, max 2.385, 2 seeds)
-                validation 2.211 +- 0.03694 (min 2.185, max 2.237, 2 seeds)
-                validation curve (64 windows) lowest at step 1499 (2.190, end 2.190), 1499 (2.249, end 2.249)
-   dropout 0.2 against 0.0, test: t = +14.7
+   dropout 0.0: test 2.361 +- 0.02564 (min 2.343, max 2.379, 2 seeds)
+                validation 2.098 +- 0.01694 (min 2.086, max 2.11, 2 seeds)
+                validation curve (64 windows) lowest at step 1800 (2.040, end 2.089), 2000 (2.027, end 2.056)
+   dropout 0.2: test 2.226 +- 0.01542 (min 2.216, max 2.237, 2 seeds)
+                validation 2.015 +- 0.01929 (min 2.002, max 2.029, 2 seeds)
+                validation curve (64 windows) lowest at step 2600 (1.998, end 1.998), 2799 (2.027, end 2.027)
+   dropout 0.2 against 0.0, test: t = -6.4
    curves in experiments/recorded/gpt/curves.svg
 
-3. The checkpoint: dropout 0.0, seed 0 (the lowest validation bits), saved to experiments/recorded/gpt/model.safetensors;
+3. The checkpoint: dropout 0.2, seed 0 (the lowest validation bits), saved to experiments/recorded/gpt/model.safetensors;
    loaded back, the same scores, number for number: True
 
 4. 500 characters from it, after a newline:
 
-   Thy father had self Warwick exhally daregels,
-   Bear of thy hounty here hath good beheld!
-   Thou hadst date, yet awaked many send
-   At were no more those eyes to for me Iight,
-   And the contrary. Who! Brave a mother plain
-   Of you,--
-   I have feigned queen to this still effect,
-   As toing thy world's soft that hangmen thou wilt,
-   For they hath, but noses much thy rages behold
-   Upon full goundly will thee and like,
-   I not pretnise the feeter by the justice.
+   thou makest awhile fild can examply in the strength
+   our conduction.
+   My son of bloody Coriolanus Capulet,
+   He reign with committed, true nember their peace
+   And almost behind a cheech to muzzer thee.
+   So I fearful free it, my lord, say, if thou dost of wine.
+   My lord of night, but I cannot not from myself?
+   . How do I see to live thee, speak show, will I rather?
 
-   BRUTUS:
-   We promised, befooth cut him I will not,
-   Tettiv
+   POLIXENES:
+   O force disvolutation out a good. Thou wilt away, I fair,
+   at thy grief thief, and more than my brothers.
 
-1760 s of counting, training and scoring on cpu
+   AUTOLYCUS:
+   One comes th
+
+3371 s of counting, training and scoring on cpu

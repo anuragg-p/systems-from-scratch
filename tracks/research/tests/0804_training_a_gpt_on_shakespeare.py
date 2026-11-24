@@ -7,8 +7,10 @@ models again (6.022, 4.850 and 3.599 bits on the test text); lowest finds the lo
 validation curve. The short run: the GPT ends below the pair model, its validation curve logged,
 the checkpoint written and read back with the same scores; and the same seed gives the same bytes
 again. The recorded long run (experiments/recorded/gpt) has every file and no weights, and its
-result: every seed of the GPT below module 07's best count model and its best network. With
-LEARN_RERUN_LONG=1 the long run is run again (about an hour).
+result: without dropout every seed's validation curve turns up before the end; dropout gives the
+lower validation bits; and every seed of the setting chosen on validation is below module 07's best
+(its network and deleted interpolation mixed). With LEARN_RERUN_LONG=1 the long run is run again
+(about an hour).
 """
 
 import json
@@ -82,7 +84,11 @@ def check_recorded(t, d, rerun=False):
                     all("held_bits" in row for row in rows), f"{where}: {run}/log.jsonl should have the validation curve")
             with open(os.path.join(run, "summary.json")) as f:
                 got.setdefault(dropout, []).append(json.load(f))
+    for s in got[0.0]:
+        t.check(s["lowest_step"] < cfg["steps"] - 1 and s["end_held_bits"] > s["lowest_held_bits"] + 0.02,
+                f"{where}: without dropout the validation curve should turn up before the end: {s}")
     best = min(cfg["dropouts"], key=lambda dr: sum(s["val_bits"] for s in got[dr]))
+    t.check(best != 0.0, f"{where}: with dropout the validation bits should be lower than without: {got}")
     bits = [s["test_bits"] for s in got[best]]
     t.check(max(bits) < 2.283, f"{where}: every seed of the GPT (dropout {best}, chosen on validation) should be "
                                f"below module 07's best (2.283, its network and interpolation mixed): {bits}")
