@@ -667,7 +667,7 @@ Track `dsa` - kind: algorithms - 43 lessons - on the site: `./learn serve`, then
 
 ### A text editor in C, from scratch
 
-Track `kilo` - kind: editor - 16 lessons, +1 optional module - on the site: `./learn serve`, then /t/kilo
+Track `kilo` - kind: editor - 16 lessons, +2 optional modules - on the site: `./learn serve`, then /t/kilo
 
 
 **Module 00 - The workbench**
@@ -709,15 +709,25 @@ Track `kilo` - kind: editor - 16 lessons, +1 optional module - on the site: `./l
 
 **Module 06 - Syntax highlighting** (optional)
 
-- 06.01 [A colour for every character](tracks/kilo/lessons/06-highlighting/06.01-a-colour-for-every-character.md) - with code
-- 06.02 [Numbers and strings](tracks/kilo/lessons/06-highlighting/06.02-numbers-and-strings.md) - with code
-- 06.03 [Comments, on one line and across many](tracks/kilo/lessons/06-highlighting/06.03-comments-on-one-line-and-across-many.md) - with code
-- 06.04 [Keywords](tracks/kilo/lessons/06-highlighting/06.04-keywords.md) - with code
-- 06.05 [Showing the match](tracks/kilo/lessons/06-highlighting/06.05-showing-the-match.md) - with code
+- 06.01 [A colour for every character](tracks/kilo/lessons/06-highlighting/06.01-a-colour-for-every-character.md) - with code, decision boundary
+- 06.02 [Numbers and strings](tracks/kilo/lessons/06-highlighting/06.02-numbers-and-strings.md) - with code, decision boundary
+- 06.03 [Comments, on one line and across many](tracks/kilo/lessons/06-highlighting/06.03-comments-on-one-line-and-across-many.md) - with code, decision boundary
+- 06.04 [Keywords](tracks/kilo/lessons/06-highlighting/06.04-keywords.md) - with code, decision boundary
+- 06.05 [Showing the match](tracks/kilo/lessons/06-highlighting/06.05-showing-the-match.md) - with code, decision boundary
+
+**Module 07 - A language server client** (optional)
+
+- 07.01 [Starting a server: fork, exec and three pipes](tracks/kilo/lessons/07-language-server/07.01-starting-a-server-fork-exec-and-three-pipes.md) - with code
+- 07.02 [Messages: Content-Length and JSON-RPC](tracks/kilo/lessons/07-language-server/07.02-messages-content-length-and-json-rpc.md) - with code
+- 07.03 [Reading JSON: just enough of a parser](tracks/kilo/lessons/07-language-server/07.03-reading-json-just-enough-of-a-parser.md) - with code
+- 07.04 [Keys and the server at once: poll()](tracks/kilo/lessons/07-language-server/07.04-keys-and-the-server-at-once-poll.md) - with code
+- 07.05 [Telling the server what you see: didOpen and didChange](tracks/kilo/lessons/07-language-server/07.05-telling-the-server-what-you-see-didopen-and-didchange.md) - with code
+- 07.06 [Diagnostics: errors as you type](tracks/kilo/lessons/07-language-server/07.06-diagnostics-errors-as-you-type.md) - with code
+- 07.07 [Go to definition](tracks/kilo/lessons/07-language-server/07.07-go-to-definition.md) - with code
 
 ### AI research, from a first experiment to your own result
 
-Track `research` - kind: research - 27 lessons - on the site: `./learn serve`, then /t/research
+Track `research` - kind: research - 31 lessons - on the site: `./learn serve`, then /t/research
 
 
 **Module 00 - The workbench**
@@ -764,6 +774,13 @@ Track `research` - kind: research - 27 lessons - on the site: `./learn serve`, t
 - 05.02 [Weight decay and dropout](tracks/research/lessons/05-generalisation/05.02-weight-decay-and-dropout.md) - with code
 - 05.03 [More data for free: augmentation](tracks/research/lessons/05-generalisation/05.03-more-data-for-free-augmentation.md) - with code
 - 05.04 [Double descent: when a bigger model overfits less](tracks/research/lessons/05-generalisation/05.04-double-descent-when-a-bigger-model-overfits-less.md) - with code
+
+**Module 06 - Module 06**
+
+- 06.01 Convolution: the same weights at every position
+- 06.02 One import: the same script on PyTorch
+- 06.03 A convolutional network on CIFAR-10
+- 06.04 ResNet: the plain network against the residual one
 
 ### A Unix kernel for RISC-V, from scratch
 
