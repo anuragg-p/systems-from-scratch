@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 288" fill="none">
+<title>Keys on a time line, each with the kind undoKey() gives it, and the steps they make: a step is a run of keys of one kind, and any other key ends it</title>
+<defs><marker id="f0803a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0803a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0803a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 08.03: the kind of each key, from a build that logged undoKey(), and the steps on the undo stack</text>
+<text class="t" x="24" y="48" font-size="11.5" font-weight="700">NOTES.md&#x27;s keys, on notes.txt</text>
+<text class="ta" x="616" y="48" font-size="11.5" font-weight="700" text-anchor="end">8 keys, 3 steps</text>
+<rect class="m f" x="24" y="88" width="37.52" height="22" rx="5" stroke-width="1.5"/>
+<text class="tm" x="42.76" y="103" font-size="10.5" font-weight="600" text-anchor="middle">Down</text>
+<text class="tm" x="42.76" y="124" font-size="9.5" font-weight="600" text-anchor="middle">other</text>
+<text class="tm" x="42.76" y="78" font-size="9" text-anchor="middle">no step</text>
+<rect class="s f" x="71.52" y="88" width="34" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="88.52" y="103" font-size="10.5" font-weight="600" text-anchor="middle">a</text>
+<text class="ta" x="88.52" y="124" font-size="9.5" font-weight="600" text-anchor="middle">typing</text>
+<rect class="s f" x="115.52" y="88" width="34" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="132.52" y="103" font-size="10.5" font-weight="600" text-anchor="middle">n</text>
+<text class="ta" x="132.52" y="124" font-size="9.5" font-weight="600" text-anchor="middle">typing</text>
+<rect class="s f" x="159.52" y="88" width="34" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="176.52" y="103" font-size="10.5" font-weight="600" text-anchor="middle">d</text>
+<text class="ta" x="176.52" y="124" font-size="9.5" font-weight="600" text-anchor="middle">typing</text>
+<rect class="s f" x="203.52" y="88" width="43.4" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="225.22" y="103" font-size="10.5" font-weight="600" text-anchor="middle">space</text>
+<text class="ta" x="225.22" y="124" font-size="9.5" font-weight="600" text-anchor="middle">typing</text>
+<rect class="s f" x="256.92" y="88" width="43.4" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="278.62" y="103" font-size="10.5" font-weight="600" text-anchor="middle">Enter</text>
+<text class="tm" x="278.62" y="124" font-size="9.5" font-weight="600" text-anchor="middle">other</text>
+<rect class="s f" x="310.32" y="88" width="66.92" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="343.78" y="103" font-size="10.5" font-weight="600" text-anchor="middle">Backspace</text>
+<text class="ta" x="343.78" y="124" font-size="9.5" font-weight="600" text-anchor="middle">deleting</text>
+<rect class="s f" x="387.24" y="88" width="66.92" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="420.7" y="103" font-size="10.5" font-weight="600" text-anchor="middle">Backspace</text>
+<text class="ta" x="420.7" y="124" font-size="9.5" font-weight="600" text-anchor="middle">deleting</text>
+<path class="a" d="M72.52 87 L72.52 81 L245.92 81 L245.92 87" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="159.22" y="70" font-size="10" font-weight="600" text-anchor="middle">step 1: 1 record</text>
+<path class="a" d="M257.92 87 L257.92 81 L299.32 81 L299.32 87" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="278.62" y="70" font-size="10" font-weight="600" text-anchor="middle">step 2: 2 records</text>
+<path class="a" d="M311.32 87 L311.32 81 L453.16 81 L453.16 87" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="382.24" y="70" font-size="10" font-weight="600" text-anchor="middle">step 3: 3 records</text>
+<text class="t" x="24" y="160" font-size="11.5" font-weight="700">a, Left, b on a file of one empty row (test 0803)</text>
+<text class="ta" x="616" y="160" font-size="11.5" font-weight="700" text-anchor="end">3 keys, 2 steps</text>
+<rect class="s f" x="60" y="200" width="34" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="77" y="215" font-size="10.5" font-weight="600" text-anchor="middle">a</text>
+<text class="ta" x="77" y="236" font-size="9.5" font-weight="600" text-anchor="middle">typing</text>
+<rect class="m f" x="158" y="200" width="37.52" height="22" rx="5" stroke-width="1.5"/>
+<text class="tm" x="176.76" y="215" font-size="10.5" font-weight="600" text-anchor="middle">Left</text>
+<text class="tm" x="176.76" y="236" font-size="9.5" font-weight="600" text-anchor="middle">other</text>
+<text class="tm" x="176.76" y="190" font-size="9" text-anchor="middle">no step</text>
+<rect class="s f" x="259.52" y="200" width="34" height="22" rx="5" stroke-width="1.5"/>
+<text class="t" x="276.52" y="215" font-size="10.5" font-weight="600" text-anchor="middle">b</text>
+<text class="ta" x="276.52" y="236" font-size="9.5" font-weight="600" text-anchor="middle">typing</text>
+<path class="a" d="M61 199 L61 193 L93 193 L93 199" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="77" y="182" font-size="10" font-weight="600" text-anchor="middle">step 1: 1 record</text>
+<path class="a" d="M260.52 199 L260.52 193 L292.52 193 L292.52 199" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="276.52" y="182" font-size="10" font-weight="600" text-anchor="middle">step 2: 1 record</text>
+<text class="tm" x="24" y="266" font-size="10.5">undoKey(c), before each key acts, closes the open step when the key is &quot;other&quot; or of another kind than</text>
+<text class="tm" x="24" y="280" font-size="10.5">the keys before it. A key that closes it and changes nothing makes no step.</text>
+</svg>

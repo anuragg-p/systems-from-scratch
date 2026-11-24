@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 176" fill="none">
+<title>Enter in the middle of a row makes one step of two records; Ctrl-Z puts them back last to first: the U_CHG gives the row its text back, then the U_INS deletes the row it inserted</title>
+<defs><marker id="f0801c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0801c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0801c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 08.01 on notes.txt: Enter in the middle of row 1, and the Ctrl-Z that takes it back</text>
+<text class="tm" x="24" y="50" font-size="10.5">the rows</text>
+<text class="tm" x="340" y="50" font-size="10.5">Enter&#x27;s step: its records, in the order they were made</text>
+<g class="step"><title>Before Enter: "and " typed at the start of row 1, and the cursor just after it.</title>
+<text class="tm mono" x="36" y="72" font-size="9.5" text-anchor="end">0</text>
+<text class="t mono" x="44" y="72" font-size="11.5">undo</text>
+<text class="t mono" x="78.5" y="72" font-size="11.5">keeps</text>
+<text class="tm mono" x="36" y="90" font-size="9.5" text-anchor="end">1</text>
+<text class="t mono" x="44" y="90" font-size="11.5">and</text>
+<text class="t mono" x="71.6" y="90" font-size="11.5">what</text>
+<text class="t mono" x="106.1" y="90" font-size="11.5">each</text>
+<text class="t mono" x="140.6" y="90" font-size="11.5">line</text>
+<text class="t mono" x="175.1" y="90" font-size="11.5">was</text>
+<text class="tm mono" x="36" y="108" font-size="9.5" text-anchor="end">2</text>
+<text class="t mono" x="44" y="108" font-size="11.5">before</text>
+<text class="t mono" x="92.3" y="108" font-size="11.5">it</text>
+<text class="t mono" x="113" y="108" font-size="11.5">changed</text>
+<rect class="a" x="71.1" y="78.04" width="7.9" height="15" rx="1" stroke-width="1.5"/>
+<rect class="m f" x="340" y="60" width="276" height="72" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="478" y="100" font-size="10.5" text-anchor="middle">no step yet</text>
+</g>
+<g class="step"><title>Enter: editorInsertRow() keeps U_INS of row 2, the row it is about to insert; then editorInsertNewline() keeps U_CHG of row 1 just before it cuts it. One key, one step, two records.</title>
+<text class="tm mono" x="36" y="72" font-size="9.5" text-anchor="end">0</text>
+<text class="t mono" x="44" y="72" font-size="11.5">undo</text>
+<text class="t mono" x="78.5" y="72" font-size="11.5">keeps</text>
+<text class="tm mono" x="36" y="90" font-size="9.5" text-anchor="end">1</text>
+<rect class="af" x="41" y="77.04" width="33.6" height="16.5" rx="2"/>
+<text class="ta mono" x="44" y="90" font-size="11.5">and</text>
+<path class="a" d="M65.94 87 L65.94 90 L70.36 90 L70.36 87" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="36" y="108" font-size="9.5" text-anchor="end">2</text>
+<rect class="af" x="41" y="95.04" width="130.2" height="16.5" rx="2"/>
+<text class="ta mono" x="44" y="108" font-size="11.5">what</text>
+<text class="ta mono" x="78.5" y="108" font-size="11.5">each</text>
+<text class="ta mono" x="113" y="108" font-size="11.5">line</text>
+<text class="ta mono" x="147.5" y="108" font-size="11.5">was</text>
+<text class="tm mono" x="36" y="126" font-size="9.5" text-anchor="end">3</text>
+<text class="t mono" x="44" y="126" font-size="11.5">before</text>
+<text class="t mono" x="92.3" y="126" font-size="11.5">it</text>
+<text class="t mono" x="113" y="126" font-size="11.5">changed</text>
+<rect class="a" x="43.5" y="96.04" width="7.9" height="15" rx="1" stroke-width="1.5"/>
+<rect class="s f" x="340" y="60" width="276" height="34" rx="5" stroke-width="1.5"/>
+<text class="tm mono" x="348" y="74" font-size="9.5">[0]</text>
+<text class="t mono" x="372" y="74" font-size="10" font-weight="700">U_INS at 2</text>
+<text class="tm" x="348" y="88" font-size="9.5">no text: the row was not there</text>
+<rect class="s f" x="340" y="100" width="276" height="34" rx="5" stroke-width="1.5"/>
+<text class="tm mono" x="348" y="114" font-size="9.5">[1]</text>
+<text class="t mono" x="372" y="114" font-size="10" font-weight="700">U_CHG at 1</text>
+<text class="t mono" x="348" y="128" font-size="10">&quot;and</text>
+<text class="t mono" x="378" y="128" font-size="10">what</text>
+<text class="t mono" x="408" y="128" font-size="10">each</text>
+<text class="t mono" x="438" y="128" font-size="10">line</text>
+<text class="t mono" x="468" y="128" font-size="10">was&quot;</text>
+<text class="tm" x="340" y="158" font-size="10.5">Ctrl-Z applies them last to first: [1], then [0].</text>
+</g>
+<g class="step"><title>Ctrl-Z (the third here: the first two took back the Backspaces) starts with the last record: U_CHG gives row 1 its text back. For a moment the rest of the line is in the file twice.</title>
+<text class="tm mono" x="36" y="72" font-size="9.5" text-anchor="end">0</text>
+<text class="t mono" x="44" y="72" font-size="11.5">undo</text>
+<text class="t mono" x="78.5" y="72" font-size="11.5">keeps</text>
+<text class="tm mono" x="36" y="90" font-size="9.5" text-anchor="end">1</text>
+<rect class="af" x="41" y="77.04" width="157.8" height="16.5" rx="2"/>
+<text class="ta mono" x="44" y="90" font-size="11.5">and</text>
+<text class="ta mono" x="71.6" y="90" font-size="11.5">what</text>
+<text class="ta mono" x="106.1" y="90" font-size="11.5">each</text>
+<text class="ta mono" x="140.6" y="90" font-size="11.5">line</text>
+<text class="ta mono" x="175.1" y="90" font-size="11.5">was</text>
+<text class="tm mono" x="36" y="108" font-size="9.5" text-anchor="end">2</text>
+<text class="t mono" x="44" y="108" font-size="11.5">what</text>
+<text class="t mono" x="78.5" y="108" font-size="11.5">each</text>
+<text class="t mono" x="113" y="108" font-size="11.5">line</text>
+<text class="t mono" x="147.5" y="108" font-size="11.5">was</text>
+<text class="tm mono" x="36" y="126" font-size="9.5" text-anchor="end">3</text>
+<text class="t mono" x="44" y="126" font-size="11.5">before</text>
+<text class="t mono" x="92.3" y="126" font-size="11.5">it</text>
+<text class="t mono" x="113" y="126" font-size="11.5">changed</text>
+<rect class="s f" x="340" y="60" width="276" height="34" rx="5" stroke-width="1.5"/>
+<text class="tm mono" x="348" y="74" font-size="9.5">[0]</text>
+<text class="t mono" x="372" y="74" font-size="10" font-weight="700">U_INS at 2</text>
+<text class="tm" x="348" y="88" font-size="9.5">no text: the row was not there</text>
+<rect class="a af" x="340" y="100" width="276" height="34" rx="5" stroke-width="1.5"/>
+<text class="tm mono" x="348" y="114" font-size="9.5">[1]</text>
+<text class="ta mono" x="372" y="114" font-size="10" font-weight="700">U_CHG at 1</text>
+<text class="tm" x="348" y="128" font-size="9.5">used up: the row has its text</text>
+<text class="tm" x="340" y="158" font-size="10.5">Ctrl-Z applies them last to first: [1], then [0].</text>
+</g>
+<g class="step"><title>Then U_INS: the row it inserted, row 2, is deleted, and the text is as it was before Enter. At 08.01 the step is then freed: nothing redoes it yet.</title>
+<text class="tm mono" x="36" y="72" font-size="9.5" text-anchor="end">0</text>
+<text class="t mono" x="44" y="72" font-size="11.5">undo</text>
+<text class="t mono" x="78.5" y="72" font-size="11.5">keeps</text>
+<text class="tm mono" x="36" y="90" font-size="9.5" text-anchor="end">1</text>
+<text class="t mono" x="44" y="90" font-size="11.5">and</text>
+<text class="t mono" x="71.6" y="90" font-size="11.5">what</text>
+<text class="t mono" x="106.1" y="90" font-size="11.5">each</text>
+<text class="t mono" x="140.6" y="90" font-size="11.5">line</text>
+<text class="t mono" x="175.1" y="90" font-size="11.5">was</text>
+<text class="tm mono" x="36" y="108" font-size="9.5" text-anchor="end">2</text>
+<text class="t mono" x="44" y="108" font-size="11.5">before</text>
+<text class="t mono" x="92.3" y="108" font-size="11.5">it</text>
+<text class="t mono" x="113" y="108" font-size="11.5">changed</text>
+<text class="ta" x="44" y="130" font-size="10.5">row 2, &quot;what each line was&quot;, deleted</text>
+<rect class="a af" x="340" y="60" width="276" height="34" rx="5" stroke-width="1.5"/>
+<text class="tm mono" x="348" y="74" font-size="9.5">[0]</text>
+<text class="ta mono" x="372" y="74" font-size="10" font-weight="700">U_INS at 2</text>
+<text class="tm" x="348" y="88" font-size="9.5">no text: the row was not there</text>
+<rect class="m f" x="340" y="100" width="276" height="34" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="348" y="114" font-size="9.5">[1]</text>
+<text class="tm mono" x="372" y="114" font-size="10" font-weight="700">U_CHG at 1</text>
+<text class="tm" x="348" y="128" font-size="9.5">used up: the row has its text</text>
+<text class="tm" x="340" y="158" font-size="10.5">Ctrl-Z applies them last to first: [1], then [0].</text>
+</g>
+</svg>

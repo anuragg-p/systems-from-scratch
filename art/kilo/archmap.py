@@ -163,6 +163,17 @@ _IN = 12                                 # what a piece gives up to make a corri
 _WAIT_X = (COLS[0] + _IN + COLS[0] + W) / 2
 
 
+# 08, undo and redo. Two rows under the grid. Row 4: steps (08.03) under the cursor's column, which
+# the key handler feeds with every key (undoKey); the saved point (08.04) under save, which sets it;
+# redo (08.02); records (08.01) under rows, whose row functions make them. Row 5: the history,
+# the two stacks of steps, across all five columns. The key handler -> steps goes down the left
+# margin (the handler and the cursor start 12 in to make room for it, as read a key and wait do
+# in 07), and history -> rows, the way an undo changes the rows, up the right margin (rows gives
+# up 12 at its right end, as the frame does in 07). Redo takes a step from the history and gives
+# it back: two short arrows side by side.
+_UNDO_MID = (COLS[0] + _IN + COLS[0] + W) / 2        # the middle of steps, 12 in
+
+
 def _down(x, top_row, bottom_row):
     """A short vertical from the bottom of a piece in one row to the top of the next."""
     return [(x, top_row + H + 1), (x, bottom_row - 2)]
@@ -243,6 +254,46 @@ EXTENSIONS = {
             ("07.05", "Telling the server what you see: didOpen and didChange", {"sync"}),
             ("07.06", "Diagnostics: errors as you type", {"diagnostics"}),
             ("07.07", "Go to definition", {"definition"}),
+        ],
+    },
+    "08": {
+        "dir": "08-undo",
+        "height": HEIGHT + 2 * PITCH,
+        "move": {"handler": (COLS[0] + _IN, ROWS[2], COLS[3] + W - COLS[0] - _IN),
+                 "cursor": (COLS[0] + _IN, ROWS[3], W - _IN),
+                 "rows": (COLS[4], ROWS[3], W - _IN)},
+        "reroute": {},
+        "pieces": {
+            "steps": ("steps", "a run of keys", COLS[0] + _IN, _R4, W - _IN),
+            "saved": ("saved point", "is the text the file?", COLS[2], _R4, W),
+            "redo": ("redo", "a record, reversed", COLS[3], _R4, W),
+            "records": ("records", "what a row was", COLS[4], _R4, W),
+            "history": ("history", "steps to take back and to put back, 8 MB at most", COLS[0], _R5,
+                        RIGHT - COLS[0]),
+        },
+        "links": [
+            # every key goes to undoKey() first: down the left margin
+            ("handler", "steps", [(COLS[0] + _IN - 1, ROWS[2] + H / 2), (_MARGIN_L, ROWS[2] + H / 2),
+                                  (_MARGIN_L, _R4 + H / 2), (COLS[0] + _IN - 2, _R4 + H / 2)]),
+            # save sets the saved point; a row about to change is recorded
+            ("save", "saved", _down(cx(2), ROWS[3], _R4)),
+            ("rows", "records", _down(cx(4), ROWS[3], _R4)),
+            # into the history: steps, the saved point, records
+            ("steps", "history", _down(_UNDO_MID, _R4, _R5)),
+            ("saved", "history", _down(cx(2), _R4, _R5)),
+            ("records", "history", _down(cx(4), _R4, _R5)),
+            # redo takes a step from the history and gives it back
+            ("history", "redo", _up(cx(3) - 10, _R4, _R5)),
+            ("redo", "history", _down(cx(3) + 10, _R4, _R5)),
+            # an undo changes the rows: up the right margin
+            ("history", "rows", [(RIGHT + 1, _R5 + H / 2), (_MARGIN_R, _R5 + H / 2), (_MARGIN_R, ROWS[3] + H / 2),
+                                 (RIGHT - _IN + 2, ROWS[3] + H / 2)]),
+        ],
+        "lessons": [
+            ("08.01", "Remembering what a line was", {"records", "history"}),
+            ("08.02", "Redo: a record that undoes itself", {"redo"}),
+            ("08.03", "One Ctrl-Z, one thought: steps", {"steps"}),
+            ("08.04", "The saved point, and a bound on memory", {"saved", "history"}),
         ],
     },
 }
