@@ -3727,6 +3727,49 @@ track.py's `Editor`, KILO_INIT naming the lesson's init.lua.
   and rows 5 and 6 are drawn with no highlight until a key moves the
   cursor.
 
+### 09.07, 09.08, 09.09: what the lessons' runs found
+
+Run on the Mac through `./learn run` (or the folder's ./kilo), on the
+projects at each lesson, with track.py's Editor and Screen (12 x 60 for
+09.07, 8 x 60 for 09.08); none of it changed code.
+
+- **09.07.** Ctrl-A mapped to open() the .h beside a .c file: with a change
+  unsaved, `init.lua:15: open: unsaved changes`; Backspace after the change
+  leaves the bar `(modified)` (kilo counts changes). Ctrl-X mapped to
+  `if api.save() then api.quit(false) end`: status 0, no frame after it.
+  With apiQuit's `editorQuit = 1;` made `exit(0);`: `kilo.api.quit(true)
+  io.open('after.txt', 'w'):write('ran'):close()` at the prompt exits 0 with
+  the terminal back but no after.txt (made without the change); a `__gc`
+  function that writes a file, set in the same line, writes nothing with
+  the change (scriptStop sees S.depth 1 and does not close the state) and
+  does without it; a BufWritePre function calling quit(true), "y" and
+  Ctrl-S on a file of "x": the file stays `x\n` with the change, `yx\n`
+  without.
+- **09.08.** `s = string.rep('x', 100 * 2^20)` gives `not enough memory`,
+  `collectgarbage('count')` 25.9 after it, 25.4 after
+  `local t = {} while true do t[#t + 1] = {} end` (also `not enough
+  memory`). With scriptStart's lua_sethook line deleted: Ctrl-T then Ctrl-C
+  does nothing, ps shows 95% of a processor, SIGTERM (pkill) ends kilo with
+  the typed text lost and the terminal left raw (ECHO, ICANON, ISIG off,
+  read after it died); from zsh, the prompt works but `cat` shows Enter as
+  `^M`, and `reset` puts it right; from bash, typed commands do not echo.
+  Through `./learn run`, ./learn exits 241. The backtracking pattern under
+  kilo -l at 09.09 took 0.005, 0.063, 1.0 and 15.2 s at n = 10, 12, 14, 16
+  (quicker than the times above, same growth); in the editor at n = 16,
+  Ctrl-C pressed a second in was never seen: the call ended 15.7 s later
+  and the prompt line said `nil`. `setmetatable({}, {__gc = function()
+  while true do end end}) collectgarbage()` at the prompt hangs the editor;
+  Ctrl-C does nothing. With scriptProtected's lua_pcall made a lua_call and
+  09.01's init.lua with the typo: `kilo: Lua panic: init.lua:2: attempt to
+  concatenate a nil value (global 'nme')`, status 1, the terminal back.
+- **09.09.** Under -l, a TextChanged function never runs (no main loop);
+  BufWritePre does; a line after `quit(true)` runs, status 0. With
+  `editorRefreshScreen();` added after apiMessage's editorMessage() call,
+  `kilo -l count.lua notes.txt > out.txt` (count.lua says the line count
+  with message()) writes 291 bytes, a whole 22-row frame and then `3
+  lines` (stdio's buffer, flushed at exit, after the frame's write()),
+  where it wrote 8.
+
 ## Other behaviour of the original, kept
 
 - kilo does not clear the screen on exit: the shell prompt appears where
