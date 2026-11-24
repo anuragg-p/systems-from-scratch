@@ -9,25 +9,26 @@ This file holds the decisions.
 
 ## Where it stands (2026-11-24)
 
-On master: modules 00 to 05, code, tests and all 27 lessons, and the
-first four clean-up commits (verify waits 60 s of quiet for this track;
-one seed prints its number; gradcheck's message in plain ints; NOTES.md
-corrections). In work, each by an agent in its own worktree:
+On master: modules 00 to 05, code, tests and all 27 lessons. The clean-up
+is finished and merged: `./learn verify --fresh research` passes 27 of
+27 (8 min 27 s), with the tests, check-skeleton, check-timeline and
+check; a read across the modules fixed eleven cross-references, terms
+used before their lesson and numbers that disagreed with NOTES.md. The
+covers of 00 to 04 and 15 and the track card are redrawn from the built
+track's own numbers; the generator, art/outlines/research_art.py, writes
+each built module's cover to both outlines/ai-research/NN/ and
+tracks/research/lessons/NN-*/ and stops if a lesson's number changes.
 
-1. The rest of the clean-up: `./learn verify --fresh research` and the
-   other checks over the whole track together, and a read across modules
-   for wrong cross-references and terms defined two ways.
-2. Covers that contradict the built track: 00 (labelled validation loss;
-   module 00 has none), 01 (micrograd's numbers and a one-sided nudge),
-   02 (shape notation), 03 (AdamW's decay comes before Adam's step, not
-   after), 04 (drawn for 50 layers; the code uses 20 and 30), 15 (`make
-   reproduce` was never decided). The generator,
-   art/outlines/research_art.py, writes the result to both
-   outlines/ai-research/NN/ and tracks/research/lessons/NN-*/.
-3. Module 06's code, with spike 3. Its lessons follow as soon as it is
-   merged.
+Left by the read, on purpose: "spread" is used for the lab's one-line
+result, for the spread over a batch, and as a plain word for a standard
+deviation; 05.03 calls MNIST's background "white"; a few facts about
+the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
+not checked against the sources.
 
-After those, in this order: 07, 08 and 09, one module's code at a time,
+In work, by an agent in its own worktree: module 06's code, with spike
+3. Its lessons follow as soon as it is merged.
+
+After that, in this order: 07, 08 and 09, one module's code at a time,
 each module's lessons written while the next module's code is built
 (lessons module by module); then 10 to 14 in parallel.
 
