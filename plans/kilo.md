@@ -330,3 +330,50 @@ teaches only the buffer (plans/dsa.md).
 - The editors' sources (Vim, Neovim, Emacs, Zed, Helix, VS Code) were read
   at named tags and quoted in NOTES.md, with what could not be confirmed.
   Lessons and art follow, from NOTES.md.
+
+## Module 09 as built (code, tests and notes; 2026-11-24)
+
+- Files of its own: script.c and script.h (everything that includes
+  lua.h: the state, the one protected way in, the dispatcher, references,
+  the Lua on top, the count hook, the allocator, the panic function, kilo
+  -l) and api.h (the API's types); in kilo.c a section "The API" above
+  main() (24 functions, the table, --api-info, the prompt, keys by name,
+  autocommands, highlights, the status line) and one-line hooks. No Lua
+  header in kilo.c. Lua 5.4.9's README and src/ unchanged in lua/ (a commit
+  of its own, sha256 checked; NOTICE has its licence); hidden from the site,
+  fetched by the reader, copied into a written-out project by track.py's
+  prepare() (supply_lua). The Makefile builds liblua.a once; its four
+  shapes (core, core + 07, core + 09, all) use blocks nested in other
+  blocks' @else parts. The design (two revisions, the second "fully
+  extensible") was fixed by the coordinator; NOTES.md, "09", lists where
+  the code departs from it and where it was wrong.
+- Nine lessons, 09.01 to 09.09, as the revised list; 09.10 (plugins in Lua
+  only) follows the review. NOTES.md says, for each of 09.10's three
+  proofs, whether the API reaches it: vi keys and colouring yes; a find yes
+  but for putting back the exact view (no set_view).
+- Independence holds: the projects at all 32 lessons to 08.04 are byte for
+  byte master's (diff -r, against cf9919a); no 06, 07 or 08 code in a 09
+  project, none of 09 in an 08 one; every 09 project builds with -Werror.
+  With module 08 merged in, what a key's scripts change is one step of undo
+  of its own (finished tree only; NOTES.md 09, "With module 08").
+- Tests: one per lesson (0901 to 0909) with init files the tests write,
+  every error text, the cursor rule, references let go, the guards
+  (Ctrl-C on five kinds of runaway script, the 64 MB bound, os.exit, the
+  panic aid, Ctrl-Q never a script's), kilo -l, and a fuzz in Python of
+  random API calls under ASan and UBSan (in the editor and with no
+  screen). In the finished tree: 06's colours and 07's scripted server
+  after set_lines, 08's undo and redo of a script's change. KILO_INIT is
+  set and empty in every test's editor unless the test gives one.
+- Found: module 06's memset of the NULL that realloc(p, 0) gives on glibc
+  (UBSan, on Debian; 06 unchanged, the fuzz names it); the count hook slows
+  every Lua instruction (a loop 1.4 times, a call 2.4 times); a finalizer
+  or a backtracking pattern cannot be stopped by Ctrl-C; open() does not
+  tell 07's server.
+- The editors' sources (Neovim at v0.12.6, Vim, Emacs, Zed, VS Code,
+  Redis, Helix) were read at named tags and quoted in NOTES.md, with what
+  could not be confirmed. Where Neovim differs from the design's guesses:
+  the cursor after set_lines, set_lines not the base of set_text, the TUI a
+  process since 0.9, init.lua before files are read, no interrupt for Lua.
+- All pass on macOS; on Debian trixie and Alpine 3.22 (the 07 containers)
+  every test, check-skeleton of 09 and check-timeline, every 09 project
+  with gcc -Werror. Lessons and art follow, from NOTES.md.

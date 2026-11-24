@@ -49,9 +49,11 @@ byte what it was without it. See "06 Syntax highlighting" below. Module
 07, another extension, is ours: a language server client in lsp.c and
 json.c, which kilo.c calls from a few one-line hooks (see "07 A language
 server client"). Module 08, a third, is ours too: undo and redo, in kilo.c
-(see "08 Undo and redo"). The finished kilo.c (`./learn files kilo`,
-every lesson of every path) is 1862 lines (1541 before module 08, 1472
-with module 06 alone); at 05.02 it is 1068, as without any of them.
+(see "08 Undo and redo"). Module 09, the fourth, is ours too: an API in C
+and the real Lua on top of it (see "09 An API, and Lua on top of it").
+The finished kilo.c (`./learn files kilo`, every lesson of every path) is
+2749 lines (1862 with 06, 07 and 08; 1541 with 06 and 07; 1472 with
+module 06 alone); at 05.02 it is 1068, as without any of them.
 
 ## Every departure from upstream, and why
 
@@ -2399,6 +2401,902 @@ Not confirmed (could not be seen in the sources read, so not for a lesson):
   persistent undo, were not read. VS Code's undo across file reloads was
   not looked for.
 
+## 09 An API, and Lua on top of it (an extension)
+
+Module 09 (`lessons/09-api-and-lua/`, `optional: true`, started 2026-11-24
+on the owner's word) is ours: the editor's operations as a table of typed C
+functions, the real Lua embedded and given that table as `kilo.api`, any
+key and the editor's events bound to Lua functions, colour and the status
+bar drawn from a script, a script that goes wrong never taking the file with
+it, and the editor run with no screen at all. Neovim's shape, cut to kilo's
+size; "The notable editors" below says where Neovim and the others really
+stand, from their sources. The design (files, types, functions, limits,
+guards) was fixed by the coordinator, with a second revision the same day
+("fully extensible": every key, KeyPress and CursorMoved, drawing, input,
+open, quit); where the code departs from it, "Departures" says so.
+
+At a lesson of the module the project is the core plus 09's lessons so far:
+no code of 06, 07 or 08 (checked: no `editorSelectSyntaxHighlight`, `lsp`,
+`json`, `HL_`, `E.syntax`, `undo`, `CTRL_Z` or `CTRL_R` in any 09 project,
+and each builds with `-Wall -W -pedantic -std=c99 -Werror`). Module 09 is
+in no core, 06, 07 or 08 lesson: the projects at the 28 lessons to 07.07,
+written out before the module existed and after, are identical (`diff
+-r`); and after module 08 was merged in, the projects at all 32 lessons to
+08.04 are identical to master's at cf9919a, which has 08 and not 09; no 08
+project holds code of 09. The finished kilo.c is 2749 lines (with 06, 07
+and 08). 09.10, "Features as scripts" (plugins written only in Lua), is
+not built yet: it follows the review of this code.
+
+### Lua itself
+
+Lua 5.4.9, https://www.lua.org/ftp/lua-5.4.9.tar.gz, sha256
+2335b6c582a52654f94612bf10d2f4672805d05329aa6568b1d8cd9e5c6fb8e6 (checked
+on download, 2026-11-24). `tracks/kilo/lua/` holds the release's README and
+src/ exactly as they are (63 files, all ASCII; no doc/, no Makefile of the
+top), in a commit of their own; `lua/.gitignore` keeps out what a build
+leaves there. NOTICE has a Lua section with the MIT licence text (the end of
+src/lua.h). It is the one thing in the track we do not write.
+
+The site does not show it (track.py `HIDDEN` "lua/*"), so a project written
+out by `./learn files` has no lua/. A reader fetches it once, and 09.01
+gives the commands (tried on the project at 09.01 as written out):
+
+    curl -O https://www.lua.org/ftp/lua-5.4.9.tar.gz
+    shasum -a 256 lua-5.4.9.tar.gz     # 2335b6c5...b8e6
+    tar xzf lua-5.4.9.tar.gz && mv lua-5.4.9 lua
+
+(The whole release as lua/: the Makefile uses lua/src only.) The course's
+own tools supply it: track.py's `prepare(root)`, which `./learn run`,
+`bench`, `verify` and `check-timeline` call before they build a project,
+first calls `supply_lua(root)`, which copies the track's lua/ (README and
+src/, not what a build left there) into a project that has script.c and no
+lua/. Projects without script.c (every core, 06 and 07 lesson) get nothing.
+`check-skeleton` and the tests copy or use the whole track, lua/ included.
+No change under harness/.
+
+The Makefile builds the library once, as a target of its own, with Lua's
+own Makefile, and links it:
+
+    lua/src/liblua.a:
+    	$(MAKE) -C lua/src liblua.a MYCFLAGS=-DLUA_USE_POSIX
+
+Lua's Makefile compiles with `gcc -std=gnu99 -O2`; kilo's own files keep
+kilo's flags, and Lua's headers pass them with `-Werror`. It takes 2.8 s
+here (Lua and kilo). The Makefile has four shapes, written with @from
+blocks nested inside other blocks' @else parts (the harness takes those: a
+block's @else lines are uncommented once per enclosing block not reached):
+the core's (unchanged), core + 07 (unchanged, to the byte), core + 09
+(kilo.c script.c, api.h from 09.02, and Lua), and the finished tree (all of
+them). `make clean` removes Lua's build too (from 09.01).
+
+### The files
+
+| file | lines in tracks/ (markers in) | what it is |
+|---|---|---|
+| script.h | 43 | the limits, all of them; what kilo.c calls (scriptStart, scriptEval, scriptCall, scriptUnref, scriptRun) and what script.c calls in kilo.c (editorMessage, editorScriptReturned, disableRawMode) |
+| script.c | 743 | everything that includes lua.h: the state, the protected way in, errors, print, the dispatcher, references, the Lua on top, the count hook, the allocator, the panic function, kilo -l |
+| api.h | 79 | the API's types (ApiType, ApiString, ApiValue, ApiError, ApiFn, ApiFunc) and the table's declaration |
+| kilo.c | 3647 | the hooks below, and the section "The API" above main(): the 24 functions, the table, --api-info, the prompt, keys by name, autocommands, highlights, the status line, kilo -l. No Lua header. |
+| Makefile | | from 09.01 `kilo.c script.c` and Lua's library |
+
+The project at each lesson (lines, `./learn files kilo --at 09.LL`):
+
+| lesson | kilo.c | script.c | script.h | api.h |
+|---|---|---|---|---|
+| 09.01 | 1141 | 218 | 24 | - |
+| 09.02 | 1318 | 403 | 24 | 77 |
+| 09.03 | 1406 | 404 | 25 | 77 |
+| 09.04 | 1535 | 476 | 27 | 79 |
+| 09.05 | 1681 | 476 | 28 | 79 |
+| 09.06 | 1858 | 476 | 30 | 79 |
+| 09.07 | 1915 | 476 | 30 | 79 |
+| 09.08 | 1915 | 559 | 32 | 79 |
+| 09.09 | 1941 | 571 | 33 | 79 |
+
+### The lessons, and how they divide the code
+
+The coordinator's revised list, in its order (09.10 later). Regions
+(`./learn solution kilo 09.LL`):
+
+| lesson | regions (file: title) |
+|---|---|
+| 09.01 | kilo.c: say it in the message line (editorMessage); the prompt (editorPrompt); script.c: say what went wrong; every way in is a protected call; run a file; a line at the prompt; print to the message line; the libraries and the table kilo; a state for the scripts; the init file; at exit |
+| 09.02 | kilo.c: get_lines; get_cursor; message; --api-info; script.c: check an argument; an argument as the API's value; the API's value as Lua's; the dispatcher; kilo.api |
+| 09.03 | kilo.c: set_lines: check everything first; set_lines: the change; set_lines: the cursor afterwards; set_cursor; save; the cursor after a script |
+| 09.04 | kilo.c: a name to a key; set_keymap; del_keymap; feed_key; a mapped key; script.c: call a function kept as a reference; the Lua on top |
+| 09.05 | kilo.c: KeyPress; create_autocmd; del_autocmd; an event's functions; TextChanged and CursorMoved |
+| 09.06 | kilo.c: create_namespace; add_highlight; clear_namespace; draw the highlights; the status bar |
+| 09.07 | kilo.c: leave, once back from the script; input; open; quit |
+| 09.08 | script.c: count the memory; a panic; back from a script that went wrong; Ctrl-C stops a script; no os.exit in the editor |
+| 09.09 | kilo.c: with no screen (in editorMessage); the editor with no screen; script.c: run a script with no screen |
+
+Not in regions, arriving with `@from`: the limits, each with its lesson;
+the trivial functions (line_count, get_name, is_modified, get_changedtick,
+set_statusline, get_view, get_size), editorClean, the value helpers
+(apiValue, apiInteger, apiPosition, apiFail, apiString, apiFree, apiRange,
+apiTypeName, apiKey), editorShowCursor (09.03), KEYNAMES and
+editorKeymapSlot (09.04), editorKeyName (09.05), the tables (EVENTS,
+STYLES, the autocommands, the namespaces, the highlights), the API table, a
+line per lesson's functions; in script.c the reader for files, scriptEval,
+scriptRelease, scriptCall and scriptUnref (09.04), SCRIPT_LUA (09.04),
+scriptNoExit (09.08); `luaL_newstate()` to 09.07, `lua_newstate()` with
+scriptAlloc from 09.08.
+
+### Hooks in core code
+
+Each is one marked line or a small marked block; none is inside 06's or
+07's blocks, so core + 09 and the finished file have the same lines.
+
+- `#include "script.h"` (09.01) and `#include "api.h"` (09.02).
+- `enum KEY_ACTION`: `CTRL_E = 5` (09.01).
+- `struct editorConfig`: `long long changedtick;` (09.05).
+- A block of prototypes after editorSetStatusMessage's: editorPrompt
+  (09.01), `int editorFed = -1;` and editorScriptKey (09.04), editorEvent
+  (09.05), `struct abuf;`, editorDrawHighlights and editorStatusLine (09.06).
+- `E.changedtick++;` after `E.dirty++` in editorInsertRow, editorDelRow,
+  editorRowInsertChar, editorRowAppendString, editorRowDelChar, and after
+  the cut in editorInsertNewline (09.05).
+- editorOpen: `editorEvent("BufReadPost");` before each return, the one for
+  a file that is not there too (09.05).
+- editorSave: `editorEvent("BufWritePre");` before the text is made into a
+  string, `editorEvent("BufWritePost");` after a good write (09.05).
+- editorRefreshScreen: `editorDrawHighlights(&ab,filerow);` after the row
+  (after 07's lspDrawRow block, outside it), and `len =
+  editorStatusLine(status,sizeof(status),len);` after the status bar's text
+  is made (09.06).
+- editorProcessKeypress: the read becomes `int c = editorFed != -1 ?
+  editorFed : editorReadKey(fd);` (a 09.04 block nested in 01.02's, the
+  core's line as its @else), then `if (editorFed == -1 &&
+  editorScriptKey(c)) return;` before the switch, after 08's undoKey(c)
+  (09.04); and `case CTRL_E:` the prompt and scriptEval (09.01), after
+  08's Ctrl-Z and Ctrl-R. In the finished tree only, 08's `undoKey(c);`
+  is `if (editorFed == -1) undoKey(c);` (a 09.04 block nested in 08.03's,
+  08's line as its @else), and two small blocks of 08 in editorScriptKey and
+  one of 09 in undoSave make a script's change a step of its own (below).
+- main: `--api-info` (09.02) and `-l` (09.09) before the argument check;
+  two more usage lines (the first unchanged); `scriptStart();` after
+  lspStart's place (09.01); `editorEvent("BufReadPost");` after it, and
+  `editorAfterKey();` at the top of the loop (09.05).
+
+### With module 08: a script's change is a step of its own
+
+Module 08 was built at the same time on another branch and merged in
+after: its undoSave() calls are at the top of the row functions and before
+the cut, 09's tick lines next to `E.dirty++`; in editorProcessKeypress its
+`undoKey(c)` (which ends the open step at a key of another kind) comes
+first, then 09's hook. Because set_lines is built from editorDelRow() and
+editorInsertRow(), 08 remembers a script's change with no code for it in
+09, and module 07 sends it to the server likewise.
+
+What a step is, when scripts run for a key, was decided here (in the
+finished tree only: each part is a block of one module nested in a block of
+the other, so it is at no 08 lesson and no 09 lesson):
+
+- **What a key's scripts change is one step of its own.** undoKey() alone
+  would glue a script's change to the typing before it when the key a
+  script takes is itself a typed character ("x" mapped, or "j" in a vi
+  layer: same kind, no new step), and the typing after it to the script's.
+  Closing the step before every key offered to a script would split all
+  typing into one-key steps whenever a KeyPress function exists. So the
+  step ends lazily: editorScriptKey() sets `editorStepBreak` before the
+  KeyPress functions and the mapping run, undoSave() closes the open step
+  at the scripts' first change (and clears the flag), and editorScriptKey()
+  closes the scripts' step when they return, if the changed tick moved.
+  A KeyPress function that changes nothing leaves 08's steps as they were.
+- **A key a script feeds is part of the script's step**: undoKey() is not
+  called for a fed key, so a function that sets lines and feeds "B" and
+  Enter is one Ctrl-Z.
+- **Ctrl-Z and Ctrl-R can be a script's**, mapped or taken by KeyPress, as
+  Ctrl-S can; feed_key("<C-z>") is 08's undo (undo runs with U.off set, so
+  it never trips the break).
+- Not done: a TextChanged or CursorMoved function's change joins the open
+  step (the key's), so one Ctrl-Z takes back the key and what its events
+  did; and after an undo, TextChanged fires again.
+
+Tested in 0904 (the finished tree, with 08's own invariant check after
+every key, KILO_TEST_UNDO_LOG): set_lines undone by one Ctrl-Z, the cursor
+at the step's start, redone by Ctrl-R, the cursor at its end; typing, a
+typed key a script takes, typing: three steps; several changes with fed
+keys: one step; a row deleted with set_lines and the row now at its index
+changed by a fed key (a U_DEL then a U_CHG of the same row, which 08's own
+keys never make): one Ctrl-Z puts the text back; Ctrl-Z mapped and Ctrl-R
+taken by KeyPress, both feeding the editor's. With editorStepBreak never
+set, the test fails ("the script's step alone": the script's change and the
+typing before it go together).
+
+### The API as built
+
+`kilo --api-info` (no Lua is started for it: the table is C):
+
+    line_count() -> integer  -- the number of rows in the file
+    get_lines(start: integer, end: integer) -> lines  -- the rows [start, end), counted from 0
+    get_cursor() -> position  -- the cursor's {row, col}, col a byte of the row
+    get_name() -> string  -- the file's name
+    is_modified() -> boolean  -- true when the file has unsaved changes
+    message(text: string)  -- show text in the message line
+    set_lines(start: integer, end: integer, lines: lines)  -- replace the rows [start, end) by lines
+    set_cursor(pos: position)  -- move the cursor to {row, col}
+    save() -> boolean  -- save the file, as Ctrl-S does; false if that failed
+    set_keymap(key: string, fn: function)  -- run fn for key, in place of what the editor does
+    del_keymap(key: string)  -- give key back to the editor
+    feed_key(key: string)  -- do what the editor itself does for key
+    create_autocmd(event: string, fn: function) -> integer  -- run fn on event; returns its id
+    del_autocmd(id: integer)  -- stop running an autocommand
+    get_changedtick() -> integer  -- a count that goes up with every change to the text
+    create_namespace(name: string) -> integer  -- the id of a namespace for highlights; "" makes a new one
+    add_highlight(ns: integer, row: integer, start: integer, end: integer, style: string)  -- draw bytes [start, end) of row in style
+    clear_namespace(ns: integer)  -- remove the namespace's highlights
+    set_statusline(text: string)  -- the status bar's left part; "" for the editor's own
+    get_view() -> position  -- the file's {row, col} at the screen's top left
+    get_size() -> position  -- the {rows, cols} of text the screen shows
+    input(prompt: string) -> string  -- a line typed at the prompt; nil for Escape
+    open(path: string)  -- edit the file at path in place of this one
+    quit(force: boolean)  -- leave the editor; force: even with unsaved changes
+
+The dispatcher (scriptDispatch, one C function behind every name, its
+entry as an upvalue) checks the count, then every argument's type, before
+the function runs: an integer is a Lua number with no fraction (2.0 is 2,
+"2" is not), a string a Lua string (a number is not), lines a table whose
+keys are exactly 1 to #t and every value a string, a position a table of
+two integers. Strings are lent to the function (Lua's own bytes, alive while
+on the stack), lines get an array of them; a function argument becomes a
+reference in Lua's registry (luaL_ref), which the API keeps or, if the
+function failed, the dispatcher lets go. What a function returns it
+allocated; the dispatcher pushes it in a protected call of its own and
+frees it either way, so no memory error between them leaks it. Errors, with
+the script's place in front (`luaL_error`, level 1: the Lua caller; none
+when the caller is pcall, a C function):
+
+| from | text |
+|---|---|
+| the dispatcher | `NAME: expected N arguments, got M`; `NAME: argument I (ARG): expected TYPE, got WHAT` (WHAT: Lua's type, `float`, `a table that is not a list`, `a table that is not {row, col}`, `a table with a TYPE at K`); `NAME: not enough memory` |
+| get_lines, set_lines | `[S, E) is not a range of the file's N rows` |
+| set_lines | `a line cannot hold a newline (line N)` (N from 1, as Lua counts the list) |
+| set_cursor | `row R is outside the file (it has N rows)`; `column C is outside row R (it has N bytes)` |
+| save | `a save is already going on` (in BufWritePre/Post); `no file name` (kilo -l, no file) |
+| set_keymap, del_keymap, feed_key | `unknown key "NAME"`; `<C-q> is the way out: no script can have it` |
+| del_keymap | `NAME is not mapped` |
+| feed_key | `a save is already going on` (Ctrl-S in BufWritePre/Post); `NAME waits for the keyboard, and there is none` (Ctrl-E, Ctrl-F under -l) |
+| create_autocmd, del_autocmd | `unknown event "NAME"`; `too many autocommands (64)`; `no autocommand ID` |
+| create_namespace | `too many namespaces (64)`; `not enough memory` |
+| add_highlight, clear_namespace | `no namespace N`; `row R is outside the file (it has N rows)`; `[S, E) is not a range of bytes`; `unknown style "X": red, green, yellow, blue, magenta, cyan, bold, underline or reverse`; `too many highlights (10000)` |
+| input | `no keyboard` (kilo -l) |
+| open | `a save is going on`; `unsaved changes`; `"X" is not a file name` (empty, or with a NUL); `cannot read PATH: REASON` |
+| quit | `unsaved changes (quit(true) leaves anyway)` |
+| script.c | `interrupted`; Lua's `not enough memory`; `os.exit is taken away in the editor: kilo.api.quit() leaves`; `cannot open PATH: REASON` (a script); `(error object is a TYPE value)`; `lua: cannot start: not enough memory`; at a panic, on standard error, `kilo: Lua panic: MESSAGE` |
+
+Every text is tested except the three "not enough memory" of C
+allocations (malloc failing) and "lua: cannot start".
+
+Rows and columns count from 0, a column is a byte, a range is [start,
+end); out of range is an error, never clamped (as Neovim with
+strict_indexing). Lua's lists count from 1. The cursor may be on the row
+past the last, column 0: kilo puts it there itself (Down at the end, an
+empty file), so set_cursor takes it and get_cursor gives it.
+
+### Limits
+
+All in script.h, each tested:
+
+| name | value | why |
+|---|---|---|
+| SCRIPT_PROMPT_MAX | 256 bytes | a line at the "lua: " prompt or input(); the 257th byte is not taken (0901) |
+| AUTOCMD_MAX | 64 | autocommands at once (0905) |
+| NAMESPACE_MAX | 64 | namespaces (0906); not in the design: each keeps a copy of its name, outside Lua's memory |
+| HIGHLIGHT_MAX | 10000 | highlights at once, in all namespaces (0906) |
+| SCRIPT_MAX_MEMORY | 64 MB | what Lua may hold (0908) |
+| SCRIPT_HOOK_COUNT | 100000 | instructions between looks at the keyboard (0908) |
+| (the message line) | 79 bytes | E.statusmsg, then the screen's width (0901, 0908) |
+
+### Invariants, and where each is tested
+
+- No core, 06 or 07 lesson's project changes; no 06/07 code at a 09
+  lesson; every 09 project builds with -Werror: the diff and the builds
+  above.
+- No init file: the screen is the core's, to the byte (0901).
+- Every way into Lua is one function, scriptProtected (lua_pcall of a C
+  function with a light userdata: neither push needs memory), so an error
+  or a memory error always comes back as a status; the panic function is
+  reached only by the test aid (0908), never by the fuzz.
+- After any script returns to the editor, the cursor is in the text
+  (editorScriptReturned, called at the outermost return): 0903 (Page Down
+  past a short file, then a script).
+- set_lines changes all or nothing (0903).
+- Nothing a script writes reaches the terminal as a control byte: messages,
+  print, errors, the status line, the prompt of input() (0901, 0902, 0906,
+  0907, 0908).
+- Ctrl-Q is never offered to a script: the first line of editorScriptKey,
+  the one function that offers keys to scripts; set_keymap and feed_key
+  refuse it (0904); an init.lua that maps every other key and has a
+  KeyPress function taking every key still lets Ctrl-Q quit (0908), and so
+  does the end of the editor fuzz.
+- No event fires while another's functions run (0905, 0907).
+- kilo does not exit, nor close the state, while Lua runs: quit() sets a
+  mark read at the top of main's loop (0907); scriptStop leaves the state
+  when exit() comes from inside Lua (os.exit under -l: 0909).
+- References are let go: 2000 mappings of one key leave the registry's
+  count of functions as it was, del_keymap takes one off, a refused mapping
+  keeps none (0904).
+- Lua's memory is bounded and given back (0908); a runaway script is
+  stoppable, in five shapes (0908).
+- The API does not know which way it was called: the same trim() with no
+  screen and on a key gives the same file (0909).
+- Highlights are cut to the row as it is when drawn (0906).
+
+### Departures from the design, and why
+
+- **The second revision is built**, 09.01 to 09.09; 09.10 is not.
+- **ApiFunc has the arguments' names** (`argnames`), for --api-info and
+  for the errors; API_MAX_ARGS is 5 (add_highlight).
+- **NAMESPACE_MAX 64**, a limit the design did not have.
+- **Key names: "<xNN>" for any other byte**, both ways. The design's list
+  ("<C-a>" to "<C-z>", the named keys, printable characters) leaves bytes
+  0, 28 to 31 and 128 to 255 without a name, though "every key
+  editorReadKey() returns" includes them (typing a UTF-8 character gives
+  two such keys). A byte above 127 comes back from editorReadKey() as a
+  negative char on a machine where char is signed; editorScriptKey takes
+  its low byte.
+- **Ctrl-H is not Backspace here.** The design: "Ctrl-H Backspace's:
+  mapping one maps the other". Backspace sends 127 on the terminals kilo
+  targets (kilo's own enum, BACKSPACE = 127; the tests send 127), and
+  Ctrl-H is byte 8 (which kilo also treats as Backspace). Mapping "<C-h>"
+  maps byte 8 only; the Backspace key stays the editor's (0904). "<C-m>" is
+  Enter and "<C-i>" is Tab, as the design says.
+- **The cursor rule when the range is deleted.** The design: inside the
+  range, "the same row or the range's new last row, whichever is higher".
+  With no new lines there is no new last row (set_lines(3, 6, {}) with the
+  cursor on row 4). Built: the row that took the range's place, or the
+  file's last row if none did (0, past the last, for an empty file), as
+  Vim's dd leaves it.
+- **set_cursor takes the row past the last (column 0)**: see above.
+- **BufReadPost for a file that is not there too**, from both of
+  editorOpen's returns: open() makes such a file "as on the command line",
+  and at start BufReadPost fires once for the first file whatever it is.
+  Neovim has BufNewFile for that; kilo has the one event.
+- **An event's function gets one string**: the key's name for KeyPress,
+  the event's name for the others (Neovim passes a table: id, event, buf,
+  match, ...). "Returns true": any value Lua counts as true.
+- **TextChanged and CursorMoved are fired by one function, editorAfterKey,
+  at the top of main's loop**, before the frame: TextChanged first, then
+  CursorMoved; the tick and the place are noted after the functions run.
+- **feed_key refuses more than Ctrl-Q**: Ctrl-S inside BufWritePre/Post
+  (as save() does), and Ctrl-E and Ctrl-F under -l (they read the
+  keyboard: with standard input at its end, editorReadKey() spins for
+  ever).
+- **Under -l, E has the size of a 24 x 80 terminal** (22 x 80 of text).
+  The core's key functions assume a screen: Page Down with 0 rows sets
+  E.cy to -1, and the next arrow reads E.row[-1]. Found reading the code
+  for feed_key, not seen.
+- **A tab in a message shows as a space**; any other control byte as '?'.
+  print() joins with tabs, as Lua's does.
+- **Chunk names**: the init file and a -l script by their own name
+  ("init.lua:3: ..."), the prompt "lua", the Lua on top "kilo.lua".
+- **os.exit in the editor is a function that raises** (not nil), so the
+  error says why.
+- **lua_close at exit, after the terminal is put back**: scriptStop calls
+  disableRawMode() first. A finalizer runs with Lua's hooks off (lgc.c,
+  GCTM: `L->allowhook = 0;  /* stop debug hooks during GC metamethod */`);
+  one that never ends would hang kilo at exit, and with the terminal back
+  in its own mode Ctrl-C is SIGINT again and ends it (0908). Before it,
+  Ctrl-C is byte 3, and nothing would.
+- **Ctrl-C's error is raised again at every instruction** (the hook's
+  count set to 1) until the outermost call returns: a script's pcall()
+  would otherwise catch "interrupted" and go on (`while true do
+  pcall(function() while true do end end) end`, 0908). Its place is level
+  0 for luaL_where: a count hook runs inside the function it stops.
+- **A full collection after any error** at the outermost return, not only
+  after a memory error.
+- **luaL_newstate() to 09.07, lua_newstate() with kilo's allocator and
+  panic function from 09.08**, the lesson that is about them.
+- **open() is refused during a save's events** ("a save is going on",
+  checked before "unsaved changes": during a save the file is usually
+  unsaved), and input()'s prompt is cleaned and cut to 63 bytes.
+- **set_statusline's text is cut so that "row/rows" still fits**, as the
+  design says the count stays.
+- **The panic aid** is an @internal Lua function, `kilo.test_panic()`,
+  which asks scriptProtected to raise once the call has returned, outside
+  any protected call.
+
+### Where the design was wrong, or missed a case
+
+- The deleted-range cursor and Ctrl-H, above.
+- **The count hook does not stop everything.** Two ways a script hangs the
+  editor with Ctrl-C unheard: a finalizer that never ends (hooks are off in
+  finalizers, lgc.c above: `setmetatable({}, {__gc = function() while true
+  do end end})` hangs the editor at whatever collection runs it), and a
+  loop inside one C function, such as a pattern with heavy backtracking:
+  `string.find(string.rep('a', n), string.rep('a*', n) .. 'b')` took 0.009
+  s at n = 10, 0.118 s at 12, 1.548 s at 14, 23.3 s at 16 (under -l). Kept:
+  a script has the user's whole trust, as the design says; the editor can
+  be killed from another terminal, and at exit the first case is handled.
+- **Recursion without end is not "stack overflow" here**: with the 64 MB
+  limit, memory runs out first (`local function f() return 1 + f() end
+  f()` gives "not enough memory"); without the limit (the project at 09.07)
+  it is "lua:1: stack overflow". Through C (string.gsub calling itself) it
+  is "C stack overflow" either way.
+- **The count hook costs every instruction, not every 100000th.** With a
+  count hook set, Lua's VM takes its slow path for each instruction to
+  count it down (lvm.c, `trap`; ldebug.c, luaG_traceexec): an empty loop of
+  10 million iterations took 15 ms with no hook (kilo -l) and 22 ms in the
+  editor; a call of an empty Lua function 7 ns and 17 ns. lua.c avoids
+  that by setting its hook only from the SIGINT handler; kilo cannot, since
+  in raw mode Ctrl-C is a byte, not a signal. A timer signal that sets the
+  hook while a script runs would do it, with more code: not built.
+- **In the finished project, open() does not tell module 07's language
+  server** that the file changed: 09 cannot call lsp.c, so the server keeps
+  the old file's name and is sent the new file's text as a change to it.
+  (07's own jump, Ctrl-G, does it right, and fires BufReadPost through
+  editorOpen.) The extensions do not know each other, as 06 and 07 do not.
+- feed_key under -l and the size under -l, above.
+
+### How the screens below were captured
+
+With a scratch driver around track.py's `Editor` (no change to the track):
+the project at 09.09 (`./learn files kilo --at 09.09`, with lua/ copied in,
+built with make), on an 8 x 60 pseudo-terminal (7 x 40 for the vi keys),
+KILO_INIT naming the init.lua shown, the cursor `[cursor R,C]` from 1. In
+the finished project the screens are the same for a .txt file.
+
+### 09.01 A second language inside the editor: embedding Lua
+
+    -- init.lua: print("hello from init.lua")
+    |hello world
+    |second line
+    |~
+    |~
+    |~
+    |~
+    |f.txt - 2 lines                                          1/2
+    |hello from init.lua
+
+With `local name = 'kilo'` and `print('hello ' .. nme)` (a typo):
+
+    |init.lua:2: attempt to concatenate a nil value (global 'nme'
+
+(cut at the 60 columns). Ctrl-E shows `lua: `, then `lua: 1+1`; Enter
+gives `2` in the message line, the cursor where it was. A statement (`x =
+5`) shows nothing; several values are joined with spaces (`10 a nil`); an
+error is `lua:1: attempt to call a nil value (global 'nosuch')`.
+
+### 09.02 The API is a table
+
+    lua: kilo.api.line_count()                       -> 2
+    lua: kilo.api.get_lines(0, 2)                    -> table: 0x950c04400
+    lua: table.concat(kilo.api.get_lines(0, 2), ' | ')
+                                                     -> hello world   | second line
+    lua: kilo.api.get_lines(0, 5)                    -> lua:1: get_lines: [0, 5) is not a range of the file's 2 rows
+    lua: kilo.api.get_lines('a', 1)                  -> lua:1: get_lines: argument 1 (start): expected integer, got string
+
+(A table is shown as Lua's tostring() shows it; the lesson can use
+table.concat. The trailing spaces of "hello world  " are the row's.)
+
+### 09.03 Changing the text from a script: set_lines
+
+The cursor on row 2, column 3 (1-based), then `kilo.api.set_lines(0, 0,
+{'-- a header, from a script'})`: the row goes in above, the cursor stays on
+its line, now row 3:
+
+    |-- a header, from a script
+    |hello world
+    |second line
+    |~
+    |~
+    |~
+    |f.txt - 3 lines (modified)                               3/3
+    |
+    [cursor 3,3]
+
+`kilo.api.set_lines(0, 1, {'a', 'b\nc'})`: `lua:1: set_lines: a line
+cannot hold a newline (line 2)`, and nothing changed. The cursor rule, as
+0903 checks it on rows line0..line9 (cursor before -> call -> cursor
+after): (1,3) 5,7,{'x'} -> (1,3); (8,2) 2,5,{} -> (5,2); (8,2)
+2,3,{'a','b','c'} -> (10,2); (6,4) 3,8,{'x','y'} -> (4,1); (4,3)
+3,5,{'p','q','r','s'} -> (4,1); (5,4) 5,6,{'Z'} -> (5,1); (4,2) 3,6,{} ->
+(3,2); (8,4) 7,10,{} -> (6,4); (5,1) 0,10,{} -> (0,0); (2,2)
+0,0,{'-- header'} -> (3,2); (9,1) 10,10,{'end1','end2'} -> (9,1); (10,0)
+9,10,{'x','y'} -> (11,0).
+
+### 09.04 Any key can run a Lua function
+
+The lesson's two, in init.lua:
+
+    kilo.keymap.set('<C-d>', function()
+      local row = kilo.api.get_cursor()[1]
+      local line = kilo.api.get_lines(row, row + 1)[1]
+      kilo.api.set_lines(row + 1, row + 1, {line})
+    end)
+    kilo.keymap.set('<C-t>', function()
+      local row = kilo.api.get_cursor()[1]
+      local line = kilo.api.get_lines(row, row + 1)[1]
+      if line:sub(1, 3) == '-- ' then line = line:sub(4) else line = '-- ' .. line end
+      kilo.api.set_lines(row, row + 1, {line})
+    end)
+
+On "local x = 1 / print(x)": Ctrl-D gives `local x = 1` twice (the cursor
+stays on row 1); Down, Ctrl-T gives `-- local x = 1` on row 2; Ctrl-T again
+takes it back. The Lua on top (SCRIPT_LUA in script.c, 19 lines):
+kilo.keymap.set takes a key or a list of keys and calls set_keymap for
+each; kilo.lines() is an iterator, `for row, line in kilo.lines()`, rows
+from 0, over the file as it was when the loop began. A mapped Ctrl-S that
+still saves: `kilo.api.set_keymap('<C-s>', function() ... 
+kilo.api.feed_key('<C-s>') end)` (0904).
+
+### 09.05 Events: autocommands
+
+The lesson's two (trailing spaces trimmed before a save; the words counted
+as you type), on "hello world  / second line\t": typing "a " gives `5
+words` in the message line; Ctrl-S saves `a hello world\nsecond line\n`
+(the spaces and the tab gone) and says `25 bytes written on disk`... then
+the message is the save's? No: the screen shows `5 words` after Ctrl-S,
+since TextChanged fires after the key (the trim changed the text) and its
+function says the count after the save's own message. The order around a
+save, from 0905: `BufWritePre true BufWritePost false` (is_modified() in
+each). A function that fails is said (`lua:1: post failed`) and the next
+runs; the file is written.
+
+### 09.06 Drawing from a script: highlights and the status bar
+
+Every number on the screen in red (the init.lua of 0906, NUMBERS: on
+BufReadPost, TextChanged and CursorMoved, clear the namespace and add a
+highlight for each `%d+` in the rows get_view() and get_size() say are
+shown):
+
+    |int width = [r:640];
+    |int height = [r:480];
+    |print(width * height * [r:3]);
+
+Row 0 as kilo sends it: `int width = 640;ESC[0K \r ESC[12C ESC[31m 640
+ESC[0m` (spaces added here): the core's row, then the highlight drawn over
+it, as module 07's underline is. `kilo.api.set_statusline('3 numbers | '
+.. kilo.api.get_name())`:
+
+    |3 numbers | f.txt                                        1/3
+
+### 09.07 Asking, opening, leaving: input(), open(), quit()
+
+Go to a line on Ctrl-O (GOTO in 0907): Ctrl-O, "30" shows `Go to line: 30`
+in the message line; Enter puts the cursor on line 30 (the view scrolled
+to show it, line 25 to 30 on the 6 rows, the bar `30/40`). quit(true) in
+a line at the prompt: the rest of the line still runs (it wrote a file),
+then kilo exits 0 and the terminal is put back.
+
+### 09.08 Scripts that go wrong
+
+`kilo.api.set_keymap('<C-t>', function() while true do end end)`: Ctrl-T,
+a second later Ctrl-C: `init.lua:2: interrupted`; the frame came 170 ms
+after Ctrl-C, of which the driver's own wait for quiet is 150 ms: the hook
+runs every 100000 instructions, about 0.2 ms here. What each hostile
+script did before its guard (the project at 09.07, which has no 09.08
+code) and after (09.09):
+
+| script | at 09.07 | from 09.08 |
+|---|---|---|
+| `while true do end` at the prompt, then Ctrl-C | still running after 3 s (the process killed) | `lua:1: interrupted` at once |
+| the same inside `pcall`, or in a coroutine | (as above) | `lua:1: interrupted`; `lua:1: lua:1: interrupted` (coroutine.wrap puts its place in front) |
+| `#string.rep('x', 200 * 2^20)` | `209715200`; collectgarbage('count') after: 212642 KB | `not enough memory`; 1584 KB after |
+| a table grown for ever | (not run: it would take the machine's memory) | `not enough memory` after 51468 strings of 1 KB; 87 KB after the collection |
+| `local function f() return 1 + f() end f()` | `lua:1: stack overflow` | `not enough memory` |
+| `local function f(s) return (s:gsub('.', f)) end f('ab')` | `C stack overflow` | `C stack overflow` |
+| `os.exit(0)` with a change unsaved | kilo exits 0, the change lost | `lua:1: os.exit is taken away in the editor: kilo.api.quit() leaves` |
+| `print("\27[2J")`, any control byte | (from 09.01) `?[2J` | `?[2J` |
+| `kilo.test_panic()` (the aid) | (luaL_newstate's panic: a line on standard error, then abort(), the terminal left raw) | `kilo: Lua panic: a panic, on purpose`, status 1, the terminal put back |
+| a KeyPress function that takes every key | (not before 09.05) | Ctrl-Q still quits |
+| a finalizer that never ends, at Ctrl-Q | (terminal put back first from 09.01) | hangs, the terminal back; Ctrl-C ends kilo (SIGINT) |
+
+### 09.09 The editor without its screen
+
+    $ ./kilo -l upper.lua notes.txt          (hello / World / 123)
+    2 lines upper-cased                      (status 0; notes.txt: HELLO / WORLD / 123)
+    $ ./kilo -l bad.lua notes.txt            (set_lines, then get_lines(0, 99))
+    bad.lua:2: get_lines: [0, 99) is not a range of the file's 3 rows
+                                             (status 1, on standard error; nothing saved)
+
+print() and message() write their bytes as they are (control bytes too:
+no terminal is being drawn); os.exit(3) gives status 3; input() is
+`input: no keyboard`; keys fed go to a 22 x 80 view; an event's failing
+function is a line on standard error and the script goes on.
+
+### Measurements
+
+On the Mac (Apple M-series, Apple clang 21):
+
+- The binary: the core at 05.02 53320 bytes (52304 stripped); core + 09 at
+  09.09 337672 (311104 stripped): Lua and module 09 add about 284 KB.
+  liblua.a is 401200 bytes.
+- Start: `kilo --api-info` (no Lua) median 2.40 ms, `kilo -l empty.lua`
+  (a state, the libraries, kilo.api, the Lua on top, an empty script) 2.60
+  ms, of 50 runs each; a 100-line script 2.7 ms. In the editor, spawn to
+  first frame is about 64 ms with no init file, an empty one or 100 lines
+  (the median of 15 runs each, 42 to 62 ms the least): the tests' Python
+  wrapper that makes the terminal the controlling one is most of it.
+- An API call from Lua (a million, os.clock()): line_count 34 to 42 ns,
+  get_lines(0, 1) 192 to 203 ns (a table and a string made), an empty Lua
+  function 7 ns.
+- The count hook: an empty loop of 10 million iterations, best of 5, three
+  runs: 14.8 to 15.7 ms with no hook (kilo -l), 21.7 to 23.9 ms in the
+  editor (hook on); an empty function call 6.8 to 7.3 ns and 16.9 to 18.6
+  ns. See "Where the design was wrong".
+- The fuzz (below) runs 5000 calls in 0.6 s under ASan and UBSan with no
+  screen.
+
+### Found on the way
+
+1. **The hook's error had no place.** luaL_error() in a count hook says
+   where level 1 is, the function's caller (C, so nothing): "interrupted"
+   alone. Level 0 is the function the hook stopped: `init.lua:2:
+   interrupted` (0908).
+2. **open() said "unsaved changes" inside BufWritePre**, where "a save is
+   going on" is the reason (the file is unsaved during most saves). The
+   order of the checks swapped (0907).
+3. **A long set_statusline text hid the row count**: the core's bar writes
+   "row/rows" only where it fits after the left part. Cut to leave room
+   (0906).
+4. **string.rep's own limit**: string.rep('x', 2^40) is "resulting string
+   too large" (lstrlib, at 2^31 bytes), not a memory error; 0908 asks for
+   2^30 to reach the allocator.
+5. **Undefined behaviour in module 06, found by the fuzz on Debian.**
+   editorUpdateSyntax() does `row->hl = realloc(row->hl,row->rsize);` and
+   then `memset(row->hl,HL_NORMAL,row->rsize);`: for an empty row, glibc's
+   realloc(p, 0) frees and gives NULL, and memset() with a NULL pointer is
+   undefined even for 0 bytes. UBSan stops there (`kilo.c:547:5: runtime
+   error: null pointer passed as argument 1, which is declared to never be
+   null`, from editorDelChar through editorUpdateRow) when the fuzz feeds
+   Backspace until a row is empty; typing the same does it, in any file of
+   the finished tree. macOS's realloc never gives NULL there. Harmless in
+   practice (nothing is written), and NOTES's 06 section already says the
+   search checks row->hl for the NULL. Not changed: it is 06's code, and
+   its lessons must not change. The fuzz suppresses that one report by name
+   (tests/api_fuzz.py, UBSAN_SUPPRESSIONS). 06's tests run ASan, not UBSan.
+6. **10000 highlights on one row make a frame of some 150 KB**: each is
+   drawn over the row in turn. Under ASan in Docker that was slow enough
+   for 0906's prompt to outrun the test's wait for a quiet screen; the test
+   clears them in the same line now. Kept: HIGHLIGHT_MAX bounds it.
+7. No bug in the core, in 07 or in 08 was found. All earlier tests (the 28
+   to 07.07, and 08's 4) pass on the finished tree, which has 09 in it.
+
+### Kept simple, and the frontier
+
+- One state for the whole run; one init file; scripts trusted (io,
+  os.execute, io.read on the keyboard left as they are, as a Neovim
+  plugin's are).
+- A mapped key does not reset the Ctrl-Q count (a mapped key returns before
+  the switch).
+- The prompt shows what fits of the line in the message line, as find's
+  does; bytes above 127 are not taken there.
+- A highlight is a row and bytes, drawn after the row; it does not move
+  with the text. A script puts its highlights again on TextChanged (which
+  fires before the frame). In the finished project a highlight is drawn
+  over 06's colours, and over 07's underline where they meet.
+- Highlights are not cleared by open() or by 07's jump: a script clears its
+  namespace on BufReadPost.
+- The frontier, not built (the design's): no timers and no work in the
+  background (one loop would have to own all the waiting, as libuv does in
+  Neovim; 07's poll() and a timer here could not know of each other); one
+  file at a time (E is one file: no buffers, no windows); highlights that
+  do not move when the text does (Neovim's extmarks do); no floating
+  windows or menus.
+
+### For 09.10: does the API reach the three proofs
+
+- **A modal layer of vi keys**: yes. A KeyPress function (created first, so
+  it runs first) takes the keys of "normal" mode, moves with feed_key or
+  set_cursor, edits with set_lines, gives keys back by returning false;
+  Escape and i switch modes (0905 does j, k, i and x). A mode in the status
+  bar with set_statusline. Missing for the full thing: nothing essential;
+  the cursor's shape cannot change, and there is no visual selection
+  drawn but by highlights.
+- **Colouring as module 06 does it**: yes, by highlights over the visible
+  rows, again on BufReadPost, TextChanged and CursorMoved (0906 colours the
+  numbers). Comments over many rows need the rows above the view read on
+  each change (get_lines(0, top)), so the cost grows with the file; and a
+  highlight's styles are the 8 colours and bold, underline, reverse, as
+  06's are.
+- **A find**, or go to a line: go to a line, yes (0907). Find: a one-shot
+  find (input(), then set_cursor and a highlight) yes; find as you type, as
+  the core's, by a KeyPress layer that collects the query and shows it with
+  message() or set_statusline, yes. Missing: a way to set the view, so
+  that Escape puts back the exact view find started from (the core's
+  saves rowoff and coloff; a script can put the cursor back, and the view
+  follows only as little as shows it), and putting the match's row at the
+  top of the screen as the core's find does. A `set_view(position)` would
+  close it.
+
+### The notable editors
+
+This subsection is filled in from the coordinator's research for module 09;
+what follows was confirmed while the code was built, and is kept as it is.
+
+Read on 2026-11-24, by fetching each file or page at the tag or commit
+named (the research was done for this section; quotes are exact, a
+non-ASCII character in one replaced by its ASCII equivalent). Neovim is at
+**v0.12.6** (released 2026-10-09, commit
+779c36969e31080503be2dfccbcc3f999e289606) unless another tag is named;
+URLs are `https://raw.githubusercontent.com/neovim/neovim/v0.12.6/PATH`.
+
+**Neovim, against the design's guesses:**
+
+- **Indexing** (runtime/doc/api.txt, api-indexing): "Most of the API uses
+  0-based indices, and ranges are end-exclusive." "Negative indices are
+  interpreted as length+1+index: -1 refers to the index past the end."
+  "Out-of-bounds indices are clamped to the nearest valid value, unless
+  `strict_indexing` is set." The cursor: "Sets the (1,0)-indexed cursor
+  position (byte offset) in the window" (nvim_win_set_cursor). So the
+  design's guess holds: rows from 0, end-exclusive, a cursor counting rows
+  from 1; kilo's cursor counts rows from 0, and kilo never clamps.
+- **nvim_buf_set_lines** (src/nvim/api/buffer.c): checks first
+  (`VALIDATE((!strict_indexing || !oob), "%s", "Index out of bounds", {`,
+  `VALIDATE((start <= end), "%s", "'start' is higher than 'end'", {`; a
+  newline in an item is an error for Lua and RPC callers,
+  src/nvim/api/private/validate.c: `"'%s' item contains newlines"`); saves
+  for undo before any change (`if (u_save_buf(b, (linenr_T)(start - 1),
+  (linenr_T)end) == FAIL) {`); then marks (mark_adjust_buf, extmark_splice)
+  and the tick (`changed_lines(b, (linenr_T)start, 0, (linenr_T)end,
+  (linenr_T)extra, true);`, which reaches `buf_inc_changedtick(buf);` in
+  change.c).
+- **The cursor after set_lines differs from kilo's.** Neovim's fix_cursor
+  keeps a cursor inside the replaced range on the same line number, and
+  only clamps it to the last line when lines were deleted (`} else if
+  (extra < 0) { check_cursor_lnum(win); }`); below the range, `lnum +=
+  extra`. kilo's (the design's) moves a cursor inside the range up to the
+  range's new last row when the range shrank.
+- **set_lines is not "the function the others are built from".**
+  nvim_buf_set_text is its own implementation of the same steps, and says
+  so: "unlike set_lines, we want to save the undo state of one past the
+  end_row, since end_row is inclusive." The only callers of
+  nvim_buf_set_lines found in src/nvim/api/*.c are the deprecated wrappers
+  in deprecated.c (buffer_insert, buffer_set_line, ...).
+- **The types** (src/nvim/api/private/defs.h): `kObjectTypeNil = 0,
+  kObjectTypeBoolean, kObjectTypeInteger, kObjectTypeFloat,
+  kObjectTypeString, kObjectTypeArray, kObjectTypeDict, kObjectTypeLuaRef`
+  (and Buffer, Window, Tabpage); `typedef struct { ErrorType type; char
+  *msg; } Error;`; and in src/nvim/types_defs.h, `typedef int LuaRef;`.
+- **The generator**: src/gen/gen_api_dispatch.lua reads the api headers
+  (api.txt: "parses headers in src/nvim/api/* and generates
+  dispatch-functions mapping RPC API method names to public C API
+  functions, converting/validating arguments and return values") and
+  writes the RPC wrappers (each checks "Wrong number of arguments" and
+  "Wrong type for argument"), the Lua bindings (`static int
+  nlua_api_<name>(lua_State *lstate)`, put into `vim.api` by
+  `lua_setfield(lstate, -2, "api");`), and the metadata that
+  src/gen/gen_api_metadata.lua packs and `nvim --api-info` prints
+  ("Print msgpack-encoded |api-metadata| and exit", starting.txt). kilo
+  writes its table by hand, and --api-info prints text.
+- **Lua in Neovim** (src/nvim/lua/executor.c): `lua_State *lstate =
+  luaL_newstate();` and `luaL_openlibs(lstate);` in nlua_init; a function
+  becomes a LuaRef in nlua_ref (`LuaRef ref = luaL_ref(lstate,
+  LUA_REGISTRYINDEX);`); nlua_call_ref calls one later, through nlua_pcall
+  ("Like lua_pcall, but use debug.traceback as errfunc."); errors go to
+  nlua_error ("Converts a Lua error into a Vim error message"), e.g. `"E5108:
+  Lua: %.*s"`. The language is 5.1: "Lua 5.1 is the permanent interface for
+  Nvim Lua", built with LuaJIT where it can be (lua.txt). kilo's is 5.4;
+  what the lessons use is the same in both but integers (5.4 has them, 5.1
+  has only doubles: converter.c makes a whole number an Integer).
+- **converter.c**: nlua_pop_Object and nlua_push_Object; a table is an
+  Array when its keys are 1 to n, a Dict when all are strings, else
+  "Cannot convert given Lua table".
+- **vim.keymap.set is Lua** (runtime/lua/vim/keymap.lua):
+  `vim.api.nvim_set_keymap(m, lhs, rhs, opts)` and
+  `vim.api.nvim_buf_set_keymap(buf, m, lhs, rhs, opts)`, as the design
+  supposed; kilo.keymap.set is the same idea in 3 lines.
+- **Starting** (starting.txt): `-l {script}` "Executes Lua {script}
+  non-interactively (no UI) ... then exits. Exits 1 on Lua error."; and it
+  makes print() write to output. `--headless`: "Start without UI". The
+  order: step 3 "Buffers are created for all files (but not loaded yet).",
+  step 8 "Load user config ...", step 18 "Buffers for all windows will be
+  loaded": **Neovim runs init.lua before it reads the files**; kilo reads
+  the file first, so init.lua can see it, and fires BufReadPost once after.
+- **The UI as a client**: since Neovim 0.9 (news.txt at v0.9.5): "The
+  |TUI| is changed to run in a separate process (previously, a separate
+  thread was used)." tui.txt (v0.12.6): "Nvim has a client-server
+  architecture: by default when you run `nvim`, this starts the builtin UI
+  client, which starts a `nvim --embed` server (child) process that the UI
+  client connects to." kilo's screen is in its own process; only the API
+  is shared by the editor and -l.
+- **b:changedtick** (vimeval.txt): "The total number of changes to the
+  current buffer. It is incremented for each change. An undo command is
+  also a change in this case." kilo's tick goes up in each row function.
+- **Nesting** (autocmd.txt): "By default, autocommands do not nest. For
+  example, if you use ":e" or ":w" in an autocommand, Vim does not execute
+  the BufRead and BufWrite autocommands for those commands." In autocmd.c
+  such an event is skipped, not queued (`if (autocmd_busy && !(force ||
+  autocmd_nested)) { goto BYPASS_AU; }`), as in kilo. Event names in Neovim
+  are case-insensitive ("Names are case-insensitive."); kilo's are exact.
+- **TextChanged, CursorMoved** (normal.c): the tick is noted after the
+  autocommands, so a callback's own change does not fire it again
+  (`apply_autocmds(EVENT_TEXTCHANGED, NULL, NULL, false, curbuf);` then
+  `curbuf->b_last_changedtick = buf_get_changedtick(curbuf);`), and
+  CursorMoved compares the cursor's position with the last one, as kilo's
+  editorAfterKey does. Which of the two Neovim checks first was not read.
+- **Stopping a Lua script: Neovim does not.** executor.c has no
+  lua_sethook; issue #6800, "Lua: interrupt / ctrl-c / cancel Lua code",
+  is open (fetched): "if you write an endless loop inside `:lua` then it
+  can't be interrupted." kilo's count hook is Lua's own lua.c's idea, and
+  Redis's (below).
+- **Highlights** (api.txt): nvim_create_namespace "If `name` matches an
+  existing namespace, the associated id is returned. If `name` is an empty
+  string a new, anonymous namespace is created." (as kilo's);
+  nvim_buf_set_extmark with `end_col` and `hl_group`;
+  nvim_buf_clear_namespace; nvim_buf_add_highlight is deprecated (API
+  level 13). Extmarks move with the text (extmark.c: "Marks sit in a
+  MarkTree datastructure which provides both efficient mark
+  insertations/lookups and adjustment to text changes."); kilo's do not.
+- **Keys**: vim.on_key sees every key "after mappings have been applied but
+  before further processing", and since 0.11 "callbacks can consume the
+  key by returning an empty string" (news-0.11.txt). kilo's KeyPress runs
+  before the mappings, and returning true takes the key. nvim_feedkeys with
+  mode 'n' ("Do not remap keys") is feed_key's nearest.
+- **Asking, opening, leaving**: vim.ui.input's default calls vim.fn.input
+  and gives nil "if the user aborted the dialog" (ui.lua); `:edit` with
+  changes is E37 "No write since last change (add ! to override)"; `:q[uit]!`
+  "Quit without writing, also when the current buffer has changes."
+
+**The others:**
+
+- **Vim** (v9.2.1398, runtime/doc/usr_41.txt): "The Vim script language is
+  used for the startup vimrc file, syntax files, and many other things."
+  Neovim's own docs on what it changed (v0.12.6): "Nvim exposes a powerful
+  API that can be used by plugins and external processes via |RPC|, |Lua|
+  and Vimscript" (api.txt); "Extensibility is a primary goal of Nvim. Any
+  programming language may be used to extend Nvim without changes to Nvim
+  itself." (remote_plugin.txt).
+- **Emacs** (GNU Emacs Lisp Reference Manual, read 2026-11-24): "Most of
+  the GNU Emacs text editor is written in the programming language called
+  Emacs Lisp." (Introduction); "Lisp primitives are Lisp functions
+  implemented in C. The details of interfacing the C function so that Lisp
+  can call it are handled by a few C macros." (Writing Emacs Primitives,
+  https://www.gnu.org/software/emacs/manual/html_node/elisp/Writing-Emacs-Primitives.html),
+  the macro being `DEFUN (lname, fname, sname, min, max, interactive, doc)`.
+  The other design: the editor mostly in its extension language, C only for
+  the primitives.
+- **Zed** (v1.29.3, commit d01b134cddf5e4f71964deb2d6f81cdb38fcf1e7):
+  "Procedural parts of extensions are written in Rust and compiled to
+  WebAssembly." (zed.dev/docs/extensions/developing-extensions). The API is
+  WIT, crates/extension_api/wit/since_v0.8.0/extension.wit: `world
+  extension {` with exports such as `language-server-command`,
+  `run-slash-command`, `context-server-command`, and imports such as a
+  worktree's `read-text-file`. Capabilities (`process:exec`,
+  `download_file`, `npm:install`) are granted by the user. No function in
+  the WIT files read edits a buffer or draws in the editor (github.wit was
+  not read).
+- **VS Code** (https://code.visualstudio.com/api/advanced-topics/extension-host,
+  read 2026-11-24): "The **Extension Host** is responsible for running
+  extensions." "VS Code aims to deliver a stable and high performance
+  editor to users, and misbehaving extensions should not impact the user
+  experience. The Extension Host in VS Code prevents extensions from:
+  Impacting startup performance / Slowing down UI operations / Modifying
+  the UI". There can be several hosts (local, remote, web).
+- **Redis** (tag 8.12.0, commit 215f2e33da9dfb2e0783cdd3a7acd29f8f6e9dd2):
+  deps/lua is `"Lua 5.1.5"`; src/script_lua.c stops a slow script with a
+  count hook, the same count as kilo's:
+  `lua_sethook(lua,luaMaskCountHook,LUA_MASKCOUNT,100000);` ("This is the
+  Lua script "count" hook that we use to detect scripts timeout."), and
+  once a script is killed re-arms it "so the user will not be able to
+  catch the error with pcall", as kilo does. Redis does not stop a slow
+  script by itself; it serves other clients and lets an operator kill it.
+  Why Lua (redis.io, eval-intro): "Lua lets you run part of your
+  application logic inside Redis."
+- **Helix** (25.07.1): no plugin system in a release; a Scheme one (Steel)
+  is an open pull request, #8675 (fetched).
+
+| editor | extension language | where it runs | what the API is |
+|---|---|---|---|
+| kilo (09) | Lua 5.4 | in the editor's process | 24 C functions in a table, given to Lua by one dispatcher |
+| Neovim | Lua 5.1 (LuaJIT), Vimscript; any, as a remote plugin | Lua and Vimscript in the editor's process; remote plugins and the UI in other processes | C functions with typed Objects, a generated table serving Lua, msgpack-RPC and --api-info |
+| Vim | Vimscript | in the editor's process (not read in a source) | the language's functions and commands |
+| Emacs | Emacs Lisp | in the editor's process, by its own interpreter | a Lisp: most of the editor is Lisp, C primitives by DEFUN |
+| Zed | Rust (or any) compiled to WebAssembly | a sandbox in the editor's process, with capabilities | WIT interfaces |
+| VS Code | JavaScript or TypeScript | another process (the extension host), or a web worker | the extension API (not read here) |
+| Redis (not an editor) | Lua 5.1 | in the server's process | redis.call and its kin |
+
+**Not confirmed** (kept out of the lessons): that nothing else in
+Neovim's C tree calls nvim_buf_set_lines (only the api files were read);
+the release in which the TUI became a process rests on the 0.9 news line
+alone; that Ctrl-C cannot stop `:lua while true do end` was read from the
+source and the open issue, not run; which of TextChanged and CursorMoved
+Neovim checks first; Vim's process model (no Vim source read for it); VS
+Code's pages do not say "separate process from the window" in those words;
+Zed's github.wit was not read.
+
 ## Other behaviour of the original, kept
 
 - kilo does not clear the screen on exit: the shell prompt appears where
@@ -2566,3 +3464,43 @@ and tests/):
   timeline_after: at 08.01, after every step undone and a save, learn.txt
   is the file as it was; from 08.02 it is saved with the edits, as in the
   core.
+
+For module 09 (the test aid `@internal` in script.c, the rest in track.py
+and tests/):
+
+- `edit(..., init=None)`, the default, sets KILO_INIT to the empty string,
+  so no test of any module runs a developer's own init.lua; a string is Lua
+  written to an init.lua of the test's (`initN/init.lua` for the Nth
+  editor, so errors still say "init.lua"); "env" takes it from the test.
+  `run_script(t, lua, text, ...)` runs `kilo -l` with no terminal.
+  `lua_quote(s)` writes any bytes as a Lua literal. `asan_build(t,
+  sanitize)` links Lua's library and takes "address,undefined" too.
+- The tests drive the editor through the Ctrl-E prompt and init files,
+  and compare strings longer than the message line inside Lua (`... ==
+  "..."`, which shows true or false): the line holds 79 bytes.
+- `kilo.test_panic()` (`@internal`) asks for an error outside any
+  protected call, the one way to reach the panic function (0908).
+- tests/api_fuzz.py writes random calls of every API function as Lua:
+  0908 runs 10 blocks of 300 in the editor, a block a key, the screen drawn
+  after each, under ASan and UBSan (input, quit and keys that read the
+  keyboard left out; autocommand 1, the driver, never deleted); 0909 runs 3
+  scripts of 2000 with no screen under ASan and UBSan, with LeakSanitizer
+  on Linux. The seed is the clock's, printed with a failure. UBSan's one
+  report from module 06 is suppressed by name (Found on the way, 5).
+- The timeline at 09.01 to 09.09 runs the project with TIMELINE_INIT
+  (an init.lua that uses what each lesson has), on learn.txt: init.lua's
+  message, a line at the prompt and an error, from 09.02 the reads, from
+  09.03 a header put in with set_lines, 09.04 Ctrl-T (Lua) commenting a row
+  and back, 09.05 the words counted on TextChanged, 09.06 the numbers in
+  red and the status bar set, 09.07 Ctrl-O asking for a line, 09.08 a loop
+  stopped by Ctrl-C. timeline_after: learn.txt untouched; `--api-info` has
+  the lesson's count of functions (6, 9, 12, 15, 21, 24); at 09.09 `kilo
+  -l` upper-cases a copy of learn.txt. prepare() copies lua/ into the
+  project first (supply_lua).
+- On Linux (in Docker, aarch64): Debian trixie (glibc 2.41, gcc 14.2),
+  the finished tree with module 08: all 41 tests (09's fuzz with ASan,
+  UBSan and LeakSanitizer), check-skeleton of 09 and check-timeline pass,
+  and every 09 project and the finished one build with -Werror; that took
+  the two findings above (5 and 6). Alpine 3.22 (musl, gcc 14.2), the tree
+  before module 08 was merged: the same pass (no ASan for gcc there, so
+  the plain build).
