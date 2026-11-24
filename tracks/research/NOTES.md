@@ -3972,15 +3972,16 @@ times.json beside the runs.
    written out is the largest piece, forward and backward (11.03). Next,
    element-wise operations: rotary's turning, the written-out RMSNorm,
    SwiGLU's product, and their gradients, each a pass over memory.
-3. Rotary's angles: 8 calls a step, 20.9 microseconds a call alone,
-   0.17 ms a step, 0.7% of it. The turning, forward and backward (the
-   first version timed 8 calls at the queries' size, 0.87 ms each, 6.9
-   ms, 27% of the step: too much, the keys have 2 heads, not 4; profile.py
-   now times a block's queries and keys at their own sizes: rerun it for
-   the page). Kept (Rotary.keep = True): every weight after 3 steps bit
-   for bit as without (True); a step 35.1 ms against 34.6 (the smallest
-   of 15, interleaved rounds, load 6.8), x1.015; at load 10, 27.7 against
-   28.5, x0.972; at load 18, 70.3 against 73.2, x0.960; in the recorded
+3. Rotary's angles: 8 calls a step, 20.4 to 21.7 microseconds a call
+   alone, 0.16 ms a step, 0.5% of it (load 5.8; 0.4% at load 10). The
+   turning, forward and backward, a block's queries (4 heads) and keys (2
+   heads) at their own sizes: 1.37 ms a block, 5.5 ms a step, 15.8% of it
+   (load 5.8; the step 34.7 ms with the timers that run). Kept
+   (Rotary.keep = True): every weight after 3 steps bit for bit as
+   without (True); a step 32.6 ms against 32.5 (the smallest of 15,
+   interleaved rounds, load 6.1), x1.003; at load 6.8, 35.1 against 34.6,
+   x1.015; at load 10, 27.7 against 28.5, x0.972; at load 18, 70.3
+   against 73.2, x0.960; in the recorded
    benchmark (load 2.5, width 128, windows of 128), 23.0 against 22.7 s
    to the target, x1.01, t = +0.5. As found: the fix is right and costs
    nothing, and the profile shows the angles were never the cost.
@@ -4504,8 +4505,8 @@ explained.
 belongs):
 - 11.02's finding is not the planned one. The plan (and 10.02's notes)
   put rotary's angles at "18 to 52% of a step"; the profile puts them at
-  0.3% (the angles of 64 places, 22 microseconds a call, 8 calls). What
-  module 10 measured was the whole turning (x times the cos, the other
+  0.5% (the angles of 64 places, 20 to 22 microseconds a call, 8 calls).
+  What module 10 measured was the whole turning (x times the cos, the other
   half turned and times the sin, and their backward), a dozen
   element-wise operations over every query and key: the turning is the
   cost, not the angles. The cache was built as planned (the same angles,
@@ -4559,8 +4560,8 @@ belongs):
   step here); its bits are early ones (3.8 to 3.9).
 - 11.02's part 3 first timed rotary's turning as 8 calls at the
   queries' size (27% of a step at load 6.5); the keys have 2 heads, not
-  4, so it now times each block's queries and keys at their own sizes:
-  the number on the page is that run's, not this file's.
+  4, so it now times each block's queries and keys at their own sizes
+  (15.8%).
 - benchmark.py's curves are drawn against seconds as steps times the run's
   mean ms a step (times stay out of log.jsonl, so the exact clock at each
   row is not kept); the time to the target itself is the clock's.
