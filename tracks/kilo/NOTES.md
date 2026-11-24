@@ -3846,6 +3846,175 @@ notes.txt ("hello world", "second line").
   after the b (column cut by editorScriptReturned). 0903 and 0904 pass on
   the finished tree (colour, the language server and undo see set_lines).
 
+### 09.10 Features as scripts
+
+The proof of "fully extensible": three plugins, only Lua, no line of C,
+each standing in for a feature the editor or module 06 has in C. They are
+`plugins/vi.lua` (89 lines), `plugins/colour.lua` (113) and
+`plugins/find.lua` (105), in the project from 09.10 (track.py FILES_FROM
+"plugins/*"). Nothing in kilo.c, script.c or the API changed for them (the
+API got set_view in 09.06 for find, before they were written).
+
+**Loading them.** With `require`: each plugin returns a table (vi's mode,
+colour's functions, find's state) and require loads it once, however many
+times it is asked for (dofile would run a file again each time, and its
+autocommands with it). Lua's default `package.path` holds `./?.lua`, so a
+reader who starts kilo in the project's directory writes, in init.lua:
+
+    require('plugins.colour')
+    require('plugins.find')
+    require('plugins.vi')
+
+From anywhere else, the project's directory goes first on the path:
+`package.path = '/path/to/the/project/?.lua;' .. package.path`. The
+order matters (below): colour, then find, then vi.
+
+**What each calls.**
+
+- vi.lua: create_autocmd (KeyPress, BufReadPost), get_cursor, set_cursor,
+  get_lines, line_count, set_lines, set_statusline, get_name.
+- colour.lua: create_namespace, clear_namespace, add_highlight, get_name,
+  get_view, get_size, line_count, get_lines, create_autocmd (BufReadPost,
+  TextChanged, CursorMoved).
+- find.lua: set_keymap (Ctrl-N, Ctrl-O), create_autocmd (KeyPress,
+  TextChanged, CursorMoved), create_namespace, clear_namespace,
+  add_highlight, get_cursor, set_cursor, get_view, set_view, line_count,
+  get_lines, message, input.
+
+**Against what each stands in for.**
+
+- vi.lua against vi's modes: h j k l, 0 and $, i a o, x, dd, Escape back to
+  normal (one step left, as vi); the mode in the status bar; in normal mode
+  a printable key it does not know does nothing, and a named key (an arrow,
+  Ctrl-S, Ctrl-Z) goes to the editor. Not done: counts, operators but dd,
+  visual mode, `.`, its own undo (Ctrl-Z, module 08's, passes through in
+  the finished project); dd keeps the column where vi goes to the first
+  character; the cursor's shape does not change; keys typed in kilo's own
+  prompts (Ctrl-F, Ctrl-E, input()) never reach it.
+- colour.lua against module 06: the same classes and colours for C, with
+  06's own lists of keywords and types; Lua besides (keywords, nil, true and
+  false, `--` and `--[[ ]]` comments, strings). In the finished project,
+  drawn over 06's colours, the screen is the same (0910 compares). Not the
+  same: the leading spaces of a row inside a comment are coloured (06 leaves
+  them plain: invisible); a control character is not drawn reversed (06
+  does); Lua's long strings and `--[==[` comments are not read. And the
+  cost (below): to know whether the view's first row is inside a comment
+  it reads every row above it on every key, where 06 keeps a state per row
+  (hl_oc) and works only on the rows that changed.
+- find.lua against the core's Ctrl-F: as you type from the top, Down and
+  Right to the next match, Up and Left to the one before, round the end,
+  Backspace, Enter to stay, Escape to put back the cursor and the view (with
+  set_view); the match's row at the top of the screen, the match in blue.
+  On Ctrl-N, as Ctrl-F is the core's. Not the same: the query shows with
+  message() (a message, not a prompt with a cursor); a character above 127
+  cannot be typed into the query (it arrives as `<xNN>` keys, one byte
+  each); with module 06, 06's own find colours the match by its classes,
+  find.lua by a highlight. Go to a line: Ctrl-O, input(), set_cursor.
+
+**Two plugins that want the same key.** KeyPress functions run in the
+order they were made, and the first that returns true has the key: with
+find loaded before vi, a find takes every key while it lasts and vi sees
+none; with vi before find, vi's normal mode takes the query's letters (l
+moves right) and the find never gets them, though Escape, a named key vi
+gives back, still ends it (0910). Highlights are drawn in the order they
+were added: colour.lua draws its own again on every change and move, so
+find.lua draws its match again then too, and loaded after colour.lua its
+blue is the last; loaded before, on a key that moves the cursor (Down to
+the next match) colour.lua's yellow covers find's blue on a keyword
+(0910). Two mappings of one key: the later replaces the earlier.
+
+**Screens** (the project at 09.10, built; 7 x 50, 10 x 50, 8 x 50):
+
+    vi.lua, on "local x = 1 / print(x) / return x":
+    |local x = 1
+    |print(x)
+    |return x
+    |-- NORMAL -- f.txt                             1/3        [cursor 1,1]
+    j $:                                                          [cursor 2,8]
+    dd:                       local x = 1 / return x, 2/2      [cursor 2,8]
+    o, then "-- new":         row 3 "-- new", -- INSERT --, 3/3 [cursor 3,7]
+    Escape:                   -- NORMAL --                      [cursor 3,6]
+
+    colour.lua, sum.c and n.lua:
+    |#include <stdio.h>
+    |[c:/* sum the numbers]
+    |[c:   given */]
+    |[g:int] main([g:void]) {
+    |        [g:int] total = [r:0]; [c:// none yet]
+    |        printf([m:"%d\n"], total + [r:42]);
+    |        [y:return] [r:0];
+    |}
+    |[c:-- a comment]
+    |[y:local] n = [r:10]
+    |print([m:'n is'], n, [g:nil])
+
+    find.lua, on lines_of(40) with the three loaded:
+    Ctrl-N:       |Search:  (Use ESC/Arrows/Enter)
+    "line 3":     |[b:line 3]          (row 3 at the top, the bar 3/40)
+    Down:         |[b:line 3]0         (row 30 at the top, 30/40)
+    Escape:       |line 1 ... as before, the message empty
+    Ctrl-O, 25:   |Go to line: 25
+    Enter:        rows 20 to 25 shown, the bar 25/40, [cursor 6,1]
+
+**Measurements** (Mac, the time from a typed key to the end of the frame it
+causes, the median of 40 keys, typing and deleting a character, on the
+core's own kilo.c at 05.02, 1068 lines, saved as big.c):
+
+| | at the top of the file | at main(), row 1050 |
+|---|---|---|
+| module 06 (the project at 06.05) | 0.57 ms | 0.43 ms |
+| colour.lua (the project at 09.10) | 0.81 ms | 11.63 ms |
+| no colours (09.10, no plugin) | 0.46 ms | 0.40 ms |
+
+Lines: module 06 adds 411 lines to kilo.c (261 of code, the rest notes);
+colour.lua has 106 that are not blank (94 of code). vi.lua 74 lines of
+code, find.lua 78.
+
+**What a script still cannot do**, and what each would need:
+
+- Keep a state per row that follows the text, as 06's hl_oc does: the
+  API says that the text changed (TextChanged, the tick), not which rows;
+  so colour.lua reads every row above the view on each key (11.6 ms at row
+  1050). It would need an event with the changed rows (Neovim's
+  nvim_buf_attach and its on_lines), or highlights that move with the text
+  (Neovim's extmarks, marktree.c).
+- Say which highlight is drawn on top: the order they were added decides,
+  so the order plugins are loaded in matters. It would need a priority per
+  highlight or per namespace (Neovim's extmarks have one).
+- Wait for time to pass, or work in the background: no timers (the
+  frontier: one loop would have to own all the waiting, 07's poll()
+  included, as libuv does for Neovim).
+- More than one file at a time, windows, floating windows, menus: E is one
+  file and the screen is the core's.
+- A prompt that sees each key: input() returns at Enter; find.lua's search
+  as you type is a KeyPress layer and a message. A prompt with a per-key
+  function would close it.
+- Type a character above 127 into a plugin's own layer as one key: it comes
+  as one KeyPress per byte (`<xNN>`).
+- Group its own changes into undo steps (module 08) as it chooses: a key's
+  scripts make one step (09's choice, above), nothing finer.
+- A known limit of the finished project: open() from a script does not tell
+  module 07's language server that the file changed (a jump with Ctrl-G
+  does, through lsp.c's lspSwitch). A function exported from lsp.c for it
+  would have to sit behind a 07 marker, and so change 07.07's project, or
+  behind a 09 marker in lsp.c, a file only 07 brings, which `./learn check`
+  refuses ("@from 09.07, but the file only comes with 07.01"). The
+  coordinator accepted the gap; no harness change.
+
+**Tests and timeline.** tests/0910_features_as_scripts.py writes out the
+project at 09.10 (harness/timeline.py), builds it against the track's Lua
+(with ASan where the compiler can), and drives each plugin as a user does:
+vi's moves, edits, modes and Ctrl-S; colour.lua on C, on Lua, on a comment
+opened 60 rows above the view; find's search, next, previous, round the
+top, Backspace, Escape back to the exact view, no match, Enter, go to a
+line; the two load orders. In the finished project, the three with 06, 07
+(scripted server) and 08: colour.lua over 06 the same screen, 07's
+underline, vi's dd undone by Ctrl-Z, find's blue over both, the load order
+of find and colour after a move. The timeline at 09.10 runs on learn.c with
+an init.lua that requires the three from the project's directory (`./?.lua`,
+the reader's way): colour.lua's colours, vi's status and moves, find's
+match at the top and Escape back, Ctrl-O; learn.c untouched.
+
 ## Other behaviour of the original, kept
 
 - kilo does not clear the screen on exit: the shell prompt appears where
