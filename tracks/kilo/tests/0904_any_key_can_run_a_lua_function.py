@@ -9,8 +9,14 @@ editor's own key, and runs in place of it; it does not apply inside find
 or a prompt. The dispatcher keeps a function as a reference in Lua's
 registry; mapping a key again, or del_keymap(), lets it go. feed_key(key)
 does what the editor itself does for a key, with no mapping consulted.
-kilo.keymap.set() and kilo.lines() are Lua, on top of the API.
+kilo.keymap.set() and kilo.lines() are Lua, on top of the API. In the
+finished project, with module 08: what a key's scripts change is one step of
+undo, its own, whatever keys were typed before; Ctrl-Z and Ctrl-R can be a
+script's, and feed_key() reaches the editor's.
 """
+
+import os
+
 
 INIT = r"""
 log = {}
@@ -157,3 +163,71 @@ def test(t):
             "0=one 1=one 2=-- two 3=threx!zz 4=", f"kilo.lines(): {ed.message!r}")
     ed.keys(tr.ctrl("s"))
     t.check(ed.quit() == 0, "Ctrl-Q quits")
+
+    # With module 08 (the finished project): set_lines undone by one Ctrl-Z and done again by
+    # Ctrl-R, the cursor where 08's step puts it (before the step; after it); a script's step
+    # not glued to the typing before it, nor the typing after it to the script's; several
+    # changes one step; a row deleted and then the row now in its place changed, in one step;
+    # Ctrl-Z mapped and Ctrl-R taken by KeyPress, feed_key() reaching the editor's. Module
+    # 08's own check of its history runs after every key (KILO_TEST_UNDO_LOG).
+    if "undoSave" not in open(os.path.join(t.root, "kilo.c"), errors="replace").read():
+        return
+    undo = (INIT + r"""
+kilo.api.set_keymap('<C-y>', function() kilo.api.set_lines(0, 0, {'header'}) end)
+kilo.api.set_keymap('x', function() kilo.api.set_lines(0, 0, {'by x'}) end)
+kilo.api.set_keymap('<C-k>', function()
+  kilo.api.set_lines(0, 1, {'A'})
+  kilo.api.set_lines(2, 3, {'C'})
+  kilo.api.set_cursor({1, 0})
+  kilo.api.feed_key('B')
+  kilo.api.feed_key('<Enter>')
+end)
+kilo.api.set_keymap('<C-o>', function()
+  kilo.api.set_lines(1, 2, {})
+  kilo.api.set_cursor({1, 0})
+  kilo.api.feed_key('Z')
+end)
+kilo.api.set_keymap('<C-z>', function() note('undo') kilo.api.feed_key('<C-z>') end)
+kilo.api.create_autocmd('KeyPress', function(k)
+  if k == '<C-r>' then note('redo') kilo.api.feed_key('<C-r>') return true end
+end)
+""")
+    log = os.path.join(t.tmp, "undo.log")
+    ed = tr.edit(t, "one\ntwo\nthree\n", name="u.txt", init=undo, asan=True,
+                 env=dict(os.environ, KILO_TEST_UNDO_LOG=log))
+    base = ["one", "two", "three"]
+    ed.keys(tr.DOWN, tr.RIGHT, tr.RIGHT, tr.ctrl("y"))
+    t.check(ed.lines[:4] == ["header"] + base and ed.cursor == (2, 2), f"{ed.lines[:4]} {ed.cursor}")
+    ed.keys(tr.ctrl("z"))
+    t.check(ed.lines[:4] == base + ["~"] and ed.cursor == (1, 2), f"one Ctrl-Z: {ed.lines[:4]} {ed.cursor}")
+    ed.keys(tr.ctrl("r"))
+    t.check(ed.lines[:4] == ["header"] + base and ed.cursor == (2, 2), f"Ctrl-R: {ed.lines[:4]} {ed.cursor}")
+    t.check(lua("L()") == "undo redo", f"both were the scripts': {ed.message!r}")
+    ed.keys(tr.ctrl("z"))
+    # Typing, then a typed key a script takes, then typing: three steps.
+    ed.keys("ab", "x", "cd")
+    t.check(ed.lines[:4] == ["by x", "one", "twabcdo", "three"], f"{ed.lines[:4]}")
+    ed.keys(tr.ctrl("z"))
+    t.check(ed.lines[:4] == ["by x", "one", "twabo", "three"], f"the typing after the script: {ed.lines[:4]}")
+    ed.keys(tr.ctrl("z"))
+    t.check(ed.lines[:4] == ["one", "twabo", "three", "~"], f"the script's step alone: {ed.lines[:4]}")
+    ed.keys(tr.ctrl("z"))
+    t.check(ed.lines[:4] == base + ["~"], f"then the typing before it: {ed.lines[:4]}")
+    # Several changes, fed keys among them: one step.
+    ed.keys(tr.ctrl("k"))
+    t.check(ed.lines[:5] == ["A", "B", "two", "C", "~"], f"{ed.lines[:5]}")
+    ed.keys(tr.ctrl("z"))
+    t.check(ed.lines[:4] == base + ["~"], f"one Ctrl-Z for all of them: {ed.lines[:4]}")
+    # A row deleted, then the row now at its index changed (a U_DEL, then a U_CHG of the same
+    # row: a path 08's own keys never take).
+    ed.keys(tr.ctrl("o"))
+    t.check(ed.lines[:3] == ["one", "Zthree", "~"], f"{ed.lines[:3]}")
+    ed.keys(tr.ctrl("z"))
+    t.check(ed.lines[:4] == base + ["~"], f"undone: {ed.lines[:4]}")
+    ed.keys(tr.ctrl("r"))
+    t.check(ed.lines[:3] == ["one", "Zthree", "~"], f"redone: {ed.lines[:3]}")
+    ed.keys(tr.ctrl("z"), tr.ctrl("s"))
+    t.check(ed.saved() == "one\ntwo\nthree\n", f"{ed.saved()!r}")
+    t.check(ed.quit() == 0, "Ctrl-Q quits")
+    with open(log) as f:
+        t.check(len(f.read().splitlines()) > 5, "module 08 checked its history after the keys")

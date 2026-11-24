@@ -52,7 +52,7 @@ server client"). Module 08, a third, is ours too: undo and redo, in kilo.c
 (see "08 Undo and redo"). Module 09, the fourth, is ours too: an API in C
 and the real Lua on top of it (see "09 An API, and Lua on top of it").
 The finished kilo.c (`./learn files kilo`, every lesson of every path) is
-FINISHED lines (1862 with 06, 07 and 08; 1541 with 06 and 07; 1472 with
+2749 lines (1862 with 06, 07 and 08; 1541 with 06 and 07; 1472 with
 module 06 alone); at 05.02 it is 1068, as without any of them.
 
 ## Every departure from upstream, and why
@@ -2417,12 +2417,15 @@ open, quit); where the code departs from it, "Departures" says so.
 
 At a lesson of the module the project is the core plus 09's lessons so far:
 no code of 06, 07 or 08 (checked: no `editorSelectSyntaxHighlight`, `lsp`,
-`json`, `HL_` or `E.syntax` in any 09 project, and each builds with
-`-Wall -W -pedantic -std=c99 -Werror`). Module 09 is in no core, 06 or 07
-lesson: the projects at those 28 lessons, written out before the module
-existed and after, are identical (`diff -r`). The finished kilo.c is 2414
-lines. 09.10, "Features as scripts" (plugins written only in Lua), is not
-built yet: it follows the review of this code.
+`json`, `HL_`, `E.syntax`, `undo`, `CTRL_Z` or `CTRL_R` in any 09 project,
+and each builds with `-Wall -W -pedantic -std=c99 -Werror`). Module 09 is
+in no core, 06, 07 or 08 lesson: the projects at the 28 lessons to 07.07,
+written out before the module existed and after, are identical (`diff
+-r`); and after module 08 was merged in, the projects at all 32 lessons to
+08.04 are identical to master's at cf9919a, which has 08 and not 09; no 08
+project holds code of 09. The finished kilo.c is 2749 lines (with 06, 07
+and 08). 09.10, "Features as scripts" (plugins written only in Lua), is
+not built yet: it follows the review of this code.
 
 ### Lua itself
 
@@ -2473,7 +2476,7 @@ them). `make clean` removes Lua's build too (from 09.01).
 | script.h | 43 | the limits, all of them; what kilo.c calls (scriptStart, scriptEval, scriptCall, scriptUnref, scriptRun) and what script.c calls in kilo.c (editorMessage, editorScriptReturned, disableRawMode) |
 | script.c | 743 | everything that includes lua.h: the state, the protected way in, errors, print, the dispatcher, references, the Lua on top, the count hook, the allocator, the panic function, kilo -l |
 | api.h | 79 | the API's types (ApiType, ApiString, ApiValue, ApiError, ApiFn, ApiFunc) and the table's declaration |
-| kilo.c | 3116 | the hooks below, and the section "The API" above main(): the 24 functions, the table, --api-info, the prompt, keys by name, autocommands, highlights, the status line, kilo -l. No Lua header. |
+| kilo.c | 3647 | the hooks below, and the section "The API" above main(): the 24 functions, the table, --api-info, the prompt, keys by name, autocommands, highlights, the status line, kilo -l. No Lua header. |
 | Makefile | | from 09.01 `kilo.c script.c` and Lua's library |
 
 The project at each lesson (lines, `./learn files kilo --at 09.LL`):
@@ -2544,17 +2547,62 @@ Each is one marked line or a small marked block; none is inside 06's or
 - editorProcessKeypress: the read becomes `int c = editorFed != -1 ?
   editorFed : editorReadKey(fd);` (a 09.04 block nested in 01.02's, the
   core's line as its @else), then `if (editorFed == -1 &&
-  editorScriptKey(c)) return;` before the switch (09.04); and `case
-  CTRL_E:` the prompt and scriptEval (09.01).
+  editorScriptKey(c)) return;` before the switch, after 08's undoKey(c)
+  (09.04); and `case CTRL_E:` the prompt and scriptEval (09.01), after
+  08's Ctrl-Z and Ctrl-R. In the finished tree only, 08's `undoKey(c);`
+  is `if (editorFed == -1) undoKey(c);` (a 09.04 block nested in 08.03's,
+  08's line as its @else), and two small blocks of 08 in editorScriptKey and
+  one of 09 in undoSave make a script's change a step of its own (below).
 - main: `--api-info` (09.02) and `-l` (09.09) before the argument check;
   two more usage lines (the first unchanged); `scriptStart();` after
   lspStart's place (09.01); `editorEvent("BufReadPost");` after it, and
   `editorAfterKey();` at the top of the loop (09.05).
 
-For module 08 (built at the same time, elsewhere): its calls go at the top
-of the row functions and before the cut, ours next to `E.dirty++`; its
-"call at the top of editorProcessKeypress" will meet our read line and
-hook there.
+### With module 08: a script's change is a step of its own
+
+Module 08 was built at the same time on another branch and merged in
+after: its undoSave() calls are at the top of the row functions and before
+the cut, 09's tick lines next to `E.dirty++`; in editorProcessKeypress its
+`undoKey(c)` (which ends the open step at a key of another kind) comes
+first, then 09's hook. Because set_lines is built from editorDelRow() and
+editorInsertRow(), 08 remembers a script's change with no code for it in
+09, and module 07 sends it to the server likewise.
+
+What a step is, when scripts run for a key, was decided here (in the
+finished tree only: each part is a block of one module nested in a block of
+the other, so it is at no 08 lesson and no 09 lesson):
+
+- **What a key's scripts change is one step of its own.** undoKey() alone
+  would glue a script's change to the typing before it when the key a
+  script takes is itself a typed character ("x" mapped, or "j" in a vi
+  layer: same kind, no new step), and the typing after it to the script's.
+  Closing the step before every key offered to a script would split all
+  typing into one-key steps whenever a KeyPress function exists. So the
+  step ends lazily: editorScriptKey() sets `editorStepBreak` before the
+  KeyPress functions and the mapping run, undoSave() closes the open step
+  at the scripts' first change (and clears the flag), and editorScriptKey()
+  closes the scripts' step when they return, if the changed tick moved.
+  A KeyPress function that changes nothing leaves 08's steps as they were.
+- **A key a script feeds is part of the script's step**: undoKey() is not
+  called for a fed key, so a function that sets lines and feeds "B" and
+  Enter is one Ctrl-Z.
+- **Ctrl-Z and Ctrl-R can be a script's**, mapped or taken by KeyPress, as
+  Ctrl-S can; feed_key("<C-z>") is 08's undo (undo runs with U.off set, so
+  it never trips the break).
+- Not done: a TextChanged or CursorMoved function's change joins the open
+  step (the key's), so one Ctrl-Z takes back the key and what its events
+  did; and after an undo, TextChanged fires again.
+
+Tested in 0904 (the finished tree, with 08's own invariant check after
+every key, KILO_TEST_UNDO_LOG): set_lines undone by one Ctrl-Z, the cursor
+at the step's start, redone by Ctrl-R, the cursor at its end; typing, a
+typed key a script takes, typing: three steps; several changes with fed
+keys: one step; a row deleted with set_lines and the row now at its index
+changed by a fed key (a U_DEL then a U_CHG of the same row, which 08's own
+keys never make): one Ctrl-Z puts the text back; Ctrl-Z mapped and Ctrl-R
+taken by KeyPress, both feeding the editor's. With editorStepBreak never
+set, the test fails ("the script's step alone": the script's change and the
+typing before it go together).
 
 ### The API as built
 
@@ -2986,8 +3034,25 @@ On the Mac (Apple M-series, Apple clang 21):
 4. **string.rep's own limit**: string.rep('x', 2^40) is "resulting string
    too large" (lstrlib, at 2^31 bytes), not a memory error; 0908 asks for
    2^30 to reach the allocator.
-5. No bug in the core, in 06 or in 07 was found. All 28 earlier tests pass
-   on the finished tree, which now has 09 in it.
+5. **Undefined behaviour in module 06, found by the fuzz on Debian.**
+   editorUpdateSyntax() does `row->hl = realloc(row->hl,row->rsize);` and
+   then `memset(row->hl,HL_NORMAL,row->rsize);`: for an empty row, glibc's
+   realloc(p, 0) frees and gives NULL, and memset() with a NULL pointer is
+   undefined even for 0 bytes. UBSan stops there (`kilo.c:547:5: runtime
+   error: null pointer passed as argument 1, which is declared to never be
+   null`, from editorDelChar through editorUpdateRow) when the fuzz feeds
+   Backspace until a row is empty; typing the same does it, in any file of
+   the finished tree. macOS's realloc never gives NULL there. Harmless in
+   practice (nothing is written), and NOTES's 06 section already says the
+   search checks row->hl for the NULL. Not changed: it is 06's code, and
+   its lessons must not change. The fuzz suppresses that one report by name
+   (tests/api_fuzz.py, UBSAN_SUPPRESSIONS). 06's tests run ASan, not UBSan.
+6. **10000 highlights on one row make a frame of some 150 KB**: each is
+   drawn over the row in turn. Under ASan in Docker that was slow enough
+   for 0906's prompt to outrun the test's wait for a quiet screen; the test
+   clears them in the same line now. Kept: HIGHLIGHT_MAX bounds it.
+7. No bug in the core, in 07 or in 08 was found. All earlier tests (the 28
+   to 07.07, and 08's 4) pass on the finished tree, which has 09 in it.
 
 ### Kept simple, and the frontier
 
@@ -3037,6 +3102,9 @@ On the Mac (Apple M-series, Apple clang 21):
   close it.
 
 ### The notable editors
+
+This subsection is filled in from the coordinator's research for module 09;
+what follows was confirmed while the code was built, and is kept as it is.
 
 Read on 2026-11-24, by fetching each file or page at the tag or commit
 named (the research was done for this section; quotes are exact, a
@@ -3396,3 +3464,42 @@ and tests/):
   timeline_after: at 08.01, after every step undone and a save, learn.txt
   is the file as it was; from 08.02 it is saved with the edits, as in the
   core.
+
+For module 09 (the test aid `@internal` in script.c, the rest in track.py
+and tests/):
+
+- `edit(..., init=None)`, the default, sets KILO_INIT to the empty string,
+  so no test of any module runs a developer's own init.lua; a string is Lua
+  written to an init.lua of the test's (`initN/init.lua` for the Nth
+  editor, so errors still say "init.lua"); "env" takes it from the test.
+  `run_script(t, lua, text, ...)` runs `kilo -l` with no terminal.
+  `lua_quote(s)` writes any bytes as a Lua literal. `asan_build(t,
+  sanitize)` links Lua's library and takes "address,undefined" too.
+- The tests drive the editor through the Ctrl-E prompt and init files,
+  and compare strings longer than the message line inside Lua (`... ==
+  "..."`, which shows true or false): the line holds 79 bytes.
+- `kilo.test_panic()` (`@internal`) asks for an error outside any
+  protected call, the one way to reach the panic function (0908).
+- tests/api_fuzz.py writes random calls of every API function as Lua:
+  0908 runs 10 blocks of 300 in the editor, a block a key, the screen drawn
+  after each, under ASan and UBSan (input, quit and keys that read the
+  keyboard left out; autocommand 1, the driver, never deleted); 0909 runs 3
+  scripts of 2000 with no screen under ASan and UBSan, with LeakSanitizer
+  on Linux. The seed is the clock's, printed with a failure. UBSan's one
+  report from module 06 is suppressed by name (Found on the way, 5).
+- The timeline at 09.01 to 09.09 runs the project with TIMELINE_INIT
+  (an init.lua that uses what each lesson has), on learn.txt: init.lua's
+  message, a line at the prompt and an error, from 09.02 the reads, from
+  09.03 a header put in with set_lines, 09.04 Ctrl-T (Lua) commenting a row
+  and back, 09.05 the words counted on TextChanged, 09.06 the numbers in
+  red and the status bar set, 09.07 Ctrl-O asking for a line, 09.08 a loop
+  stopped by Ctrl-C. timeline_after: learn.txt untouched; `--api-info` has
+  the lesson's count of functions (6, 9, 12, 15, 21, 24); at 09.09 `kilo
+  -l` upper-cases a copy of learn.txt. prepare() copies lua/ into the
+  project first (supply_lua).
+- On Linux (in Docker, aarch64): Debian trixie (glibc 2.41, gcc 14.2) and
+  Alpine 3.22 (musl, gcc 14.2), the tree as committed before module 08 was
+  merged: every test, check-skeleton of 09 and check-timeline pass on
+  Alpine (no ASan for gcc there, so the plain build); on Debian the same,
+  once the two findings above (5 and 6) were handled; every 09 project and
+  the finished one build with -Werror on both.
