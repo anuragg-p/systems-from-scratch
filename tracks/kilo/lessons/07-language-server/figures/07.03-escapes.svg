@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 196" fill="none">
+<title>Four strings as they are written in a message and the bytes the reader makes of them: a newline, an e-acute, an emoji from a pair of escapes, and half a pair alone</title>
+<defs><marker id="f0703c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">the text in the message, and the bytes jsonString() at 07.03 makes of it</text>
+<rect class="s fs" x="24" y="36" width="140" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="94" y="55" font-size="11.5" font-weight="600" text-anchor="middle">&quot;\n&quot;</text>
+<line class="s" x1="94" y1="68" x2="94" y2="86" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703c-ah)"/>
+<rect class="a af" x="79.5" y="90" width="26" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="92.5" y="106.5" font-size="11" font-weight="700" text-anchor="middle">0A</text>
+<text class="t" x="24" y="136" font-size="10.5">a newline: one byte</text>
+<rect class="s fs" x="174" y="36" width="140" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="244" y="55" font-size="11.5" font-weight="600" text-anchor="middle">&quot;\u00e9&quot;</text>
+<line class="s" x1="244" y1="68" x2="244" y2="86" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703c-ah)"/>
+<rect class="a af" x="215" y="90" width="26" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="228" y="106.5" font-size="11" font-weight="700" text-anchor="middle">C3</text>
+<rect class="a af" x="244" y="90" width="26" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="257" y="106.5" font-size="11" font-weight="700" text-anchor="middle">A9</text>
+<text class="t" x="174" y="136" font-size="10.5">U+00E9, &#233;: two bytes of</text>
+<text class="t" x="174" y="150" font-size="10.5">UTF-8</text>
+<rect class="s fs" x="324" y="36" width="140" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="394" y="55" font-size="11.5" font-weight="600" text-anchor="middle">&quot;\ud83d\ude00&quot;</text>
+<line class="s" x1="394" y1="68" x2="394" y2="86" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703c-ah)"/>
+<rect class="a af" x="336" y="90" width="26" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="349" y="106.5" font-size="11" font-weight="700" text-anchor="middle">F0</text>
+<rect class="a af" x="365" y="90" width="26" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="378" y="106.5" font-size="11" font-weight="700" text-anchor="middle">9F</text>
+<rect class="a af" x="394" y="90" width="26" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="407" y="106.5" font-size="11" font-weight="700" text-anchor="middle">98</text>
+<rect class="a af" x="423" y="90" width="26" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="436" y="106.5" font-size="11" font-weight="700" text-anchor="middle">80</text>
+<text class="t" x="324" y="136" font-size="10.5">U+1F600, &#128512;: a pair of \u</text>
+<text class="t" x="324" y="150" font-size="10.5">escapes, one character,</text>
+<text class="t" x="324" y="164" font-size="10.5">four bytes</text>
+<rect class="s fs" x="474" y="36" width="140" height="28" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="544" y="55" font-size="11.5" font-weight="600" text-anchor="middle">&quot;\ud83d&quot;</text>
+<line class="s" x1="544" y1="68" x2="544" y2="86" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0703c-ah)"/>
+<rect class="a af" x="500.5" y="90" width="26" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="513.5" y="106.5" font-size="11" font-weight="700" text-anchor="middle">EF</text>
+<rect class="a af" x="529.5" y="90" width="26" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="542.5" y="106.5" font-size="11" font-weight="700" text-anchor="middle">BF</text>
+<rect class="a af" x="558.5" y="90" width="26" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="571.5" y="106.5" font-size="11" font-weight="700" text-anchor="middle">BD</text>
+<text class="t" x="474" y="136" font-size="10.5">half a pair, alone:</text>
+<text class="t" x="474" y="150" font-size="10.5">U+FFFD, the replacement</text>
+<text class="t" x="474" y="164" font-size="10.5">character &#65533;</text>
+</svg>

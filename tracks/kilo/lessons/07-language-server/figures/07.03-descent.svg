@@ -1,0 +1,554 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" fill="none">
+<title>The reader&#x27;s calls on {&quot;a&quot;:[1,&quot;x&quot;]}: where in the text it is, and the calls on the C stack, one more for each value inside another; then the depth cap at 64</title>
+<defs><marker id="f0703b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">json.c at 07.03, with a line printed as each of its readers starts and returns</text>
+<g class="step"><title>jsonParse() calls jsonValue() at 0. It sees '{' and calls jsonList(): an object, one level deep.</title>
+<rect class="a af" x="40" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="53.5" y="74" font-size="13" font-weight="600" text-anchor="middle">{</text>
+<text class="tm mono" x="53.5" y="50" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="70" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="83.5" y="50" font-size="9" text-anchor="middle">1</text>
+<rect class="s f" x="100" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="113.5" y="74" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<text class="tm mono" x="113.5" y="50" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="130" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="143.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="143.5" y="50" font-size="9" text-anchor="middle">3</text>
+<rect class="s f" x="160" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="173.5" y="74" font-size="13" font-weight="600" text-anchor="middle">:</text>
+<text class="tm mono" x="173.5" y="50" font-size="9" text-anchor="middle">4</text>
+<rect class="s f" x="190" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="203.5" y="74" font-size="13" font-weight="600" text-anchor="middle">[</text>
+<text class="tm mono" x="203.5" y="50" font-size="9" text-anchor="middle">5</text>
+<rect class="s f" x="220" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.5" y="74" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<text class="tm mono" x="233.5" y="50" font-size="9" text-anchor="middle">6</text>
+<rect class="s f" x="250" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="263.5" y="74" font-size="13" font-weight="600" text-anchor="middle">,</text>
+<text class="tm mono" x="263.5" y="50" font-size="9" text-anchor="middle">7</text>
+<rect class="s f" x="280" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="293.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="293.5" y="50" font-size="9" text-anchor="middle">8</text>
+<rect class="s f" x="310" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="323.5" y="74" font-size="13" font-weight="600" text-anchor="middle">x</text>
+<text class="tm mono" x="323.5" y="50" font-size="9" text-anchor="middle">9</text>
+<rect class="s f" x="340" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="353.5" y="50" font-size="9" text-anchor="middle">10</text>
+<rect class="s f" x="370" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="383.5" y="74" font-size="13" font-weight="600" text-anchor="middle">]</text>
+<text class="tm mono" x="383.5" y="50" font-size="9" text-anchor="middle">11</text>
+<rect class="s f" x="400" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="413.5" y="74" font-size="13" font-weight="600" text-anchor="middle">}</text>
+<text class="tm mono" x="413.5" y="50" font-size="9" text-anchor="middle">12</text>
+<rect class="s f" x="24" y="292" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="306" font-size="10.5">jsonParse()</text>
+<rect class="s f" x="24" y="268" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="282" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="282" font-size="10" text-anchor="end">at 0</text>
+<rect class="a af" x="24" y="244" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="258" font-size="10.5" font-weight="700">jsonList()</text>
+<text class="tm mono" x="186" y="258" font-size="10" text-anchor="end">at 0</text>
+<text class="ta mono" x="202" y="258" font-size="10.5" font-weight="600">depth 1</text>
+<text class="tm" x="24" y="330" font-size="10">the calls on the C stack, the latest on top</text>
+</g>
+<g class="step"><title>In an object each member starts with a key: jsonString() at 1 reads "a". Then a ':' must follow.</title>
+<rect class="s f" x="40" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="53.5" y="74" font-size="13" font-weight="600" text-anchor="middle">{</text>
+<text class="tm mono" x="53.5" y="50" font-size="9" text-anchor="middle">0</text>
+<rect class="a af" x="70" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="83.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="83.5" y="50" font-size="9" text-anchor="middle">1</text>
+<rect class="s f" x="100" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="113.5" y="74" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<text class="tm mono" x="113.5" y="50" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="130" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="143.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="143.5" y="50" font-size="9" text-anchor="middle">3</text>
+<rect class="s f" x="160" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="173.5" y="74" font-size="13" font-weight="600" text-anchor="middle">:</text>
+<text class="tm mono" x="173.5" y="50" font-size="9" text-anchor="middle">4</text>
+<rect class="s f" x="190" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="203.5" y="74" font-size="13" font-weight="600" text-anchor="middle">[</text>
+<text class="tm mono" x="203.5" y="50" font-size="9" text-anchor="middle">5</text>
+<rect class="s f" x="220" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.5" y="74" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<text class="tm mono" x="233.5" y="50" font-size="9" text-anchor="middle">6</text>
+<rect class="s f" x="250" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="263.5" y="74" font-size="13" font-weight="600" text-anchor="middle">,</text>
+<text class="tm mono" x="263.5" y="50" font-size="9" text-anchor="middle">7</text>
+<rect class="s f" x="280" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="293.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="293.5" y="50" font-size="9" text-anchor="middle">8</text>
+<rect class="s f" x="310" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="323.5" y="74" font-size="13" font-weight="600" text-anchor="middle">x</text>
+<text class="tm mono" x="323.5" y="50" font-size="9" text-anchor="middle">9</text>
+<rect class="s f" x="340" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="353.5" y="50" font-size="9" text-anchor="middle">10</text>
+<rect class="s f" x="370" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="383.5" y="74" font-size="13" font-weight="600" text-anchor="middle">]</text>
+<text class="tm mono" x="383.5" y="50" font-size="9" text-anchor="middle">11</text>
+<rect class="s f" x="400" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="413.5" y="74" font-size="13" font-weight="600" text-anchor="middle">}</text>
+<text class="tm mono" x="413.5" y="50" font-size="9" text-anchor="middle">12</text>
+<rect class="s f" x="24" y="292" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="306" font-size="10.5">jsonParse()</text>
+<rect class="s f" x="24" y="268" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="282" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="282" font-size="10" text-anchor="end">at 0</text>
+<rect class="s f" x="24" y="244" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="258" font-size="10.5">jsonList()</text>
+<text class="tm mono" x="186" y="258" font-size="10" text-anchor="end">at 0</text>
+<text class="t mono" x="202" y="258" font-size="10.5" font-weight="600">depth 1</text>
+<rect class="a af" x="24" y="220" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="234" font-size="10.5" font-weight="700">jsonString()</text>
+<text class="tm mono" x="186" y="234" font-size="10" text-anchor="end">at 1</text>
+<text class="tm" x="24" y="330" font-size="10">the calls on the C stack, the latest on top</text>
+</g>
+<g class="step"><title>The member's value: jsonValue() at 5 sees '[' and calls jsonList() again, for the array inside: two levels deep.</title>
+<rect class="s f" x="40" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="53.5" y="74" font-size="13" font-weight="600" text-anchor="middle">{</text>
+<text class="tm mono" x="53.5" y="50" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="70" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="83.5" y="50" font-size="9" text-anchor="middle">1</text>
+<rect class="s f" x="100" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="113.5" y="74" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<text class="tm mono" x="113.5" y="50" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="130" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="143.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="143.5" y="50" font-size="9" text-anchor="middle">3</text>
+<rect class="s f" x="160" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="173.5" y="74" font-size="13" font-weight="600" text-anchor="middle">:</text>
+<text class="tm mono" x="173.5" y="50" font-size="9" text-anchor="middle">4</text>
+<rect class="a af" x="190" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="203.5" y="74" font-size="13" font-weight="600" text-anchor="middle">[</text>
+<text class="tm mono" x="203.5" y="50" font-size="9" text-anchor="middle">5</text>
+<rect class="s f" x="220" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.5" y="74" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<text class="tm mono" x="233.5" y="50" font-size="9" text-anchor="middle">6</text>
+<rect class="s f" x="250" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="263.5" y="74" font-size="13" font-weight="600" text-anchor="middle">,</text>
+<text class="tm mono" x="263.5" y="50" font-size="9" text-anchor="middle">7</text>
+<rect class="s f" x="280" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="293.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="293.5" y="50" font-size="9" text-anchor="middle">8</text>
+<rect class="s f" x="310" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="323.5" y="74" font-size="13" font-weight="600" text-anchor="middle">x</text>
+<text class="tm mono" x="323.5" y="50" font-size="9" text-anchor="middle">9</text>
+<rect class="s f" x="340" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="353.5" y="50" font-size="9" text-anchor="middle">10</text>
+<rect class="s f" x="370" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="383.5" y="74" font-size="13" font-weight="600" text-anchor="middle">]</text>
+<text class="tm mono" x="383.5" y="50" font-size="9" text-anchor="middle">11</text>
+<rect class="s f" x="400" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="413.5" y="74" font-size="13" font-weight="600" text-anchor="middle">}</text>
+<text class="tm mono" x="413.5" y="50" font-size="9" text-anchor="middle">12</text>
+<rect class="s f" x="24" y="292" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="306" font-size="10.5">jsonParse()</text>
+<rect class="s f" x="24" y="268" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="282" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="282" font-size="10" text-anchor="end">at 0</text>
+<rect class="s f" x="24" y="244" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="258" font-size="10.5">jsonList()</text>
+<text class="tm mono" x="186" y="258" font-size="10" text-anchor="end">at 0</text>
+<text class="t mono" x="202" y="258" font-size="10.5" font-weight="600">depth 1</text>
+<rect class="s f" x="24" y="220" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="234" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="234" font-size="10" text-anchor="end">at 5</text>
+<rect class="a af" x="24" y="196" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="210" font-size="10.5" font-weight="700">jsonList()</text>
+<text class="tm mono" x="186" y="210" font-size="10" text-anchor="end">at 5</text>
+<text class="ta mono" x="202" y="210" font-size="10.5" font-weight="600">depth 2</text>
+<text class="tm" x="24" y="330" font-size="10">the calls on the C stack, the latest on top</text>
+</g>
+<g class="step"><title>jsonValue() at 6 sees a digit: jsonNumber() reads 1, the array's first element.</title>
+<rect class="s f" x="40" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="53.5" y="74" font-size="13" font-weight="600" text-anchor="middle">{</text>
+<text class="tm mono" x="53.5" y="50" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="70" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="83.5" y="50" font-size="9" text-anchor="middle">1</text>
+<rect class="s f" x="100" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="113.5" y="74" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<text class="tm mono" x="113.5" y="50" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="130" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="143.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="143.5" y="50" font-size="9" text-anchor="middle">3</text>
+<rect class="s f" x="160" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="173.5" y="74" font-size="13" font-weight="600" text-anchor="middle">:</text>
+<text class="tm mono" x="173.5" y="50" font-size="9" text-anchor="middle">4</text>
+<rect class="s f" x="190" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="203.5" y="74" font-size="13" font-weight="600" text-anchor="middle">[</text>
+<text class="tm mono" x="203.5" y="50" font-size="9" text-anchor="middle">5</text>
+<rect class="a af" x="220" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="233.5" y="74" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<text class="tm mono" x="233.5" y="50" font-size="9" text-anchor="middle">6</text>
+<rect class="s f" x="250" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="263.5" y="74" font-size="13" font-weight="600" text-anchor="middle">,</text>
+<text class="tm mono" x="263.5" y="50" font-size="9" text-anchor="middle">7</text>
+<rect class="s f" x="280" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="293.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="293.5" y="50" font-size="9" text-anchor="middle">8</text>
+<rect class="s f" x="310" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="323.5" y="74" font-size="13" font-weight="600" text-anchor="middle">x</text>
+<text class="tm mono" x="323.5" y="50" font-size="9" text-anchor="middle">9</text>
+<rect class="s f" x="340" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="353.5" y="50" font-size="9" text-anchor="middle">10</text>
+<rect class="s f" x="370" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="383.5" y="74" font-size="13" font-weight="600" text-anchor="middle">]</text>
+<text class="tm mono" x="383.5" y="50" font-size="9" text-anchor="middle">11</text>
+<rect class="s f" x="400" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="413.5" y="74" font-size="13" font-weight="600" text-anchor="middle">}</text>
+<text class="tm mono" x="413.5" y="50" font-size="9" text-anchor="middle">12</text>
+<rect class="s f" x="24" y="292" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="306" font-size="10.5">jsonParse()</text>
+<rect class="s f" x="24" y="268" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="282" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="282" font-size="10" text-anchor="end">at 0</text>
+<rect class="s f" x="24" y="244" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="258" font-size="10.5">jsonList()</text>
+<text class="tm mono" x="186" y="258" font-size="10" text-anchor="end">at 0</text>
+<text class="t mono" x="202" y="258" font-size="10.5" font-weight="600">depth 1</text>
+<rect class="s f" x="24" y="220" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="234" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="234" font-size="10" text-anchor="end">at 5</text>
+<rect class="s f" x="24" y="196" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="210" font-size="10.5">jsonList()</text>
+<text class="tm mono" x="186" y="210" font-size="10" text-anchor="end">at 5</text>
+<text class="t mono" x="202" y="210" font-size="10.5" font-weight="600">depth 2</text>
+<rect class="s f" x="24" y="172" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="186" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="186" font-size="10" text-anchor="end">at 6</text>
+<rect class="a af" x="24" y="148" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="162" font-size="10.5" font-weight="700">jsonNumber()</text>
+<text class="tm mono" x="186" y="162" font-size="10" text-anchor="end">at 6</text>
+<text class="tm" x="24" y="330" font-size="10">the calls on the C stack, the latest on top</text>
+</g>
+<g class="step"><title>After the ',', jsonValue() at 8 sees a quote: jsonString() reads "x".</title>
+<rect class="s f" x="40" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="53.5" y="74" font-size="13" font-weight="600" text-anchor="middle">{</text>
+<text class="tm mono" x="53.5" y="50" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="70" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="83.5" y="50" font-size="9" text-anchor="middle">1</text>
+<rect class="s f" x="100" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="113.5" y="74" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<text class="tm mono" x="113.5" y="50" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="130" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="143.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="143.5" y="50" font-size="9" text-anchor="middle">3</text>
+<rect class="s f" x="160" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="173.5" y="74" font-size="13" font-weight="600" text-anchor="middle">:</text>
+<text class="tm mono" x="173.5" y="50" font-size="9" text-anchor="middle">4</text>
+<rect class="s f" x="190" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="203.5" y="74" font-size="13" font-weight="600" text-anchor="middle">[</text>
+<text class="tm mono" x="203.5" y="50" font-size="9" text-anchor="middle">5</text>
+<rect class="s f" x="220" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.5" y="74" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<text class="tm mono" x="233.5" y="50" font-size="9" text-anchor="middle">6</text>
+<rect class="s f" x="250" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="263.5" y="74" font-size="13" font-weight="600" text-anchor="middle">,</text>
+<text class="tm mono" x="263.5" y="50" font-size="9" text-anchor="middle">7</text>
+<rect class="a af" x="280" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="293.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="293.5" y="50" font-size="9" text-anchor="middle">8</text>
+<rect class="s f" x="310" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="323.5" y="74" font-size="13" font-weight="600" text-anchor="middle">x</text>
+<text class="tm mono" x="323.5" y="50" font-size="9" text-anchor="middle">9</text>
+<rect class="s f" x="340" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="353.5" y="50" font-size="9" text-anchor="middle">10</text>
+<rect class="s f" x="370" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="383.5" y="74" font-size="13" font-weight="600" text-anchor="middle">]</text>
+<text class="tm mono" x="383.5" y="50" font-size="9" text-anchor="middle">11</text>
+<rect class="s f" x="400" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="413.5" y="74" font-size="13" font-weight="600" text-anchor="middle">}</text>
+<text class="tm mono" x="413.5" y="50" font-size="9" text-anchor="middle">12</text>
+<rect class="s f" x="24" y="292" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="306" font-size="10.5">jsonParse()</text>
+<rect class="s f" x="24" y="268" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="282" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="282" font-size="10" text-anchor="end">at 0</text>
+<rect class="s f" x="24" y="244" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="258" font-size="10.5">jsonList()</text>
+<text class="tm mono" x="186" y="258" font-size="10" text-anchor="end">at 0</text>
+<text class="t mono" x="202" y="258" font-size="10.5" font-weight="600">depth 1</text>
+<rect class="s f" x="24" y="220" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="234" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="234" font-size="10" text-anchor="end">at 5</text>
+<rect class="s f" x="24" y="196" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="210" font-size="10.5">jsonList()</text>
+<text class="tm mono" x="186" y="210" font-size="10" text-anchor="end">at 5</text>
+<text class="t mono" x="202" y="210" font-size="10.5" font-weight="600">depth 2</text>
+<rect class="s f" x="24" y="172" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="186" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="186" font-size="10" text-anchor="end">at 8</text>
+<rect class="a af" x="24" y="148" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="162" font-size="10.5" font-weight="700">jsonString()</text>
+<text class="tm mono" x="186" y="162" font-size="10" text-anchor="end">at 8</text>
+<text class="tm" x="24" y="330" font-size="10">the calls on the C stack, the latest on top</text>
+</g>
+<g class="step"><title>The ']' at 11 ends the array: its jsonList() returns it, the depth is one again, and the object's loop goes on.</title>
+<rect class="s f" x="40" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="53.5" y="74" font-size="13" font-weight="600" text-anchor="middle">{</text>
+<text class="tm mono" x="53.5" y="50" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="70" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="83.5" y="50" font-size="9" text-anchor="middle">1</text>
+<rect class="s f" x="100" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="113.5" y="74" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<text class="tm mono" x="113.5" y="50" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="130" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="143.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="143.5" y="50" font-size="9" text-anchor="middle">3</text>
+<rect class="s f" x="160" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="173.5" y="74" font-size="13" font-weight="600" text-anchor="middle">:</text>
+<text class="tm mono" x="173.5" y="50" font-size="9" text-anchor="middle">4</text>
+<rect class="s f" x="190" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="203.5" y="74" font-size="13" font-weight="600" text-anchor="middle">[</text>
+<text class="tm mono" x="203.5" y="50" font-size="9" text-anchor="middle">5</text>
+<rect class="s f" x="220" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.5" y="74" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<text class="tm mono" x="233.5" y="50" font-size="9" text-anchor="middle">6</text>
+<rect class="s f" x="250" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="263.5" y="74" font-size="13" font-weight="600" text-anchor="middle">,</text>
+<text class="tm mono" x="263.5" y="50" font-size="9" text-anchor="middle">7</text>
+<rect class="s f" x="280" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="293.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="293.5" y="50" font-size="9" text-anchor="middle">8</text>
+<rect class="s f" x="310" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="323.5" y="74" font-size="13" font-weight="600" text-anchor="middle">x</text>
+<text class="tm mono" x="323.5" y="50" font-size="9" text-anchor="middle">9</text>
+<rect class="s f" x="340" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="353.5" y="50" font-size="9" text-anchor="middle">10</text>
+<rect class="a af" x="370" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="383.5" y="74" font-size="13" font-weight="600" text-anchor="middle">]</text>
+<text class="tm mono" x="383.5" y="50" font-size="9" text-anchor="middle">11</text>
+<rect class="s f" x="400" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="413.5" y="74" font-size="13" font-weight="600" text-anchor="middle">}</text>
+<text class="tm mono" x="413.5" y="50" font-size="9" text-anchor="middle">12</text>
+<rect class="s f" x="24" y="292" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="306" font-size="10.5">jsonParse()</text>
+<rect class="s f" x="24" y="268" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="282" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="282" font-size="10" text-anchor="end">at 0</text>
+<rect class="s f" x="24" y="244" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="258" font-size="10.5">jsonList()</text>
+<text class="tm mono" x="186" y="258" font-size="10" text-anchor="end">at 0</text>
+<text class="t mono" x="202" y="258" font-size="10.5" font-weight="600">depth 1</text>
+<rect class="a af" x="24" y="220" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="234" font-size="10.5" font-weight="700">jsonValue()</text>
+<text class="tm mono" x="186" y="234" font-size="10" text-anchor="end">at 5</text>
+<text class="tm" x="24" y="330" font-size="10">the calls on the C stack, the latest on top</text>
+</g>
+<g class="step"><title>The '}' at 12 ends the object. jsonValue() returns the tree to jsonParse(), at 13: nothing is left after the value, so the message is one value.</title>
+<rect class="s f" x="40" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="53.5" y="74" font-size="13" font-weight="600" text-anchor="middle">{</text>
+<text class="tm mono" x="53.5" y="50" font-size="9" text-anchor="middle">0</text>
+<rect class="s f" x="70" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="83.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="83.5" y="50" font-size="9" text-anchor="middle">1</text>
+<rect class="s f" x="100" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="113.5" y="74" font-size="13" font-weight="600" text-anchor="middle">a</text>
+<text class="tm mono" x="113.5" y="50" font-size="9" text-anchor="middle">2</text>
+<rect class="s f" x="130" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="143.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="143.5" y="50" font-size="9" text-anchor="middle">3</text>
+<rect class="s f" x="160" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="173.5" y="74" font-size="13" font-weight="600" text-anchor="middle">:</text>
+<text class="tm mono" x="173.5" y="50" font-size="9" text-anchor="middle">4</text>
+<rect class="s f" x="190" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="203.5" y="74" font-size="13" font-weight="600" text-anchor="middle">[</text>
+<text class="tm mono" x="203.5" y="50" font-size="9" text-anchor="middle">5</text>
+<rect class="s f" x="220" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="233.5" y="74" font-size="13" font-weight="600" text-anchor="middle">1</text>
+<text class="tm mono" x="233.5" y="50" font-size="9" text-anchor="middle">6</text>
+<rect class="s f" x="250" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="263.5" y="74" font-size="13" font-weight="600" text-anchor="middle">,</text>
+<text class="tm mono" x="263.5" y="50" font-size="9" text-anchor="middle">7</text>
+<rect class="s f" x="280" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="293.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="293.5" y="50" font-size="9" text-anchor="middle">8</text>
+<rect class="s f" x="310" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="323.5" y="74" font-size="13" font-weight="600" text-anchor="middle">x</text>
+<text class="tm mono" x="323.5" y="50" font-size="9" text-anchor="middle">9</text>
+<rect class="s f" x="340" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="353.5" y="74" font-size="13" font-weight="600" text-anchor="middle">&quot;</text>
+<text class="tm mono" x="353.5" y="50" font-size="9" text-anchor="middle">10</text>
+<rect class="s f" x="370" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="383.5" y="74" font-size="13" font-weight="600" text-anchor="middle">]</text>
+<text class="tm mono" x="383.5" y="50" font-size="9" text-anchor="middle">11</text>
+<rect class="a af" x="400" y="56" width="27" height="26" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="413.5" y="74" font-size="13" font-weight="600" text-anchor="middle">}</text>
+<text class="tm mono" x="413.5" y="50" font-size="9" text-anchor="middle">12</text>
+<rect class="a af" x="24" y="292" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="306" font-size="10.5" font-weight="700">jsonParse()</text>
+<text class="tm" x="24" y="330" font-size="10">the calls on the C stack, the latest on top</text>
+</g>
+<g class="step"><title>The cap: 65 '[' one inside another. Each level is two more calls on the C stack; 64 levels read, but the 65th jsonList() makes the depth 65, more than 64, and returns NULL, and so does every call under it: no tree, and the message is dropped.</title>
+<rect class="s f" x="40" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="43.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="48" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="51.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="56" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="59.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="64" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="67.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="72" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="75.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="80" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="83.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="88" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="91.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="96" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="99.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="104" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="107.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="112" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="115.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="120" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="123.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="128" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="131.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="136" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="139.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="144" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="147.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="152" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="155.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="160" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="163.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="168" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="171.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="176" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="179.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="184" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="187.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="192" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="195.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="200" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="203.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="208" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="211.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="216" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="219.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="224" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="227.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="232" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="235.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="240" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="243.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="248" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="251.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="256" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="259.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="264" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="267.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="272" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="275.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="280" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="283.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="288" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="291.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="296" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="299.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="304" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="307.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="312" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="315.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="320" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="323.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="328" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="331.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="336" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="339.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="344" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="347.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="352" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="355.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="360" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="363.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="368" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="371.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="376" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="379.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="384" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="387.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="392" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="395.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="400" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="403.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="408" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="411.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="416" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="419.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="424" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="427.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="432" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="435.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="440" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="443.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="448" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="451.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="456" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="459.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="464" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="467.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="472" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="475.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="480" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="483.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="488" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="491.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="496" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="499.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="504" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="507.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="512" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="515.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="520" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="523.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="528" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="531.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="536" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="539.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="s f" x="544" y="56" width="7" height="26" rx="1.5"/>
+<text class="t mono" x="547.5" y="73" font-size="9" text-anchor="middle">[</text>
+<rect class="a af" x="552" y="56" width="7" height="26" rx="1.5"/>
+<text class="ta mono" x="555.5" y="73" font-size="9" text-anchor="middle">[</text>
+<text class="tm mono" x="43.5" y="50" font-size="9" text-anchor="middle">0</text>
+<text class="ta mono" x="555.5" y="50" font-size="9" text-anchor="middle">64</text>
+<text class="tm" x="566" y="73" font-size="10.5">then 65 ]</text>
+<rect class="s f" x="24" y="292" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="306" font-size="10.5">jsonParse()</text>
+<rect class="s f" x="24" y="268" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="282" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="282" font-size="10" text-anchor="end">at 0</text>
+<rect class="s f" x="24" y="244" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="258" font-size="10.5">jsonList()</text>
+<text class="tm mono" x="186" y="258" font-size="10" text-anchor="end">at 0</text>
+<text class="t mono" x="202" y="258" font-size="10.5" font-weight="600">depth 1</text>
+<text class="tm" x="109" y="235" font-size="10" text-anchor="middle">... 124 more calls ...</text>
+<rect class="s f" x="24" y="196" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="210" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="210" font-size="10" text-anchor="end">at 63</text>
+<rect class="s f" x="24" y="172" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="186" font-size="10.5">jsonList()</text>
+<text class="tm mono" x="186" y="186" font-size="10" text-anchor="end">at 63</text>
+<text class="t mono" x="202" y="186" font-size="10.5" font-weight="600">depth 64</text>
+<rect class="s f" x="24" y="148" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="32" y="162" font-size="10.5">jsonValue()</text>
+<text class="tm mono" x="186" y="162" font-size="10" text-anchor="end">at 64</text>
+<rect class="a af" x="24" y="124" width="170" height="20" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="32" y="138" font-size="10.5" font-weight="700">jsonList()</text>
+<text class="tm mono" x="186" y="138" font-size="10" text-anchor="end">at 64</text>
+<text class="ta mono" x="202" y="138" font-size="10.5" font-weight="600">depth 65 &gt; 64: NULL</text>
+<text class="tm" x="24" y="330" font-size="10">the calls on the C stack, the latest on top</text>
+</g>
+</svg>

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 316" fill="none">
+<title>How kilo learns whether exec worked: the third pipe. When exec works it closes the child&#x27;s end and read() returns 0 bytes; when it fails the child writes errno into it</title>
+<defs><marker id="f0701b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0701b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0701b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="24" font-size="13" font-weight="700">exec works</text>
+<rect class="s f" x="24" y="38" width="120" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="84" y="55" font-size="11" font-weight="600" text-anchor="middle">the child</text>
+<text class="ta mono" x="84" y="70" font-size="10.5" text-anchor="middle">clangd</text>
+<rect class="s f" x="200" y="38" width="110" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="255" y="55" font-size="11" font-weight="600" text-anchor="middle">kilo</text>
+<text class="tm mono" x="255" y="70" font-size="10.5" text-anchor="middle">read(7, &amp;e, 4)</text>
+<rect class="m fs" x="54" y="112" width="226" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="68" y="128" font-size="10.5" font-weight="700">err</text>
+<text class="t mono" x="68" y="102" font-size="10.5" font-weight="700" text-anchor="end">8</text>
+<text class="t mono" x="259" y="102" font-size="10.5" font-weight="700">7</text>
+<line class="s" x1="255" y1="111" x2="255" y2="81" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701b-ah)"/>
+<line class="s" x1="84" y1="80" x2="84" y2="111" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="74" y1="92" x2="94" y2="104" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="74" y1="104" x2="94" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="100" y="102" font-size="10.5" font-weight="600">closed by exec</text>
+<text class="t" x="24" y="182" font-size="11.5" font-weight="600">read(7) returns 0: end of file</text>
+<text class="tm" x="24" y="200" font-size="10.5">exec closed the write end, 8, which is</text>
+<text class="tm" x="24" y="214" font-size="10.5">close-on-exec: no byte can ever come. clangd</text>
+<text class="tm" x="24" y="228" font-size="10.5">runs.</text>
+<text class="t" x="330" y="24" font-size="13" font-weight="700">exec fails</text>
+<rect class="s f" x="330" y="38" width="120" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="390" y="55" font-size="11" font-weight="600" text-anchor="middle">the child</text>
+<text class="tm" x="390" y="70" font-size="10.5" text-anchor="middle">still kilo&#x27;s code</text>
+<rect class="s f" x="506" y="38" width="110" height="40" rx="6" stroke-width="1.5"/>
+<text class="t" x="561" y="55" font-size="11" font-weight="600" text-anchor="middle">kilo</text>
+<text class="tm mono" x="561" y="70" font-size="10.5" text-anchor="middle">read(7, &amp;e, 4)</text>
+<rect class="m fs" x="360" y="112" width="226" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="374" y="128" font-size="10.5" font-weight="700">err</text>
+<text class="t mono" x="386" y="102" font-size="10.5" font-weight="700" text-anchor="end">8</text>
+<text class="t mono" x="565" y="102" font-size="10.5" font-weight="700">7</text>
+<line class="s" x1="561" y1="111" x2="561" y2="81" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701b-ah)"/>
+<line class="s" x1="390" y1="80" x2="390" y2="111" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701b-ah)"/>
+<text class="tm mono" x="396" y="102" font-size="10">write(8, &amp;errno, 4)</text>
+<rect class="a af" x="429" y="115" width="23" height="18" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="440.5" y="128" font-size="10.5" font-weight="700" text-anchor="middle">02</text>
+<rect class="a af" x="454" y="115" width="23" height="18" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="465.5" y="128" font-size="10.5" font-weight="700" text-anchor="middle">00</text>
+<rect class="a af" x="479" y="115" width="23" height="18" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="490.5" y="128" font-size="10.5" font-weight="700" text-anchor="middle">00</text>
+<rect class="a af" x="504" y="115" width="23" height="18" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="515.5" y="128" font-size="10.5" font-weight="700" text-anchor="middle">00</text>
+<text class="tm" x="479" y="154" font-size="10" text-anchor="middle">errno 2 as an int: 4 bytes, little-endian</text>
+<text class="t" x="330" y="182" font-size="11.5" font-weight="600">read(7) returns 4 bytes: errno 2</text>
+<text class="tm" x="330" y="200" font-size="10.5">ENOENT, no such file or directory. The child</text>
+<text class="tm" x="330" y="214" font-size="10.5">_exit(127)s; kilo reaps it at once.</text>
+<text class="tm" x="24" y="248" font-size="10.5">and the message line kilo shows (07.01, a terminal 64 columns wide)</text>
+<rect class="s fs" x="24" y="258" width="440" height="21" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="272.5" font-size="10.5">lsp: started clangd (pid 28843)</text>
+<text class="tm" x="476" y="272.5" font-size="10.5">exec works</text>
+<rect class="s fs" x="24" y="285" width="440" height="21" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="299.5" font-size="10.5">lsp: cannot start no-such-server: No such file or directory</text>
+<text class="tm" x="476" y="299.5" font-size="10.5">exec fails</text>
+</svg>

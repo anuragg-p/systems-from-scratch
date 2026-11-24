@@ -1,0 +1,318 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 372" fill="none">
+<title>kilo&#x27;s descriptors and its child&#x27;s as the server starts: three pipes, fork, dup2, exec; at the end the child is clangd, reading 0 and writing 1, and kilo holds 4 and 5</title>
+<defs><marker id="f0701a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0701a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0701a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">the descriptors open in each process after each step: a build of 07.01 that listed them</text>
+<text class="tm" x="24" y="352" font-size="10.5">c: close-on-exec (FD_CLOEXEC): exec closes it</text>
+<g class="step"><title>kilo alone: descriptors 0, 1 and 2 are the terminal.</title>
+<text class="t" x="24" y="52" font-size="12.5" font-weight="700">kilo</text>
+<rect class="s f" x="24" y="66" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="79" font-size="11.5" font-weight="700">0</text>
+<text class="t" x="50" y="79" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="92" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="105" font-size="11.5" font-weight="700">1</text>
+<text class="t" x="50" y="105" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="118" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="131" font-size="11.5" font-weight="700">2</text>
+<text class="t" x="50" y="131" font-size="10.5">the terminal</text>
+<rect class="m f" x="432" y="66" width="184" height="70" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="524" y="103" font-size="10.5" text-anchor="middle">no child yet</text>
+</g>
+<g class="step"><title>Three pipe() calls: in is 3 (its read end) and 4 (its write end), out 5 and 6, err 7 and 8. FD_CLOEXEC on all six: exec will close them.</title>
+<text class="t" x="24" y="52" font-size="12.5" font-weight="700">kilo</text>
+<rect class="s f" x="24" y="66" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="79" font-size="11.5" font-weight="700">0</text>
+<text class="t" x="50" y="79" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="92" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="105" font-size="11.5" font-weight="700">1</text>
+<text class="t" x="50" y="105" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="118" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="131" font-size="11.5" font-weight="700">2</text>
+<text class="t" x="50" y="131" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="144" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="157" font-size="11.5" font-weight="700">3</text>
+<text class="t" x="50" y="157" font-size="10.5">in, read end</text>
+<text class="ta mono" x="200" y="157" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="170" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="183" font-size="11.5" font-weight="700">4</text>
+<text class="t" x="50" y="183" font-size="10.5">in, write end</text>
+<text class="ta mono" x="200" y="183" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="196" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="209" font-size="11.5" font-weight="700">5</text>
+<text class="t" x="50" y="209" font-size="10.5">out, read end</text>
+<text class="ta mono" x="200" y="209" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="222" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="235" font-size="11.5" font-weight="700">6</text>
+<text class="t" x="50" y="235" font-size="10.5">out, write end</text>
+<text class="ta mono" x="200" y="235" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="248" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="261" font-size="11.5" font-weight="700">7</text>
+<text class="t" x="50" y="261" font-size="10.5">err, read end</text>
+<text class="ta mono" x="200" y="261" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="274" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="287" font-size="11.5" font-weight="700">8</text>
+<text class="t" x="50" y="287" font-size="10.5">err, write end</text>
+<text class="ta mono" x="200" y="287" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="m f" x="432" y="66" width="184" height="70" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="524" y="103" font-size="10.5" text-anchor="middle">no child yet</text>
+<rect class="m fs" x="262" y="159" width="116" height="14" rx="7" stroke-width="1.5"/>
+<line class="a" x1="272" y1="166" x2="304" y2="166" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<line class="a" x1="336" y1="166" x2="368" y2="166" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<text class="ta mono" x="320" y="169.5" font-size="10.5" font-weight="700" text-anchor="middle">in</text>
+<path class="m" d="M209 153 L356 153 L356 159" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="s" d="M209 179 L262 166" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="262" cy="166" r="2" stroke-width="1.5"/>
+<rect class="m fs" x="262" y="211" width="116" height="14" rx="7" stroke-width="1.5"/>
+<line class="a" x1="304" y1="218" x2="272" y2="218" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<line class="a" x1="368" y1="218" x2="336" y2="218" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<text class="ta mono" x="320" y="221.5" font-size="10.5" font-weight="700" text-anchor="middle">out</text>
+<path class="s" d="M209 205 L262 218" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="262" cy="218" r="2" stroke-width="1.5"/>
+<path class="m" d="M209 231 L356 231 L356 225" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<rect class="m fs" x="262" y="263" width="116" height="14" rx="7" stroke-width="1.5"/>
+<line class="a" x1="304" y1="270" x2="272" y2="270" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<line class="a" x1="368" y1="270" x2="336" y2="270" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<text class="ta mono" x="320" y="273.5" font-size="10.5" font-weight="700" text-anchor="middle">err</text>
+<path class="s" d="M209 257 L262 270" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="262" cy="270" r="2" stroke-width="1.5"/>
+<path class="m" d="M209 283 L356 283 L356 277" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+</g>
+<g class="step"><title>fork(): the child has a copy of every descriptor, so each pipe now has four, two in each process. The child opens /dev/null as 9.</title>
+<text class="t" x="24" y="52" font-size="12.5" font-weight="700">kilo</text>
+<rect class="s f" x="24" y="66" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="79" font-size="11.5" font-weight="700">0</text>
+<text class="t" x="50" y="79" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="92" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="105" font-size="11.5" font-weight="700">1</text>
+<text class="t" x="50" y="105" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="118" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="131" font-size="11.5" font-weight="700">2</text>
+<text class="t" x="50" y="131" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="144" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="157" font-size="11.5" font-weight="700">3</text>
+<text class="t" x="50" y="157" font-size="10.5">in, read end</text>
+<text class="ta mono" x="200" y="157" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="170" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="183" font-size="11.5" font-weight="700">4</text>
+<text class="t" x="50" y="183" font-size="10.5">in, write end</text>
+<text class="ta mono" x="200" y="183" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="196" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="209" font-size="11.5" font-weight="700">5</text>
+<text class="t" x="50" y="209" font-size="10.5">out, read end</text>
+<text class="ta mono" x="200" y="209" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="222" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="235" font-size="11.5" font-weight="700">6</text>
+<text class="t" x="50" y="235" font-size="10.5">out, write end</text>
+<text class="ta mono" x="200" y="235" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="248" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="261" font-size="11.5" font-weight="700">7</text>
+<text class="t" x="50" y="261" font-size="10.5">err, read end</text>
+<text class="ta mono" x="200" y="261" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="274" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="287" font-size="11.5" font-weight="700">8</text>
+<text class="t" x="50" y="287" font-size="10.5">err, write end</text>
+<text class="ta mono" x="200" y="287" font-size="11" font-weight="700" text-anchor="end">c</text>
+<text class="t" x="432" y="52" font-size="12.5" font-weight="700">the child, still kilo</text>
+<rect class="s f" x="432" y="66" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="79" font-size="11.5" font-weight="700">0</text>
+<text class="t" x="458" y="79" font-size="10.5">the terminal</text>
+<rect class="s f" x="432" y="92" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="105" font-size="11.5" font-weight="700">1</text>
+<text class="t" x="458" y="105" font-size="10.5">the terminal</text>
+<rect class="s f" x="432" y="118" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="131" font-size="11.5" font-weight="700">2</text>
+<text class="t" x="458" y="131" font-size="10.5">the terminal</text>
+<rect class="s f" x="432" y="144" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="157" font-size="11.5" font-weight="700">3</text>
+<text class="t" x="458" y="157" font-size="10.5">in, read end</text>
+<text class="ta mono" x="608" y="157" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="170" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="183" font-size="11.5" font-weight="700">4</text>
+<text class="t" x="458" y="183" font-size="10.5">in, write end</text>
+<text class="ta mono" x="608" y="183" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="196" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="209" font-size="11.5" font-weight="700">5</text>
+<text class="t" x="458" y="209" font-size="10.5">out, read end</text>
+<text class="ta mono" x="608" y="209" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="222" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="235" font-size="11.5" font-weight="700">6</text>
+<text class="t" x="458" y="235" font-size="10.5">out, write end</text>
+<text class="ta mono" x="608" y="235" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="248" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="261" font-size="11.5" font-weight="700">7</text>
+<text class="t" x="458" y="261" font-size="10.5">err, read end</text>
+<text class="ta mono" x="608" y="261" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="274" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="287" font-size="11.5" font-weight="700">8</text>
+<text class="t" x="458" y="287" font-size="10.5">err, write end</text>
+<text class="ta mono" x="608" y="287" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="300" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="313" font-size="11.5" font-weight="700">9</text>
+<text class="t" x="458" y="313" font-size="10.5">/dev/null</text>
+<text class="ta mono" x="608" y="313" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="m fs" x="262" y="159" width="116" height="14" rx="7" stroke-width="1.5"/>
+<line class="a" x1="272" y1="166" x2="304" y2="166" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<line class="a" x1="336" y1="166" x2="368" y2="166" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<text class="ta mono" x="320" y="169.5" font-size="10.5" font-weight="700" text-anchor="middle">in</text>
+<path class="m" d="M209 153 L356 153 L356 159" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="s" d="M209 179 L262 166" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="262" cy="166" r="2" stroke-width="1.5"/>
+<path class="s" d="M431 153 L378 166" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="378" cy="166" r="2" stroke-width="1.5"/>
+<path class="m" d="M431 179 L284 179 L284 173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<rect class="m fs" x="262" y="211" width="116" height="14" rx="7" stroke-width="1.5"/>
+<line class="a" x1="304" y1="218" x2="272" y2="218" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<line class="a" x1="368" y1="218" x2="336" y2="218" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<text class="ta mono" x="320" y="221.5" font-size="10.5" font-weight="700" text-anchor="middle">out</text>
+<path class="s" d="M209 205 L262 218" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="262" cy="218" r="2" stroke-width="1.5"/>
+<path class="m" d="M209 231 L356 231 L356 225" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="m" d="M431 205 L284 205 L284 211" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="s" d="M431 231 L378 218" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="378" cy="218" r="2" stroke-width="1.5"/>
+<rect class="m fs" x="262" y="263" width="116" height="14" rx="7" stroke-width="1.5"/>
+<line class="a" x1="304" y1="270" x2="272" y2="270" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<line class="a" x1="368" y1="270" x2="336" y2="270" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<text class="ta mono" x="320" y="273.5" font-size="10.5" font-weight="700" text-anchor="middle">err</text>
+<path class="s" d="M209 257 L262 270" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="262" cy="270" r="2" stroke-width="1.5"/>
+<path class="m" d="M209 283 L356 283 L356 277" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="m" d="M431 257 L284 257 L284 263" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="s" d="M431 283 L378 270" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="378" cy="270" r="2" stroke-width="1.5"/>
+</g>
+<g class="step"><title>The child dup2()s in's read end to 0, out's write end to 1 and /dev/null to 2: copies without close-on-exec. kilo closes 3, 6 and 8, the ends it does not use.</title>
+<text class="t" x="24" y="52" font-size="12.5" font-weight="700">kilo</text>
+<rect class="s f" x="24" y="66" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="79" font-size="11.5" font-weight="700">0</text>
+<text class="t" x="50" y="79" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="92" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="105" font-size="11.5" font-weight="700">1</text>
+<text class="t" x="50" y="105" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="118" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="131" font-size="11.5" font-weight="700">2</text>
+<text class="t" x="50" y="131" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="170" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="183" font-size="11.5" font-weight="700">4</text>
+<text class="t" x="50" y="183" font-size="10.5">in, write end</text>
+<text class="ta mono" x="200" y="183" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="196" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="209" font-size="11.5" font-weight="700">5</text>
+<text class="t" x="50" y="209" font-size="10.5">out, read end</text>
+<text class="ta mono" x="200" y="209" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="248" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="261" font-size="11.5" font-weight="700">7</text>
+<text class="t" x="50" y="261" font-size="10.5">err, read end</text>
+<text class="ta mono" x="200" y="261" font-size="11" font-weight="700" text-anchor="end">c</text>
+<text class="t" x="432" y="52" font-size="12.5" font-weight="700">the child, still kilo</text>
+<rect class="s f" x="432" y="66" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="79" font-size="11.5" font-weight="700">0</text>
+<text class="t" x="458" y="79" font-size="10.5">in, read end (from 3)</text>
+<rect class="s f" x="432" y="92" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="105" font-size="11.5" font-weight="700">1</text>
+<text class="t" x="458" y="105" font-size="10.5">out, write end (from 6)</text>
+<rect class="s f" x="432" y="118" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="131" font-size="11.5" font-weight="700">2</text>
+<text class="t" x="458" y="131" font-size="10.5">/dev/null (from 9)</text>
+<rect class="s f" x="432" y="144" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="157" font-size="11.5" font-weight="700">3</text>
+<text class="t" x="458" y="157" font-size="10.5">in, read end</text>
+<text class="ta mono" x="608" y="157" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="170" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="183" font-size="11.5" font-weight="700">4</text>
+<text class="t" x="458" y="183" font-size="10.5">in, write end</text>
+<text class="ta mono" x="608" y="183" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="196" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="209" font-size="11.5" font-weight="700">5</text>
+<text class="t" x="458" y="209" font-size="10.5">out, read end</text>
+<text class="ta mono" x="608" y="209" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="222" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="235" font-size="11.5" font-weight="700">6</text>
+<text class="t" x="458" y="235" font-size="10.5">out, write end</text>
+<text class="ta mono" x="608" y="235" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="248" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="261" font-size="11.5" font-weight="700">7</text>
+<text class="t" x="458" y="261" font-size="10.5">err, read end</text>
+<text class="ta mono" x="608" y="261" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="274" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="287" font-size="11.5" font-weight="700">8</text>
+<text class="t" x="458" y="287" font-size="10.5">err, write end</text>
+<text class="ta mono" x="608" y="287" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="432" y="300" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="313" font-size="11.5" font-weight="700">9</text>
+<text class="t" x="458" y="313" font-size="10.5">/dev/null</text>
+<text class="ta mono" x="608" y="313" font-size="11" font-weight="700" text-anchor="end">c</text>
+<text class="tm" x="432" y="334" font-size="10.5">3 to 9 stay open until exec closes them</text>
+<rect class="m fs" x="262" y="159" width="116" height="14" rx="7" stroke-width="1.5"/>
+<line class="a" x1="272" y1="166" x2="304" y2="166" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<line class="a" x1="336" y1="166" x2="368" y2="166" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<text class="ta mono" x="320" y="169.5" font-size="10.5" font-weight="700" text-anchor="middle">in</text>
+<path class="s" d="M209 179 L262 166" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="262" cy="166" r="2" stroke-width="1.5"/>
+<path class="s" d="M431 75 L378 166" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="378" cy="166" r="2" stroke-width="1.5"/>
+<rect class="m fs" x="262" y="211" width="116" height="14" rx="7" stroke-width="1.5"/>
+<line class="a" x1="304" y1="218" x2="272" y2="218" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<line class="a" x1="368" y1="218" x2="336" y2="218" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<text class="ta mono" x="320" y="221.5" font-size="10.5" font-weight="700" text-anchor="middle">out</text>
+<path class="s" d="M209 205 L262 218" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="262" cy="218" r="2" stroke-width="1.5"/>
+<path class="s" d="M431 101 L378 218" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="378" cy="218" r="2" stroke-width="1.5"/>
+<path class="s" d="M431 231 L378 218" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="378" cy="218" r="2" stroke-width="1.5"/>
+<rect class="m fs" x="262" y="263" width="116" height="14" rx="7" stroke-width="1.5"/>
+<line class="a" x1="304" y1="270" x2="272" y2="270" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<line class="a" x1="368" y1="270" x2="336" y2="270" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<text class="ta mono" x="320" y="273.5" font-size="10.5" font-weight="700" text-anchor="middle">err</text>
+<path class="s" d="M209 257 L262 270" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="262" cy="270" r="2" stroke-width="1.5"/>
+<path class="s" d="M431 283 L378 270" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="378" cy="270" r="2" stroke-width="1.5"/>
+</g>
+<g class="step"><title>execvp(): the child is clangd, with 0, 1 and 2 alone; exec closed 3 to 9, err's write end 8 with them, so kilo's read(7) gets 0 bytes, and kilo closes 7. kilo keeps 4 and 5.</title>
+<text class="t" x="24" y="52" font-size="12.5" font-weight="700">kilo</text>
+<rect class="s f" x="24" y="66" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="79" font-size="11.5" font-weight="700">0</text>
+<text class="t" x="50" y="79" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="92" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="105" font-size="11.5" font-weight="700">1</text>
+<text class="t" x="50" y="105" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="118" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="131" font-size="11.5" font-weight="700">2</text>
+<text class="t" x="50" y="131" font-size="10.5">the terminal</text>
+<rect class="s f" x="24" y="170" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="183" font-size="11.5" font-weight="700">4</text>
+<text class="t" x="50" y="183" font-size="10.5">in, write end</text>
+<text class="ta mono" x="200" y="183" font-size="11" font-weight="700" text-anchor="end">c</text>
+<rect class="s f" x="24" y="196" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="34" y="209" font-size="11.5" font-weight="700">5</text>
+<text class="t" x="50" y="209" font-size="10.5">out, read end</text>
+<text class="ta mono" x="200" y="209" font-size="11" font-weight="700" text-anchor="end">c</text>
+<text class="t" x="432" y="52" font-size="12.5" font-weight="700">clangd, after exec</text>
+<rect class="s f" x="432" y="66" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="79" font-size="11.5" font-weight="700">0</text>
+<text class="t" x="458" y="79" font-size="10.5">in, read end</text>
+<rect class="s f" x="432" y="92" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="105" font-size="11.5" font-weight="700">1</text>
+<text class="t" x="458" y="105" font-size="10.5">out, write end</text>
+<rect class="s f" x="432" y="118" width="184" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="442" y="131" font-size="11.5" font-weight="700">2</text>
+<text class="t" x="458" y="131" font-size="10.5">/dev/null</text>
+<rect class="m fs" x="262" y="159" width="116" height="14" rx="7" stroke-width="1.5"/>
+<line class="a" x1="272" y1="166" x2="304" y2="166" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<line class="a" x1="336" y1="166" x2="368" y2="166" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<text class="ta mono" x="320" y="169.5" font-size="10.5" font-weight="700" text-anchor="middle">in</text>
+<path class="s" d="M209 179 L262 166" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="262" cy="166" r="2" stroke-width="1.5"/>
+<path class="s" d="M431 75 L378 166" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="378" cy="166" r="2" stroke-width="1.5"/>
+<rect class="m fs" x="262" y="211" width="116" height="14" rx="7" stroke-width="1.5"/>
+<line class="a" x1="304" y1="218" x2="272" y2="218" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<line class="a" x1="368" y1="218" x2="336" y2="218" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0701a-aa)"/>
+<text class="ta mono" x="320" y="221.5" font-size="10.5" font-weight="700" text-anchor="middle">out</text>
+<path class="s" d="M209 205 L262 218" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="262" cy="218" r="2" stroke-width="1.5"/>
+<path class="s" d="M431 101 L378 218" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s fa" cx="378" cy="218" r="2" stroke-width="1.5"/>
+</g>
+</svg>

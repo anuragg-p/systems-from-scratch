@@ -29,6 +29,13 @@ the size the cover names (the reference kilo.c, or the project at 02.01 for 02):
       inserts the two rows and prints them): 555000007700333333 and hl_oc 1, then
       0003333305555000 and hl_oc 0. The second row alone is 0007700005555000: "41" a
       number, "*/" plain.
+  07  (an extension) captured when this runs, by figs07.py's capture_cover(): the project at
+      07.07 (the whole client, without module 06) and clangd, through figs07's relay that logs
+      every frame, on sum.c in "sam ple/" on a 10 x 38 terminal; Backspace in the printf line's
+      total. The screen once totl is underlined and the error said (the message cut at 38
+      columns, as kilo cuts it), the didChange that carried the change and its Content-Length,
+      and clangd's publishDiagnostics, its Content-Length and the error's range. It needs
+      clangd: without it, that cover is not written and the others are.
 
 Text in these SVGs is placed a run of non-spaces at a time, at its column: SVG
 collapses runs of spaces, and a screen's columns must line up.
@@ -42,6 +49,7 @@ shows a colour without its name or its class beside it.
 """
 import os
 import re
+import sys
 
 import figart
 from archmap import sane
@@ -50,7 +58,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 TRACK = os.path.join(ROOT, "tracks", "kilo")
 LESSONS = os.path.join(TRACK, "lessons")
 MODULES = {"00": "00-workbench", "01": "01-terminal", "02": "02-screen", "03": "03-viewer",
-           "04": "04-editor", "05": "05-search", "06": "06-highlighting"}
+           "04": "04-editor", "05": "05-search", "06": "06-highlighting", "07": "07-language-server"}
 SW = 'stroke-width="1.5"'
 
 # ESC [ n m -> (name, fill): the colours kilo's editorSyntaxToColor() returns.
@@ -548,6 +556,79 @@ def highlighting():
     return a
 
 
+# ------------------------------------------------------------------ 07 a language server client (an extension)
+
+def language_server():
+    """kilo and clangd, two processes joined by two pipes: the text goes one way in a didChange,
+    the diagnostics come back, and kilo underlines what they point at. Captured by figs07.py's
+    capture_cover() (needs clangd)."""
+    import figs07
+    cap = figs07.capture_cover(10, 38)
+    shot, change, diags = cap["shot"], cap["change"], cap["diags"]
+    m = diags["msg"]
+    d0 = m["params"]["diagnostics"][0]
+    s, e = d0["range"]["start"], d0["range"]["end"]
+    assert shot.unders[s["line"]][23:27] == "____" and shot.lines[s["line"]][23:27] == "totl"
+    assert change["body"].startswith('{"jsonrpc":"2.0","method":"textDocument/didChange",')
+    assert diags["body"].startswith('{"jsonrpc":"2.0","method":"textDocument/publishDiagnostics","params":'
+                                    '{"diagnostics":[{"code":')
+    a = Art("k07", "kilo and clangd, two processes joined by two pipes: the text goes to clangd in a didChange, "
+                   "the diagnostics come back, and kilo underlines what they point at")
+    # the screen: sum.c on a 10 x 38 terminal, totl underlined, the error on the message line
+    oy = 12
+    size, pitch, x0, y0 = 9, 15, 30, 62 + oy
+    c = cw(size)
+    rows = len(shot.lines)
+    a.text(x0 - 7, 44 + oy, "kilo, on a terminal 10 x 38", "tm", 11)
+    a.box(x0 - 7, y0 - 4, 38 * c + 14, rows * pitch + 8, "s fs", rx=8)
+    for r, line in enumerate(shot.lines):
+        b = y0 + r * pitch + pitch * 0.72
+        if r == rows - 2:
+            a.fill(x0 - 1, y0 + r * pitch + 1, 38 * c + 2, pitch - 2, "t", 1.5)
+            a.mono(x0, b, line, "f", size)
+        else:
+            a.mono(x0, b, line, "t", size)
+        for mm in re.finditer(r"_+", shot.unders[r]):
+            a.line(x0 + mm.start() * c + 0.5, b + 2.5, x0 + mm.end() * c - 0.5, b + 2.5, "s")
+        if r == s["line"]:
+            ub = b + 2.5
+    ux = x0 + (23 + 2) * c
+    # clangd
+    a.box(524, 92 + oy, 92, 72, "s f", rx=10)
+    a.text(570, 118 + oy, "clangd", "t", 15, "middle", 700, mono=True)
+    a.text(570, 136 + oy, "another process:", "tm", 10.5, "middle")
+    a.text(570, 151 + oy, "fork, exec", "tm", 10.5, "middle")
+
+    def pipe(ya, yb, right):
+        """A pipe between kilo and clangd: its two walls, and the way the bytes go at each end."""
+        a.path(f"M252 {ya} L516 {ya} M252 {yb} L516 {yb}", "m")
+        ym = (ya + yb) / 2
+        if right:
+            a.line(496, ym, 518, ym, "a", arrow=True)
+        else:
+            a.line(272, ym, 250, ym, "a", arrow=True)
+
+    def card(x, y, lines, w):
+        a.box(x, y, w, len(lines) * 13 + 8, "a af", rx=5)
+        for k, (text, cls) in enumerate(lines):
+            a.mono(x + 8, y + 15 + k * 13, text, cls, 8.6)
+        return [y + 15 + k * 13 for k in range(len(lines))]
+    pipe(28 + oy, 100 + oy, True)
+    card(280, 35 + oy, [(f"Content-Length: {change['len']}", "ta"), ('{"jsonrpc":"2.0","method":', "t"),
+                        ('"textDocument/didChange",...', "t"), ("the whole text, version 2", "tm")], 196)
+    pipe(108 + oy, 208 + oy, False)
+    ys = card(280, 115 + oy, [(f"Content-Length: {diags['len']}", "ta"), ('{"jsonrpc":"2.0","method":', "t"),
+                              ('"textDocument/publishDiagnostics",', "t"), ('"params":{"diagnostics":[{...', "t"),
+                              (f'"range":{{"end":{{"character":{e["character"]},"line":{e["line"]}}},', "ta"),
+                              (f'"start":{{"character":{s["character"]},"line":{s["line"]}}}}},...', "ta")], 234)
+    # from the range to the underline it makes
+    a.path(f"M278 {n(ys[4] - 3)} C248 {n(ys[4])}, {n(ux + 30)} {n(ub + 14)}, {n(ux)} {n(ub + 3)}", "a", arrow=True)
+    a.text(252, 20 + oy, "the text, as typed", "ta", 10.5, weight=600)
+    a.text(252, 224 + oy, "what is wrong with it", "ta", 10.5, weight=600)
+    a.text(24, 288, "kilo never waits for the server: poll() watches the keyboard and the pipe together.", "tm", 11.5)
+    return a
+
+
 # ------------------------------------------------------------------ icons and the track's own art
 
 ICONS = {
@@ -560,6 +641,8 @@ ICONS = {
     "05": '<circle cx="8.5" cy="8.5" r="5"/><path d="M12.25 12.25L17 17"/>',
     # a character over a bar of its colour: the text-colour mark
     "06": '<path d="M5.5 13.5L10 3.25l4.5 10.25M7.1 10h5.8"/><path d="M3.5 17h13" stroke-width="2.5"/>',
+    # two pipes, one each way: a straight arrow right over a straight arrow left
+    "07": '<path d="M3 7h14M14 4l3 3-3 3"/><path d="M17 13H3M6 10l-3 3 3 3"/>',
 }
 TRACK_ICON = '<rect x="2.5" y="3.5" width="15" height="13" rx="2.5"/><path d="M5.5 7h9M5.5 12h3.5"/><path d="M11.5 10.5v3"/>'
 
@@ -609,13 +692,20 @@ def card():
 
 
 COVERS = {"00": workbench, "01": terminal, "02": screen, "03": viewer, "04": editor, "05": search,
-          "06": highlighting}
+          "06": highlighting, "07": language_server}
 
 
 def main():
     for mid, fn in COVERS.items():
         d = os.path.join(LESSONS, MODULES[mid])
-        for name, s in (("cover.svg", fn().svg()), ("icon.svg", icon_svg(ICONS[mid]))):
+        try:
+            cover = fn().svg()
+        except SystemExit as e:          # 07's needs clangd: the other covers are written all the same
+            print(f"{MODULES[mid]}/cover.svg not written: {e}")
+            cover = None
+        for name, s in (("cover.svg", cover), ("icon.svg", icon_svg(ICONS[mid]))):
+            if s is None:
+                continue
             s.encode("ascii")
             sane(s, os.path.join(MODULES[mid], name))
             with open(os.path.join(d, name), "w") as f:
@@ -627,6 +717,8 @@ def main():
         with open(os.path.join(TRACK, name), "w") as f:
             f.write(s)
         print(os.path.join(TRACK, name))
+    if "figs07" in sys.modules:
+        sys.modules["figs07"].cleanup()
 
 
 if __name__ == "__main__":

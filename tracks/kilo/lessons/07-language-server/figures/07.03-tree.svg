@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 338" fill="none">
+<title>clangd&#x27;s answer to initialize, 2008 bytes, trimmed to what kilo reads at 07.03, and the tree jsonParse() makes of it: result, serverInfo, name is the path to &quot;clangd&quot;</title>
+<defs><marker id="f0703a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0703a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">clangd&#x27;s answer to kilo at 07.03 (2008 bytes), trimmed</text>
+<text class="t mono" x="24" y="52" font-size="10">{&quot;id&quot;:1,</text>
+<text class="t mono" x="30" y="69" font-size="10">&quot;jsonrpc&quot;:&quot;2.0&quot;,</text>
+<text class="ta mono" x="30" y="86" font-size="10" font-weight="700">&quot;result&quot;:{</text>
+<text class="t mono" x="36" y="103" font-size="10">&quot;capabilities&quot;:{</text>
+<text class="t mono" x="42" y="120" font-size="10">&quot;astProvider&quot;:true,</text>
+<text class="tm mono" x="42" y="137" font-size="10">...</text>
+<text class="tm mono" x="66" y="137" font-size="10">29</text>
+<text class="tm mono" x="84" y="137" font-size="10">more</text>
+<text class="tm mono" x="114" y="137" font-size="10">members</text>
+<text class="tm mono" x="162" y="137" font-size="10">...</text>
+<text class="t mono" x="42" y="154" font-size="10">&quot;workspaceSymbolProvider&quot;:true},</text>
+<text class="ta mono" x="36" y="171" font-size="10" font-weight="700">&quot;serverInfo&quot;:{</text>
+<text class="ta mono" x="42" y="188" font-size="10" font-weight="700">&quot;name&quot;:&quot;clangd&quot;,</text>
+<text class="t mono" x="42" y="205" font-size="10">&quot;version&quot;:&quot;Apple</text>
+<text class="t mono" x="144" y="205" font-size="10">clangd</text>
+<text class="t mono" x="186" y="205" font-size="10">version</text>
+<text class="t mono" x="234" y="205" font-size="10">21.0.0</text>
+<text class="t mono" x="276" y="205" font-size="10">(...)&quot;}}}</text>
+<text class="tm" x="24" y="230" font-size="10">&quot;version&quot; is all of &quot;Apple clangd version 21.0.0</text>
+<text class="tm" x="24" y="243" font-size="10">(clang-2100.1.1.101) mac+xpc</text>
+<text class="tm" x="24" y="256" font-size="10">arm64-apple-darwin25.6.0&quot;</text>
+<rect class="a af" x="338" y="44" width="34.9" height="20" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="346" y="58" font-size="10.5" font-weight="700">{ }</text>
+<text class="tm" x="378.9" y="58" font-size="9.5">the message</text>
+<rect class="s f" x="362" y="74" width="60.1" height="20" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="370" y="88" font-size="10.5">&quot;id&quot;: 1</text>
+<text class="tm" x="428.1" y="88" font-size="9.5">number</text>
+<rect class="s f" x="362" y="104" width="116.8" height="20" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="370" y="118" font-size="10.5">&quot;jsonrpc&quot;: &quot;2.0&quot;</text>
+<text class="tm" x="484.8" y="118" font-size="9.5">string</text>
+<rect class="a af" x="362" y="134" width="97.9" height="20" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="370" y="148" font-size="10.5" font-weight="700">&quot;result&quot;: { }</text>
+<text class="tm" x="465.9" y="148" font-size="9.5">object</text>
+<rect class="s f" x="386" y="164" width="135.7" height="20" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="394" y="178" font-size="10.5">&quot;capabilities&quot;: { }</text>
+<text class="tm" x="527.7" y="178" font-size="9.5">31 members</text>
+<rect class="a af" x="386" y="194" width="123.1" height="20" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="394" y="208" font-size="10.5" font-weight="700">&quot;serverInfo&quot;: { }</text>
+<text class="tm" x="515.1" y="208" font-size="9.5">object</text>
+<rect class="a af" x="410" y="224" width="116.8" height="20" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="418" y="238" font-size="10.5" font-weight="700">&quot;name&quot;: &quot;clangd&quot;</text>
+<text class="tm" x="532.8" y="238" font-size="9.5">string</text>
+<rect class="s f" x="410" y="254" width="148.3" height="20" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="418" y="268" font-size="10.5">&quot;version&quot;: &quot;Apple...&quot;</text>
+<text class="tm" x="564.3" y="268" font-size="9.5">string</text>
+<path class="m" d="M348 65 L348 84 L361 84" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M348 65 L348 114 L361 114" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M348 65 L348 144 L361 144" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M372 155 L372 174 L385 174" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M372 155 L372 204 L385 204" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M396 215 L396 234 L409 234" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M396 215 L396 264 L409 264" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm" x="338" y="298" font-size="10">kilo reads the name with</text>
+<text class="t mono" x="338" y="314" font-size="10">jsonStr(jsonGet(jsonGet(result,</text>
+<text class="t mono" x="338" y="328" font-size="10">&quot;serverInfo&quot;),&quot;name&quot;),L.name): &quot;clangd&quot;</text>
+<text class="tm" x="24" y="284" font-size="10.5">and says, on the message line:</text>
+<rect class="s fs" x="24" y="292" width="260" height="21" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="32" y="306.5" font-size="10.5">lsp: clangd 21.0.0 ready</text>
+</svg>

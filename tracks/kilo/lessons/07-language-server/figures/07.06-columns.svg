@@ -1,0 +1,192 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 268" fill="none">
+<title>One line with two e-acutes, counted three ways: the bytes kilo keeps, the UTF-16 units of the protocol&#x27;s default, and the columns of render; where totl starts in each</title>
+<defs><marker id="f0706b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0706b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0706b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">row 6 of sum.c with &#233;t&#233; in it; clangd&#x27;s error range for totl, and where kilo draws it</text>
+<rect class="s fs" x="63" y="52" width="122" height="24" rx="3" stroke-width="1.5"/>
+<text class="t" x="124" y="68.5" font-size="11" font-weight="600" text-anchor="middle">tab</text>
+<rect class="s fs" x="187" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="193.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">p</text>
+<rect class="s fs" x="202.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="209.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">r</text>
+<rect class="s fs" x="218" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="224.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="233.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="240.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">n</text>
+<rect class="s fs" x="249" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="255.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">t</text>
+<rect class="s fs" x="264.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="271.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">f</text>
+<rect class="s fs" x="280" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="286.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">(</text>
+<rect class="s fs" x="295.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="302.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">&quot;</text>
+<rect class="s fs" x="311" y="52" width="29" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="325.5" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">&#233;</text>
+<rect class="s fs" x="342" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="348.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">t</text>
+<rect class="s fs" x="357.5" y="52" width="29" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="372" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">&#233;</text>
+<rect class="s fs" x="388.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="395.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">:</text>
+<rect class="s fs" x="404" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="410.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle"> </text>
+<rect class="s fs" x="419.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="426.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">%</text>
+<rect class="s fs" x="435" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="441.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">d</text>
+<rect class="s fs" x="450.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="457.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">\</text>
+<rect class="s fs" x="466" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="472.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">n</text>
+<rect class="s fs" x="481.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="488.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">&quot;</text>
+<rect class="s fs" x="497" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="503.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">,</text>
+<rect class="s fs" x="512.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="519.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle"> </text>
+<rect class="a af" x="528" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="534.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">t</text>
+<rect class="a af" x="543.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="550.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">o</text>
+<rect class="a af" x="559" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="565.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">t</text>
+<rect class="a af" x="574.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="ta mono" x="581.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">l</text>
+<rect class="s fs" x="590" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="596.75" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">)</text>
+<rect class="s fs" x="605.5" y="52" width="13.5" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="612.25" y="68.5" font-size="12.5" font-weight="600" text-anchor="middle">;</text>
+<text class="t" x="24" y="100" font-size="11" font-weight="700">bytes of the row</text>
+<text class="tm" x="136.54" y="100" font-size="10">what kilo keeps; clangd&#x27;s characters with utf-8: 23 to 27</text>
+<rect class="m f" x="62.75" y="108" width="122.5" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="124" y="120" font-size="8.5" text-anchor="middle">0</text>
+<rect class="m f" x="186.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="202.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="217.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="233.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="248.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="255.75" y="120" font-size="8.5" text-anchor="middle">5</text>
+<rect class="m f" x="264.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="279.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="295.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="310.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="326.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="333.25" y="120" font-size="8.5" text-anchor="middle">10</text>
+<rect class="m f" x="341.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="357.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="372.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="388.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="403.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="410.75" y="120" font-size="8.5" text-anchor="middle">15</text>
+<rect class="m f" x="419.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="434.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="450.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="465.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="481.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="488.25" y="120" font-size="8.5" text-anchor="middle">20</text>
+<rect class="m f" x="496.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="512.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="527.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="534.75" y="120" font-size="8.5" font-weight="700" text-anchor="middle">23</text>
+<rect class="a af" x="543.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="550.25" y="120" font-size="8.5" text-anchor="middle">24</text>
+<rect class="a af" x="558.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="565.75" y="120" font-size="8.5" text-anchor="middle">25</text>
+<rect class="a af" x="574.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="581.25" y="120" font-size="8.5" text-anchor="middle">26</text>
+<rect class="m f" x="589.75" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="605.25" y="108" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm" x="54" y="120" font-size="9.5" text-anchor="end">byte</text>
+<text class="t" x="24" y="144" font-size="11" font-weight="700">UTF-16 units</text>
+<text class="tm" x="110.41" y="144" font-size="10">clangd&#x27;s characters when kilo does not offer utf-8: 21 to 25</text>
+<rect class="m f" x="62.75" y="152" width="122.5" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="124" y="164" font-size="8.5" text-anchor="middle">0</text>
+<rect class="m f" x="186.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="202.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="217.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="233.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="248.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="255.75" y="164" font-size="8.5" text-anchor="middle">5</text>
+<rect class="m f" x="264.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="279.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="295.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="310.75" y="152" width="29.5" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="341.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="348.75" y="164" font-size="8.5" text-anchor="middle">10</text>
+<rect class="m f" x="357.25" y="152" width="29.5" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="388.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="403.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="419.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="434.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="441.75" y="164" font-size="8.5" text-anchor="middle">15</text>
+<rect class="m f" x="450.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="465.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="481.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="496.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="512.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="519.25" y="164" font-size="8.5" text-anchor="middle">20</text>
+<rect class="a af" x="527.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="534.75" y="164" font-size="8.5" font-weight="700" text-anchor="middle">21</text>
+<rect class="a af" x="543.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="550.25" y="164" font-size="8.5" text-anchor="middle">22</text>
+<rect class="a af" x="558.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="565.75" y="164" font-size="8.5" text-anchor="middle">23</text>
+<rect class="a af" x="574.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="581.25" y="164" font-size="8.5" text-anchor="middle">24</text>
+<rect class="m f" x="589.75" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="596.75" y="164" font-size="8.5" text-anchor="middle">25</text>
+<rect class="m f" x="605.25" y="152" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm" x="54" y="164" font-size="9.5" text-anchor="end">unit</text>
+<text class="t" x="24" y="188" font-size="11" font-weight="700">columns of render</text>
+<text class="tm" x="143.08" y="188" font-size="10">the tab to the next multiple of 8: 30 to 34</text>
+<rect class="m f" x="62.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="69.75" y="208" font-size="8.5" text-anchor="middle">0</text>
+<rect class="m f" x="78.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="93.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="109.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="124.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="140.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="147.25" y="208" font-size="8.5" text-anchor="middle">5</text>
+<rect class="m f" x="155.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="171.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="186.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="202.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="217.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="224.75" y="208" font-size="8.5" text-anchor="middle">10</text>
+<rect class="m f" x="233.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="248.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="264.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="279.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="295.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="302.25" y="208" font-size="8.5" text-anchor="middle">15</text>
+<rect class="m f" x="310.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="326.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="341.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="357.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="372.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="379.75" y="208" font-size="8.5" text-anchor="middle">20</text>
+<rect class="m f" x="388.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="403.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="419.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="434.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="450.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="457.25" y="208" font-size="8.5" text-anchor="middle">25</text>
+<rect class="m f" x="465.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="481.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="496.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="512.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="527.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="534.75" y="208" font-size="8.5" font-weight="700" text-anchor="middle">30</text>
+<rect class="a af" x="543.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="550.25" y="208" font-size="8.5" text-anchor="middle">31</text>
+<rect class="a af" x="558.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="565.75" y="208" font-size="8.5" text-anchor="middle">32</text>
+<rect class="a af" x="574.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="581.25" y="208" font-size="8.5" text-anchor="middle">33</text>
+<rect class="m f" x="589.75" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<rect class="m f" x="605.25" y="196" width="14" height="17" rx="2" stroke-width="1.5"/>
+<text class="tm mono" x="612.25" y="208" font-size="8.5" text-anchor="middle">35</text>
+<text class="tm" x="54" y="208" font-size="9.5" text-anchor="end">column</text>
+<text class="t" x="24" y="238" font-size="10.5">The terminal draws each &#233; in one cell: totl is in cells 28 to 31, so kilo moves there with ESC [ 28 C, not 30,</text>
+<text class="t" x="24" y="254" font-size="10.5">and underlines the same four cells whichever count clangd used (a terminal 10 x 60 that knows UTF-8).</text>
+</svg>

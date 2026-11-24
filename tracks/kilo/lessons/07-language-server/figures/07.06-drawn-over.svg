@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 296" fill="none">
+<title>The bytes kilo at 07.06 writes for the error&#x27;s row: the row as always, then back to its start, 23 cells right, underline on, totl again, underline off</title>
+<defs><marker id="f0706c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0706c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0706c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">the frame&#x27;s bytes for row 6, from what kilo wrote to the terminal</text>
+<path class="m" d="M25.19 53.5 L25.19 56 L29.41 56 L29.41 53.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M31.79 53.5 L31.79 56 L36.01 56 L36.01 53.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M38.39 53.5 L38.39 56 L42.61 56 L42.61 53.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M44.99 53.5 L44.99 56 L49.21 56 L49.21 53.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M51.59 53.5 L51.59 56 L55.81 56 L55.81 53.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M58.19 53.5 L58.19 56 L62.41 56 L62.41 53.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M64.79 53.5 L64.79 56 L69.01 56 L69.01 53.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M71.39 53.5 L71.39 56 L75.61 56 L75.61 53.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="76.8" y="56" font-size="11">printf(&quot;%d\n&quot;,</text>
+<text class="t mono" x="175.8" y="56" font-size="11">totl);</text>
+<text class="ta mono" x="220.4" y="56" font-size="11">ESC[0K</text>
+<text class="ta mono" x="265" y="56" font-size="11" font-weight="700">\r</text>
+<text class="ta mono" x="283.2" y="56" font-size="11" font-weight="700">ESC[23C</text>
+<text class="ta mono" x="334.4" y="56" font-size="11" font-weight="700">ESC[4m</text>
+<text class="ta mono" x="379" y="56" font-size="11" font-weight="700">totl</text>
+<text class="ta mono" x="410.4" y="56" font-size="11" font-weight="700">ESC[0m</text>
+<text class="tm mono" x="455" y="56" font-size="11">\r\n</text>
+<path class="m" d="M24 60 L24 66 L258 66 L258 60" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="24" y="84" font-size="10.5">first pass: the row, and erase to its end</text>
+<path class="a" d="M265 60 L265 66 L450 66 L450 60" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="265" y="84" font-size="10.5" font-weight="600">second pass: over the same cells</text>
+<text class="tm mono" x="38.5" y="124" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="110.5" y="124" font-size="9" text-anchor="middle">8</text>
+<text class="tm mono" x="182.5" y="124" font-size="9" text-anchor="middle">16</text>
+<text class="ta mono" x="245.5" y="124" font-size="9" font-weight="700" text-anchor="middle">23</text>
+<text class="tm mono" x="326.5" y="124" font-size="9" text-anchor="middle">32</text>
+<rect class="s fs" x="28" y="132" width="309" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="106" y="147.5" font-size="15">printf(&quot;%d\n&quot;,</text>
+<text class="t mono" x="241" y="147.5" font-size="15">totl);</text>
+<text class="tm" x="347" y="147.5" font-size="10.5">after the first pass</text>
+<rect class="s fs" x="28" y="188" width="309" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="106" y="203.5" font-size="15">printf(&quot;%d\n&quot;,</text>
+<text class="t mono" x="241" y="203.5" font-size="15">totl);</text>
+<text class="ta" x="347" y="203.5" font-size="10.5" font-weight="600">after the second: totl underlined</text>
+<line class="s" x1="241.5" y1="206.5" x2="276.5" y2="206.5" stroke-width="1.5" stroke-linecap="round"/>
+<path class="a" d="M295 168 L34 168" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0706c-aa)"/>
+<text class="ta mono" x="304" y="172" font-size="10.5" font-weight="700">\r</text>
+<path class="a" d="M34 176 L241 176" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0706c-aa)"/>
+<text class="ta mono" x="247" y="180" font-size="10.5" font-weight="700">ESC[23C</text>
+<text class="tm" x="24" y="268" font-size="10.5">The row&#x27;s own drawing is not touched: the underline is drawn over it. In the finished project, with module 06,</text>
+<text class="tm" x="24" y="283" font-size="10.5">the string is coloured by the first pass and totl drawn again in the default colour.</text>
+</svg>
