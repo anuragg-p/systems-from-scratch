@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Grokking, reproduced from the text: memorised near step 400 at chance, generalised 5.0 to 5.6 times later, where the paper&#x27;s figure 1 has about a thousand; at the paper&#x27;s 50% the start decides it</title>
+<defs><marker id="r14-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="r14-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="60" y1="222" x2="420" y2="222" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="60" y1="222" x2="60" y2="80" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="60.0" y1="222" x2="60.0" y2="226" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="60.0" y="239" font-size="10" text-anchor="middle">1</text>
+<line class="m" x1="120.0" y1="222" x2="120.0" y2="226" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="120.0" y="239" font-size="10" text-anchor="middle">1e1</text>
+<line class="m" x1="180.0" y1="222" x2="180.0" y2="226" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="180.0" y="239" font-size="10" text-anchor="middle">1e2</text>
+<line class="m" x1="240.0" y1="222" x2="240.0" y2="226" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="240.0" y="239" font-size="10" text-anchor="middle">1e3</text>
+<line class="m" x1="300.0" y1="222" x2="300.0" y2="226" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="300.0" y="239" font-size="10" text-anchor="middle">1e4</text>
+<line class="m" x1="360.0" y1="222" x2="360.0" y2="226" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="360.0" y="239" font-size="10" text-anchor="middle">1e5</text>
+<line class="m" x1="420.0" y1="222" x2="420.0" y2="226" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="420.0" y="239" font-size="10" text-anchor="middle">1e6</text>
+<text class="tm mono" x="52" y="226" font-size="10" text-anchor="end">0%</text>
+<text class="tm mono" x="52" y="157.0" font-size="10" text-anchor="end">50%</text>
+<text class="tm mono" x="52" y="88" font-size="10" text-anchor="end">100%</text>
+<line class="m" x1="60" y1="85.38" x2="420" y2="85.38" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="240.0" y="256" font-size="10.5" text-anchor="middle">steps, log scale</text>
+<text class="t" x="24" y="24" font-size="11" font-weight="600">x / y mod 97, 35% of the equations to train on, the text&#x27;s AdamW: the recorded run, 3 seeds</text>
+<text class="tm" x="24" y="74" font-size="10.5">accuracy</text>
+<path class="s" d="M60.0 222.0 L78.1 220.6 L88.6 220.3 L96.1 220.3 L101.9 220.4 L106.7 218.8 L110.7 220.1 L114.2 219.7 L120.0 219.7 L122.5 219.7 L124.8 219.7 L128.8 218.2 L130.6 218.2 L133.8 218.2 L136.7 218.2 L140.5 218.2 L143.9 218.4 L146.8 218.4 L149.5 218.1 L152.6 217.2 L155.5 217.5 L158.6 216.7 L161.9 216.2 L164.9 215.1 L168.0 213.7 L170.7 212.7 L173.9 211.6 L177.0 209.8 L180.0 206.5 L183.0 204.6 L185.8 198.8 L189.0 195.7 L191.9 187.3 L194.9 178.2 L197.9 161.4 L200.9 144.9 L204.0 126.0 L206.9 112.1 L210.0 94.2 L212.9 86.8 L216.0 84.1 L219.0 84.0 L222.0 84.2 L225.0 84.8 L228.0 84.0 L231.0 84.0 L234.0 84.1 L237.0 84.0 L240.0 84.2 L243.0 96.4 L246.0 84.0 L249.0 84.0 L252.0 89.7 L255.0 84.0 L258.0 84.0 L261.0 84.0 L264.0 84.0 L267.0 84.0 L270.0 84.0 L273.0 84.0 L276.0 94.3 L279.0 84.0 L281.9 84.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="a" d="M60.0 222.0 L78.1 220.7 L88.6 220.7 L96.1 220.7 L101.9 220.7 L106.7 219.5 L110.7 220.7 L114.2 221.1 L120.0 221.1 L122.5 221.1 L124.8 221.1 L128.8 219.7 L130.6 219.7 L133.8 219.7 L136.7 219.7 L140.5 219.7 L143.9 219.9 L146.8 219.4 L149.5 219.7 L152.6 220.0 L155.5 220.0 L158.6 220.2 L161.9 220.2 L164.9 220.3 L168.0 220.4 L170.7 220.5 L173.9 220.5 L177.0 220.6 L180.0 220.6 L183.0 220.5 L185.8 220.6 L189.0 220.5 L191.9 220.5 L194.9 220.4 L197.9 220.3 L200.9 220.3 L204.0 220.3 L206.9 220.1 L210.0 220.2 L212.9 220.0 L216.0 219.8 L219.0 219.9 L222.0 219.8 L225.0 219.4 L228.0 219.6 L231.0 219.4 L234.0 219.1 L237.0 218.9 L240.0 218.0 L243.0 218.0 L246.0 215.1 L249.0 208.8 L252.0 202.0 L255.0 165.1 L258.0 100.4 L261.0 85.0 L264.0 84.1 L267.0 84.0 L270.0 84.0 L273.0 84.0 L276.0 98.6 L279.0 84.0 L281.9 84.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M60.0 222.0 L78.1 220.3 L88.6 220.2 L96.1 220.1 L101.9 220.4 L106.7 220.5 L110.7 220.3 L114.2 220.3 L120.0 220.5 L122.5 220.5 L124.8 220.3 L128.8 220.1 L130.6 220.1 L133.8 218.7 L136.7 218.7 L140.5 218.2 L143.9 218.4 L146.8 218.0 L149.5 218.1 L152.6 217.8 L155.5 217.0 L158.6 216.4 L161.9 216.3 L164.9 215.5 L168.0 213.8 L170.7 212.7 L173.9 210.9 L177.0 208.4 L180.0 205.3 L183.0 201.5 L185.8 196.1 L189.0 189.0 L191.9 179.2 L194.9 168.7 L197.9 154.9 L200.9 135.0 L204.0 116.4 L206.9 102.8 L210.0 91.1 L212.9 84.8 L216.0 84.0 L219.0 84.0 L222.0 84.0 L225.0 84.7 L228.0 84.0 L231.0 84.0 L234.0 84.2 L237.0 84.3 L240.0 84.0 L243.0 84.0 L246.0 84.0 L249.0 84.0 L252.0 84.0 L255.0 84.0 L258.0 84.0 L261.0 98.4 L264.0 84.1 L267.0 84.0 L270.0 84.0 L273.0 84.0 L276.0 84.0 L279.0 84.0 L281.9 84.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="a" d="M60.0 222.0 L78.1 220.7 L88.6 220.7 L96.1 220.7 L101.9 220.7 L106.7 220.6 L110.7 220.7 L114.2 220.7 L120.0 220.6 L122.5 220.6 L124.8 220.7 L128.8 220.8 L130.6 220.8 L133.8 219.4 L136.7 219.4 L140.5 219.6 L143.9 219.6 L146.8 219.7 L149.5 219.7 L152.6 220.0 L155.5 220.1 L158.6 220.1 L161.9 220.3 L164.9 220.3 L168.0 220.3 L170.7 220.4 L173.9 220.5 L177.0 220.5 L180.0 220.6 L183.0 220.6 L185.8 220.5 L189.0 220.4 L191.9 220.2 L194.9 220.1 L197.9 219.9 L200.9 219.9 L204.0 219.7 L206.9 219.4 L210.0 218.7 L212.9 218.7 L216.0 218.0 L219.0 218.1 L222.0 217.4 L225.0 216.8 L228.0 216.1 L231.0 215.8 L234.0 214.1 L237.0 213.8 L240.0 207.0 L243.0 203.3 L246.0 167.9 L249.0 101.6 L252.0 87.6 L255.0 84.0 L258.0 84.0 L261.0 108.4 L264.0 84.4 L267.0 84.0 L270.0 84.0 L273.0 84.0 L276.0 84.0 L279.0 84.0 L281.9 84.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M60.0 220.9 L78.1 220.3 L88.6 220.3 L96.1 220.4 L101.9 220.1 L106.7 219.8 L110.7 220.0 L114.2 220.4 L120.0 220.4 L122.5 220.3 L124.8 220.3 L128.8 219.0 L130.6 220.0 L133.8 220.1 L136.7 218.3 L140.5 218.4 L143.9 218.4 L146.8 218.1 L149.5 218.2 L152.6 217.8 L155.5 217.0 L158.6 216.9 L161.9 216.5 L164.9 216.3 L168.0 215.9 L170.7 215.4 L173.9 213.6 L177.0 212.7 L180.0 210.9 L183.0 207.8 L185.8 205.7 L189.0 200.8 L191.9 197.0 L194.9 188.3 L197.9 175.5 L200.9 155.1 L204.0 138.7 L206.9 123.8 L210.0 106.9 L212.9 97.0 L216.0 87.5 L219.0 85.2 L222.0 84.6 L225.0 84.2 L228.0 84.5 L231.0 84.0 L234.0 86.9 L237.0 84.0 L240.0 93.9 L243.0 84.0 L246.0 84.0 L249.0 84.4 L252.0 89.7 L255.0 86.8 L258.0 84.0 L261.0 84.0 L264.0 84.0 L267.0 84.0 L270.0 84.0 L273.0 84.0 L276.0 84.0 L279.0 84.0 L281.9 84.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="a" d="M60.0 220.9 L78.1 220.7 L88.6 220.7 L96.1 220.7 L101.9 220.8 L106.7 220.9 L110.7 221.1 L114.2 220.7 L120.0 220.7 L122.5 220.7 L124.8 220.7 L128.8 219.8 L130.6 220.6 L133.8 220.7 L136.7 219.6 L140.5 219.6 L143.9 219.6 L146.8 219.7 L149.5 219.8 L152.6 219.9 L155.5 220.2 L158.6 220.3 L161.9 220.5 L164.9 220.5 L168.0 220.5 L170.7 220.6 L173.9 220.7 L177.0 220.6 L180.0 220.6 L183.0 220.7 L185.8 220.7 L189.0 220.6 L191.9 220.6 L194.9 220.6 L197.9 220.2 L200.9 220.1 L204.0 219.4 L206.9 218.7 L210.0 218.6 L212.9 218.6 L216.0 218.3 L219.0 218.0 L222.0 218.3 L225.0 218.0 L228.0 218.3 L231.0 218.1 L234.0 218.4 L237.0 217.8 L240.0 218.1 L243.0 217.6 L246.0 216.6 L249.0 212.9 L252.0 205.3 L255.0 189.7 L258.0 128.5 L261.0 90.9 L264.0 84.0 L267.0 84.0 L270.0 84.3 L273.0 84.0 L276.0 84.0 L279.0 84.0 L281.9 84.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="216.0" cy="85.4" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="261.0" cy="85.4" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="212.9" cy="85.4" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="255.0" cy="85.4" r="3.5" stroke-width="1.5"/>
+<circle class="s f" cx="219.0" cy="85.4" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="264.0" cy="85.4" r="3.5" stroke-width="1.5"/>
+<line class="a" x1="215.99298432442126" y1="62" x2="260.9916049315399" y2="62" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r14-aa)"/>
+<line class="a" x1="215.99298432442126" y1="58" x2="215.99298432442126" y2="66" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="268.9916049315399" y="66" font-size="10.5" font-weight="600">ours: 5.0 to 5.6 times later</text>
+<line class="s" x1="240.0" y1="180.6" x2="420.0" y2="180.6" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="s f" cx="240.0" cy="180.6" r="3" stroke-width="1.5"/>
+<circle class="s fs" cx="420.0" cy="180.6" r="3" stroke-width="1.5"/>
+<text class="t" x="282.0" y="172.6" font-size="10.5" font-weight="600">figure 1: about 1000 times</text>
+<text class="ta" x="282.0" y="196.6" font-size="10.5" font-weight="600">late: did not hold</text>
+<text class="t" x="452" y="74" font-size="12" font-weight="700">what decides it</text>
+<text class="t" x="452" y="96" font-size="10.5">at the paper&#x27;s 50%:</text>
+<text class="tm" x="452" y="112" font-size="10.5">GPT&#x27;s own start: 1.0, 1.3, never</text>
+<text class="ta" x="452" y="128" font-size="10.5">started 10 times larger:</text>
+<text class="ta" x="452" y="144" font-size="10.5" font-weight="600">4.0 to 7.9 times later</text>
+<text class="t" x="452" y="168" font-size="10.5">without weight decay:</text>
+<text class="tm" x="452" y="184" font-size="10.5">never, in 6000 steps</text>
+<text class="t" x="452" y="208" font-size="10.5" font-weight="600">the text gives neither</text>
+<text class="t" x="452" y="224" font-size="10.5" font-weight="600">the start nor the last batch</text>
+<text class="tm" x="24" y="270" font-size="10.5">Dashed: the training equations; solid: the held-out ones; a dot where each first reached 99%. 5000 steps,</text>
+<text class="tm" x="24" y="286" font-size="10.5">after Power et al. (2022), figure 1, whose span comes from its caption.</text>
+</svg>

@@ -1288,37 +1288,85 @@ def res_rigour():
 
 # =================================================================== 14 grokking
 
+def grok_numbers():
+    """14's numbers as 14.03 and 14.04 print them, from the recorded runs (tracks/research/experiments/recorded/grokking
+    and .../ablations): every seed's log of the figure's run, the steps at which training and held-out accuracy first
+    reached 99%, and the times-later of the start ablation (50% of the equations) and of no weight decay (40%)."""
+    rec = os.path.join(ROOT, "tracks", "research", "experiments", "recorded")
+
+    def logs(d):
+        found = sorted(glob.glob(os.path.join(d, "seed*", "log.jsonl")))
+        return [[json.loads(line) for line in open(p) if line.strip()] for p in found]
+
+    def first(rows, key):
+        return next((r["step"] for r in rows if r[key] >= 0.99), None)
+
+    def later(runs):
+        return [None if first(r, "val_acc") is None else first(r, "val_acc") / first(r, "train_acc") for r in runs]
+    runs = logs(os.path.join(rec, "grokking"))
+    cfg = json.load(open(os.path.join(rec, "grokking", "seed0", "config.json")))
+    own, big, none = (later(logs(os.path.join(rec, "ablations", name))) for name in
+                      ("fraction0.5-decay1-start1", "fraction0.5-decay1-start10", "fraction0.4-decay0-start1"))
+    got = {"t99": [first(r, "train_acc") for r in runs], "v99": [first(r, "val_acc") for r in runs],
+           "later": f"{min(later(runs)):.1f} to {max(later(runs)):.1f}", "steps": cfg["steps"],
+           "fraction": cfg["fraction"], "own": ", ".join("never" if x is None else f"{x:.1f}" for x in own),
+           "big": f"{min(big):.1f} to {max(big):.1f}", "none": all(x is None for x in none)}
+    assert {k: v for k, v in got.items()} == {"t99": [398, 354, 446], "v99": [2238, 1778, 2511], "later": "5.0 to 5.6",
+                                              "steps": 5000, "fraction": 0.35, "own": "1.0, 1.3, never",
+                                              "big": "4.0 to 7.9", "none": True}, got  # 14.03, 14.04
+    return got, runs
+
+
 def res_grok():
-    a = Art("r14", "Grokking, the figure to reproduce: train accuracy saturates early, validation jumps much later")
-    px0, px1, py0, py1 = 72, 440, 52, 212
-    X = lambda lg: px0 + (lg - 1) / 5 * (px1 - px0)
-    Y = lambda acc: py1 - acc * (py1 - py0)
+    a = Art("r14", "Grokking, reproduced from the text: memorised near step 400 at chance, generalised 5.0 to 5.6 times "
+                   "later, where the paper's figure 1 has about a thousand; at the paper's 50% the start decides it")
+    got, runs = grok_numbers()
+    px0, px1, py0, py1 = 60, 420, 84, 222
+    X = lambda s: px0 + math.log10(max(s, 1)) / 6 * (px1 - px0)   # noqa: E731
+    Y = lambda acc: py1 - acc * (py1 - py0)                        # noqa: E731
     a.line(px0, py1, px1, py1, "m"); a.line(px0, py1, px0, py0 - 4, "m")
-    for e in range(1, 7):
-        a.line(X(e), py1, X(e), py1 + 4, "m")
-        a.text(X(e), py1 + 18, f"1e{e}", "tm", 10, "middle", mono=True)
+    for e in range(0, 7):
+        a.line(X(10 ** e), py1, X(10 ** e), py1 + 4, "m")
+        a.text(X(10 ** e), py1 + 17, "1" if e == 0 else f"1e{e}", "tm", 10, "middle", mono=True)
     for acc, lab in ((0, "0%"), (0.5, "50%"), (1, "100%")):
         a.text(px0 - 8, Y(acc) + 4, lab, "tm", 10, "end", mono=True)
-    a.line(px0, Y(1), px1, Y(1), "m", dash=True)
-    a.text(px0 + (px1 - px0) / 2, py1 + 36, "optimization steps, log scale", "tm", 10.5, "middle")
-    a.text(24, 30, "accuracy", "tm", 10.5)
-
-    def logistic(c, k, lo):
-        return [(X(lg), Y(lo + (1 - lo) / (1 + math.exp(-k * (lg - c))))) for lg in [1 + i * 0.05 for i in range(101)]]
-    poly(a, logistic(2.5, 9, 0.01), "s")
-    poly(a, logistic(5.35, 10, 0.01), "a")
-    a.text(X(2.5) + 10, Y(0.42), "train", size=11, weight=600)
-    a.text(X(5.35) + 10, Y(0.42), "validation", "ta", 11, weight=600)
-    # the paper: train accuracy near perfect before 1e3 steps, validation near perfect only close to 1e6
-    a.path(f"M{X(3):.1f} 38 H {X(6) - 2:.1f}", "m", arrow=True)
-    a.text((X(3) + X(6)) / 2, 32, "about 1000x more steps", "tm", 10.5, "middle")
-    rx = 470
-    a.text(rx, 64, "reproduce it", size=12, weight=700)
-    for i, t in enumerate(["division mod 97", "train on 50% of the pairs", "the same optimizer and", "weight decay as the paper"]):
-        a.text(rx, 86 + i * 17, t, "tm", 10.5)
-    a.text(rx, 172, "Does the jump appear,", size=11, weight=600)
-    a.text(rx, 188, "and at which step?", size=11, weight=600)
-    a.text(24, 284, "After Power et al. 2022, Figure 1. A schematic: your own run produces the real curve.", "tm", 10.5)
+    a.line(px0, Y(0.99), px1, Y(0.99), "m", dash=True)
+    a.text((px0 + px1) / 2, py1 + 34, "steps, log scale", "tm", 10.5, "middle")
+    a.text(24, 24, f"x / y mod 97, {got['fraction']:.0%} of the equations to train on, the text's AdamW: the recorded "
+                   f"run, 3 seeds", "t", 11, weight=600)
+    a.text(24, 74, "accuracy", "tm", 10.5)
+    for rows in runs:
+        rows = [r for r in rows if r["step"] >= 1]
+        poly(a, [(X(r["step"]), Y(r["train_acc"])) for r in rows], "s", dash=True)
+        poly(a, [(X(r["step"]), Y(r["val_acc"])) for r in rows], "a")
+    for t, v in zip(got["t99"], got["v99"]):
+        dot(a, X(t), Y(0.99), 3, "s f")
+        dot(a, X(v), Y(0.99), 3.5, "a fa")
+    tm, vm = sorted(got["t99"])[1], sorted(got["v99"])[1]
+    y = py0 - 22                                   # ours, over the plot: from the training 99% to the held-out one
+    a.line(X(tm), y, X(vm), y, "a", arrow=True)
+    a.line(X(tm), y - 4, X(tm), y + 4, "a")
+    a.text(X(vm) + 8, y + 4, f"ours: {got['later']} times later", "ta", 10.5, weight=600)
+    # the paper's figure 1, as its caption gives it: training close to perfect at under 1e3, validation close to 1e6
+    y = Y(0.3)
+    a.line(X(1000), y, X(10 ** 6), y, "s", dash=True)
+    dot(a, X(1000), y, 3, "s f")
+    dot(a, X(10 ** 6), y, 3, "s fs")
+    a.text(X(10 ** 3.7), y - 8, "figure 1: about 1000 times", "t", 10.5, weight=600)
+    a.text(X(10 ** 3.7), y + 16, "late: did not hold", "ta", 10.5, weight=600)
+    rx = 452
+    a.text(rx, 74, "what decides it", size=12, weight=700)
+    a.text(rx, 96, "at the paper's 50%:", "t", 10.5)
+    a.text(rx, 112, f"GPT's own start: {got['own']}", "tm", 10.5)
+    a.text(rx, 128, "started 10 times larger:", "ta", 10.5)
+    a.text(rx, 144, f"{got['big']} times later", "ta", 10.5, weight=600)
+    a.text(rx, 168, "without weight decay:", "t", 10.5)
+    a.text(rx, 184, "never, in 6000 steps", "tm", 10.5)
+    a.text(rx, 208, "the text gives neither", "t", 10.5, weight=600)
+    a.text(rx, 224, "the start nor the last batch", "t", 10.5, weight=600)
+    a.text(24, 270, f"Dashed: the training equations; solid: the held-out ones; a dot where each first reached 99%. "
+                    f"{got['steps']} steps,", "tm", 10.5)
+    a.text(24, 286, "after Power et al. (2022), figure 1, whose span comes from its caption.", "tm", 10.5)
     return a
 
 
