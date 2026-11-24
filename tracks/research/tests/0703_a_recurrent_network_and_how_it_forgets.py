@@ -30,7 +30,8 @@ def test(t):
     t.check(sum(late) / len(late) < 0.4, f"after 40 blanks the recall network should be near chance (0.125): {late}")
     start = row(t, r.out, "the recall network, as it starts")
     big = row(t, r.out, "rescaled to radius 3")
-    t.check(start[-1] < start[1] * 1e-10, f"from the network as it starts, the gradient 60 steps back should vanish: {start}")
+    t.check(start[-1] < start[1] * 1e-10,
+            f"from the network as it starts, the gradient 60 steps back should vanish: {start}")
     t.check(big[-1] > big[1] * 10, f"rescaled to radius 3, the gradient should grow going back: {big}")
     w4, w16, w64 = (T.value(r.out, rf"w = +{w}: (\S+)") for w in (4, 16, 64))
     t.check(w4 > w16 + 0.2 and abs(w64 - w16) < 0.01,

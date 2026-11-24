@@ -36,7 +36,8 @@ def test(t):
             f"the unsmoothed pair model should be infinite on the test text:\n{a.out}")
     t.check(T.value(a.out, r"chosen: k = (\S+)") > 0, a.out)
     folded = T.value(a.out, r"training text folded to 27 symbols +\S+ +\S+ +(\S+)")
-    t.check(abs(folded - 3.32) < 0.1, f"the text folded to Shannon's 27 symbols should give an F2 near his 3.32:\n{a.out}")
+    t.check(abs(folded - 3.32) < 0.1,
+            f"the text folded to Shannon's 27 symbols should give an F2 near his 3.32:\n{a.out}")
     b = T.experiment(t, "bigram")
     for name in ("log.jsonl", "summary.json"):
         t.check(read(os.path.join(a.runs, "seed0", name)) == read(os.path.join(b.runs, "seed0", name)),

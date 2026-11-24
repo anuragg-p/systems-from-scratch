@@ -15,13 +15,13 @@ every symbol a vector of m learned numbers, an embedding, and let a
 network read the context's embeddings side by side and score the next
 symbol, trained by cross-entropy. Similar symbols get similar vectors, so
 what is learned about one context carries to contexts never seen. Their
-table 1 (words, the Brown corpus): the network's test perplexity 252 to
-268 against 312 for the best n-gram model and 336 for deleted
-interpolation of trigrams. Part 3 runs it on characters at several
-lengths of context, a few seeds each, against the best count models of
-the same length, and the paper's mix of the two (each half the chance).
-Part 4 looks at which characters the network put near each other, and
-part 5 at what it writes.
+table 1 (words, the Brown corpus): test perplexity 268 for their best
+network alone and 252 mixed with a trigram model, against 312 for the
+best n-gram model and 336 for deleted interpolation of trigrams. Part 3
+runs it on characters at several lengths of context, a few seeds each,
+against the best count models of the same length, and the paper's mix of
+the two (each half the chance). Part 4 looks at which characters the
+network put near each other, and part 5 at what it writes.
 
     python3 -m experiments.nplm
 

@@ -92,8 +92,9 @@ def main():
     dev = lab.device(torch, cfg.device)
     start = lab.clock(torch, dev)
     print(f"Task: {cfg.task} {cfg.symbols} random symbols; trained on lengths {cfg.shortest} to {cfg.longest}, "
-          f"{cfg.steps} steps of {cfg.batch}, a state of {cfg.hidden}, {cfg.seeds} seeds;\nthe fraction of symbols "
-          f"written right, greedily, on {cfg.tested} new inputs of each length (chance {1 / cfg.symbols:.2f})")
+          f"{cfg.steps} steps of {cfg.batch}, a state of {cfg.hidden}, {cfg.seeds} seed{'s' * (cfg.seeds > 1)};\n"
+          f"the fraction of symbols written right, greedily, on {cfg.tested} new inputs of each length "
+          f"(chance {1 / cfg.symbols:.2f})")
     results, nets = {}, {}
     for kind in KINDS:
         for seed in range(cfg.seeds):
@@ -115,6 +116,7 @@ def main():
                                                  "weights": weights[0].tolist()})
             run.finish(symbols_right={str(k): v[0] for k, v in got.items()},
                        wholes_right={str(k): v[1] for k, v in got.items()}, **examples)
+            print(f"   {kind}, seed {seed}: trained, the last batch's cross-entropy {run.rows[-1]['loss']:.3f} (nats)")
     print(f"\n{'length':>6s}  {'no attention':38s}  {'attention':38s}  t")
     for length in cfg.lengths:
         a, b = ([r[0] for r in results[kind, length]] for kind in KINDS)

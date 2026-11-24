@@ -1,18 +1,19 @@
 """A recurrent network, and how it forgets.
 
 07.02's network reads a fixed number of characters; to read more it needs
-more weights, and it got worse with more. A recurrent network reads one
-character at a time into a state, a vector it keeps, with the same
-weights at every step (models/rnn.py), so in principle it can use
-everything it has read. Here, on Tiny Shakespeare:
+more weights, and in 07.02's long run 8 characters did no better than 5.
+A recurrent network reads one character at a time into a state, a vector
+it keeps, with the same weights at every step (models/rnn.py), so in
+principle it can use everything it has read. Here, on Tiny Shakespeare:
 
 1. a recurrent network over embeddings of the characters, trained with
    truncated backpropagation through time: the text read in pieces, the
    state carried from piece to piece but the gradient cut at each piece's
    start; bits per character on the test text, a few seeds, beside the
    best count model of 07.02;
-2. how much it uses what it has read: the bits when it starts from
-   nothing and reads only the last w characters, for growing w;
+2. how much of what it reads it uses: the bits when only the last w of
+   the characters it reads before each one are the real ones, the rest
+   taken from another place in the text, for growing w;
 3. the recall task: a symbol shown first must be given back after T
    steps of blanks; accuracy against T, a few seeds;
 4. why: the size of the gradient that reaches an input k steps back

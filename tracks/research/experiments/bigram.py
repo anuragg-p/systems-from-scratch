@@ -126,7 +126,8 @@ def main():
     for a, b in zip(test[:cfg.show], test[1:cfg.show + 1]):
         p = table[a, b] / first[a]
         ps.append(p)
-        print(f"   {shakespeare.decode([a, b])!r:8s} {int(table[a, b]):6d} {int(first[a]):7d} {p:8.4f} {-math.log2(p):8.3f}")
+        print(f"   {shakespeare.decode([a, b])!r:8s} {int(table[a, b]):6d} {int(first[a]):7d} {p:8.4f} "
+              f"{-math.log2(p):8.3f}")
     print(f"   mean -log2 p over these {cfg.show}: {bits(np.array(ps)):.3f} bits a character; "
           f"2 ** {bits(np.array(ps)):.3f} = {2 ** bits(np.array(ps)):.2f}, the perplexity")
     raw = probabilities(table)[test[:-1], test[1:]]
