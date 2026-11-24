@@ -102,19 +102,27 @@ project.
    08.02 Redo: a record that undoes itself
    08.03 One Ctrl-Z, one thought: steps
    08.04 The saved point, and a bound on memory
-09 An API, and Lua on top of it: Neovim's shape. The editor's operations
-   as a table of typed functions in C; Lua (the real one, its source in
-   the tree unchanged, the one thing in this track we do not write)
-   embedded and given that table; keys and events bound to Lua functions;
-   a script that goes wrong never takes the file with it; and the editor
-   run with no screen at all, from a script.
+09 An API, and Lua on top of it: Neovim's shape, and fully extensible
+   (the owner, 2026-11-24): the test is that the editor's own features
+   could have been written as scripts. The editor's operations as a table
+   of typed functions in C; Lua (the real one, its source in the tree
+   unchanged, the one thing in this track we do not write) embedded and
+   given that table; any key and the editor's events bound to Lua
+   functions; colour and the status bar drawn from a script; a script
+   that goes wrong never takes the file with it; the editor run with no
+   screen at all; and, as the proof, find-like, colouring and vi-key
+   plugins written only in Lua. Not built, and said so: timers and
+   background work, more than one file, marks that move with the text.
    09.01 A second language inside the editor: embedding Lua
    09.02 The API is a table
    09.03 Changing the text from a script: set_lines
-   09.04 A key that runs a Lua function
+   09.04 Any key can run a Lua function
    09.05 Events: autocommands
-   09.06 Scripts that go wrong
-   09.07 The editor without its screen
+   09.06 Drawing from a script: highlights and the status bar
+   09.07 Asking, opening, leaving: input(), open(), quit()
+   09.08 Scripts that go wrong
+   09.09 The editor without its screen
+   09.10 Features as scripts
 
 The lists are the direction; fit them to the code, as the core's were.
 08 and 09 were started on 2026-11-24 on the owner's word, with this
