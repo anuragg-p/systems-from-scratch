@@ -37,16 +37,18 @@ Computed, for the built modules, from the formulas and settings of the track's o
         and that run's results read from tracks/research/experiments/recorded/gpt/: its weight count (checked
         against what it printed), each dropout's mean test bits, the turn-up without dropout; and module 07's
         best, 07.02's recorded network mixed with interpolation at 8 characters
+    14  the recorded long run of 14.03 (tracks/research/experiments/recorded/grokking/): every seed's accuracy
+        curves and its two 99% steps; 14.04's recorded ablations: the start's and no weight decay's results;
+        the paper's span is figure 1's caption (under 1e3, close to 1e6)
 Where a cover prints a number the lessons print, the script asserts it is the same number, so a
 change to the track that moves it stops this script instead of leaving the cover wrong.
 Also computed: the double-descent curve in 05 (random ReLU features, least squares), the
 convolution in 06, the BPE merges in 09, the LoRA counts in 12, the DDPM noising in 17 and the
-PPO objective in 18. Schematic (the true shape, no measured numbers): 11's loss curves, 13's panels, 14's grokking curves (after Power et al. 2022, Figure 1), 15's
+PPO objective in 18. Schematic (the true shape, no measured numbers): 11's loss curves, 13's panels, 15's
 paper, 20's over-optimisation and 21's four phenomena.
 
-Modules 14 and 15 keep the covers first drawn for the older outline in outline_art.py (its
-modules 04 and 07): 14 with its step gap corrected to the paper's (train near 100% before 1e3
-steps, validation only near 1e6), 15 with its repository shown as the track lays one out (a run
+Module 15 keeps the cover first drawn for the older outline in outline_art.py (its module 07),
+with its repository shown as the track lays one out (a run
 is `python3 -m experiments.<name>` with key=value settings, and leaves config.json, log.jsonl
 and summary.json). The rest are new here.
 
@@ -1362,8 +1364,8 @@ def res_grok():
     a.text(rx, 144, f"{got['big']} times later", "ta", 10.5, weight=600)
     a.text(rx, 168, "without weight decay:", "t", 10.5)
     a.text(rx, 184, "never, in 6000 steps", "tm", 10.5)
-    a.text(rx, 208, "the text gives neither", "t", 10.5, weight=600)
-    a.text(rx, 224, "the start nor the last batch", "t", 10.5, weight=600)
+    a.text(rx, 208, "the paper's text does not", "t", 10.5, weight=600)
+    a.text(rx, 224, "say how the weights start", "t", 10.5, weight=600)
     a.text(24, 270, f"Dashed: the training equations; solid: the held-out ones; a dot where each first reached 99%. "
                     f"{got['steps']} steps,", "tm", 10.5)
     a.text(24, 286, "after Power et al. (2022), figure 1, whose span comes from its caption.", "tm", 10.5)
