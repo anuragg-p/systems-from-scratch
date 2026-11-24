@@ -384,7 +384,7 @@ def block0802():
         f.circle(add, ys, 10, "a af")
         f.text(add, ys + 4.5, "+", "ta", 14, "middle", 700, mono=True)
         f.text((tap + add) / 2, 40, note, "ta", 11, "middle", 600)
-        f.text(add + 6, ys - 22, "dropout, in training", "tm", 9, "end")
+        f.text(add - 6, ys - 22, "dropout, in training", "tm", 9, "end")
     branch(52, 316, 64, 160, 146, "attention", f"{H} heads of {W // H}, causal", d["attention"],
            "between positions")
     branch(342, 598, 354, 450, 138, "MLP", f"{W} -> {inner} -> {W}, GELU", d["mlp"], "each position alone")

@@ -17,7 +17,7 @@
 <circle class="a af" cx="316" cy="196" r="10" stroke-width="1.5"/>
 <text class="ta mono" x="316" y="200.5" font-size="14" font-weight="700" text-anchor="middle">+</text>
 <text class="ta" x="184" y="40" font-size="11" font-weight="600" text-anchor="middle">between positions</text>
-<text class="tm" x="322" y="174" font-size="9" text-anchor="end">dropout, in training</text>
+<text class="tm" x="310" y="174" font-size="9" text-anchor="end">dropout, in training</text>
 <path class="s" d="M342 196 V 96 H 354" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#block0802-ah)"/>
 <rect class="s f" x="356" y="80" width="80" height="32" rx="6" stroke-width="1.5"/>
 <text class="t" x="396" y="99.96" font-size="11" text-anchor="middle">layer norm</text>
@@ -31,6 +31,6 @@
 <circle class="a af" cx="598" cy="196" r="10" stroke-width="1.5"/>
 <text class="ta mono" x="598" y="200.5" font-size="14" font-weight="700" text-anchor="middle">+</text>
 <text class="ta" x="470" y="40" font-size="11" font-weight="600" text-anchor="middle">each position alone</text>
-<text class="tm" x="604" y="174" font-size="9" text-anchor="end">dropout, in training</text>
+<text class="tm" x="592" y="174" font-size="9" text-anchor="end">dropout, in training</text>
 <text class="tm" x="22" y="252" font-size="10.5">x = x + attention(norm1(x)); x = x + mlp(norm2(x)): 49,984 weights in all; the stream itself is only ever added to.</text>
 </svg>
