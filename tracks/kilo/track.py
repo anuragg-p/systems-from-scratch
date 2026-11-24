@@ -96,20 +96,39 @@ UPSTREAM = {
 # Files that may hold "@build NN.LL" regions (see harness/workspace.py), and what replaces
 # a region's code when a learner's workspace cuts it: kiloTodo() (@internal in kilo.c)
 # puts the terminal back, prints "kilo: NN.LL: <title> not written yet" and exits 3.
-SOURCES = ["kilo.c", "lsp.c", "json.c"]
+SOURCES = ["kilo.c", "lsp.c", "json.c", "script.c"]
 STUBS = {".c": 'kiloTodo("{id}", "{title}");'}
-# Not for learners: notes for the lesson writers, and the ./kilo the Makefile builds.
-HIDDEN = ["NOTES.md", "kilo"]
+# Not for learners: notes for the lesson writers, and the ./kilo the Makefile builds; and
+# Lua (module 09), the one thing in the track we do not write: its source is in lua/,
+# unchanged, and the reader fetches it (09.01 says how). supply_lua() below puts it into a
+# project the harness writes out, before it is built.
+HIDDEN = ["NOTES.md", "kilo", "lua/*"]
 # When each file comes into the project the site shows (see harness/timeline.py): kilo.c
-# comes with its first region (01.01), lsp.c (07.01) and json.c (07.02) with theirs; the
-# files without regions are named here. What later lessons add to a file outside their
-# regions is marked "@from NN.LL" in the file itself.
+# comes with its first region (01.01), lsp.c (07.01), json.c (07.02) and script.c (09.01)
+# with theirs; the files without regions are named here. What later lessons add to a file
+# outside their regions is marked "@from NN.LL" in the file itself.
 FILES_FROM = {
     "LICENSE": "00.01",          # kilo's licence goes with every copy of the project
     "Makefile": "01.01",
     "lsp.h": "07.01",            # module 07, the language server client
     "json.h": "07.02",
+    "script.h": "09.01",         # module 09, the API and Lua
+    "api.h": "09.02",
 }
+
+LUA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lua")
+
+
+def supply_lua(root):
+    """Module 09 links Lua, built from lua/ beside kilo.c; the site hides lua/ (HIDDEN), so
+    a project written out at a lesson of 09 has none. Copy the track's (its README and src/,
+    without what a build left there) into root, when root's project has script.c and no
+    lua/ yet. Nothing for any other project."""
+    import shutil
+    if not os.path.exists(os.path.join(root, "script.c")) or os.path.exists(os.path.join(root, "lua")):
+        return
+    shutil.copytree(LUA, os.path.join(root, "lua"),
+                    ignore=shutil.ignore_patterns("*.o", "*.a", "lua", "luac", ".*"))
 
 
 def build(t):
@@ -124,6 +143,7 @@ def build(t):
 # build/at/kilo/NN.LL/), or the finished track.
 
 def prepare(root):
+    supply_lua(root)
     return ["make", "-s"]
 
 
@@ -389,6 +409,20 @@ def lines_of(n, fmt="line {}"):
     return "".join(fmt.format(i) + "\n" for i in range(1, n + 1))
 
 
+def lua_quote(s):
+    """s as a Lua string literal, any byte (a str of Latin-1 characters) written so: "a\\010b"."""
+    out = []
+    for ch in s:
+        o = ord(ch)
+        if ch in '"\\':
+            out.append("\\" + ch)
+        elif 32 <= o < 127:
+            out.append(ch)
+        else:
+            out.append(f"\\{o:03d}")
+    return '"' + "".join(out) + '"'
+
+
 # ---------------------------------------------------------------- the editor on a terminal
 
 # Make the terminal the program's controlling terminal (as a login does), then run it.
@@ -611,25 +645,29 @@ def paint(text, codes):
     return "".join(out)
 
 
-def asan_build(t):
-    """The tree under test (kilo.c, and lsp.c and json.c when they are there) built with
-    AddressSanitizer, into the test's scratch directory (once per test): a memory error then
-    stops kilo with a report and status 1, where the plain build would go on, often showing
-    nothing. None where the compiler cannot build that (gcc on musl, for one)."""
-    if not hasattr(t, "_kilo_asan"):
-        exe = os.path.join(t.tmp, "kilo-asan")
-        files = [f for f in ("kilo.c", "lsp.c", "json.c") if os.path.exists(os.path.join(t.root, f))]
+def asan_build(t, sanitize="address"):
+    """The tree under test (kilo.c, and lsp.c, json.c and script.c when they are there, with
+    Lua's library from the build) built with AddressSanitizer, into the test's scratch
+    directory (once per test): a memory error then stops kilo with a report and status 1,
+    where the plain build would go on, often showing nothing. None where the compiler cannot
+    build that (gcc on musl, for one). sanitize: what -fsanitize= gets ("address,undefined"
+    for module 09's fuzz), a build of its own."""
+    attr = "_kilo_asan" if sanitize == "address" else "_kilo_san_" + sanitize.replace(",", "_")
+    if not hasattr(t, attr):
+        exe = os.path.join(t.tmp, "kilo-" + sanitize.replace(",", "-"))
+        files = [f for f in ("kilo.c", "lsp.c", "json.c", "script.c") if os.path.exists(os.path.join(t.root, f))]
+        lua = ["-Ilua/src", "lua/src/liblua.a", "-lm"] if "script.c" in files else []
         try:
-            r = subprocess.run([os.environ.get("CC", "cc"), "-std=c99", "-g", "-fsanitize=address",
-                                "-fno-omit-frame-pointer", "-o", exe] + files,
+            r = subprocess.run([os.environ.get("CC", "cc"), "-std=c99", "-g", "-fsanitize=" + sanitize,
+                                "-fno-omit-frame-pointer", "-o", exe] + files + lua,
                                cwd=t.root, capture_output=True, timeout=300)
-            t._kilo_asan = exe if r.returncode == 0 else None
+            setattr(t, attr, exe if r.returncode == 0 else None)
         except (OSError, subprocess.TimeoutExpired):
-            t._kilo_asan = None
-    return t._kilo_asan
+            setattr(t, attr, None)
+    return getattr(t, attr)
 
 
-def edit(t, text=None, name="f.txt", rows=24, cols=80, asan=False, lsp=None, env=None, **kw):
+def edit(t, text=None, name="f.txt", rows=24, cols=80, asan=False, lsp=None, env=None, init=None, **kw):
     """./kilo name in the test's scratch directory, with text written there first (name may
     be in a folder, which is made then). asan=True: the AddressSanitizer build (asan_build)
     where there is one, else the plain one; ed.asan says which ran.
@@ -638,7 +676,12 @@ def edit(t, text=None, name="f.txt", rows=24, cols=80, asan=False, lsp=None, env
     of the core and of module 06 runs the finished editor as it ran before module 07 existed.
     A string: the scripted server (lsp_server), the string its scenario ("" for none); ed.lsp_log
     is its log. "table": KILO_LSP left out, so kilo chooses by the file's name (clangd). "env":
-    KILO_LSP as env has it."""
+    KILO_LSP as env has it.
+
+    init: the Lua init file (module 09). None: none (KILO_INIT set and empty), so no test runs
+    a developer's own init.lua. A string: Lua, written to init.lua in the scratch directory
+    (in its folder initN/ for the Nth editor of the test after the first) and named by
+    KILO_INIT. "env": KILO_INIT and the rest as env has them."""
     path = os.path.join(t.tmp, name)
     if text is not None:
         os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -649,6 +692,16 @@ def edit(t, text=None, name="f.txt", rows=24, cols=80, asan=False, lsp=None, env
     if exe:
         # Leaks are no error here: kilo frees nothing on the way out, as the original does.
         env.setdefault("ASAN_OPTIONS", "detect_leaks=0")
+    if init is None:
+        env["KILO_INIT"] = ""
+    elif init != "env":
+        t._kilo_inits = getattr(t, "_kilo_inits", 0) + 1
+        idir = t.tmp if t._kilo_inits == 1 else os.path.join(t.tmp, f"init{t._kilo_inits}")
+        os.makedirs(idir, exist_ok=True)
+        ipath = os.path.join(idir, "init.lua")
+        with open(ipath, "w", encoding="latin-1", newline="") as f:
+            f.write(init)
+        env["KILO_INIT"] = ipath
     log = None
     if lsp is None:
         env["KILO_LSP"] = ""
@@ -662,6 +715,27 @@ def edit(t, text=None, name="f.txt", rows=24, cols=80, asan=False, lsp=None, env
     ed.asan = bool(exe)
     ed.lsp_log = log
     return ed
+
+
+def run_script(t, lua, text=None, name="f.txt", script="script.lua", exe=None, env=None, timeout=60):
+    """kilo -l (module 09): write lua to script in the scratch directory, and text to name
+    (None: no file is named on the command line; "": the name is given, the file is not
+    written), run `kilo -l script [name]` there with no terminal, and return what
+    subprocess.run() gives (returncode, stdout, stderr as text, latin-1)."""
+    with open(os.path.join(t.tmp, script), "w", encoding="latin-1", newline="") as f:
+        f.write(lua)
+    args = [script]
+    if text is not None:
+        if text:
+            with open(os.path.join(t.tmp, name), "w", encoding="latin-1", newline="") as f:
+                f.write(text)
+        args.append(name)
+    env = dict(env or os.environ)
+    env.setdefault("KILO_INIT", "")
+    env.setdefault("ASAN_OPTIONS", "detect_leaks=0")
+    return subprocess.run([exe or os.path.join(t.root, "kilo"), "-l"] + args, cwd=t.tmp,
+                          stdin=subprocess.DEVNULL, capture_output=True, timeout=timeout,
+                          env=env, encoding="latin-1")
 
 
 # ---------------------------------------------------------------- a scripted language server

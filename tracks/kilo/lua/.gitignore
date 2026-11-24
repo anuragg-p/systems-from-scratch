@@ -1,0 +1,5 @@
+# What Lua's own Makefile builds here (kilo's Makefile asks only for liblua.a).
+*.o
+*.a
+/src/lua
+/src/luac

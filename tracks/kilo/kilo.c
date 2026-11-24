@@ -71,6 +71,8 @@
 #include <fcntl.h>      // @from 04.04
 #include <signal.h>     // @from 02.01
 #include "lsp.h"        // @from 07.01
+#include "api.h"        // @from 09.02
+#include "script.h"     // @from 09.01
 
 // @from 06.01
 /* What each character of a row is, for its colour: its highlight class.
@@ -151,6 +153,7 @@ struct editorConfig {
     // int dirty;          // changes since the file was opened; 0: none
     // @end
     // @end
+    long long changedtick;  // changes to the text so far: it only goes up @from 09.05
     char *filename;     // the file being edited @from 03.01
     char statusmsg[80];         // the message under the status bar @from 03.04
     time_t statusmsg_time;      // when it was set: it shows for 5 seconds @from 03.04
@@ -167,6 +170,7 @@ enum KEY_ACTION{
         CTRL_B = 2,         /* Ctrl-b */ // @from 07.07
         CTRL_C = 3,         /* Ctrl-c */
         CTRL_D = 4,         /* Ctrl-d */
+        CTRL_E = 5,         /* Ctrl-e */ // @from 09.01
         CTRL_F = 6,         /* Ctrl-f */
         CTRL_G = 7,         /* Ctrl-g */ // @from 07.07
         CTRL_H = 8,         /* Ctrl-h */
@@ -195,6 +199,21 @@ enum KEY_ACTION{
 };
 
 void editorSetStatusMessage(const char *fmt, ...);  // @from 03.04
+// @from 09.01
+/* In "The API", near the end of the file: what the editor's own code calls
+ * of it, here so that it can. */
+char *editorPrompt(const char *prompt);
+// @from 09.04
+int editorFed = -1;     /* a key a script feeds the editor (feed_key), or -1 */
+int editorScriptKey(int c);
+// @end
+void editorEvent(const char *event);                // @from 09.05
+// @from 09.06
+struct abuf;
+void editorDrawHighlights(struct abuf *ab, int filerow);
+int editorStatusLine(char *status, int size, int len);
+// @end
+// @end
 
 // @from 06.01
 /* =========================== Syntax highlights DB ========================= */
@@ -851,6 +870,7 @@ void editorInsertRow(int at, char *s, size_t len) {
     // E.numrows++;
     // @end
     E.dirty++;                      // @from 04.01
+    E.changedtick++;                // @from 09.05
     // @end
 }
 
@@ -883,6 +903,7 @@ void editorDelRow(int at) {
     // @end
     E.numrows--;
     E.dirty++;
+    E.changedtick++;                // @from 09.05
     // @from 06.03
     /* Not in the original kilo: the row now at at has another row above
      * it, which may end inside a comment where the deleted one did not. */
@@ -946,6 +967,7 @@ void editorRowInsertChar(erow *row, int at, int c) {
     row->chars[at] = c;
     editorUpdateRow(row);
     E.dirty++;
+    E.changedtick++;                // @from 09.05
     // @end
 }
 
@@ -960,6 +982,7 @@ void editorRowAppendString(erow *row, char *s, size_t len) {
     row->chars[row->size] = '\0';
     editorUpdateRow(row);
     E.dirty++;
+    E.changedtick++;                // @from 09.05
     // @end
 }
 
@@ -973,6 +996,7 @@ void editorRowDelChar(erow *row, int at) {
     editorUpdateRow(row);
     row->size--;
     E.dirty++;
+    E.changedtick++;                // @from 09.05
     // @end
 }
 
@@ -1035,6 +1059,7 @@ void editorInsertNewline(void) {
         row->chars[filecol] = '\0';
         row->size = filecol;
         editorUpdateRow(row);
+        E.changedtick++;            // @from 09.05
     }
 fixcursor:
     if (E.cy == E.screenrows-1) {
@@ -1123,6 +1148,7 @@ int editorOpen(char *filename) {
             perror("Opening file");
             exit(1);
         }
+        editorEvent("BufReadPost");     /* a new file: in the editor too */ // @from 09.05
         return 1;
     }
 
@@ -1140,6 +1166,7 @@ int editorOpen(char *filename) {
     free(line);
     fclose(fp);
     E.dirty = 0;                    // @from 04.01
+    editorEvent("BufReadPost");     // @from 09.05
     return 0;
     // @end
 }
@@ -1154,6 +1181,7 @@ int editorSave(void) {
     // "N bytes written on disk"; on any error say "Can't save! I/O error:"
     // and the reason. Free the text either way.
     int len;
+    editorEvent("BufWritePre");     // @from 09.05
     char *buf = editorRowsToString(&len);
     int fd = open(E.filename,O_RDWR|O_CREAT,0644);
     if (fd == -1) goto writeerr;
@@ -1167,6 +1195,7 @@ int editorSave(void) {
     free(buf);
     E.dirty = 0;
     editorSetStatusMessage("%d bytes written on disk", len);
+    editorEvent("BufWritePost");    // @from 09.05
     return 0;
 
 writeerr:
@@ -1354,6 +1383,7 @@ void editorRefreshScreen(void) {
         lspDrawRow(&ab,filerow,r->chars,r->size,r->render,r->rsize,
                    E.coloff,E.screencols);
         // @end
+        editorDrawHighlights(&ab,filerow);  // @from 09.06
         abAppend(&ab,"\r\n",2);
         // @end
     }
@@ -1375,6 +1405,7 @@ void editorRefreshScreen(void) {
     // int len = snprintf(status, sizeof(status), "%.20s - %d lines",
     //     E.filename, E.numrows);
     // @end
+    len = editorStatusLine(status,sizeof(status),len);  // @from 09.06
     int rlen = snprintf(rstatus, sizeof(rstatus),
         "%d/%d",E.rowoff+E.cy+1,E.numrows);
     if (len > E.screencols) len = E.screencols;
@@ -1709,7 +1740,11 @@ void editorProcessKeypress(int fd) {
 
     // @end
     // @from 01.02
-    int c = editorReadKey(fd);
+    // @from 09.04
+    int c = editorFed != -1 ? editorFed : editorReadKey(fd);
+    // @else
+    // int c = editorReadKey(fd);
+    // @end
     // @else
     // char ch;
     // if (read(fd,&ch,1) != 1) return; /* nothing typed in 0.1 s */
@@ -1721,6 +1756,7 @@ void editorProcessKeypress(int fd) {
     // if (c >= 32 && c < 127) printf("%d ('%c')\r\n",c,c);
     // else printf("%d\r\n",c);
     // @end
+    if (editorFed == -1 && editorScriptKey(c)) return;  /* a script took it */ // @from 09.04
     switch(c) {
     case ENTER:         /* Enter */ // @from 04.01
         editorInsertNewline();      // @from 04.02
@@ -1753,6 +1789,14 @@ void editorProcessKeypress(int fd) {
     case CTRL_B:        /* Ctrl-b: and back */
         lspBack();
         break;
+    // @end
+    // @from 09.01
+    case CTRL_E: {      /* Ctrl-e: a line of Lua, run */
+        char *line = editorPrompt("lua: ");
+        if (line) scriptEval(line);
+        free(line);
+        break;
+    }
     // @end
     case BACKSPACE:     /* Backspace */ // @from 04.01
     case CTRL_H:        /* Ctrl-h */ // @from 04.01
@@ -1977,9 +2021,1050 @@ int editorJump(const char *path, int row, int col) {
 }
 
 // @end
+// @from 09.01
+/* ================================= The API ================================ */
+
+// @from 09.02
+/* What a script can do to the editor: the functions in the table API, at
+ * the end of this section, which script.c hands to Lua as kilo.api. They
+ * work on E, which only this file sees, and take and return only the API's
+ * own types (api.h). No Lua header is included in this file: the API does
+ * not know that it is Lua that calls it. */
+// @else
+// /* What a script can do to the editor. So far: say something in the message
+//  * line. And Ctrl-E asks for a line of Lua to run. No Lua header is included
+//  * in this file: script.c is Lua's side. */
+// @end
+
+static int editorScreen = 1;        /* 0 under kilo -l: no screen and no keys */ // @from 09.09
+// @from 09.05
+static const char *editorRunning;   /* the event whose functions run now, or NULL */
+static int editorFire(const char *event, const char *arg, int stop);
+// @end
+static int editorQuit;             /* quit() was called: leave once back from the script */ // @from 09.07
+
+/* Copy len bytes at s into buf (size bytes, with its '\0'), cut to fit, so
+ * that the copy can go to the terminal: a tab becomes a space, any other
+ * control byte a '?'. A script's text may hold anything, and a byte such as
+ * ESC would reach the terminal as a command. */
+static void editorClean(char *buf, size_t size, const char *s, size_t len) {
+    size_t j;
+
+    if (len > size-1) len = size-1;
+    for (j = 0; j < len; j++) {
+        unsigned char c = s[j];
+        buf[j] = c == '\t' ? ' ' : (c < 32 || c == 127) ? '?' : (char)c;
+    }
+    buf[len] = '\0';
+}
+
+/* Say len bytes at s from a script, an error or not (in the message line
+ * the two look the same): in the message line, cleaned and cut to it. */
+void editorMessage(const char *s, size_t len, int error) {
+    // @build 09.09 with no screen
+    // Under kilo -l: the bytes as they are and a newline, on standard error
+    // for an error, else on standard output; and that is all.
+    if (!editorScreen) {
+        FILE *out = error ? stderr : stdout;
+        fwrite(s,1,len,out);
+        fputc('\n',out);
+        return;
+    }
+    // @end
+    // @build 09.01 say it in the message line
+    // Clean a copy as big as E.statusmsg (editorClean()) and make it the
+    // message.
+    char msg[sizeof(E.statusmsg)];
+
+    (void)error;
+    editorClean(msg,sizeof(msg),s,len);
+    editorSetStatusMessage("%s",msg);
+    // @end
+}
+
+/* Ask for a line in the message line: prompt, then what is typed, at most
+ * SCRIPT_PROMPT_MAX bytes. Enter gives the line, in a new allocation the
+ * caller frees; Escape gives NULL. Backspace deletes, and a key that is not
+ * a printable character is not taken. Like editorFind(), it has its own
+ * loop of drawing the screen and reading a key. */
+char *editorPrompt(const char *prompt) {
+    // @build 09.01 the prompt
+    // Loop: the message is prompt and the line so far; draw the screen; read
+    // a key from standard input. Backspace, Delete or Ctrl-H: drop the last
+    // byte. Escape: clear the message, return NULL. Enter: clear the
+    // message, return a copy of the line. A printable character: add it, if
+    // there is room.
+    char line[SCRIPT_PROMPT_MAX+1] = {0};
+    int len = 0;
+
+    while(1) {
+        editorSetStatusMessage("%s%s",prompt,line);
+        editorRefreshScreen();
+        int c = editorReadKey(STDIN_FILENO);
+        if (c == DEL_KEY || c == CTRL_H || c == BACKSPACE) {
+            if (len != 0) line[--len] = '\0';
+        } else if (c == ESC) {
+            editorSetStatusMessage("");
+            return NULL;
+        } else if (c == ENTER) {
+            char *copy = malloc(len+1);
+            editorSetStatusMessage("");
+            if (copy) memcpy(copy,line,len+1);
+            return copy;
+        } else if (isprint(c) && len < SCRIPT_PROMPT_MAX) {
+            line[len++] = c;
+            line[len] = '\0';
+        }
+    }
+    // @end
+}
+
+// @from 09.02
+/* The name of a type, in --api-info and in errors. */
+const char *apiTypeName(ApiType type) {
+    switch(type) {
+    case API_NIL: return "nil";
+    case API_BOOLEAN: return "boolean";
+    case API_INTEGER: return "integer";
+    case API_STRING: return "string";
+    case API_LINES: return "lines";
+    case API_POSITION: return "position";
+    case API_FUNCTION: return "function";       // @from 09.04
+    }
+    return "?";
+}
+
+/* A value of type t, its members zero. */
+static ApiValue apiValue(ApiType t) {
+    ApiValue v;
+    memset(&v,0,sizeof(v));
+    v.type = t;
+    return v;
+}
+
+static ApiValue apiInteger(long long n) {
+    ApiValue v = apiValue(API_INTEGER);
+    v.u.integer = n;
+    return v;
+}
+
+static ApiValue apiPosition(long long row, long long col) {
+    ApiValue v = apiValue(API_POSITION);
+    v.u.position.row = row;
+    v.u.position.col = col;
+    return v;
+}
+
+/* How a function fails: fill err, printf style, and return nil. */
+static ApiValue apiFail(ApiError *err, const char *fmt, ...) {
+    va_list ap;
+
+    va_start(ap,fmt);
+    vsnprintf(err->msg,sizeof(err->msg),fmt,ap);
+    va_end(ap);
+    err->set = 1;
+    return apiValue(API_NIL);
+}
+
+/* A string to return: a copy of len bytes at s. No memory: fail. */
+static ApiValue apiString(const char *s, size_t len, ApiError *err) {
+    ApiValue v = apiValue(API_STRING);
+
+    if ((v.u.string.s = malloc(len+1)) == NULL) return apiFail(err,"not enough memory");
+    memcpy(v.u.string.s,s,len);
+    v.u.string.s[len] = '\0';
+    v.u.string.len = len;
+    return v;
+}
+
+/* Free what a function returned, and make it nil. */
+void apiFree(ApiValue *v) {
+    int j;
+
+    if (v->type == API_STRING) free(v->u.string.s);
+    if (v->type == API_LINES) {
+        for (j = 0; j < v->u.lines.count; j++) free(v->u.lines.line[j].s);
+        free(v->u.lines.line);
+    }
+    v->type = API_NIL;
+}
+
+/* Is [start, end) a range of rows of the file? If not, fail. Out of range
+ * is an error, never cut to fit. */
+static int apiRange(long long start, long long end, ApiError *err) {
+    if (start >= 0 && start <= end && end <= E.numrows) return 1;
+    apiFail(err,"[%lld, %lld) is not a range of the file's %d rows",start,end,E.numrows);
+    return 0;
+}
+
+/* line_count() -> integer */
+static ApiValue apiLineCount(ApiValue *args, int nargs, ApiError *err) {
+    (void)args; (void)nargs; (void)err;
+    return apiInteger(E.numrows);
+}
+
+/* get_lines(start, end) -> lines: a copy of the rows [start, end). */
+static ApiValue apiGetLines(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.02 get_lines
+    // Check the range (apiRange()). Allocate an ApiString for each row, and
+    // a copy of each row's chars with its '\0'; with no memory, free what
+    // was made and fail.
+    long long start = args[0].u.integer, end = args[1].u.integer, j;
+    ApiValue v = apiValue(API_LINES);
+
+    (void)nargs;
+    if (!apiRange(start,end,err)) return v;
+    if ((v.u.lines.line = malloc(sizeof(ApiString)*(end-start+1))) == NULL)
+        return apiFail(err,"not enough memory");
+    for (j = start; j < end; j++) {
+        erow *row = &E.row[j];
+        ApiString *line = &v.u.lines.line[v.u.lines.count];
+        if ((line->s = malloc(row->size+1)) == NULL) {
+            apiFree(&v);
+            return apiFail(err,"not enough memory");
+        }
+        memcpy(line->s,row->chars,row->size+1);
+        line->len = row->size;
+        v.u.lines.count++;
+    }
+    return v;
+    // @end
+}
+
+/* get_cursor() -> position: the cursor's row, and its byte in that row. */
+static ApiValue apiGetCursor(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.02 get_cursor
+    // The screen's row and column of the cursor, plus the view's offsets.
+    (void)args; (void)nargs; (void)err;
+    return apiPosition(E.rowoff+E.cy,E.coloff+E.cx);
+    // @end
+}
+
+/* get_name() -> string: the file's name ("" if there is none). */
+static ApiValue apiGetName(ApiValue *args, int nargs, ApiError *err) {
+    const char *name = E.filename ? E.filename : "";
+    (void)args; (void)nargs;
+    return apiString(name,strlen(name),err);
+}
+
+/* is_modified() -> boolean */
+static ApiValue apiIsModified(ApiValue *args, int nargs, ApiError *err) {
+    ApiValue v = apiValue(API_BOOLEAN);
+    (void)args; (void)nargs; (void)err;
+    v.u.boolean = E.dirty != 0;
+    return v;
+}
+
+/* message(text): in the message line. */
+static ApiValue apiMessage(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.02 message
+    // editorMessage() of the text: the way print() goes too.
+    (void)nargs; (void)err;
+    editorMessage(args[0].u.string.s,args[0].u.string.len,0);
+    return apiValue(API_NIL);
+    // @end
+}
+
+// @end
+// @from 09.03
+/* Put the cursor on row, col of the file, and scroll the view as little as
+ * shows it. */
+static void editorShowCursor(int row, int col) {
+    if (row < E.rowoff) E.rowoff = row;
+    if (E.screenrows > 0 && row >= E.rowoff+E.screenrows) E.rowoff = row-E.screenrows+1;
+    if (col < E.coloff) E.coloff = col;
+    if (E.screencols > 0 && col >= E.coloff+E.screencols) E.coloff = col-E.screencols+1;
+    E.cy = row-E.rowoff;
+    E.cx = col-E.coloff;
+}
+
+/* set_lines(start, end, lines): replace the rows [start, end) by the lines,
+ * as many as there are. No lines: the rows are deleted. start == end: the
+ * lines go in before row start. It is the one way a script changes the
+ * text, and it changes it all or not at all. */
+static ApiValue apiSetLines(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.03 set_lines: check everything first
+    // Check the range (apiRange()), and that no line holds a '\n': "a line
+    // cannot hold a newline (line N)", N counted from 1 as Lua counts the
+    // list. Fail before anything has changed.
+    long long start = args[0].u.integer, end = args[1].u.integer;
+    ApiString *line = args[2].u.lines.line;
+    int n = args[2].u.lines.count, j, row, col, size;
+
+    (void)nargs;
+    if (!apiRange(start,end,err)) return apiValue(API_NIL);
+    for (j = 0; j < n; j++)
+        if (memchr(line[j].s,'\n',line[j].len))
+            return apiFail(err,"a line cannot hold a newline (line %d)",j+1);
+    // @end
+    // @build 09.03 set_lines: the change
+    // Note where the cursor is. Delete rows end-1 down to start with
+    // editorDelRow(), then insert line j at start+j with editorInsertRow():
+    // the core's own functions for rows, so whatever watches those sees
+    // this change as it sees a key's.
+    row = E.rowoff+E.cy;
+    col = E.coloff+E.cx;
+    for (j = end-1; j >= start; j--) editorDelRow(j);
+    for (j = 0; j < n; j++) editorInsertRow(start+j,line[j].s,line[j].len);
+    // @end
+    // @build 09.03 set_lines: the cursor afterwards
+    // On a row below the range: the same line, so its row moves by the
+    // change in the count. Inside the range: the same row, or the range's
+    // new last row if that is higher; with no new rows, the row that took
+    // the range's place, or the file's last row. Its column cut to the row.
+    // Then show it (editorShowCursor()).
+    if (row >= end) {
+        row += n-(end-start);
+    } else if (row >= start) {
+        if (n > 0 && row > start+n-1) row = start+n-1;
+        if (n == 0) row = start < E.numrows || E.numrows == 0 ? start : E.numrows-1;
+        size = row < E.numrows ? E.row[row].size : 0;
+        if (col > size) col = size;
+    }
+    editorShowCursor(row,col);
+    return apiValue(API_NIL);
+    // @end
+}
+
+/* set_cursor(pos): move the cursor to {row, col}. The row past the last,
+ * where kilo puts the cursor below the text, is a place too (column 0). */
+static ApiValue apiSetCursor(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.03 set_cursor
+    // A row from 0 to E.numrows, and a column from 0 to the row's size (0
+    // past the last row); otherwise fail. Show it (editorShowCursor()).
+    long long row = args[0].u.position.row, col = args[0].u.position.col;
+    int size;
+
+    (void)nargs;
+    if (row < 0 || row > E.numrows)
+        return apiFail(err,"row %lld is outside the file (it has %d rows)",row,E.numrows);
+    size = row < E.numrows ? E.row[row].size : 0;
+    if (col < 0 || col > size)
+        return apiFail(err,"column %lld is outside row %lld (it has %d bytes)",col,row,size);
+    editorShowCursor(row,col);
+    return apiValue(API_NIL);
+    // @end
+}
+
+/* save() -> boolean: save the file as Ctrl-S does; false when that failed
+ * (the message line says why). */
+static ApiValue apiSave(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.03 save
+    // editorSave(), and whether it gave 0.
+    ApiValue v = apiValue(API_BOOLEAN);
+
+    (void)args; (void)nargs; (void)err;
+    // @from 09.05
+    if (editorRunning && strncmp(editorRunning,"BufWrite",8) == 0)
+        return apiFail(err,"a save is already going on");
+    // @end
+    if (E.filename == NULL) return apiFail(err,"no file name");    // @from 09.09
+    v.u.boolean = editorSave() == 0;
+    return v;
+    // @end
+}
+
+/* script.c calls this each time a script has returned to the editor. The
+ * cursor must be in the text: on a row, or on the one just past the last,
+ * where kilo itself may put it, and inside its row; and the view must show
+ * it. Nothing in the API puts it anywhere else: this is the check. */
+void editorScriptReturned(void) {
+    // @build 09.03 the cursor after a script
+    // Cut the cursor's row to 0 .. E.numrows and its column to that row's
+    // size (0 past the last row), and show it (editorShowCursor()).
+    int row = E.rowoff+E.cy, col = E.coloff+E.cx, size;
+
+    if (row > E.numrows) row = E.numrows;
+    if (row < 0) row = 0;
+    size = row < E.numrows ? E.row[row].size : 0;
+    if (col > size) col = size;
+    if (col < 0) col = 0;
+    editorShowCursor(row,col);
+    // @end
+}
+
+// @end
+// @from 09.04
+/* ================================== Keys ================================== */
+
+/* Keys by name: every key editorReadKey() can return has one. These, and
+ * besides them "<C-a>" to "<C-z>", any printable character as itself ("x",
+ * "<"), and "<xNN>" (two hex digits) for any other byte. A name in angle
+// @from 09.05
+ * brackets may be in either case. The one table serves both ways: a name
+ * to a key, and (for KeyPress) a key to its name. */
+// @else
+//  * brackets may be in either case. */
+// @end
+static const struct { const char *name; int key; } KEYNAMES[] = {
+    {"<Enter>",ENTER}, {"<Esc>",ESC}, {"<Tab>",TAB}, {"<BS>",BACKSPACE},
+    {"<Space>",' '}, {"<Del>",DEL_KEY}, {"<Up>",ARROW_UP},
+    {"<Down>",ARROW_DOWN}, {"<Left>",ARROW_LEFT}, {"<Right>",ARROW_RIGHT},
+    {"<Home>",HOME_KEY}, {"<End>",END_KEY}, {"<PageUp>",PAGE_UP},
+    {"<PageDown>",PAGE_DOWN}, {NULL,0}
+};
+
+/* Is a the same as b, len bytes of each, in either case? */
+static int editorSameName(const char *a, const char *b, size_t len) {
+    size_t j;
+    for (j = 0; j < len; j++)
+        if (tolower((unsigned char)a[j]) != tolower((unsigned char)b[j])) return 0;
+    return 1;
+}
+
+/* The key a name of len bytes names, or -1. */
+static int editorKeyByName(const char *name, size_t len) {
+    // @build 09.04 a name to a key
+    // One printable character, not a space: itself. A name in KEYNAMES, in
+    // either case: its key. "<C-x>" for a letter x: x & 0x1f. "<xNN>": the
+    // byte NN. Anything else: -1.
+    unsigned int byte;
+    int j;
+
+    if (len == 1 && isprint((unsigned char)name[0]) && name[0] != ' ')
+        return (unsigned char)name[0];
+    for (j = 0; KEYNAMES[j].name; j++)
+        if (strlen(KEYNAMES[j].name) == len && editorSameName(KEYNAMES[j].name,name,len))
+            return KEYNAMES[j].key;
+    if (len == 5 && name[0] == '<' && name[4] == '>') {
+        if (tolower((unsigned char)name[1]) == 'c' && name[2] == '-' && isalpha((unsigned char)name[3]))
+            return toupper((unsigned char)name[3]) & 0x1f;
+        if (tolower((unsigned char)name[1]) == 'x' && isxdigit((unsigned char)name[2]) &&
+            isxdigit((unsigned char)name[3]) && sscanf(name+2,"%2x",&byte) == 1)
+            return byte;
+    }
+    return -1;
+    // @end
+}
+
+// @from 09.05
+/* The other way, for KeyPress: the name of key c, as editorKeyByName()
+ * takes it, in buf: from KEYNAMES, "<C-x>", the character itself, or
+ * "<xNN>". */
+static void editorKeyName(int c, char *buf, size_t size) {
+    int j;
+
+    for (j = 0; KEYNAMES[j].name; j++)
+        if (KEYNAMES[j].key == c) {
+            snprintf(buf,size,"%s",KEYNAMES[j].name);
+            return;
+        }
+    if (c >= 1 && c <= 26) snprintf(buf,size,"<C-%c>",'a'+c-1);
+    else if (c > ' ' && c < 127) snprintf(buf,size,"%c",c);
+    else snprintf(buf,size,"<x%02x>",c & 0xff);
+}
+
+// @end
+
+/* The functions mapped to keys: a reference for each key editorReadKey()
+ * can return (the bytes, then ARROW_LEFT to PAGE_DOWN), 0 for none. */
+static int editorKeymap[256+PAGE_DOWN-ARROW_LEFT+1];
+
+static int *editorKeymapSlot(int key) {
+    if (key >= 0 && key < 256) return &editorKeymap[key];
+    if (key >= ARROW_LEFT && key <= PAGE_DOWN) return &editorKeymap[256+key-ARROW_LEFT];
+    return NULL;
+}
+
+/* The key a name names, for set_keymap(), del_keymap() and feed_key(): -1
+ * after failing with err for a name that is no key's, and for Ctrl-Q. */
+static int apiKey(ApiValue *name, ApiError *err) {
+    int key = editorKeyByName(name->u.string.s,name->u.string.len);
+
+    if (key == -1) apiFail(err,"unknown key \"%.40s\"",name->u.string.s);
+    else if (key == CTRL_Q) apiFail(err,"<C-q> is the way out: no script can have it");
+    return err->set ? -1 : key;
+}
+
+/* set_keymap(key, fn): from now on the key runs fn, instead of what the
+ * editor does with it. */
+static ApiValue apiSetKeymap(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.04 set_keymap
+    // The key by its name (apiKey(): it refuses Ctrl-Q). Let go of the
+    // function the key had (scriptUnref()) and keep the new reference.
+    int key = apiKey(&args[0],err), *slot;
+
+    (void)nargs;
+    if (key == -1) return apiValue(API_NIL);
+    slot = editorKeymapSlot(key);
+    if (*slot) scriptUnref(*slot);
+    *slot = args[1].u.function;
+    return apiValue(API_NIL);
+    // @end
+}
+
+/* del_keymap(key): give the key back to the editor. */
+static ApiValue apiDelKeymap(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.04 del_keymap
+    // The key by its name; one with no function is an error ("NAME is not
+    // mapped"). Let go of the reference.
+    int key = apiKey(&args[0],err), *slot;
+
+    (void)nargs;
+    if (key == -1) return apiValue(API_NIL);
+    slot = editorKeymapSlot(key);
+    if (*slot == 0) return apiFail(err,"%.40s is not mapped",args[0].u.string.s);
+    scriptUnref(*slot);
+    *slot = 0;
+    return apiValue(API_NIL);
+    // @end
+}
+
+/* feed_key(key): do now what the editor itself does for the key: its own
+ * action, with no mapping and no KeyPress consulted, so a function mapped
+ * to Ctrl-S can still save as Ctrl-S does. */
+static ApiValue apiFeedKey(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.04 feed_key
+    // The key by its name (Ctrl-Q refused: leaving is quit()'s). Put it in
+    // editorFed and run editorProcessKeypress(): it takes the key from there
+    // instead of reading one, and offers it to no script. Then put back what
+    // editorFed held.
+    int key = apiKey(&args[0],err), fed = editorFed;
+
+    (void)nargs;
+    if (key == -1) return apiValue(API_NIL);
+    // @from 09.05
+    if (key == CTRL_S && editorRunning && strncmp(editorRunning,"BufWrite",8) == 0)
+        return apiFail(err,"a save is already going on");
+    // @end
+    // @from 09.09
+    if (!editorScreen && (key == CTRL_E || key == CTRL_F))
+        return apiFail(err,"%.40s waits for the keyboard, and there is none",args[0].u.string.s);
+    // @end
+    editorFed = key;
+    editorProcessKeypress(STDIN_FILENO);
+    editorFed = fed;
+    return apiValue(API_NIL);
+    // @end
+}
+
+/* editorProcessKeypress() offers this every key the user types, before
+ * its own switch. Ctrl-Q is never offered to a script, whatever a script
+ * has asked: this is the one place that guarantees the user can leave.
+ * Returns 1 if a script took the key. */
+int editorScriptKey(int c) {
+    int *slot;
+
+    if (c == CTRL_Q) return 0;
+    if (c < 0) c &= 0xff;           /* a byte above 127, read as a negative char */
+    // @build 09.05 KeyPress
+    // Fire KeyPress with the key's name (editorKeyName()), stopping at the
+    // first function that returns true: if one did, the key is taken.
+    char name[16];
+
+    editorKeyName(c,name,sizeof(name));
+    if (editorFire("KeyPress",name,1)) return 1;
+    // @end
+    // @build 09.04 a mapped key
+    // If the key has a function, call it (scriptCall()): the key is taken.
+    slot = editorKeymapSlot(c);
+    if (slot && *slot) {
+        scriptCall(*slot,NULL);
+        return 1;
+    }
+    return 0;
+    // @end
+}
+
+// @end
+// @from 09.05
+/* ============================= Autocommands =============================== */
+
+/* The events, and the functions scripts have bound to them, autocommands
+ * as Vim and Neovim call them, kept in the order they were made. */
+static const char *EVENTS[] = {"BufReadPost","BufWritePre","BufWritePost",
+    "TextChanged","CursorMoved","KeyPress",NULL};
+
+static struct autocmd {
+    int id;             /* from 1, never given twice */
+    const char *event;  /* one of EVENTS */
+    int ref;            /* the function */
+} editorAutocmds[AUTOCMD_MAX];
+static int editorNumAutocmds, editorLastId;
+
+/* create_autocmd(event, fn) -> integer: run fn on event; its id. */
+static ApiValue apiCreateAutocmd(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.05 create_autocmd
+    // Find the event in EVENTS, its name exactly (none: "unknown event"). At
+    // AUTOCMD_MAX, fail. Add it at the end, with the next id; return the id.
+    const char *name = args[0].u.string.s;
+    struct autocmd *a;
+    int j;
+
+    (void)nargs;
+    for (j = 0; EVENTS[j]; j++)
+        if (strlen(EVENTS[j]) == args[0].u.string.len && strcmp(EVENTS[j],name) == 0) break;
+    if (EVENTS[j] == NULL) return apiFail(err,"unknown event \"%.40s\"",name);
+    if (editorNumAutocmds == AUTOCMD_MAX)
+        return apiFail(err,"too many autocommands (%d)",AUTOCMD_MAX);
+    a = &editorAutocmds[editorNumAutocmds++];
+    a->id = ++editorLastId;
+    a->event = EVENTS[j];
+    a->ref = args[1].u.function;
+    return apiInteger(a->id);
+    // @end
+}
+
+/* del_autocmd(id) */
+static ApiValue apiDelAutocmd(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.05 del_autocmd
+    // Find the id (none: "no autocommand ID"); let go of its function and
+    // close the gap, keeping the order.
+    int j;
+
+    (void)nargs;
+    for (j = 0; j < editorNumAutocmds; j++)
+        if (editorAutocmds[j].id == args[0].u.integer) break;
+    if (j == editorNumAutocmds) return apiFail(err,"no autocommand %lld",args[0].u.integer);
+    scriptUnref(editorAutocmds[j].ref);
+    memmove(editorAutocmds+j,editorAutocmds+j+1,sizeof(editorAutocmds[0])*(editorNumAutocmds-j-1));
+    editorNumAutocmds--;
+    return apiValue(API_NIL);
+    // @end
+}
+
+/* get_changedtick() -> integer */
+static ApiValue apiGetChangedtick(ApiValue *args, int nargs, ApiError *err) {
+    (void)args; (void)nargs; (void)err;
+    return apiInteger(E.changedtick);
+}
+
+/* Call the functions bound to event, in the order they were made, each with
+ * arg. With stop set (KeyPress), stop at the first that returns true, and
+ * return 1. While they run, no event fires: what their work causes is not
+ * heard (no nesting). The functions bound before the event began are the
+ * ones that run; one deleted meanwhile does not; one that fails is said
+ * and the next runs. */
+static int editorFire(const char *event, const char *arg, int stop) {
+    // @build 09.05 an event's functions
+    // Nothing while editorRunning is set; set it for the time this runs.
+    // Over and over: the first autocommand for event with an id above the
+    // last one called and not above editorLastId as it was at the start;
+    // none left: done. scriptCall() it with arg.
+    int last = 0, top = editorLastId, taken = 0, j;
+
+    if (editorRunning) return 0;
+    editorRunning = event;
+    while (!taken) {
+        struct autocmd *a = NULL;
+        for (j = 0; j < editorNumAutocmds && a == NULL; j++)
+            if (editorAutocmds[j].id > last && editorAutocmds[j].id <= top &&
+                strcmp(editorAutocmds[j].event,event) == 0) a = &editorAutocmds[j];
+        if (a == NULL) break;
+        last = a->id;
+        if (scriptCall(a->ref,arg) == 1 && stop) taken = 1;
+    }
+    editorRunning = NULL;
+    return taken;
+    // @end
+}
+
+/* Fire event: its functions are called with its name. */
+void editorEvent(const char *event) {
+    editorFire(event,event,0);
+}
+
+/* At the top of main()'s loop, after a key's work and before the screen is
+ * drawn: TextChanged if the text has changed since the last look (the
+ * changed tick moved), CursorMoved if the cursor is somewhere else. Each
+ * fires once, outside any other event. The first look only notes. */
+void editorAfterKey(void) {
+    // @build 09.07 leave, once back from the script
+    // If quit() was called, exit(0).
+    if (editorQuit) exit(0);
+    // @end
+    // @build 09.05 TextChanged and CursorMoved
+    // Keep the tick and the cursor's place of the last look (statics; tick
+    // -1 before the first). Fire TextChanged if the tick is not the same,
+    // then CursorMoved if the place is not. Note both as they are now,
+    // after the functions: what those changed is not heard again.
+    static long long tick = -1;
+    static int row, col;
+    int moved = row != E.rowoff+E.cy || col != E.coloff+E.cx;
+
+    if (tick != -1 && tick != E.changedtick) editorEvent("TextChanged");
+    if (tick != -1 && moved) editorEvent("CursorMoved");
+    tick = E.changedtick;
+    row = E.rowoff+E.cy;
+    col = E.coloff+E.cx;
+    // @end
+}
+
+// @end
+// @from 09.06
+/* ================================ Drawing ================================= */
+
+/* Namespaces, so that two scripts can each clear their own highlights; and
+ * the highlights: a row, its bytes [start, end), and a style. They do not
+ * move when the text does: a script puts them again when it changes. */
+static char *editorNamespaces[NAMESPACE_MAX];   /* names; "" for one made without */
+static int editorNumNamespaces;
+
+static const struct { const char *name; const char *code; } STYLES[] = {
+    {"red","31"}, {"green","32"}, {"yellow","33"}, {"blue","34"},
+    {"magenta","35"}, {"cyan","36"}, {"bold","1"}, {"underline","4"},
+    {"reverse","7"}, {NULL,NULL}
+};
+
+static struct highlight {
+    int ns, row, style;
+    long long start, end;
+} editorHighlights[HIGHLIGHT_MAX];
+static int editorNumHighlights;
+
+static char editorStatus[80];       /* set_statusline()'s text, cleaned; "" for none */
+
+/* create_namespace(name) -> integer: the namespace of that name, made if
+ * it is new; "" makes a new one each time. Ids count from 1. */
+static ApiValue apiCreateNamespace(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.06 create_namespace
+    // A name already there (not ""): its id, its place plus 1. Else, unless
+    // there are NAMESPACE_MAX, keep a copy of the name and return the new id.
+    const char *name = args[0].u.string.s;
+    int j;
+
+    (void)nargs;
+    if (name[0])
+        for (j = 0; j < editorNumNamespaces; j++)
+            if (strcmp(editorNamespaces[j],name) == 0) return apiInteger(j+1);
+    if (editorNumNamespaces == NAMESPACE_MAX)
+        return apiFail(err,"too many namespaces (%d)",NAMESPACE_MAX);
+    if ((editorNamespaces[editorNumNamespaces] = malloc(strlen(name)+1)) == NULL)
+        return apiFail(err,"not enough memory");
+    memcpy(editorNamespaces[editorNumNamespaces],name,strlen(name)+1);
+    return apiInteger(++editorNumNamespaces);
+    // @end
+}
+
+/* add_highlight(ns, row, start, end, style): draw bytes [start, end) of
+ * the row in the style, over whatever the editor drew there. */
+static ApiValue apiAddHighlight(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.06 add_highlight
+    // The namespace must be one, the row in the file, start not negative
+    // and not past end, the style one of STYLES; and there must be room
+    // (HIGHLIGHT_MAX). Keep it at the end: later ones are drawn over
+    // earlier ones.
+    long long ns = args[0].u.integer, row = args[1].u.integer;
+    long long start = args[2].u.integer, end = args[3].u.integer;
+    struct highlight *h;
+    int j;
+
+    (void)nargs;
+    if (ns < 1 || ns > editorNumNamespaces) return apiFail(err,"no namespace %lld",ns);
+    if (row < 0 || row >= E.numrows)
+        return apiFail(err,"row %lld is outside the file (it has %d rows)",row,E.numrows);
+    if (start < 0 || start > end) return apiFail(err,"[%lld, %lld) is not a range of bytes",start,end);
+    for (j = 0; STYLES[j].name; j++)
+        if (strcmp(STYLES[j].name,args[4].u.string.s) == 0) break;
+    if (STYLES[j].name == NULL || strlen(STYLES[j].name) != args[4].u.string.len)
+        return apiFail(err,"unknown style \"%.20s\": red, green, yellow, blue, magenta, cyan, "
+                       "bold, underline or reverse",args[4].u.string.s);
+    if (editorNumHighlights == HIGHLIGHT_MAX)
+        return apiFail(err,"too many highlights (%d)",HIGHLIGHT_MAX);
+    h = &editorHighlights[editorNumHighlights++];
+    h->ns = ns;
+    h->row = row;
+    h->start = start;
+    h->end = end;
+    h->style = j;
+    return apiValue(API_NIL);
+    // @end
+}
+
+/* clear_namespace(ns): remove its highlights. */
+static ApiValue apiClearNamespace(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.06 clear_namespace
+    // The namespace must be one. Keep the highlights of every other, in
+    // their order.
+    long long ns = args[0].u.integer;
+    int j, k = 0;
+
+    (void)nargs;
+    if (ns < 1 || ns > editorNumNamespaces) return apiFail(err,"no namespace %lld",ns);
+    for (j = 0; j < editorNumHighlights; j++)
+        if (editorHighlights[j].ns != ns) editorHighlights[k++] = editorHighlights[j];
+    editorNumHighlights = k;
+    return apiValue(API_NIL);
+    // @end
+}
+
+/* Called by editorRefreshScreen() after it has drawn file row filerow, as
+ * module 07's underline is: draw the row's highlights over it, cut to the
+ * row as it is now and to the columns on the screen. */
+void editorDrawHighlights(struct abuf *ab, int filerow) {
+    // @build 09.06 draw the highlights
+    // For each highlight on the row: its bytes of chars, cut to the row, as
+    // columns of render (a tab goes to the next multiple of 8, as
+    // editorUpdateRow() has it); cut to the screen's columns. Then "\r" back
+    // to the row's start, ESC [ n C to the first cell (n: the cells before
+    // it from E.coloff, a UTF-8 character taking one), ESC [ code m, the
+    // same bytes of render again (ESC [ C for a control byte, leaving its
+    // cell as it was drawn), and ESC [ 0 m.
+    erow *r = &E.row[filerow];
+    int j, k;
+
+    for (j = 0; j < editorNumHighlights; j++) {
+        struct highlight *h = &editorHighlights[j];
+        long long from = h->start, to = h->end;
+        int a = 0, b = 0, cells = 0, n;
+        char buf[32];
+
+        if (h->row != filerow) continue;
+        if (from > r->size) from = r->size;
+        if (to > r->size) to = r->size;
+        if (from >= to) continue;
+        for (k = 0; k < to; k++) {          /* bytes of chars to columns of render */
+            if (k == from) a = b;
+            b += r->chars[k] == TAB ? 8-b%8 : 1;
+        }
+        if (a < E.coloff) a = E.coloff;
+        if (b > E.coloff+E.screencols) b = E.coloff+E.screencols;
+        if (a >= b) continue;
+        for (k = E.coloff; k < a; k++)
+            if (((unsigned char)r->render[k] & 0xc0) != 0x80) cells++;
+        abAppend(ab,"\r",1);
+        if (cells > 0) {
+            n = snprintf(buf,sizeof(buf),"\x1b[%dC",cells);
+            abAppend(ab,buf,n);
+        }
+        n = snprintf(buf,sizeof(buf),"\x1b[%sm",STYLES[h->style].code);
+        abAppend(ab,buf,n);
+        for (k = a; k < b; k++) {
+            unsigned char c = r->render[k];
+            if (c < 32 || c == 127) abAppend(ab,"\x1b[C",3);
+            else abAppend(ab,(char *)&c,1);
+        }
+        abAppend(ab,"\x1b[0m",4);
+    }
+    // @end
+}
+
+/* set_statusline(text): the left part of the status bar, in place of the
+ * file's name and lines; "" gives the editor's own back. */
+static ApiValue apiSetStatusline(ApiValue *args, int nargs, ApiError *err) {
+    (void)nargs; (void)err;
+    editorClean(editorStatus,sizeof(editorStatus),args[0].u.string.s,args[0].u.string.len);
+    return apiValue(API_NIL);
+}
+
+/* Called by editorRefreshScreen() with the left part of the status bar it
+ * made (len bytes in status, size big): put set_statusline()'s text there
+ * if there is one. Returns the length of what is there now. */
+int editorStatusLine(char *status, int size, int len) {
+    // @build 09.06 the status bar
+    // No text set: len, untouched. Else copy it in (snprintf(), cut to
+    // size) and return its length.
+    if (editorStatus[0] == '\0') return len;
+    snprintf(status,size,"%s",editorStatus);
+    return strlen(status);
+    // @end
+}
+
+/* get_view() -> position: the file's row and column at the screen's top
+ * left. get_size() -> position: the rows and columns of text the screen
+ * shows. */
+static ApiValue apiGetView(ApiValue *args, int nargs, ApiError *err) {
+    (void)args; (void)nargs; (void)err;
+    return apiPosition(E.rowoff,E.coloff);
+}
+
+static ApiValue apiGetSize(ApiValue *args, int nargs, ApiError *err) {
+    (void)args; (void)nargs; (void)err;
+    return apiPosition(E.screenrows,E.screencols);
+}
+
+// @end
+// @from 09.07
+/* ========================= Asking, opening, leaving ======================= */
+
+/* input(prompt) -> string: a line typed at the prompt; nil for Escape. */
+static ApiValue apiInput(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.07 input
+    // Clean the prompt (editorClean()), ask with editorPrompt(): NULL is
+    // nil, a line is a string (free editorPrompt()'s copy).
+    char prompt[64], *line;
+    ApiValue v;
+
+    (void)nargs;
+    if (!editorScreen) return apiFail(err,"no keyboard");      // @from 09.09
+    editorClean(prompt,sizeof(prompt),args[0].u.string.s,args[0].u.string.len);
+    if ((line = editorPrompt(prompt)) == NULL) return apiValue(API_NIL);
+    v = apiString(line,strlen(line),err);
+    free(line);
+    return v;
+    // @end
+}
+
+/* open(path): edit another file in place of this one. A path where there
+ * is no file is a new, empty file of that name, as on the command line. */
+static ApiValue apiOpen(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.07 open
+    // Unsaved changes: fail. In a save's events: fail. A name with a '\0'
+    // in it, or none: fail. fopen() it first: editorOpen() exits on a file
+    // that is there but cannot be read, so that is an error here. Then free
+    // every row, empty the file and the view, and editorOpen() the path (it
+    // sets E.filename, and fires BufReadPost).
+    const char *path = args[0].u.string.s;
+    FILE *fp;
+    int j;
+
+    (void)nargs;
+    if (E.dirty) return apiFail(err,"unsaved changes");
+    if (editorRunning && strncmp(editorRunning,"BufWrite",8) == 0)
+        return apiFail(err,"a save is going on");
+    if (path[0] == '\0' || strlen(path) != args[0].u.string.len)
+        return apiFail(err,"\"%.40s\" is not a file name",path);
+    if ((fp = fopen(path,"r")) != NULL) fclose(fp);
+    else if (errno != ENOENT) return apiFail(err,"cannot read %.60s: %s",path,strerror(errno));
+    for (j = 0; j < E.numrows; j++) editorFreeRow(E.row+j);
+    free(E.row);
+    E.row = NULL;
+    E.numrows = 0;
+    E.cx = E.cy = E.rowoff = E.coloff = 0;
+    editorOpen((char *)path);
+    return apiValue(API_NIL);
+    // @end
+}
+
+/* quit(force): leave the editor, once the script has returned. Without
+ * force, unsaved changes are an error. */
+static ApiValue apiQuit(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.07 quit
+    // Without force and with unsaved changes: fail. Otherwise note it in
+    // editorQuit: kilo must not exit, nor the state close, while Lua is
+    // running.
+    (void)nargs;
+    if (!args[0].u.boolean && E.dirty)
+        return apiFail(err,"unsaved changes (quit(true) leaves anyway)");
+    editorQuit = 1;
+    return apiValue(API_NIL);
+    // @end
+}
+
+// @end
+// @from 09.02
+/* =============================== The table ================================ */
+
+/* Every function a script can call: its name, its arguments' types and
+ * names, what it returns, the C function, and what it does. script.c makes
+ * kilo.api from this table, and kilo --api-info prints it. */
+const ApiFunc API[] = {
+    {"line_count", {API_NIL}, {NULL}, 0, API_INTEGER, apiLineCount,
+     "the number of rows in the file"},
+    {"get_lines", {API_INTEGER,API_INTEGER}, {"start","end"}, 2, API_LINES, apiGetLines,
+     "the rows [start, end), counted from 0"},
+    {"get_cursor", {API_NIL}, {NULL}, 0, API_POSITION, apiGetCursor,
+     "the cursor's {row, col}, col a byte of the row"},
+    {"get_name", {API_NIL}, {NULL}, 0, API_STRING, apiGetName,
+     "the file's name"},
+    {"is_modified", {API_NIL}, {NULL}, 0, API_BOOLEAN, apiIsModified,
+     "true when the file has unsaved changes"},
+    {"message", {API_STRING}, {"text"}, 1, API_NIL, apiMessage,
+     "show text in the message line"},
+    // @from 09.03
+    {"set_lines", {API_INTEGER,API_INTEGER,API_LINES}, {"start","end","lines"}, 3, API_NIL,
+     apiSetLines, "replace the rows [start, end) by lines"},
+    {"set_cursor", {API_POSITION}, {"pos"}, 1, API_NIL, apiSetCursor,
+     "move the cursor to {row, col}"},
+    {"save", {API_NIL}, {NULL}, 0, API_BOOLEAN, apiSave,
+     "save the file, as Ctrl-S does; false if that failed"},
+    // @end
+    // @from 09.04
+    {"set_keymap", {API_STRING,API_FUNCTION}, {"key","fn"}, 2, API_NIL, apiSetKeymap,
+     "run fn for key, in place of what the editor does"},
+    {"del_keymap", {API_STRING}, {"key"}, 1, API_NIL, apiDelKeymap,
+     "give key back to the editor"},
+    {"feed_key", {API_STRING}, {"key"}, 1, API_NIL, apiFeedKey,
+     "do what the editor itself does for key"},
+    // @end
+    // @from 09.05
+    {"create_autocmd", {API_STRING,API_FUNCTION}, {"event","fn"}, 2, API_INTEGER,
+     apiCreateAutocmd, "run fn on event; returns its id"},
+    {"del_autocmd", {API_INTEGER}, {"id"}, 1, API_NIL, apiDelAutocmd,
+     "stop running an autocommand"},
+    {"get_changedtick", {API_NIL}, {NULL}, 0, API_INTEGER, apiGetChangedtick,
+     "a count that goes up with every change to the text"},
+    // @end
+    // @from 09.06
+    {"create_namespace", {API_STRING}, {"name"}, 1, API_INTEGER, apiCreateNamespace,
+     "the id of a namespace for highlights; \"\" makes a new one"},
+    {"add_highlight", {API_INTEGER,API_INTEGER,API_INTEGER,API_INTEGER,API_STRING},
+     {"ns","row","start","end","style"}, 5, API_NIL, apiAddHighlight,
+     "draw bytes [start, end) of row in style"},
+    {"clear_namespace", {API_INTEGER}, {"ns"}, 1, API_NIL, apiClearNamespace,
+     "remove the namespace's highlights"},
+    {"set_statusline", {API_STRING}, {"text"}, 1, API_NIL, apiSetStatusline,
+     "the status bar's left part; \"\" for the editor's own"},
+    {"get_view", {API_NIL}, {NULL}, 0, API_POSITION, apiGetView,
+     "the file's {row, col} at the screen's top left"},
+    {"get_size", {API_NIL}, {NULL}, 0, API_POSITION, apiGetSize,
+     "the {rows, cols} of text the screen shows"},
+    // @end
+    // @from 09.07
+    {"input", {API_STRING}, {"prompt"}, 1, API_STRING, apiInput,
+     "a line typed at the prompt; nil for Escape"},
+    {"open", {API_STRING}, {"path"}, 1, API_NIL, apiOpen,
+     "edit the file at path in place of this one"},
+    {"quit", {API_BOOLEAN}, {"force"}, 1, API_NIL, apiQuit,
+     "leave the editor; force: even with unsaved changes"},
+    // @end
+    {NULL, {API_NIL}, {NULL}, 0, API_NIL, NULL, NULL}
+};
+
+/* kilo --api-info: the table, a line per function, as a script calls it,
+ * "get_lines(start: integer, end: integer) -> lines  -- what it does". It
+ * needs no Lua: the API is the table. */
+int apiInfo(void) {
+    // @build 09.02 --api-info
+    // For each entry: its name, "(", each argument as "NAME: TYPE" with ", "
+    // between, ")", " -> TYPE" unless it returns nil, "  -- " and its help.
+    const ApiFunc *f;
+    int j;
+
+    for (f = API; f->name; f++) {
+        printf("%s(",f->name);
+        for (j = 0; j < f->nargs; j++)
+            printf("%s%s: %s",j ? ", " : "",f->argnames[j],apiTypeName(f->args[j]));
+        printf(")");
+        if (f->ret != API_NIL) printf(" -> %s",apiTypeName(f->ret));
+        printf("  -- %s\n",f->help);
+    }
+    return 0;
+    // @end
+}
+
+// @end
+// @from 09.09
+/* kilo -l script [file]: the editor with no screen and no keys. The file
+ * is read if one is named, the script runs with the same kilo.api, and
+ * kilo ends: 0, or 1 when the script failed (its error on standard error).
+ * Nothing is saved unless the script calls save(). init.lua is not run. */
+int editorRunScript(char *script, char *filename) {
+    // @build 09.09 the editor with no screen
+    // No raw mode, no window: note there is no screen (editorScreen 0), and
+    // give E the size of a 24 x 80 terminal for the keys a script feeds.
+    // Read the file, if one is named. Run the script (scriptRun()); return
+    // 0, or 1 if it failed.
+    editorScreen = 0;
+    E.screenrows = 22;
+    E.screencols = 80;
+    if (filename) editorOpen(filename);
+    return scriptRun(script) == 0 ? 0 : 1;
+    // @end
+}
+
+// @end
+// @end
 int main(int argc, char **argv) {
+    if (argc == 2 && strcmp(argv[1],"--api-info") == 0) return apiInfo();   // @from 09.02
+    // @from 09.09
+    if ((argc == 3 || argc == 4) && strcmp(argv[1],"-l") == 0)
+        return editorRunScript(argv[2],argc == 4 ? argv[3] : NULL);
+    // @end
     if (argc != 2) {
         fprintf(stderr,"Usage: kilo <filename>\n");
+        fprintf(stderr,"       kilo --api-info\n");                     // @from 09.02
+        fprintf(stderr,"       kilo -l <script.lua> [filename]\n");     // @from 09.09
         exit(1);
     }
 
@@ -2014,7 +3099,10 @@ int main(int argc, char **argv) {
     // @end
     // @end
     lspStart(argv[1]);              // @from 07.01
+    scriptStart();                  // @from 09.01
+    editorEvent("BufReadPost");     /* now the scripts are there to hear it */ // @from 09.05
     while(1) {
+        editorAfterKey();           // @from 09.05
         editorRefreshScreen();      // @from 02.01
         editorProcessKeypress(STDIN_FILENO);
     }
