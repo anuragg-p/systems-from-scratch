@@ -672,3 +672,52 @@ DATA["experiments/recorded/grokking/*"] = ("the long run of experiments/grokking
                                            "NOTES.md")
 DATA["experiments/recorded/ablations/*"] = ("the runs of experiments/ablations.py (14.04), recorded on the machine in "
                                             "NOTES.md")
+
+
+# ---------------------------------------------------------------- module 12: fine-tuning
+#
+# Kept apart from the tables above, as the other modules' parts are, in one block. Every experiment starts from 09.03's
+# GPT-2 small, so each needs GPT-2's files; classify (12.01) and lora (12.02) need Banking77 too (python3 -m data.fetch
+# banking77), the labelled set of the module. models/classifier.py and models/lora.py wrap a built GPT and never change
+# models/gpt.py; experiments/tuning.py is the loop and the measures the module shares (as language.py is 08's).
+# DATASET_OF names one download for each experiment, and two of these need two, so module 12's experiments are kept in
+# a table of their own, TWELVE, and timeline_boot below adds their steps: a run where both are here, else the line the
+# script stops with for the first one missing, in the order the scripts check them (GPT-2's files first).
+
+TWELVE = {
+    "classify": ("12.01", ["train=300", "test_per_class=1", "seeds=1", "head_steps=5", "small_steps=2", "small_width=16",
+                           "sizes=[100]"], r"s of reading, training and scoring on cpu", ["gpt2", "banking77"]),
+    "lora": ("12.02", ["ranks=[1]", "demo_steps=1", "timed=1", "standardise_from=10"],
+             r"s of loading, training and scoring on cpu", ["gpt2", "banking77"]),
+    "instruct": ("12.03", ["steps=2", "seeds=1", "scored=1", "examples=20", "longest=3"],
+                 r"s of loading, training and answering on cpu", ["gpt2"]),
+    "forgetting": ("12.04", ["steps=1", "seeds=1", "scored=1", "examples=10", "untuned_tokens=200", "stories=1",
+                             "methods=['lora']"], r"s of reading, training and scoring on cpu", ["gpt2"]),
+}
+
+DATASET_FILES["banking77"] = {"train.csv": 839073, "test.csv": 239961, "categories.json": 2036}
+DATASET_NAMES["banking77"] = "Banking77 (its training and test questions, and its 77 intents)"
+TOOLS["banking77"] = lambda: have_dataset("banking77")
+
+# The long run of 12.02, recorded as 08.04's and 09.04's are (experiments/lora.py train=True with out=experiments/recorded):
+# every config.json, log.jsonl and summary.json, and what it printed; no weights. The narrower glob goes first.
+FILES_FROM = {"experiments/recorded/lora/*": "12.02", **FILES_FROM}
+DATA["experiments/recorded/lora/*"] = ("the long run of experiments/lora.py (12.02), recorded on the machine in "
+                                       "NOTES.md")
+_boot_before_12 = timeline_boot
+
+
+def timeline_boot(lesson_id):
+    """The steps before module 12, then module 12's experiments that the project has by lesson_id."""
+    steps = _boot_before_12(lesson_id)
+    k = lesson_key(lesson_id)
+    for name, (lid, settings, last, needs) in TWELVE.items():
+        if lesson_key(lid) > k:
+            continue
+        command = _python("-m", f"experiments.{name}", *settings)
+        missing = [d for d in needs if not have_dataset(d)]
+        if missing:
+            steps.append(sh_step(command + " 2>&1", rf"{missing[0]} is missing: .*python3 -m data\.fetch {missing[0]}", 1))
+        else:
+            steps.append(sh_step(command, last))
+    return steps

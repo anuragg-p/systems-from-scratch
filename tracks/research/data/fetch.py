@@ -46,6 +46,15 @@ first 64 MiB of TinyStories-train.txt (the file the paper's models were
 trained on; it is 1.9 GB), fetched as one range of bytes, and the whole
 of TinyStories-valid.txt, 19 MB, for stories no model here trains on.
 # @end
+# @from 12.01
+
+Banking77 (Casanueva et al., "Efficient Intent Detection with Dual
+Sentence Encoders", 2020): 13,083 short questions customers asked an
+online bank, each labelled with one of 77 intents, from PolyAI's
+task-specific-datasets repository on GitHub at one fixed commit, under
+the Creative Commons Attribution 4.0 licence its LICENSE file gives.
+python3 -m data.fetch banking77 takes its three files, 1,081,070 bytes.
+# @end
 """
 
 import hashlib
@@ -99,6 +108,18 @@ DATASETS = {
             "valid.txt": (19447282, "94e431816c4cce81ff71e4408ff8d3bda9a42e8d2663986697c3954288cb38b4"),
         },
         "ranges": {"train.txt": ("TinyStories-train.txt", 0), "valid.txt": ("TinyStories-valid.txt", 0)},
+    },
+    # @end
+    # @from 12.01
+    "banking77": {
+        "url": ("https://raw.githubusercontent.com/PolyAI-LDN/task-specific-datasets/"
+                "57ec275d8078af65b7731c2a98be812d844a6d6b/banking_data/"),
+        "each": True,
+        "files": {
+            "train.csv": (839073, "b06e26ac675513959a63135f11b94ea7786ed02da65db93a5650d8838cbc664b"),
+            "test.csv": (239961, "d12d6e3bc4c3103966ae786dc435913c0c563dfa328f5a3646d0e62cfeeb474d"),
+            "categories.json": (2036, "53261da888122daf2d120d925458631d9619e15d82e56052e7a42e535ce32b63"),
+        },
     },
     # @end
 }
