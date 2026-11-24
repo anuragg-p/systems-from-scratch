@@ -1,0 +1,51 @@
+1. Counting with longer contexts: bits per character on the training text itself (k = 0) and on the test text
+   (k, added to every count, chosen on the validation text from [1.0, 0.3, 0.1, 0.03, 0.01, 0.003, 0.001])
+   context contexts seen        of pairs seen   of them unseen in test training    test      k
+         0             1         1         65  1.00e+00           0.0%    4.774   4.850  0.001
+         1            65        65      1,380  3.27e-01           0.0%    3.537   3.599    0.1
+         2         1,380  4.22e+03     11,228  4.09e-02           0.3%    2.746   3.044   0.03
+         3        11,228  2.75e+05     48,539  2.72e-03           2.2%    2.151   2.659   0.03
+         4        48,539  1.79e+07    133,293  1.15e-04           5.5%    1.754   2.629   0.03
+         5       133,293  1.16e+09    264,623  3.51e-06          11.7%    1.419   2.979   0.03
+         6       264,623  7.54e+10    413,620  8.44e-08          22.8%    1.097   3.515   0.03
+         7       413,620   4.9e+12    559,503  1.76e-09          37.3%    0.804   4.109   0.03
+
+2. Deleted interpolation: the count models of every context up to n mixed, weights fit on the validation text
+   up to 1: test 3.612   weights, context 0 to 1: 0.001 0.999
+   up to 2: test 3.033   weights, context 0 to 2: 0.002 0.030 0.968
+   up to 3: test 2.632   weights, context 0 to 3: 0.002 0.024 0.100 0.873
+   up to 4: test 2.445   weights, context 0 to 4: 0.002 0.018 0.086 0.252 0.642
+   up to 5: test 2.416   weights, context 0 to 5: 0.001 0.013 0.080 0.254 0.365 0.288
+   up to 6: test 2.410   weights, context 0 to 6: 0.001 0.011 0.075 0.254 0.365 0.216 0.079
+   up to 7: test 2.409   weights, context 0 to 7: 0.000 0.010 0.074 0.255 0.365 0.216 0.070 0.010
+   up to 8: test 2.409   weights, context 0 to 8: 0.000 0.009 0.074 0.255 0.365 0.216 0.070 0.008 0.002
+
+3. The network (embeddings of 32, 1024 tanh units, 20000 steps of 1024, 3 seeds) against counting, bits per character on the test text
+   context  network                                            add-k interp.  network and interp., half each
+         1  3.593 +- 0.001571 (min 3.592, max 3.594, 3 seeds)  3.599   3.612  3.594 +- 0.001242 (min 3.593, max 3.596, 3 seeds)
+         3  2.576 +- 0.008656 (min 2.567, max 2.585, 3 seeds)  2.659   2.632  2.55 +- 0.006132 (min 2.543, max 2.555, 3 seeds)
+         5  2.346 +- 0.005664 (min 2.34, max 2.352, 3 seeds)   2.979   2.416  2.294 +- 0.000964 (min 2.294, max 2.295, 3 seeds)
+         8  2.36 +- 0.009012 (min 2.353, max 2.37, 3 seeds)    4.654   2.409  2.283 +- 0.004755 (min 2.279, max 2.288, 3 seeds)
+   context 1: the network -0.020 bits from interpolation, lower in 3 of 3 seeds; -0.006 from add-k
+   context 3: the network -0.056 bits from interpolation, lower in 3 of 3 seeds; -0.083 from add-k
+   context 5: the network -0.070 bits from interpolation, lower in 3 of 3 seeds; -0.634 from add-k
+   context 8: the network -0.049 bits from interpolation, lower in 3 of 3 seeds; -2.294 from add-k
+   curves in experiments/recorded/nplm/training.svg
+
+4. Nearest characters by embedding (context 8, seed 0), cosine similarity, among the 53 characters seen at least 1000 times in training
+   (two random vectors of 32 numbers: similarities spread with a standard deviation of 1/sqrt(32) = 0.18)
+   'a'   'A' 0.32  'u' 0.16  'o' 0.12  'i' 0.10
+   'e'   'O' 0.17  'E' 0.17  'y' 0.10  'h' 0.09
+   '.'   '!' 0.81  '?' 0.81  ':' 0.49  '-' 0.30
+   'A'   'a' 0.32  'E' 0.29  'O' 0.27  '-' 0.26
+   '!'   '.' 0.81  '?' 0.77  ':' 0.53  ';' 0.43
+   's'   'S' 0.57  'y' 0.16  'U' 0.15  'Y' 0.13
+
+5. 300 characters drawn from the network (context 8, seed 0):
+
+   thore his kind sell it Hath earth you.
+   I to the Mence, with for mean? hath not seemeling good depitiats, your way, and comes;
+   And trunk-day, thy devenge
+   to find filious think the hands up the created I fear, it is mine moon, he should spoke duke of winle in me to the sea, noble consent to fear my ha
+
+1198 s of counting, training and scoring on cpu

@@ -43,17 +43,26 @@ data/mnist.py           03.01   read_idx, load(split, n, standardise)
 data/cifar.py           06.03   read_records, load(split, n): CIFAR-10's binary records, standardised per channel
 data/__init__.py        03.01   batches(n, size, rng)
 data/augment.py         05.03   shift(x, k, rng, fill);  06.03 crop_flip(x, pad, rng)
+data/tinyshakespeare.txt 07.01  the text, shipped byte for byte (no regions; FILES_FROM and DATA in track.py)
+data/shakespeare.py     07.01   load, chars, encode, decode, split(name): the text as numpy character numbers
 models/__init__.py      06.02   (no regions) the networks experiments share, one file each
 models/convnet.py       06.02   convnet(torch, width): 3 convolutions and a Linear layer, on either library
 models/resnet.py        06.04   Block, ResNet; resnet(n, residual, width), layers(model): He et al.'s CIFAR network
+models/ngram.py         07.02   context_codes, lookup, NGram, mixture_weights: count models of any context (numpy)
+models/rnn.py           07.03   RNNCell, RNN: the recurrent cell by hand, unrolled in a loop
+models/attention.py     07.04   attend(scores, values), Additive: attention, kept apart from its scores
+models/seq2seq.py       07.04   Encoder, Decoder, AttentionDecoder, Seq2Seq (forward, generate)
 experiments/<name>.py   one per lesson (below); loop.py (03.01) and deep.py (04.01) are shared code
                         06.03   images.py: the PyTorch-era loop, tensors(dev, ...), train_epoch, evaluate
+                        07.02   sequences.py: bits, contexts, context_bits, sample;  07.03 windows, window_bits
 experiments/recorded/   06.04   the long run of resnet.py, recorded (DATA in track.py; see "Long runs")
+                        07.02   recorded/nplm/: the long run of nplm.py
 tests/                  NNLL_*.py one per lesson; support.py, helpers for the PyTorch comparisons
 ```
 
 From 06.02 the project needs PyTorch too (`pip install torch`; the CPU build
 is enough), and from 06.03 CIFAR-10 (`python3 -m data.fetch cifar10`).
+Module 07's text, Tiny Shakespeare, ships with the project: nothing to fetch.
 
 Run everything from the project's top: `python3 -m experiments.<name>
 [key=value ...]`. `./learn run research --at 03.01 -- mnist_lr "lrs=[0.1]"`
@@ -254,6 +263,34 @@ No harness change was needed. The rules this track follows:
   0..1 scale (measured over all 50,000; data/cifar.py's MEAN and STD).
   `load(split, n)` reads only as many files as n needs and caches per
   process, as mnist.load does.
+- **Tiny Shakespeare** (07.01 on): shipped, `data/tinyshakespeare.txt`,
+  byte for byte the file karpathy/char-rnn has at
+  `data/tinyshakespeare/input.txt` (fetched 2026-11-24 from
+  raw.githubusercontent.com at master, commit 6f9487a6fe5b...; the file is
+  unchanged since the repository's first commit, 370cbcd4, 2015). 1,115,394
+  bytes, 40,000 lines, SHA-256
+  86c4e6aa9db7c042ec79f339dcb96d42b0075e16b8fc2e86bf0ca57e2dc565ed, MD5
+  6fb458f1232090904fb40fe944165e91. Plain ASCII (no byte above 127, no
+  carriage return), so `./learn check`'s ASCII rule holds and one byte is
+  one character. 65 characters: newline, space, ! $ & ' , - . : ; ?, the
+  digit 3, A-Z, a-z (`$` occurs once, `&` three times, `3` 27 times, all in
+  the training part). The plays are public domain; char-rnn's Readme gives
+  MIT; NOTICE has the entry. The test pins size and hash. track.py puts it
+  in FILES_FROM (07.01) and DATA (the site shows its first 20 lines).
+- The split is by position, never shuffled (data/shakespeare.py SPLITS):
+  train = the first 90% (characters 0 to 1,003,853), validation the next
+  5% (55,770 characters, from 1,003,854), test the last 5% (55,770, from
+  1,059,624; it starts mid-word, "rance ta'en"). Validation is The Taming
+  of the Shrew; test is its end and then The Tempest, a play whose names
+  (Prospero, Miranda, Ariel) never occur in training: every model scores
+  about 0.2 bits per character worse on test than on validation (4-character
+  add-k 2.42 against 2.63, deleted interpolation up to 5 2.23 against 2.42).
+  So settings are chosen on validation and every reported score is on
+  test; never compare a validation number with a test number.
+- `split(name)` encodes with a dict per character (about 0.1 s for the
+  whole text) and caches per process, as mnist.load does: never change its
+  arrays in place. Scripts make a split one tensor on the device once
+  (`torch.from_numpy(a).to(dev)`), as 06.03's tensors() does for images.
 
 ## The lessons: code, default run, time, and what held
 
@@ -290,10 +327,26 @@ Times: the default run, `python3 -m experiments.<name>`, wall clock.
 | 06.02 | switch | 4.1 |
 | 06.03 | cifar | 43.4 |
 | 06.04 | resnet (short; the long run, 40 minutes: see 06.04) | 53.5 |
+| 07.01 | bigram (numpy only) | 0.3 |
+| 07.02 | nplm (short; the long run, 20 minutes: see 07.02) | 38.6 |
+| 07.03 | rnn | 46.4 |
+| 07.04 | attention | 37.0 |
 
 06.01 to 06.04 were timed twice, the second time with other agents' runs
 going (load average 6 to 8): conv 26.4 and 27.0, switch 3.7 and 4.1, cifar
 42.1 and 43.4, resnet about 50 and 53.5. Same digits both times.
+
+07.01 to 07.04 were timed twice in a row with the defaults (10 threads),
+the machine never quite quiet: a virtual machine took 1 to 7 cores all
+afternoon and Spotlight one, load average 3.8 to 5.6 during the runs:
+bigram 0.33 and 0.32, nplm 38.6 and 37.5, rnn 46.4 and 44.9, attention 37.0
+and 36.3; the same digits both times, and the same as a third run before
+them. With other agents' runs going as well (load 7 to 14) the same
+settings took up to 1.5 times as long (rnn 57 to 73 s at 800 steps), the
+10 threads spending as much time in the system as in the work: so the
+defaults were cut to these (07.02's network 2500 to 2000 steps, 07.03's 800
+to 600, 07.04's 1200 to 1000; their entries give both sets of numbers).
+On a machine with nothing else running they should be faster still.
 
 Spike 1 (engine speed): one MNIST epoch (784-100-10, batches of 128, SGD)
 takes 0.14 s on the engine, 0.23 s on PyTorch; 0.41 s against 0.38 s with
@@ -837,6 +890,321 @@ shallow/deep (t), residual shallow/deep (t); 2 seeds unless said.
   against 0.40 s; ResNet-56 0.68 against 1.14) and the short run at width
   8 showed neither half (82.0 against 84.2, t = -0.7); width stays 16.
 
+**07.01 Counting pairs (Shannon 1951).** bigram, numpy only (no torch, no
+device setting: counting needs neither), one Run (seed 0, which only the
+sample uses; every other number is exact, the same on every run). The
+training text has 1,003,853 pairs, 1380 of the 65 x 65 = 4225 possible.
+1. The pair model, k = 0, on the first 12 characters of the test text,
+   each line count of the pair, count of the first, p, -log2 p: 'ra' 2375
+   / 44271 = 0.0536, 4.220 bits; ... "a'" 58 / 49718 = 0.0012, 9.743. Mean
+   4.282 bits; 2 ** 4.282 = 19.45, the perplexity. Over all 55,769 test
+   pairs: inf, because 176 of them (12 distinct: '-D' 'DR' 'EB' 'FE' 'IB'
+   'NZ' 'O\n' 'SP' 'Sy' 'dt' 'fn' 'rz') never occur in training: p = 0.
+2. Every count plus k, on validation: k = 0 inf, 1 3.5696, 0.1 3.5678,
+   0.01 3.5682, 0.001 3.5688; chosen 0.1. With a million characters the
+   pair table is full enough that k hardly matters (0.002 bits); in 07.02
+   it matters a great deal.
+3. The ladder on the test text (perplexity): equal chances 6.022 (65.0) =
+   log2 65; single characters 4.850 (28.8); pairs 3.599 (12.1). On the
+   training text with k = 0 (the counts' own text): 6.022, 4.774 (27.4),
+   3.537 (11.6).
+4. Shannon's table (BSTJ 30, 1951, page 54), 27 letters: F0 4.76, F1 4.03,
+   F2 3.32 (F3 3.1, Fword 2.14; 26 letters 4.70, 4.14, 3.56, 3.3, 2.62),
+   computed from published tables of letter, pair and triple frequencies
+   (Pratt 1942): each F_N is an entropy of the text the frequencies came
+   from, not a score on held-out text, so ours beside his are the training
+   column. The training text folded to his 27 symbols (letters made small,
+   everything else a space, runs of spaces one): 4.75, 4.09, 3.32. With all
+   65 characters: 6.02, 4.77, 3.54. Say the text and the alphabet differ;
+   the folded F2 matching his to 3 digits is a coincidence of two texts,
+   not a reproduction. His prediction experiments (with 100 letters known,
+   "of the order of one bit per letter") are not run here.
+5. 300 characters from the pair model, k = 0.1, seed 0, starting after a
+   newline ("NE ETornetl / V: / Whan ashe:'thend se! ...").
+0.3 to 0.5 s. For the theory rule, every number a page derives is printed: the
+p of a pair as count / count, -log2 p, the mean, 2 to the mean, log2 65.
+Trailing spaces are stripped from printed sample lines (the summary keeps
+the text exact).
+
+**07.02 Longer contexts, and Bengio et al. (2003).** nplm. Counting with
+contexts of 0 to 7 characters (models/ngram.py): contexts seen 1, 65,
+1,380, 11,228, 48,539, 133,293, 264,623, 413,620 of 65^n possible (65^5 =
+1.16e9); the (context, next) pairs seen are 100%, 33%, 4.1%, 0.27%,
+0.012%, 3.5e-4%, ... of those possible; the test text's contexts never
+seen in training 0, 0, 0.3, 2.2, 5.5, 11.7, 22.8, 37.3%. Training bits
+(k = 0, Shannon's F_{n+1} of this text) fall 4.774, 3.537, 2.746, 2.151,
+1.754, 1.419, 1.097, 0.804; test bits with add-k (k from 1, 0.3, ...,
+0.001 chosen on validation: 0.001 for singles, 0.1 for pairs, 0.03 from
+2 on) 4.850, 3.599, 3.044, 2.659, 2.629, 2.979, 3.515, 4.109: best at 4,
+then up. Deleted interpolation (the paper's own baseline: every order up
+to n mixed, one weight per order fit by EM on validation; an order's
+chance after a context never seen is 1 / V): up to 1 3.612, 2 3.033, 3
+2.632, 4 2.445, 5 2.416, 6 2.410, 7 2.409; the weights at 5 are 0.001
+0.013 0.080 0.254 0.365 0.288. Up to 1 it is worse than add-k (3.612
+against 3.599): weights fit on validation (The Shrew) and scored on test
+(The Tempest).
+The network (NPLM: embeddings of 24, 512 tanh units, Adam 0.01 falling to
+0 along a cosine, 2000 steps of 1024 random positions, 3 seeds; no direct
+connections, no dropout by default), test bits, against add-k and
+interpolation of the same context, and mixed half and half with
+interpolation (the paper's "mix"):
+- context 1: 3.594 +- 0.0011 / 3.599 / 3.612 / 3.592: the pair model
+  again; "lower" than both by 0.005 and 0.018, nothing to make of it.
+- context 3: 2.606 +- 0.0074 / 2.659 / 2.632 / 2.553: lower than both.
+- context 5: 2.474 +- 0.0070 / 2.979 / 2.416 / 2.330: far below add-k,
+  0.058 above interpolation in every seed: in a minute it has not caught
+  up with the paper's baseline. Mixed, 0.09 below it.
+(At 2500 steps, the first default: 3.593, 2.601, 2.466, mixed 2.329; it
+took 46 to 69 s with 10 threads and the machine busy, so 2000.)
+Nearest by embedding (context 5, seed 0; among the 53 characters seen
+1000 times or more; random vectors of 24 numbers have cosine spread 0.20):
+'.' -> '?' 0.75, '!' 0.72; '!' -> '.' 0.72, '?' 0.69; 'a' -> 'A' 0.32;
+'s' -> 'S' 0.35; 'e' -> nothing above 0.22. Only sentence-ending
+punctuation is clearly grouped; capitals with their small letters
+weakly; the rest is within the noise of the random start. Say that.
+Sample from context 5, seed 0 ("Third his kiss selffeconce me hand, / And
+gels exerelow, with than here hear off stery soul. ...").
+The long run, recorded in experiments/recorded/nplm/ (every config.json,
+log.jsonl and summary.json, training.svg: each network's batch bits every
+100 steps, output.txt; seed 0 of context 8 keeps its 65 x 32 embeddings
+in its summary.json for a figure):
+
+    python3 -m experiments.nplm "contexts=[1,3,5,8]" embed=32 hidden=1024 dropout=0.3 steps=20000 lr=0.003 seeds=3 out=experiments/recorded
+
+19 min 59 s of wall clock (1198 s by its own clock; user 1867 s) with
+OMP_NUM_THREADS=4 and other agents' runs going (load average 7 to 10).
+Network / add-k / interpolation / mixed:
+- 1: 3.593 +- 0.0016 / 3.599 / 3.612 / 3.594 (a tie with the pair model);
+- 3: 2.576 +- 0.0087 / 2.659 / 2.632 / 2.550 (every seed lower);
+- 5: 2.346 +- 0.0057 / 2.979 / 2.416 / 2.294 (every seed lower, by 0.07);
+- 8: 2.360 +- 0.0090 / 4.654 / 2.409 / 2.283 (every seed lower, by 0.05).
+The paper's claim held at 3, 5 and 8 characters, not at 1 (where there
+is nothing to share between contexts). In perplexity at 5: 2^2.346 = 5.08
+against 5.34, interpolation 5% above the network; the paper's table 1
+(Brown corpus, words): 268 for its best network alone (MLP1), 252 mixed
+with the trigram (MLP10, the one with the lowest validation perplexity),
+312 for the best n-gram (class-based back-off, 24% above), 336 for deleted
+interpolation of trigrams (33% above); AP News 109 against 117 (8%).
+Their mix row is their best, as ours is. The network does not gain from 8 characters over
+5 (2.360 against 2.346; a spike at 12, one seed: 2.451): more context is
+more weights before the hidden layer, not more use. Embeddings in the
+long run: '.' -> '!' 0.81, '?' 0.81; 's' -> 'S' 0.57; 'a' -> 'A' 0.32;
+'A' -> 'a' 0.32, 'E' 0.29, 'O' 0.27; vowels near vowels only within noise.
+Departures from the paper, for the page: characters, not words (65
+symbols, where its vocabularies had 16,383 words (Brown) and 17,964 (AP
+News), so the curse of dimensionality is milder and counting stronger);
+Adam, not plain SGD; no direct connections; dropout in the long run (the
+paper used weight decay, 1e-4 on Brown); the mix by fixed halves, as the
+paper's; deleted interpolation with one weight per order (the paper's,
+after Jelinek and Mercer 1980, has a set of weights for each frequency
+bin of the context, also fit by EM on validation, and 1 / |V| as one of
+the mixed models, where ours gives 1 / V for an unseen context);
+Kneser-Ney (the paper's 321 to 323) not run. The paper's other finding,
+that its network gained from 2 to 4 words of context while the n-grams
+did not, is not ours: both gain from 3 to 5 characters, and the network
+not from 5 to 8.
+Tried and not used: smaller or shorter short runs (h 256, m 16, 3000
+steps of 256: 2.75 at 5; h 512, m 24, 10000 steps of 256: 2.46, 9 s;
+4000 of 1024 at lr 0.01: 2.444, 7 s, too slow for 3 seeds and 3
+contexts); a long run without dropout (h 512, 30000 steps of 1024:
+training 1.85, test 2.48, overfit); interpolation with 0 instead of 1 / V
+after an unseen context (2.513 against 2.416 at 5). Times: steps take 1.2
+to 2.4 ms here with 512 units and 4 to 10 threads; with the machine busy,
+10 threads were slower than 4 (oversubscribed: the 2500-step default took
+68 s at load 9 to 13 with 10 threads, as much system time as user time,
+and 37 s with OMP_NUM_THREADS=4).
+Thread count and bytes: a run with 1 and with 10 threads gives different
+bytes in summary.json (the 7th digit of a weight after 300 steps): the
+order of float32 sums in a matrix product depends on the threads. Printed
+numbers agree to every digit shown (checked at 4 and 10 threads). The
+byte-for-byte test runs twice under the same conditions, so it holds.
+
+**07.03 A recurrent network (Bengio, Simard and Frasconi 1994; Pascanu,
+Mikolov and Bengio 2013).** models/rnn.py: RNNCell is tanh(ih(x) + hh(h)),
+two Linear layers (so two biases, as torch.nn.RNN has); RNN loops over the
+steps calling the cell (computing ih for every step at once outside the
+loop was slower here: 12.2 against 8.9 ms for a batch of 64 x 64 steps at
+256, forward and backward). The test copies torch.nn.RNN's weights in and
+compares states and every gradient at 1e-10 in float64. nn.Linear's start
+gives the recurrent matrix a spectral radius of about sqrt(1/3) = 0.58
+(0.61 measured), nn.RNN's would differ (all weights in +-1/sqrt(hidden)).
+rnn, default:
+1. CharRNN (embeddings of 32, a state of 256, Linear to 65), truncated
+   backpropagation through time: the training text as 64 streams laid end
+   to end, 64 characters of each per step, the state carried and
+   detached; Adam 0.005 falling to 0 on a cosine, 600 steps (2.5M
+   characters, 2.4 passes), the gradient clipped to 1. Test bits (window_
+   bits, spans of 1024, each scored character with 64 or more before it):
+   2.545, 2.540, 2.536, `2.54 +- 0.0049` (the seeds change only the start:
+   the streams are the same every run). Gradient length median 0.44 to
+   0.45, largest 1.4 to 1.7, 5 or 6 of 600 steps clipped. At 800 steps, the
+   first default (2.487, 2.487, 2.486; 57 to 73 s with 10 threads and the
+   machine busy, so 600): with clip=0 the same bits (2.488, 2.473): the
+   text network does not need clipping. Against 07.02: its best count
+   model (interpolation up to 5) 2.416, its network at 5 (short run)
+   2.474. So in a minute the RNN is behind both; say so. Spike (not in
+   the default run): the same network for 5000 steps (79 s, 1 seed): test
+   2.369, validation 2.183. Tried for the default: a state of 384 for 600
+   steps (2.459, 2.457, 2.510: more spread, seed 2 clipped 41 steps) or 800
+   steps (2.412, 1 seed, 17 s a seed, too slow for 3 seeds); 512 for 500
+   steps (2.512: lr 0.005 is too high for it, 110 of 500 steps clipped);
+   lr 0.01 at 256 (2.499, 32 clipped); 128 streams of 32 (2.483); a state
+   of 128 for 1600 steps (2.611).
+2. What it uses: each test character (every 4th from 64 on, 13,927) read
+   after 64 characters of which only the last w are really the ones
+   before it, the others the 64 before another, random position: w = 0
+   10.037, 1 5.867, 2 4.337, 4 3.121, 8 2.633, 16 2.566, 32 2.567, 64
+   2.567 (at 800 steps: 10.469, 6.074, 4.459, 3.126, 2.579, then 2.506
+   three times). Past 16 characters nothing it reads changes its guess (to
+   3 decimals, or the last one): that is the forgetting, on real text.
+   (2.567 here against part 1's 2.545: every 4th character, and a window
+   that starts with false text.) Small w are worse than
+   the pair model and even than equal chances because the false text before
+   them misleads it; the comparison that matters is where it stops
+   changing. A first version started from a zero state and read only the
+   last w (w = 1 5.211, 8 2.537, 16 to 64 2.506): the same 16, but a zero
+   state is one it hardly saw in training.
+3. The recall task: a symbol of 8, then T blanks (a ninth symbol), answer
+   from the last state; Recall (embeddings of 16, a state of 64), SGD with
+   momentum 0.9 at 0.1 (the papers' plain gradient descent; recall_opt=adam
+   is there), 300 steps of 64, clipped to 1, 3 seeds, accuracy on 1000 new
+   sequences: T = 2, 5, 10: 1, 1, 1 in every seed; T = 20: 0.624 +- 0.441
+   (0.115, 0.881, and one between); T = 40: 0.169 +- 0.082 (0.115 to 0.264;
+   chance 0.125). Clipping is needed here: with clip=0 (2 seeds) T = 10
+   gives 0.131 (the loss jumps to 12.6 at step 100, an exploding step),
+   T = 20 0.25, T = 40 0.12. With Adam (spike, lr 0.01, 5 seeds) the fall
+   is softer and noisier: T = 20 0.83 (0.41 to 1.0), T = 40 0.42 (0.13 to
+   0.75): Adam scales each weight's tiny gradient up to a full step, so the
+   long path is not as starved; the gradient table still shows it is tiny.
+   With random filler symbols instead of blanks (spike, Adam): 0.83 at 20,
+   0.36 at 40, 0.45 at 80 (2 seeds): no cleaner.
+4. The gradient reaching the input k steps back (k = 0, 5, 10, 20, 40, 60)
+   for the recall task with T = 60, 256 sequences, gradient_back (the
+   inputs' embeddings made a leaf, torch.autograd.grad, so no weight's
+   .grad changes): as it starts (radius 0.61) 9.5e-4, 2.2e-5, 4.4e-7,
+   2.1e-10, 1.1e-16, 4.1e-23; the same weights rescaled to radius 0.5:
+   down to 7.3e-20 at 40 and 0 at 60; 1.0: 8.9e-4 to 2.0e-11; 2.0: 6.7e-4
+   rising to 0.11; 3.0: 5.1e-4 rising to 2900. The trained text network
+   (radius 2.95, on 256 windows of the test text): 3.4e-3, 3.7e-4, 3.7e-5,
+   3.9e-7, 4.3e-11, 1.0e-14 (at 800 steps: radius 3.25, the same shape):
+   it vanishes although the radius is above 1,
+   because tanh saturates and its slope multiplies every step. Pascanu et
+   al. state their conditions with the largest singular value of the
+   recurrent matrix, which is at least its spectral radius (in a spike, 0.90
+   at radius 0.5 and 1.79 at radius 1): below 1 the gradient must vanish
+   (with tanh, whose slope is at most 1); above 1 it may explode, and need
+   not. The column printed is the spectral radius, the size of the largest
+   eigenvalue; do not call it the singular value. Exact zeros: at radius 0.5
+   the gradient underflows float32 before 60 steps.
+5. 300 characters, the state carried from one character to the next (a
+   small Reader object as next_scores for sequences.sample), seed 0.
+
+**07.04 Attention (Bahdanau, Cho and Bengio 2015, figure 2).** models/
+attention.py: attend(scores, values) = softmax over the last axis, then
+weights @ values; Additive = v . tanh(W q + U k), no biases (their
+appendix A.1.2 writes none: "whenever possible, we omit bias terms").
+models/seq2seq.py: Encoder (embedding, 07.03's RNN), Decoder (07.03's
+cell, starts from the encoder's last state, reads the previous symbol,
+START numbered `symbols`), AttentionDecoder (scores of its state before
+the step against every encoder state, attend, the context read beside the
+previous symbol's embedding and given to the output beside the new state:
+the paper's section 3.1, with its s_{i-1} as the query), Seq2Seq (forward
+with teacher forcing, generate greedy, both returning the weights).
+attention, default: copying 10 random symbols, trained on lengths 1 to 20
+(each batch one length), embeddings of 32, states of 64, score size 64,
+Adam 0.003, 1000 steps of 64, clipped to 1, 3 seeds; a line after each
+model is trained (the last batch's cross-entropy, in nats: about 2 without
+attention, 0.001 to 0.06 with); then the fraction of symbols written right,
+greedily, on 500 new inputs of each length (rng 1000 + seed). No attention
+/ attention (t):
+2: 1.000 / 0.999 (-1.0); 5: 0.454 / 1.000 (+36.1); 10: 0.242 / 0.992;
+15: 0.186 / 0.973; 20: 0.156 / 0.937; and longer than any trained on, 25:
+0.142 / 0.874; 30: 0.129 / 0.801; 40: 0.125 / 0.604 (chance 0.10). Whole
+outputs right: no attention 1.000 at 2, 0.010 at 5, 0 from 10; attention
+0.999, 0.999, 0.973, 0.912, 0.809, 0.668, 0.497, 0.203. (At 1200 steps,
+the first default, 43 to 49 s with the machine busy: 0.998 / 1.000, 0.471
+/ 0.999, ..., 0.166 / 0.942 at 20, 0.125 / 0.665 at 40.)
+The weights of one example of length 10 and one of 30 per attention seed
+are in the summary.json of attention/seed<k> ("examples": input, written,
+weights, one row per output step, each adding up to 1). Seed 0's printed
+example (input 8 6 5 2 3 0 0 0 1 8) puts its most weight on input i at
+step i every time, 0.73 to 0.99. Its length-30 example (longer than
+trained on) is a clean diagonal for 13 steps, then loses its place: the
+largest weights wander (positions 28, 20, 29, 9, ...) and 15 of the 30
+symbols are wrong; at 1200 steps the same seed's was a clean diagonal but
+for one step. A figure of both shows where attention holds and where it
+does not.
+Held: without attention the copy falls with length, from right at 2 to
+near chance by 20; with attention it holds at the lengths trained on (0.94
+at 20, the longest) and stays far above on longer ones, falling slowly
+(0.60 at 40). The paper's figure 2 is BLEU against sentence length for
+English to French: RNNencdec-30 and -50 fall as sentences lengthen,
+RNNsearch-50 "shows no performance deterioration even with sentences of
+length 50 or more" (table 1: BLEU 17.82 against 26.75 on all sentences).
+Ours is not translation and not BLEU; and past the trained lengths ours
+does deteriorate, which theirs (trained to 50, scored to about 60) shows
+less of. Departures: the paper's units are gated (its appendix A.1.1),
+ours 07.03's tanh cell (no LSTM or GRU in this module); its encoder is
+bidirectional, ours one-way, so that the only change is in the decoder;
+its output is a maxout layer, ours Linear; it searches with a beam, we
+decode greedily. No attention needs more than 1000 steps even at short
+lengths (spike, 6000 steps, 1 seed: 0.96 at 3, 0.56 at 5, 0.30 at 10,
+0.19 at 20; a state of 128, 3000 steps: 0.98, 0.60, 0.30, 0.18): more
+training does not save it past 5. task=reverse (spike, 2 seeds) is the
+more paper-like curve for the plain model, which reverses short inputs
+well (1.00 at 5, 0.80 at 10, 0.41 at 20, 0.26 at 40) while attention gives
+1.00, 0.99, 0.87, 0.42: it holds less well than on the copy (a one-way
+encoder's states know less of what comes after them); the default stays
+the copy, where attention holds.
+
+## For module 08: what module 07 leaves ready
+
+- The text: `from data import shakespeare`; `shakespeare.split("train")`
+  (numpy int64), `chars()`, `encode`, `decode`. Choose on "val", report on
+  "test" (Data above: test is The Tempest, 0.2 bits harder).
+- Batches: `experiments.sequences.windows(ids, starts, length)` gives x and
+  the next symbol at every position, y, both (B, length): for a GPT draw
+  the starts from run.rng (`torch.from_numpy(run.rng.integers(0, len(ids)
+  - length - 1, B)).to(dev)`); 07.03 uses consecutive starts instead.
+- Scoring: `window_bits(predict, ids, span, warm)`, bits per character over
+  every test position from warm on, each with at least `warm` characters
+  before it in its window; the window is warm - 1 + span long, so with a
+  block of 256 take warm=64, span=193 and the GPT's numbers sit beside
+  07.03's (warm=64). predict is the model itself for a GPT (scores (B, T,
+  V)); `lambda x: model(x)[0]` for 07.03's RNN. `bits(scores, targets)` is
+  the cross-entropy in bits for training losses.
+- Sampling: `sample(next_scores, prompt, n, generator, temperature)`, a
+  seeded torch.Generator; next_scores is given every number so far, so a
+  GPT's is `lambda ids: model(ids[None, -block:].to(dev))[0, -1]`. Top-k
+  and top-p (08.05) need no change to it: each is a function of the scores
+  (the rest set to -inf), wrapped around next_scores.
+- Attention: `from models.attention import attend`: self-attention is
+  attend(q @ k.transpose(-2, -1) / sqrt(d) with the future masked to -inf,
+  v): the mask goes on the scores before attend, which has no mask argument
+  and needs none.
+- 07's ladder, test bits per character, for 08.04 to print beside its GPT
+  (recompute the counts with models.ngram, a few seconds; quote the
+  networks): equal chances 6.022; single characters 4.850; pairs (add-k
+  0.1) 3.599; best add-k (context 4) 2.629; deleted interpolation up to 7
+  2.409; 07.02's network at 5 characters 2.474 (short run) and 2.346 (long
+  run), mixed with interpolation 2.294 (long, 5) and 2.283 (long, 8);
+  07.03's RNN 2.540 (short run, 600 steps; 800 steps 2.487; 5000 steps, 1
+  seed, 2.369).
+- Shared loops: module 07 has none like images.train_epoch (each script's
+  train is its own: random positions, streams, or tasks); 08 may write one
+  in sequences.py or its own file, never in an experiment.
+- Threads: unlike 06's ResNet-8 ("Seeds and determinism" above), 07.02's
+  network gives other bytes with 1 thread than with 10 (the printed digits
+  agree): a byte-for-byte test compares two runs on the same machine with
+  the same thread count, as the tests here do. And with the machine busy
+  (load 9 to 14 here), 10 threads were up to twice as slow as 4 for these
+  small layers, with as much system time as user time: time a page's runs
+  on a quiet machine, and say what was running.
+- The models/ docstring (06.02) says every model after convnet imports
+  torch; models/ngram.py (07.02) is numpy only. Left as it is: the file
+  comes with 06.02, and a note about 07.02 there would be a later lesson's
+  text in an earlier file.
+
 ## Tests
 
 `./learn test research`: 27 tests, all pass, 3 min 22 s. Each runs its
@@ -872,6 +1240,42 @@ recorded run). `./learn selftest` ok (269 tests). `./learn check` reports
 exactly four problems, `research/06.0N: test has no lesson doc`, until the
 pages are written; nothing else.
 
+With module 07 (timed with other agents' runs and a virtual machine going,
+load average 9 to 28): `./learn test research` 35 tests, all pass, 9 min
+2 s; module 07's four 2 min 10 s. 07.01 2 s: the text's size and SHA-256,
+the reader (65 characters, the three parts are the whole text in order),
+pair_counts against collections.Counter, probabilities, bits, sample, then
+bigram's ladder and twice byte for byte. 07.02 52 s: context_codes and
+NGram's counts against direct counts at contexts 0 to 3, the pair counts
+against 07.01's table, chances adding up to 1 after a seen and an unseen
+context, EM against the best of a grid, bits, contexts, context_bits,
+sample and nearest against direct computations; the recorded long run's
+files, settings and result (every seed below interpolation at 5 and 8,
+the pair model at 1); then nplm at contexts 1 and 5 (2 seeds, 1500 steps:
+training bits fall, held-out bits turn up, the network far below add-k at
+5, mixed below interpolation) and a tiny run twice, byte for byte. 07.03
+41 s: RNN against torch.nn.RNN on copied weights in float64 at 1e-10
+(states, the last state, and the gradients of the inputs, the first state
+and every weight), windows and window_bits against direct sums,
+recall_task, gradient_back against a direct backward (and the weights'
+.grad left alone); then rnn (2 seeds, 300 steps: text below 3 bits, recall
+right at T = 2 and near chance at 40, the gradient table's two ends, the
+reads flat past 16) and a tiny run twice. 07.04 35 s: attend and Additive
+against the formula written out by loops, the plain decoder ignoring the
+encoder's states, the attention decoder's step against its definition,
+teacher forcing with a model's own symbols against generate; then
+attention (2 seeds, 800 steps, lengths 2, 10, 30) and a tiny run twice.
+Again later with the machine lighter (load about 5): 07.01 to 07.04 in
+1.4, 19.6, 23.3 and 23.9 s. The long run of 07.02 is rerun only with
+LEARN_RERUN_LONG=1 (about 20 minutes). `./learn check-skeleton research` ok, 38 s (35 lessons, each
+fails at its stub). `./learn check-timeline research` ok, 107 s; the
+project has 101 files at 07.01, 145 at 07.02 (41 of them the recorded
+run), 147 at 07.03 and 150 at 07.04; 06.04 still has 98 (track.py puts
+"experiments/recorded/nplm/*" before 06.04's wider glob). `./learn
+selftest` ok (269 tests). `./learn check` reports exactly eight problems,
+`research/06.0N` and `research/07.0N: test has no lesson doc`; nothing
+else.
+
 ## For the harness work and module 06
 
 - verify_tools() names python3 and numpy only. MNIST is a download, not a
@@ -890,3 +1294,11 @@ pages are written; nothing else.
   engine-era script here.
 - `experiments/` is the plan's `papers/<name>/`: one file per lesson, since
   most of 00 to 05 are not papers.
+- (07) FILES_FROM places a file by the first glob that matches it, in the
+  dict's order, and 06.04's "experiments/recorded/*" matches every later
+  recorded run. track.py's module-07 part rebuilds FILES_FROM with
+  "experiments/recorded/nplm/*" first. What the harness could do instead:
+  let the longest (most specific) matching pattern win, as an exact path
+  already does; then each module's recorded run needs only its own line.
+- (07) Module 07 needs no download, so its session blocks need only
+  needs="torch" from 07.02 on; 07.01 is numpy only and needs nothing.

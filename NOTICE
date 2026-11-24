@@ -265,6 +265,18 @@ Licence    As read at the source on 2026-11-14 and 2026-11-24 (the page now
            licence and asks that the tech report be cited (Krizhevsky,
            "Learning Multiple Layers of Features from Tiny Images", 2009).
            Nothing of it is redistributed here.
+Data       Tiny Shakespeare: a selection of Shakespeare's plays, 1,115,394
+           bytes of plain ASCII, put together by Andrej Karpathy for
+           char-rnn (https://github.com/karpathy/char-rnn, the file
+           data/tinyshakespeare/input.txt, unchanged since the
+           repository's first commit; fetched at commit
+           6f9487a6fe5b420b7ca9afb0d7c078e37c1d1b4e). It ships with the
+           track, byte for byte, as tracks/research/data/tinyshakespeare.txt
+           (SHA-256 86c4e6aa9db7c042ec79f339dcb96d42b0075e16b8fc2e86bf0ca57e2dc565ed),
+           and lessons from 07.01 on train and score on it.
+Licence    As read at the source on 2026-11-24: the plays are in the public
+           domain; the char-rnn repository's Readme gives its licence as
+           MIT. The file is redistributed here unchanged.
 Generated  The two groups of points (data/points.py) are made from a seed
            when a script runs; none is stored.
 
