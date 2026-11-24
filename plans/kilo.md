@@ -461,7 +461,30 @@ teaches only the buffer (plans/dsa.md).
   has one, no dead link, nothing naming NOTES.md, a test or an agent.
   NOTES.md 09: Zed's cell in "The notable editors" says what was confirmed,
   not "a sandbox"; the lines that said 09.10 was not built are current.
-- 09.06 to 09.10: see the commits of the second read.
+- 09.06 to 09.10, the second read: 09.09 said 24 functions (25 since
+  set_view) and worded its invariant too widely (in the editor input()
+  draws a prompt; under -l the two functions that would draw refuse);
+  Ctrl-C under -l run at last (the terminal's SIGINT: kilo ends at once,
+  status 130, an unsaved change lost, the terminal untouched); 09.07's
+  quit-mark caption said quit(true) where the lesson's key calls
+  quit(false); typed spaces and leading spaces lost by the site's inline
+  code, said in words; rows from 0 and from 1 told apart; 09.10 said
+  package.path starts with ./?.lua (it ends with it).
+- Found by 09.10's writer and fixed in the code after the lessons were
+  written: the count hook dropped every key it read but Ctrl-C, so with a
+  plugin that runs on every key (colour.lua) a paste of 60 letters
+  arrived as 5. The hook now keeps those bytes (4096 at most) and
+  editorReadKey() takes them first; a Ctrl-C throws away the keys before
+  it. 09.08, 09.10 and figure 09.08-hook were rewritten to it. Found
+  with it: four field comments in script.c's state carried marker text
+  the harness did not read, shown in every 09 project; made proper
+  markers. The 0908 fuzz sent Ctrl-Q to a kilo that had left (one failure
+  in two full runs); it stops once kilo has exited.
+- Known and left: in the finished tree open() from a script does not
+  tell module 07's server (lsp.c cannot take a 09 marker); the count hook
+  cannot stop a finalizer or one long call inside a Lua library function;
+  module 06's editorUpdateSyntax does memset on NULL for an empty row
+  under glibc (suppressed by name in the fuzz, recorded in NOTES.md).
 - `./learn verify` passes 09.01 to 09.05; `./learn check` lists nothing for
   kilo; `./learn test kilo` passes (all 42). Once, run beside the
   read's screenshots and verify, 0908 failed at its last step: the fuzz's
