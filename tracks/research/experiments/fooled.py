@@ -41,8 +41,9 @@ CONFIG = dict(n_train=10000, hidden=256, epochs=2, batch=128, lr=0.004, runs=32,
 # Two disjoint halves of n test examples, drawn once from rng (a numpy
 # Generator) before anything is run: A, the one choices are made on, and
 # B, held back, the one the choice never sees. (A file of test examples
-# can be in an order, easier ones first: MNIST's is, as part 1 measures.
-# So the halves are drawn at random, not cut.)
+# can be in an order: the first half of MNIST's is far harder for part 1's
+# networks than the second, as part 1 measures. So the halves are drawn at
+# random, not cut.)
 def hold_back(n, rng):
     order = rng.permutation(n)
     return np.sort(order[:n // 2]), np.sort(order[n // 2:])
