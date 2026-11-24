@@ -31,14 +31,17 @@ research 08` passed on the lessons' branch (534 s) and `./learn check`
 is ok on master. That is 40 of the core's 70 lessons. 08.02's default
 run is 2 seeds (3 took 82 s on a loaded machine); its heads comparison
 is inside the noise at 2 seeds and the page runs that part at 3 as well.
-In work, each by an agent in its own worktree: module 09's code, and
-module 14's code (grokking, which needs nothing of 09 to 13). Both
-append to track.py and NOTES.md, so the second merge keeps both blocks
-by hand.
+Module 09's code is on master too (tokens/, models/gpt2.py, TinyStories
+and its recorded run, 44 tests). In work, each by an agent in its own
+worktree: module 09's lessons, module 10's code, and module 14's code
+(grokking, which needs nothing of 09 to 13). All three add to track.py
+and NOTES.md, so the merges keep each block by hand. No more than three
+agents at once: with more the machine's load makes every timing
+useless.
 
-After that: 09's lessons when its code is merged, with 10, 12 and 13's
-code in parallel (11 after 10, both change models/gpt.py); 14's lessons
-when its code is merged; 15 last.
+After that, as agents finish: 14's lessons; 12 and 13's code; 11's code
+after 10's (both change models/gpt.py); each module's lessons after its
+code; 15 last.
 
 Still open, not in work:
 - Harness quirks the writers met, for whoever next works in harness/: a
@@ -262,9 +265,27 @@ Built, as found:
   run's model even plain sampling writes text the model finds likelier
   than the real text.
 
+- 09.01 Sennrich et al. (2016): 15.9% of the test text's different
+  words are not in training (6.9% of its running words). BPE at 2048
+  gives 2.92 bytes a token on training text, 2.58 held out. The same
+  GPT for the same steps: 3.332 bits per character on characters, 2.691
+  on BPE tokens.
+- 09.02 The same ids as tiktoken and transformers on everything tried,
+  but for letters newer than Python's Unicode tables (15.0 here, 16.0
+  in tiktoken) before a contraction: 5,004 code points.
+- 09.03 Logits identical to transformers' (eager attention). GPT-2
+  scores 1.851 bits per character on Shakespeare's test text, never
+  trained on it, against 2.226. Holtzman et al. on their own model's
+  small sibling, in a 32-minute run that is not recorded: greedy loops
+  and pure sampling is above the text's perplexity (held); the nucleus
+  is not the closest to the text (did not hold).
+- 09.04 Eldan and Li (2023): 4.27 million weights, 45 minutes, 2 seeds:
+  0.7367 bits per byte on held-out stories (GPT-2 small: 0.836); 16 of
+  16 stories end on their own, none loop, and they share no longer runs
+  with the training text than held-out stories do. Whole stories: held.
+  Consistent, nearly perfect grammar: did not. GPT-4's grading: not run.
+
 Still the plan:
-- 09.01 BPE; 09.03 GPT-2: the published weights, the reference's logits.
-- 09.04 TinyStories: a model of a few million parameters tells a story.
 - 10.01 to 10.03 RMSNorm, RoPE, SwiGLU: each against the piece it
   replaced, same parameters, several seeds; 10.05 is the table.
 - 11.03 FlashAttention, 11.04 mixed precision: the same numbers, sooner.
@@ -287,6 +308,21 @@ Still the plan:
 - Module 09's tests take their reference from `transformers` (already
   installed, 4.57.6): its GPT-2 tokenizer built from the fetched files,
   its model for logits. Nothing new is installed for a test.
+
+## Decisions after module 09's code (Fable, 2026-11-24)
+
+- Module 09's tests fail with "missing:" and the fetch command when a
+  download is absent, as module 06's do. A pass that never compared the
+  ids or the logits would say more than it checked.
+- 09.03's 32-minute sampling run is quoted on the page as a table, with
+  its command and time and the words that it is not recorded, as 08.05
+  quotes its checkpoint's numbers.
+- 09.02 says that where its ids part from tiktoken's depends on the
+  learner's Python (its Unicode tables), and how to see which.
+- A default run is cut for time only when it passes 55 s at a load
+  average under 6. (08.02 was cut at a load of 10 to 13; it stays cut.)
+- tiktoken was installed for the tests (pip install --user). The tests
+  use it when it imports and transformers' tokenizers either way.
 
 ## Directions for 07 to 15 (Fable, 2026-11-24)
 
