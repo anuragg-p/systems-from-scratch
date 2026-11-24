@@ -134,9 +134,9 @@ def measure(model, cfg, dev, held, held_ids, table, end, train_ids, index, k, la
           f"   {len(told)} stories at temperature {cfg.temperature}: {out['ended']} ended on their own (wrote END) within "
           f"{cfg.length} tokens; {out['looped']} ended in a loop.\n   Words each: {', '.join(map(str, out['words']))}\n"
           f"   The longest run of tokens each shares with the training text: {', '.join(map(str, runs))}\n"
-          f"   (in words: {', '.join(map(str, words))}); the longest: {longest!r}")
+          f"   (in words: {', '.join(map(str, words))}); the longest: {ascii(longest)}")
     for s, ended in told[:cfg.shown]:
-        text = bpe.decode(s, table).replace("\n", "\n      ")
+        text = bpe.decode(s, table).encode("ascii", "backslashreplace").decode().replace("\n", "\n      ")
         print(f"\n      {text}\n      [{'END' if ended else 'no END'}]")
     return out
 
@@ -214,7 +214,7 @@ def main():
                                      index, k, table)
     print(f"\n   The first {cfg.samples} held-out stories, which no model saw: the longest run of tokens each shares with "
           f"the training text:\n   {', '.join(map(str, people))} (in words: {', '.join(map(str, words))}); the longest: "
-          f"{longest!r}")
+          f"{ascii(longest)}")
     for label, out in measured.items():
         lab.Run(cfg, 0, label=f"stories-{label.replace(' ', '-')}").finish(**out)
     lab.Run(cfg, 0, label="stories-held-out").finish(copied=people, copied_words=words)

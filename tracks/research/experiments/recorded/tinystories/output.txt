@@ -1,0 +1,148 @@
+1. TinyStories: 74,394 training stories, 16,709,577 tokens (a vocabulary of 4096: 256 bytes, 3839 merges, END),
+   3.95 bytes a token; 21,990 held-out stories, 4,831,485 tokens. (0 s to read and tokenise, or to read what was kept.)
+
+2. 08's GPT, 4 blocks of 8 heads, width 256, windows of 256 tokens: 4,273,664 weights.
+   4000 steps of 32 windows (32,768,000 tokens, 1.96 passes over the training stories), AdamW 0.001.
+   Bits per byte on the first 2,000 held-out stories: 0.7367 +- 0.001263 (min 0.7358, max 0.7376, 2 seeds)
+   curves in experiments/recorded/tinystories/curves.svg; the best seed (0) saved to experiments/recorded/tinystories/model.safetensors
+
+3. Stories, each started from END, the symbol after which a new story begins (runs of fewer than 8 tokens shared with the training text count as 0):
+
+   The model trained here (seed 0):
+   bits per byte on 2,000 held-out stories: 0.7358
+   16 stories at temperature 1.0: 16 ended on their own (wrote END) within 600 tokens; 0 ended in a loop.
+   Words each: 187, 152, 129, 105, 110, 172, 125, 214, 174, 323, 159, 210, 102, 171, 242, 203
+   The longest run of tokens each shares with the training text: 19, 11, 9, 11, 14, 10, 10, 14, 12, 15, 8, 12, 0, 14, 10, 19
+   (in words: 17, 10, 8, 9, 13, 9, 9, 12, 8, 8, 8, 11, 0, 11, 9, 17); the longest: 'Once upon a time, there was a little girl named Lily. Lily was very happy because she'
+
+      Once upon a time, there was a little girl named Lily. Lily was very happy because she loved to go to the park every day to eat sausages. One day, she saw her friend Timmy at the park. Timmy was sad because he didn't want to taste noisy and that she thought she looked ugly and fancy.
+      But then, she had an idea. She asked him, "Can you say this sausage, Sammy? Is. They speak me every day."
+      Timmy thought hard about this idea and decided to have a new one van to play in the park. He took out a big bag and put all the page on it. But then, he accidentally dropped the bin and it broke. Timmy tried to yell "You are too weird, I'll not keep our cart for!" 
+      His friends tried to make a funny noise, but it fell over and the ground was couldn't fush Lily. They both tried their best to take the new meeting. The next day, when they were done eating the new lid of sausage, Timmy was relieved he wanted to show his friends. The end.
+      [END]
+
+      Once upon a time, there was a little bird named Flanna. Flanna flew around the forest every night to look for food. One day, Flanna flew down into the rough trees and saw a big log! Mom said to Flongoantly, "Look, Mom, I can pick you up!" 
+      They flew high up to the river and noticed a big paddling. To Granaelia said, "Ha-by, let me pick!" She laughed and said, "That looks amazing, a membori!" 
+      Suddenly, Papa shouted, "I love to catch by catch other birds!" So, Pe shone up with the birds that were running and running in the river. They were happy to be together. 
+      As they left, Marna felt the view of her body full of sunglasses; she was having so much fun, but she didn't have exploreing the weird moves had with all her first time. She was glad that it's not so pallengenty and yet remain loved.
+      [END]
+
+      Once upon a time, there was a serious story. It was full of chocolate. The stickers were so sweet and delicious! The sweet little boy stolen every day. 
+      One day, the little boy decided to gain a bit further. Every day he took out a bulan at the little boy's house and he was so ashamed to what was wrong. But when he did something wrong, the little boy stopped crying. Everyone was very upset but then the big boy had an idea. He had seen this again because his father had only been restless. 
+      The young boy never played with chorch more than before. He wasn't upset anymore and his father was brave. He knew how to Areay back and stayed quiet, and remain safe, no matter what!
+      [END]
+
+      Once upon a time, there were two friends, Ra and Raabbit. Rabbit wanted to be fun so they stretched their arms up. Rabbit jumped up and down, they pulled, ready to have a picnic.
+      Then, Rabbit asked the Tabbit, "Wow! Let's see what we got for?" Rabbit replied, "I think it wants, let's rest." They swooped down on Sam's blanket and started to run.
+      They swooped and laughed together. Rabbit said, "Let's go to the park. Sabbit!" Rabbit was really excited and said, "Yes I would love to slide!" Babbit smiled, and they left the park together and had a great time on the safari.
+      [END]
+
+      Once upon a time, there was a happy little rabbit named Timmy. Timmy loved to run and jump in the air. One day, Timmy saw a cherry was still singing a song. He picked it up and showed it to his friend, a little girl named Lily. 
+      "Hi Timmy! Can you help me get a cherry cherries from the bin?" said Lily.
+      Timmy thought for a moment and then said, "Yes, I like cherries."
+      Lily chose lots of cherries too and they agreed together. They ate fruits and passed hours. At the end of the day, they paid for the cherry tree, and Timmy became very popular with his friend.
+      [END]
+
+      Once upon a time there was a big, dark hall of children. Every day she did not go there. She was so brave. Her humb had bad teeth and made her laugh.
+      One day, while Jane and her friends, Amy, Joe's silly nose was the same color of body. He smiled and said it was the same thing to do.
+      But one of her favorite thing she knew was wrong. Alice felt so embarrassed that she didn't even run away again. "I don't want hergy and now come back!"
+      The two friends quickly ran away from the friendly waste of the life for each other. On the back one of her friends, she realised it was time to come back home with a show. All her friends were so excited and gathered around to join her.
+      Soon, the strong ade got around and quietly as she made it to his friends. She they all told them that the moves would go back another day and now it would rest of another day.
+      [END]
+
+      Once upon a time, there was a big building in the building. The building was gloomy and fluffy, but it seemed like it could not go outside. The little building was alert and started walking.
+      One day, a generous mother came and she was busy making a folder for the guard's creative blocks. The little girl was so excited! She grabbed the box and grabbed one of the puzzle.
+      The mom was very happy to see the little girl. She said, "Good job sun. I am happy to play with my paint again."
+      The little girl walked to the building work and immediately the special tube was still there. But she missed it all her art, and she was feeling a real 3 year old.
+      [END]
+
+      One day, the farmer took out a big bowl of bananas, was a very impressive stick. He was very nice, so he stung his sticks around. He liked how the bananas had all his toys.
+      One day, he decided to go for a walk in the lake. He saw ants roll off the rocks, and even tried to catch one. But bunny was scared and went near the big red bean."
+      The bean did not want to. He wanted to play like the beanes and try them. He got married and ran away.
+      He saw other kids playing on the pond too. The other kids asked his friends if he could join them. His efforts thought of why he felt sorry for him, so he gave them both an old bag.
+      The begged them to go to an effort effort. Everywhere they went, they brought some bananas from some other people. They all agreed that they had a great time exploring each other.
+      When they finally got home, everyone learned a lesson that day. A valuable lesson is where you surrounded in its life, not to be jealous because you had to remain surrounded by his life. And the beanos help-tain those in need, no matter what, they do to or make it powerful.
+      [END]
+
+      The dolphin was a strong octopus, so he could just give it back to the beach and showed him how to drive the beach. Every day, he said goodbye to the ship and sailed away, ready to share his nice fish with the fish. 
+      One day, the huge magnet asked the giant, "What are you doing with me?" The shield replied, "I'm refusing some words." 
+      But then the giant let go and the giant started laughing. The giant smiled and wanted to help, so the giant took the silver hat with him. He ate the yellow hat and used all the colors until he was strong! 
+      The two mule looked up and said, "Let's go back to the beach!" The machine blinked Sam and the giant smiled at him. He nodded in joy, happy that he could help.
+      Sam and the two swam into the ocean! They played and splash and had a great time. From that day on, the dolphin remembered to always remember to take responsibide before taking things that might smaren.
+      [END]
+
+      Lily was impatient. She did not want to make mom sad. She wanted to go to the library. She did not want itplace. She wanted to play with her mom and her dolls. But her mom did not want to play. She thought she would not be herat.
+      Soid show her her birthday. "Please, mom, can I and her?" she asked. Mom would show her how much she had grownze.
+      Lily thought about what Mommy had told her. "Lear now, you have to promise to try something new. It is hard to make you happy. I have something for you. It is my gift. You have been very stubborn andison not care to make you angry. It is dangerous and lonely."
+      Lily was sad. She said, "I'm sorry, Mommy, Anna, I'm sorry. I won't do it. I love this, Mommy. I'm sorry, Mommy. I did not know."
+      Mommy smiled and said, "I know, Lily. But you can keep flying. You can do it for you if you practice. But first, let me learn a lot of value, and no matter how we take turns you want."
+      Lily thought about it. She loved her purple dress and her mom. She asked, "Wow, Mommy, I am proud of you. I love you, Mommy and I love you. She is my boy. Maybe I will try to be more flexible again."
+      Mommy smiled and said, "Yes, Lily, too, from now on, Lily. Always try to find a way to find some math. You will be proud of her, Lily. Come record your purple dress, with me and my pink dress. It will get shiny and sweet. You both improved things both and respectful. And then we can try!"
+      Lily thought about what her mommy said and watches her. She said, "Thank you, mommy. You are a good activit. Now, remember, how much fun things can make. Look, seven, sew in the box, number, seveneen, fadine, sevenins!"
+      [END]
+
+      Once upon a time there was a green bird. He wanted to make himself even faster than anyone who helped him. So he flew into the forest, looking for things to do. Then, one day he noticed something sparkled up in the silence. He saw a tall, blue moon. 
+      The bird had never seen them before and was just so excited. He looked around in the trees and found some colorful colors to colour. Then he started making the most beautiful colours!
+      The bird sealed wide to the top of the trees and rolled through the trees. The bird was so amazed! He had never been able to help without a friend before. 
+      In the end, the bird was able to take some little them with Jack. He was happy too and flew up and down in the sky. 
+      Jack meamed with pride for his friends and he knew that he had done good. The bird felt so special!
+      [END]
+
+      Anna and Ben were playing in the garden. They liked to plant bugs and flowers. They liked to pretend they were bees. They saw flowers, bugs, flowers, and even a nest near the fountain.
+      "Look, Mom, I like bloom!" they said.
+      "That's a nice bee, Anna. Maybe we can grow in a magic place." Ben said.
+      Anna and Ben ran to the fountain. They saw a man with a hat. He said hello.
+      "Hello, kids. Do you want to come home?"
+      The man looked at them. He smiled too.
+      "Yes, we arebigail." Anna said.
+      "Yes, please!" Ben said. He ran to the same spot.
+      The kids were happy. They can smell the delicious tree. They played with someone else. They had a lot of fun.
+      The man thanked Anna. He said he was happy.
+      "Thank you, Anna. I love you!" Anna said.
+      "You're welcome, snowman. I love you." Ben said.
+      The man said, "I love you too. I'll share the fruits and the river. I'm glad you're my magic window."
+      Anna and Ben smiled. They played happily hard with the plants and the man and the color. They made a new friends. They played and gathered and shared the flowers. They learned a lot to be kind. They became friends.
+      [END]
+
+      The sky was shining brightly. Everyone danced with big smiles on their hands. Jake watched in amazement and laughed.
+      Then, the sky became dull. Jake spun around and whistling a nice song. He danced like mommy was doing a friend.
+      They joined together all sorts of fun things to hear. Soon, Jake got a little kiss out of breath that his eyes lit up every size of the trees could keep him walking.
+      When the sky was returned, Jake thanked the sparkler for his big smile. The end that day, Jake's lovely job was over. Jake showed the sparkling wave.
+      The end.
+      [END]
+
+      Once upon a time, there was a gloomy missile. He was young, and the sky was cold and icy. He was lost.
+      One day, he went to the park with his mom. In the park, he saw a big raven. The raven was so cute and fluffy! The raven smiled at the grumpy tunes.
+      The raven asked, "Why are you so sad?"
+      The raven laughed and said, "I don't want any peace!"
+      The raven was so grumpy that he started to weep. The raven arrived at first, but the thief wasn't afraid to listen.
+      Then he said, "No all thanks to you. You can always tell me about you when you told me no. The silly raven will be weird soon." 
+      The raven was sad and he tried to be friends to listen. Finally, the raven was left left.
+      The raven was so happy that he created something as a new friend just like the two friends. The raven and the child had a great time as a big winter together.
+      [END]
+
+      Once upon a time, there were two white pants that Lucy loved an ordinary pants. One day, they went to the park to buy a different smile. As they were walking around the park, they spotted something shiny in the grass. It was round, silver, and Lucy picked it up to get
+      "Look mom, here's a shiny, blue pants!" Lucy said hair to her dad, holding up her blue pants.
+      "Go ahead, Lucy!" it said. Lucy giggled and clapped her hands. With a pet, the pants passed the pants everywhere.
+      But then, Jill felt a sharp pain. She looked up and saw that it was scared. It was a needle lying next to her. "I grabbed the needle," the belt said.
+      She put some on her feet and started to walk. Then she saw the belt and she picked it up. She screamed and ran to the ground click.
+      But then, with her mom saw her wearing the needle and felt an urache to encourage her to hold it.
+      \u201cOkay,\u201d Lucy asked, revealing her mom. 
+      Her mom watched as she climbed the stretches if there was a tiny thing in the ground. It was on her plate and it was filled with a beautiful moment. 
+      Lucy was happy to have made a special friend to play with. The moral of the story is from it when it wants to be kind to our friends, even if they want to play yummy things.
+      [END]
+
+      Once upon a time, there was a little girl named Lily. She loved to play at the start-ship. One day, her mom was making lunch. Lily followed her mom to the dowings. They sat on the gray over to watch them a picture of a strange light modas.
+      "Do I wanna wag a symbol?" her mom asked.
+      "Yes, sweetie. But be careful, it is very cold outside. Don't flo blow filthy so high!" Lily said.
+      "Okay, mom. I will settle on the phone." mom said.
+      Lily went outside and looked for her favorite toy to play. Suddenly, it began to crash into a bush. Suddenly, she heard a loud knock. It was the sound of light a magical boot.
+      "Look mom, I'm!" Lily exclaimed.
+      Her mom picked up the ruler and put it in a blanket. Lily watched as the voice got to the ground. The sound got a bit louder and Timmy enjoyed rest of the story.
+      Mommy put the band-aid down and couldn't wait to come home and play. The bandages were a big, scary monster's warriage was coming from the end. The bad ending was where Timmy had bll-ure in the shelival while he woke up feeling happy and proud.
+      [END]
+
+   The first 16 held-out stories, which no model saw: the longest run of tokens each shares with the training text:
+   11, 13, 13, 17, 11, 16, 14, 19, 17, 13, 23, 16, 13, 14, 13, 16 (in words: 10, 11, 11, 15, 9, 14, 12, 17, 15, 11, 19, 14, 11, 12, 11, 12); the longest: 'Once upon a time, there was a little boy named Tim. Tim had a big, orange ball. He loved'
+
+2702 s of tokenising, training, scoring and telling on cpu
