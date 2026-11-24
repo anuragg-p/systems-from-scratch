@@ -13,5 +13,5 @@
 <text class="ta" x="485.27" y="143" font-size="10.5" text-anchor="middle">the rows: 1830</text>
 <text class="ta mono" x="590" y="143" font-size="12" font-weight="700">5190</text>
 <text class="tm" x="24" y="168" font-size="10.5">the row kept before each character: 1 byte (its &#x27;\0&#x27;), then 2, ... up to 60: 1 + 2 + ... + 60 = 1830</text>
-<text class="tm" x="24" y="196" font-size="10.5">One record a run: the row is kept once, before its first change; the leave-out rule skips the rest.</text>
+<text class="tm" x="24" y="196" font-size="10.5">One record a run: the row is kept once, before its first change; undoSave() leaves the rest out.</text>
 </svg>

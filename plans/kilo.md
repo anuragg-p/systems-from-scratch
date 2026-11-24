@@ -331,6 +331,43 @@ teaches only the buffer (plans/dsa.md).
   at named tags and quoted in NOTES.md, with what could not be confirmed.
   Lessons and art follow, from NOTES.md.
 
+## Module 08's lessons, art and read (2026-11-25)
+
+- 4 lessons and the module page, written from a lesson design (on
+  2026-11-24), and the art on another branch from an art design: a cover
+  and icon, the map in every lesson (under the core's grid, steps, saved
+  point, redo and records in a row, and the history under them all),
+  and 9 figures of the idea, four of them stepped (08.01 undo-enter, 08.02
+  swap and two-stacks, 08.04 saved-point). Generators: art/kilo/figs08.py
+  (it runs each lesson's project, with a trace patched into a scratch copy,
+  and checks its numbers against NOTES.md), covers.py, archmap.py.
+- The read (in order, on the site in light and dark and at 390 px, Back and
+  Next on every stepped figure; every Run it and Break it typed again
+  through `./learn run` as written, on a 10x44 pseudo-terminal): 08.03's
+  runs figure had a second row of its own (a, Left, b on an empty file);
+  it now has the keys Run it types next, `so `, Down, Left three times,
+  `and `, from the same run as the lesson. 08.02 numbered rows from 1
+  where the figures and a record's `at` count from 0; it counts from 0 now,
+  and 08.01 says the cursor's row and column count from 1. 08.01's Break it
+  (a double free) warns before the key that kills kilo and says `reset`
+  first; its Linux result was run in the module 07 Debian container
+  (glibc's "double free detected in tcache 2", SIGABRT; SIGTRAP on the
+  Mac). The site's code spans drop a trailing space (harness/web/
+  markdown.py), so `so `, `if ` and `and ` showed as "so", "if", "and"
+  where the reader types them: 08.03 and 08.04 now say "and a space". The
+  one-record figure named "the leave-out rule", which no lesson does; 08.01
+  read as if Ctrl-Z's case did nothing; the module page said every lesson
+  compares five editors. figs08.py's tree() copied no file of module 09
+  and no longer built; it copies script.c, script.h, api.h and lua/ now,
+  and every other figure comes out byte for byte as before.
+- 08.02 has two stepped figures, the only lesson in any track with more
+  than one; both step on their own on the page. art/steps.py's "at most
+  one per lesson" now allows it; the root README says the same and was
+  left alone (another session's edits are in it).
+- On a phone every figure fits and nothing overflows; the figures are drawn
+  640 wide and scale down, as in 07. `./learn verify` passes 08.01 to
+  08.04; `./learn check` lists nothing for kilo 00 to 08.
+
 ## Module 09 as built (code, tests and notes; 2026-11-24)
 
 - Files of its own: script.c and script.h (everything that includes

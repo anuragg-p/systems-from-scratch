@@ -28,9 +28,9 @@ as test 0804 and NOTES.md's measurements use it.
                      Backspace's one U_CHG record and its row, as the trace showed them each time
   08.02-two-stacks   stepped: the project at 08.02 on notes.txt: a, b, Ctrl-Z, Ctrl-Z, Ctrl-R, c:
                      both stacks after each key
-  08.03-runs         the project at 08.03: NOTES.md's keys, and a, Left, b on a file of one empty
-                     row (test 0803's case): the kind undoKey() gave each key, the steps and their
-                     records
+  08.03-runs         the project at 08.03: the lesson's Run it, NOTES.md's keys, Ctrl-Z four times
+                     (to "Nothing to undo"), then "so ", Down, Left three times, "and ": the kind
+                     undoKey() gave each key, the steps and their records
   08.03-one-record   the tree's build: 60 characters typed into an empty row, as one step and with
                      Ctrl-L after each (60 steps): the bytes held, checked against NOTES.md
                      (Measurements: 57 and 5190)
@@ -195,8 +195,11 @@ def tree():
     if "tree" not in _built:
         d = os.path.join(tempfile.mkdtemp(prefix="kilo-figs08-"), "tree")
         os.makedirs(d)
-        for fn in ("kilo.c", "lsp.c", "lsp.h", "json.c", "json.h", "Makefile"):
+        for fn in ("kilo.c", "lsp.c", "lsp.h", "json.c", "json.h", "script.c", "script.h", "api.h", "Makefile"):
             shutil.copy(os.path.join(TREE, fn), d)
+        # module 09's Lua, which the tree's Makefile builds into liblua.a
+        shutil.copytree(os.path.join(TREE, "lua"), os.path.join(d, "lua"),
+                        ignore=shutil.ignore_patterns("*.o", "*.a", "lua", "luac"))
         subprocess.run(["make", "-s"], cwd=d, check=True)
         _built["tree"] = d
     return _built["tree"]
@@ -861,20 +864,34 @@ def key_steps(cap):
     return out
 
 
+SECOND_KEYS = [("s", "s"), ("o", "o"), ("space", " "), ("Down", DOWN), ("Left", LEFT), ("Left", LEFT),
+               ("Left", LEFT), ("a", "a"), ("n", "n"), ("d", "d"), ("space", " ")]
+
+
 def runs0803():
-    a = capture_notes("08.03")
-    b = run("08.03", [("a", "a"), ("Left", LEFT), ("b", "b")], text="\n", name="e.txt")
-    ka, kb = key_steps(a), key_steps(b)
+    # 08.03's Run it: NOTES.md's keys, Ctrl-Z until "Nothing to undo", then its second half
+    a = capture_notes("08.03", tuple([("Ctrl-Z", CTRL_Z)] * 4 + SECOND_KEYS))
+    ka = key_steps(a[:9])
+    kb = key_steps([a[12]] + a[13:])
+    assert a[12][1].message == "Nothing to undo", a[12][1].message
     assert [k for _, k, _ in ka] == ["other", "typing", "typing", "typing", "typing", "other", "deleting",
                                      "deleting"], ka
-    assert [s for _, _, s in ka] == [None, 1, 1, 1, 1, 2, 3, 3] and [s for _, _, s in kb] == [1, None, 2], (ka, kb)
+    assert [k for _, k, _ in kb] == ["typing"] * 3 + ["other"] * 4 + ["typing"] * 4, kb
+    assert [s for _, _, s in ka] == [None, 1, 1, 1, 1, 2, 3, 3] and \
+        [s for _, _, s in kb] == [1, 1, 1, None, None, None, None, 2, 2, 2, 2], (ka, kb)
     block = flat(notes_section("08.03 One Ctrl-Z, one thought: steps"))
     assert "Three steps: `and ` (typing), Enter (other), the two Backspaces (deleting)." in block
-    recs_a = [len(s.recs) for s in last_frame(a[-1][2])["undo"]]
-    recs_b = [len(s.recs) for s in last_frame(b[-1][2])["undo"]]
+    recs_a = [len(s.recs) for s in last_frame(a[8][2])["undo"]]
+    end = last_frame(a[-1][2])
+    recs_b = [len(s.recs) for s in end["undo"]]
     assert recs_a == [1, 2, 3] and recs_b == [1, 1], (recs_a, recs_b)
-    # the second run, as test 0803 has it: Ctrl-Z twice takes back b, then a
-    assert [r[2] for s in last_frame(b[-1][2])["undo"] for r in s.recs] == ["", "a"]
+    # the second half, as the lesson and NOTES.md (Screens the lessons show) have it: a U_CHG of
+    # row 1 keeping "what each line was", then one of row 2 keeping "before it changed"
+    assert end["rows"][1:3] == ["so what each line was", "and before it changed"], end["rows"]
+    assert [r for s in end["undo"] for r in s.recs] == [("U_CHG", 1, "what each line was"),
+                                                        ("U_CHG", 2, "before it changed")]
+    assert "`so `, Down, Left three times, `and ` gives `so what each line was` and `and before it changed`" \
+        in flat(notes_section("Added by the lesson writer (2026-11-24)"))
 
     f = F8("f0803a", "Keys on a time line, each with the kind undoKey() gives it, and the steps they make: a step "
            "is a run of keys of one kind, and any other key ends it", 288)
@@ -901,8 +918,8 @@ def runs0803():
             f.text((lo + hi) / 2, y + 22, f"step {step}: {n} record{'s' if n != 1 else ''}", "ta", 10, "middle", 600)
     line(48, "Down, \"and \", Enter, Backspace, Backspace on notes.txt", ka, recs_a,
          f"{len(ka)} keys, {len(recs_a)} steps")
-    line(160, "a, Left, b on a file of one empty row", kb, recs_b, f"{len(kb)} keys, {len(recs_b)} steps",
-         x=60, gap=64)
+    line(160, "then, after Ctrl-Z to \"Nothing to undo\": \"so \", Down, Left three times, \"and \"", kb, recs_b,
+         f"{len(kb)} keys, {len(recs_b)} steps")
     notes(f, 24, 266, "undoKey(c), before each key acts, closes the open step when the key is \"other\" or of "
           "another kind than the keys before it. A key that closes it and changes nothing makes no step.",
           104, "tm", 10.5)
@@ -944,8 +961,8 @@ def one_record0803():
     f.text(X0 + b60 * scale + 6, 143, f"{b60}", "ta", 12, weight=700, mono=True)
     f.text(X0, 168, "the row kept before each character: 1 byte (its '\\0'), then 2, ... up to 60: "
            "1 + 2 + ... + 60 = 1830", "tm", 10.5)
-    f.text(X0, 196, "One record a run: the row is kept once, before its first change; the leave-out rule skips "
-           "the rest.", "tm", 10.5)
+    f.text(X0, 196, "One record a run: the row is kept once, before its first change; undoSave() leaves the "
+           "rest out.", "tm", 10.5)
     return f
 
 

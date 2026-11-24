@@ -131,6 +131,7 @@ FILES_FROM = {
     "json.h": "07.02",
     "script.h": "09.01",         # module 09, the API and Lua
     "api.h": "09.02",
+    "plugins/*": "09.10",        # 09.10's three plugins, written only in Lua
 }
 
 LUA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "lua")
@@ -1005,10 +1006,25 @@ def has_script(root):
     return os.path.exists(os.path.join(root, "script.c"))
 
 
+# At 09.10 the project has its plugins: the run is on learn.c (TIMELINE_C_TEXT), with an
+# init.lua that loads them as a reader's does when kilo runs in the project's directory:
+# require() finds plugins/vi.lua through Lua's "./?.lua". The order matters (find.lua says
+# why): colour, then find, then vi.
+TIMELINE_PLUGINS_INIT = "require('plugins.colour')\nrequire('plugins.find')\nrequire('plugins.vi')\n"
+
+
 def timeline_run(root):
     with open(os.path.join(root, TIMELINE_FILE), "w") as f:
         f.write(TIMELINE_TEXT)
     name = TIMELINE_FILE
+    if os.path.isdir(os.path.join(root, "plugins")):
+        init = os.path.join(root, "init.lua")
+        with open(init, "w") as f:
+            f.write(TIMELINE_PLUGINS_INIT)
+        with open(os.path.join(root, TIMELINE_C_FILE), "w") as f:
+            f.write(TIMELINE_C_TEXT)
+        return ["env", f"KILO_INIT={init}", sys.executable, os.path.abspath(__file__), "relay", "24", "80",
+                "--", "./kilo", TIMELINE_C_FILE]
     if has_script(root):
         init = os.path.join(root, "init.lua")
         with open(init, "w") as f:
@@ -1066,6 +1082,8 @@ def timeline_boot(lesson_id):
         return _lsp_steps(k)
     if lesson_id.startswith("08."):
         return timeline_boot("05.02") + _undo_steps(k)
+    if lesson_id == "09.10":
+        return _plugin_steps()
     if lesson_id.startswith("09."):
         return _script_steps(k)
     if k < (1, 1):
@@ -1443,6 +1461,32 @@ def _script_steps(k):
     return steps
 
 
+def _plugin_steps():
+    """Steps for the project at 09.10, on TIMELINE_C_FILE with the three plugins: colour.lua's
+    colours (module 06's classes, though 06 is not there), vi.lua's normal mode in the status
+    bar and its moves, find.lua's find with the match's row at the top and Escape back, and its
+    go to a line."""
+    S, C = "screen", "colors"
+    lines = TIMELINE_C_TEXT.replace("\t", " " * 8).replace("\x01", "").split("\n")
+    text = {i: lines[i] for i in range(8)} | {i: "~" for i in range(8, 22)}
+    painted = {0: "[c:/* kilo at a lesson]", 1: "", 2: "[c:   still a comment */] [g:int] n = [r:7];",
+               3: "[g:int] main([g:void]) {", 4: '        [g:char] *s = [m:"a string"];  [c:// a comment]',
+               5: "        [y:return] [r:42];", 6: "}", 7: "xy"}
+    normal = re.compile(r"-- NORMAL -- learn\.c +{}/8")
+    return [(S, _screen(24, text | {22: re.compile(normal.pattern.format(1))}, cursor=(1, 1))),
+            (C, _colors(24, painted)),
+            # vi: j j (over the empty row), then $ to the row's last character.
+            ("keys jj$", SENT), (S, _screen(24, text | {22: re.compile(normal.pattern.format(3))}, cursor=(3, 32))),
+            # find: the match's row at the top, blue over colour.lua's; Escape back.
+            ("keys {ctrl-n}return", SENT),
+            (S, _screen(24, {0: "        return 42;", 23: "Search: return (Use ESC/Arrows/Enter)"}, cursor=(1, 9))),
+            (C, _colors(24, {0: "        [b:return] [r:42];"})),
+            ("keys {esc}", SENT), (S, _screen(24, text | {23: ""}, cursor=(3, 32))),
+            # go to a line.
+            ("keys {ctrl-o}6{enter}", SENT),
+            (S, _screen(24, text | {22: re.compile(normal.pattern.format(6))}, cursor=(6, 1)))]
+
+
 def _script_after(root, lesson_id):
     """At module 09: learn.txt untouched (nothing there saves); from 09.02 kilo --api-info,
     a line per function of the lesson's API; at 09.09 kilo -l upper-cases a copy of it."""
@@ -1452,6 +1496,11 @@ def _script_after(root, lesson_id):
         if f.read() != TIMELINE_TEXT:
             raise Fail(f"{TIMELINE_FILE} changed, with no save")
     notes = [f"{TIMELINE_FILE} untouched"]
+    if lesson_id == "09.10":
+        with open(os.path.join(root, TIMELINE_C_FILE), encoding="latin-1", newline="") as f:
+            if f.read() != TIMELINE_C_TEXT:
+                raise Fail(f"{TIMELINE_C_FILE} changed, with no save")
+        notes.append(f"{TIMELINE_C_FILE} untouched")
     if k >= (9, 2):
         r = subprocess.run(["./kilo", "--api-info"], cwd=root, capture_output=True, text=True, timeout=20,
                            stdin=subprocess.DEVNULL)
