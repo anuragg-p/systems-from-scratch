@@ -1732,6 +1732,93 @@ nucleus each below 95% of pure sampling's.
 taking 4 to 5 cores); 72 and 110 s earlier at load 10 to 16 with other
 agents' runs going. The same output each time.
 
+**The pages (module 08's lessons agent, 2026-11-24).** The lessons are in
+lessons/08-transformer/ (slug as 06-images, 07-language-models), with the
+module page, cover and icon (art/outlines/research_art.py now reads
+08.04's recorded run and asserts its numbers) and 18 figures from
+art/research/figs08.py (about four minutes of runs; RESEARCH_FIGS_CACHE
+keeps them). The generator trains three models again in the project at
+their lesson, 08.01's masked OneHead (seed 0), 08.03's GPT with
+positions (seed 0) and 08.05's small model, and stops unless each scores
+what the page's run printed. Every default run printed on the pages gave
+the digits above, run by run (08.02 in 45 s at load 6 to 7, under the 55
+s line: not cut).
+Read at the sources for the pages, beyond what is above:
+- Vaswani et al., the PDF of arXiv 1706.03762v7: section 3.1, the norm
+  after the addition, LayerNorm(x + Sublayer(x)); 3.2.2, "Multi-head
+  attention allows the model to jointly attend to information from
+  different representation subspaces at different positions. With a
+  single attention head, averaging inhibits this." and "Due to the
+  reduced dimension of each head, the total computational cost is similar
+  to that of single-head attention with full dimensionality."; 3.3,
+  "applied to each position separately and identically", inner layer
+  2048 for 512; 3.4, "we share the same weight matrix between the two
+  embedding layers and the pre-softmax linear transformation"; 3.5, "The
+  positional encodings have the same dimension d_model as the embeddings,
+  so that the two can be summed." and the sentence on learned positions;
+  5.3, Adam with warmup_steps = 4000, then the rate falls as one over the
+  square root of the step; 5.4, Residual Dropout: "We apply dropout to the
+  output of each sub-layer, before it is added to the sub-layer input and
+  normalized. In addition, we apply dropout to the sums of the embeddings
+  and the positional encodings in both the encoder and decoder stacks."
+  (base rate 0.1); table 3 rows (A), (C) and (E) as quoted above, and row
+  (D): dropout 0.0 5.77 / 24.6, 0.2 4.95 / 25.5, with "dropout is very
+  helpful in avoiding over-fitting" under the table.
+- Radford et al. (2019), section 2.3, in the PDF: "Layer normalization (Ba
+  et al., 2016) was moved to the input of each sub-block, similar to a
+  pre-activation residual network (He et al., 2016) and an additional
+  layer normalization was added after the final self-attention block."
+- Haviv et al. (2022), the paper itself now (arXiv 2203.16634v2, Findings
+  of EMNLP 2022), not only its abstract: table 1, validation perplexity
+  without positions against learned ones, 20.97 against 20.42 on
+  WikiText-103 (a 247M model, 512 tokens) and 13.10 against 13.05 on the
+  Pile (1.3B, 1024 tokens); table 2, 125M to 1.3B; section 5, shuffling
+  the tokens before one token of a model without positions raises its
+  loss "from ~4 to ~11"; section 6 and table 4, a masked language model
+  without positions: perplexity 147.18 against 4.06 with learned ones
+  ("training without positional encodings (NoPos) fails").
+- Holtzman et al. (arXiv 1904.09751v2, ICLR 2020), in the PDF: table 1
+  and figure 9's caption as quoted above; GPT-2 Large, 762M, 5,000
+  passages of up to 200 tokens after 1 to 40 tokens of held-out WebText;
+  temperature is their equation 4; section 3.1, "selecting the highest
+  probability tokens whose cumulative probability mass exceeds the
+  pre-chosen threshold p"; 4.2, "we argue that the optimal generation
+  strategy should produce text which has a perplexity close to that of
+  the gold text".
+- nanoGPT's README: the Shakespeare character model, "a 6-layer
+  Transformer with 6 heads in each layer", "a context size of up to 256
+  characters, 384 feature channels", "the best validation loss is 1.4697"
+  (nats; 2.120 bits, on its own split), about 3 minutes on one A100;
+  model.py: the c_proj scaling by 0.02/math.sqrt(2 * config.n_layer), the
+  decay groups by p.dim() >= 2, generate's temperature and top_k.
+Not checked, so not on the pages: the content of Karpathy's video beyond
+its description, and what chapter 5 of Raschka's book does with sampling.
+The Break its, run on the project at each lesson (same machine):
+- 08.01, `.tril(1)` in causal_mask (each position also sees the next
+  character): "masked" last batch 2.34, test as trained 2.307, past only
+  4.592 (worse than no mask), its text 300 newlines; part 3, one position
+  changed, by 0.811; part 1's trained rows 4.592 and 4.277 (both leak).
+- 08.02, both `x +` out of Block.forward: 1 block 3.639, 4 blocks 4.82 (t
+  = +40.2), 4 blocks of 1 head 4.853; every head of blocks 2 to 4 at 11.1
+  back.
+- 08.03, Positions adding row 0 at every place: learned positions 3.416
+  against none 3.407 (t = +1.0); order test 3.18; the last 32 before each
+  3.430; block 1's heads near equal again.
+- 08.04, load() without load_state_dict: "the same scores, number for
+  number: False", and the text is equal chances (8 of its 500 characters
+  are $).
+- 08.05, top_p without "- chances": a RuntimeError from torch.multinomial
+  at the nucleus (every score -inf where the likeliest has 0.95 or more).
+  Tried first and not used: held_bits without eval(), which changes the
+  training itself (dropout's draws move torch's generator: dropout 0.2
+  test 3.458 instead of 3.474).
+Seen while drawing: 08.01's trained head (seed 0, masked) puts 0.93 to 1
+of a row's weight on its own position for most characters and splits it
+evenly between equal characters (0.49 and 0.49 for two spaces, a third
+each for three, the o of "ho" half on the o of "Not"): equal keys. 08.05's
+small model after prompt 1 gives "t" 0.22, and its nucleus at 0.95 keeps
+18 of the 65 characters.
+
 ## For module 08: what module 07 leaves ready
 
 - The text: `from data import shakespeare`; `shakespeare.split("train")`
