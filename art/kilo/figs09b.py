@@ -1358,7 +1358,7 @@ def could_have_been0910():
     W = 180
     heads = [("vi's keys", "vi.lua"), ("colour for C and Lua", "colour.lua"), ("find, and go to a line", "find.lua")]
     in_c = [("none in the track:", "kilo's keys have no modes"),
-            ("module 06: editorUpdateSyntax(),", "HLDB: 411 lines of kilo.c, 261 code"),
+            ("module 06: editorUpdateSyntax()", "and HLDB; 411 lines, 261 code"),
             ("module 05: editorFind(), Ctrl-F,", "in kilo.c")]
     code_lines = {"vi.lua": 74, "colour.lua": 94, "find.lua": 78}
     how = ["A KeyPress function: h j k l, 0 and $, i a o, x, dd, Escape back to normal; the mode in the status bar.",

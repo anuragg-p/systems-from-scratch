@@ -19,8 +19,8 @@
 <text class="t" x="230" y="50" font-size="12" font-weight="700">colour for C and Lua</text>
 <text class="tm" x="230" y="68" font-size="9.5" font-weight="600">in C</text>
 <rect class="s fs" x="230" y="74" width="180" height="38" rx="5" stroke-width="1.5"/>
-<text class="t" x="238" y="89" font-size="10">module 06: editorUpdateSyntax(),</text>
-<text class="tm" x="238" y="103" font-size="10">HLDB: 411 lines of kilo.c, 261 code</text>
+<text class="t" x="238" y="89" font-size="10">module 06: editorUpdateSyntax()</text>
+<text class="tm" x="238" y="103" font-size="10">and HLDB; 411 lines, 261 code</text>
 <line class="a" x1="320" y1="114" x2="320" y2="128" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-10a-aa)"/>
 <text class="tm" x="230" y="142" font-size="9.5" font-weight="600">as a script</text>
 <rect class="a af" x="230" y="148" width="180" height="22" rx="5" stroke-width="1.5"/>
