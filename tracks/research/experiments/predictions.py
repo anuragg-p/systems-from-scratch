@@ -1,6 +1,7 @@
 """The grokking paper's claims as predictions, written down before anything is run (14.01).
 
     PAPER, NANDA          the two papers, as they are cited
+    SETUP                 the paper's set-up as its text gives it: each setting, and where it says so
     Claim                 key, where (in the paper), says (its words), setting, measure, paper (its number), rule
     CLAIMS                the claims module 14 tests
     verdict(rule, ours)   "held", "did not hold" or "not settled", by the claim's rule
@@ -25,6 +26,23 @@ NANDA = ("Nanda, Chan, Lieberum, Smith and Steinhardt (2023), Progress measures 
          "interpretability, arXiv 2301.05217v3")
 
 Claim = namedtuple("Claim", "key where says setting measure paper rule")
+
+# The paper's set-up as its text gives it, with where: what a run's settings are held against (report.py). Figure 1
+# itself was run with Adam without weight decay for 10^6 steps (appendix A.1.2, its last paragraphs).
+SETUP = {
+    "p": (97, "appendix A.1.1, 'for a prime number p = 97'"),
+    "operation": ("/", "figure 1, 'the binary operation of division mod 97'"),
+    "fraction": (0.5, "figure 1, 'with 50% of the data in the training set'"),
+    "layers": (2, "appendix A.1.2, 'a transformer with 2 layers, width 128, and 4 attention heads'"),
+    "width": (128, "appendix A.1.2"),
+    "heads": (4, "appendix A.1.2"),
+    "lr": (1e-3, "appendix A.1.2, 'AdamW optimizer with learning rate 10^-3'"),
+    "weight_decay": (1.0, "appendix A.1.2, 'weight decay 1' (figure 1: 'Adam optimizer with no weight decay')"),
+    "betas": ([0.9, 0.98], "appendix A.1.2, 'beta1 = 0.9, beta2 = 0.98'"),
+    "warmup": (10, "appendix A.1.2, 'linear learning rate warmup over the first 10 updates'"),
+    "batch": (512, "appendix A.1.2, 'minibatch size 512 or half of training dataset size (whichever was smaller)'"),
+    "steps": (100000, "appendix A.1.2, 'optimization budget of 10^5 gradient updates' (figure 1: 10^6)"),
+}
 
 FIGURE1 = "x/y mod 97, 50% of the equations to train on, Adam without weight decay, 10^6 steps"
 CLAIMS = [

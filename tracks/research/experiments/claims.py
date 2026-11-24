@@ -8,8 +8,9 @@ words, the setting the paper ran it in, what we will measure, the paper's
 number, and the rule that will say whether it held. 14.03 and 14.04 run
 the experiments; report.py (14.04) fills in the outcome of each claim.
 
-1. The claims, as predictions.
-2. The baselines any run must beat, on the paper's own data (data/modular.py):
+1. The set-up, as the paper's text gives it, and where.
+2. The claims, as predictions.
+3. The baselines any run must beat, on the paper's own data (data/modular.py):
    a guess (chance), and a model that only memorises.
 
     python3 -m experiments.claims
@@ -20,7 +21,7 @@ from collections import Counter
 
 import lab
 from data import modular
-from experiments.predictions import CLAIMS, NANDA, PAPER
+from experiments.predictions import CLAIMS, NANDA, PAPER, SETUP
 
 CONFIG = dict(p=97, operation="/", fraction=0.5, seeds=3)
 
@@ -43,8 +44,10 @@ def memoriser(train, val):
 
 def main():
     cfg = lab.config(CONFIG)
-    print(f"1. What the paper claims, as predictions (before running anything).\n   The paper: {PAPER}.\n"
-          f"   And one that explains it: {NANDA}.")
+    print(f"The paper: {PAPER}.\nAnd one that explains it: {NANDA}.\n\n1. The set-up, as the paper's text gives it:")
+    for key, (value, where) in SETUP.items():
+        print(f"   {key:13s} {str(value):11s} {where}")
+    print("\n2. What the paper claims, as predictions (before running anything):")
     for i, c in enumerate(CLAIMS, 1):
         kind, x = c.rule
         rule = f"within a factor of 3 of {x:g}" if kind == "about" else f"{kind} {x:.4g}"
@@ -53,7 +56,7 @@ def main():
 
     p, op = cfg.p, cfg.operation
     rows = modular.equations(p, op)
-    print(f"\n2. The baselines, x {op} y mod {p}: {len(rows)} equations, {cfg.fraction:.0%} of them to train on.")
+    print(f"\n3. The baselines, x {op} y mod {p}: {len(rows)} equations, {cfg.fraction:.0%} of them to train on.")
     example = rows[(rows[:, 0] == 20 % p) & (rows[:, 1] == 15 % p)]
     a, b, c = example[0]
     names = modular.names(p)
