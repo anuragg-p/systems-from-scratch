@@ -65,7 +65,7 @@ list.
 ## Extensions (started 2026-11-15 on the owner's word; each `optional: true`)
 
 Each extension stands on the finished core and is independent of the
-other: at an extension's lesson the site shows the core plus that
+others: at an extension's lesson the site shows the core plus that
 extension only. So neither may need the other's code, though both are in
 the tree. No core lesson may change when one is added: the workbench
 (00.01, 00.02) runs and measures the core at 05.02, not the finished
@@ -93,8 +93,40 @@ project.
    07.06 Diagnostics: errors as you type
    07.07 Go to definition
 
+08 Undo and redo: Vim's way, cut to kilo's size, in kilo.c. Before a row
+   changes, what it was is kept; a record that is applied takes what was
+   there and so becomes its own opposite, as Vim's u_undoredo() swaps.
+   Records are made in the core's row functions, so anything that edits
+   through them is remembered. Ctrl-Z and Ctrl-R.
+   08.01 Remembering what a line was
+   08.02 Redo: a record that undoes itself
+   08.03 One Ctrl-Z, one thought: steps
+   08.04 The saved point, and a bound on memory
+09 An API, and Lua on top of it: Neovim's shape. The editor's operations
+   as a table of typed functions in C; Lua (the real one, its source in
+   the tree unchanged, the one thing in this track we do not write)
+   embedded and given that table; keys and events bound to Lua functions;
+   a script that goes wrong never takes the file with it; and the editor
+   run with no screen at all, from a script.
+   09.01 A second language inside the editor: embedding Lua
+   09.02 The API is a table
+   09.03 Changing the text from a script: set_lines
+   09.04 A key that runs a Lua function
+   09.05 Events: autocommands
+   09.06 Scripts that go wrong
+   09.07 The editor without its screen
+
 The lists are the direction; fit them to the code, as the core's were.
-Order (the owner, 2026-11-15: "first finish highlighting", then "stop
+08 and 09 were started on 2026-11-24 on the owner's word, with this
+direction for both: take the mechanisms from the notable editors (Vim and
+Neovim, Zed, Emacs, Helix, VS Code), so a reader learns how the real ones
+work at their core; every claim about another editor is read from its
+source at a named tag or commit and recorded in NOTES.md before a lesson
+states it. The owner also allowed changes to the core for 09; the designs
+do not need them (hooks behind markers, as 06 and 07), so the core's
+lessons stand as they are. Order: 08's code, then 09's code on top of it
+while 08's lessons and art are made, then 09's lessons and art.
+Order before that (the owner, 2026-11-15: "first finish highlighting", then "stop
 after completing highlighting"): 06 whole, its code, then its lessons and
 art, then a read of it. 07 was started on 2026-11-24 on the owner's word:
 its code, tests and notes first (see "Module 07 as built"), then its
