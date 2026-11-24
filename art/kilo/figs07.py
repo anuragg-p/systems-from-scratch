@@ -58,7 +58,7 @@ and clangd that logs every frame (body and time) and changes nothing.
                      add, Ctrl-B, Ctrl-G with an unsaved change: screens, requests and replies
   07.07-uri          the uri of the add.h reply in the same run, and the path lspPath() makes of it
                      (checked: the file's own path); each outcome's message from that run, "no
-                     definition found" from Ctrl-G on row 3's space
+                     definition found" from Ctrl-G on the empty row 3
 
 Uris and paths are shown with the scratch directory above "sam ple" cut to "..." (trim_uri).
 
@@ -96,7 +96,7 @@ SUM_C = ('#include <stdio.h>\n#include "add.h"\n\nint main(void) {\n\tint total 
          '\tprintf("%d\\n", total);\n\treturn 0;\n}\n')
 ADD_H = "/* add.h: the one function sum.c calls. */\nstatic inline int add(int a, int b) {\n\treturn a + b;\n}\n"
 DIR = "sam ple"
-UP, DOWN, RIGHT = "\x1b[A", "\x1b[B", "\x1b[C"
+UP, DOWN, RIGHT, LEFT = "\x1b[A", "\x1b[B", "\x1b[C", "\x1b[D"
 BACKSPACE = "\x7f"
 
 
@@ -690,9 +690,9 @@ def capture0706columns(utf16):
 @functools.cache
 def capture0707():
     """kilo at 07.07 and clangd through PROXY, on a 10 x 64 terminal: Ctrl-G on total in the printf
-    line, Ctrl-G on add, Ctrl-B, then a space on row 3 and Ctrl-G on add again; then Ctrl-S and
-    Ctrl-G on that space, where nothing is defined. For each: the screen before the last key, after
-    it, and the frames it sent and got."""
+    line, Ctrl-G on add, Ctrl-B, then Left and a space before add and Ctrl-G on add again; then
+    Ctrl-S and Ctrl-G on the empty row 3, where nothing is defined: the lesson's keys. For each: the
+    screen before the last key, after it, and the frames it sent and got."""
     logs = {}
 
     def env(tmp):
@@ -718,11 +718,11 @@ def capture0707():
             ed.pump(settle)
             steps_.append({"name": name, "before": before, "at": at, "after": Shot(ed),
                            "frames": frames_of(logs["log"])[n:]})
-        step("total", [*[DOWN] * 5, *[RIGHT] * 17, ctrl("g")], lambda: ed.cursor == (4, 12))
+        # the lesson's keys (07.07, Run it): eighteen Rights to the second t of total, byte 18
+        step("total", [*[DOWN] * 5, *[RIGHT] * 18, ctrl("g")], lambda: ed.cursor == (4, 12))
         step("add", [*[RIGHT] * 9, ctrl("g")], lambda: ed.status.startswith("sam ple/add.h"))
         step("back", [ctrl("b")], lambda: ed.status.startswith("sam ple/sum.c"))
-        step("unsaved", [UP, UP, " ", DOWN, DOWN, *[RIGHT] * 13, ctrl("g")],
-             lambda: ed.message.startswith("Unsaved changes"))
+        step("unsaved", [LEFT, " ", ctrl("g")], lambda: ed.message.startswith("Unsaved changes"))
         ed.keys(ctrl("s"))
         step("none", [UP, UP, ctrl("g")], lambda: ed.message == "lsp: no definition found")
         ed.quit()
@@ -1965,7 +1965,7 @@ def jump0707():
     with steps.step(f, "Ctrl-B: back to where the jump came from, sum.c with the cursor on add again. No question "
                        "for clangd, only didClose add.h and didOpen sum.c."):
         frame(back, "Ctrl-B", "Back where the last jump came from: no question, two notifications.")
-    with steps.step(f, "A space typed on row 3, not saved, then Ctrl-G on add: the change goes first, then the "
+    with steps.step(f, "Left, a space before add, not saved, then Ctrl-G on add: the change goes first, then the "
                        "question; the answer is add.h again, but kilo will not read it over unsaved changes."):
         frame(uns, "Ctrl-G, unsaved", "A change not saved: sum.c stays, and the message line says why.")
     return f
@@ -2009,7 +2009,7 @@ def uri0707():
     QX, QW, OX, OW, BH = 24, 200, 290, 326, 36
     rows = [
         ("a uri and a line?", "lspDefinitionResult()", "no", "lsp: no definition found",
-         f"Ctrl-G on row 3's space: the answer is {json.dumps(nreply['msg']['result'])}", True),
+         f"Ctrl-G on the empty row 3: the answer is {json.dumps(nreply['msg']['result'])}", True),
         ("the file that is open?", "lspSameFile()", "yes", "move the cursor there",
          f"Ctrl-G on total: to row {tot['after'].cursor[0] + 1}, column {tot['after'].cursor[1] + 1}", False),
         ("changes not saved?", "editorJump()", "yes", said[:said.index(" (")],

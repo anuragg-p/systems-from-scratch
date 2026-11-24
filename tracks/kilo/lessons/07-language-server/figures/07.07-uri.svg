@@ -20,7 +20,7 @@
 <text class="tm" x="70" y="197" font-size="10">yes</text>
 <rect class="a af" x="290" y="150" width="326" height="36" rx="6" stroke-width="1.5"/>
 <text class="ta mono" x="300" y="165" font-size="10.5" font-weight="700">lsp: no definition found</text>
-<text class="ta" x="300" y="179" font-size="9.5">Ctrl-G on row 3&#x27;s space: the answer is []</text>
+<text class="ta" x="300" y="179" font-size="9.5">Ctrl-G on the empty row 3: the answer is []</text>
 <rect class="s fs" x="24" y="200" width="200" height="36" rx="6" stroke-width="1.5"/>
 <text class="t" x="34" y="215" font-size="11" font-weight="700">the file that is open?</text>
 <text class="tm mono" x="34" y="229" font-size="9.5">lspSameFile()</text>
