@@ -1,10 +1,12 @@
-"""Module art for the research outline (outlines/ai-research.md), in the same visual language as
-dsa_art.py, outline_art.py and the xv6 covers.
+"""Module art for the research track (its outline is plans/research-outline.md), in the same visual
+language as dsa_art.py, outline_art.py and the xv6 covers.
 
 Writes, under outlines/ai-research/:
     NN/cover.svg    640x300 teaching diagram for module NN (00 to 21; 16 to 21 are the extensions)
     NN/icon.svg     20x20 currentColor line icon for module NN
-The track-level art.svg and icon.svg there are not this script's.
+and the same two files into tracks/research/lessons/NN-*/ for every module that has a lessons
+folder there, so a built module's art and the outline's never drift apart.
+The track-level art.svg and icon.svg are not this script's.
 
 Covers style themselves only through the .art classes in harness/web/app.css:
     s m a        stroke: foreground, muted, accent
@@ -13,23 +15,38 @@ Covers style themselves only through the .art classes in harness/web/app.css:
 A shaded cell is a rect of class fa (or t) with a fill-opacity, so it follows the theme.
 
 What a cover shows is either computed here or drawn as a labelled schematic with no numbers on
-its axes. Computed: the backprop graph and its nudge check, the seed runs of module 00 (a small
-curve fit with hand-written gradients), the optimiser paths of 03, the activation sizes through
-50 layers in 04, the double-descent curve in 05 (random ReLU features, least squares), the
+its axes. Every word and number on a built module's cover must be true of the built track.
+Computed, for the built modules, from the formulas and settings of the track's own code:
+    00  experiments/curve.py over seeds 0 to 4: the training-loss curves and test losses, with
+        numpy's default_rng drawing in the script's order, so they are the script's numbers
+    01  01.02's neuron, o = tanh(x1 w1 + x2 w2 + b), its backward() node by node and 01.01's
+        central-difference nudge (h = 1e-6) for every input
+    02  a broadcast's backward on small numbers, and the shapes of a matrix multiply's backward
+    03  SGD, momentum 0.8 and Adam in 03.02's valley, and 03.05's warmup and cosine schedule
+    04  the spread over a batch at every relu of 04.02's 30-layer network for its three starts
+        (random inputs in place of MNIST), and each start's factor sqrt(n Var(w) / 2)
+Where a cover prints a number the lessons print, the script asserts it is the same number, so a
+change to the track that moves it stops this script instead of leaving the cover wrong.
+Also computed: the double-descent curve in 05 (random ReLU features, least squares), the
 convolution in 06, the BPE merges in 09, the LoRA counts in 12, the DDPM noising in 17 and the
 PPO objective in 18. Schematic (the true shape, no measured numbers): 08's attention shading,
-11's loss curves, 13's panels, 14's grokking curves (after Power et al. 2022, Figure 1), 20's
-over-optimisation and 21's four phenomena.
+11's loss curves, 13's panels, 14's grokking curves (after Power et al. 2022, Figure 1), 15's
+paper, 20's over-optimisation and 21's four phenomena.
 
-Modules 01, 14 and 15 keep the covers first drawn for the older outline in outline_art.py (its
-modules 01, 04 and 07): 01 with a nudge check added, 14 with its step gap corrected to the
-paper's (train near 100% before 1e3 steps, validation only near 1e6). The rest are new here.
+Modules 14 and 15 keep the covers first drawn for the older outline in outline_art.py (its
+modules 04 and 07): 14 with its step gap corrected to the paper's (train near 100% before 1e3
+steps, validation only near 1e6), 15 with its repository shown as the track lays one out (a run
+is `python3 -m experiments.<name>` with key=value settings, and leaves config.json, log.jsonl
+and summary.json). The rest are new here.
 
 The Art class is the one from art/xv6/covers.py and dsa_art.py, repeated so this file stands alone.
+Module 00's cover needs numpy, as the track does.
 
-    python3 art/outlines/research_art.py     write every file, then check each one is ASCII and
-                                             survives harness/web/art.py's sanitizer unchanged
+    python3 art/outlines/research_art.py [NN ...]
+        write every file (or only modules NN), then check each one is ASCII and survives
+        harness/web/art.py's sanitizer unchanged
 """
+import glob
 import html
 import math
 import os
@@ -39,6 +56,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 OUT = os.path.join(ROOT, "outlines", "ai-research")
+LESSONS = os.path.join(ROOT, "tracks", "research", "lessons")
 SW = 'stroke-width="1.5"'
 
 
@@ -138,59 +156,50 @@ def clipped(a, pts, box, cls="m", dash=False):
 
 # =================================================================== 00 workbench
 
-def seed_run(seed, steps=300, every=5, lr=0.1, hidden=8, batch=8):
-    """The kind of experiment module 00 starts with, small: fit a curve with a 1-8-1 tanh network,
-    its gradients worked out by hand, plain SGD on mini-batches. The data is the same for every
-    seed; the seed sets the starting weights and the batch order. Returns the validation losses."""
-    rd = random.Random(1000)
-    xs = [rd.uniform(-1, 1) for _ in range(64)]
-    data = [(x, math.sin(2.5 * x) + rd.gauss(0, 0.1)) for x in xs]
-    train, val = data[:32], data[32:]
-    r = random.Random(seed)
-    w1 = [r.gauss(0, 1) for _ in range(hidden)]
-    b1 = [0.0] * hidden
-    w2 = [r.gauss(0, 1 / math.sqrt(hidden)) for _ in range(hidden)]
-    b2 = 0.0
+CURVE = dict(n_train=20, n_test=500, noise=0.2, degree=3, lr=0.5, steps=2000, every=100)   # curve.py's CONFIG
 
-    def fwd(x):
-        h = [math.tanh(w1[j] * x + b1[j]) for j in range(hidden)]
-        return h, sum(w2[j] * h[j] for j in range(hidden)) + b2
 
-    def loss(d):
-        return sum((fwd(x)[1] - y) ** 2 for x, y in d) / len(d)
-    log, order = [], []
-    for step in range(steps + 1):
+def curve_run(seed, n_train, n_test, noise, degree, lr, steps, every):
+    """One run of module 00's experiment, experiments/curve.py: a cubic fitted by gradient descent
+    to n_train points of sin(pi x) plus noise, its gradient 2 X.T (X w - y) / n worked by hand,
+    then scored on n_test points drawn after them from the same generator. numpy's
+    default_rng(seed) makes the draws in the script's order, so these are the script's numbers.
+    Returns the training loss every `every` steps and after the last, and the test loss."""
+    import numpy as np
+    rng = np.random.default_rng(seed)
+
+    def make_data(n):
+        x = rng.uniform(-1, 1, n)
+        return x, np.sin(np.pi * x) + rng.normal(0, noise, n)
+    x, y = make_data(n_train)
+    xt, yt = make_data(n_test)
+    X = np.stack([x ** k for k in range(degree + 1)], axis=1)
+    Xt = np.stack([xt ** k for k in range(degree + 1)], axis=1)
+    loss = lambda w, A, b: float(np.mean((A @ w - b) ** 2))
+    w = np.zeros(degree + 1)
+    log = []
+    for step in range(steps):
         if step % every == 0:
-            log.append(loss(val))
-        if step == steps:
-            break
-        if not order:
-            order = list(range(len(train)))
-            r.shuffle(order)
-        gw1, gb1, gw2, gb2 = [0.0] * hidden, [0.0] * hidden, [0.0] * hidden, 0.0
-        for x, y in (train[order.pop()] for _ in range(batch)):
-            h, p = fwd(x)
-            d = 2 * (p - y) / batch
-            gb2 += d
-            for j in range(hidden):
-                gw2[j] += d * h[j]
-                dh = d * w2[j] * (1 - h[j] ** 2)
-                gw1[j] += dh * x
-                gb1[j] += dh
-        for j in range(hidden):
-            w1[j] -= lr * gw1[j]
-            b1[j] -= lr * gb1[j]
-            w2[j] -= lr * gw2[j]
-        b2 -= lr * gb2
-    return log
+            log.append(loss(w, X, y))
+        w -= lr * 2 * X.T @ (X @ w - y) / len(y)
+    log.append(loss(w, X, y))
+    return log, loss(w, Xt, yt)
+
+
+def spread(xs):
+    """lab.spread: mean +- sample sd, min, max, to 3 significant digits."""
+    m = sum(xs) / len(xs)
+    sd = math.sqrt(sum((v - m) ** 2 for v in xs) / (len(xs) - 1))
+    return f"{m:.3g} +- {sd:.3g} (min {min(xs):.3g}, max {max(xs):.3g}, {len(xs)} seeds)"
 
 
 def res_workbench():
-    a = Art("r00", "One experiment in one file, run over five seeds: the same seed gives the same curve, "
-                   "other seeds show how far the number moves by chance")
+    a = Art("r00", "One experiment in one file, run over five seeds: the same seed gives the same numbers, "
+                   "other seeds show how far the test loss moves by chance")
     a.text(24, 28, "one file", size=12, weight=700)
-    stages = [("data", "points on a curve, with noise"), ("model", "y = f(x; w)"), ("loss", "mean squared error"),
-              ("update", "w -= lr * grad, worked by hand"), ("evaluate", "loss on held-out points")]
+    stages = [("data", "20 points of sin(pi x), plus noise"), ("model", "a cubic, w0 + w1 x + w2 x^2 + w3 x^3"),
+              ("loss", "mean squared error"), ("update", "w -= lr * grad, worked by hand"),
+              ("evaluate", "loss on 500 points it never saw")]
     for k, (name, sub) in enumerate(stages):
         y = 40 + k * 38
         cell(a, 32, y, 92, 26, name, "s fs" if k in (1, 3) else "s f", "t", 11.5, rx=6, weight=600, mono=False)
@@ -198,85 +207,128 @@ def res_workbench():
         if k:
             a.line(78, y - 12, 78, y - 2, "s", arrow=True)
     a.path("M32 167 H 20 V 91 H 30", "m", arrow=True)
-    a.text(24, 248, "the runner keeps every run's config,", "tm", 10.5)
-    a.text(24, 263, "seed and log, and draws runs over each other", "tm", 10.5)
+    a.text(24, 236, "each run's folder: config.json, log.jsonl and", "tm", 10.5)
+    a.text(24, 251, "summary.json; curves are drawn from the logs", "tm", 10.5)
 
-    logs = [seed_run(s) for s in range(5)]
-    assert seed_run(0) == logs[0]                     # same seed, same numbers, to the last digit
-    px0, px1, py0, py1 = 356, 604, 44, 214
-    lo = math.log10(min(min(l) for l in logs)) - 0.08
-    hi = math.log10(max(max(l) for l in logs)) + 0.05
-    n = len(logs[0]) - 1
+    runs = [curve_run(s, **CURVE) for s in range(5)]
+    assert curve_run(0, **CURVE) == runs[0]           # same seed, same numbers, to the last digit
+    tests = [t for _, t in runs]
+    line = spread(tests)
+    # the numbers lessons 00.01 to 00.03 print; if the experiment changes, so must this cover
+    assert (round(runs[0][0][-1], 4), round(tests[0], 4)) == (0.0104, 0.0496)
+    assert line == "0.0542 +- 0.00668 (min 0.0472, max 0.0645, 5 seeds)", line
+    px0, px1, py0, py1 = 356, 540, 46, 204
+    lo, hi = math.log10(0.008), math.log10(0.8)
+    n = len(runs[0][0]) - 1
     X = lambda i: px0 + 4 + i / n * (px1 - px0 - 8)
     Y = lambda v: py1 - (math.log10(v) - lo) / (hi - lo) * (py1 - py0)
     axes(a, px0, py0 - 6, px1, py1)
-    a.text(px0, 32, "validation loss, log scale", "tm", 10.5)
-    a.text(px1, py1 + 18, "steps", "tm", 10.5, "end")
+    a.text(px0, 30, "training loss, log scale", "tm", 10.5)
+    a.text(X(0), py1 + 15, "0", "tm", 9.5, "middle", mono=True)
+    a.text(X(n), py1 + 15, str(CURVE["steps"]), "tm", 9.5, "middle", mono=True)
+    a.text((px0 + px1) / 2, py1 + 15, "step", "tm", 10.5, "middle")
     for s in (1, 2, 3, 4, 0):
-        poly(a, [(X(i), Y(v)) for i, v in enumerate(logs[s])], "a" if s == 0 else "m")
-    ends = sorted(Y(l[-1]) for l in logs)
-    for s in range(5):
-        dot(a, X(n), Y(logs[s][-1]), 2.6, "a fa" if s == 0 else "s f")
-    bx = px1 + 6
-    a.path(f"M{bx - 2} {ends[0]:.1f} H {bx + 2} V {ends[-1]:.1f} H {bx - 2}", "s")
-    a.text(px1 - 4, ends[0] - 10, "the spread over 5 seeds", size=10.5, anchor="end", weight=600)
-    a.text(px1 - 4, 70, "seed 0, run twice: one curve,", "ta", 10.5, "end", 600)
-    a.text(px1 - 4, 85, "the same to the last digit", "ta", 10.5, "end")
-    a.text(px1 - 4, 106, "seeds 1 to 4: same code,", "tm", 10.5, "end")
-    a.text(px1 - 4, 121, "other numbers", "tm", 10.5, "end")
-    a.text(24, 288, "One run is never a result: report the number with its spread over seeds.  (Curves computed here.)",
-           "tm", 11)
+        poly(a, [(X(i), Y(v)) for i, v in enumerate(runs[s][0])], "a" if s == 0 else "m")
+    a.text(px1 - 4, 72, "seed 0, run twice: the same", "ta", 10.5, "end", 600)
+    a.text(px1 - 4, 87, "log, to the last digit", "ta", 10.5, "end")
+    a.text(px1 - 4, 108, "seeds 1 to 4: same code,", "tm", 10.5, "end")
+    a.text(px1 - 4, 123, "other numbers", "tm", 10.5, "end")
+    # the test losses, one dot a seed, on a scale of their own
+    tx, t0, t1 = 584, min(tests), max(tests)
+    TY = lambda v: py1 - 16 - (v - t0) / (t1 - t0) * (py1 - py0 - 64)
+    a.text(tx + 6, 30, "test loss", "tm", 10.5, "middle")
+    a.line(tx - 12, py0 - 6, tx - 12, py1, "m")
+    for s in (1, 2, 3, 4, 0):
+        dot(a, tx, TY(tests[s]), 3, "a fa" if s == 0 else "s f")
+    a.path(f"M{tx + 10} {TY(t1):.1f} H {tx + 14} V {TY(t0):.1f} H {tx + 10}", "s")
+    a.text(tx + 6, TY(t1) - 12, f"{t1:.3g}", "tm", 9.5, "middle", mono=True)
+    a.text(tx + 6, TY(t0) + 20, f"{t0:.3g}", "tm", 9.5, "middle", mono=True)
+    a.text(24, 272, "One run is never a result. The five test losses, as the lab reports them:", "tm", 11)
+    a.text(24, 289, f"test loss {line}", "ta", 11, weight=600, mono=True)
+    a.text(616, 289, "(computed here)", "tm", 10.5, "end")
     return a
 
 
 # =================================================================== 01 backprop
 
-def res_backprop():
-    a = Art("r01", "Backpropagation on a small graph: values flow forward, gradients flow back")
-    va, vb, vc, vf = 2.0, -3.0, 10.0, -2.0
+NEURON = dict(x1=1.5, x2=-0.5, w1=0.8, w2=-1.2, b=-1.0)         # experiments/graph.py's CONFIG
 
-    def forward(xa):
-        e = xa * vb
-        d = e + vc
-        return e, d, d * vf
-    ve, vd, vL = forward(va)
-    gL = 1.0
-    gd, gf = vf * gL, vd * gL           # L = d * f
-    ge, gc = gd, gd                     # d = e + c
-    ga, gb = vb * ge, va * ge           # e = a * b
-    h = 0.001
-    nudge = (forward(va + h)[2] - vL) / h
-    assert abs(nudge - ga) < 1e-6
-    W, H = 96, 46
-    f1 = lambda v: f"{v:.1f}"
-    nodes = {"a": (24, 36, va, ga), "b": (24, 112, vb, gb), "e": (182, 72, ve, ge),
-             "c": (182, 158, vc, gc), "d": (342, 116, vd, gd), "f": (342, 200, vf, gf),
-             "L": (504, 158, vL, gL)}
-    for name, (x, y, v, g) in nodes.items():
+
+def neuron(x1, x2, w1, w2, b):
+    """01.02's neuron, o = tanh(x1 w1 + x2 w2 + b), one step at a time in graph.py's order."""
+    p1 = x1 * w1
+    p2 = x2 * w2
+    s = p1 + p2
+    n = s + b
+    return p1, p2, s, n, math.tanh(n)
+
+
+def central(f, xs, h=1e-6):
+    """01.01's gradient(): every partial derivative of f at xs by the central difference."""
+    out = []
+    for i in range(len(xs)):
+        up, down = list(xs), list(xs)
+        up[i] += h
+        down[i] -= h
+        out.append((f(up) - f(down)) / (2 * h))
+    return out
+
+
+def res_backprop():
+    a = Art("r01", "Backpropagation through one neuron, o = tanh(x1 w1 + x2 w2 + b): values flow forward, "
+                   "gradients flow back, and the nudge checks them")
+    v = NEURON
+    p1, p2, s, n, o = neuron(**v)
+    # backward(), node by node: o.grad = 1; tanh passes 1 - o^2; a sum passes its grad on unchanged;
+    # a product gives each input the other input times its grad
+    g = {"o": 1.0}
+    g["n"] = (1 - o * o) * g["o"]
+    g["s"] = g["b"] = g["n"]
+    g["x1*w1"] = g["x2*w2"] = g["s"]
+    g["x1"], g["w1"] = v["w1"] * g["x1*w1"], v["x1"] * g["x1*w1"]
+    g["x2"], g["w2"] = v["w2"] * g["x2*w2"], v["x2"] * g["x2*w2"]
+    names = ("x1", "x2", "w1", "w2", "b")
+    nudged = central(lambda xs: neuron(*xs)[-1], [v[k] for k in names])
+    worst = max(abs(g[k] - e) for k, e in zip(names, nudged))
+    # what 01.02's run prints: o = 0.6640, the nudge for w1 +0.83858275, the largest gap 1.2e-10
+    assert (f"{o:.4f}", f"{nudged[2]:+.8f}", f"{worst:.1e}") == ("0.6640", "+0.83858275", "1.2e-10")
+    W, H = 96, 38
+    val = {"x1": v["x1"], "w1": v["w1"], "x2": v["x2"], "w2": v["w2"], "b": v["b"], "x1*w1": p1, "x2*w2": p2,
+           "s": s, "n": n, "o": o}
+    at = {"x1": (24, 34), "w1": (24, 80), "x2": (24, 136), "w2": (24, 182), "x1*w1": (182, 57),
+          "x2*w2": (182, 159), "s": (340, 108), "b": (340, 176), "n": (498, 142), "o": (498, 40)}
+    for name, (x, y) in at.items():
         a.box(x, y, W, H, "s f", rx=8)
-        a.text(x + 12, y + 19, f"{name} = {f1(v)}", size=12, mono=True, weight=600)
-        a.text(x + 12, y + 36, f"grad {f1(g)}", "ta", 11, mono=True)
-    for x, y, s in ((152, 97, "*"), (312, 139, "+"), (474, 181, "*")):
+        a.text(x + 10, y + 16, f"{name} = {val[name]:.4g}", size=11.5, mono=True, weight=600)
+        a.text(x + 10, y + 31, f"grad {g[name]:.4g}", "ta", 10.5, mono=True)
+    for x, y, op in ((152, 76, "*"), (152, 178, "*"), (310, 127, "+"), (468, 161, "+")):
         a.circle(x, y, 12, "s fs")
-        a.text(x, y + 4.5, s, size=13, anchor="middle", mono=True, weight=600)
+        a.text(x, y + 4.5, op, size=13, anchor="middle", mono=True, weight=600)
+    a.circle(546, 110, 14, "s fs")
+    a.text(546, 113.5, "tanh", size=9.5, anchor="middle", mono=True, weight=600)
 
     def edge(x1, y1, x2, y2):
         a.path(f"M{x1} {y1} C {x1 + 14} {y1}, {x2 - 16} {y2}, {x2} {y2}", "s")
-    edge(120, 59, 140, 93); edge(120, 135, 140, 101)
-    a.line(164, 97, 180, 95, arrow=True)
-    edge(278, 95, 300, 135); edge(278, 181, 300, 143)
-    a.line(324, 139, 340, 139, arrow=True)
-    edge(438, 139, 462, 177); edge(438, 223, 462, 185)
-    a.line(486, 181, 502, 181, arrow=True)
+    edge(120, 53, 140, 72); edge(120, 99, 140, 80)
+    a.line(164, 76, 180, 76, arrow=True)
+    edge(120, 155, 140, 174); edge(120, 201, 140, 182)
+    a.line(164, 178, 180, 178, arrow=True)
+    edge(278, 76, 298, 123); edge(278, 178, 298, 131)
+    a.line(322, 127, 338, 127, arrow=True)
+    edge(436, 127, 456, 157); edge(436, 195, 456, 165)
+    a.line(480, 161, 496, 161, arrow=True)
+    a.line(546, 142, 546, 124)
+    a.line(546, 96, 546, 80, arrow=True)
     a.line(24, 16, 300, 16, "s", arrow=True)
     a.text(308, 20, "forward: values", "tm", 10.5)
-    a.text(24, 186, "chain rule, one step:", "tm", 10.5)
-    a.text(24, 204, "a.grad = b x e.grad", "ta", 11, mono=True, weight=600)
-    a.text(65, 220, f"= {f1(vb)} x {f1(ge)} = {f1(ga)}", "ta", 11, mono=True)
-    a.text(24, 246, f"check: nudge a by h = {h}", "tm", 10.5)
-    a.text(24, 262, f"(L(a+h) - L(a)) / h = {nudge:.3f}", size=11, mono=True)
-    a.line(616, 280, 250, 280, "a", arrow=True)
-    a.text(240, 284, "backward(): gradients, from L", "ta", 10.5, "end", 600)
+    a.text(24, 240, "chain rule, one step:", "tm", 10.5)
+    a.text(24, 256, "w1.grad = x1 x (x1*w1).grad", "ta", 11, mono=True, weight=600)
+    a.text(77, 272, f"= {v['x1']:g} x {g['x1*w1']:.4f} = {g['w1']:.4f}", "ta", 11, mono=True)
+    a.text(290, 240, "check, the nudge both ways, h = 1e-6:", "tm", 10.5)
+    a.text(290, 256, f"(o(w1+h) - o(w1-h)) / 2h = {nudged[2]:.8f}", size=11, mono=True)
+    a.text(290, 272, f"backward: {g['w1']:.8f}; largest gap of the five {worst:.1e}", "tm", 10.5)
+    a.line(616, 290, 250, 290, "a", arrow=True)
+    a.text(240, 294, "backward(): gradients, from o", "ta", 10.5, "end", 600)
     return a
 
 
@@ -288,7 +340,7 @@ def res_tensors():
     cw, ch = 20, 18
     # broadcasting, forward
     a.text(24, 28, "broadcasting", size=12, weight=700)
-    a.text(24, 48, "y = x + b", size=11.5, mono=True, weight=600)
+    a.text(24, 48, "out = x + b", size=11.5, mono=True, weight=600)
     gy = 58
     for r in range(3):
         for c in range(4):
@@ -297,10 +349,10 @@ def res_tensors():
             a.box(124 + c * cw, gy + r * ch, cw, ch, "a af" if r == 0 else "m", rx=0, dash=r > 0)
     a.text(114, gy + 31, "+", size=14, anchor="middle", mono=True)
     a.text(214, gy + 31, "=", size=14, anchor="middle", mono=True)
-    a.text(64, gy + 70, "x  [3, 4]", "tm", 10.5, "middle", mono=True)
-    a.text(164, gy + 70, "b  [4]", "ta", 10.5, "middle", mono=True)
-    a.text(264, gy + 70, "y  [3, 4]", "tm", 10.5, "middle", mono=True)
-    a.text(164, gy + 85, "copied down the rows", "tm", 10, "middle")
+    a.text(64, gy + 70, "x  (3, 4)", "tm", 10.5, "middle", mono=True)
+    a.text(164, gy + 70, "b  (4,)", "ta", 10.5, "middle", mono=True)
+    a.text(264, gy + 70, "out  (3, 4)", "tm", 10.5, "middle", mono=True)
+    a.text(164, gy + 85, "repeated down the rows", "tm", 10, "middle")
     # broadcasting, backward
     dy = [[1, 0, 2, 1], [0, 1, 1, 0], [2, 1, 0, 1]]
     db = [sum(dy[r][c] for r in range(3)) for c in range(4)]
@@ -309,23 +361,25 @@ def res_tensors():
     for r in range(3):
         for c in range(4):
             cell(a, 24 + c * cw, by + r * ch, cw, ch, str(dy[r][c]), "s f", "t", 10.5, rx=0)
-    a.text(64, by + 68, "y.grad  [3, 4]", "tm", 10.5, "middle", mono=True)
-    a.path(f"M108 {by + 27} H 150", "a", arrow=True)
-    a.text(130, by + 20, "sum(0)", "ta", 10, "middle", mono=True)
+    a.text(64, by + 68, "out.grad  (3, 4)", "tm", 10.5, "middle", mono=True)
+    a.path(f"M108 {by + 27} H 172", "a", arrow=True)
+    a.text(140, by + 20, "sum(axis=0)", "ta", 10, "middle", mono=True)
     for c in range(4):
-        cell(a, 154 + c * cw, by + 18, cw, ch, str(db[c]), "a af", "ta", 10.5, rx=0, weight=700)
-    a.text(194, by + 52, "b.grad  [4]", "ta", 10.5, "middle", mono=True)
+        cell(a, 176 + c * cw, by + 18, cw, ch, str(db[c]), "a af", "ta", 10.5, rx=0, weight=700)
+    a.text(216, by + 52, "b.grad  (4,)", "ta", 10.5, "middle", mono=True)
     a.text(24, 254, "b was used in 3 rows, so its gradient adds up all 3", "tm", 10.5)
 
-    # matrix multiply: rectangles drawn to scale, B = 3, in = 4, out = 2
+    # matrix multiply: rectangles drawn to scale, n = 3, k = 4, m = 2
     u = 9
     a.text(340, 28, "matrix multiply", size=12, weight=700)
-    a.text(616, 28, "B: batch; in, out: layer sizes", "tm", 10, "end")
-    rows = [("y = x @ W", 50, [("[B, in]", 4, 3, "s f"), ("[in, out]", 2, 4, "s f"), ("[B, out]", 2, 3, "s f")]),
-            ("x.grad = y.grad @ W.T", 124, [("[B, out]", 2, 3, "s f"), ("[out, in]", 4, 2, "s f"), ("[B, in]", 4, 3, "a af")]),
-            ("W.grad = x.T @ y.grad", 194, [("[in, B]", 3, 4, "s f"), ("[B, out]", 2, 3, "s f"), ("[in, out]", 2, 4, "a af")])]
+    a.text(616, 28, "drawn with n = 3, k = 4, m = 2", "tm", 10, "end")
+    rows = [("out = x @ w", 50, [("(n, k)", 4, 3, "s f"), ("(k, m)", 2, 4, "s f"), ("(n, m)", 2, 3, "s f")], ""),
+            ("w.grad = x.T @ out.grad", 124, [("(k, n)", 3, 4, "s f"), ("(n, m)", 2, 3, "s f"), ("(k, m)", 2, 4, "a af")],
+             "w"),
+            ("x.grad = out.grad @ w.T", 194, [("(n, m)", 2, 3, "s f"), ("(m, k)", 4, 2, "s f"), ("(n, k)", 4, 3, "a af")],
+             "x")]
     centres = [374, 448, 522]
-    for title, ty, mats in rows:
+    for title, ty, mats, of in rows:
         a.text(340, ty, title, "ta" if "grad" in title else "t", 11, mono=True, weight=600)
         top = ty + 8
         for k, (lab, w, hh, cls) in enumerate(mats):
@@ -336,59 +390,68 @@ def res_tensors():
             if k < 2:
                 a.text((cx + centres[k + 1]) / 2, top + 1.5 * u + 4, "@" if k == 0 else "=", size=12, anchor="middle",
                        mono=True)
-        if ty > 100:
-            a.text(566, top + 1.5 * u + 4, "<- shape of " + ("x" if ty < 150 else "W"), "ta", 10, weight=600)
+        if of:
+            a.text(566, top + 1.5 * u + 4, "<- shape of " + of, "ta", 10, weight=600)
     a.text(24, 272, "Each gradient has the shape of the tensor it belongs to: the first check on any backward.", "tm", 11)
-    a.text(24, 288, "Every backward here is checked against PyTorch's gradients, to six decimal places.", "tm", 11)
+    a.text(24, 288, "Every backward here is checked against the nudge, and against PyTorch's gradients to within 1e-6.",
+           "tm", 11)
     return a
 
 
 # =================================================================== 03 optimisers
 
-K03 = 25.0                                  # the valley: f(u, v) = (u^2 + K v^2) / 2
+VALLEY = dict(steep=50.0, start=(-4.0, 1.0), threshold=1e-4)    # 03.02's valley: (w0^2 + 50 w1^2) / 2
 
 
-def opt_paths(start=(-4.4, 1.05), n=20):
-    grad = lambda u, v: (u, K03 * v)
-    out = {}
-    u, v = start
-    p = [(u, v)]
-    for _ in range(n):
-        gu, gv = grad(u, v)
-        u, v = u - 0.07 * gu, v - 0.07 * gv
-        p.append((u, v))
-    out["sgd"] = p
-    u, v = start
-    bu = bv = 0.0
-    p = [(u, v)]
-    for _ in range(n):
-        gu, gv = grad(u, v)
-        bu, bv = 0.6 * bu + gu, 0.6 * bv + gv
-        u, v = u - 0.06 * bu, v - 0.06 * bv
-        p.append((u, v))
-    out["momentum"] = p
-    u, v = start
-    m, s = [0.0, 0.0], [0.0, 0.0]
-    p = [(u, v)]
-    for t in range(1, n + 1):
-        g = grad(u, v)
-        for i in range(2):
-            m[i] = 0.9 * m[i] + 0.1 * g[i]
-            s[i] = 0.999 * s[i] + 0.001 * g[i] ** 2
-        step = [0.25 * (m[i] / (1 - 0.9 ** t)) / (math.sqrt(s[i] / (1 - 0.999 ** t)) + 1e-8) for i in range(2)]
-        u, v = u - step[0], v - step[1]
-        p.append((u, v))
-    out["adam"] = p
-    return out
+def valley_path(steep, start, threshold, lr, mu=0.0, adam=False, max_steps=5000):
+    """Descent on (w0^2 + steep w1^2) / 2 from start until the loss is below threshold, as
+    experiments/momentum.py (SGD, momentum mu, the velocity starting as the first gradient) and
+    adam.py (Adam, betas 0.9 and 0.999, eps 1e-8) run it. Returns the steps taken and the path."""
+    w = list(start)
+    buf, m, s = None, [0.0, 0.0], [0.0, 0.0]
+    path = [tuple(w)]
+    for step in range(max_steps):
+        if 0.5 * (w[0] ** 2 + steep * w[1] ** 2) < threshold:
+            return step, path
+        g = [w[0], steep * w[1]]
+        if adam:
+            t = step + 1
+            for i in range(2):
+                m[i] = 0.9 * m[i] + 0.1 * g[i]
+                s[i] = 0.999 * s[i] + 0.001 * g[i] * g[i]
+                w[i] -= lr * (m[i] / (1 - 0.9 ** t)) / (math.sqrt(s[i] / (1 - 0.999 ** t)) + 1e-8)
+        else:
+            if mu:
+                buf = list(g) if buf is None else [mu * b + gi for b, gi in zip(buf, g)]
+                g = buf
+            w = [wi - lr * gi for wi, gi in zip(w, g)]
+        path.append(tuple(w))
+    return max_steps, path
+
+
+def warmup_cosine(warmup, total):
+    """lab/schedule.py's multiplier of the rate at each step: up in a line, then half a cosine to 0."""
+    def multiplier(step):
+        if step < warmup:
+            return (step + 1) / warmup
+        p = min(1.0, (step - warmup) / max(1, total - warmup))
+        return 0.5 * (1 + math.cos(math.pi * p))
+    return multiplier
 
 
 def res_optim():
     a = Art("r03", "Optimisers in a narrow valley: plain SGD zigzags across it, momentum adds up the push along it, "
                    "and Adam sizes each parameter's step on its own")
-    paths = opt_paths()
-    sc = 44
-    a.text(24, 28, "a narrow valley, the same start, 20 steps each", "tm", 10.5)
-    panels = [(40, ["sgd"], "SGD: zigzags across, crawls along"),
+    runs = {"sgd": valley_path(lr=0.03, **VALLEY), "momentum": valley_path(lr=0.03, mu=0.8, **VALLEY),
+            "adam": valley_path(lr=0.1, adam=True, **VALLEY)}
+    steps = {k: n for k, (n, _) in runs.items()}
+    # what 03.02 and 03.03 print: 186 and 52 steps for SGD at lr 0.03 without and with momentum 0.8,
+    # 109 for Adam at lr 0.1
+    assert steps == {"sgd": 186, "momentum": 52, "adam": 109}, steps
+    paths = {k: p for k, (_, p) in runs.items()}
+    sc, steep = 44, VALLEY["steep"]
+    a.text(24, 28, "03.02's valley, (w0^2 + 50 w1^2) / 2, from (-4, 1), to a loss below 1e-4", "tm", 10.5)
+    panels = [(40, ["sgd"], f"plain SGD, lr 0.03: {steps['sgd']} steps"),
               (150, ["momentum", "adam"], "momentum, and Adam")]
     for top, names, title in panels:
         box = (24, top, 360, top + 96)
@@ -396,7 +459,7 @@ def res_optim():
         X = lambda u: ox + u * sc
         Y = lambda v: oy - v * sc
         for c in (0.2, 1.0, 2.8, 6, 11, 18, 28):
-            rx, ry = math.sqrt(c), math.sqrt(c / K03)
+            rx, ry = math.sqrt(c), math.sqrt(c / steep)
             pts = [(X(rx * math.cos(2 * math.pi * k / 240)), Y(ry * math.sin(2 * math.pi * k / 240))) for k in range(241)]
             clipped(a, pts, box, "m")
         dot(a, X(0), Y(0), 2.5, "s fs")
@@ -404,35 +467,38 @@ def res_optim():
             pts = [(X(u), Y(v)) for u, v in paths[name]]
             cls = "a" if name == "adam" else "s"
             poly(a, pts, cls)
-            for x, y in pts[1:]:
-                dot(a, x, y, 1.8, "a fa" if name == "adam" else "s fs")
+            last = pts[0]
+            for x, y in pts[1:]:                 # a dot a step, where the steps are not too close to see
+                if math.hypot(x - last[0], y - last[1]) >= 3:
+                    dot(a, x, y, 1.8, "a fa" if name == "adam" else "s fs")
+                    last = (x, y)
             dot(a, pts[0][0], pts[0][1], 3.2, "s f")
         a.text(360, top + 12, title, size=10.5, anchor="end", weight=700)
-    u, v = paths["momentum"][-1]
-    a.text(24 + 4.75 * sc + u * sc + 4, 150 + 48 + 22, "momentum", size=10, weight=600)
-    u, v = paths["adam"][-1]
-    a.text(24 + 4.75 * sc + u * sc + 8, 150 + 48 - v * sc - 10, "Adam", "ta", 10, weight=600)
+    a.text(130, 150 + 48 + 40, f"momentum 0.8, lr 0.03: {steps['momentum']} steps", size=10, weight=600)
+    a.text(130, 150 + 48 - 30, f"Adam, lr 0.1: {steps['adam']} steps", "ta", 10, weight=600)
 
     rx0 = 392
-    rules = [("SGD", "s", ["w -= lr * g"]),
-             ("momentum", "s", ["v = mu * v + g;  w -= lr * v"]),
-             ("Adam", "a", ["m, v: running means of g and g^2,", "each corrected for starting at 0",
-                            "w -= lr * m / (sqrt(v) + eps)"]),
-             ("AdamW", "s", ["Adam, then  w -= lr * wd * w"])]
+    T, M, S = "t", "tm", "sans"
+    rules = [("SGD", "s", [("w -= lr * g", T)]),
+             ("momentum", "s", [("v = mu * v + g;  w -= lr * v", T)]),
+             ("Adam", "a", [("m, v: running means of g and g^2,", S), ("each corrected for starting at 0", S),
+                            ("w -= lr * m / (sqrt(v) + eps)", T)]),
+             ("AdamW", "s", [("w -= lr * wd * w", T), ("first, then Adam's step on g alone", S)])]
     y = 40
     for name, cls, lines in rules:
         a.text(rx0, y, name, "ta" if cls == "a" else "t", 11.5, weight=700)
-        for k, ln in enumerate(lines):
-            sans = ln.startswith("m, v") or ln.startswith("each")
-            a.text(rx0, y + 16 + k * 15, ln, "tm" if sans else ("ta" if cls == "a" else "t"), 10.5, mono=not sans)
-        y += 20 + 15 * len(lines)
-    # warmup, then cosine decay
-    gx0, gx1, gy0, gy1 = rx0 + 4, 604, 222, 254
-    warm, T = 0.12, 1.0
-    lr = lambda t: t / warm if t < warm else 0.5 * (1 + math.cos(math.pi * (t - warm) / (T - warm)))
+        for k, (ln, kind) in enumerate(lines):
+            sans = kind == S
+            a.text(rx0, y + 15 + k * 14, ln, M if sans else ("ta" if cls == "a" else "t"), 10.5, mono=not sans)
+        y += 18 + 14 * len(lines)
+    # 03.05's schedule: 200 warmup steps, then cosine decay, over 2 passes of 469 batches
+    gx0, gx1, gy0, gy1 = rx0 + 4, 604, 224, 254
+    total = 2 * math.ceil(60000 / 128)
+    lr = warmup_cosine(200, total)
     axes(a, gx0, gy0 - 4, gx1, gy1)
-    poly(a, [(gx0 + t / 100 * (gx1 - gx0), gy1 - lr(t / 100) * (gy1 - gy0)) for t in range(101)], "s")
-    a.text(rx0, 212, "the learning rate: warmup, then cosine decay", "tm", 10.5)
+    poly(a, [(gx0 + s / (total - 1) * (gx1 - gx0), gy1 - lr(s) * (gy1 - gy0)) for s in [*range(0, total, 6), total - 1]],
+         "s")
+    a.text(rx0, 213, "03.05's rate: 200 steps of warmup, cosine decay", "tm", 10.5)
     a.text(24, 272, "Steep across, shallow along: a step small enough for the steep way crawls along the shallow way.",
            "tm", 11)
     a.text(24, 288, "Each optimiser is the fix for what you watched the one before it do.  (Paths computed here.)", "tm", 11)
@@ -441,45 +507,73 @@ def res_optim():
 
 # =================================================================== 04 deep networks
 
-def layer_sizes(var, layers=50, width=64, batch=16, seed=0):
-    """The RMS of each layer's output in a ReLU network at initialisation, weights ~ N(0, var / width)."""
+def layer_spreads(how, depth=30, width=64, n_in=784, batch=16, seed=0):
+    """04.02's network at the start: depth linear layers, n_in -> width -> ... -> width -> 10, a relu
+    after each but the last, on a batch of random inputs. Each layer started as experiments/init.py
+    starts it: "default" as nn.Linear does (weights and biases uniform in +-1/sqrt(fan_in)),
+    "glorot" xavier_normal_ (sd sqrt(2 / (fan_in + fan_out))), "he" kaiming_normal_ for relu
+    (sd sqrt(2 / fan_in)), both with biases 0. Returns layer_stats' spread at every relu: for each
+    unit the standard deviation of its output over the batch, averaged over the units."""
     r = random.Random(seed)
-    h = [[r.gauss(0, 1) for _ in range(width)] for _ in range(batch)]
-    out = []
-    for _ in range(layers):
-        W = [[r.gauss(0, math.sqrt(var / width)) for _ in range(width)] for _ in range(width)]
-        h = [[max(0.0, sum(wi[k] * hb[k] for k in range(width))) for wi in W] for hb in h]
-        out.append(math.sqrt(sum(v * v for hb in h for v in hb) / (width * batch)))
+    h = [[r.gauss(0, 1) for _ in range(n_in)] for _ in range(batch)]
+    out, fan = [], n_in
+    for _ in range(depth - 1):
+        if how == "default":
+            bound = 1 / math.sqrt(fan)
+            W = [[r.uniform(-bound, bound) for _ in range(fan)] for _ in range(width)]
+            bias = [r.uniform(-bound, bound) for _ in range(width)]
+        else:
+            sd = math.sqrt(2 / (fan + width)) if how == "glorot" else math.sqrt(2 / fan)
+            W = [[r.gauss(0, sd) for _ in range(fan)] for _ in range(width)]
+            bias = [0.0] * width
+        h = [[max(0.0, sum(wk * xk for wk, xk in zip(wi, hb)) + bi) for wi, bi in zip(W, bias)] for hb in h]
+        fan = width
+        total = 0.0
+        for j in range(width):
+            col = [hb[j] for hb in h]
+            m = sum(col) / batch
+            total += math.sqrt(sum((c - m) ** 2 for c in col) / (batch - 1))
+        out.append(total / width)
     return out
 
 
 def res_deep():
-    a = Art("r04", "Fifty layers deep, a signal shrinks or blows up a little at every layer; the right initial size, "
-                   "normalisation and shortcuts keep it the same")
+    a = Art("r04", "Thirty relu layers deep, a signal shrinks at every layer unless the weights start at the right "
+                   "size; normalisation and shortcuts also keep it the same")
     px0, px1, py0, py1 = 64, 352, 44, 214
-    lo, hi = -8.5, 5.0
-    L = 50
+    lo, hi = -8.0, 0.5
+    n, L = 64, 29                             # 64 inputs a unit; 30 linear layers, so 29 relus
     X = lambda l: px0 + (l - 1) / (L - 1) * (px1 - px0)
     Y = lambda v: py1 - (math.log10(v) - lo) / (hi - lo) * (py1 - py0)
     axes(a, px0, py0 - 6, px1, py1)
-    for e, lab in ((-8, "1e-8"), (-4, "1e-4"), (0, "1"), (4, "1e4")):
+    for e, lab in ((-8, "1e-8"), (-6, "1e-6"), (-4, "1e-4"), (-2, "1e-2"), (0, "1")):
         a.line(px0 - 4, Y(10 ** e), px0, Y(10 ** e), "m")
         a.text(px0 - 8, Y(10 ** e) + 3.5, lab, "tm", 9.5, "end", mono=True)
-    for l in (1, 10, 20, 30, 40, 50):
+    for l in (1, 10, 20, 29):
         a.line(X(l), py1, X(l), py1 + 4, "m")
         a.text(X(l), py1 + 16, str(l), "tm", 9.5, "middle", mono=True)
-    a.text(px0, 30, "size of each layer's output (RMS), log scale", "tm", 10.5)
-    a.text((px0 + px1) / 2, py1 + 32, "layer", "tm", 10.5, "middle")
-    a.line(px0, Y(1), px1, Y(1), "m", dash=True)
-    lines = [(3.0, "s", "N(0, 3/n)"), (2.0, "a", "N(0, 2/n)"), (1.0, "s", "N(0, 1/n)")]
-    for var, cls, lab in lines:
-        sizes = layer_sizes(var)
-        poly(a, [(X(l + 1), Y(v)) for l, v in enumerate(sizes)], cls)
-        factor = math.sqrt(var / 2)          # expected change of the RMS per layer
-        y = Y(sizes[-1])
-        a.text(px1 + 8, y - 2, lab, "ta" if cls == "a" else "t", 10.5, weight=600, mono=True)
-        note = "holds (He)" if var == 2 else f"x{factor:.2f} a layer"
-        a.text(px1 + 8, y + 12, note, "ta" if cls == "a" else "tm", 10)
+    a.text(px0, 30, "spread of each layer's output over a batch, log scale", "tm", 10.5)
+    a.text((px0 + px1) / 2, py1 + 32, "relu layer", "tm", 10.5, "middle")
+    # each layer multiplies the size by sqrt(n Var(w) / 2): 04.02's derivation
+    starts = [("default", 1 / (3 * n), "s", "nn.Linear's start"), ("glorot", 2 / (n + n), "s", "Glorot's"),
+              ("he", 2 / n, "a", "He's")]
+    factor = {how: f"{math.sqrt(n * var / 2):.2f}".rstrip("0").rstrip(".") for how, var, _, _ in starts}
+    assert factor == {"default": "0.41", "glorot": "0.71", "he": "1"}          # 04.02's three numbers
+    for how, var, cls, lab in starts:
+        spreads = layer_spreads(how)
+        assert len(spreads) == L
+        clipped(a, [(X(l + 1), Y(v)) for l, v in enumerate(spreads)], (px0, py0 - 6, px1, py1), cls)
+        note = f"x{factor[how]} a layer"
+        tcls = "ta" if cls == "a" else "t"
+        if spreads[-1] >= 10 ** lo:
+            y = Y(spreads[-1])
+            a.text(px1 + 8, y - 2, lab, tcls, 10.5, weight=600)
+            a.text(px1 + 8, y + 12, note, "ta" if cls == "a" else "tm", 10)
+        else:                                  # it leaves the frame at the bottom: say so where it does
+            out = next(l for l, v in enumerate(spreads) if v < 10 ** lo)
+            x = X(out + 0.5) + 8
+            a.text(x, py1 - 26, lab, tcls, 10.5, weight=600)
+            a.text(x, py1 - 12, f"{note}, on below 1e-8", "tm", 10)
     rx0 = 470
     a.text(rx0, 36, "three fixes", size=12, weight=700)
     fixes = [("1. the right starting size", ["w ~ N(0, 2 / fan_in)", "for ReLU: He et al."], [True, False]),
@@ -492,10 +586,10 @@ def res_deep():
         for k, (ln, mo) in enumerate(zip(ls, mono)):
             a.text(rx0, y + 16 + k * 14, ln, "ta" if mo else "tm", 10.5 if mo else 10, mono=mo)
         y += 26 + 14 * len(ls) + 8
-    a.text(24, 270, "Weights in a ReLU network, n inputs a layer: the variance 2/n keeps the size; a little less fades,",
-           "tm", 11)
-    a.text(24, 286, "a little more explodes. Gradients do the same going back.  (Lines computed here: 64 wide, at init.)",
-           "tm", 11)
+    a.text(24, 270, "Each relu layer, its units summing n inputs, multiplies the size of the signal by sqrt(n Var(w) / 2):",
+           "tm", 10.5)
+    a.text(24, 286, f"{factor['default']} for nn.Linear's start, {factor['glorot']} for Glorot's, {factor['he']} for "
+                    "He's.  (Computed here: 30 layers, 64 wide, random inputs.)", "tm", 10.5)
     return a
 
 
@@ -1153,34 +1247,42 @@ def res_grok():
 # =================================================================== 15 your own result
 
 def res_result():
-    a = Art("r15", "Your own result: a loop of question, prediction, experiment and doubt, and a way out to a public write-up")
-    nodes = {"Q": (40, 46, "a small question"), "P": (230, 46, "a prediction"), "E": (230, 146, "the experiment"),
-             "D": (40, 146, "try to break it")}
+    a = Art("r15", "Your own result: a loop of question, prediction, experiment and doubt, and a way out to a short "
+                   "paper and a public repository anyone can rerun")
+    nodes = {"Q": (24, 46, "a small question"), "P": (196, 46, "a prediction"), "E": (196, 146, "the experiment"),
+             "D": (24, 146, "try to break it")}
     for _, (x, y, t) in nodes.items():
-        a.box(x, y, 130, 36, "s f", rx=18)
-        a.text(x + 65, y + 23, t, size=12, anchor="middle", weight=600)
-    a.line(170, 64, 228, 64, arrow=True)
-    a.line(295, 82, 295, 144, arrow=True)
-    a.line(230, 164, 172, 164, arrow=True)
-    a.line(105, 146, 105, 84, "m", arrow=True)
-    a.text(114, 120, "it breaks: refine", "tm", 10.5)
-    a.path("M105 182 V 236 H 396 V 104 H 416", "a", arrow=True)
-    a.text(250, 228, "it survives: write it up", "ta", 11, "middle", 600)
-    a.box(420, 30, 100, 140, "s f", rx=6)
-    a.add(f'<rect class="s fs" x="432" y="42" width="76" height="9" rx="2" {SW}/>')
+        a.box(x, y, 124, 36, "s f", rx=18)
+        a.text(x + 62, y + 23, t, size=12, anchor="middle", weight=600)
+    a.line(148, 64, 194, 64, arrow=True)
+    a.line(258, 82, 258, 144, arrow=True)
+    a.line(196, 164, 150, 164, arrow=True)
+    a.line(86, 146, 86, 84, "m", arrow=True)
+    a.text(95, 120, "it breaks: refine", "tm", 10.5)
+    a.path("M86 182 V 236 H 330 V 100 H 342", "a", arrow=True)
+    a.text(208, 228, "it survives: write it up", "ta", 11, "middle", 600)
+    # the paper, a schematic page
+    px, pw = 346, 76
+    a.box(px, 30, pw, 140, "s f", rx=6)
+    a.add(f'<rect class="s fs" x="{px + 10}" y="42" width="{pw - 20}" height="9" rx="2" {SW}/>')
     for y in (62, 71, 80):
-        a.line(432, y, 508, y, "m")
-    a.line(436, 128, 436, 92, "m"); a.line(436, 128, 504, 128, "m")
-    poly(a, [(440, 122), (452, 116), (464, 117), (476, 106), (488, 101), (500, 96)], "s")
+        a.line(px + 10, y, px + pw - 10, y, "m")
+    a.line(px + 14, 128, px + 14, 92, "m"); a.line(px + 14, 128, px + pw - 12, 128, "m")
+    poly(a, [(px + 18, 122), (px + 27, 116), (px + 36, 117), (px + 45, 106), (px + 54, 101), (px + 62, 96)], "s")
     for y in (142, 151, 160):
-        a.line(432, y, 508 if y < 160 else 480, y, "m")
-    a.text(470, 188, "paper", size=12, anchor="middle", weight=700)
-    a.box(540, 30, 76, 140, "s fs", rx=6)
-    for i, t in enumerate(["repo/", "README", "data/", "train.py", "plots.py", "Makefile"]):
-        a.text(550, 52 + i * 19, t, "t" if i == 0 else "tm", 10.5, weight=600 if i == 0 else None, mono=True)
-    a.text(578, 188, "code", size=12, anchor="middle", weight=700)
-    a.text(420, 222, "$ make reproduce", size=11, mono=True, weight=600)
-    a.text(420, 238, "rebuilds every number and figure", "tm", 10.5)
+        a.line(px + 10, y, px + pw - 10 if y < 160 else px + pw - 30, y, "m")
+    a.text(px + pw / 2, 188, "paper", size=12, anchor="middle", weight=700)
+    # the repository: the track's own layout, and the files every run leaves
+    rx, rw = 436, 180
+    a.box(rx, 30, rw, 140, "s fs", rx=6)
+    tree = [("repo/", 0, "t"), ("engine/  lab/  data/", 1, "tm"), ("experiments/<name>.py", 1, "tm"),
+            ("runs/<name>/seed0/", 1, "tm"), ("config.json", 2, "ta"), ("log.jsonl", 2, "ta"), ("summary.json", 2, "ta")]
+    for i, (t, depth, cls) in enumerate(tree):
+        a.text(rx + 10 + 14 * depth, 50 + i * 17, t, cls, 10, weight=600 if i == 0 else None, mono=True)
+    a.text(rx + rw / 2, 188, "code, and every run", size=12, anchor="middle", weight=700)
+    a.text(px, 216, "$ python3 -m experiments.<name> key=value", size=10.5, mono=True, weight=600)
+    a.text(px, 232, "reruns it; each run's config.json records every", "tm", 10.5)
+    a.text(px, 247, "setting it used and its seed", "tm", 10.5)
     a.text(24, 284, "Small, finished and public beats big and half done.", "tm", 11)
     return a
 
@@ -1607,17 +1709,30 @@ def check(out):
     return bad
 
 
+def built(mid):
+    """The lessons folder of module mid in tracks/research, or None while the module is not built."""
+    found = sorted(glob.glob(os.path.join(LESSONS, f"{mid}-*")))
+    return found[0] if found else None
+
+
 def main(argv):
     out = files(set(argv) or None)
+    paths = {}
     for rel, text in out.items():
-        path = os.path.join(OUT, rel)
+        paths[os.path.join(OUT, rel)] = text
+        mid, name = rel.split("/")
+        if built(mid):                           # a built module's copy, so the two never drift
+            paths[os.path.join(built(mid), name)] = text
+    for path, text in paths.items():
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w") as f:
             f.write(text)
     bad = check(out)
     for b in bad:
         print("problem:", b)
-    print("wrote", len(out), "files under", os.path.relpath(OUT, ROOT))
+    copies = len(paths) - len(out)
+    print("wrote", len(out), "files under", os.path.relpath(OUT, ROOT), "and", copies, "under",
+          os.path.relpath(LESSONS, ROOT))
     return 1 if bad else 0
 
 

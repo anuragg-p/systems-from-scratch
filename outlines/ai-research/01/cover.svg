@@ -1,49 +1,68 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
-<title>Backpropagation on a small graph: values flow forward, gradients flow back</title>
+<title>Backpropagation through one neuron, o = tanh(x1 w1 + x2 w2 + b): values flow forward, gradients flow back, and the nudge checks them</title>
 <defs><marker id="r01-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="r01-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
-<rect class="s f" x="24" y="36" width="96" height="46" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="36" y="55" font-size="12" font-weight="600">a = 2.0</text>
-<text class="ta mono" x="36" y="72" font-size="11">grad 6.0</text>
-<rect class="s f" x="24" y="112" width="96" height="46" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="36" y="131" font-size="12" font-weight="600">b = -3.0</text>
-<text class="ta mono" x="36" y="148" font-size="11">grad -4.0</text>
-<rect class="s f" x="182" y="72" width="96" height="46" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="194" y="91" font-size="12" font-weight="600">e = -6.0</text>
-<text class="ta mono" x="194" y="108" font-size="11">grad -2.0</text>
-<rect class="s f" x="182" y="158" width="96" height="46" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="194" y="177" font-size="12" font-weight="600">c = 10.0</text>
-<text class="ta mono" x="194" y="194" font-size="11">grad -2.0</text>
-<rect class="s f" x="342" y="116" width="96" height="46" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="354" y="135" font-size="12" font-weight="600">d = 4.0</text>
-<text class="ta mono" x="354" y="152" font-size="11">grad -2.0</text>
-<rect class="s f" x="342" y="200" width="96" height="46" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="354" y="219" font-size="12" font-weight="600">f = -2.0</text>
-<text class="ta mono" x="354" y="236" font-size="11">grad 4.0</text>
-<rect class="s f" x="504" y="158" width="96" height="46" rx="8" stroke-width="1.5"/>
-<text class="t mono" x="516" y="177" font-size="12" font-weight="600">L = -8.0</text>
-<text class="ta mono" x="516" y="194" font-size="11">grad 1.0</text>
-<circle class="s fs" cx="152" cy="97" r="12" stroke-width="1.5"/>
-<text class="t mono" x="152" y="101.5" font-size="13" font-weight="600" text-anchor="middle">*</text>
-<circle class="s fs" cx="312" cy="139" r="12" stroke-width="1.5"/>
-<text class="t mono" x="312" y="143.5" font-size="13" font-weight="600" text-anchor="middle">+</text>
-<circle class="s fs" cx="474" cy="181" r="12" stroke-width="1.5"/>
-<text class="t mono" x="474" y="185.5" font-size="13" font-weight="600" text-anchor="middle">*</text>
-<path class="s" d="M120 59 C 134 59, 124 93, 140 93" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path class="s" d="M120 135 C 134 135, 124 101, 140 101" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<line class="s" x1="164" y1="97" x2="180" y2="95" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r01-ah)"/>
-<path class="s" d="M278 95 C 292 95, 284 135, 300 135" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path class="s" d="M278 181 C 292 181, 284 143, 300 143" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<line class="s" x1="324" y1="139" x2="340" y2="139" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r01-ah)"/>
-<path class="s" d="M438 139 C 452 139, 446 177, 462 177" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path class="s" d="M438 223 C 452 223, 446 185, 462 185" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<line class="s" x1="486" y1="181" x2="502" y2="181" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r01-ah)"/>
+<rect class="s f" x="24" y="34" width="96" height="38" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="34" y="50" font-size="11.5" font-weight="600">x1 = 1.5</text>
+<text class="ta mono" x="34" y="65" font-size="10.5">grad 0.4472</text>
+<rect class="s f" x="24" y="80" width="96" height="38" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="34" y="96" font-size="11.5" font-weight="600">w1 = 0.8</text>
+<text class="ta mono" x="34" y="111" font-size="10.5">grad 0.8386</text>
+<rect class="s f" x="24" y="136" width="96" height="38" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="34" y="152" font-size="11.5" font-weight="600">x2 = -0.5</text>
+<text class="ta mono" x="34" y="167" font-size="10.5">grad -0.6709</text>
+<rect class="s f" x="24" y="182" width="96" height="38" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="34" y="198" font-size="11.5" font-weight="600">w2 = -1.2</text>
+<text class="ta mono" x="34" y="213" font-size="10.5">grad -0.2795</text>
+<rect class="s f" x="182" y="57" width="96" height="38" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="192" y="73" font-size="11.5" font-weight="600">x1*w1 = 1.2</text>
+<text class="ta mono" x="192" y="88" font-size="10.5">grad 0.5591</text>
+<rect class="s f" x="182" y="159" width="96" height="38" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="192" y="175" font-size="11.5" font-weight="600">x2*w2 = 0.6</text>
+<text class="ta mono" x="192" y="190" font-size="10.5">grad 0.5591</text>
+<rect class="s f" x="340" y="108" width="96" height="38" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="350" y="124" font-size="11.5" font-weight="600">s = 1.8</text>
+<text class="ta mono" x="350" y="139" font-size="10.5">grad 0.5591</text>
+<rect class="s f" x="340" y="176" width="96" height="38" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="350" y="192" font-size="11.5" font-weight="600">b = -1</text>
+<text class="ta mono" x="350" y="207" font-size="10.5">grad 0.5591</text>
+<rect class="s f" x="498" y="142" width="96" height="38" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="508" y="158" font-size="11.5" font-weight="600">n = 0.8</text>
+<text class="ta mono" x="508" y="173" font-size="10.5">grad 0.5591</text>
+<rect class="s f" x="498" y="40" width="96" height="38" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="508" y="56" font-size="11.5" font-weight="600">o = 0.664</text>
+<text class="ta mono" x="508" y="71" font-size="10.5">grad 1</text>
+<circle class="s fs" cx="152" cy="76" r="12" stroke-width="1.5"/>
+<text class="t mono" x="152" y="80.5" font-size="13" font-weight="600" text-anchor="middle">*</text>
+<circle class="s fs" cx="152" cy="178" r="12" stroke-width="1.5"/>
+<text class="t mono" x="152" y="182.5" font-size="13" font-weight="600" text-anchor="middle">*</text>
+<circle class="s fs" cx="310" cy="127" r="12" stroke-width="1.5"/>
+<text class="t mono" x="310" y="131.5" font-size="13" font-weight="600" text-anchor="middle">+</text>
+<circle class="s fs" cx="468" cy="161" r="12" stroke-width="1.5"/>
+<text class="t mono" x="468" y="165.5" font-size="13" font-weight="600" text-anchor="middle">+</text>
+<circle class="s fs" cx="546" cy="110" r="14" stroke-width="1.5"/>
+<text class="t mono" x="546" y="113.5" font-size="9.5" font-weight="600" text-anchor="middle">tanh</text>
+<path class="s" d="M120 53 C 134 53, 124 72, 140 72" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M120 99 C 134 99, 124 80, 140 80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="s" x1="164" y1="76" x2="180" y2="76" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r01-ah)"/>
+<path class="s" d="M120 155 C 134 155, 124 174, 140 174" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M120 201 C 134 201, 124 182, 140 182" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="s" x1="164" y1="178" x2="180" y2="178" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r01-ah)"/>
+<path class="s" d="M278 76 C 292 76, 282 123, 298 123" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M278 178 C 292 178, 282 131, 298 131" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="s" x1="322" y1="127" x2="338" y2="127" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r01-ah)"/>
+<path class="s" d="M436 127 C 450 127, 440 157, 456 157" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M436 195 C 450 195, 440 165, 456 165" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line class="s" x1="480" y1="161" x2="496" y2="161" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r01-ah)"/>
+<line class="s" x1="546" y1="142" x2="546" y2="124" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="546" y1="96" x2="546" y2="80" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r01-ah)"/>
 <line class="s" x1="24" y1="16" x2="300" y2="16" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r01-ah)"/>
 <text class="tm" x="308" y="20" font-size="10.5">forward: values</text>
-<text class="tm" x="24" y="186" font-size="10.5">chain rule, one step:</text>
-<text class="ta mono" x="24" y="204" font-size="11" font-weight="600">a.grad = b x e.grad</text>
-<text class="ta mono" x="65" y="220" font-size="11">= -3.0 x -2.0 = 6.0</text>
-<text class="tm" x="24" y="246" font-size="10.5">check: nudge a by h = 0.001</text>
-<text class="t mono" x="24" y="262" font-size="11">(L(a+h) - L(a)) / h = 6.000</text>
-<line class="a" x1="616" y1="280" x2="250" y2="280" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r01-aa)"/>
-<text class="ta" x="240" y="284" font-size="10.5" font-weight="600" text-anchor="end">backward(): gradients, from L</text>
+<text class="tm" x="24" y="240" font-size="10.5">chain rule, one step:</text>
+<text class="ta mono" x="24" y="256" font-size="11" font-weight="600">w1.grad = x1 x (x1*w1).grad</text>
+<text class="ta mono" x="77" y="272" font-size="11">= 1.5 x 0.5591 = 0.8386</text>
+<text class="tm" x="290" y="240" font-size="10.5">check, the nudge both ways, h = 1e-6:</text>
+<text class="t mono" x="290" y="256" font-size="11">(o(w1+h) - o(w1-h)) / 2h = 0.83858275</text>
+<text class="tm" x="290" y="272" font-size="10.5">backward: 0.83858275; largest gap of the five 1.2e-10</text>
+<line class="a" x1="616" y1="290" x2="250" y2="290" stroke-width="1.5" stroke-linecap="round" marker-end="url(#r01-aa)"/>
+<text class="ta" x="240" y="294" font-size="10.5" font-weight="600" text-anchor="end">backward(): gradients, from o</text>
 </svg>
