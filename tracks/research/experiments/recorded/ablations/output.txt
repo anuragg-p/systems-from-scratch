@@ -1,0 +1,26 @@
+1. Weight decay, 40% of the equations to train on:
+   0      validation 99% at step never, never, never      median more than 6000
+          training 99% at step   398, 398, 398            best validation accuracy 0.027, 0.071, 0.077
+   0.3    validation 99% at step 3981, 3981, 2511         median 3981
+          training 99% at step   398, 398, 398            best validation accuracy 0.996, 0.992, 0.996
+   1      validation 99% at step 1258, 1000, 1000         median 1000
+          training 99% at step   501, 501, 501            best validation accuracy 0.998, 0.993, 1.000
+   (never: not within 6000 steps; 3 seeds each, x / y mod 97)
+
+2. The fraction of the equations to train on, weight decay 1:
+   0.35   validation 99% at step 2511, 1995, 2511         median 2511
+          training 99% at step   398, 398, 501            best validation accuracy 1.000, 1.000, 1.000
+   0.4    validation 99% at step 1258, 1000, 1000         median 1000
+          training 99% at step   501, 501, 501            best validation accuracy 0.998, 0.993, 1.000
+   0.5    validation 99% at step 630, 794, never          median 794
+          training 99% at step   630, 630, never          best validation accuracy 0.997, 1.000, 0.369
+   (never: not within 6000 steps; 3 seeds each, x / y mod 97)
+
+3. The start, as a multiple of GPT's own, 50% of the equations, weight decay 1:
+   1      validation 99% at step 630, 794, never          median 794
+          training 99% at step   630, 630, never          best validation accuracy 0.997, 1.000, 0.369
+   10     validation 99% at step 3981, 3981, 3162         median 3981
+          training 99% at step   501, 630, 794            best validation accuracy 0.998, 1.000, 1.000
+   (never: not within 6000 steps; 3 seeds each, x / y mod 97)
+
+1634 s of training and reading on cpu
