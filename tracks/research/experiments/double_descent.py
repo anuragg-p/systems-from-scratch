@@ -3,15 +3,17 @@
 Nakkiran et al. (2019) find test error rising as a model grows to the size
 where it can just fit its training set exactly (the interpolation
 threshold), then falling again, below where it started, as the model
-grows past it; label noise makes the peak larger. Their figure trains
-ResNets on CIFAR-10 for hours. At laptop size this runs the model the
+grows past it, and see it most strongly with label noise. Their figure
+trains ResNets on CIFAR-10 for hours. At laptop size this runs the model the
 effect was first described on (Belkin et al., 2019, cited by the paper):
 a network of two layers whose first layer is fixed at random (p random
 relu features of the image) and whose second is fitted exactly, by least
 squares to the one-hot labels, with the smallest weights that do it (what
 gradient descent started from zero converges to). n = 1000 training
 digits, 10% of them with a random label; p from 50 to 10,000; a few seeds.
-The threshold is p = n.
+The threshold is p = n. Here the peak does not need the noise: with no
+label random (noise=0) the test error at p = n is 86.8%, against 88.3%
+with 10%; the noise raises the error on either side of the peak instead.
 
     python3 -m experiments.double_descent    (needs MNIST: python3 -m data.fetch mnist)
 """

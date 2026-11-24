@@ -1,9 +1,9 @@
 """00.03 Five seeds: how far a number moves by chance
 
 The mean and sample standard deviation agree with numpy's, Welch's t with its formula, and a
-result prints as mean +- sd with its range; the plot draws round-numbered ticks and one line
-per run, broken where a value is not finite; the curve experiment runs five seeds and prints
-their spread, which is what the summaries say.
+result prints as mean +- sd with its range (one seed as its number alone); the plot draws
+round-numbered ticks and one line per run, broken where a value is not finite; the curve
+experiment runs five seeds and prints their spread, which is what the summaries say.
 """
 
 import re
@@ -37,6 +37,7 @@ def inside(S):
     assert abs(lab.mean(xs) - np.mean(xs)) < 1e-15 and abs(lab.sd(xs) - np.std(xs, ddof=1)) < 1e-15
     assert math.isnan(lab.sd([1.0]))
     assert lab.spread(xs) == "0.316 +- 0.0241 (min 0.29, max 0.35, 5 seeds)", lab.spread(xs)
+    assert lab.spread([0.0496]) == "0.0496 (1 seed)", lab.spread([0.0496])
     a, b = [1.0, 1.2, 0.9, 1.1], [2.0, 2.3, 1.8]
     want = (np.mean(a) - np.mean(b)) / math.sqrt(np.var(a, ddof=1) / 4 + np.var(b, ddof=1) / 3)
     assert abs(lab.welch_t(a, b) - want) < 1e-12, (lab.welch_t(a, b), want)

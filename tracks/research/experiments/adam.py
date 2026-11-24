@@ -18,7 +18,7 @@
    the whole training set.
 
     python3 -m experiments.adam              (part 2 needs MNIST: python3 -m data.fetch mnist)
-    python3 -m experiments.adam models=[]    part 1 alone
+    python3 -m experiments.adam "models=[]"  part 1 alone
     python3 -m experiments.adam standardise=True       the inputs the rest of the track uses
 """
 
