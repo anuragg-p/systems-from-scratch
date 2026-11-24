@@ -27,7 +27,9 @@ not checked against the sources.
 
 Modules 06 and 07 are on master whole: code, 35 tests, eight lessons,
 module pages, figures and covers; `./learn verify --fresh research 07`
-passes. In work, by an agent in its own worktree: module 08's code.
+passes. Module 08's code is on master (models/gpt.py, five experiments,
+40 tests, the recorded GPT run). In work, each by an agent in its own
+worktree: module 08's lessons, and module 09's code.
 
 After that, in this order: 07, 08 and 09, one module's code at a time,
 each module's lessons written while the next module's code is built
@@ -231,8 +233,31 @@ Built, as found:
   20, and 0.87, 0.80, 0.60 at 25, 30 and 40, beyond any length trained
   on. Held, with a one-way encoder and greedy decoding.
 
+- 08.01 Without the mask and without positions (08.03's) the model
+  cannot find the next character to copy: its reported loss is only a
+  little lower (3.26 against 3.57 bits) and, asked from the past only,
+  it is far worse (4.20) and writes one character over and over. The
+  planned "falls to nothing" needs positions. Without the division by
+  sqrt(d): 3.752 against 3.581.
+- 08.02 Attention stacked four deep without the rest of the block is
+  worse than one layer (4.60 against 3.73); four blocks beat one (3.41
+  against 3.50); four heads against one at equal weights, 3.407 against
+  3.433, barely beyond noise.
+- 08.03 The order test is exact for one block only (3.6e-15). From the
+  second block on the causal mask lets order in (the scores move by
+  2.44), as Haviv et al. (2022) found at scale. Learned positions still
+  help: 3.342 against 3.407.
+- 08.04 The recorded run (6 blocks, width 192, 2800 steps, 56 minutes,
+  2 seeds): without dropout validation turns up near step 1900, test
+  2.361; with dropout 0.2 it is still falling, test 2.226, below module
+  07's best (2.283) on both seeds.
+- 08.05 Holtzman et al. (2020): greedy loops, as they found. At
+  character level the rest did not hold: plain sampling is the closest
+  to the text's perplexity, the nucleus further off, and with the long
+  run's model even plain sampling writes text the model finds likelier
+  than the real text.
+
 Still the plan:
-- 08 Transformer; 08.05 nucleus sampling against plain and top-k.
 - 09.01 BPE; 09.03 GPT-2: the published weights, the reference's logits.
 - 09.04 TinyStories: a model of a few million parameters tells a story.
 - 10.01 to 10.03 RMSNorm, RoPE, SwiGLU: each against the piece it
@@ -241,6 +266,22 @@ Still the plan:
 - 12.02 LoRA: close to full fine-tuning with a small fraction of weights.
 - 13.04 Scaling laws: loss as a power law in size, used to predict.
 - 14 Grokking: the paper's figure, and what weight decay does to it.
+
+## Decisions after module 08's code (Fable, 2026-11-24)
+
+- The 08.04 long run stays at 2 seeds for each dropout (3 would pass
+  the 60-minute limit). The lesson says 2, and claims only what both
+  seeds show.
+- 08.01 stays as measured. 08.03 does not add a model to show the
+  unmasked copy once positions exist; it may leave that as something
+  for the reader to try, with no number claimed.
+- 08.02's default run (45 to 47 s on a loaded machine) stays unless
+  the lessons agent sees it pass 55 s when verifying; then it is cut
+  and its numbers and test move together.
+- 08.05 scores on the test text, as every lesson does.
+- Module 09's tests take their reference from `transformers` (already
+  installed, 4.57.6): its GPT-2 tokenizer built from the fetched files,
+  its model for logits. Nothing new is installed for a test.
 
 ## Directions for 07 to 15 (Fable, 2026-11-24)
 
