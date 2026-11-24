@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 404" fill="none">
+<title>A test digit and the same digit moved 4 pixels up, through the trained convolutional network (seed 0): the same maps one place higher, read by the Linear layer&#x27;s other weights</title>
+<defs><marker id="maps0601-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="maps0601-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="maps0601-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="20" y="20" font-size="11.5" font-weight="600">the digit</text>
+<text class="tm" x="20" y="35" font-size="10.5">28 by 28 pixels</text>
+<text class="t" x="146" y="20" font-size="11.5" font-weight="600">convolution 1</text>
+<text class="tm" x="146" y="35" font-size="10.5">map 2 of 8, 28 by 28</text>
+<text class="t" x="272" y="20" font-size="11.5" font-weight="600">pooling 2</text>
+<text class="tm" x="272" y="35" font-size="10.5">map 14 of 16, 7 by 7</text>
+<text class="t" x="404" y="20" font-size="11.5" font-weight="600">Linear weights, a 7</text>
+<text class="tm" x="404" y="35" font-size="10.5">on map 14: one a place</text>
+<text class="t" x="536" y="20" font-size="11.5" font-weight="600">scores</text>
+<text class="tm" x="536" y="35" font-size="10.5">for 10 digits</text>
+<path class="t" d="M53.0 81.0h3.0v3.0h-3.0zM53.0 90.0h3.0v3.0h-3.0zM59.0 90.0h3.0v3.0h-3.0zM74.0 90.0h3.0v3.0h-3.0zM83.0 93.0h3.0v3.0h-3.0zM71.0 96.0h3.0v3.0h-3.0zM59.0 117.0h3.0v3.0h-3.0zM68.0 120.0h3.0v3.0h-3.0zM56.0 123.0h3.0v3.0h-3.0zM53.0 126.0h3.0v3.0h-3.0zM59.0 138.0h3.0v3.0h-3.0z" fill-opacity="0.1"/>
+<path class="t" d="M50.0 81.0h3.0v3.0h-3.0zM83.0 84.0h3.0v3.0h-3.0zM71.0 90.0h3.0v3.0h-3.0zM80.0 99.0h3.0v3.0h-3.0zM68.0 102.0h3.0v3.0h-3.0zM77.0 102.0h3.0v3.0h-3.0zM74.0 108.0h3.0v3.0h-3.0zM71.0 114.0h3.0v3.0h-3.0zM62.0 129.0h3.0v3.0h-3.0zM50.0 132.0h3.0v3.0h-3.0zM62.0 132.0h3.0v3.0h-3.0zM62.0 135.0h3.0v3.0h-3.0z" fill-opacity="0.2"/>
+<path class="t" d="M38.0 81.0h3.0v3.0h-3.0zM38.0 87.0h3.0v3.0h-3.0zM44.0 87.0h3.0v3.0h-3.0zM56.0 90.0h3.0v3.0h-3.0zM62.0 90.0h9.0v3.0h-9.0zM74.0 93.0h3.0v3.0h-3.0zM80.0 96.0h3.0v3.0h-3.0zM62.0 114.0h3.0v3.0h-3.0zM65.0 123.0h3.0v3.0h-3.0z" fill-opacity="0.3"/>
+<path class="t" d="M41.0 87.0h3.0v3.0h-3.0zM47.0 87.0h3.0v3.0h-3.0zM83.0 90.0h3.0v3.0h-3.0z" fill-opacity="0.4"/>
+<path class="t" d="M83.0 87.0h3.0v3.0h-3.0zM71.0 99.0h3.0v3.0h-3.0zM68.0 105.0h3.0v3.0h-3.0zM65.0 111.0h3.0v3.0h-3.0zM62.0 126.0h3.0v3.0h-3.0zM53.0 129.0h3.0v3.0h-3.0zM50.0 135.0h3.0v3.0h-3.0zM50.0 138.0h3.0v3.0h-3.0z" fill-opacity="0.5"/>
+<path class="t" d="M44.0 81.0h6.0v3.0h-6.0zM50.0 87.0h3.0v3.0h-3.0z" fill-opacity="0.6"/>
+<path class="t" d="M41.0 81.0h3.0v3.0h-3.0zM80.0 84.0h3.0v3.0h-3.0zM74.0 105.0h3.0v3.0h-3.0zM71.0 111.0h3.0v3.0h-3.0zM68.0 117.0h3.0v3.0h-3.0z" fill-opacity="0.7"/>
+<path class="t" d="M56.0 84.0h24.0v3.0h-24.0zM80.0 93.0h3.0v3.0h-3.0zM68.0 108.0h3.0v3.0h-3.0zM59.0 120.0h3.0v3.0h-3.0zM56.0 138.0h3.0v3.0h-3.0z" fill-opacity="0.8"/>
+<path class="t" d="M38.0 84.0h3.0v3.0h-3.0zM53.0 84.0h3.0v3.0h-3.0zM53.0 87.0h3.0v3.0h-3.0zM59.0 87.0h3.0v3.0h-3.0zM74.0 87.0h3.0v3.0h-3.0zM77.0 90.0h3.0v3.0h-3.0zM74.0 96.0h3.0v3.0h-3.0zM77.0 99.0h3.0v3.0h-3.0zM68.0 114.0h3.0v3.0h-3.0zM62.0 117.0h3.0v3.0h-3.0zM65.0 120.0h3.0v3.0h-3.0zM56.0 126.0h3.0v3.0h-3.0zM53.0 132.0h3.0v3.0h-3.0zM59.0 135.0h3.0v3.0h-3.0z" fill-opacity="0.9"/>
+<path class="t" d="M41.0 84.0h12.0v3.0h-12.0zM56.0 87.0h3.0v3.0h-3.0zM62.0 87.0h12.0v3.0h-12.0zM77.0 87.0h6.0v3.0h-6.0zM80.0 90.0h3.0v3.0h-3.0zM77.0 93.0h3.0v3.0h-3.0zM77.0 96.0h3.0v3.0h-3.0zM74.0 99.0h3.0v3.0h-3.0zM71.0 102.0h6.0v3.0h-6.0zM71.0 105.0h3.0v3.0h-3.0zM71.0 108.0h3.0v3.0h-3.0zM68.0 111.0h3.0v3.0h-3.0zM65.0 114.0h3.0v3.0h-3.0zM65.0 117.0h3.0v3.0h-3.0zM62.0 120.0h3.0v3.0h-3.0zM59.0 123.0h6.0v3.0h-6.0zM59.0 126.0h3.0v3.0h-3.0zM56.0 129.0h6.0v3.0h-6.0zM56.0 132.0h6.0v3.0h-6.0zM53.0 135.0h6.0v3.0h-6.0zM53.0 138.0h3.0v3.0h-3.0z" fill-opacity="1.0"/>
+<rect class="m" x="20" y="60" width="84" height="84" rx="0" stroke-width="1.5"/>
+<text class="t" x="62" y="160" font-size="11" font-weight="600" text-anchor="middle">as it is</text>
+<path class="fa" d="M200.0 90.0h3.0v3.0h-3.0zM212.0 90.0h3.0v3.0h-3.0zM197.0 93.0h3.0v3.0h-3.0zM209.0 96.0h3.0v3.0h-3.0zM200.0 102.0h3.0v3.0h-3.0zM197.0 105.0h3.0v3.0h-3.0zM203.0 108.0h3.0v3.0h-3.0zM188.0 111.0h3.0v3.0h-3.0zM188.0 114.0h3.0v3.0h-3.0zM200.0 114.0h3.0v3.0h-3.0zM185.0 117.0h3.0v3.0h-3.0zM191.0 117.0h3.0v3.0h-3.0zM188.0 120.0h3.0v3.0h-3.0zM197.0 120.0h3.0v3.0h-3.0zM185.0 126.0h3.0v3.0h-3.0zM182.0 129.0h3.0v3.0h-3.0zM185.0 141.0h3.0v3.0h-3.0z" fill-opacity="0.1"/>
+<path class="fa" d="M176.0 87.0h3.0v3.0h-3.0zM206.0 102.0h3.0v3.0h-3.0zM197.0 108.0h3.0v3.0h-3.0zM188.0 123.0h3.0v3.0h-3.0zM194.0 123.0h3.0v3.0h-3.0zM179.0 126.0h3.0v3.0h-3.0zM188.0 138.0h3.0v3.0h-3.0z" fill-opacity="0.2"/>
+<path class="fa" d="M176.0 81.0h3.0v3.0h-3.0zM203.0 96.0h3.0v3.0h-3.0zM194.0 114.0h3.0v3.0h-3.0zM191.0 120.0h3.0v3.0h-3.0zM191.0 126.0h3.0v3.0h-3.0zM179.0 135.0h3.0v3.0h-3.0zM182.0 138.0h3.0v3.0h-3.0zM182.0 141.0h3.0v3.0h-3.0z" fill-opacity="0.3"/>
+<path class="fa" d="M173.0 81.0h3.0v3.0h-3.0zM206.0 84.0h3.0v3.0h-3.0zM185.0 87.0h3.0v3.0h-3.0zM209.0 87.0h3.0v3.0h-3.0zM203.0 90.0h3.0v3.0h-3.0zM203.0 105.0h3.0v3.0h-3.0zM200.0 111.0h3.0v3.0h-3.0zM197.0 117.0h3.0v3.0h-3.0zM188.0 126.0h3.0v3.0h-3.0zM188.0 129.0h3.0v3.0h-3.0zM182.0 132.0h3.0v3.0h-3.0zM188.0 132.0h3.0v3.0h-3.0zM182.0 135.0h3.0v3.0h-3.0z" fill-opacity="0.4"/>
+<path class="fa" d="M164.0 81.0h9.0v3.0h-9.0zM167.0 84.0h3.0v3.0h-3.0zM179.0 87.0h3.0v3.0h-3.0zM188.0 87.0h15.0v3.0h-15.0zM209.0 90.0h3.0v3.0h-3.0zM206.0 93.0h6.0v3.0h-6.0zM206.0 96.0h3.0v3.0h-3.0zM206.0 99.0h3.0v3.0h-3.0zM203.0 102.0h3.0v3.0h-3.0zM200.0 108.0h3.0v3.0h-3.0zM197.0 111.0h3.0v3.0h-3.0zM197.0 114.0h3.0v3.0h-3.0zM188.0 135.0h3.0v3.0h-3.0z" fill-opacity="0.5"/>
+<path class="fa" d="M170.0 84.0h3.0v3.0h-3.0zM185.0 84.0h3.0v3.0h-3.0zM191.0 84.0h15.0v3.0h-15.0zM182.0 87.0h3.0v3.0h-3.0zM203.0 99.0h3.0v3.0h-3.0zM200.0 105.0h3.0v3.0h-3.0zM194.0 117.0h3.0v3.0h-3.0zM194.0 120.0h3.0v3.0h-3.0zM191.0 123.0h3.0v3.0h-3.0zM185.0 138.0h3.0v3.0h-3.0z" fill-opacity="0.6"/>
+<path class="fa" d="M182.0 84.0h3.0v3.0h-3.0zM188.0 84.0h3.0v3.0h-3.0zM206.0 90.0h3.0v3.0h-3.0zM185.0 135.0h3.0v3.0h-3.0z" fill-opacity="0.7"/>
+<path class="fa" d="M185.0 129.0h3.0v3.0h-3.0z" fill-opacity="0.8"/>
+<path class="fa" d="M173.0 84.0h9.0v3.0h-9.0zM203.0 87.0h6.0v3.0h-6.0zM185.0 132.0h3.0v3.0h-3.0z" fill-opacity="1.0"/>
+<rect class="m" x="146" y="60" width="84" height="84" rx="0" stroke-width="1.5"/>
+<path class="fa" d="M320.0 72.0h12.0v12.0h-12.0z" fill-opacity="0.1"/>
+<path class="fa" d="M332.0 84.0h12.0v12.0h-12.0zM308.0 132.0h12.0v12.0h-12.0z" fill-opacity="0.2"/>
+<path class="fa" d="M308.0 72.0h12.0v12.0h-12.0z" fill-opacity="0.3"/>
+<path class="fa" d="M284.0 72.0h12.0v12.0h-12.0zM296.0 84.0h12.0v12.0h-12.0z" fill-opacity="0.8"/>
+<path class="fa" d="M296.0 72.0h12.0v12.0h-12.0zM320.0 84.0h12.0v12.0h-12.0z" fill-opacity="0.9"/>
+<path class="fa" d="M308.0 84.0h12.0v12.0h-12.0z" fill-opacity="1.0"/>
+<rect class="m" x="272" y="60" width="84" height="84" rx="0" stroke-width="1.5"/>
+<line class="s" x1="108" y1="102" x2="140" y2="102" stroke-width="1.5" stroke-linecap="round" marker-end="url(#maps0601-ah)"/>
+<line class="s" x1="234" y1="102" x2="266" y2="102" stroke-width="1.5" stroke-linecap="round" marker-end="url(#maps0601-ah)"/>
+<path class="s" d="M360 102 L396 180.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#maps0601-ah)"/>
+<path class="s" d="M494 180.0 L528 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#maps0601-ah)"/>
+<text class="t" x="536" y="90" font-size="13" font-weight="700">predicted: 7</text>
+<text class="tm" x="536" y="108" font-size="10.5">top score 21.4</text>
+<text class="tm" x="536" y="122" font-size="10.5">for a 7: 21.4</text>
+<path class="t" d="M53.0 249.0h3.0v3.0h-3.0zM53.0 258.0h3.0v3.0h-3.0zM59.0 258.0h3.0v3.0h-3.0zM74.0 258.0h3.0v3.0h-3.0zM83.0 261.0h3.0v3.0h-3.0zM71.0 264.0h3.0v3.0h-3.0zM59.0 285.0h3.0v3.0h-3.0zM68.0 288.0h3.0v3.0h-3.0zM56.0 291.0h3.0v3.0h-3.0zM53.0 294.0h3.0v3.0h-3.0zM59.0 306.0h3.0v3.0h-3.0z" fill-opacity="0.1"/>
+<path class="t" d="M50.0 249.0h3.0v3.0h-3.0zM83.0 252.0h3.0v3.0h-3.0zM71.0 258.0h3.0v3.0h-3.0zM80.0 267.0h3.0v3.0h-3.0zM68.0 270.0h3.0v3.0h-3.0zM77.0 270.0h3.0v3.0h-3.0zM74.0 276.0h3.0v3.0h-3.0zM71.0 282.0h3.0v3.0h-3.0zM62.0 297.0h3.0v3.0h-3.0zM50.0 300.0h3.0v3.0h-3.0zM62.0 300.0h3.0v3.0h-3.0zM62.0 303.0h3.0v3.0h-3.0z" fill-opacity="0.2"/>
+<path class="t" d="M38.0 249.0h3.0v3.0h-3.0zM38.0 255.0h3.0v3.0h-3.0zM44.0 255.0h3.0v3.0h-3.0zM56.0 258.0h3.0v3.0h-3.0zM62.0 258.0h9.0v3.0h-9.0zM74.0 261.0h3.0v3.0h-3.0zM80.0 264.0h3.0v3.0h-3.0zM62.0 282.0h3.0v3.0h-3.0zM65.0 291.0h3.0v3.0h-3.0z" fill-opacity="0.3"/>
+<path class="t" d="M41.0 255.0h3.0v3.0h-3.0zM47.0 255.0h3.0v3.0h-3.0zM83.0 258.0h3.0v3.0h-3.0z" fill-opacity="0.4"/>
+<path class="t" d="M83.0 255.0h3.0v3.0h-3.0zM71.0 267.0h3.0v3.0h-3.0zM68.0 273.0h3.0v3.0h-3.0zM65.0 279.0h3.0v3.0h-3.0zM62.0 294.0h3.0v3.0h-3.0zM53.0 297.0h3.0v3.0h-3.0zM50.0 303.0h3.0v3.0h-3.0zM50.0 306.0h3.0v3.0h-3.0z" fill-opacity="0.5"/>
+<path class="t" d="M44.0 249.0h6.0v3.0h-6.0zM50.0 255.0h3.0v3.0h-3.0z" fill-opacity="0.6"/>
+<path class="t" d="M41.0 249.0h3.0v3.0h-3.0zM80.0 252.0h3.0v3.0h-3.0zM74.0 273.0h3.0v3.0h-3.0zM71.0 279.0h3.0v3.0h-3.0zM68.0 285.0h3.0v3.0h-3.0z" fill-opacity="0.7"/>
+<path class="t" d="M56.0 252.0h24.0v3.0h-24.0zM80.0 261.0h3.0v3.0h-3.0zM68.0 276.0h3.0v3.0h-3.0zM59.0 288.0h3.0v3.0h-3.0zM56.0 306.0h3.0v3.0h-3.0z" fill-opacity="0.8"/>
+<path class="t" d="M38.0 252.0h3.0v3.0h-3.0zM53.0 252.0h3.0v3.0h-3.0zM53.0 255.0h3.0v3.0h-3.0zM59.0 255.0h3.0v3.0h-3.0zM74.0 255.0h3.0v3.0h-3.0zM77.0 258.0h3.0v3.0h-3.0zM74.0 264.0h3.0v3.0h-3.0zM77.0 267.0h3.0v3.0h-3.0zM68.0 282.0h3.0v3.0h-3.0zM62.0 285.0h3.0v3.0h-3.0zM65.0 288.0h3.0v3.0h-3.0zM56.0 294.0h3.0v3.0h-3.0zM53.0 300.0h3.0v3.0h-3.0zM59.0 303.0h3.0v3.0h-3.0z" fill-opacity="0.9"/>
+<path class="t" d="M41.0 252.0h12.0v3.0h-12.0zM56.0 255.0h3.0v3.0h-3.0zM62.0 255.0h12.0v3.0h-12.0zM77.0 255.0h6.0v3.0h-6.0zM80.0 258.0h3.0v3.0h-3.0zM77.0 261.0h3.0v3.0h-3.0zM77.0 264.0h3.0v3.0h-3.0zM74.0 267.0h3.0v3.0h-3.0zM71.0 270.0h6.0v3.0h-6.0zM71.0 273.0h3.0v3.0h-3.0zM71.0 276.0h3.0v3.0h-3.0zM68.0 279.0h3.0v3.0h-3.0zM65.0 282.0h3.0v3.0h-3.0zM65.0 285.0h3.0v3.0h-3.0zM62.0 288.0h3.0v3.0h-3.0zM59.0 291.0h6.0v3.0h-6.0zM59.0 294.0h3.0v3.0h-3.0zM56.0 297.0h6.0v3.0h-6.0zM56.0 300.0h6.0v3.0h-6.0zM53.0 303.0h6.0v3.0h-6.0zM53.0 306.0h3.0v3.0h-3.0z" fill-opacity="1.0"/>
+<rect class="m" x="20" y="240" width="84" height="84" rx="0" stroke-width="1.5"/>
+<text class="ta" x="62" y="340" font-size="11" font-weight="600" text-anchor="middle">moved 4 up</text>
+<path class="fa" d="M200.0 258.0h3.0v3.0h-3.0zM212.0 258.0h3.0v3.0h-3.0zM197.0 261.0h3.0v3.0h-3.0zM209.0 264.0h3.0v3.0h-3.0zM200.0 270.0h3.0v3.0h-3.0zM197.0 273.0h3.0v3.0h-3.0zM203.0 276.0h3.0v3.0h-3.0zM188.0 279.0h3.0v3.0h-3.0zM188.0 282.0h3.0v3.0h-3.0zM200.0 282.0h3.0v3.0h-3.0zM185.0 285.0h3.0v3.0h-3.0zM191.0 285.0h3.0v3.0h-3.0zM188.0 288.0h3.0v3.0h-3.0zM197.0 288.0h3.0v3.0h-3.0zM185.0 294.0h3.0v3.0h-3.0zM182.0 297.0h3.0v3.0h-3.0zM185.0 309.0h3.0v3.0h-3.0z" fill-opacity="0.1"/>
+<path class="fa" d="M176.0 255.0h3.0v3.0h-3.0zM206.0 270.0h3.0v3.0h-3.0zM197.0 276.0h3.0v3.0h-3.0zM188.0 291.0h3.0v3.0h-3.0zM194.0 291.0h3.0v3.0h-3.0zM179.0 294.0h3.0v3.0h-3.0zM188.0 306.0h3.0v3.0h-3.0z" fill-opacity="0.2"/>
+<path class="fa" d="M176.0 249.0h3.0v3.0h-3.0zM203.0 264.0h3.0v3.0h-3.0zM194.0 282.0h3.0v3.0h-3.0zM191.0 288.0h3.0v3.0h-3.0zM191.0 294.0h3.0v3.0h-3.0zM179.0 303.0h3.0v3.0h-3.0zM182.0 306.0h3.0v3.0h-3.0zM182.0 309.0h3.0v3.0h-3.0z" fill-opacity="0.3"/>
+<path class="fa" d="M173.0 249.0h3.0v3.0h-3.0zM206.0 252.0h3.0v3.0h-3.0zM185.0 255.0h3.0v3.0h-3.0zM209.0 255.0h3.0v3.0h-3.0zM203.0 258.0h3.0v3.0h-3.0zM203.0 273.0h3.0v3.0h-3.0zM200.0 279.0h3.0v3.0h-3.0zM197.0 285.0h3.0v3.0h-3.0zM188.0 294.0h3.0v3.0h-3.0zM188.0 297.0h3.0v3.0h-3.0zM182.0 300.0h3.0v3.0h-3.0zM188.0 300.0h3.0v3.0h-3.0zM182.0 303.0h3.0v3.0h-3.0z" fill-opacity="0.4"/>
+<path class="fa" d="M164.0 249.0h9.0v3.0h-9.0zM167.0 252.0h3.0v3.0h-3.0zM179.0 255.0h3.0v3.0h-3.0zM188.0 255.0h15.0v3.0h-15.0zM209.0 258.0h3.0v3.0h-3.0zM206.0 261.0h6.0v3.0h-6.0zM206.0 264.0h3.0v3.0h-3.0zM206.0 267.0h3.0v3.0h-3.0zM203.0 270.0h3.0v3.0h-3.0zM200.0 276.0h3.0v3.0h-3.0zM197.0 279.0h3.0v3.0h-3.0zM197.0 282.0h3.0v3.0h-3.0zM188.0 303.0h3.0v3.0h-3.0z" fill-opacity="0.5"/>
+<path class="fa" d="M170.0 252.0h3.0v3.0h-3.0zM185.0 252.0h3.0v3.0h-3.0zM191.0 252.0h15.0v3.0h-15.0zM182.0 255.0h3.0v3.0h-3.0zM203.0 267.0h3.0v3.0h-3.0zM200.0 273.0h3.0v3.0h-3.0zM194.0 285.0h3.0v3.0h-3.0zM194.0 288.0h3.0v3.0h-3.0zM191.0 291.0h3.0v3.0h-3.0zM185.0 306.0h3.0v3.0h-3.0z" fill-opacity="0.6"/>
+<path class="fa" d="M182.0 252.0h3.0v3.0h-3.0zM188.0 252.0h3.0v3.0h-3.0zM206.0 258.0h3.0v3.0h-3.0zM185.0 303.0h3.0v3.0h-3.0z" fill-opacity="0.7"/>
+<path class="fa" d="M185.0 297.0h3.0v3.0h-3.0z" fill-opacity="0.8"/>
+<path class="fa" d="M173.0 252.0h9.0v3.0h-9.0zM203.0 255.0h6.0v3.0h-6.0zM185.0 300.0h3.0v3.0h-3.0z" fill-opacity="1.0"/>
+<rect class="m" x="146" y="240" width="84" height="84" rx="0" stroke-width="1.5"/>
+<path class="fa" d="M332.0 252.0h12.0v12.0h-12.0zM308.0 300.0h12.0v12.0h-12.0z" fill-opacity="0.2"/>
+<path class="fa" d="M308.0 240.0h12.0v12.0h-12.0z" fill-opacity="0.3"/>
+<path class="fa" d="M284.0 240.0h12.0v12.0h-12.0z" fill-opacity="0.7"/>
+<path class="fa" d="M296.0 252.0h12.0v12.0h-12.0z" fill-opacity="0.8"/>
+<path class="fa" d="M296.0 240.0h12.0v12.0h-12.0zM320.0 252.0h12.0v12.0h-12.0z" fill-opacity="0.9"/>
+<path class="fa" d="M308.0 252.0h12.0v12.0h-12.0z" fill-opacity="1.0"/>
+<rect class="m" x="272" y="240" width="84" height="84" rx="0" stroke-width="1.5"/>
+<line class="s" x1="108" y1="282" x2="140" y2="282" stroke-width="1.5" stroke-linecap="round" marker-end="url(#maps0601-ah)"/>
+<line class="s" x1="234" y1="282" x2="266" y2="282" stroke-width="1.5" stroke-linecap="round" marker-end="url(#maps0601-ah)"/>
+<path class="s" d="M360 282 L396 204.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#maps0601-ah)"/>
+<path class="s" d="M494 204.0 L528 266" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#maps0601-ah)"/>
+<text class="ta" x="536" y="270" font-size="13" font-weight="700">predicted: 2</text>
+<text class="tm" x="536" y="288" font-size="10.5">top score 15.5</text>
+<text class="tm" x="536" y="302" font-size="10.5">for a 7: 6.3</text>
+<path class="fa" d="M416.0 150.0h12.0v12.0h-12.0zM404.0 162.0h12.0v12.0h-12.0zM452.0 162.0h12.0v12.0h-12.0zM404.0 174.0h12.0v12.0h-12.0z" fill-opacity="0.1"/>
+<path class="fa" d="M440.0 174.0h12.0v12.0h-12.0zM452.0 186.0h24.0v12.0h-24.0zM428.0 222.0h12.0v12.0h-12.0z" fill-opacity="0.2"/>
+<path class="fa" d="M440.0 162.0h12.0v12.0h-12.0z" fill-opacity="0.3"/>
+<path class="fa" d="M416.0 162.0h12.0v12.0h-12.0zM416.0 174.0h12.0v12.0h-12.0zM452.0 174.0h12.0v12.0h-12.0zM452.0 222.0h12.0v12.0h-12.0z" fill-opacity="0.4"/>
+<path class="fa" d="M440.0 222.0h12.0v12.0h-12.0z" fill-opacity="0.5"/>
+<path class="fa" d="M428.0 162.0h12.0v12.0h-12.0zM428.0 174.0h12.0v12.0h-12.0z" fill-opacity="0.6"/>
+<path class="t" d="M440.0 150.0h24.0v12.0h-24.0zM476.0 162.0h12.0v12.0h-12.0zM476.0 174.0h12.0v12.0h-12.0zM404.0 186.0h12.0v12.0h-12.0zM464.0 198.0h12.0v12.0h-12.0zM476.0 210.0h12.0v12.0h-12.0zM476.0 222.0h12.0v12.0h-12.0z" fill-opacity="0.1"/>
+<path class="t" d="M416.0 186.0h12.0v12.0h-12.0zM416.0 198.0h12.0v12.0h-12.0zM452.0 198.0h12.0v12.0h-12.0z" fill-opacity="0.2"/>
+<path class="t" d="M464.0 162.0h12.0v12.0h-12.0zM416.0 210.0h12.0v12.0h-12.0zM440.0 210.0h12.0v12.0h-12.0z" fill-opacity="0.3"/>
+<path class="t" d="M440.0 198.0h12.0v12.0h-12.0zM452.0 210.0h24.0v12.0h-24.0z" fill-opacity="0.4"/>
+<path class="t" d="M428.0 186.0h12.0v12.0h-12.0zM428.0 198.0h12.0v12.0h-12.0z" fill-opacity="0.5"/>
+<path class="t" d="M428.0 210.0h12.0v12.0h-12.0z" fill-opacity="0.6"/>
+<path class="t" d="M440.0 186.0h12.0v12.0h-12.0z" fill-opacity="1.0"/>
+<rect class="m" x="404" y="150" width="84" height="84" rx="0" stroke-width="1.5"/>
+<text class="tm" x="404" y="250" font-size="10.5">accent: above 0</text>
+<text class="tm" x="404" y="264" font-size="10.5">the others: below 0</text>
+<text class="ta" x="146" y="189" font-size="10.5">the same numbers,</text>
+<text class="ta" x="146" y="203" font-size="10.5">4 rows higher</text>
+<text class="ta" x="272" y="189" font-size="10.5">the same numbers,</text>
+<text class="ta" x="272" y="203" font-size="10.5">1 cell higher</text>
+<text class="tm" x="20" y="378" font-size="10.5">Convolution and pooling move the features with the digit, exactly: the largest difference is 0.</text>
+<text class="tm" x="20" y="394" font-size="10.5">The Linear layer has a weight of its own for every place, so the moved features meet other weights.</text>
+</svg>
