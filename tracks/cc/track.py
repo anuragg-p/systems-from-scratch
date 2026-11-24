@@ -577,111 +577,137 @@ def sh_step(command, out=None, status=0, regex=None):
     return (f'{command}; echo "@@ $?"', "(?s)^" + body + rf"@@ {status}\r?\n")
 
 
-def _asm(*lines):
+def _lines(*lines):
     return "".join(l + "\n" for l in lines)
 
 
-def _tokens(*toks):
-    return "".join(t + "\n" for t in toks)
+def _err(k, name, line, text, col, msg):
+    """What ./cc prints for an error at line:col of the file name, whose line is text: from 01.05
+    the two lines that point at it, before that the message alone."""
+    if k < (1, 5):
+        return msg + "\n"
+    head = f"{name}:{line}: "
+    under = "".join("\t" if c == "\t" else " " for c in text[:col - 1])
+    return f"{head}{text}\n{' ' * len(head)}{under}^ {msg}\n"
+
+
+# try.c, lesson by lesson: its text, its value, and what --tokens, --tree and ./cc make of it.
+SUM, PREC, DEEP = "5 + 20 - 4", "1 + 2 * 3 - 4 / 2", "9 - (8 - (7 - (6 - (5 - (4 - (3 - 2))))))"
+SUM_TOKENS = _lines("1:1 num 5 5", "1:3 punct +", "1:5 num 20 20", "1:8 punct -", "1:10 num 4 4", "1:11 eof")
+PREC_TOKENS = _lines("1:1 num 1 1", "1:3 punct +", "1:5 num 2 2", "1:7 punct *", "1:9 num 3 3", "1:11 punct -",
+                     "1:13 num 4 4", "1:15 punct /", "1:17 num 2 2", "1:18 eof")
+SUM_TREE = _lines("-", "  +", "    num 5", "    num 20", "  num 4")
+PREC_TREE = _lines("-", "  +", "    num 1", "    *", "      num 2", "      num 3", "  /", "    num 4", "    num 2")
+DEEP_TREE = _lines("-", "  num 9", "  -", "    num 8", "    -", "      num 7", "      -", "        num 6",
+                   "        -", "          num 5", "          -", "            num 4", "            -",
+                   "              num 3", "              num 2")
+SUM_WALKED = _lines("  .globl main", "main:", "  li a0, 5", "  li t0, 20", "  add a0, a0, t0", "  li t0, 4",
+                    "  sub a0, a0, t0", "  ret")
+PREC_CODE = _lines("  .globl main", "main:", "  li t0, 1", "  li t1, 2", "  li t2, 3", "  mul t1, t1, t2",
+                   "  add t0, t0, t1", "  li t1, 4", "  li t2, 2", "  div t1, t1, t2", "  sub t0, t0, t1",
+                   "  mv a0, t0", "  ret")
+DEEP_CODE = _lines("  .globl main", "main:", "  li t0, 9", "  li t1, 8", "  li t2, 7", "  li t3, 6", "  li t4, 5",
+                   "  li t5, 4", "  addi sp, sp, -16", "  sd t5, 0(sp)", "  li t5, 3", "  addi sp, sp, -16",
+                   "  sd t5, 0(sp)", "  li t5, 2", "  ld t6, 0(sp)", "  addi sp, sp, 16", "  sub t5, t6, t5",
+                   "  ld t6, 0(sp)", "  addi sp, sp, 16", "  sub t5, t6, t5", "  sub t4, t4, t5",
+                   "  sub t3, t3, t4", "  sub t2, t2, t3", "  sub t1, t1, t2", "  sub t0, t0, t1",
+                   "  mv a0, t0", "  ret")
 
 
 def timeline_boot(lesson_id):
     """The steps for the project at a lesson: what its code can do, and an ordinary error for
-    the next thing it cannot."""
+    the next thing it cannot. In the walker's forms (01.01 to 02.02) an error comes after some
+    of the assembly is written already, as in chibicc's first commits, so those runs send
+    standard output to /dev/null."""
     from harness.core import lesson_key
     k = lesson_key(lesson_id)
     S = sh_step
-    # try.c, lesson by lesson: its text's value, what --tokens and --tree print.
-    if k < (1, 1):
-        value = 42
-    elif k < (2, 2):
-        value = 21
-    elif k < (2, 6):
-        value = 5
-    else:
-        value = 4
     steps = []
+    # Form 1, 00.01 to 00.03: main.c alone, and the file is one number.
     if k < (1, 1):
-        # Form 1: main.c alone; the file is one number.
-        steps += [S("./cc try.c", _asm("  .globl main", "main:", "  li a0, 42", "  ret")),
-                  S("./cc -o try.s try.c && cat try.s", _asm("  .globl main", "main:", "  li a0, 42", "  ret")),
-                  S("./cc two.c", "expected the end of the file after the number", status=1),
-                  S("./cc missing.c", "cannot open missing.c", status=1)]
-    elif k < (2, 3):
-        # Form 2: tokens, and main.c walks them: a number, then "+ n" or "- n".
-        steps += [S("./cc try.c", _asm("  .globl main", "main:", "  li a0, 5", "  li t0, 20", "  add a0, a0, t0",
-                                       "  li t0, 4", "  sub a0, a0, t0", "  ret"))
-                  if k < (2, 2) else
-                  S("./cc try.c", "expected '-'" if k < (1, 5) else
-                    "try.c:1: 1 + 2 * 3 - 4 / 2\n            ^ expected '-'", status=1)]
-    if k >= (0, 2):
-        steps.append(S("./ccrun try.c </dev/null", "", status=value) if not (2, 2) <= k < (2, 3) else
-                     S("./ccrun try.c </dev/null", "try.c:1: 1 + 2 * 3 - 4 / 2\n            ^ expected '-'", status=1))
-        steps.append(S("./ccrun missing.c </dev/null", "cannot open missing.c", status=1))
-    if k >= (0, 3) and not (2, 2) <= k < (2, 3):
-        steps.append(S("./same try.c", f"same: status {value}"))
-    if k < (1, 1):
+        form1 = _lines("  .globl main", "main:", "  li a0, 42", "  ret")
+        steps += [S("./cc try.c", form1),
+                  S("./cc -o try.s try.c && cat try.s", form1),
+                  S("./cc two.c", "expected the end of the file after the number\n", status=1),
+                  S("./cc missing.c", "cannot open missing.c\n", status=1)]
+        if k >= (0, 2):
+            steps += [S("./ccrun try.c </dev/null", "", status=42),
+                      S("./ccrun missing.c </dev/null", "cannot open missing.c\n", status=1)]
+        if k >= (0, 3):
+            steps.append(S("./same try.c", "same: status 42\n"))
         return steps
-    # --tokens, from 01.01.
+
+    # From 01.01: tokens. The walker compiles the sample until 02.03, the tree from then on.
     if k < (2, 2):
-        steps.append(S("./cc --tokens try.c", _tokens("1:1 num 5 5", "1:3 punct +", "1:5 num 20 20", "1:8 punct -",
-                                                    "1:10 num 4 4", "1:11 eof")))
-    # 01.01 knows + and - only; 01.02 knows every punctuator, by longest match.
+        steps += [S("./cc try.c", SUM_WALKED), S("./cc --tokens try.c", SUM_TOKENS),
+                  S("./ccrun try.c </dev/null", "", status=21), S("./same try.c", "same: status 21\n")]
+    elif k < (2, 3):
+        # 02.02: the parser takes "*", but the walker that still makes the code does not.
+        walked = _err(k, "try.c", 1, PREC, 7, "expected '-'")
+        steps += [S("./cc --tokens try.c", PREC_TOKENS), S("./cc try.c >/dev/null", walked, status=1),
+                  S("./ccrun try.c </dev/null", walked, status=1), S("./same try.c", walked, status=2)]
+    elif k < (2, 6):
+        steps += [S("./cc --tokens try.c", PREC_TOKENS), S("./cc try.c", PREC_CODE),
+                  S("./ccrun try.c </dev/null", "", status=5), S("./same try.c", "same: status 5\n")]
+    else:
+        steps += [S("./cc try.c", DEEP_CODE), S("./ccrun try.c </dev/null", "", status=4),
+                  S("./same try.c", "same: status 4\n")]
+    steps.append(S("./ccrun missing.c </dev/null", "cannot open missing.c\n", status=1))
+
+    # 01.01 knows "+" and "-"; 01.02 every punctuator, by longest match.
     if k < (1, 2):
-        steps.append(S("./cc --tokens punct.c", "invalid token", status=1))
+        steps.append(S("./cc --tokens punct.c", _err(k, "punct.c", 1, "1 >>= 2 -> 3", 3, "invalid token"), status=1))
     else:
-        steps.append(S("./cc --tokens punct.c", _tokens("1:1 num 1 1", "1:3 punct >>=", "1:7 num 2 2",
-                                                      "1:9 punct ->", "1:12 num 3 3", "1:13 eof")))
+        steps.append(S("./cc --tokens punct.c", _lines("1:1 num 1 1", "1:3 punct >>=", "1:7 num 2 2",
+                                                     "1:9 punct ->", "1:12 num 3 3", "1:13 eof")))
     # 01.03: identifiers and keywords.
-    if (1, 2) <= k < (1, 3):
-        steps.append(S("./cc --tokens ident.c", "invalid token", status=1))
-    elif k >= (1, 3):
-        steps.append(S("./cc --tokens ident.c", _tokens("1:1 keyword return", "1:8 ident x1", "1:11 ident _y",
-                                                      "1:13 eof")))
-    # 01.04: comments, strings, character constants, bases.
-    if (1, 3) <= k < (1, 4):
-        steps.append(S("./cc --tokens lit.c", "invalid token", status=1))
-    elif k >= (1, 4):
-        steps.append(S("./cc --tokens lit.c", _tokens('1:17 str "a\\tb" 3', "1:25 num '\\n' 10", "1:30 num 0x1F 31",
-                                                    "1:35 num 017 15", "1:39 num 0b101 5", "1:56 eof")))
-    # 01.05: errors point at the source. The end of the file is on its last line.
-    if k < (1, 5):
-        steps.append(S("./cc end.c", "expected a number", status=1))
-    elif k < (2, 1):
-        steps.append(S("./cc end.c", "end.c:2: \t2 +\n\t\t ^ expected a number", status=1))
+    if k < (1, 3):
+        steps.append(S("./cc --tokens ident.c", _err(k, "ident.c", 1, "return x1 _y", 1, "invalid token"), status=1))
     else:
-        steps.append(S("./cc end.c", "end.c:2: \t2 +\n\t\t ^ expected an expression", status=1))
+        steps.append(S("./cc --tokens ident.c", _lines("1:1 keyword return", "1:8 ident x1", "1:11 ident _y",
+                                                     "1:13 eof")))
+    # 01.04: comments, strings, character constants, other bases. Before it, "/" is the first
+    # thing the scanner cannot read at 01.01, and the '"' after the comment's words from 01.02.
+    lit = "/* a comment */ \"a\\tb\" '\\n' 0x1F 017 0b101 // the end"
+    if k < (1, 2):
+        steps.append(S("./cc --tokens lit.c", _err(k, "lit.c", 1, lit, 1, "invalid token"), status=1))
+    elif k < (1, 4):
+        steps.append(S("./cc --tokens lit.c", _err(k, "lit.c", 1, lit, 17, "invalid token"), status=1))
+    else:
+        steps.append(S("./cc --tokens lit.c", _lines('1:17 str "a\\tb" 3', "1:24 num '\\n' 10", "1:29 num 0x1F 31",
+                                                   "1:34 num 017 15", "1:38 num 0b101 5", "1:54 eof")))
+    # 01.05: an error points at its place; the end of the file is on its last line.
+    if k < (2, 1):
+        steps.append(S("./cc end.c >/dev/null", _err(k, "end.c", 2, "\t2 +", 5, "expected a number"), status=1))
+    else:
+        steps.append(S("./cc end.c", _err(k, "end.c", 2, "\t2 +", 5, "expected an expression"), status=1))
     if k < (2, 1):
         return steps
-    # --tree, from 02.01; "*" from 02.02.
+
+    # From 02.01: the tree. "*" and parentheses from 02.02.
+    steps.append(S("./cc --tree try.c", SUM_TREE if k < (2, 2) else PREC_TREE if k < (2, 6) else DEEP_TREE))
     if k < (2, 2):
-        steps += [S("./cc --tree try.c", "-\n  +\n    num 5\n    num 20\n  num 4\n"),
-                  S("./cc --tree mul.c", "mul.c:1: 1 * 2\n           ^ extra token", status=1)]
-    else:
-        steps.append(S("./cc --tree try.c", "-\n  +\n    num 1\n    *\n      num 2\n      num 3\n"
-                                           "  /\n    num 4\n    num 2\n" if k < (2, 6) else None,
-                       regex=None if k < (2, 6) else r"-\r?\n  num 9\r?\n  -\r?\n    num 8\r?\n(?:.*\r?\n)*"))
-    if (2, 2) <= k < (2, 3):
-        # The parser knows "*", the walker that still makes the code does not.
-        steps.append(S("./cc mul.c", "mul.c:1: 1 * 2\n           ^ expected '-'", status=1))
+        steps.append(S("./cc --tree mul.c", _err(k, "mul.c", 1, "1 * 2", 3, "extra token"), status=1))
+    elif k < (2, 3):
+        steps += [S("./cc --tree mul.c", _lines("*", "  num 1", "  num 2")),
+                  S("./cc mul.c >/dev/null", _err(k, "mul.c", 1, "1 * 2", 3, "expected '-'"), status=1)]
     if k < (2, 3):
         return steps
-    # 02.03: code from the tree.
-    steps += [S("./ccrun mul.c </dev/null", "", status=2),
-              S("./same mul.c", "same: status 2")]
+
+    # From 02.03: code from the tree, for each level as it comes.
+    steps += [S("./ccrun mul.c </dev/null", "", status=2), S("./same mul.c", "same: status 2\n")]
     if k < (2, 4):
-        steps.append(S("./cc ops.c", "ops.c:1: 6 % 4 << 2 | 1\n            ^ extra token", status=1))
+        steps.append(S("./cc ops.c", _err(k, "ops.c", 1, "6 % 4 << 2 | 1", 3, "extra token"), status=1))
     else:
-        steps += [S("./ccrun ops.c </dev/null", "", status=9), S("./same ops.c", "same: status 9")]
+        steps += [S("./ccrun ops.c </dev/null", "", status=9), S("./same ops.c", "same: status 9\n")]
     if k < (2, 5):
-        steps.append(S("./cc cmp.c", "cmp.c:1: -3 < 2 == !0\n         ^ expected an expression", status=1))
+        steps.append(S("./cc cmp.c", _err(k, "cmp.c", 1, "-3 < 2 == !0", 1, "expected an expression"), status=1))
     else:
-        steps += [S("./ccrun cmp.c </dev/null", "", status=1), S("./same cmp.c", "same: status 1")]
+        steps += [S("./ccrun cmp.c </dev/null", "", status=1), S("./same cmp.c", "same: status 1\n")]
+    deep = "1 - (2 - (3 - (4 - (5 - (6 - 7)))))"
     if k < (2, 6):
-        steps.append(S("./cc deep.c",
-                       "deep.c:1: 1 - (2 - (3 - (4 - (5 - (6 - 7)))))\n"
-                       "                                     ^ out of registers: the expression is too deep",
-                       status=1))
+        steps.append(S("./cc deep.c >/dev/null",
+                       _err(k, "deep.c", 1, deep, 28, "out of registers: the expression is too deep"), status=1))
     else:
-        steps += [S("./ccrun deep.c </dev/null", "", status=4), S("./same deep.c", "same: status 4")]
+        steps += [S("./ccrun deep.c </dev/null", "", status=4), S("./same deep.c", "same: status 4\n")]
     return steps
