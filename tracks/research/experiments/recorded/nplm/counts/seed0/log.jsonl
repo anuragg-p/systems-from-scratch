@@ -1,0 +1,8 @@
+{"context": 0, "contexts": 1, "pairs": 65, "unseen": 0.0, "train_bits": 4.773999473821628, "test_bits": 4.850287952248067, "k": 0.001}
+{"context": 1, "contexts": 65, "pairs": 1380, "unseen": 0.0, "train_bits": 3.5373633369560773, "test_bits": 3.5990555897243612, "k": 0.1}
+{"context": 2, "contexts": 1380, "pairs": 11228, "unseen": 0.003155931717113757, "train_bits": 2.745705334196113, "test_bits": 3.0437824506267726, "k": 0.03}
+{"context": 3, "contexts": 11228, "pairs": 48539, "unseen": 0.02239675793928309, "train_bits": 2.1505168939689736, "test_bits": 2.658809269284485, "k": 0.03}
+{"context": 4, "contexts": 48539, "pairs": 133293, "unseen": 0.055176989563533334, "train_bits": 1.754053464109585, "test_bits": 2.6293388859596094, "k": 0.03}
+{"context": 5, "contexts": 133293, "pairs": 264623, "unseen": 0.11681162019187663, "train_bits": 1.418584607584689, "test_bits": 2.9791185241109126, "k": 0.03}
+{"context": 6, "contexts": 264623, "pairs": 413620, "unseen": 0.22819381679936876, "train_bits": 1.097439567983342, "test_bits": 3.5145329950966464, "k": 0.03}
+{"context": 7, "contexts": 413620, "pairs": 559503, "unseen": 0.3727740616537848, "train_bits": 0.8038203557887381, "test_bits": 4.109396371244619, "k": 0.03}
