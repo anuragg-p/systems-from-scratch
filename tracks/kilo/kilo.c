@@ -3410,6 +3410,47 @@ static ApiValue apiGetSize(ApiValue *args, int nargs, ApiError *err) {
     return apiPosition(E.screenrows,E.screencols);
 }
 
+/* set_view(pos): put the file's {row, col} at the screen's top left, the
+ * pair of get_view(). The cursor is then moved into the view, as little as
+ * that takes: to the view's first or last row, and to its first or last
+ * column, cut to its row. If its row ends left of the view's column, the
+ * view's column goes back to that end instead, so the cursor shows, as the
+ * core does when an arrow takes the cursor to a short row. */
+static ApiValue apiSetView(ApiValue *args, int nargs, ApiError *err) {
+    // @build 09.06 set_view
+    // The row must be one of the file's (0 in an empty file), the column
+    // not negative and not past the longest row. Set E.rowoff and
+    // E.coloff. Then bring the cursor's row into the view's rows (and not
+    // past the row after the last), its column into the view's columns and
+    // then to its row's end; if that end is left of the view, the view's
+    // column becomes it. Set E.cy and E.cx from the new place.
+    long long row = args[0].u.position.row, col = args[0].u.position.col;
+    int crow = E.rowoff+E.cy, ccol = E.coloff+E.cx, longest = 0, size, j;
+
+    (void)nargs;
+    if (row < 0 || row > (E.numrows ? E.numrows-1 : 0))
+        return apiFail(err,"row %lld is outside the file (it has %d rows)",row,E.numrows);
+    for (j = 0; j < E.numrows; j++)
+        if (E.row[j].size > longest) longest = E.row[j].size;
+    if (col < 0) return apiFail(err,"column %lld is negative",col);
+    if (col > longest)
+        return apiFail(err,"column %lld is past every row (the longest has %d bytes)",col,longest);
+    E.rowoff = row;
+    E.coloff = col;
+    if (crow < E.rowoff) crow = E.rowoff;
+    if (E.screenrows > 0 && crow >= E.rowoff+E.screenrows) crow = E.rowoff+E.screenrows-1;
+    if (crow > E.numrows) crow = E.numrows;
+    size = crow < E.numrows ? E.row[crow].size : 0;
+    if (ccol < E.coloff) ccol = E.coloff;
+    if (E.screencols > 0 && ccol >= E.coloff+E.screencols) ccol = E.coloff+E.screencols-1;
+    if (ccol > size) ccol = size;
+    if (ccol < E.coloff) E.coloff = ccol;
+    E.cy = crow-E.rowoff;
+    E.cx = ccol-E.coloff;
+    return apiValue(API_NIL);
+    // @end
+}
+
 // @end
 // @from 09.07
 /* ========================= Asking, opening, leaving ======================= */
@@ -3536,6 +3577,8 @@ const ApiFunc API[] = {
      "the file's {row, col} at the screen's top left"},
     {"get_size", {API_NIL}, {NULL}, 0, API_POSITION, apiGetSize,
      "the {rows, cols} of text the screen shows"},
+    {"set_view", {API_POSITION}, {"pos"}, 1, API_NIL, apiSetView,
+     "put the file's {row, col} at the screen's top left"},
     // @end
     // @from 09.07
     {"input", {API_STRING}, {"prompt"}, 1, API_STRING, apiInput,
