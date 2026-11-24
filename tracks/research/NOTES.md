@@ -5350,4 +5350,89 @@ TinyStories file for held-out stories (only our 64 MiB); per-size learning
 rates or other depths for 13.04, and whether its exponent moves with the
 steps (one budget, 800 steps, was run); the paper's precise exponent at
 convergence (not reachable on a laptop); Linux. Schulman's guide was not
-read.
+read by the code's agent (the lessons' was: below).
+
+### The lessons (written 2026-11-25, after the code)
+
+Four lessons, the module page, 21 figures (art/research/figs13.py) and the
+maps, and the cover (art/outlines/research_art.py, its numbers asserted).
+Read at the source for the pages, beyond what is above:
+- J. Schulman, "An Opinionated Guide to ML Research" (posted 2020/01/24),
+  whole, fetched 2026-11-25 (curl; the page as served). It says nothing
+  of tuning baselines, seeds, error bars or test sets; 13.01's Go deeper
+  quotes "Aim High, and Climb Incrementally Towards High Goals": "A
+  method that slightly improves on the baseline better be very simple,
+  otherwise no one will bother using it" (the guide goes on with a dash,
+  "not even you"). Module 14's writer read it too (above).
+- 07.01's page, for 13.03's quote of why the split is unshuffled ("a
+  held-out passage is whole, as a new text would be"); 05.01's page, for
+  the rule 13.03 measures ("part of why it was best is luck").
+Every other source fact on the pages is a quote or number from "What was
+read, at the source" above. Section numbers are given only where that
+list has them (Recht et al.: appendix B.2.2 only; Kaplan et al.: 1.2,
+3.2 and figure 6, 5.2 with equation 1.6, D.7, "section 2" for equation
+2.1); Student's and Efron's names and dates in stats.py's comments are
+not repeated on the pages (not checked here).
+
+Measured for the pages (this machine, load 12 to 18, other agents
+training; the same digits as the code's runs above wherever both ran):
+- The defaults as the pages show them: baseline 19 s (load 12 to 14),
+  errorbars 97 s (14 to 18), fooled 23 s, scaling 41 s. The pages state
+  the times above (about ten seconds, a minute, twenty seconds, under a
+  minute) and `vary` the printed ones.
+- 13.01's aside, `baseline trials=16` (16 s): Adam's choice moves to
+  0.00519 (4.85% on validation; fresh seeds `6.58 +- 0.519`), SGD's to
+  0.222 (7.57%; `8.84 +- 2.78`, max 13.5); hurried +8.04, t = +19.9;
+  fair +2.27, t = +1.8, a tie. The first 8 draws of 16 are the 8 of the
+  default (figs13 stops if not). The remedy (the best few trials again on
+  several seeds) is named on the page with no number.
+- 13.01's Break it, SGD's range made Adam's (`nesterov=[1e-4, 1e-2]`): SGD
+  90.29% on validation at 1.1e-4, chosen 0.00669, fresh seeds `19.2 +-
+  0.817`, worse than the docs' 0.01; the "fair" gap +12.99, t = +30.5,
+  held. best_of(Adam's 8 validation errors, 3) against all 56 draws by
+  hand: 5.5748 both.
+- 13.02: the three seeds' differences -0.0288, -0.0174, -0.0311 (seed 1
+  the best of both arms, seed 0 the worst); Welch's degrees of freedom at
+  3 seeds 3.18; t_quantile(0.975, df) 12.706, 4.303, 2.776, 2.262, 2.042,
+  1.962 at 1, 2, 4, 9, 30, 1000; 27 resamples of 3 seeds make 10 distinct
+  means, all inside 3.4149 to 3.4442. At the 10 seeds' spread (each arm
+  0.0098, pairs 0.0096) seeds_needed gives 16/10, 4/4, 3/3 for 0.010,
+  0.026, 0.050 (not printed by the code; 13.02-seeds draws the curve, and
+  stops unless 0.025 paired is the printed 4). Break it, four heads'
+  weights from seed + 100 (batches still shared): 4 heads `3.403 +-
+  0.008127`, t = -3.0, correlation +0.72, Welch width 0.0656, paired
+  0.0569 (-0.0588 to -0.0019): pairing kept little of what it bought.
+- 13.03: normal_best(1, 2, 4, 8, 16, 32) = 0, 0.564, 1.029, 1.424, 1.766,
+  2.07; the best of the 32 by A is seed 22, also the best on B (5.60 and
+  5.52). Break it, halves cut in file order (`np.arange(n)`): A `8.21 +-
+  0.563`, B `4.8 +- 0.454`, covariance 0.1489 of 0.3172, the best of 32
+  3.88 on B. The twins figure picks the test image nearest each ratio
+  0, 0.1, 0.25, 0.4, 0.49 and 0.6 among all 10,000 (two_nearest at 13.03,
+  346 twins again); by eye, in the figure, the 0.397 and 0.49 pairs look
+  like one photograph, the 0.6 pair like two photographs of dogs.
+- 13.04: the prediction remade from the summaries alone (15 runs, width 256
+  left out): 3.9038 (3.8357 to 3.9732). Break it, `fit_rows = rows` (the
+  largest in the fit): the paper's count 17 runs, alpha 0.0961, 3.9152
+  (3.8611 to 3.9701), inside +0.2%; every weight alpha 0.1282, 3.8733
+  (3.8036 to 3.9443), inside +1.3%: the miss is gone. Width 256 has
+  09.04's long run's 4,273,664 weights (0.7367 bits per byte at five
+  times the tokens, against 0.977 here).
+
+Departures from the plan, and why:
+- 13.01 reads 03.03's result as 03.03 measured it (training cost) and says
+  13.01 measures another thing (test error, 2 passes of 10,000); the
+  verdict is "03.03's reading stands", not that 03.03 is confirmed.
+- 13.02 says "a little beyond the noise" (08.02's words), not "barely".
+- 13.03 frames its test as 05.01's rule measured; the track's earlier
+  scores are said to stand on what this lesson checked (no choice on test,
+  no copies, the split, the scored stories), nothing more.
+- The cover's 13.01 and 13.03 numbers come from those pages' Run it (no
+  recorded run), as module 10's cover reads 10.04's page.
+
+For the harness (not changed): a figure can use only the theme's
+colours (app.css's `.art :where(rect, path, ...) { fill: none }` beats a
+`fill` attribute), so 13.03's photographs are negatives in the dark
+theme, said in its caption; 13.02's and 13.04's recorded runs are 63 and
+57 blocks in The code (pages about 47,000 px tall); a new file's only
+lead-in (13.02's `position_bits`) is shown under the file's name without
+its own title.
