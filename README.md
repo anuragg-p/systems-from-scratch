@@ -667,7 +667,7 @@ Track `dsa` - kind: algorithms - 43 lessons - on the site: `./learn serve`, then
 
 ### A text editor in C, from scratch
 
-Track `kilo` - kind: editor - 16 lessons, +2 optional modules - on the site: `./learn serve`, then /t/kilo
+Track `kilo` - kind: editor - 16 lessons, +4 optional modules - on the site: `./learn serve`, then /t/kilo
 
 
 **Module 00 - The workbench**
@@ -724,6 +724,26 @@ Track `kilo` - kind: editor - 16 lessons, +2 optional modules - on the site: `./
 - 07.05 [Telling the server what you see: didOpen and didChange](tracks/kilo/lessons/07-language-server/07.05-telling-the-server-what-you-see-didopen-and-didchange.md) - with code, decision boundary
 - 07.06 [Diagnostics: errors as you type](tracks/kilo/lessons/07-language-server/07.06-diagnostics-errors-as-you-type.md) - with code, decision boundary
 - 07.07 [Go to definition](tracks/kilo/lessons/07-language-server/07.07-go-to-definition.md) - with code, decision boundary
+
+**Module 08 - Undo and redo** (optional)
+
+- 08.01 [Remembering what a line was](tracks/kilo/lessons/08-undo/08.01-remembering-what-a-line-was.md) - with code, decision boundary
+- 08.02 [Redo: a record that undoes itself](tracks/kilo/lessons/08-undo/08.02-redo-a-record-that-undoes-itself.md) - with code, decision boundary
+- 08.03 [One Ctrl-Z, one thought: steps](tracks/kilo/lessons/08-undo/08.03-one-ctrl-z-one-thought-steps.md) - with code, decision boundary
+- 08.04 [The saved point, and a bound on memory](tracks/kilo/lessons/08-undo/08.04-the-saved-point-and-a-bound-on-memory.md) - with code, decision boundary
+
+**Module 09 - An API, and Lua on top of it** (optional)
+
+- 09.01 [A second language inside the editor: embedding Lua](tracks/kilo/lessons/09-api-and-lua/09.01-a-second-language-inside-the-editor-embedding-lua.md) - with code, decision boundary
+- 09.02 [The API is a table](tracks/kilo/lessons/09-api-and-lua/09.02-the-api-is-a-table.md) - with code, decision boundary
+- 09.03 [Changing the text from a script: set_lines](tracks/kilo/lessons/09-api-and-lua/09.03-changing-the-text-from-a-script-set-lines.md) - with code, decision boundary
+- 09.04 [Any key can run a Lua function](tracks/kilo/lessons/09-api-and-lua/09.04-any-key-can-run-a-lua-function.md) - with code, decision boundary
+- 09.05 [Events: autocommands](tracks/kilo/lessons/09-api-and-lua/09.05-events-autocommands.md) - with code, decision boundary
+- 09.06 [Drawing from a script: highlights and the status bar](tracks/kilo/lessons/09-api-and-lua/09.06-drawing-from-a-script-highlights-and-the-status-bar.md) - with code, decision boundary
+- 09.07 [Asking, opening, leaving: input(), open(), quit()](tracks/kilo/lessons/09-api-and-lua/09.07-asking-opening-leaving-input-open-quit.md) - with code, decision boundary
+- 09.08 [Scripts that go wrong](tracks/kilo/lessons/09-api-and-lua/09.08-scripts-that-go-wrong.md) - with code, decision boundary
+- 09.09 [The editor without its screen](tracks/kilo/lessons/09-api-and-lua/09.09-the-editor-without-its-screen.md) - with code, decision boundary
+- 09.10 [Features as scripts](tracks/kilo/lessons/09-api-and-lua/09.10-features-as-scripts.md) - lab, decision boundary
 
 ### AI research, from a first experiment to your own result
 
