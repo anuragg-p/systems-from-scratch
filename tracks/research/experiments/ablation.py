@@ -25,6 +25,7 @@ and its time, under an hour on a laptop's CPU).
 import glob
 import json
 import os
+import textwrap
 
 import numpy as np
 import torch
@@ -152,7 +153,7 @@ def main():
         print(table(rec, rec_times))
     print("\n   What each paper claimed, and at what size:")
     for name, claim in CLAIMS.items():
-        print(f"   {name}: {claim}")
+        print(textwrap.fill(f"{name}: {claim}", 110, initial_indent="   ", subsequent_indent="      "))
     print(f"\n{lab.clock(torch, dev) - start:.0f} s of training and scoring on {dev.type}")
 
 
