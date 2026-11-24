@@ -3497,9 +3497,10 @@ and tests/):
   the lesson's count of functions (6, 9, 12, 15, 21, 24); at 09.09 `kilo
   -l` upper-cases a copy of learn.txt. prepare() copies lua/ into the
   project first (supply_lua).
-- On Linux (in Docker, aarch64): Debian trixie (glibc 2.41, gcc 14.2) and
-  Alpine 3.22 (musl, gcc 14.2), the tree as committed before module 08 was
-  merged: every test, check-skeleton of 09 and check-timeline pass on
-  Alpine (no ASan for gcc there, so the plain build); on Debian the same,
-  once the two findings above (5 and 6) were handled; every 09 project and
-  the finished one build with -Werror on both.
+- On Linux (in Docker, aarch64): Debian trixie (glibc 2.41, gcc 14.2),
+  the finished tree with module 08: all 41 tests (09's fuzz with ASan,
+  UBSan and LeakSanitizer), check-skeleton of 09 and check-timeline pass,
+  and every 09 project and the finished one build with -Werror; that took
+  the two findings above (5 and 6). Alpine 3.22 (musl, gcc 14.2), the tree
+  before module 08 was merged: the same pass (no ASan for gcc there, so
+  the plain build).
