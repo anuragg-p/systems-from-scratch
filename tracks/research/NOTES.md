@@ -3551,9 +3551,10 @@ body were not read. Nothing was run on Linux.
 
 Built by one agent on 2026-11-24, on the reference machine above (Apple M4
 Pro, 14 cores, 48 GB, Python 3.12.7, numpy 2.4.3, PyTorch 2.10.0, 10
-threads by default), shared all the while with two other agents' work
-(module 10's code, module 14's lessons): load average 6 to 16. Every time
-below says its load. Explorations ran on the Apple GPU (mps) to spare the
+threads by default), shared all the while with other agents' work (module
+10's code and 14's lessons, and later runs of modules 11 and 13 and other
+agents' check-timelines): load average 6 to 25 most of the time, up to 68
+for a few minutes. Every time below says its load. Explorations ran on the Apple GPU (mps) to spare the
 CPU, as 08.04's and 09.04's did; every number a page may print is a CPU
 number from the scripts' own runs.
 
@@ -3813,12 +3814,13 @@ vectors as they come, 500 steps of 64, test accuracy `0.1866 +- 0.02324`
 (3 seeds), and in a spike (all of train.csv, test.csv) no setting reached
 55% (lr 1e-3 to 1e-2, up to 3,000 steps of 64: best 0.542). Standardised
 (each number less its mean over the training questions, over its spread
-there) the same head reaches `0.7732 +- 0.002703` at once (t = +43.4). The
-same thing slowed full fine-tuning in spikes before standardising: with the
-head at the body's rate (5e-5) validation was 3.5% after 100 steps and 83.8%
-after 600, against 88.6% for the standardised head. The standardisation is
-part of the Classifier, and every model of 12.01 to 12.04 that reads GPT-2's
-vectors uses it. (Not checked: which of the 768 these are in other work;
+there) the same head reaches `0.7732 +- 0.002703` at once (t = +43.4). In
+fine-tuning every weight it matters less, since the body can move too
+(spikes, mps, 1 seed, 600 steps of 16, validation): the head at the body's
+rate (5e-5), not standardised, 3.5% after 100 steps and 83.8% after 600;
+the head at 1e-3, not standardised, 89.3%; standardised, the head at 3e-3,
+88.6%. The standardisation is part of the Classifier, and every model of
+12.01 to 12.04 that reads GPT-2's vectors uses it. (Not checked: which of the 768 these are in other work;
 GPT-2's few very large hidden numbers are reported elsewhere as "massive
 activations", not read.)
 
@@ -3882,8 +3884,8 @@ Times: 43 s at load 6 to 8 (the same settings, an earlier run, the same
 digits), 99 s and 71 s at load 36 to 68 (four other agents' runs and a
 check-timeline: not a load the rule cuts at); the same digits each time.
 The same run on all of the data (`train=0 test_per_class=0
-"sizes=[100,300,1000,3000]"`, 69 s at load 11 to 24; not recorded): 8,997 training questions, all 3,080 test
-questions; the bag of words (2,312 words) `0.8824 +- 0.0008171`; the small
+"sizes=[100,300,1000,3000]"`, 69 s at load 11 to 24; not recorded): 8,997
+training questions, all 3,080 test questions; the bag of words (2,312 words) `0.8824 +- 0.0008171`; the small
 GPT `0.793 +- 0.0367` (0.753 to 0.825); the frozen body read in 29 s, the
 head on raw vectors `0.2623 +- 0.001687`, standardised `0.8629 +- 0.00114`
 (t against the bag of words -24.1, against the small GPT +3.3); fewer
@@ -3902,9 +3904,9 @@ only a new head, is not better than a bag of words on this task once the
 bag of words is tuned (0.773 against 0.817 at 3,000 questions; 0.863
 against 0.882 on all of it), and its vectors need standardising before a
 new head learns from them at all. Fine-tuning (whole or LoRA) is what beats
-the bag of words (every weight, 0.900, by 1.8 points, t = +10.9; LoRA, 0.886 to 0.889,
-by less than a point, t = +2.0 to +3.3; computed by hand from the two
-runs' summaries). The auxiliary language
+the bag of words (every weight, 0.900, by 1.8 points, t = +10.9; LoRA,
+0.886 to 0.889, by less than a point, t = +2.0 to +3.3; computed by hand
+from the two runs' summaries). The auxiliary language
 model loss (lambda 0.5) was not built: the paper's own table 5 has it
 helping some tasks and not others (SST-2 92.0 without it against 91.3 with
 it).
@@ -3963,9 +3965,9 @@ rank 8 (alpha 8) at 1e-3 0.888, 3e-3 0.888, 1e-2 0.808; rank 1 at 3e-3
 0.882, 1e-2 0.794. alpha is 8 at every rank, as the paper says (set to the
 first r tried, not tuned), so rank 1's change is scaled by 8 and rank 8's by
 1; lr 1e-3 was kept for every rank (rank 1 at 3e-3 behaves like rank 8 at
-about 8e-3, the start of the fall). Before the head was standardised (same
-spikes): every weight, 1200 steps, 0.914; LoRA rank 8 and 1, 1200 steps,
-0.901 and 0.899.
+about 8e-3, the start of the fall). Longer (the same spikes, 1200 steps,
+the cosine over 1200): every weight (the head at 3e-3 but not standardised)
+0.914; LoRA ranks 8 and 1 at 3e-3 (standardised) 0.901 and 0.899.
 
 The long run, recorded in experiments/recorded/lora/ (a folder per method,
 seed0 to seed2 in each: config.json, log.jsonl with a row every 150 steps,
@@ -4029,9 +4031,9 @@ as small as one suffices"). Did not hold at this size and budget: on-par or
 better. Not run: the paper's GPT-2 setting (E2E generation, 5 epochs, its
 LoRA lr 2e-4 and alpha 32 at rank 4, label smoothing), longer training (in
 this run LoRA was ahead at 300 steps and behind from 450 on, so the budget
-decides which looks better; 1200 steps in the spikes, 1 seed on mps before
-the head was standardised, left every weight 1.3 to 1.5 points ahead),
-other learning rates at 600 steps beyond the spike.
+decides which looks better; 1200 steps in the spikes, 1 seed on mps,
+settings not quite these, left every weight 1.3 to 1.5 points ahead on
+validation), other learning rates at 600 steps beyond the spike.
 
 ### 12.03 Instructions: a chat template, and a model that answers
 
