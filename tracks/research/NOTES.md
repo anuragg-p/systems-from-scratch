@@ -33,18 +33,21 @@ lab/run.py              00.02   config() (key=value settings), Run (config.json,
 lab/stats.py            00.03   mean sd spread welch_t
 lab/plot.py             00.03   ticks, lines(): SVG line plots of plain elements, text in currentColor
 lab/safetensors.py      02.05   save_file, load_file, read_header (numpy arrays; the library's numpy API)
+                        09.03   load_file reads each tensor in place (an @from block inside the 02.05 region)
 lab/schedule.py         03.05   warmup_cosine
 lab/checks.py           04.06   the five checks
 lab/devices.py          06.02   device(torch, name), clock(torch, dev): where a PyTorch run computes, and its time
 data/points.py          01.04   two_groups: two moons from a seed
 data/fetch.py           03.01   the explicit download, pinned sizes and SHA-256 (whole, no regions)
                         06.03   cifar10: one archive, resumed if dropped, unpacked, every file pinned (@from blocks)
+                        09.02   gpt2; fetch_each: separate files, each resumed, or a range of a larger one;  09.04 tinystories
 data/mnist.py           03.01   read_idx, load(split, n, standardise)
 data/cifar.py           06.03   read_records, load(split, n): CIFAR-10's binary records, standardised per channel
 data/__init__.py        03.01   batches(n, size, rng)
 data/augment.py         05.03   shift(x, k, rng, fill);  06.03 crop_flip(x, pad, rng)
 data/tinyshakespeare.txt 07.01  the text, shipped byte for byte (no regions; FILES_FROM and DATA in track.py)
 data/shakespeare.py     07.01   load, chars, encode, decode, split(name): the text as numpy character numbers
+data/tinystories.py     09.04   stories, tokenizer, tokens: TinyStories, as 09.01's BPE tokens (kept in the data cache)
 models/__init__.py      06.02   (no regions) the networks experiments share, one file each
 models/convnet.py       06.02   convnet(torch, width): 3 convolutions and a Linear layer, on either library
 models/resnet.py        06.04   Block, ResNet; resnet(n, residual, width), layers(model): He et al.'s CIFAR network
@@ -55,21 +58,30 @@ models/seq2seq.py       07.04   Encoder, Decoder, AttentionDecoder, Seq2Seq (for
 models/gpt.py           08.01   causal_mask, self_attend, SelfAttention (one head: query, key, value, out)
                         08.02   SelfAttention's heads (@from); gelu, MLP, Block, GPT (no positions yet)
                         08.03   Positions; GPT's positions=True (@from): the file modules 09 to 14 start from
+models/gpt2.py          09.03   CONFIG, from_gpt2, load: GPT-2 small's published weights in GPT
+tokens/__init__.py      09.01   (no regions) text as the numbers a model reads; not "tokenizers" (an installed library)
+tokens/bpe.py           09.01   pieces, pairs, merge, train_simple, train, encode, vocab, decode: byte pair encoding
+tokens/gpt2.py          09.02   byte_symbols, classes, pattern, split, Tokenizer, load: GPT-2's tokenizer, its own files
 experiments/<name>.py   one per lesson (below); loop.py (03.01) and deep.py (04.01) are shared code
                         06.03   images.py: the PyTorch-era loop, tensors(dev, ...), train_epoch, evaluate
                         07.02   sequences.py: bits, contexts, context_bits, sample;  07.03 windows, window_bits
                         08.01   language.py: train, the loop module 08 shares;  08.02 attention_maps, looks
                         08.04   language.py: held_bits (and train's held), save, load;  08.05 top_k, top_p, generate
+                        09.01   sequences.py: per_character;  09.03 language.py: loops
 experiments/recorded/   06.04   the long run of resnet.py, recorded (DATA in track.py; see "Long runs")
                         07.02   recorded/nplm/: the long run of nplm.py
                         08.04   recorded/gpt/: the long run of gpt.py (no weights: model.safetensors is not shipped)
+                        09.04   recorded/tinystories/: the long run of tinystories.py (no weights)
 tests/                  NNLL_*.py one per lesson; support.py, helpers for the PyTorch comparisons
                         08.02   support.py: gpt_numpy and its pieces, the GPT again in float64 numpy
+                        09.01   support.py: bpe_reference, bpe_replay, unicode_pool, unicode_strings
 ```
 
 From 06.02 the project needs PyTorch too (`pip install torch`; the CPU build
 is enough), and from 06.03 CIFAR-10 (`python3 -m data.fetch cifar10`).
 Module 07's text, Tiny Shakespeare, ships with the project: nothing to fetch.
+Module 09 fetches GPT-2's files (`python3 -m data.fetch gpt2`, from 09.02) and
+TinyStories (`python3 -m data.fetch tinystories`, 09.04).
 
 Run everything from the project's top: `python3 -m experiments.<name>
 [key=value ...]`. `./learn run research --at 03.01 -- mnist_lr "lrs=[0.1]"`
@@ -299,6 +311,52 @@ No harness change was needed. The rules this track follows:
   arrays in place. Scripts make a split one tensor on the device once
   (`torch.from_numpy(a).to(dev)`), as 06.03's tensors() does for images.
 
+- **GPT-2 small** (09.02 on): not shipped; `python3 -m data.fetch gpt2`
+  puts vocab.json (1,042,301 bytes, SHA-256 196139668b...6783),
+  merges.txt (456,318, 1ce1664773...adc5) and model.safetensors
+  (548,105,171, 248dfc3911...a707) into `$LEARN_CACHE/gpt2/` from
+  https://huggingface.co/openai-community/gpt2/resolve/607a30d783dfa663caf39e06633721c8d4cfcd7e/
+  (fetched 2026-11-24, 73 s; data/fetch.py has the full hashes). Each was
+  checked before it was pinned: the model's SHA-256 is the X-Linked-ETag
+  the site sends for that LFS file (NOTES on 08 found it); vocab.json and
+  merges.txt are plain git files there (their ETags are git blob SHA-1s,
+  which match), and their SHA-256s are exactly the ones tiktoken pins for
+  OpenAI's own encoder.json and vocab.bpe at
+  openaipublic.blob.core.windows.net/gpt-2/encodings/main/: byte for byte
+  OpenAI's files. Licence as read at the source on 2026-11-24: the
+  Hugging Face model card's metadata says `license: mit` (that repository
+  has no licence file); OpenAI's own repository, github.com/openai/gpt-2,
+  has a "Modified MIT License" (Copyright (c) 2019 OpenAI: MIT, plus "We
+  only ask that you use GPT-2 responsibly and clearly indicate your
+  content was created using GPT-2", and the notice need not go with
+  content the model makes). Nothing of it is in the project; NOTICE has
+  the entry. A dropped connection
+  carries on (fetch_each, an HTTP Range request; tried: a vocab.json cut at
+  500,000 bytes finished through the site's redirect, byte for byte).
+  Missing, a script stops with exit 1 and `gpt2 is missing: ... Fetch it
+  once with: python3 -m data.fetch gpt2`; a test prints `skipped what needs
+  it: GPT-2 ... is not in ...` and passes the checks it could run (see
+  Tests).
+- **TinyStories** (09.04): not shipped; `python3 -m data.fetch tinystories`
+  puts train.txt (67,108,864 bytes: bytes 0 to 67,108,863 of
+  TinyStories-train.txt, one Range request; SHA-256 1aa3e816...8d82,
+  computed here) and valid.txt (TinyStories-valid.txt whole, 19,447,282
+  bytes, SHA-256 94e43181...38b4, equal to the site's X-Linked-ETag) into
+  `$LEARN_CACHE/tinystories/`, from
+  https://huggingface.co/datasets/roneneldan/TinyStories/resolve/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64/
+  (fetched 2026-11-24, 11 s). TinyStories-train.txt is the file the
+  paper's models were trained on (the dataset card: "The models referred
+  to in the paper were trained on TinyStories-train.txt"); it is
+  1,924,281,556 bytes, stories by GPT-3.5 and GPT-4, each followed by a
+  line `<|endoftext|>`. The first 64 MiB hold 74,394 whole stories (the
+  range ends mid-story: dropped); valid.txt 21,990. The repository also has
+  TinyStoriesV2-GPT4-train.txt (2.2 GB, GPT-4 only, "of higher quality"
+  per the card), not used: the paper's file was. Licence as read on the
+  card on 2026-11-24: CDLA-Sharing-1.0 (its metadata; the card states no
+  other terms); NOTICE has the entry. data/tinystories.py keeps what it
+  makes in the same folder: bpe4096.json, train-bpe4096.npy,
+  valid-bpe4096.npy (see 09.04).
+
 ## The lessons: code, default run, time, and what held
 
 Times: the default run, `python3 -m experiments.<name>`, wall clock.
@@ -343,6 +401,10 @@ Times: the default run, `python3 -m experiments.<name>`, wall clock.
 | 08.03 | positions | 38.9 |
 | 08.04 | gpt (short; the long run, 56 minutes: see 08.04) | 35.1 |
 | 08.05 | sampling (no checkpoint: trains its own small GPT; with 08.04's long-run checkpoint 85 s) | 36.9 |
+| 09.01 | bpe | 37.8 |
+| 09.02 | tokenizer (needs GPT-2's files) | 8.4 |
+| 09.03 | gpt2 (needs GPT-2's files) | 44.4 |
+| 09.04 | tinystories (short; the long run, 45 minutes: see 09.04; with its checkpoint 45 s) | 24.1 |
 
 06.01 to 06.04 were timed twice, the second time with other agents' runs
 going (load average 6 to 8): conv 26.4 and 27.0, switch 3.7 and 4.1, cifar
@@ -1732,6 +1794,495 @@ nucleus each below 95% of pure sampling's.
 taking 4 to 5 cores); 72 and 110 s earlier at load 10 to 16 with other
 agents' runs going. The same output each time.
 
+### Module 09: GPT-2, the tokenizer and the real weights
+
+New in the project: tokens/ (a package of its own, as models/ is; not
+"tokenizers", which would hide the installed library of that name): bpe.py
+(09.01) and gpt2.py (09.02); models/gpt2.py (09.03); data/tinystories.py
+(09.04); experiments bpe, tokenizer, gpt2, tinystories; two shared
+regions: experiments/sequences.py per_character (09.01: bits per token
+made bits per character, used by 09.01, 09.03, 09.04) and
+experiments/language.py loops (09.03: 08.05's repetition for any symbols,
+used by 09.03 and 09.04; an experiment never imports another, so 08.05's
+repeats in sampling.py could not be reused). data/fetch.py gains gpt2
+(09.02) and tinystories (09.04) in @from blocks and fetch_each, a
+resumable download of separate files or of a range of bytes of a larger
+one. lab/safetensors.py's load_file reads in place from 09.03 (an @from
+block inside the 02.05 region; 02.05 shows the old one). The learner's
+code imports numpy, torch and the standard library only; tiktoken,
+transformers and the regex module are used by the tests only.
+
+**09.01 Bytes, UTF-8 and byte pair encoding (Sennrich, Haddow and Birch
+2016).** tokens/bpe.py: pieces (the text cut by ` ?\w+| ?[^\w\s]+|\s+`, a
+word with the space before it, a run of other marks with the space before
+it, a run of spaces; every character is in exactly one), pairs, merge,
+train_simple (the obvious trainer: every pair of every piece of the whole
+text counted again for every merge), train (the same merges: each distinct
+piece once with its count, and `where`, the pieces that hold each pair, so
+a merge changes only those), encode (each piece's bytes, then the pair
+learned first merged, again and again), vocab, decode (UTF-8, a cut
+character U+FFFD). The rule for ties: of pairs counted equally often, the
+smaller pair (first symbol, then second), so the merges do not depend on
+the order the text is read in (the paper's Algorithm 1 takes
+max(pairs, key=pairs.get), the first in dictionary order). Pairs never
+cross pieces. experiments/bpe.py, default run:
+1. The failure, counted on Tiny Shakespeare's own split (a word: a run of
+   letters, [A-Za-z]+). Characters: 65 symbols, and 08.04's window of 256
+   characters holds 47.7 words on average (38 to 55; 2000 windows of the
+   test text drawn with rng 0). Words: the training text has 187,779
+   words, 12,558 different; of the test text's 2,396 different words
+   15.9% never occur in training, which is 6.9% of its 10,264 running
+   words (lowercased: 13.1% and 5.8%; with apostrophes inside words,
+   [A-Za-z]+(?:'[A-Za-z]+)*: 16.8% and 7.6%; spike, not printed). A model
+   with one symbol for each training word could give none of those a
+   chance.
+2. The trainers, on the training text (1,003,854 bytes, 264,485 pieces,
+   14,134 different). The obvious one: 0.45 to 0.69 s a merge (3 merges
+   timed, load 5 to 12), so the default's 1,792 merges (a vocabulary of
+   2048) would take about 16 minutes, and 3,840 (4096) 29 to 44. The fast
+   one: 1,792 merges in 2.3 to 2.4 s (512: 0.4 s, 1024: 0.9, 4096: 6.0 to
+   10.2 with the machine busier, 8192: 13.3); the run checks its first 3
+   merges are the obvious one's, the test checks whole merge lists (below).
+   This is the paper's own way: "For efficiency, we do not consider pairs
+   that cross word boundaries. The algorithm can thus be run on the
+   dictionary extracted from a text, with each word being weighted by its
+   frequency", and "In practice, we increase efficiency by indexing all
+   pairs, and updating data structures incrementally" (section 3.2, read
+   at the source, arXiv 1508.07909v5). The first symbols made: ' t' 'he'
+   ' a' 'ou' ' s' ' m' 'in' ' w' 're' 'ha' ' the' 'nd' ' b' 'is' 'or'
+   '\n\n' ...; the last of 2048: ' dish' ' gates' 'oop' ' stir' ...
+   ' heavens' ' close' ' harm'; of 4096 ' hanging' ' services' ...
+   ' possible'; at 8192 the last ones are names of the training plays
+   (' Chertsey', ' Crosby').
+3. Bytes per token (training text / test text): 256: 1.000 / 1.000; 512:
+   1.957 / 1.890; 1024: 2.458 / 2.268; 2048: 2.916 / 2.579 (the default
+   stops there); 4096: 3.291 / 2.916 (`"sizes=[256,512,1024,2048,4096]"`,
+   the first default, 38.7 s at load 5.5 to 5.9, 60.8 s at load 8 to 11);
+   8192 (spike): 3.567 / 3.176. The gap grows with the vocabulary: the
+   later merges are the training text's own words.
+4. Round trips with the vocabulary of 2048: the test text (21,627 tokens;
+   19,127 at 4096)
+   and eight strings the training text never had (accents, Greek,
+   Russian, Chinese, Hindi, an emoji with a skin tone and a flag, a
+   combining accent, a tab, a NUL and a DEL; escapes in the file): all
+   decode to themselves. Greek's 16 bytes are 16 tokens (no merge has its
+   bytes); "na\xefve caf\xe9, se\xf1or" 20 bytes, 14 tokens.
+5. 08.04's GPT (4 blocks of 4 heads, width 64, windows of 64 symbols, 300
+   steps of 32, AdamW 0.003, the same seeds) on characters and on BPE
+   tokens of 2048, both in bits per character on the test text (each
+   token scored with 16 or more before it; the bits of the scored tokens
+   over the characters they stand for: per_character): characters `3.332
+   +- 0.01587` (08.04's default dropout 0 to the last digit: the same
+   model, data and draws), BPE 2048 `2.691 +- 0.00954`, t = -49.0. A step
+   reads 2,048 characters on characters and 5,973 on tokens, and the
+   window of 64 tokens is about 187 characters: at equal steps the
+   tokens see 2.9 times the text. Spike (300 steps, 2 seeds, load 4 to
+   5): 512 2.865 / 2.869, 1024 2.802 / 2.813, 2048 2.698 / 2.684. As
+   found: the bigger the vocabulary the lower, at this budget; at equal
+   characters read, not measured. With 200 steps (spike, load 10 to 12):
+   characters 3.473, BPE 2.787, t = -91.1.
+41.1 s at load 7 to 10 (10 threads; other agents' runs); 37.8 s at load 4
+to 5. The same digits each time.
+
+**09.02 GPT-2's tokenizer: the same ids as tiktoken (Radford et al.
+2019, section 2.2).** tokens/gpt2.py: byte_symbols (GPT-2's table of the
+256 bytes as printable characters: "!" to "~", 0xa1 to 0xac and 0xae to
+0xff as themselves, the other 68 as chr(256 + n) in byte order: a space
+is U+0120, a newline U+010A), classes, pattern, split, Tokenizer (table,
+first, merges; encode with a cache of pieces; decode is 09.01's), load.
+GPT-2's files are 09.01's form exactly: vocab.json's ids for the merged
+symbols are 256 + the line of merges.txt (checked by Tokenizer: a file
+out of order is a ValueError), so the merges become {(id, id): new id}
+and 09.01's merge loop (smallest new id first) gives OpenAI's ids. The
+byte symbols' ids are not their bytes ("!" is 0), hence `first`.
+The pattern without the regex module: GPT-2's own pattern (OpenAI's
+encoder.py, `import regex as re`), `'s|'t|'re|'ve|'m|'ll|'d| ?\p{L}+|
+?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+`, with \p{L} and \p{N} replaced
+by character classes built from unicodedata (every code point whose
+category starts with L, or N, written as runs of ranges with \U escapes:
+136,104 letters in 1,181 runs, 1,831 numbers in 268 runs; 0.07 s, made
+once), and \s by Unicode's White_Space, written out (SPACE: 25 code
+points; unicodedata does not have the property). re's own \s is
+str.isspace(), which has four more, 0x1c to 0x1f (the information
+separators); the regex module's \s is exactly SPACE (checked over every
+code point). No merge in GPT-2's file has those four bytes, so re's \s
+would give the same ids, but other pieces (split("x \x1c y") is "x", "
+\x1c", " y" with SPACE). Every other part of the pattern is re's own:
+alternation tried in order, backtracking into \s+ for (?!\S). tiktoken's
+r50k pattern is written differently ('(?:[sdmt]|ll|ve|re)| ?\p{L}++|
+... |\s++$|\s+(?!\S)|\s) and cuts the same.
+experiments/tokenizer.py, default run (needs `python3 -m data.fetch gpt2`):
+1. The files: 50,257 symbols, 50,000 merges, 50256 is <|endoftext|>; the
+   first merges ' '+'t', ' '+'a', 'h'+'e', 'i'+'n', 'r'+'e', 'o'+'n', ' t'+'he'
+   ...; the longest symbol, 35496, is 128 bytes (the mojibake "\xc3\x83\xc3\x82"
+   32 times: web pages decoded twice), then runs of "=" "-" "." "_".
+2. The pieces of "Hello world! It's 2019, isn't it?  Yes...\n\n   NAME:\tna\xefve
+   3.14 caf\xe9s": GPT-2's 'Hello' ' world' '!' ' It' "'s" ' 2019' ',' ' isn' "'t"
+   ' it' '?' ' ' ' Yes' '...' '\n\n  ' ' NAME' ':' '\t' 'na\xefve' ' 3' '.' '14'
+   ' caf\xe9s' against 09.01's re pattern (\w lumps letters, digits and _;
+   no contractions; spaces not left for the next word).
+3. "Hello world" [15496, 995]; " SolidGoldMagikarp" [43453], one token;
+   "1234567890" '123' '45' '678' '90'; "IT'S" 'IT' "'" 'S' (the
+   contractions are lower case only); U+4F60 U+597D ("hello" in Chinese) 4 tokens of byte
+   pieces; the waving hand with a skin tone 5. All of Tiny Shakespeare,
+   1,115,394 bytes, is 338,025 tokens, decoded the same.
+4. Bytes per token on Tiny Shakespeare, GPT-2 (50,257, learned on WebText)
+   against 09.01's 4,096 learned on the training text: training text 3.324
+   against 3.291, test text 3.099 against 2.916 (validation, GPT-2: 3.087).
+   Twelve times the vocabulary buys 1% on the text 09.01's merges were
+   learned on and 6% on the test text: GPT-2's merges were not learned on
+   Shakespeare.
+5. Encoding all of Tiny Shakespeare (1.12 MB), best of 2: without the
+   cache 0.90 to 0.91 s (1.23 MB a second), with it 0.24 s (4.7 MB a
+   second); 297,833 pieces, 15,057 different. tiktoken (Rust) 0.043 s
+   (26 MB a second), transformers' fast tokenizer 0.28 s, its slow
+   (Python, regex module) 0.78 s; the regex classes 0.07 s and reading
+   the files 0.06 s once.
+8.4 s at load 1.5 to 2.7, 8.7 s at load 5, 15.0 s at load 10 to 11 (most of
+it 09.01's trainer to 4096 for part 4).
+The same ids as the references: the test compares with every reference
+it can import, each built from the fetched files (no network: tiktoken's
+Encoding from tiktoken.load.data_gym_to_mergeable_bpe_ranks on the local
+merges.txt and vocab.json, with tiktoken's own r50k pattern;
+transformers' GPT2TokenizerFast and, when the regex module imports,
+GPT2Tokenizer from the same two files) and prints which: here tiktoken
+0.14.0 (installed for the test with `python3 -m pip install --user
+tiktoken`), transformers 4.57.6 GPT2TokenizerFast (tokenizers 0.22.2) and
+GPT2Tokenizer (regex 2026.2.28). The corpus: all of Tiny Shakespeare (one
+string), built strings (runs of 1 to 12 spaces and 1 to 5 newlines and
+their mixes with words, contractions in every case and odd places,
+digits of several scripts and Roman numerals, punctuation runs,
+combining marks, Hangul jamo, 18 scripts, emoji with skin tones, ZWJ
+families, flags and keycaps, and their mixes), 3000 random strings drawn
+from up to 40 characters of every general category unicodedata knows
+(assigned ones, and unassigned ones from planes 4 to 13, which no Unicode
+version has assigned yet), and every such character in 8 contexts ("x{}",
+"{}x", " {}", "{}'s", "1{}", "{}1", "'{}", " {}!"). Every id equal to all
+three references; every string decodes to itself; split equals the regex
+module running GPT-2's own pattern on the built and the random strings.
+Where ids differ, and why (found, not designed): Python 3.12.7's
+unicodedata is Unicode 15.0.0. tiktoken 0.14.0 and tokenizers 0.22.2
+classify letters and numbers by Unicode 16.0, the regex module 2026.2.28
+by 17.0. A character assigned since 15.0 is a letter or a number to them
+and unassigned ("other") here. That changes ids only where the piece
+boundary meets a merge: before a contraction. U+1C89 followed by "'s" (U+1C89 is a
+Cyrillic capital letter added in 16.0) is cut U+1C89 + "'", "s" here, ids
+[157, 110, 231, 6, 82], and U+1C89, "'s" by tiktoken, [157, 110, 231,
+338]. Scanned: of the 104,782 code points unassigned in 15.0 in planes 0
+to 3, each before "'s", 5,004 give other ids than tiktoken and the fast
+tokenizer, U+1C89 to U+2EE5D, and 9,661 other ids than the slow one,
+U+088F to U+33479; in every one the reference's ids are ours for the
+character alone followed by ours for "'s" (the test asserts this). 5,004
+is exactly the letters and numbers Unicode 15.1 and 16.0 added (counted
+with Python 3.14.6's unicodedata, Unicode 16.0.0: 622 from 15.1, CJK
+Extension I, the rest 16.0's); 9,661 adds 17.0's 4,657. With Python 3.14
+the ids should equal tiktoken's on all of them (not run: the project's
+python is 3.12). In any other context the pieces differ but the ids do
+not (no merge joins those bytes to their neighbours), e.g. "x" + c, " "
++ c, "1" + c for all 9,661.
+
+**09.03 Loading GPT-2: the same logits as the reference.** models/gpt2.py:
+CONFIG (GPT(vocab=50257, context=1024, layers=12, heads=12, width=768,
+dropout=0.0, bias=True, positions=True)), from_gpt2 (the mapping of "For
+module 09 and after" below as code, on numpy arrays: transposed views,
+no copies) and load(dev, path). lab/safetensors.py's load_file, as
+written in 02.05, read the whole file into bytes, copied the data part
+into a bytearray, and copied each tensor out of it: measured on GPT-2's
+548 MB, a peak of 2,127 MB (ru_maxrss) to hold 523 MB of arrays, four
+times the file. From 09.03 (an @from block inside the 02.05 region, the
+old code its @else) it reads the header, checks every range before
+reading anything, then reads each tensor straight into its own array
+(np.fromfile on the open file, in offset order): peak 559 MB, 0.06 s
+from the page cache; the same arrays as the safetensors library's (every
+tensor, dtype and value), writable; 02.05's test passes unchanged, and
+09.03's test holds it at under 1.3 times a 96 MB file in a fresh python
+(measured 1.0). Loading GPT-2 whole (load_file, from_gpt2, GPT(**CONFIG)
+with its random start, load_state_dict): 1.3 s, peak 1,197 MB.
+The reference: transformers 4.57.6 GPT2LMHeadModel.from_pretrained on a
+folder with GPT2Config() (the defaults are GPT-2 small) and a link to
+the same model.safetensors, local_files_only (no network),
+attn_implementation="eager". Logits on 1,024 tokens of Tiny Shakespeare
+and on 4 rows of 64 random tokens: identical, the largest difference 0.0
+in float32 (logits up to 342), and 0.0 in float64 too (both models
+.double()). Same operations in the same order: transformers' Conv1D is
+addmm(bias, x, W) on the file's (inputs, outputs) weight, nn.Linear
+addmm with the transposed view of ours, the same GELU formula, the same
+softmax of the same masked scores. With transformers' default attention
+(sdpa) the largest difference is 4.1e-3 (relative to 1 + |logit|,
+1.2e-3). The test asserts eager at 1e-4 of (1 + |logit|) in float32, and
+prints the largest difference. Without the transpose of attn.c_proj (a
+square 768 x 768 weight in each block): load_state_dict takes it without
+a word, the largest difference from the reference is 111 to 323 and the
+top token agrees at 7.6% of positions; a non-square weight left
+untransposed is refused (size mismatch).
+experiments/gpt2.py, default run:
+1. GPT-2: after "The meaning of life is" ' not' 0.109, ' to' 0.083, ' the'
+   0.051, ' that' 0.048, ' a' 0.040; greedy after "Hello, I'm a language
+   model," gives " not a programming language. I'm a language model. I'm
+   a language model. I'm a".
+2. attn.c_proj untransposed: on the first 1,986 test tokens 3.493 bits
+   per character against 1.814 right.
+3. Tiny Shakespeare's test text: 55,770 characters, 17,995 GPT-2 tokens
+   (3.10 characters a token); each token with 64 or more before it,
+   windows of 1024: 5.737 bits per token, 1.851 bits per character
+   (warm 256: 1.816; warm 512: 1.806; spike). Beside the ladder: equal
+   chances 6.022, pairs 3.599, interpolation 2.409, 07.02's network
+   2.346, mixed 2.283, 08.04's GPT 2.226. GPT-2 is 0.375 bits per
+   character below 08.04's best. Not "never seen": WebText is 8 million
+   web pages (Wikipedia removed, section 2.1); some may hold
+   Shakespeare. What can be said: we did not train it on this text.
+   Comparability: GPT-2 reads 64 tokens (about 200 characters) before
+   the first scored one, our models 64 characters.
+4. 08.05's measurements on the real model, on word pieces: 8 prompts of
+   16 tokens (starts of speeches of the test text, evenly spread), 40
+   tokens after each, 2 seeds of the sampling (greedy once), the model's
+   perplexity per token of what it wrote (prompt and continuation in one
+   window: perplexity, a 09.03 region) and Holtzman et al.'s repetition on
+   tokens (loops, 08.05's measure moved to language.py). Default run:
+
+       the text itself    64.74                                         0.0%
+       greedy             2.386 (no chance in it)                      50.0%
+       pure sampling      48 +- 3.397 (min 45.6, max 50.41, 2 seeds)    0.0%
+       sampling, t=0.9    26.58 +- 6.273                                0.0%
+       sampling, t=0.7    10.49 +- 3.395                                0.0%
+       top-k=40           13.01 +- 1.933                                0.0%
+       nucleus, p=0.95    34.14 +- 6.406                                0.0%
+
+   With prompts of 32 tokens (the first default, cut for time: 42.3 s at
+   load 2.6 but 81.7 s at load 12): text 65.9, greedy 2.311 and 37.5%,
+   pure sampling 38.83, t=0.9 22.38, t=0.7 7.63, top-k=40 11.13, nucleus
+   29.4; the same picture.
+   A longer run, closer to the paper's set-up (prompt_tokens=32 prompts=16
+   length=200 seeds=3; 32 minutes at load 3 to 15, not a default):
+
+       the text itself    53.87                                         0.0%
+       greedy             1.202 (no chance in it)                     100.0%
+       pure sampling      71.94 +- 12.11 (min 61, max 84.95, 3 seeds)   0.0%
+       sampling, t=0.9    23.12 +- 0.693                                0.0%
+       sampling, t=0.7    3.602 +- 0.3526                              20.8% (25, 12, 25)
+       top-k=40           9.552 +- 0.7457                               0.0%
+       nucleus, p=0.95    37.31 +- 4.076                                0.0%
+
+   Against the paper's table 1 (GPT-2 Large, WebText, 200 word pieces;
+   quoted in 08.05's notes: human 12.38 / 0.28%, greedy 1.50 / 73.66%,
+   pure 22.73 / 0.22%, t=0.9 10.25 / 0.66%, top-k=40 6.88 / 0.78%,
+   top-k=40 t=0.7 3.48 / 8.86%, nucleus 0.95 13.13 / 0.36%). Held, on the
+   real model: greedy degenerates (perplexity 1.2, every passage of 200
+   ends in a loop; at 40 tokens 2.4 and 4 of 8 already loop: "Pitchers
+   have ears, and I have many ears." over and over); at 200 tokens pure
+   sampling's text is less likely to the model than the text itself (72
+   against 54, 34% above; the paper's 84% above): "the model is confusing
+   itself", which 08.05's character models never showed; a temperature
+   of 0.7 brings loops back (21%; the paper's figure 9). Did not hold: the
+   nucleus is not the closest to the text: at 200 tokens it lies below
+   the text (37 against 54) about as far as pure sampling lies above it.
+   And at 40 tokens pure sampling is below the text (48 against 65): just
+   after a Shakespeare prompt the model's own words are likelier to it
+   than Shakespeare's next ones; over 200 tokens it wanders off into web
+   prose (the passages above: "the American I have in my upper depths",
+   "Squad Volunteers") and loses itself. The text is the other difference:
+   the paper's human text was held-out WebText (perplexity 12.38 to GPT-2
+   Large), ours Shakespeare (54 to 66 to GPT-2 small). The default shows
+   greedy's loops and the temperature's pull; the claim about pure
+   sampling needs the longer run, and the page should quote it.
+42.8 s at load 8 to 10 (10 threads; other agents' runs); 44.4 s at load 5;
+the same output each time. The slowest default of the module: GPT-2's
+forward is a big matrix product on 10 threads, so a busy machine slows
+it most (81.7 s at load 12 with the first default's prompts of 32
+tokens). If verify sees it pass 55 s, cut length to 32 or prompts to 6
+(not measured).
+
+**09.04 Pretraining on TinyStories (Eldan and Li 2023).**
+data/tinystories.py: stories (the file cut at each <|endoftext|>, the
+training range's last cut piece dropped, stripped, empty ones left out;
+28 empty ones in 128 MB of the file), tokenizer (09.01's train on the
+first 10,000 training stories, one to a line; 3,839 merges in 5.0 s; kept
+as JSON), tokens (every piece merged once, remembered, END after each
+story; 2.9 s for 64 MiB, 1.0 s for valid; kept as .npy). The first
+merges: 'he' ' t' ' a' ' s' ' w' 'nd' ' the' 'ed' ' and' 'in' ' to'
+...; the last: ' sheep' ' switch' ' celebrated' ' Chloe' ' classroom'
+' impressive'. experiments/tinystories.py: tell (generate in chunks of
+32 tokens, stopped once every story has written END; a story is its
+tokens before END), kgram_hashes and shared_run (copying: see below),
+copying and measure (not regions).
+Spike 4, what I tried (the plan left the size, vocabulary and steps to
+it). The CPU budget: 2 seeds in at most 60 minutes, so about 25 minutes
+a seed. Speeds measured on the CPU (10 threads, load 7 to 8, windows of
+256, batches of 32, vocabulary 4096): 4 x 128 (1.35M weights) 195 ms a
+step, 6 x 192 (3.5M) 464, 4 x 256 (4.27M) 430, 6 x 256 (5.9M) 630, 8 x
+256 (7.4M) 809; at load 6: 4 x 256 288 ms, 4 x 128 136 ms. Each candidate
+was then trained on the Apple GPU (mps, 3 times faster; 1 seed) for the
+steps the CPU makes in about 27 minutes, and scored the same way (bits
+per byte on the first 2000 held-out stories; 16 stories at temperature
+1, up to 600 tokens):
+- 4 blocks of 4 heads, width 128 (1,350,400 weights), 9500 steps, lr
+  0.002: 0.7348 bits per byte; held-out windows 2.978 bits per token at
+  the end; 16 of 16 stories ended on their own, median 204 tokens, none
+  in a loop.
+- 6 x 192, 6 heads (3,505,152), 4000 steps, lr 0.001: 0.7564; 3.056;
+  16 of 16, median 194, none.
+- 4 x 256, 8 heads (4,273,664), 4400 steps, lr 0.001: 0.7267; 2.940;
+  16 of 16, median 202, none.
+All three tell whole stories at this budget, with "Once upon a time",
+names kept, dialogue in quotes, an ending ("From that day on, ...", "The
+end."), and sentences that do not follow from each other; the three
+are within 0.03 bits per byte. Chosen: 4 x 256, 8 heads, the best and "a
+few million weights" (the paper's "below 10 million"), at 4000 steps
+(not 4400, for room under the hour at a busier machine's 0.43 s a step).
+Vocabulary 4096 (4,095 symbols and END): 3.95 bytes a token on both
+files (2048: 3.66 on valid; spike); the paper kept GPT-Neo's top 10,000
+tokens. Windows of 256 hold 80% of stories whole. Not tried: other
+learning rates for 4 x 256, dropout (the data is not repeated much: 2
+passes in the long run), windows of 512.
+Measured for the lesson, what code can check (the paper's grading by
+GPT-4 is not run): bits per byte on held-out stories (the first 2000 of
+the validation file in the long run, 200 in the default; END counted as
+one byte, the line it stands for); whether a story ends on its own (the
+model writes END within `length` tokens); its length in tokens and
+words; repetition (loops, 08.05's: a phrase of 2 or more tokens 3 times
+at the end); copying: the longest run of tokens a story shares with the
+training tokens (16.7 million), found with an index of every run of 8
+(hashes sorted, 3 s) and followed token by token; runs under 8 count 0;
+beside the same for held-out stories, which no model saw. The paper
+measured copying another way (Rouge-k precision against the training
+set and the share of k-grams that occur in it, its section 4.4); the
+longest shared run is a simpler check of the same thing.
+Reference point (spike, 210 s): GPT-2 small (124M, WebText, its own
+tokenizer, 4.16 bytes a token) on the first 2000 held-out stories: 0.836
+bits per byte (3.477 bits per token, windows of 1024, warm 64).
+
+The default run (no checkpoint; in verify's copy of the project there is
+none): 4 blocks of 4 heads, width 128, windows of 128 tokens (1,334,016
+weights), 120 steps of 32 windows (491,520 tokens, 0.03 passes), AdamW
+0.003, warmup 20, 2 seeds. Bits per byte on the first 200 held-out
+stories `1.571 +- 0.08948` (min 1.507, max 1.634). Its stories (seed 0,
+8 at temperature 1, at most 300 tokens): 4 of 8 end on their own, none
+in a loop, 8 to 245 words, no run of 8 tokens shared with the training
+text: story-shaped words without sense ("Once upon bad secret became
+swing does a very squirrel cried. / Lily was very bowance."). The first
+8 held-out stories share runs of 11, 13, 13, 17, 11, 16, 14, 19 tokens
+(9 to 17 words) with the training text, the longest "Once upon a time,
+there was a little boy named Tom. He loved to play with his": the
+stories' own formulas. 21.9 s at load 7; 24.1 s at load 5 to 6; 28.2 s at
+load 10 to 12 (the
+tokens read from the cache; making them first adds about 9 s). With the
+long run's checkpoint in experiments/recorded/tinystories/ (a learner who
+ran it again) the same run measures it too: 45.0 s at load 9 to 12; on
+the first 200 held-out stories 0.6266 bits per byte (the first 200 are
+easier than the first 2000: 0.7358, below), 7 of 8 stories end within
+300 tokens, 61 to 230 words, shared runs 9 to 19 tokens.
+The long run, recorded in experiments/recorded/tinystories/ (config.json,
+log.jsonl and summary.json of each seed; stories-trained-here/ and
+stories-held-out/, the measures as summary.json; curves.svg, the
+held-out windows' bits per token; output.txt, what it printed, all 16
+stories with it, two curly quotes printed as escapes). Its checkpoint
+(model.safetensors, 17.1 MB) was moved out: no weights are shipped.
+
+    python3 -m experiments.tinystories layers=4 heads=8 width=256 context=256 batch=32 steps=4000 lr=0.001 warmup=100 every=250 seeds=2 held=64 held_stories=2000 samples=16 length=600 shown=16 checkpoint=none out=experiments/recorded
+
+4 blocks of 8 heads, width 256, windows of 256 tokens, 4,273,664
+weights; 4000 steps of 32 windows (32,768,000 tokens, 1.96 passes over
+the 64 MiB), AdamW 0.001, weight decay 0.1, warmup 100 then cosine, no
+dropout; 2 seeds. 2702 s by its own clock, 45 min 3 s of wall clock
+(20:43:21 to 21:28:24), 10 threads, load 6 to 14 (other agents' runs; four
+of module 14's from 21:20 slowed the last minutes): seed 0 in 20 min
+(0.30 s a step), seed 1 in 23.
+- Bits per byte on the first 2,000 held-out stories: `0.7367 +- 0.001263`
+  (0.7358, 0.7376). The held-out windows (64) end at 2.978 and 2.974 bits
+  per token, still falling slowly at the end (2.980 and 2.976 at step
+  3750): nothing turns up in 2 passes. The same model on the GPU for 4400
+  steps (spike): 0.7267. GPT-2 small (124M, WebText, its own tokenizer)
+  on the same 2,000 stories: 0.836 (spike, above): a model 29 times
+  smaller, trained 45 CPU minutes on the right text, predicts these
+  stories better than GPT-2 small.
+- Stories (seed 0, the better; 16 at temperature 1, at most 600 tokens):
+  16 of 16 end on their own (END), none in a loop, 102 to 323 words
+  (median 172). Copying: the longest run of tokens each shares with the
+  training text 19, 11, 9, 11, 14, 10, 10, 14, 12, 15, 8, 12, 0, 14, 10,
+  19 (median 11.5; 0 to 17 words), against 11 to 23 (median 14; 9 to 19
+  words) for the first 16 held-out stories, which no model saw. The
+  model's stories share shorter runs than real unseen stories do: no
+  sign of copying beyond the formulas ("Once upon a time, there was a
+  little girl named Lily. Lily was very happy because she", 19 tokens).
+- What they read like (output.txt has all 16): "Once upon a time, there
+  was a happy little rabbit named Timmy. Timmy loved to run and jump in
+  the air. One day, Timmy saw a cherry was still singing a song. He
+  picked it up and showed it to his friend, a little girl named Lily. /
+  "Hi Timmy! Can you help me get a cherry cherries from the bin?" said
+  Lily. / Timmy thought for a moment and then said, "Yes, I like
+  cherries." / Lily chose lots of cherries too and they agreed together.
+  They ate fruits and passed hours. At the end of the day, they paid for
+  the cherry tree, and Timmy became very popular with his friend." Whole
+  stories in paragraphs, a beginning, dialogue in quotes, an ending ("The
+  end.", "From that day on", a moral), most clauses grammatical; names
+  drift (Flanna, Flongoantly, Marna in one story), made words appear
+  ("membori", "pallengenty"), and one sentence rarely follows from the
+  last.
+Against the paper. Eldan and Li's claim (abstract, read at the source,
+arXiv 2305.07759v2): TinyStories "can be used to train and evaluate LMs
+that are much smaller than the state-of-the-art models (below 10 million
+total parameters) ... yet still produce fluent and consistent stories
+with several paragraphs that are diverse and have almost perfect grammar,
+and demonstrate reasoning capabilities". Held at laptop size: a model of
+4.3 million weights writes whole stories of several paragraphs that end
+on their own, in the dataset's form, without copying its training text.
+Not held: consistent, and almost perfect grammar; their models were
+trained "on a single V100 GPU within at most 30 hours" (section 4) on all
+of TinyStories (1.9 GB; ours 64 MiB, 2 passes, 45 CPU minutes), and
+graded by GPT-4 (not run here). Their figure 4's evaluation losses
+(about 1.3 to 2.3) are per token of GPT-Neo's tokenizer (its top 10,000
+tokens), not comparable with bits per byte here. Their models "learn when
+to stop generating correctly" (figure 4's caption): ours do too (16 of
+16).
+
+**Module 09's papers: what was read at the source.** On 2026-11-24, from
+the papers themselves:
+- Sennrich, Haddow and Birch, arXiv 1508.07909v5 (ACL 2016): section 3.2
+  (the quotes in 09.01), Algorithm 1 (`best = max(pairs, key=pairs.get)`:
+  ties go to the pair counted first), the end-of-word symbol (their BPE
+  is on characters with a mark at each word's end; ours on GPT-2's bytes,
+  where the space starts a word instead), "The final symbol vocabulary
+  size is equal to the size of the initial vocabulary, plus the number of
+  merge operations", footnote 3 (only unknown characters can be unknown:
+  with bytes, none). Their translation experiments are not run.
+- Radford et al. 2019 (the PDF at cdn.openai.com/better-language-models/):
+  section 2.2, "We observed BPE including many versions of common words
+  like dog since they occur in many variations such as dog. dog! dog? ...
+  To avoid this, we prevent BPE from merging across character categories
+  for any byte sequence. We add an exception for spaces which
+  significantly improves the compression efficiency"; Unicode code points
+  "would result in a base vocabulary of over 130,000 before any
+  multi-symbol tokens are added", "a byte-level version of BPE only
+  requires a base vocabulary of size 256" (09.02: 136,104 letters alone
+  in Unicode 15.0); section 2.3, "The vocabulary is expanded to 50,257. We
+  also increase the context size from 512 to 1024 tokens"; table 2 gives
+  the smallest model as 117M parameters, where its published file holds
+  124,439,808 (the paper does not say how it counted); section 2.1,
+  WebText is "slightly over 8 million documents for a total of 40 GB of
+  text", Wikipedia removed. OpenAI's src/encoder.py (github, master):
+  `import regex as re` and the pattern of 09.02, word for word.
+- Holtzman et al. 2020: 08.05's notes have the quotes (read there).
+- Eldan and Li, arXiv 2305.07759v2: the abstract (quoted in 09.04);
+  footnote 2, "We use GPT-Neo architecture with window size 256 and
+  context length 512. We use GPT-Neo tokenizer but only keep the top 10K
+  most common tokens"; section 4, "All of the models can be trained on a
+  single V100 GPU within at most 30 hours"; figure 4 (evaluation losses
+  and GPT-4 grades by hidden size and layers, and its caption: "our
+  models learn when to stop generating correctly"); section 4.4 (copying
+  measured by Rouge-k against the training set). Not found in the pages
+  read: their learning rates, batch sizes and step counts.
+Departures from the design, and why (each said above where it belongs):
+09.01's default stops at a vocabulary of 2048 and 09.03's prompts are 16
+tokens (time, on a busy machine); Holtzman's pure-sampling claim shows
+only in 09.03's longer, unrecorded run (32 minutes); copying is measured
+in tokens (each run's words beside it), not words; one fetch, gpt2, holds
+the tokenizer's files and the weights, so 09.02 asks for all 549 MB;
+TinyStories is the paper's own training file (GPT-3.5 and GPT-4), not
+V2; load_file changed from 09.03 (it held the file four times); the
+tests compare with tiktoken built from the fetched files
+(tiktoken.get_encoding("gpt2") would download them); per_character and
+loops are in the shared files, not in an experiment.
+
 ## For module 08: what module 07 leaves ready
 
 - The text: `from data import shakespeare`; `shakespeare.split("train")`
@@ -1901,6 +2452,100 @@ the loop right. attention_maps (experiments/language.py) rebuilds each
 block's weights from block.norm1, block.attention.qkv, a.mask and a.scale;
 it must follow those changes too.
 
+## For module 10 and after: GPT-2, its tokenizer and TinyStories
+
+**GPT-2 and its tokenizer in three lines**, from the project's top, once
+`python3 -m data.fetch gpt2` has run:
+
+    import torch; from models import gpt2 as M; from tokens import gpt2 as T
+    model, tok = M.load(torch.device("cpu")), T.load()          # GPT(**M.CONFIG) in eval mode; the tokenizer
+    scores = model(torch.tensor([tok.encode("Hello, I'm a language model,")]))   # (1, T, 50257); tok.decode(ids)
+
+model is models/gpt.py's GPT (vocab=50257, context=1024, layers=12,
+heads=12, width=768, dropout 0): everything module 08 says about GPT
+holds (generate, window_bits, save and load, its parameter names). The
+weights come in by M.from_gpt2(tensors, 12, 768) on the dict
+lab/safetensors.load_file gives; M.load(dev, path) takes another file of
+GPT-2's names and shapes. tok.encode(text) treats "<|endoftext|>" in the
+text as ordinary text (tiktoken's encode_ordinary); T.END is 50256, to
+put between documents by hand. tok.table maps an id to its bytes;
+tok.decode joins them (U+FFFD for a cut character). Module 12 fine-tunes
+this model: train it with experiments/language.py's train on ids from
+tok.encode (CONFIG has dropout 0: GPT(**{**M.CONFIG, "dropout": 0.1}) and
+load_state_dict for GPT-2's own 0.1).
+
+**Fetching** (data/fetch.py; every file checked against its pinned size
+and SHA-256 before it is kept; a dropped download carries on with an
+HTTP Range request; a generic User-Agent, no account, no token):
+
+    python3 -m data.fetch gpt2          vocab.json 1,042,301, merges.txt 456,318, model.safetensors 548,105,171 bytes
+                                        https://huggingface.co/openai-community/gpt2/resolve/607a30d783dfa663caf39e06633721c8d4cfcd7e/
+                                        73 s here
+    python3 -m data.fetch tinystories   train.txt 67,108,864 (bytes 0 to 67,108,863 of TinyStories-train.txt),
+                                        valid.txt 19,447,282 (TinyStories-valid.txt whole)
+                                        https://huggingface.co/datasets/roneneldan/TinyStories/resolve/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64/
+                                        11 s here
+
+into $LEARN_CACHE (default ~/.cache/systems-from-scratch)/gpt2/ and
+/tinystories/. A dataset of separate files says "each": True in
+DATASETS, a range of a larger file "ranges": {local name: (name on the
+server, first byte)}; fetch_each does both. Module 10's SmolLM2-135M fits
+the same form: one model.safetensors of 269,060,552 bytes (at commit
+93efa2f097d58c2a74874c7e644dbc9b0cee75a2 of HuggingFaceTB/SmolLM2-135M on
+2026-11-24, X-Linked-ETag 80521b40...5da1, to be checked as GPT-2's was),
+plus its tokenizer files. Read from that file's header (two Range
+requests, 30,536 bytes): 272 tensors, every one BF16; numpy has no
+bfloat16 and lab/safetensors.py's DTYPES has no "BF16", so module 10 must
+add it (the 16 bits are a float32's top half: read as uint16, shift into
+uint32, view as float32). Names model.embed_tokens.weight [49152, 576],
+model.layers.i.self_attn.q_proj [576, 576], k_proj and v_proj [192, 576]
+(3 key/value heads of 64 for 9 query heads), o_proj [576, 576],
+mlp.gate_proj and up_proj [1536, 576], down_proj [576, 1536],
+input_layernorm and post_attention_layernorm [576], no lm_head (tied).
+Its weights are nn.Linear's (outputs, inputs): no transposes, unlike
+GPT-2's Conv1D; a missing transpose cannot happen, a wrong head split can.
+
+**Speeds on this CPU** (Apple M4 Pro, 10 threads, load about 2; GPT-2
+small in float32, no cache of keys and values):
+- forward, scoring: 1 x 1024 tokens 0.23 s (4,500 tokens a second); 4 x
+  256 0.14 s (7,400); 16 x 64 0.14 s (7,400); 16 x 128 0.25 s (8,200);
+  1 x 64 0.024 s (2,700). Scoring Tiny Shakespeare's test text (17,995
+  tokens, windows of 1024, warm 64) 4.8 s.
+- generating (experiments/language.py's generate, a whole forward a
+  step; load 8 to 11): 1 row, 64 tokens after 32: 2.2 s, 29 tokens a
+  second (35 ms a step); 8 rows: 7.2 s, 71 tokens a second (113 ms a
+  step); 1 row, 32 tokens after 512: 4.2 s, 7.7 a second (130 ms a step:
+  every step reads the whole window again). A cache of keys and values is
+  module 11's. The TinyStories long run's model (4.27M weights): one
+  story of 200 tokens 1.0 s (204 tokens a second), 16 at once 5.8 s
+  (549).
+- loading: 1.3 s (load_file 0.06 s from the page cache, the rest GPT's
+  random start and load_state_dict), peak memory 1.2 GB.
+- the tokenizer: 4.7 MB of text a second with its cache (0.24 s for Tiny
+  Shakespeare), 1.2 MB without; reading its files 0.06 s and making its
+  Unicode classes 0.07 s, once a process.
+A training step of GPT-2 small was not measured here (module 12's).
+
+**TinyStories** (data/tinystories.py; `python3 -m data.fetch tinystories`):
+stories("train") 74,394 stories, stories("valid") 21,990 (lists of
+strings, in file order; the train file's last, cut story dropped, the
+empty ones left out); tokenizer(size) -> (merges, table), 09.01's BPE
+learned on the first 10,000 training stories (LEARN_FROM) one to a
+line, size - 1 symbols, the last id, size - 1, is END; tokens(split,
+size) -> numpy uint16, every story's tokens then END. size 4096:
+16,709,577 training tokens, 4,831,485 held-out, 3.95 bytes a token;
+stories median 194 tokens (90% 353 or fewer, 99% 645, longest 1,253;
+80% fit in 256, 97% in 512). Tokenising takes 9 s (merges 5 s, train 2.9
+s, valid 1.0 s) and is kept in the cache folder: bpe4096.json (the merged
+pairs in order), train-bpe4096.npy, valid-bpe4096.npy; read back in
+milliseconds. Delete them after changing tokens/bpe.py or LEARN_FROM:
+nothing checks that they are stale. The stories have curly quotes and
+dashes (about 1 character in 2,500 is not ASCII), so table lookups are bytes and
+decode is 09.01's. The long run's checkpoint, when the learner has made
+it: experiments/recorded/tinystories/model.safetensors, GPT(vocab=4096,
+context=256, layers=4, heads=8, width=256), loaded by language.load;
+it needs tokenizer(4096) for its text.
+
 ## Tests
 
 `./learn test research`: 27 tests, all pass, 3 min 22 s. Each runs its
@@ -2043,6 +2688,74 @@ with its glob first) and 171 at 08.05; 06.04 still 98 and 07.02 145.
 problems, `research/07.0N` and `research/08.0N: test has no lesson doc`;
 nothing else.
 
+With module 09 (load average 4 to 10, other agents' runs going): `./learn
+test research` 44 tests, all pass, 12 min 43 s; module 09's four 2 min 12
+s (09.01 34.2 s, 09.02 13.4, 09.03 58.0, 09.04 26.8). Module 09's four tests, each its checks
+that need no download first, then `T.need(t, "gpt2" or "tinystories",
+skip=True)`: without the files the test prints `skipped what needs it:
+... Fetch it once with python3 -m data.fetch ...` and passes on what it
+could check (as 08.03 does without transformers), where 06.03 and 06.04
+fail with "missing:" without CIFAR-10. The plan's words were "skip with a
+printed line"; a decision for the owner whether module 09 should fail
+instead, as 06's do. 09.01: pieces join back to 3,000 random strings
+from every part of Unicode; pairs, merge (against a tuple version on 200
+random cases); train_simple and train against tests/support.py's
+bpe_reference (written apart: sorted counts, tuples) on 20,000 characters
+of Shakespeare and on the random Unicode text, merge lists equal in
+order; ties to the smaller pair; encode against bpe_replay (every merge
+applied in learned order) and decode back, on held-out Shakespeare and
+100 random strings; unseen and per_character against direct counts; then
+bpe (2 seeds, 200 steps, vocabularies to 1024, the GPT on 1024 tokens):
+words in a window, the unseen counts to the digit, the fast trainer 50
+times sooner with the same first merges, bytes per token growing and
+higher on training text, every round trip, BPE 0.2 bits per character
+below characters on every seed; a tiny run twice, byte for byte. 09.02:
+byte_symbols; classes against unicodedata on every code point; SPACE is
+str.isspace() without 0x1c to 0x1f, 25 code points; split's pieces
+against the regex module's GPT-2 pattern on 3,000 random strings and the
+built corpus; Tokenizer on toy files (and a file with merges out of order
+refused); data/fetch.py's fetch_each against a server on 127.0.0.1 that
+serves at most 3,000 bytes a request (a download carried on from where
+it stopped, a range of a larger file, a wrong SHA-256 not kept); then,
+with GPT-2's files, the ids against every reference (above) and the
+Unicode-version scan; then tokenizer (repeats=1, size=1024). 09.03:
+load_file on a good file and three bad ones, in a fresh python its peak
+on 96 MB (under 1.3 times the file); loops, perplexity against a direct
+sum; from_gpt2 with transformers' GPT2LMHeadModel (random weights, a
+small configuration) at 1e-10 in float64, a square weight untransposed
+gives other logits, a non-square one is refused; then, with GPT-2's
+files, the real logits against transformers' (above), the missing
+transpose far off; then gpt2 (the default): the wrong mapping 1 bit per
+character worse, GPT-2 below 2.0 on the test text, greedy below a
+quarter of pure sampling's perplexity and looping in 25% or more,
+t=0.7, top-k 40 and the nucleus below pure sampling; a tiny run twice.
+09.04: data/tinystories.py on small files the test writes (a LEARN_CACHE
+of its own, DATASETS' sizes patched: stories cut, the last cut piece and
+empty ones dropped, merges kept and read back, tokens with END, kept and
+read back the same); kgram_hashes against the polynomial written out;
+shared_run against a direct search on 30 random cases (half with a
+planted copy); tell against generate with the same generator; the
+recorded long run's files and result; then, with TinyStories, the real
+counts (74,394 and 21,990 stories, END after each, tokens decoding back
+to the stories); then tinystories (the default, checkpoint=none: so a
+learner's runs/ cannot change it): bits per byte below 2.2, the
+checkpoint and curves written, 8 stories measured; a tiny run twice.
+LEARN_RERUN_LONG=1 runs the long run again (about 45 minutes).
+The references: tiktoken was installed for this with `python3 -m pip
+install --user tiktoken` (0.14.0; pip did not refuse); transformers
+4.57.6 and the regex module were already here. The project never
+imports any of them.
+`./learn check-skeleton research` ok, 42 s (44 lessons, each fails at its
+stub: 09.01 at pieces, 09.02 at byte_symbols, 09.03 at loops, 09.04 at
+kgram_hashes). `./learn check-timeline research` ok, 3 min 16 s at load 6
+to 8; the project has 174 files at 09.01, 176 at 09.02, 178 at 09.03 and
+194 at 09.04 (14 of them the recorded run); 06.04 still 98, 07.02 145,
+08.04 170, 08.05 171. experiments/tokenizer.py has no regions, so
+track.py names it in FILES_FROM (09.02); `./learn check` found it before
+that line. `./learn selftest` ok (269 tests). `./learn check` reports
+exactly nine problems, `research/08.0N` and `research/09.0N: test has no
+lesson doc`; nothing else.
+
 ## For the harness work and module 06
 
 - verify_tools() names python3 and numpy only. MNIST is a download, not a
@@ -2078,3 +2791,22 @@ nothing else.
   "experiments/recorded/*/model.safetensors" to HIDDEN: never listed,
   shown or materialized. The recorded one was moved out before the commit
   (no weights are shipped).
+- (09) The glob order once more: track.py's module-09 part puts
+  "experiments/recorded/tinystories/*" first in FILES_FROM; HIDDEN's
+  "experiments/recorded/*/model.safetensors" already hides its checkpoint.
+- (09) needs=: 09.01 needs "torch" only (Tiny Shakespeare ships); 09.02
+  and 09.03 needs="torch gpt2"; 09.04 needs="torch tinystories".
+  pytorch_era_tools() now writes one empty program for each entry of
+  track.py's TOOLS dict (torch, cifar10, gpt2, tinystories); a module
+  that adds a download adds an entry. need(t, name, skip=True) is
+  module 09's form (see Tests). The same harness hook as before would
+  make all of this unnecessary.
+- (09) Region titles that are ordinary words, for the lessons agent's
+  lead-ins (they match case-insensitively): load (language.py 08.04,
+  tokens/gpt2.py 09.02, models/gpt2.py 09.03), tokens, stories, pattern,
+  split, merge, pairs, pieces, train (language.py 08.01, tokens/bpe.py
+  09.01), encode and decode (data/shakespeare.py 07.01, tokens/bpe.py
+  09.01). No lesson has two regions of one name.
+- (09) check-timeline runs tokenizer and gpt2 only where GPT-2's files
+  are in the cache, tinystories where TinyStories is (DATASET_OF), and
+  expects the "is missing" line elsewhere, as for CIFAR-10.

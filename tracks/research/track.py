@@ -575,6 +575,7 @@ HIDDEN.append("experiments/recorded/*/model.safetensors")
 
 SOURCES.append("tokens/*.py")
 FILES_FROM["tokens/__init__.py"] = "09.01"
+FILES_FROM["experiments/tokenizer.py"] = "09.02"          # no regions: its lesson's code is tokens/gpt2.py
 PACKAGES = PACKAGES + ("tokens",)
 
 EXPERIMENTS.update({
