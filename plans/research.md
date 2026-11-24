@@ -25,21 +25,20 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-Modules 06, 07 and 08 are on master whole: code, 40 tests, thirteen
-lessons, module pages, figures and covers; `./learn verify --fresh
-research 08` passed on the lessons' branch (534 s) and `./learn check`
-is ok on master. That is 40 of the core's 70 lessons. 08.02's default
-run is 2 seeds (3 took 82 s on a loaded machine); its heads comparison
-is inside the noise at 2 seeds and the page runs that part at 3 as well.
-The code of modules 09 and 14 is on master too (tokens/, models/gpt2.py,
-TinyStories; data/modular.py, the grokking runs and the report; 48
-tests, three recorded runs). In work, each by an agent in its own
-worktree: module 09's lessons, module 10's code, module 14's lessons.
+Modules 06 to 09 are on master whole: code, tests, seventeen lessons,
+module pages, figures and covers; each module's `./learn verify --fresh`
+passed on its lessons' branch (08: 534 s; 09: 315 s). That is 44 of
+the core's 70 lessons. 08.02's default run is 2 seeds (3 took 82 s on a
+loaded machine); its heads comparison is inside the noise at 2 seeds
+and the page runs that part at 3 as well. Module 14's code is on master
+too (data/modular.py, the grokking runs and the report); 48 tests and
+four recorded runs in all. In work, each by an agent in its own
+worktree: module 10's code, module 12's code, module 14's lessons.
 Agents that add to track.py and NOTES.md at the same time are merged by
 hand, keeping each block. No more than three agents at once: with more
 the machine's load makes every timing useless.
 
-After that, as agents finish: 12 and 13's code; 11's code
+After that, as agents finish: 13's code; 11's code
 after 10's (both change models/gpt.py); each module's lessons after its
 code; 15 last.
 
