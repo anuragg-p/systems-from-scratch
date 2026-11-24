@@ -174,8 +174,10 @@ enum KEY_ACTION{
         CTRL_L = 12,        /* Ctrl+l */
         ENTER = 13,         /* Enter */
         CTRL_Q = 17,        /* Ctrl-q */
+        CTRL_R = 18,        /* Ctrl-r */ // @from 08.01
         CTRL_S = 19,        /* Ctrl-s */
         CTRL_U = 21,        /* Ctrl-u */
+        CTRL_Z = 26,        /* Ctrl-z */ // @from 08.01
         ESC = 27,           /* Escape */
         BACKSPACE =  127,   /* Backspace */
         // @from 01.02
@@ -196,6 +198,60 @@ enum KEY_ACTION{
 
 void editorSetStatusMessage(const char *fmt, ...);  // @from 03.04
 
+// @from 08.01
+/* ============================ The undo history ============================ */
+
+/* Before a row function changes a row, it calls undoSave() with what is
+ * about to happen to which row, and the history keeps what the row was. */
+#define U_CHG 0         /* row at changes: keep its text */
+#define U_INS 1         /* a row is inserted at at: nothing to keep */
+#define U_DEL 2         /* the row at at is deleted: keep its text */
+
+/* What row at was: its text (U_CHG, U_DEL), a copy of its chars with the
+ * '\0' after them, len bytes before it; or nothing (U_INS, text NULL): the
+ * row was not there. */
+struct undoRecord {
+    int type;
+    int at;
+    char *text;
+    int len;
+};
+
+/* A step: what one Ctrl-Z takes back. Its records are in the order they
+ * were made. */
+struct undoStep {
+    struct undoRecord *rec;
+    int numrec;
+    int row0, col0;     // the cursor in the file before the step @from 08.03
+    int row1, col1;     // and after it @from 08.03
+};
+
+// @from 08.02
+/* The history: the steps that can be undone, oldest first, and the steps
+ * undone that can be done again, the one undone last at the end. */
+// @else
+// /* The history: the steps that can be undone, oldest first. */
+// @end
+struct undoState {
+    struct undoStep *undo;  // the undo stack
+    int numundo;
+    struct undoStep *redo;  // the redo stack @from 08.02
+    int numredo;            // @from 08.02
+    int open;               // does the last step on the undo stack still take records?
+    int off;                // 1: nothing is remembered (undo at work, a file being read)
+    int lost;               // 1: the history was given up in this step; the rest of it is not kept
+    int kind;               // the kind of key the open step is made of, UNDO_* @from 08.03
+    int saved;              // the steps under the text on disk; -1: it cannot be reached @from 08.04
+    size_t bytes;           // what the history holds, counted against UNDO_MAX_BYTES @from 08.04
+};
+
+static struct undoState U;
+
+void undoSave(int type, int at);
+void undoClear(void);
+void undoClose(void);       // @from 08.04
+
+// @end
 // @from 06.01
 /* =========================== Syntax highlights DB ========================= */
 
@@ -826,6 +882,7 @@ void editorInsertRow(int at, char *s, size_t len) {
     // on down one place, and fill in row at with a copy of s (and its
     // '\0'). Count the new row in E.numrows.
     if (at > E.numrows) return;
+    undoSave(U_INS,at);             // @from 08.01
     E.row = realloc(E.row,sizeof(erow)*(E.numrows+1));
     if (at != E.numrows) {
         memmove(E.row+at+1,E.row+at,sizeof(E.row[0])*(E.numrows-at));
@@ -872,6 +929,7 @@ void editorDelRow(int at) {
     erow *row;
 
     if (at >= E.numrows) return;
+    undoSave(U_DEL,at);             // @from 08.01
     row = E.row+at;
     editorFreeRow(row);
     memmove(E.row+at,E.row+at+1,sizeof(E.row[0])*(E.numrows-at-1));
@@ -927,6 +985,7 @@ void editorRowInsertChar(erow *row, int at, int c) {
     // and fill the gap with spaces. Otherwise grow it by one and move the
     // bytes from at on (with the '\0') one place right. Put c at at, render
     // the row again, and count a change.
+    undoSave(U_CHG,row-E.row);      // @from 08.01
     if (at > row->size) {
         /* Pad the string with spaces if the insert location is outside the
          * current length by more than a single character. */
@@ -954,6 +1013,7 @@ void editorRowAppendString(erow *row, char *s, size_t len) {
     // @build 04.03 append to a row
     // Grow chars by len, copy s after the row's bytes, end it with '\0',
     // render the row again and count a change.
+    undoSave(U_CHG,row-E.row);      // @from 08.01
     row->chars = realloc(row->chars,row->size+len+1);
     memcpy(row->chars+row->size,s,len);
     row->size += len;
@@ -969,6 +1029,7 @@ void editorRowDelChar(erow *row, int at) {
     // Ignore an at past the end. Move the bytes after at (with the '\0')
     // one place left, and count one byte fewer and one change more.
     if (row->size <= at) return;
+    undoSave(U_CHG,row-E.row);      // @from 08.01
     memmove(row->chars+at,row->chars+at+1,row->size-at);
     editorUpdateRow(row);
     row->size--;
@@ -1032,6 +1093,7 @@ void editorInsertNewline(void) {
         /* We are in the middle of a line. Split it between two rows. */
         editorInsertRow(filerow+1,row->chars+filecol,row->size-filecol);
         row = &E.row[filerow];
+        undoSave(U_CHG,filerow);    /* the row is cut here, by hand */ // @from 08.01
         row->chars[filecol] = '\0';
         row->size = filecol;
         editorUpdateRow(row);
@@ -1112,6 +1174,7 @@ int editorOpen(char *filename) {
     FILE *fp;
 
     E.dirty = 0;                    // @from 04.01
+    undoClear();                    /* a file read anew: a history anew */ // @from 08.01
     free(E.filename);
     size_t fnlen = strlen(filename)+1;
     E.filename = malloc(fnlen);
@@ -1129,6 +1192,7 @@ int editorOpen(char *filename) {
     char *line = NULL;
     size_t linecap = 0;
     ssize_t linelen;
+    U.off = 1;                      /* reading the file is not an edit */ // @from 08.01
     while((linelen = getline(&line,&linecap,fp)) != -1) {
         /* The original kilo strips one byte here (an if, not a while), so
          * a "\r\n" line keeps its '\r'; drawn, the '\r' sends the cursor
@@ -1137,6 +1201,7 @@ int editorOpen(char *filename) {
             line[--linelen] = '\0';
         editorInsertRow(E.numrows,line,linelen);
     }
+    U.off = 0;                      // @from 08.01
     free(line);
     fclose(fp);
     E.dirty = 0;                    // @from 04.01
@@ -1166,6 +1231,10 @@ int editorSave(void) {
     close(fd);
     free(buf);
     E.dirty = 0;
+    // @from 08.04
+    undoClose();            /* the step typed so far ends here */
+    U.saved = U.numundo;    /* the text on disk is the one after these steps */
+    // @end
     editorSetStatusMessage("%d bytes written on disk", len);
     return 0;
 
@@ -1177,6 +1246,421 @@ writeerr:
     // @end
 }
 
+// @from 08.01
+/* ============================== Undo and redo ============================= */
+
+// @internal
+/* For the tests: an invariant of NOTES.md, "08", does not hold. Put the
+ * terminal back, say which, and exit with status 4. */
+__attribute__((noreturn)) void undoBroken(const char *what, long a, long b) {
+    if (E.rawmode) tcsetattr(STDIN_FILENO,TCSAFLUSH,&orig_termios);
+    fprintf(stderr,"\r\nkilo: undo: %s (%ld, %ld)\r\n",what,a,b);
+    _exit(4);
+}
+
+// @end
+// @from 08.04
+/* The most the history may hold: the bytes of text in both stacks, and
+ * each record's and step's own size. */
+#define UNDO_MAX_BYTES (8*1024*1024)
+
+// @internal
+/* The tests set a smaller bound, in bytes, in KILO_TEST_UNDO_MAX. */
+size_t undoMaxBytes(void) {
+    char *s = getenv("KILO_TEST_UNDO_MAX");
+    return s ? (size_t)strtoul(s,NULL,10) : UNDO_MAX_BYTES;
+}
+#undef UNDO_MAX_BYTES
+#define UNDO_MAX_BYTES undoMaxBytes()
+
+// @end
+/* The bytes a record holds: the record, and its text with the '\0'. */
+size_t undoSize(struct undoRecord *r) {
+    return sizeof(*r) + (r->text ? (size_t)r->len+1 : 0);
+}
+
+// @end
+/* Free a step's records and the text they hold. */
+void undoFreeStep(struct undoStep *s) {
+    int j;
+
+    for (j = 0; j < s->numrec; j++) {
+        U.bytes -= undoSize(&s->rec[j]);    // @from 08.04
+        free(s->rec[j].text);
+    }
+    free(s->rec);
+    U.bytes -= sizeof(*s);                  // @from 08.04
+}
+
+/* Forget the whole history: every step freed, none open. */
+void undoClear(void) {
+    while (U.numundo) undoFreeStep(&U.undo[--U.numundo]);
+    while (U.numredo) undoFreeStep(&U.redo[--U.numredo]);  // @from 08.02
+    free(U.undo);
+    U.undo = NULL;
+    // @from 08.02
+    free(U.redo);
+    U.redo = NULL;
+    // @end
+    U.open = 0;
+    U.lost = 0;
+    U.saved = 0;            /* the text is the file on disk */ // @from 08.04
+}
+
+/* Give the history up in the middle of a change, and say why. What is gone
+ * cannot be undone, so neither can the rest of the step: it is not kept
+ * either (U.lost, until the step ends). The change itself goes on. */
+void undoGiveUp(const char *why) {
+    undoClear();
+    U.lost = 1;
+    U.saved = -1;           /* no undo leads back to the file on disk now */ // @from 08.04
+    editorSetStatusMessage("undo: %s",why);
+}
+
+/* Push a copy of step s on a stack of *num steps. Returns 0, or -1 when
+ * there is no memory for it. */
+int undoPush(struct undoStep **stack, int *num, struct undoStep *s) {
+    struct undoStep *new = realloc(*stack,sizeof(struct undoStep)*(*num+1));
+
+    if (new == NULL) return -1;
+    new[(*num)++] = *s;
+    *stack = new;
+    return 0;
+}
+
+/* Called by the row functions just before they change row at: what is
+ * about to happen to it, and so what it was, goes into a record of the open
+ * step. Nothing here can stop the change: when there is no room for the
+ * record, the history is given up instead. */
+void undoSave(int type, int at) {
+    struct undoStep step, *s;
+    struct undoRecord r, *rec;
+    size_t need;                            // @from 08.04
+
+    if (U.off || U.lost) return;
+    // @build 08.03 a row already covered
+    // A U_CHG of row at needs no record when the open step's last record
+    // is of row at and is a U_CHG or a U_INS: undone, that record puts the
+    // row back as it was before all the changes since. Return then.
+    if (U.open && type == U_CHG) {
+        s = &U.undo[U.numundo-1];
+        if (s->rec[s->numrec-1].at == at && s->rec[s->numrec-1].type != U_DEL)
+            return;
+    }
+    // @end
+    // @build 08.02 a new edit forgets what was undone
+    // A record that starts a new step is a new edit, after any undo: the
+    // steps on the redo stack cannot be redone now. Free them.
+    if (!U.open) {
+        while (U.numredo) undoFreeStep(&U.redo[--U.numredo]);
+        if (U.saved > U.numundo) U.saved = -1;  /* the text on disk was among them */ // @from 08.04
+    }
+    // @end
+    // @build 08.04 room for the record
+    // The record needs its own size and the row's text with its '\0'
+    // (none for U_INS); a new step, its size too. While the history would
+    // pass UNDO_MAX_BYTES with them, drop its oldest step, never the open
+    // one; the saved point goes down one with each, to -1 when the text on
+    // disk was under a dropped step. If it still does not fit, give the
+    // history up: "change too big to remember".
+    need = sizeof(struct undoRecord) + (type == U_INS ? 0 : (size_t)E.row[at].size+1);
+    if (!U.open) need += sizeof(struct undoStep);
+    while (U.bytes+need > UNDO_MAX_BYTES && U.numundo > U.open) {
+        undoFreeStep(&U.undo[0]);
+        memmove(U.undo,U.undo+1,sizeof(struct undoStep)*(--U.numundo));
+        if (U.saved >= 0) U.saved--;
+    }
+    if (U.bytes+need > UNDO_MAX_BYTES) {
+        undoGiveUp("change too big to remember");
+        return;
+    }
+    // @end
+    // @build 08.01 keep what the row was
+    // Fill a record: the type, the row, and for U_CHG and U_DEL a copy of
+    // the row's chars with the '\0' after them. With no step open, push an
+    // empty one on the undo stack (undoPush) and open it. Add the record
+    // to the open step. If any allocation fails, free what was made and
+    // give the history up: "out of memory".
+    r.type = type;
+    r.at = at;
+    r.text = NULL;
+    r.len = 0;
+    if (type != U_INS) {
+        r.len = E.row[at].size;
+        if ((r.text = malloc(r.len+1)) == NULL) goto nomem;
+        memcpy(r.text,E.row[at].chars,r.len+1);
+    }
+    if (!U.open) {
+        memset(&step,0,sizeof(step));
+        step.row0 = E.rowoff+E.cy;          /* where the step begins */ // @from 08.03
+        step.col0 = E.coloff+E.cx;          // @from 08.03
+        if (undoPush(&U.undo,&U.numundo,&step) == -1) goto nomem;
+        U.bytes += sizeof(step);            // @from 08.04
+        U.open = 1;
+    }
+    s = &U.undo[U.numundo-1];
+    if ((rec = realloc(s->rec,sizeof(r)*(s->numrec+1))) == NULL) goto nomem;
+    rec[s->numrec++] = r;
+    s->rec = rec;
+    U.bytes += undoSize(&r);                // @from 08.04
+    return;
+
+nomem:
+    free(r.text);
+    undoGiveUp("out of memory");
+    // @end
+}
+
+/* End the open step: the next change starts a new one. */
+void undoClose(void) {
+    // @build 08.01 close the open step
+    // A step given up on ends here too: clear U.lost. Then, if a step is
+    // open, close it.
+    U.lost = 0;
+    if (!U.open) return;
+    U.open = 0;
+    // @end
+    // @build 08.03 where the step ended
+    // Keep in the step just closed where the cursor is now, in the file,
+    // for redo to put it back there.
+    U.undo[U.numundo-1].row1 = E.rowoff+E.cy;
+    U.undo[U.numundo-1].col1 = E.coloff+E.cx;
+    // @end
+}
+
+/* Put a row back as a record says it was: its text again (U_CHG), not
+ * there (U_INS), there again (U_DEL). The record's text is used up. */
+void undoPut(struct undoRecord *r) {
+    // @build 08.01 put the row back
+    // U_CHG: the row's chars (freed) become the record's text, and the row
+    // is rendered again and counted as changed. U_INS: delete the row.
+    // U_DEL: insert a row holding the text at r->at, and free the text.
+    // The record holds no text after.
+    erow *row;
+
+    switch(r->type) {
+    case U_CHG:
+        row = E.row+r->at;
+        free(row->chars);
+        row->chars = r->text;
+        row->size = r->len;
+        editorUpdateRow(row);
+        E.dirty++;
+        break;
+    case U_INS:
+        editorDelRow(r->at);
+        break;
+    case U_DEL:
+        editorInsertRow(r->at,r->text,r->len);
+        free(r->text);
+        break;
+    }
+    r->text = NULL;
+    // @end
+}
+
+// @from 08.02
+/* Apply a record, and make it its own opposite: take what the row holds
+ * now, put the record's row back (undoPut), and keep what was taken. U_CHG
+ * stays U_CHG; U_INS becomes U_DEL, with the text of the row it deleted;
+ * U_DEL becomes U_INS. Applied again, the record puts back what it took:
+ * undo and redo are the same act, and only the order of a step's records
+ * differs. */
+void undoApply(struct undoRecord *r) {
+    struct undoRecord was;
+
+    // @internal
+    /* Invariant 2 (NOTES.md, 08): the record's row is in the file. */
+    if (r->at < 0 || r->at > E.numrows-(r->type != U_DEL))
+        undoBroken("a record's row is not in the file",r->at,E.numrows);
+    // @end
+    // @build 08.02 apply a record, and keep what it replaces
+    // For U_CHG and U_INS take the row's chars and size, and set its chars
+    // to NULL: they are the record's now, and undoPut() frees nothing.
+    // Put the row back with undoPut(). Then the record holds what was
+    // taken, and its type is the opposite: U_DEL for U_INS, U_INS for
+    // U_DEL.
+    was.at = r->at;
+    was.text = NULL;
+    was.len = 0;
+    if (r->type != U_DEL) {
+        was.text = E.row[r->at].chars;
+        was.len = E.row[r->at].size;
+        E.row[r->at].chars = NULL;
+    }
+    was.type = r->type == U_INS ? U_DEL : r->type == U_DEL ? U_INS : U_CHG;
+    U.bytes -= undoSize(r);                 // @from 08.04
+    undoPut(r);
+    U.bytes += undoSize(&was);              // @from 08.04
+    *r = was;
+    // @end
+}
+
+// @end
+// @from 08.03
+/* Put the cursor on row row, column col of the file, and scroll so that it
+ * shows. */
+void undoCursor(int row, int col) {
+    // @build 08.03 put the cursor back
+    // A row above or below the screen goes to its top line, as a search
+    // puts its match. The cursor goes on it at col, the view scrolled right
+    // if col is past the screen's width.
+    if (row < E.rowoff || row >= E.rowoff+E.screenrows) E.rowoff = row;
+    E.cy = row-E.rowoff;
+    E.coloff = 0;
+    E.cx = col;
+    if (E.cx >= E.screencols) {
+        E.coloff = E.cx-E.screencols+1;
+        E.cx = E.screencols-1;
+    }
+    // @end
+}
+
+// @end
+/* Ctrl-Z: take back the last step, its records last to first. */
+void editorUndo(void) {
+    struct undoStep s;
+    int j;
+
+    // @build 08.01 undo the last step
+    // Close the open step. With no step on the undo stack, say "Nothing to
+    // undo". Otherwise take the last step off it and put back its records,
+    // last to first, with U.off set: undo changes rows through the row
+    // functions, and that is no edit to remember.
+    undoClose();
+    if (U.numundo == 0) {
+        editorSetStatusMessage("Nothing to undo");
+        return;
+    }
+    s = U.undo[--U.numundo];
+    U.off = 1;
+    for (j = s.numrec-1; j >= 0; j--)
+        // @from 08.02
+        undoApply(&s.rec[j]);
+        // @else
+        // undoPut(&s.rec[j]);
+        // @end
+    U.off = 0;
+    // @end
+    // @build 08.02 keep the step for redo
+    // Push the step on the redo stack. With no memory for that, free it
+    // and give the history up.
+    if (undoPush(&U.redo,&U.numredo,&s) == -1) {
+        undoFreeStep(&s);
+        undoGiveUp("out of memory");
+    }
+    // @end
+    // @from 08.02
+    // @else
+    // undoFreeStep(&s);       /* nothing redoes it yet */
+    // @end
+    // @build 08.03 the cursor where the step began
+    // Put the cursor where it was before the step (undoCursor).
+    undoCursor(s.row0,s.col0);
+    // @end
+    // @build 08.04 modified or not, after an undo
+    // The text is the file on disk exactly when the undo stack is back at
+    // the saved point: E.dirty is 0 then, and 1 otherwise.
+    E.dirty = U.numundo != U.saved;
+    // @end
+}
+
+// @from 08.02
+/* Ctrl-R: do again the step undone last, its records first to last. */
+void editorRedo(void) {
+    struct undoStep s;
+    int j;
+
+    // @build 08.02 redo the step undone last
+    // Close the open step. With no step on the redo stack, say "Nothing to
+    // redo". Otherwise take the last step off it, apply its records first
+    // to last with U.off set, and push it on the undo stack (with no
+    // memory for that, free it and give the history up).
+    undoClose();
+    if (U.numredo == 0) {
+        editorSetStatusMessage("Nothing to redo");
+        return;
+    }
+    s = U.redo[--U.numredo];
+    U.off = 1;
+    for (j = 0; j < s.numrec; j++) undoApply(&s.rec[j]);
+    U.off = 0;
+    if (undoPush(&U.undo,&U.numundo,&s) == -1) {
+        undoFreeStep(&s);
+        undoGiveUp("out of memory");
+    }
+    // @end
+    // @build 08.03 the cursor where the step ended
+    // Put the cursor where it was when the step was closed (undoCursor).
+    undoCursor(s.row1,s.col1);
+    // @end
+    // @build 08.04 modified or not, after a redo
+    // As after an undo: E.dirty is 0 exactly at the saved point.
+    E.dirty = U.numundo != U.saved;
+    // @end
+}
+
+// @end
+// @from 08.03
+/* The kinds of key the steps are made of. A step is a run of keys of one
+ * kind; a key of another kind ends it, and an UNDO_OTHER key always does. */
+#define UNDO_OTHER 0        /* Enter, the arrows, Ctrl-S, Ctrl-Z, ...: any other */
+#define UNDO_TYPING 1       /* a character typed into the text */
+#define UNDO_DELETING 2     /* Backspace, Ctrl-H, Delete */
+
+/* The kind of key c is. */
+int undoKind(int c) {
+    // @build 08.03 the kind of a key
+    // Backspace, Ctrl-H and Delete are UNDO_DELETING. A key that types a
+    // character is UNDO_TYPING: Tab, a printable one, or a byte above 127,
+    // which comes as a negative number where char is signed and as 128 to
+    // 255 where it is not (below the codes of the keys from 1000 on). Any
+    // other is UNDO_OTHER.
+    if (c == BACKSPACE || c == CTRL_H || c == DEL_KEY) return UNDO_DELETING;
+    if (c == TAB || c < 0 || (c >= ' ' && c < ARROW_LEFT)) return UNDO_TYPING;
+    return UNDO_OTHER;
+    // @end
+}
+
+/* Called with every key, before it acts: it may end the open step. */
+void undoKey(int c) {
+    // @build 08.03 where a step ends
+    // Close the open step when the key is UNDO_OTHER or of another kind
+    // than the keys before it (U.kind). Then U.kind is this key's kind.
+    int kind = undoKind(c);
+
+    if (kind == UNDO_OTHER || kind != U.kind) undoClose();
+    U.kind = kind;
+    // @end
+}
+
+// @end
+// @internal
+/* For the tests, after every key: with KILO_TEST_UNDO_LOG naming a file,
+ * count what the history holds again, from the stacks, and append the
+ * counts to the file; when that is not U.bytes (invariant 3), stop. */
+void undoCheck(void) {
+    char *path = getenv("KILO_TEST_UNDO_LOG");
+    size_t bytes = 0;
+    int i, j, records = 0;
+    FILE *fp;
+
+    if (path == NULL) return;
+    for (i = 0; i < U.numundo+U.numredo; i++) {
+        struct undoStep *s = i < U.numundo ? &U.undo[i] : &U.redo[i-U.numundo];
+        bytes += sizeof(*s);
+        for (j = 0; j < s->numrec; j++, records++) bytes += undoSize(&s->rec[j]);
+    }
+    if ((fp = fopen(path,"a")) != NULL) {
+        fprintf(fp,"bytes %zu undo %d redo %d records %d saved %d open %d\n",
+            U.bytes,U.numundo,U.numredo,records,U.saved,U.open);
+        fclose(fp);
+    }
+    if (bytes != U.bytes) undoBroken("bytes counted, bytes held",(long)U.bytes,(long)bytes);
+}
+// @end
+
+// @end
 // @from 02.01
 /* ============================= Terminal update ============================ */
 
@@ -1721,6 +2205,13 @@ void editorProcessKeypress(int fd) {
     // if (c >= 32 && c < 127) printf("%d ('%c')\r\n",c,c);
     // else printf("%d\r\n",c);
     // @end
+    // @from 08.01
+    // @from 08.03
+    undoKey(c);                     /* a key of another kind ends the step */
+    // @else
+    // undoClose();                    /* every key is a step of its own */
+    // @end
+    // @end
     switch(c) {
     case ENTER:         /* Enter */ // @from 04.01
         editorInsertNewline();      // @from 04.02
@@ -1752,6 +2243,14 @@ void editorProcessKeypress(int fd) {
         break;
     case CTRL_B:        /* Ctrl-b: and back */
         lspBack();
+        break;
+    // @end
+    // @from 08.01
+    case CTRL_Z:        /* Ctrl-z */
+        editorUndo();
+        break;
+    case CTRL_R:        /* Ctrl-r */
+        editorRedo();               // @from 08.02
         break;
     // @end
     case BACKSPACE:     /* Backspace */ // @from 04.01
@@ -1808,6 +2307,9 @@ void editorProcessKeypress(int fd) {
     }
 
     quit_times = KILO_QUIT_TIMES; /* Reset it to the original value. */ // @from 04.04
+    // @internal
+    undoCheck();                    /* the tests' count of the history */
+    // @end
 }
 
 // @from 01.03

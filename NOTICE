@@ -92,7 +92,10 @@ Ours       The lessons, the order the code is built in and its markers,
            lsp.h, json.c and json.h are ours, and so are the lines in
            kilo.c that call into them, its section "The editor's side of
            the language client", and the Makefile's lines that build
-           lsp.c and json.c.
+           lsp.c and json.c. Module 08, undo and redo, is ours too: its
+           block and section in kilo.c and its lines in kilo's functions.
+           It follows the design of Vim's undo (a record keeps a line as
+           it was and is swapped with it), and holds no code of Vim's.
 
 
 dsa - Data structures and algorithms (tracks/dsa)
