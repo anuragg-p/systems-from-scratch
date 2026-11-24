@@ -721,7 +721,7 @@ def step0704():
     for t in range(n):
         w = ws[t]
         best = max(range(n), key=lambda j: w[j])
-        cap = (f"Step {t}: most weight, {w[best]:.2f}, on input position {best}, the symbol {x[best]}; it writes "
+        cap = (f"Output position {t}: most weight, {w[best]:.2f}, on input position {best}, the symbol {x[best]}; it writes "
                f"{wr[t]}" + (", right." if wr[t] == x[t] else f", where {x[t]} was right."))
         with steps.step(f, cap):
             for j in range(n):
@@ -737,7 +737,7 @@ def step0704():
                 f.rect(xs[i], 188, cw, 26, "a af" if lit else "s f", 3)
                 f.text(xs[i] + cw / 2, 206, str(wr[i]), "ta" if lit else "t", 12.5, "middle", 700 if lit else None,
                        mono=True)
-            f.text(20, 250, f"step {t}: the weights add up to {sum(w):.2f}", "tm", 10.5)
+            f.text(20, 250, f"writing output position {t}: the weights add up to {sum(w):.2f}", "tm", 10.5)
     steps.check(f.svg())
     return f
 
