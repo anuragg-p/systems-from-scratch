@@ -2695,6 +2695,14 @@ first (inside()), then its experiment:
   it. The ablations are not rerun by any test (half an hour).
 `./learn check-skeleton research 14` ok, 4.6 s (14.01 fails at equations,
 14.02 at log_steps, 14.03 at weight_norm, 14.04 at settings).
+With module 14, the whole track (modules 00 to 08 and 14; another agent
+training, load 6 to 10): `./learn test research` 44 tests, all pass, 14 min
+17 s (14.02 57.9 s, 14.03 80.2 s there); `./learn check-skeleton research`
+ok, 48 s; `./learn check-timeline research` ok, 3 min 17 s, the project
+has 174 files at 14.01, 176 at 14.02, 189 at 14.03 (13 of them the
+recorded figure) and 246 at 14.04 (55 the recorded ablations); `./learn
+selftest` ok (269 tests); `./learn check` reports exactly four problems,
+`research/14.0N: test has no lesson doc`, until the pages are written.
 
 ### For the harness, and what a page writer meets
 
