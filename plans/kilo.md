@@ -235,11 +235,12 @@ teaches only the buffer (plans/dsa.md).
   character 17 where the text says 18; five regions with no lead-in;
   captions that said more or less than their figures; NOTICE's kilo
   section now says module 07 is ours. Details in the commits.
-- Left as it is: lspDrawRow's signature runs onto a second, indented
-  line, which the site does not take for the start of a function
-  (harness/timeline.py, definition_span), so at 07.06 its region shows
-  without the signature, under a lead-in named by the region's title
-  that quotes it. A one-line signature in lsp.c, or the harness reading
-  an indented second line, would fix it; the read changed neither.
+- lspDrawRow's signature runs onto a second, indented line, which the
+  site did not take for the start of a function (harness/timeline.py,
+  definition_span), so at 07.06 its region showed without the signature
+  or its notes. Fixed in the code, on the coordinator's word: its opening
+  brace is on a line of its own at column 0, the only function in the
+  track written so (NOTES.md 07, "Departures from the design"). The
+  harness is unchanged.
 - On a phone (390 px) every figure fits and nothing overflows; the
   figures are drawn 640 wide and scale down, as in the core and 06.
