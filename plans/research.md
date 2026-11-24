@@ -25,18 +25,18 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-Modules 06 to 10 and 12 to 14 are on master whole: code, 61 tests,
-thirty-four lessons, module pages, figures and covers; each module's
+Modules 06 to 10 and 12 to 15 are on master whole: code, 64 tests,
+thirty-seven lessons, module pages, figures and covers; each module's
 `./learn verify --fresh` passed on its lessons' branch (08: 534 s; 09:
-315 s; 10: 524 s; 12: 342 s; 13: 274 s; 14: 201 s). That is 61 of the
-core's 70 lessons, pushed on 2026-11-24 up to module 09 and 14's code.
-08.02's default run is 2 seeds (3 took 82 s on a loaded machine); its
-heads comparison is inside the noise at 2 seeds and the page runs that
-part at 3 as well (13.02 settles it at 10). In work, each by an agent
-in its own worktree: module 11's code, and module 15 whole (its one
-experiment and its lessons, by one agent). Agents that add to track.py,
-NOTES.md and the art generators at the same time are merged by hand,
-keeping each block; the maps are then drawn again
+315 s; 10: 524 s; 12: 342 s; 13: 274 s; 14: 201 s; 15: 150 s). That is
+64 of the core's 70 lessons, pushed on 2026-11-24 up to module 09 and
+14's code. 08.02's default run is 2 seeds (3 took 82 s on a loaded
+machine); its heads comparison is inside the noise at 2 seeds and the
+page runs that part at 3 as well (13.02 settles it at 10). In work, by
+an agent in its own worktree: module 11's code, whose recorded
+benchmark waits for a quiet machine. Then 11's lessons. Agents that add
+to track.py, NOTES.md and the art generators at the same time are
+merged by hand, keeping each block; the maps are then drawn again
 (`python3 -B art/research/archmap.py`).
 
 The owner asked for more speed (2026-11-24): the limit of three agents
@@ -371,6 +371,18 @@ Built, as found:
   weights further than full fine-tuning, so the distance moved does
   not predict what is forgotten.
 
+- 15 The track's own question, from 08.03: what learned positions are
+  worth as blocks are added. 22 paired seeds a depth, each model at the
+  rate its own search chose: 0.288 bits at 1 block, 0.271 at 2, 0.201
+  at 4, 0.141 at 6, 0.124 at 8, positions ahead on every pair. No depth
+  without positions reaches one block with them. Six of seven
+  predictions held. Not expected: the learning rate matters more than
+  the depth (at 4 blocks the gap is 0.076 at 08.03's rate and 0.167 at
+  the searched one), most of the gap's fall is the model with positions
+  getting worse with depth at 300 steps, and pairing bought nothing.
+  Earlier work (Irie et al. 2019, Haviv et al. 2022, Kazemnejad et al.
+  2023) answers part of it; the lesson says so.
+
 Still the plan:
 - 11.03 FlashAttention, 11.04 mixed precision: the same numbers, sooner.
 
@@ -459,6 +471,19 @@ Still the plan:
 - "LoRA did not match full fine-tuning at 600 steps" is the finding. No
   longer run.
 - No default run is cut; the quiet pass measures classify and instruct.
+
+## Decisions after module 15 (Fable, 2026-11-25)
+
+- Module 15's records stay packed (one line of runs.jsonl for a run's
+  three files, `question.pack`, `unpack` writes them back byte for
+  byte): unpacked, 15.02's page was 849 blocks. The same packing would
+  shorten the pages of 10.05, 12.02, 13.02, 13.04 and 14.04 (49 to 63
+  blocks each) without a harness change; it means changing each
+  module's reader and test and verifying its lessons again. Not done;
+  for the owner to choose between that and the harness fix.
+- The next question the experiment points at (does the gap depend on
+  the step budget) is left in the lesson as the reader's.
+- 15.03 links Peyton Jones's own page.
 
 ## Directions for 07 to 15 (Fable, 2026-11-24)
 
