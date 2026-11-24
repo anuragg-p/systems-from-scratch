@@ -25,9 +25,9 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-Modules 06 and 07 are on master: 06 whole (code, tests, lessons, art),
-07 as code and 35 tests. In work, each by an agent in its own worktree:
-module 07's lessons, and module 08's code.
+Modules 06 and 07 are on master whole: code, 35 tests, eight lessons,
+module pages, figures and covers; `./learn verify --fresh research 07`
+passes. In work, by an agent in its own worktree: module 08's code.
 
 After that, in this order: 07, 08 and 09, one module's code at a time,
 each module's lessons written while the next module's code is built
