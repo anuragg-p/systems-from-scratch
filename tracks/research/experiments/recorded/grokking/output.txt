@@ -1,0 +1,28 @@
+1. The data: x / y mod 97, 9312 equations; 3259 of them (35%) to train on and 6053 to validate on,
+   a split of their own for each seed (data/modular.py). A guess is right 1 time in 97 (0.0103); its loss is ln 97 = 4.575 nats.
+   The model: models/gpt.py's GPT, 2 blocks of 4 heads, width 128, reading a / b =: 410,240 weights,
+   396,800 of them outside the embeddings (the paper: "about 4 x 10^5 non-embedding parameters").
+
+2. Training: AdamW, rate 0.001, betas 0.9 and 0.98, weight decay 1, the rate warmed up over 10 steps;
+   batches of 512; 5000 steps; 3 seeds. Measured at 64 steps spaced evenly in the logarithm.
+   After 5000 steps (accuracy, then loss in nats):
+   training accuracy   1 +- 0 (min 1, max 1, 3 seeds)
+   validation accuracy 1 +- 0 (min 1, max 1, 3 seeds)
+   training loss       0.04839 +- 0.02213 (min 0.03189, max 0.07354, 3 seeds)
+   validation loss     0.05196 +- 0.02446 (min 0.03398, max 0.07981, 3 seeds)
+   curves in experiments/recorded/grokking/accuracy.svg and experiments/recorded/grokking/loss.svg
+
+3. Memorised, then generalised: the first measured step at which each accuracy was 99% or more.
+   seed 0: training at step 398, validation at step 2238, 5.6 times later; validation accuracy at the first: 0.0162
+   seed 1: training at step 354, validation at step 1778, 5.0 times later; validation accuracy at the first: 0.0240
+   seed 2: training at step 446, validation at step 2511, 5.6 times later; validation accuracy at the first: 0.0289
+   training 99% at step   399 +- 46 (min 354, max 446, 3 seeds)
+   validation 99% at step 2.18e+03 +- 370 (min 1.78e+03, max 2.51e+03, 3 seeds)
+   times later            5.43 +- 0.349 (min 5.02, max 5.63, 3 seeds)
+   The validation loss at its highest, as times the loss of a guess (ln 97): 1.18 +- 0.0897 (min 1.1, max 1.27, 3 seeds),
+   at step 562, 501, 794; at the end 0.052 +- 0.0245 (min 0.034, max 0.0798, 3 seeds) nats.
+   The weights' norm: at the start 27.4, 27.5, 27.4; at its highest 27.6 (step 1584), 27.5 (step 0), 28.6 (step 1995);
+   when validation accuracy reached 99% 25.5, 23.0, 27.2; at the end 26.2, 23.7, 23.6
+   its curve in experiments/recorded/grokking/norm.svg
+
+428 s of training and scoring on cpu

@@ -561,9 +561,20 @@ HIDDEN.append("experiments/recorded/*/model.safetensors")
 #
 # Kept apart from the tables above, as modules 06 to 08's parts are, and last in the file, so another module's part can
 # sit before it. data/modular.py makes the paper's data (nothing to download); experiments/predictions.py holds the
-# paper's claims as predictions, which claims.py prints and report.py (14.04) judges.
+# paper's claims as predictions, which claims.py prints and report.py (14.04) judges. experiments/arithmetic.py is the
+# loop the module's scripts share (as language.py is module 08's); grokking.py has no region of its own, so it is placed
+# here. Nothing in the module needs a download: needs="torch" from 14.02 on, 14.01 needs nothing but numpy.
 
 EXPERIMENTS.update({
     "claims": ("14.01", ["seeds=1"], r"A run has learned the operation only if its validation accuracy is far above"),
+    "grokking": ("14.02", ["seeds=1", "steps=5", "p=7"], r"s of training and scoring on cpu"),
 })
-DATASET_OF.update({"claims": None})
+DATASET_OF.update({"claims": None, "grokking": None})
+FILES_FROM["experiments/grokking.py"] = "14.02"
+
+# The long runs, recorded as 06.04's, 07.02's and 08.04's are: grokking.py's (14.03, the figure) and ablations.py's
+# (14.04), each with out=experiments/recorded: every config.json, log.jsonl and summary.json, the curves and what it
+# printed. As module 07's part says, the first glob that matches a file places it, so these narrower ones go first.
+FILES_FROM = {"experiments/recorded/grokking/*": "14.03", **FILES_FROM}
+DATA["experiments/recorded/grokking/*"] = ("the long run of experiments/grokking.py (14.03), recorded on the machine in "
+                                           "NOTES.md")

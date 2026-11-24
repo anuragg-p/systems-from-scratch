@@ -1,0 +1,19 @@
+{
+ "best_val_acc": 1.0,
+ "norm_at_val99": 23.041053155684583,
+ "norm_end": 23.65634701621662,
+ "norm_max": 27.456969747502946,
+ "norm_max_step": 0,
+ "norm_start": 27.456969747502946,
+ "peak_over_chance": 1.0969336958563352,
+ "peak_step": 501,
+ "peak_val_loss": 5.018154621124268,
+ "ratio": 5.022598870056497,
+ "train99": 354,
+ "train_acc": 1.0,
+ "train_loss": 0.0397515669465065,
+ "val99": 1778,
+ "val_acc": 1.0,
+ "val_acc_at_train99": 0.02395506389439106,
+ "val_loss": 0.04208674654364586
+}
