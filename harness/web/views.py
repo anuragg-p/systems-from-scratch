@@ -797,7 +797,8 @@ def code_rows(lines, numbers, lang="plain", band=(), fold=False, prefix="fold", 
     the "..." standing for it gets. shut: positions of function bodies that start shut (and come
     back shut when "Functions only" is turned off). clip: rows from this position on are marked
     "clip-x", for a pane that starts with its first lines only (see code_block)."""
-    hl = hl if hl is not None else highlight.highlight_lines("\n".join(lines), lang)
+    # an empty file has no lines, and highlighting "" would give one row with no number to go with it
+    hl = hl if hl is not None else highlight.highlight_lines("\n".join(lines), lang) if lines else []
     fns = [f for f in tl.functions(lines) if f[1] <= f[2]] if fold else []
     ids = [f"{prefix}-{next(FOLD_IDS)}" for _ in fns]
     heads = {h: n for n, (h, _, _) in enumerate(fns)}
