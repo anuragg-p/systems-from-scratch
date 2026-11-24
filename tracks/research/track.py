@@ -542,8 +542,10 @@ EXPERIMENTS.update({
                   r"s of training and scoring on cpu"),
     "gpt": ("08.04", ["seeds=1", "steps=6", "layers=1", "width=16", "context=16", "every=2", "held=4", "orders=2",
                       "length=20"], r"s of counting, training and scoring on cpu"),
+    "sampling": ("08.05", ["seeds=1", "steps=5", "prompts=2", "length=8", "context=16", "prompt=8", "checkpoint=none"],
+                 r"s of training, sampling and scoring on cpu"),
 })
-DATASET_OF.update({"self_attention": None, "heads": None, "positions": None, "gpt": None})
+DATASET_OF.update({"self_attention": None, "heads": None, "positions": None, "gpt": None, "sampling": None})
 
 # The long run of 08.04, recorded as 06.04's and 07.02's are (experiments/gpt.py with out=experiments/recorded): every
 # config.json, log.jsonl and summary.json, the curves and what it printed; not its checkpoint (no weights are shipped).
