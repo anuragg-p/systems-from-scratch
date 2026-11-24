@@ -207,6 +207,10 @@ loss, full-batch descent lr 0.5, 80 steps, 3 seeds: loss 1.16 -> 0.012,
 0.88 -> 0.040, 1.18 -> 0.061; training accuracy `0.987 +- 0.0115`; on 200
 fresh points `0.975 +- 0.015`. 15 s: the scalar engine is slow, which is
 02.01's point. (At lr 0.2 and 60 steps it reached only 0.947 and 0.892.)
+With no hidden layer (`"sizes=[1]"`): training accuracy `0.9 +- 0.02` at 80
+steps and still at 800, fresh points `0.868 +- 0.0503`: the 1986 paper's
+claim, that hidden units learn what a network without them cannot, held at
+this size (the page says what it does not test).
 
 **02.01 The scalar engine is a thousand times too slow.** speed: tanh(x y +
 x) and its gradients for 20,000 pairs: scalar Values 158 to 190 ms, one
@@ -225,7 +229,7 @@ compares them.
 **02.03 Matrix multiply, sums and indexing.** groups_tensors: the two
 groups with the network as matrices (2-16-16-1), 200 points, 1000 steps, 3
 seeds: training accuracy 1.0, fresh points `0.998 +- 0.0015`, 0.14 to 0.16
-ms a step across our runs (01.04's scalar step on 50 points: about 60 ms). Starting weights come
+ms a step across our runs (01.04's scalar step on 50 points: 60 to 70 ms). Starting weights come
 from numpy, so PyTorch gives the same numbers.
 
 **02.04 Softmax and cross-entropy.** softmax: scores [100, 99, 0] and
