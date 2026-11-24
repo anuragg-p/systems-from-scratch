@@ -1,23 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 318" fill="none">
 <title>Four things a script cannot do in kilo, the piece of an editor each would need, and that piece in Neovim</title>
-<defs><marker id="f0910b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0910b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0910b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<defs><marker id="f09-10b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-10b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-10b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
 <text class="tm" x="24" y="22" font-size="11">what kilo leaves out on purpose, and Neovim&#x27;s name for each piece, from its source and documentation</text>
 <text class="tm" x="24" y="50" font-size="10" font-weight="600">a script cannot</text>
 <text class="tm" x="196" y="50" font-size="10" font-weight="600">it would need</text>
 <text class="tm" x="406" y="50" font-size="10" font-weight="600">in Neovim</text>
 <rect class="s fs" x="24" y="60" width="164" height="52" rx="5" stroke-width="1.5"/>
-<text class="t" x="32" y="76" font-size="10">wait for a time, or work in</text>
-<text class="t" x="32" y="89" font-size="10">the background</text>
+<text class="t" x="32" y="76" font-size="10">wait for time to pass, or</text>
+<text class="t" x="32" y="89" font-size="10">work in the background</text>
 <rect class="a af" x="196" y="60" width="202" height="52" rx="5" stroke-width="1.5"/>
-<text class="ta" x="204" y="76" font-size="10" font-weight="600">one loop that owns all the waiting:</text>
-<text class="ta" x="204" y="89" font-size="10" font-weight="600">07&#x27;s poll() and a timer here could</text>
-<text class="ta" x="204" y="102" font-size="10" font-weight="600">not know of each other</text>
+<text class="ta" x="204" y="76" font-size="10" font-weight="600">one loop that owns all the waiting,</text>
+<text class="ta" x="204" y="89" font-size="10" font-weight="600">07&#x27;s poll() included: kilo has no</text>
+<text class="ta" x="204" y="102" font-size="10" font-weight="600">timers</text>
 <rect class="s f" x="406" y="60" width="210" height="52" rx="5" stroke-width="1.5"/>
 <text class="t" x="414" y="76" font-size="10">libuv: &quot;Platform and I/O facilities</text>
 <text class="t" x="414" y="89" font-size="10">are built upon libuv&quot;; vim.uv gives</text>
 <text class="t" x="414" y="102" font-size="10">Lua its bindings</text>
 <rect class="s fs" x="24" y="118" width="164" height="52" rx="5" stroke-width="1.5"/>
-<text class="t" x="32" y="134" font-size="10">edit more than one file</text>
+<text class="t" x="32" y="134" font-size="10">edit more than one file at</text>
+<text class="t" x="32" y="147" font-size="10">a time</text>
 <rect class="a af" x="196" y="118" width="202" height="52" rx="5" stroke-width="1.5"/>
 <text class="ta" x="204" y="134" font-size="10" font-weight="600">many buffers: kilo&#x27;s E is one file</text>
 <rect class="s f" x="406" y="118" width="210" height="52" rx="5" stroke-width="1.5"/>
@@ -25,8 +26,8 @@
 <text class="t" x="414" y="147" font-size="10">(kObjectTypeBuffer); the nvim_buf_*</text>
 <text class="t" x="414" y="160" font-size="10">functions take one</text>
 <rect class="s fs" x="24" y="176" width="164" height="52" rx="5" stroke-width="1.5"/>
-<text class="t" x="32" y="192" font-size="10">keep marks that move with</text>
-<text class="t" x="32" y="205" font-size="10">the text</text>
+<text class="t" x="32" y="192" font-size="10">keep highlights that move</text>
+<text class="t" x="32" y="205" font-size="10">with the text</text>
 <rect class="a af" x="196" y="176" width="202" height="52" rx="5" stroke-width="1.5"/>
 <text class="ta" x="204" y="192" font-size="10" font-weight="600">marks in a tree, moved by every</text>
 <text class="ta" x="204" y="205" font-size="10" font-weight="600">edit: kilo keeps a list, put again</text>
@@ -36,10 +37,11 @@
 <text class="t" x="414" y="205" font-size="10">(marktree.c), moved by</text>
 <text class="t" x="414" y="218" font-size="10">extmark_splice</text>
 <rect class="s fs" x="24" y="234" width="164" height="52" rx="5" stroke-width="1.5"/>
-<text class="t" x="32" y="250" font-size="10">show windows over the text</text>
+<text class="t" x="32" y="250" font-size="10">show windows, floating</text>
+<text class="t" x="32" y="263" font-size="10">windows, menus</text>
 <rect class="a af" x="196" y="234" width="202" height="52" rx="5" stroke-width="1.5"/>
-<text class="ta" x="204" y="250" font-size="10" font-weight="600">windows: kilo draws one screen of</text>
-<text class="ta" x="204" y="263" font-size="10" font-weight="600">one file</text>
+<text class="ta" x="204" y="250" font-size="10" font-weight="600">windows over the text: kilo&#x27;s</text>
+<text class="ta" x="204" y="263" font-size="10" font-weight="600">screen is the core&#x27;s, one file</text>
 <rect class="s f" x="406" y="234" width="210" height="52" rx="5" stroke-width="1.5"/>
 <text class="t" x="414" y="250" font-size="10">Window, a type of the API</text>
 <text class="t" x="414" y="263" font-size="10">(kObjectTypeWindow):</text>

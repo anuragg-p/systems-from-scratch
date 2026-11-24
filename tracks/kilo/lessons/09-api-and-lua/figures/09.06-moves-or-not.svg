@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 322" fill="none">
 <title>A row put in above a highlighted word: kilo&#x27;s highlight stays on its row number, over the row that moved there; Neovim&#x27;s extmark moves down with the word</title>
-<defs><marker id="f0906c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0906c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0906c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<defs><marker id="f09-06c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-06c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-06c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
 <text class="tm" x="24" y="22" font-size="11">kilo at 09.06 on sizes.txt, the lesson&#x27;s init.lua and a green highlight added at the prompt; Neovim from its source</text>
 <text class="t" x="24" y="52" font-size="11.5" font-weight="700">kilo: a highlight is a row and a range of bytes</text>
 <text class="t" x="24" y="70" font-size="11" font-weight="700">before</text>
@@ -37,7 +37,7 @@
 <text class="t mono" x="306" y="155.52" font-size="10.67">=</text>
 <rect class="af" x="318.8" y="145.5" width="38.4" height="13" rx="1"/>
 <text class="ta mono" x="318.8" y="155.52" font-size="10.67" font-weight="700">307200</text>
-<line class="m" x1="185.2" y1="120" x2="199.2" y2="120" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0906c-am)"/>
+<line class="m" x1="185.2" y1="120" x2="199.2" y2="120" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-06c-am)"/>
 <text class="tm" x="24" y="186" font-size="10">the line typed at the prompt, before Enter:</text>
 <text class="t mono" x="24" y="202" font-size="8.6">ns</text>
 <text class="t mono" x="39.48" y="202" font-size="8.6">=</text>
@@ -72,7 +72,7 @@
 <text class="ta mono" x="520" y="139.52" font-size="10.67" font-weight="700">height</text>
 <text class="t mono" x="564.8" y="139.52" font-size="10.67">=</text>
 <text class="t mono" x="577.6" y="139.52" font-size="10.67">480</text>
-<line class="m" x1="501.2" y1="120" x2="511.2" y2="120" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0906c-am)"/>
+<line class="m" x1="501.2" y1="120" x2="511.2" y2="120" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-06c-am)"/>
 <text class="tm" x="404" y="196" font-size="10">nvim_buf_set_lines calls</text>
 <text class="tm" x="404" y="209" font-size="10">extmark_splice, and &quot;Marks are moved</text>
 <text class="tm" x="404" y="222" font-size="10">by calls to extmark_splice&quot;</text>

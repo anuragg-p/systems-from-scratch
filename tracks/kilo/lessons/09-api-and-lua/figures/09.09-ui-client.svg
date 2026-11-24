@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 340" fill="none">
 <title>Neovim as a server: the terminal UI is one client of the API, in a process of its own, and other programs are clients the same way; kilo keeps its screen inside</title>
-<defs><marker id="f0909b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0909b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0909b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<defs><marker id="f09-09b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-09b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-09b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
 <text class="tm" x="24" y="22" font-size="11">Neovim v0.12.6, from its documentation; not run here</text>
 <rect class="s f" x="24" y="44" width="178" height="60" rx="6" stroke-width="1.5"/>
 <text class="t mono" x="34" y="62" font-size="10.5" font-weight="700">$</text>
@@ -29,8 +29,8 @@
 <rect class="s f" x="312" y="226" width="84" height="38" rx="5" stroke-width="1.5"/>
 <text class="t mono" x="354" y="242" font-size="10" font-weight="700" text-anchor="middle">--api-info</text>
 <text class="tm" x="354" y="256" font-size="9" text-anchor="middle">its metadata</text>
-<line class="a" x1="113" y1="106" x2="113" y2="148" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909b-aa)" marker-start="url(#f0909b-aa)"/>
-<line class="a" x1="319" y1="106" x2="319" y2="148" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909b-aa)" marker-start="url(#f0909b-aa)"/>
+<line class="a" x1="113" y1="106" x2="113" y2="148" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-09b-aa)" marker-start="url(#f09-09b-aa)"/>
+<line class="a" x1="319" y1="106" x2="319" y2="148" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-09b-aa)" marker-start="url(#f09-09b-aa)"/>
 <text class="ta" x="121" y="124" font-size="9.5" font-weight="600">msgpack-RPC on</text>
 <text class="ta" x="121" y="136" font-size="9.5" font-weight="600">stdin/stdout</text>
 <text class="ta" x="327" y="130" font-size="9.5" font-weight="600">msgpack-RPC</text>

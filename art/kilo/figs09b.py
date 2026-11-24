@@ -31,8 +31,8 @@ No figure's text names NOTES.md, a test, or how the figure was made.
   09.09-two-doors       09.09: the editor on the lesson's notes.txt, then its upper.lua with kilo -l;
                         main() and editorRunScript() as the project has them
   09.09-ui-client       Neovim's client and server, from NOTES.md's quotes, not run
-  09.10-could-have-been the three plugins of 09.10 and the API functions each calls: PLUGIN_CALLS
-                        below, TO BE CHECKED AGAINST THE PLUGINS when they land
+  09.10-could-have-been the three plugins of 09.10 (tracks/kilo/plugins/) and the API functions each
+                        calls: PLUGIN_CALLS below, checked against the plugins and NOTES.md
   09.10-frontier        NOTES.md's frontier and the Neovim name for each piece
 
 The maps, the cover and the icon are not made here (archmap.py, covers.py).
@@ -65,42 +65,49 @@ NOTES = os.path.join(KILO, "NOTES.md")
 UP, DOWN, RIGHT, LEFT = "\x1b[A", "\x1b[B", "\x1b[C", "\x1b[D"
 ENTER, ESC = "\r", "\x1b"
 
-# ---------------------------------------------------------------- 09.10: TO BE CHECKED
+# ---------------------------------------------------------------- 09.10: the plugins
 #
-# The three plugins of 09.10 (tracks/kilo/plugins/vi.lua, colour.lua, find.lua) are being written;
-# they were not on master when this was drawn. Each plugin's list is the API functions and events
-# NOTES.md's "For 09.10: does the API reach the three proofs" says it needs. TO BE CHECKED AGAINST
-# THE PLUGINS when they land: every name here must be one the plugin calls, and every kilo.api
-# function the plugin calls must be here. check_plugins() does that once the files are there.
+# The API functions and events each of 09.10's plugins (tracks/kilo/plugins/) calls, in the order
+# NOTES.md's "09.10 Features as scripts" lists them. check_plugins() compares them with the plugins'
+# own calls (each plugin names kilo.api "api") and stops the generator on any difference.
 PLUGIN_CALLS = {
-    "vi.lua": ["create_autocmd", "feed_key", "set_cursor", "get_cursor", "get_lines", "set_lines",
-               "set_statusline"],
-    "colour.lua": ["get_name", "create_namespace", "clear_namespace", "add_highlight", "get_view", "get_size",
-                   "get_lines", "create_autocmd"],
-    "find.lua": ["input", "set_cursor", "get_lines", "line_count", "create_namespace",
-                 "add_highlight", "clear_namespace", "message"],
+    "vi.lua": ["create_autocmd", "get_cursor", "set_cursor", "get_lines", "line_count", "set_lines",
+               "set_statusline", "get_name"],
+    "colour.lua": ["create_namespace", "clear_namespace", "add_highlight", "get_name", "get_view", "get_size",
+                   "line_count", "get_lines", "create_autocmd"],
+    "find.lua": ["set_keymap", "create_autocmd", "create_namespace", "clear_namespace", "add_highlight",
+                 "get_cursor", "set_cursor", "get_view", "set_view", "line_count", "get_lines", "message", "input"],
 }
 PLUGIN_EVENTS = {
-    "vi.lua": ["KeyPress"],
+    "vi.lua": ["KeyPress", "BufReadPost"],
     "colour.lua": ["BufReadPost", "TextChanged", "CursorMoved"],
-    "find.lua": [],
+    "find.lua": ["KeyPress", "TextChanged", "CursorMoved"],
 }
+PLUGIN_LINES = {"vi.lua": 89, "colour.lua": 113, "find.lua": 105}
 
 
 def check_plugins():
-    """When tracks/kilo/plugins/ is there: PLUGIN_CALLS against what each plugin calls."""
+    """PLUGIN_CALLS, PLUGIN_EVENTS and PLUGIN_LINES against the plugins themselves, and against
+    NOTES.md's list of what each calls."""
     d = os.path.join(KILO, "plugins")
-    if not os.path.isdir(d):
-        print("figs09b: tracks/kilo/plugins/ is not there yet: PLUGIN_CALLS is unchecked")
-        return False
     for name, calls in PLUGIN_CALLS.items():
         with open(os.path.join(d, name)) as f:
             src = f.read()
-        used = sorted(set(re.findall(r"kilo\.api\.(\w+)", src)))
+        assert re.search(r"^local api = kilo\.api$", src, re.M), name
+        assert "kilo.api." not in src, name
+        used = sorted(set(re.findall(r"\bapi\.(\w+)", src)))
         assert sorted(calls) == used, (name, sorted(calls), used)
         for ev in PLUGIN_EVENTS[name]:
-            assert f"'{ev}'" in src or f'"{ev}"' in src, (name, ev)
-    return True
+            assert f"'{ev}'" in src, (name, ev)
+        assert src.count("\n") == PLUGIN_LINES[name], (name, src.count("\n"))
+        said(f"`plugins/{name}` ({PLUGIN_LINES[name]}" if name == "vi.lua" else f"`plugins/{name}` ({PLUGIN_LINES[name]})")
+    said("- vi.lua: create_autocmd (KeyPress, BufReadPost), get_cursor, set_cursor, get_lines, line_count, set_lines, "
+         "set_statusline, get_name.",
+         "- colour.lua: create_namespace, clear_namespace, add_highlight, get_name, get_view, get_size, line_count, "
+         "get_lines, create_autocmd (BufReadPost, TextChanged, CursorMoved).",
+         "- find.lua: set_keymap (Ctrl-N, Ctrl-O), create_autocmd (KeyPress, TextChanged, CursorMoved), "
+         "create_namespace, clear_namespace, add_highlight, get_cursor, set_cursor, get_view, set_view, line_count, "
+         "get_lines, message, input.")
 
 
 # ---------------------------------------------------------------- NOTES.md
@@ -591,7 +598,7 @@ def drawn_over0906():
     lesson_said("06", f"then `\\r`, `ESC [ {n} C`, `ESC [ {style} m`, `{num}`, `ESC [ 0 m`", "[y:307200]")
     said(f"the row, `ESC[0K`, then `\\r ESC[{n}C ESC[{style}m {num} ESC[0m`")
     assert "kilo.api.add_highlight(numbers, top + i - 1, s - 1, e - 1, 'yellow')" in cap["init"]
-    f = F9("f0906a", f"The bytes kilo at 09.06 writes for the row with a tab and {num}: the row as always, then "
+    f = F9("f09-06a", f"The bytes kilo at 09.06 writes for the row with a tab and {num}: the row as always, then "
            f"back to its start, {n} cells right, yellow on, {num} again, colours off", 330)
     f.text(24, 22, "kilo at 09.06 on sizes.txt with the lesson's init.lua: what it writes for the third row, "
            "a tab and pixels = 307200", "tm", 11)
@@ -677,7 +684,7 @@ def namespaces0906():
     lesson_said("06", CLEAR_SPACES, "The reverse spaces go; every yellow stays. Press Down, and the spaces are back, "
                 "put there again on CursorMoved.", "local numbers = kilo.api.create_namespace('numbers')",
                 "local spaces = kilo.api.create_namespace('spaces')")
-    f = F9("f0906b", "Two scripts draw on the same rows, each in a namespace of its own: numbers in yellow in "
+    f = F9("f09-06b", "Two scripts draw on the same rows, each in a namespace of its own: numbers in yellow in "
            "namespace 1, spaces at a row's end in reverse in namespace 2; clearing namespace 2 leaves every yellow",
            318)
     f.text(24, 22, "kilo at 09.06 on sizes.txt with the lesson's init.lua, a terminal 8 x 72 (its first three rows)",
@@ -721,7 +728,7 @@ def moves0906():
     lesson_said("06", GREEN, "`[g:width ]= [y:640]`", "the green stays on row 1")
     said("Extmarks move with the text (extmark.c:", "adjustment to text changes", "kilo's do not",
          "then marks (mark_adjust_buf, extmark_splice)", "Marks are moved by calls to extmark_splice.")
-    f = F9("f0906c", "A row put in above a highlighted word: kilo's highlight stays on its row number, over the "
+    f = F9("f09-06c", "A row put in above a highlighted word: kilo's highlight stays on its row number, over the "
            "row that moved there; Neovim's extmark moves down with the word", 322)
     f.text(24, 22, "kilo at 09.06 on sizes.txt, the lesson's init.lua and a green highlight added at the prompt; "
            "Neovim from its source", "tm", 11)
@@ -794,7 +801,7 @@ def nested_loop0907():
     lesson_said("07", "add.c - 9 lines 1/9 Go to line: 8", "and the bar says `8/9`")
     init = cap["init"].split("\n")
     ln = next(k for k, s in enumerate(init) if "api.input(" in s) + 1      # init.lua's line number
-    f = F9("f0907a", "The C stack while input() waits in kilo at 09.07: main's loop, the key, the Lua function "
+    f = F9("f09-07a", "The C stack while input() waits in kilo at 09.07: main's loop, the key, the Lua function "
            "mapped to Ctrl-O, input(), and the prompt's own key loop on top", 352)
     f.text(24, 22, "kilo at 09.07 on add.c with the lesson's init.lua: Ctrl-O, then 8 typed; the C stack, "
            "innermost at the top", "tm", 11)
@@ -870,7 +877,7 @@ def quit_mark0907():
     for k, lines in enumerate(run):
         for line in lines:
             assert line in (ksrc if k != 1 else ssrc) or line in ssrc, line
-    f = F9("f0907b", "quit() inside a mapped function, in kilo at 09.07: the mark is set, the function returns to "
+    f = F9("f09-07b", "quit() inside a mapped function, in kilo at 09.07: the mark is set, the function returns to "
            "C, and only then does kilo leave and close Lua", 316)
     f.text(24, 22, "kilo at 09.07 on add.c with the lesson's init.lua: x typed and taken back, then Ctrl-X",
            "tm", 11)
@@ -950,7 +957,7 @@ def hook0908():
                 "init.lua:1: interrupted", "Ctrl-S says `23 bytes written on disk`",
                 "`lua_sethook(lua,luaMaskCountHook,LUA_MASKCOUNT,100000);`")
     ms = 0.2
-    f = F9("f0908a", f"The count hook in kilo at 09.08: every {count} instructions it looks at the keyboard; a Ctrl-C "
+    f = F9("f09-08a", f"The count hook in kilo at 09.08: every {count} instructions it looks at the keyboard; a Ctrl-C "
            "there raises interrupted, which goes up to the protected call", 338)
     f.text(24, 22, "kilo at 09.08 on notes.txt with the lesson's init.lua: unsaved typed, Ctrl-T; a second later "
            "a b c, then Ctrl-C", "tm", 11)
@@ -1021,7 +1028,7 @@ def allocator0908():
     lesson_said("08", f"| `{BIG}` | `not enough memory` |", f"| `{GROW}` | `not enough memory` |",
                 "`#string.rep('x', 200 * 2^20)` answered `209715200`, and Lua went on holding 212642 KB",
                 line_c)
-    f = F9("f0908b", "Lua's memory in kilo: every block through scriptAlloc(), refused past 64 MB, and given back "
+    f = F9("f09-08b", "Lua's memory in kilo: every block through scriptAlloc(), refused past 64 MB, and given back "
            "by the collection after the error", 340)
     f.text(24, 22, "kilo at 09.08 on notes.txt, lines typed at the prompt; at 09.07, with no limit, one line",
            "tm", 11)
@@ -1084,7 +1091,7 @@ def trust0908():
          "Procedural parts of extensions are written in Rust and compiled to WebAssembly.",
          "Redis (not an editor) | Lua 5.1 | in the server's process",
          "a script has the user's whole trust")
-    f = F9("f0908c", "Where extension code runs in Neovim, VS Code and Zed, what stops a loop that never ends, and "
+    f = F9("f09-08c", "Where extension code runs in Neovim, VS Code and Zed, what stops a loop that never ends, and "
            "what it may reach, as their sources and docs say", 340)
     f.text(24, 22, "from each project's source and documentation, at the versions named; not run here", "tm", 11)
     cols = [24, 230, 436]
@@ -1217,7 +1224,7 @@ def two_doors0909():
         assert k >= 0, need
         at = k + len(need)
     assert "if (scriptNew() == -1) return -1;" in body(source("09.09", "script.c"), "int scriptRun(const char *path) {")
-    f = F9("f0909a", "Two ways into the same API: the keyboard and the screen, or kilo -l with a script; main() "
+    f = F9("f09-09a", "Two ways into the same API: the keyboard and the screen, or kilo -l with a script; main() "
            "takes the second before any of the screen's work", 358)
     f.text(24, 22, "kilo at 09.09 on notes.txt (hello / World / 123), each way; upper.lua as the lesson makes it",
            "tm", 11)
@@ -1267,7 +1274,7 @@ def ui_client0909():
          "`--headless`: \"Start without UI\"",
          "kilo's screen is in its own process; only the API is shared by the editor and -l.",
          "Print msgpack-encoded |api-metadata| and exit")
-    f = F9("f0909b", "Neovim as a server: the terminal UI is one client of the API, in a process of its own, and "
+    f = F9("f09-09b", "Neovim as a server: the terminal UI is one client of the API, in a process of its own, and "
            "other programs are clients the same way; kilo keeps its screen inside", 340)
     f.text(24, 22, "Neovim v0.12.6, from its documentation; not run here", "tm", 11)
     # the client you run
@@ -1326,11 +1333,14 @@ def ui_client0909():
 # ---------------------------------------------------------------- 09.10
 
 def could_have_been0910():
-    said("A KeyPress function (created first, so it runs first) takes the keys of \"normal\" mode, moves with feed_key "
-         "or set_cursor, edits with set_lines, gives keys back by returning false; Escape and i switch modes",
-         "A mode in the status bar with set_statusline.",
-         "by highlights over the visible rows, again on BufReadPost, TextChanged and CursorMoved",
-         "a one-shot find (input(), then set_cursor and a highlight) yes", "go to a line, yes (0907)")
+    check_plugins()
+    said("module 06 adds 411 lines to kilo.c (261 of code, the rest notes); colour.lua has 106 that are not blank "
+         "(94 of code). vi.lua 74 lines of code, find.lua 78.",
+         "vi.lua against vi's modes: h j k l, 0 and $, i a o, x, dd, Escape back to normal",
+         "the mode in the status bar",
+         "colour.lua against module 06: the same classes and colours for C", "Lua besides",
+         "find.lua against the core's Ctrl-F: as you type from the top", "On Ctrl-N, as Ctrl-F is the core's.",
+         "Escape to put back the cursor and the view (with set_view)", "Go to a line: Ctrl-O, input(), set_cursor.")
     kc = open(os.path.join(KILO, "kilo.c")).read()
     for fn in ("void editorFind(int fd) {", "void editorUpdateSyntax(erow *row) {", "struct editorSyntax HLDB[] = {"):
         assert fn in kc, fn
@@ -1338,19 +1348,21 @@ def could_have_been0910():
     for name, calls in PLUGIN_CALLS.items():
         for c_ in calls:
             assert c_ in api, (name, c_)
-    f = F9("f0910a", "Three features as scripts: what each is or would be in C, the plugin that does it in Lua, and "
+    f = F9("f09-10a", "Three features as scripts: what each is or would be in C, the plugin that does it in Lua, and "
            "the API functions the plugin calls", 330)
-    f.text(24, 22, "09.10's three plugins, each only Lua, each standing in for C", "tm", 11)
+    f.text(24, 22, "the three plugins of 09.10, each only Lua, each standing in for C", "tm", 11)
     cols = [24, 230, 436]
     W = 180
-    heads = [("vi's keys", "vi.lua"), ("colour for C and Lua", "colour.lua"), ("go to a line, and find", "find.lua")]
+    heads = [("vi's keys", "vi.lua"), ("colour for C and Lua", "colour.lua"), ("find, and go to a line", "find.lua")]
     in_c = [("none in the track:", "kilo's keys have no modes"),
-            ("module 06: editorUpdateSyntax()", "and the HLDB table, in kilo.c"),
-            ("module 05: editorFind(),", "in kilo.c")]
-    how = ["A KeyPress function takes normal mode's keys: moves with feed_key or set_cursor, edits with set_lines; "
-           "Escape and i switch modes, shown in the status bar.",
-           "Highlights over the rows on the screen, put again on BufReadPost, TextChanged and CursorMoved.",
-           "input() asks; set_cursor goes there; a highlight shows the match."]
+            ("module 06: editorUpdateSyntax(),", "HLDB: 411 lines of kilo.c, 261 code"),
+            ("module 05: editorFind(), Ctrl-F,", "in kilo.c")]
+    code_lines = {"vi.lua": 74, "colour.lua": 94, "find.lua": 78}
+    how = ["A KeyPress function: h j k l, 0 and $, i a o, x, dd, Escape back to normal; the mode in the status bar.",
+           "A namespace of its own: highlights over the rows on the screen, again on BufReadPost, TextChanged and "
+           "CursorMoved; C, and Lua besides.",
+           "Ctrl-N: find as you type, a KeyPress layer; next and previous; Escape puts back the cursor and the view "
+           "(set_view). Ctrl-O: go to a line, with input()."]
     ends = []
     for k, x in enumerate(cols):
         name, plugin = heads[k]
@@ -1363,7 +1375,8 @@ def could_have_been0910():
         f.text(x, 142, "as a script", "tm", 9.5, weight=600)
         f.rect(x, 148, W, 22, "a af", 5)
         mono(f, x + 8, 163, "plugins/" + plugin, "ta", 9.5, weight=700)
-        ends.append(notes(f, x, 186, how[k], 33, "t", 10, 13))
+        f.text(x, 186, f"{PLUGIN_LINES[plugin]} lines, {code_lines[plugin]} of code", "ta", 10, weight=600)
+        ends.append(notes(f, x, 204, how[k], 33, "t", 10, 13))
     top = max(ends) + 10
     bottom = top
     for k, x in enumerate(cols):
@@ -1384,14 +1397,16 @@ def could_have_been0910():
 
 
 def frontier0910():
-    said("one loop would have to own all the waiting, as libuv does in Neovim; 07's poll() and a timer here could not "
-         "know of each other", "one file at a time (E is one file: no buffers, no windows)",
-         "highlights that do not move when the text does (Neovim's extmarks do)", "no floating windows or menus",
+    said("Wait for time to pass, or work in the background: no timers (the frontier: one loop would have to own all "
+         "the waiting, 07's poll() included, as libuv does for Neovim).",
+         "More than one file at a time, windows, floating windows, menus: E is one file and the screen is the core's.",
+         "or highlights that move with the text (Neovim's extmarks, marktree.c).",
+         "highlights that do not move when the text does (Neovim's extmarks do)",
          "(and Buffer, Window, Tabpage)", "nvim_win_set_cursor", "Platform and I/O facilities are built upon libuv.",
          "`vim.uv` exposes the \"luv\" Lua bindings for the libUV library",
          "Tree data structure for storing marks at (row, col) positions and updating them to arbitrary text changes.",
          "Marks are moved by calls to extmark_splice.")
-    f = F9("f0910b", "Four things a script cannot do in kilo, the piece of an editor each would need, and that piece "
+    f = F9("f09-10b", "Four things a script cannot do in kilo, the piece of an editor each would need, and that piece "
            "in Neovim", 318)
     f.text(24, 22, "what kilo leaves out on purpose, and Neovim's name for each piece, from its source and "
            "documentation", "tm", 11)
@@ -1401,17 +1416,17 @@ def frontier0910():
     for x, h_ in zip(X, heads):
         f.text(x, 50, h_, "tm", 10, weight=600)
     rows_ = [
-        ("wait for a time, or work in the background",
-         "one loop that owns all the waiting: 07's poll() and a timer here could not know of each other",
+        ("wait for time to pass, or work in the background",
+         "one loop that owns all the waiting, 07's poll() included: kilo has no timers",
          "libuv: \"Platform and I/O facilities are built upon libuv\"; vim.uv gives Lua its bindings"),
-        ("edit more than one file",
+        ("edit more than one file at a time",
          "many buffers: kilo's E is one file",
          "Buffer, a type of the API (kObjectTypeBuffer); the nvim_buf_* functions take one"),
-        ("keep marks that move with the text",
+        ("keep highlights that move with the text",
          "marks in a tree, moved by every edit: kilo keeps a list, put again on TextChanged",
          "extmarks, in a MarkTree (marktree.c), moved by extmark_splice"),
-        ("show windows over the text",
-         "windows: kilo draws one screen of one file",
+        ("show windows, floating windows, menus",
+         "windows over the text: kilo's screen is the core's, one file",
          "Window, a type of the API (kObjectTypeWindow): nvim_win_set_cursor"),
     ]
     y = 60
@@ -1452,7 +1467,6 @@ FIGS = [
 
 def main():
     only = sys.argv[1:]
-    check_plugins()
     try:
         for name, fn, stepped in FIGS:
             if only and not any(name.startswith(o) for o in only):

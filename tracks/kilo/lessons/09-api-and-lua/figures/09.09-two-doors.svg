@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 358" fill="none">
 <title>Two ways into the same API: the keyboard and the screen, or kilo -l with a script; main() takes the second before any of the screen&#x27;s work</title>
-<defs><marker id="f0909a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0909a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0909a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<defs><marker id="f09-09a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-09a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f09-09a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
 <text class="tm" x="24" y="22" font-size="11">kilo at 09.09 on notes.txt (hello / World / 123), each way; upper.lua as the lesson makes it</text>
 <text class="t" x="24" y="52" font-size="11" font-weight="700">the keyboard and the screen</text>
 <text class="t mono" x="24" y="70" font-size="9.5">$</text>
@@ -90,9 +90,9 @@
 <text class="ta" x="430" y="257" font-size="10" font-weight="600">the screen.</text>
 <rect class="a af" x="150" y="290" width="340" height="24" rx="6" stroke-width="1.5"/>
 <text class="ta" x="320" y="306" font-size="11" font-weight="700" text-anchor="middle">kilo.api: the same 24 functions, the same rows</text>
-<line class="s" x1="172" y1="214" x2="172" y2="287" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909a-ah)"/>
-<line class="s" x1="468" y1="280" x2="468" y2="287" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909a-ah)"/>
-<line class="a" x1="414" y1="93.55" x2="427" y2="93.55" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909a-aa)"/>
+<line class="s" x1="172" y1="214" x2="172" y2="287" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-09a-ah)"/>
+<line class="s" x1="468" y1="280" x2="468" y2="287" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-09a-ah)"/>
+<line class="a" x1="414" y1="93.55" x2="427" y2="93.55" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f09-09a-aa)"/>
 <text class="t" x="24" y="334" font-size="10.5">The editor showed notes.txt as it is. Under -l, upper.lua changed two rows and saved them, HELLO / WORLD / 123;</text>
 <text class="t" x="24" y="348" font-size="10.5">&quot;2 lines upper-cased&quot; went to standard output, and kilo&#x27;s status was 0.</text>
 </svg>
