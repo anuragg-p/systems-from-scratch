@@ -449,3 +449,39 @@ throwaway program outside the repository:
 - The site and README: `./learn map`, README's "The book" and "Credits",
   and NOTICE change when step 1 lands, not before. README has another
   session's uncommitted edits today.
+
+## Step 1 as built (code, tests and notes; 2026-11-25; see tracks/cc/NOTES.md)
+
+- The compiler at 02.06: ./cc [--tokens] [--tree] [-o file] file, a file
+  of one expression to RISC-V assembly; ccrun and same; rt/start.S and
+  rt/link.ld; 14 lessons of regions, one test each, NOTES.md. The outline
+  moved to plans/cc-outline.md (its art stays in outlines/cc/; the
+  track's icon.svg and art.svg are copies of the outline's, which the site
+  and a selftest need once tracks/cc exists).
+- The three forms hold, behind @from/@else in main.c and try.c: one
+  number (00.01 to 00.03), the token walker (01.01 to 02.02, with the
+  parser there for --tree from 02.01), tokenize-parse-codegen (02.03).
+  The parser's rule comments sit inside each function, so that a
+  function hidden before its lesson takes its comment with it.
+- Departures from the brief, each with its reason in NOTES.md: same's
+  compiler is CC_UNDER_TEST, not CC (CC is the host compiler to make,
+  kilo's tests and many shells); 02.01's grammar is expr = add, add =
+  primary (...)*, so that later levels go in with one-line changes;
+  `./learn run cc` at 02.01 and 02.02 prints the tree, since the
+  walker cannot compile 02.02's sample; line and column on tokens at
+  01.01 (--tokens prints them), not 01.05; gcc also gets -mcmodel=medany
+  -fno-pie; start.S clears no bss until 05.02; consume() waits for its
+  first caller.
+- Found on the way: chibicc's equal() reads past the end of its
+  argument (memcmp of tok->len bytes); AddressSanitizer reports it, and
+  ours uses strncmp. The end-of-file token sits on the last line, so an
+  error there shows that line.
+- Checked: ./learn test cc, check-skeleton cc, check-timeline cc,
+  selftest, and check (with 14 "test has no lesson doc" lines for cc);
+  the 14 projects build with -Werror under clang 21 and gcc 14; the
+  tests under ASan and UBSan; 5000 random expressions agree with gcc
+  and with C's rules for int. All on macOS and on Linux (Debian trixie,
+  Docker).
+- Next, step 1's lessons and art from NOTES.md; then step 2 (modules 03
+  and 04). Before 03.01: same's wrapping of an expression in a main goes,
+  and the tests' value() changes with it.
