@@ -623,6 +623,17 @@ momentum 0.9, batches of 64), 3 seeds, test on 5,000 digits:
 within the spread (fc 0.914 .. 0.236, conv 0.945 .. 0.412, shuffled 0.902
 and 0.829). The two "largest difference 0" lines came out exact on both
 here; the test checks the engine's only.
+The page (lessons agent) also quotes LeCun et al. 1998, section II and
+II.A, read at the source: fully connected nets "have no built-in invariance
+with respect to translations", "shift invariance is automatically obtained
+by forcing the replication of weight configurations across space", the
+shifted feature map, and "The input variables can be presented in any
+(fixed) order without affecting the outcome of the training" (part 3 tests
+it). Its Break it makes `_scatter` assign (`=`) instead of add (`+=`): a
+4 by 4 image's gradient under a 2 by 2 filter of ones goes from the window
+counts (1, 2, 4) to all 1, gradcheck raises, and conv seeds=1 still gets
+0.956 on unmoved digits (seed 0 with the right gradient: 0.958): the wrong
+gradient reaches only the first convolution's weights, and SGD trains with it.
 
 **06.02 One import: the same script on PyTorch.** Changed from the plan's
 failure. The plan said the engine is too slow for what comes next; on this
@@ -695,6 +706,12 @@ and 16 passes by 3.5 points (t = +4.5), at 1000 and 30 passes by 6
 (t = +2.5). Augmentation pays when the network would otherwise memorise;
 say "here, 3 points", not "always". No paper's claim is run here (the
 dataset's report and LeNet are reading); He et al.'s numbers come in 06.04.
+The page (lessons agent) runs the 3000 x 10 case on the CPU (`cifar
+n_train=3000 epochs=10`, 62 s with other runs going): conv `0.501`, crops and
+flips `0.49`, t = -1.9, gaps 0.253 and 0.059: no gain, as on mps. Its Break
+it flips rows instead of columns in crop_flip (upside down): crops and flips
+`0.392` on test, training 0.456, t = -3.2 against none. A real fetch into an
+empty cache took 2418 s (40 minutes) with no dropped connection.
 
 **06.04 ResNet (He et al. 2015, section 4.2, figure 6 and table 6).**
 models/resnet.py is the paper's CIFAR-10 network: a 3 by 3 convolution of
@@ -738,8 +755,8 @@ the deeper one is better, as in the paper. Test error: plain 73.4 and
 81.6, residual 61.0 and 57.5. Both halves of the claim held, in the
 paper's own pair of depths (its figure 1) and width, on 4000 images.
 The curves: the plain networks separate from the first pass (training
-error after it 86.4 against 89.0 on average) and stay apart; the residual
-56 is below the residual 20 from pass 1 on (82.3 against 82.9, then 65.0
+error after it 86.5 against 89.0 on average) and stay apart; the residual
+56 is below the residual 20 from pass 1 on (82.3 against 83.0, then 65.0
 against 66.7 at pass 4). 39.7 minutes of training, 39 min 45 s wall clock
 in all, on the CPU (10 threads, about 2.2 cores busy: PyTorch's CPU
 convolution backward is mostly one thread here), with other agents'
@@ -756,6 +773,12 @@ direction, but 39 steps is barely training: the residual half is within
 noise there, the long run is the evidence. Two seeds only, for time; say
 so. The test checks the plain half (+2) and that residual 20 is far below
 plain 20 (-4), not the residual half.
+The page's Break it (lessons agent) comments out `out = out + shortcut` in
+Block.forward: the residual rows of the short run then equal the plain rows
+digit for digit (78.5 and 85.7, t = +2.6, test 82.1 and 87.4), since the two
+networks are built in the same order from the same seed and see the same
+images. The module's cover (art/outlines/research_art.py) now prints the
+long run's four training errors and asserts them (71.9, 81.8, 59.2, 55.0).
 
 What the lesson must not say: that this reproduces the paper's figure
 (our networks are a few hundred steps into training; the paper's errors

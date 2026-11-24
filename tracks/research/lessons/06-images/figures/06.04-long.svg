@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The recorded long run: training error (dashed, counted during each pass on its crops and flips) and test error (solid) after each pass, 20 and 56 layers, mean of 3 seeds, the band from the lowest seed to the highest</title>
+<defs><marker id="long0604-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="long0604-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="long0604-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="32.6" y1="233.2" x2="254.97" y2="233.2" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="26.6" y="236.7" font-size="10.5" text-anchor="end">50</text>
+<line class="m" x1="32.6" y1="187.6" x2="254.97" y2="187.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="26.6" y="191.1" font-size="10.5" text-anchor="end">60</text>
+<line class="m" x1="32.6" y1="142.0" x2="254.97" y2="142.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="26.6" y="145.5" font-size="10.5" text-anchor="end">70</text>
+<line class="m" x1="32.6" y1="96.4" x2="254.97" y2="96.4" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="26.6" y="99.9" font-size="10.5" text-anchor="end">80</text>
+<line class="m" x1="32.6" y1="50.8" x2="254.97" y2="50.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="26.6" y="54.3" font-size="10.5" text-anchor="end">90</text>
+<line class="m" x1="32.6" y1="256" x2="32.6" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="32.6" y="272" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="64.37" y1="256" x2="64.37" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="64.37" y="272" font-size="10.5" text-anchor="middle">2</text>
+<line class="m" x1="96.13" y1="256" x2="96.13" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="96.13" y="272" font-size="10.5" text-anchor="middle">3</text>
+<line class="m" x1="127.9" y1="256" x2="127.9" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="127.9" y="272" font-size="10.5" text-anchor="middle">4</text>
+<line class="m" x1="159.67" y1="256" x2="159.67" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="159.67" y="272" font-size="10.5" text-anchor="middle">5</text>
+<line class="m" x1="191.44" y1="256" x2="191.44" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="191.44" y="272" font-size="10.5" text-anchor="middle">6</text>
+<line class="m" x1="223.2" y1="256" x2="223.2" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="223.2" y="272" font-size="10.5" text-anchor="middle">7</text>
+<line class="m" x1="254.97" y1="256" x2="254.97" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="254.97" y="272" font-size="10.5" text-anchor="middle">8</text>
+<rect class="m" x="32.6" y="28" width="222.37" height="228" rx="0" stroke-width="1.5"/>
+<text class="tm" x="143.78" y="288" font-size="11.5" text-anchor="middle">pass over the training images</text>
+<text class="tm" x="26.6" y="20" font-size="11.5">plain: error %</text>
+<polygon class="fs" points="32.6,72.1 64.4,88.8 96.1,104.3 127.9,124.1 159.7,132.7 191.4,130.8 223.2,135.2 255.0,137.1 255.0,122.6 223.2,124.9 191.4,120.0 159.7,119.9 127.9,105.6 96.1,90.2 64.4,76.8 32.6,62.7" fill-opacity="0.75"/>
+<polyline class="m" points="32.6,72.1 64.4,88.8 96.1,104.3 127.9,124.1 159.7,132.7 191.4,130.8 223.2,135.2 255.0,137.1" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="m" points="32.6,62.7 64.4,76.8 96.1,90.2 127.9,105.6 159.7,119.9 191.4,120.0 223.2,124.9 255.0,122.6" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon class="af" points="32.6,57.9 64.4,72.9 96.1,79.9 127.9,88.1 159.7,99.8 191.4,98.3 223.2,99.2 255.0,102.7 255.0,75.7 223.2,74.1 191.4,75.3 159.7,75.1 127.9,68.8 96.1,67.0 64.4,61.2 32.6,51.5"/>
+<polyline class="s" points="32.6,67.0 64.4,84.5 96.1,99.1 127.9,114.8 159.7,127.8 191.4,127.0 223.2,131.4 255.0,130.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="s" points="32.6,71.0 64.4,81.2 96.1,102.2 127.9,118.4 159.7,126.3 191.4,127.3 223.2,126.2 255.0,126.3" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="32.6,55.3 64.4,65.5 96.1,71.4 127.9,76.0 159.7,83.5 191.4,83.4 223.2,84.2 255.0,84.9" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="32.6,54.0 64.4,73.1 96.1,75.1 127.9,80.0 159.7,86.4 191.4,87.7 223.2,89.0 255.0,89.1" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="260.97" y="92.6" font-size="10.5">56 layers</text>
+<text class="t" x="260.97" y="129.84" font-size="10.5">20 layers</text>
+<line class="m" x1="348.6" y1="233.2" x2="570.97" y2="233.2" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="342.6" y="236.7" font-size="10.5" text-anchor="end">50</text>
+<line class="m" x1="348.6" y1="187.6" x2="570.97" y2="187.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="342.6" y="191.1" font-size="10.5" text-anchor="end">60</text>
+<line class="m" x1="348.6" y1="142.0" x2="570.97" y2="142.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="342.6" y="145.5" font-size="10.5" text-anchor="end">70</text>
+<line class="m" x1="348.6" y1="96.4" x2="570.97" y2="96.4" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="342.6" y="99.9" font-size="10.5" text-anchor="end">80</text>
+<line class="m" x1="348.6" y1="50.8" x2="570.97" y2="50.8" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="342.6" y="54.3" font-size="10.5" text-anchor="end">90</text>
+<line class="m" x1="348.6" y1="256" x2="348.6" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="348.6" y="272" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="380.37" y1="256" x2="380.37" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="380.37" y="272" font-size="10.5" text-anchor="middle">2</text>
+<line class="m" x1="412.13" y1="256" x2="412.13" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="412.13" y="272" font-size="10.5" text-anchor="middle">3</text>
+<line class="m" x1="443.9" y1="256" x2="443.9" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="443.9" y="272" font-size="10.5" text-anchor="middle">4</text>
+<line class="m" x1="475.67" y1="256" x2="475.67" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="475.67" y="272" font-size="10.5" text-anchor="middle">5</text>
+<line class="m" x1="507.44" y1="256" x2="507.44" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="507.44" y="272" font-size="10.5" text-anchor="middle">6</text>
+<line class="m" x1="539.2" y1="256" x2="539.2" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="539.2" y="272" font-size="10.5" text-anchor="middle">7</text>
+<line class="m" x1="570.97" y1="256" x2="570.97" y2="260" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="570.97" y="272" font-size="10.5" text-anchor="middle">8</text>
+<rect class="m" x="348.6" y="28" width="222.37" height="228" rx="0" stroke-width="1.5"/>
+<text class="tm" x="459.79" y="288" font-size="11.5" text-anchor="middle">pass over the training images</text>
+<text class="tm" x="342.6" y="20" font-size="11.5">residual: error %</text>
+<polygon class="fs" points="348.6,86.3 380.4,129.2 412.1,145.4 443.9,160.2 475.7,178.0 507.4,182.2 539.2,191.7 571.0,188.7 571.0,180.3 539.2,182.7 507.4,177.9 475.7,173.7 443.9,150.9 412.1,138.5 380.4,119.4 348.6,79.0" fill-opacity="0.75"/>
+<polyline class="m" points="348.6,86.3 380.4,129.2 412.1,145.4 443.9,160.2 475.7,178.0 507.4,182.2 539.2,191.7 571.0,188.7" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="m" points="348.6,79.0 380.4,119.4 412.1,138.5 443.9,150.9 475.7,173.7 507.4,177.9 539.2,182.7 571.0,180.3" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polygon class="af" points="348.6,92.6 380.4,131.9 412.1,150.1 443.9,171.6 475.7,194.1 507.4,203.2 539.2,206.4 571.0,208.0 571.0,187.8 539.2,192.3 507.4,189.5 475.7,181.3 443.9,154.4 412.1,142.9 380.4,114.1 348.6,78.3"/>
+<polyline class="s" points="348.6,82.9 380.4,124.1 412.1,141.1 443.9,157.0 475.7,176.5 507.4,179.9 539.2,185.9 571.0,185.3" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="s" points="348.6,110.5 380.4,132.1 412.1,148.7 443.9,156.6 475.7,180.8 507.4,182.0 539.2,183.0 571.0,183.0" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="348.6,85.8 380.4,124.9 412.1,146.0 443.9,164.8 475.7,187.2 507.4,197.1 539.2,200.9 571.0,200.7" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="348.6,108.7 380.4,135.0 412.1,157.8 443.9,162.5 475.7,196.6 507.4,196.3 539.2,199.5 571.0,199.0" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="576.97" y="186.54" font-size="10.5">20 layers</text>
+<text class="ta" x="576.97" y="202.5" font-size="10.5">56 layers</text>
+</svg>
