@@ -1116,6 +1116,28 @@ rnn, default:
    the gradient underflows float32 before 60 steps.
 5. 300 characters, the state carried from one character to the next (a
    small Reader object as next_scores for sequences.sample), seed 0.
+For the page (lessons agent), all with the code as committed:
+- The longer run the page shows, `rnn steps=5000 seeds=1`: test 2.375 (not
+  the spike's 2.369 above), 5 of 5000 steps clipped; what it uses: w = 8
+  2.526, 16 2.388, 32 and 64 2.387 (still about 16 characters); the trained
+  network's radius 6.35, its gradient 3.75e-03 at k = 0 to 5.74e-09 at 60
+  (vanishing, more slowly); recall seed 0 at T = 20 0.115. 129 s of
+  training and scoring (130 s wall) with another agent's runs going (load 9).
+- The gradient's fall per step for the recall network as it starts: 0.46
+  a step from k = 0 to 20, 0.49 from 20 to 40 (a fact on the page).
+- Saturation in the trained text network (seed 0, the page's run, reading
+  "First Citizen" from a zero state; the stepped figure): 83 of the 256
+  state numbers beyond 0.9 in size after the first character, 139 to 189
+  after each of the others, where tanh's slope 1 - h^2 is below 0.19.
+- The page's Break it takes clipping out of train_recall only (the text
+  network keeps its clip): T = 2 and 5 still 1; T = 10 0.13 +- 0.00404
+  (every seed at chance); T = 20 0.249 +- 0.135; T = 40 0.249 +- 0.224 (0.115
+  to 0.508). Seed 0's log at T = 10: loss 2.08 at steps 0 and 50, 12.6 at
+  step 100 (gradient length 6.54), 2.25 at the end; clipped, the same seed's
+  loss is 0.499 at step 100 and 0.0012 at step 299.
+- torch.nn.RNN with our weights copied in gives the same states to 1e-12 in
+  float64, and one step's backward equals (g * (1 - h_new^2)) @ hh.weight
+  (the page's session, a check of its derivation).
 
 **07.04 Attention (Bahdanau, Cho and Bengio 2015, figure 2).** models/
 attention.py: attend(scores, values) = softmax over the last axis, then

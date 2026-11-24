@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" fill="none">
+<title>The recall task: accuracy on 1000 new sequences after T blanks, 3 seeds each: a ring per seed, the bar their mean</title>
+<defs><marker id="recall0703-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="recall0703-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="recall0703-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="39.2" y="237.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="45.2" y1="184.5" x2="628" y2="184.5" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="187.98" font-size="10.5" text-anchor="end">0.25</text>
+<line class="m" x1="45.2" y1="135.0" x2="628" y2="135.0" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="138.45" font-size="10.5" text-anchor="end">0.5</text>
+<line class="m" x1="45.2" y1="85.4" x2="628" y2="85.4" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="88.93" font-size="10.5" text-anchor="end">0.75</text>
+<line class="m" x1="45.2" y1="35.9" x2="628" y2="35.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="39.2" y="39.4" font-size="10.5" text-anchor="end">1</text>
+<rect class="m" x="45.2" y="26" width="582.8" height="208" rx="0" stroke-width="1.5"/>
+<text class="tm" x="39.2" y="18" font-size="11.5">accuracy</text>
+<text class="ta" x="103.48" y="249" font-size="11" font-weight="600" text-anchor="middle">T = 2</text>
+<line class="a" x1="103.48" y1="35.9" x2="103.48" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="97.48" y1="35.9" x2="109.48" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="97.48" y1="35.9" x2="109.48" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="103.48" cy="35.9" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="103.48" cy="35.9" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="103.48" cy="35.9" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="89.48" y1="35.9" x2="117.48" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="121.48" y="39.4" font-size="10.5">1</text>
+<text class="ta" x="220.04" y="249" font-size="11" font-weight="600" text-anchor="middle">T = 5</text>
+<line class="a" x1="220.04" y1="35.9" x2="220.04" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="214.04" y1="35.9" x2="226.04" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="214.04" y1="35.9" x2="226.04" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="220.04" cy="35.9" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="220.04" cy="35.9" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="220.04" cy="35.9" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="206.04" y1="35.9" x2="234.04" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="238.04" y="39.4" font-size="10.5">1</text>
+<text class="ta" x="336.6" y="249" font-size="11" font-weight="600" text-anchor="middle">T = 10</text>
+<line class="a" x1="336.6" y1="35.9" x2="336.6" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="330.6" y1="35.9" x2="342.6" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="330.6" y1="35.9" x2="342.6" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="336.6" cy="35.9" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="336.6" cy="35.9" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="336.6" cy="35.9" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="322.6" y1="35.9" x2="350.6" y2="35.9" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="354.6" y="39.4" font-size="10.5">1</text>
+<text class="ta" x="453.16" y="249" font-size="11" font-weight="600" text-anchor="middle">T = 20</text>
+<line class="a" x1="453.16" y1="211.22" x2="453.16" y2="59.48" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="447.16" y1="211.22" x2="459.16" y2="211.22" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="447.16" y1="59.48" x2="459.16" y2="59.48" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="453.16" cy="211.22" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="453.16" cy="59.48" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="453.16" cy="60.27" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="439.16" y1="110.32" x2="467.16" y2="110.32" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="471.16" y="113.82" font-size="10.5">0.624</text>
+<text class="ta" x="569.72" y="249" font-size="11" font-weight="600" text-anchor="middle">T = 40</text>
+<line class="a" x1="569.72" y1="211.22" x2="569.72" y2="181.7" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="563.72" y1="211.22" x2="575.72" y2="211.22" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="563.72" y1="181.7" x2="575.72" y2="181.7" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="569.72" cy="211.22" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="569.72" cy="208.45" r="2.5" stroke-width="1.5"/>
+<circle class="a f" cx="569.72" cy="181.7" r="2.5" stroke-width="1.5"/>
+<line class="a" x1="555.72" y1="200.46" x2="583.72" y2="200.46" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="587.72" y="203.96" font-size="10.5">0.169</text>
+<line class="m" x1="45.2" y1="209.24" x2="628" y2="209.24" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="49.2" y="204.24" font-size="10.5">chance: 0.125</text>
+</svg>
