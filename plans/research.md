@@ -1,40 +1,53 @@
 # Plan: track `research` - AI research, from a first experiment to your own result
 
-Status: building, paused on 2026-11-15 (direction set by Fable;
+Status: building, taken up again on 2026-11-24 (direction set by Fable;
 implementation by Opus agents). The outline is plans/research-outline.md
 (moved out of outlines/ when tracks/research took the id over): its
 modules and lesson titles are the list to build. Its module art stays in
 outlines/ai-research/ until every module has copied its cover and icon.
 This file holds the decisions.
 
-## Where it stands (2026-11-15)
+## Where it stands (2026-11-24)
 
-On master: modules 00 to 05, code, tests and all 27 lessons. Each module
-passed `./learn verify` on its own branch; `./learn check` passes on
-master. Not yet done, in this order:
+On master: modules 00 to 05, code, tests and all 27 lessons, and the
+first four clean-up commits (verify waits 60 s of quiet for this track;
+one seed prints its number; gradcheck's message in plain ints; NOTES.md
+corrections). In work, each by an agent in its own worktree:
 
-1. Clean-up, started and paused. Branch `worktree-agent-a2d234827d9c3701f`
-   (worktree under .claude/worktrees/) has four commits not on master:
-   verify waits 60 s of quiet for this track instead of 1; one seed prints
-   its number, not `+- nan`; gradcheck's message in plain ints; NOTES.md
-   corrections, each rerun. Still to do on it: `./learn verify --fresh
-   research` and the other checks over the whole track together, and a
-   read across modules for wrong cross-references and terms defined two
-   ways. Review, finish, then merge.
-2. Covers that contradict the built track, not started: 00 (labelled
-   validation loss; module 00 has none), 01 (micrograd's numbers and a
-   one-sided nudge), 02 (shape notation), 03 (AdamW's decay comes before
-   Adam's step, not after), 04 (drawn for 50 layers; the code uses 20 and
-   30), 15 (`make reproduce` was never decided). Change the generator,
-   art/outlines/research_art.py, and write the result to both
+1. The rest of the clean-up: `./learn verify --fresh research` and the
+   other checks over the whole track together, and a read across modules
+   for wrong cross-references and terms defined two ways.
+2. Covers that contradict the built track: 00 (labelled validation loss;
+   module 00 has none), 01 (micrograd's numbers and a one-sided nudge),
+   02 (shape notation), 03 (AdamW's decay comes before Adam's step, not
+   after), 04 (drawn for 50 layers; the code uses 20 and 30), 15 (`make
+   reproduce` was never decided). The generator,
+   art/outlines/research_art.py, writes the result to both
    outlines/ai-research/NN/ and tracks/research/lessons/NN-*/.
-3. README.md's map does not list the track (`./learn map --write`), held
-   back while another session had uncommitted changes in that file.
-4. Harness quirks the writers met, for whoever next works in harness/: a
-   `###` heading in How it works that contains a definition's name is
-   pulled into The code; lead-in names match case-insensitively; brackets
-   in a figure caption break the image line.
-5. Module 06, alone (see the build order), then the rest.
+3. Module 06's code, with spike 3. Its lessons follow as soon as it is
+   merged.
+
+After those, in this order: 07, 08 and 09, one module's code at a time,
+each module's lessons written while the next module's code is built
+(lessons module by module); then 10 to 14 in parallel.
+
+Still open, not in work:
+- Harness quirks the writers met, for whoever next works in harness/: a
+  `###` heading in How it works that contains a definition's name is
+  pulled into The code; lead-in names match case-insensitively; brackets
+  in a figure caption break the image line. harness/ and README.md have
+  another session's uncommitted changes in the main checkout: agents do
+  not edit them, and README's map (`./learn map --write`) is regenerated
+  only when that is clear.
+
+Decided on 2026-11-24 (Fable):
+- Devices: every PyTorch-era experiment has a `device` setting whose
+  default is `cpu`, so a page's numbers and times are CPU numbers and
+  verify replays them; `device=auto` takes cuda, then mps, when present.
+  This narrows "used when present" below: present and asked for.
+- CIFAR-10 is fetched in its binary form (records of bytes), so the
+  learner's reader parses bytes and nothing is unpickled.
+- The engine gains convolution in 06.01 and nothing after it.
 
 Decided by the owner, 2026-11-14:
 - One track, a core and a shelf: the core runs from a first gradient to a
