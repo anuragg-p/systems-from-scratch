@@ -42,6 +42,11 @@ Computed, for the built modules, from the formulas and settings of the track's o
         formula, and 09.04's recorded long run read from tracks/research/experiments/recorded/tinystories/
         (its weights, its seeds' bits per byte, its stories that ended); the tokenizer and logits column is
         what 09.02 and 09.03 found, with no number on it
+    10  10.05's recorded ablation read from tracks/research/experiments/recorded/ablation/: each change's mean
+        difference from the base over its seeds, whether Welch's t is beyond 3, the base's and all four's bits and
+        weights, checked against what the run printed; SmolLM2-135M's heads from models/smollm.py and its and
+        GPT-2's bits per character as 10.04's page prints them; the rotary pair turned through four places is a
+        schematic of 10.02's turning
     14  the recorded long run of 14.03 (tracks/research/experiments/recorded/grokking/): every seed's accuracy
         curves and its two 99% steps; 14.04's recorded ablations: the start's and no weight decay's results;
         the paper's span is figure 1's caption (under 1e3, close to 1e6)
@@ -1072,30 +1077,87 @@ def res_gpt2():
 
 # =================================================================== 10 today's architecture
 
+def modern_numbers():
+    """10's numbers as 10.04 and 10.05 print them. The recorded ablation of 10.05, read from
+    tracks/research/experiments/recorded/ablation/ (each row's seeds' test bits and weights, every difference from the
+    base with Welch's t, and the run's size, checked against its output.txt); SmolLM2-135M's heads from
+    models/smollm.py's CONFIG; and SmolLM2's and GPT-2's bits per character on the test text as 10.04's page prints them
+    (that run needs the download, so the page is the record)."""
+    import re
+    track = os.path.join(ROOT, "tracks", "research")
+    rec = os.path.join(track, "experiments", "recorded", "ablation")
+    labels = ("base", "RMSNorm", "rotary", "SwiGLU", "grouped-query", "all-four")
+    runs = {k: [json.load(open(p)) for p in sorted(glob.glob(os.path.join(rec, k, "seed*", "summary.json")))]
+            for k in labels}
+
+    def mean(xs):
+        return sum(xs) / len(xs)
+
+    def var(xs):
+        m = mean(xs)
+        return sum((x - m) ** 2 for x in xs) / (len(xs) - 1)
+    bits = {k: [s["test_bits"] for s in v] for k, v in runs.items()}
+    base = bits["base"]
+    diff = {k: (mean(b) - mean(base), (mean(b) - mean(base)) / math.sqrt(var(b) / len(b) + var(base) / len(base)))
+            for k, b in bits.items() if k != "base"}
+    with open(os.path.join(rec, "output.txt")) as f:
+        printed = f.read()
+    for k, (d, t) in diff.items():
+        assert f"{d:+.4f} (t {t:+5.1f})" in printed, (k, d, t)
+    cfg = json.load(open(os.path.join(rec, "base", "seed0", "config.json")))
+    with open(os.path.join(track, "models", "smollm.py")) as f:
+        conf = f.read()
+    heads, kv = (int(re.search(rf"\b{n}=(\d+)", conf).group(1)) for n in ("heads", "kv_heads"))
+    page = os.path.join(LESSONS, "10-todays-architecture",
+                        "10.04-grouped-query-attention-and-loading-a-current-open-model.md")
+    with open(page) as f:
+        lesson = f.read()
+    smol = re.search(r"^   SmolLM2-135M +(\d\.\d{3}) ", lesson, re.M).group(1)
+    gpt2 = re.search(r"^   GPT-2 small \(09\.03\) +(\d\.\d{3}) ", lesson, re.M).group(1)
+    got = {"width": cfg["width"], "steps": cfg["steps"], "seeds": len(base), "base": f"{mean(base):.3f}",
+           "all": f"{mean(bits['all-four']):.3f}",
+           "fewer": f"{1 - runs['all-four'][0]['weights'] / runs['base'][0]['weights']:.0%}",
+           "diff": {k: (f"{d:+.3f}", abs(t) >= 3) for k, (d, t) in diff.items()},
+           "heads": heads, "kv": kv, "smol": smol, "gpt2": gpt2}
+    assert got == {"width": 128, "steps": 2000, "seeds": 3, "base": "2.337", "all": "2.248", "fewer": "10%",
+                   "diff": {"RMSNorm": ("+0.013", False), "rotary": ("-0.060", True), "SwiGLU": ("-0.067", True),
+                            "grouped-query": ("+0.009", False), "all-four": ("-0.089", True)},
+                   "heads": 9, "kv": 3, "smol": "1.405", "gpt2": "1.851"}, got  # 10.04, 10.05
+    return got
+
+
 def res_modern():
-    a = Art("r10", "Today's architecture: four pieces of GPT-2 replaced one paper at a time, each tested against "
-                   "the piece it replaced")
-    x0, x1, x2 = 24, 112, 300
+    a = Art("r10", "Today's architecture: four pieces of GPT-2 replaced one paper at a time, each measured against the "
+                   "piece it replaced, then all four in one table; a model of 2025 loads into the result")
+    got = modern_numbers()
+    x0, x1, x2, x3 = 24, 100, 258, 462
     a.text(x1, 30, "GPT-2, 2019", size=11.5, weight=700)
     a.text(x2, 30, "open models now", "ta", 11.5, weight=700)
-    rows = [("norm", "LayerNorm", "(x - mean) / std * g + b", "RMSNorm", "x / rms(x) * g"),
-            ("position", "learned, added once", "x = tok_emb + pos_emb", "rotary (RoPE)", "turn q, k by m * theta"),
-            ("MLP", "GELU", "W2 gelu(W1 x)", "SwiGLU", "W2 (silu(W1 x) * W3 x)"),
-            ("attention", "each head its own k, v", "12 q heads, 12 k, v", "grouped-query", "q heads share k, v")]
-    for k, (piece, old, oldf, new, newf) in enumerate(rows):
-        y = 58 + k * 48
+    a.text(x3, 20, "the long run:", "tm", 10, "end")
+    a.text(x3, 32, "less the base", "tm", 10, "end")
+    rows = [("norm", "LayerNorm", "(x - mean) / std * g + b", "RMSNorm", "x / rms(x) * g", "RMSNorm"),
+            ("position", "learned, added", "x = tok_emb + pos_emb", "rotary", "turn q, k: m theta_i", "rotary"),
+            ("MLP", "GELU", "W2 gelu(W1 x)", "SwiGLU", "W2 (silu(W1 x) * W3 x)", "SwiGLU"),
+            ("attention", "each head its k, v", "12 q heads, 12 k, v", "grouped-query", "q heads share k, v",
+             "grouped-query")]
+    for k, (piece, old, oldf, new, newf, key) in enumerate(rows):
+        y = 58 + k * 46
         if k:
-            a.line(x0, y - 18, 450, y - 18, "m")
+            a.line(x0, y - 18, x3, y - 18, "m")
         a.text(x0, y, piece, size=11.5, weight=700)
         a.text(x1, y, old, size=10.5)
-        a.text(x1, y + 16, oldf, "tm", 10.5, mono=True)
-        a.line(x2 - 26, y + 4, x2 - 8, y + 4, "a", arrow=True)
+        a.text(x1, y + 16, oldf, "tm", 9.5, mono=True)
+        a.line(x2 - 22, y + 4, x2 - 6, y + 4, "a", arrow=True)
         a.text(x2, y, new, "ta", 10.5, weight=600)
-        a.text(x2, y + 16, newf, "ta", 10.5, mono=True)
-    a.text(x2, 58 + 3 * 48 + 31, "SmolLM2-135M: 9 q heads on 3", "tm", 10)
+        a.text(x2, y + 16, newf, "ta", 9.5, mono=True)
+        d, beyond = got["diff"][key]
+        a.text(x3, y, d, "ta" if beyond else "tm", 11, "end", 700 if beyond else None, mono=True)
+        a.text(x3, y + 16, "beyond noise" if beyond else "in the noise", "ta" if beyond else "tm", 9.5, "end")
+    a.text(x0, 58 + 4 * 46 - 4, f"all four together: {got['diff']['all-four'][0]} bits, the lowest row, with "
+                                f"{got['fewer']} fewer weights", "ta", 10.5, weight=600)
 
-    cx, cy, R = 534, 118, 52
-    a.text(470, 30, "rotary, one pair of dims", size=11.5, weight=700)
+    cx, cy, R = 564, 104, 46
+    a.text(488, 30, "rotary, one pair", size=11.5, weight=700)
     a.circle(cx, cy, R, "m")
     a.line(cx - R - 6, cy, cx + R + 6, cy, "m")
     a.line(cx, cy - R - 6, cx, cy + R + 6, "m")
@@ -1108,13 +1170,15 @@ def res_modern():
         a.text(round(lx, 1), round(ly + 4, 1), str(m), "ta" if m in (0, 3) else "tm", 10.5, "middle", 600, mono=True)
     a.path(f"M{cx + 22} {cy} A 22 22 0 0 0 {cx + 22 * math.cos(th):.1f} {cy - 22 * math.sin(th):.1f}", "s")
     a.text(cx + 14, cy + 16, "theta", "tm", 9.5, mono=True)
-    a.text(470, 196, "the same q at positions 0 to 3:", "tm", 10)
-    a.text(470, 210, "position m turns it by m * theta,", "tm", 10)
-    a.text(470, 224, "so q . k depends only on how far", "tm", 10)
-    a.text(470, 238, "apart q's and k's positions are", "tm", 10)
-    a.text(24, 270, "Each change goes in alone, same parameter count, several seeds; then a current open model's",
-           "tm", 11)
-    a.text(24, 286, "weights load into the result and give the reference's logits.", "tm", 11)
+    a.text(488, 176, "a query at places 0 to 3:", "tm", 10)
+    a.text(488, 190, "place m turns it by m theta,", "tm", 10)
+    a.text(488, 204, "so q . k depends only on", "tm", 10)
+    a.text(488, 218, "how far apart q and k are", "tm", 10)
+    a.text(24, 258, f"The recorded ablation: width {got['width']}, {got['steps']} steps, {got['seeds']} seeds a row; "
+                    f"the base {got['base']} bits per character, all four {got['all']}.", "tm", 10.5)
+    a.text(24, 274, f"SmolLM2-135M, {got['heads']} query heads on {got['kv']}, in your GPT: the reference's logits "
+                    f"exactly, and {got['smol']} bits per character", "tm", 10.5)
+    a.text(24, 290, f"on Shakespeare's test text, where GPT-2 small scores {got['gpt2']}.", "tm", 10.5)
     return a
 
 
