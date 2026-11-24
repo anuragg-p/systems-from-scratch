@@ -25,9 +25,9 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-Module 06's code and tests are on master (31 tests; spike 3 is in
-NOTES.md). In work, each by an agent in its own worktree: module 06's
-lessons, and module 07's code.
+Module 06 is on master whole: code, 31 tests, four lessons, module page,
+figures and cover; `./learn verify --fresh research 06` passes. In work,
+by an agent in its own worktree: module 07's code.
 
 After that, in this order: 07, 08 and 09, one module's code at a time,
 each module's lessons written while the next module's code is built
@@ -37,7 +37,12 @@ Still open, not in work:
 - Harness quirks the writers met, for whoever next works in harness/: a
   `###` heading in How it works that contains a definition's name is
   pulled into The code; lead-in names match case-insensitively; brackets
-  in a figure caption break the image line. harness/ and README.md have
+  in a figure caption break the image line; `conv2d` and `Conv2d` are
+  one lead-in name; a lead-in for a function inside an `@from` block
+  does not attach. A `DATA` glob is shown as one block per file: 06.04's
+  recorded run is 41 blocks in The code, where one folded row would do.
+  Figures use only the theme's colours, so 06.03's photographs come out
+  as negatives in the dark theme. harness/ and README.md have
   another session's uncommitted changes in the main checkout: agents do
   not edit them, and README's map (`./learn map --write`) is regenerated
   only when that is clear.
