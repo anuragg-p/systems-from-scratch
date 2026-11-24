@@ -43,14 +43,16 @@
 static struct {
     lua_State *L;       /* NULL before scriptStart(), or when Lua could not start */
     int depth;          /* calls into Lua going on now, one inside another */
-    int screen;         /* 1: the editor; 0: kilo -l, no screen and no keys @from 09.09 */
-    size_t used;        /* bytes Lua holds now @from 09.08 */
-    int interrupted;    /* Ctrl-C was typed while a script ran @from 09.08 */
+    int screen;         /* 1: the editor; 0: kilo -l, no screen and no keys */ // @from 09.09
     // @from 09.08
+    size_t used;        /* bytes Lua holds now */
+    int interrupted;    /* Ctrl-C was typed while a script ran */
     char keys[SCRIPT_KEYS_MAX]; /* bytes of keys the count hook read, kept */
     int nkeys, nextkey; /* how many are kept; the next for editorReadKey() */
     // @end
-    int panic;          /* @internal the test aid kilo.test_panic() asked for a panic */
+    // @internal
+    int panic;          /* the test aid kilo.test_panic() asked for a panic */
+    // @end
 } S;
 
 static void scriptStop(void);
