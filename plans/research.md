@@ -201,6 +201,115 @@ Still the plan:
 - 13.04 Scaling laws: loss as a power law in size, used to predict.
 - 14 Grokking: the paper's figure, and what weight decay does to it.
 
+## Directions for 07 to 15 (Fable, 2026-11-24)
+
+What each lesson's code is to try, set before the code agents start. A
+measurement that says otherwise changes the lesson, not the claim; the
+change is recorded in NOTES.md as 03.03's and 05.04's are. No weights
+are shipped: a recorded long run ships its config, log, curve and text
+samples, and a later lesson that needs a trained model trains a small
+one in its own Run it, or uses the learner's checkpoint when it is there.
+
+07, language models. Text: Tiny Shakespeare, shipped (a data file),
+split by position into train, validation and test. Scores in bits per
+character from 07.01 on.
+- 07.01: the ladder of losses to beat: equal chances, single-character
+  counts, pairs. Logarithms, probability and cross-entropy as bits
+  arrive here. Shannon (1951) is the paper: his n-gram numbers beside
+  ours, on a different alphabet and text, said so.
+- 07.02: the failure is counting with longer contexts: the table grows,
+  most of it is empty, held-out bits rise. Bengio et al. (2003):
+  embeddings and a network over the same context, against the best
+  smoothed count model, several seeds.
+- 07.03: a recurrent cell written by hand (checked against PyTorch's),
+  bits against 07.02; then how it forgets: recall of a symbol after T
+  steps, accuracy and the size of the gradient against T.
+- 07.04: Bahdanau et al. (2015), figure 2: an encoder and decoder
+  copying a sequence through one vector gets worse with length; with
+  attention over the encoder's states it does not. The weights, drawn.
+
+08, the transformer, `models/gpt.py`, shaped from the start so that
+09.03 can load GPT-2's weights into it (its layers, GELU, tied
+embedding, learned positions).
+- 08.01: attention inside one sequence, one head, causal mask. The
+  failure is no mask: the loss falls to nothing and the samples are
+  noise. A test: changing a later token leaves earlier outputs alone.
+- 08.02: heads, the MLP, the residual stream, layer norm (04.04, 04.05
+  reused); one head against several at equal size, as found.
+- 08.03: without positions the next-character guess is the same for
+  any order of the earlier characters (an exact test); bits with and
+  without.
+- 08.04: the module's long run, Shakespeare, against 07's ladder;
+  AdamW, warmup and cosine from 03; where validation loss turns up.
+- 08.05: Holtzman et al. (2020): greedy, plain sampling, temperature,
+  top-k and top-p, measured by repetition and by the model's own
+  perplexity of what it wrote beside its perplexity of held-out text.
+
+09, GPT-2.
+- 09.01: the failure is a vocabulary: characters make contexts short,
+  words leave unknown words (counted). Sennrich et al. (2016): a BPE
+  trainer on bytes; bytes per token against vocabulary size; any UTF-8
+  text round-trips (non-ASCII test strings written as escapes).
+- 09.02: GPT-2's vocabulary and merges, fetched and pinned; the same
+  ids as tiktoken (test side) on a large and awkward corpus. The
+  splitting pattern needs Unicode classes Python's `re` lacks: the
+  standard library only, no `regex` module.
+- 09.03: `model.safetensors` read by lab/safetensors.py into 08's GPT;
+  logits equal to the reference's (transformers, test side). Then
+  08.05's measurements again on the real model, as found.
+- 09.04: Eldan and Li (2023), spike 4: a fetched, pinned subset, the
+  learner's own BPE, a model of a few million parameters, the module's
+  long run. Their grading by GPT-4 is not run again; say so.
+
+10, today's architecture: each change against the piece it replaced,
+same parameter count, same budget, several seeds, on 08's GPT.
+- 10.01 RMSNorm (quality and time, both measured); 10.02 rotary
+  positions (the score depends on the offset only: an exact test;
+  longer sequences than trained on, as found); 10.03 SwiGLU at equal
+  parameters; 10.04 grouped-query attention, and SmolLM2-135M loaded
+  with the reference's logits (spike 5, its tokenizer included); 10.05
+  the table: one change at a time and all together, Welch's t.
+
+11, fast: spike 6 decides the lesson list. CPU numbers on the page, an
+Apple GPU as an aside. Each of 11.03 to 11.06 is "the same numbers,
+sooner", with a test that the numbers are the same; where an
+optimisation gives nothing on a laptop CPU, the lesson says so and
+shows where it does.
+
+12, fine-tuning, from 09.03's GPT-2.
+- 12.01: a classification head (Radford et al., 2018): frozen body,
+  fine-tuned body, and a small model from scratch, on a small labelled
+  text set whose licence is read at the source and recorded in NOTICE.
+- 12.02: LoRA (Hu et al., 2021), spike 7: against full fine-tuning,
+  with the count of trained weights; merged weights give the same
+  logits (a test).
+- 12.03: instruction tasks made by code (so every answer can be
+  checked exactly), a chat template, exact-match before and after.
+- 12.04: what each fine-tune did to the loss on text it was not tuned
+  on, full against LoRA.
+
+13, experiments that hold up, on models the learner already has.
+- 13.01: one claim from 03 or 10 with an untuned and then a tuned
+  baseline, the same search budget for both. 13.02: standard errors,
+  the bootstrap, paired runs, how many seeds a difference needs.
+  13.03: choosing by the test set, shown with real runs and a second
+  held-out set; duplicates between train and test, counted. 13.04:
+  Kaplan et al. (2020): fit loss against size on models trained here,
+  predict the next size, then train it. The module's long run.
+
+14, grokking (Power et al., 2022), spike 8, the paper's own set-up.
+14.01 the claims as predictions and the data; 14.02 the short run that
+memorises; 14.03 the long run and the figure, several seeds; 14.04
+weight decay and training fraction, and the report.
+
+15, lessons without new code: the worked example is a result of this
+track that was not expected (03.03's tie, 04.05's "about as well",
+03.04's region that did not show), taken from question to write-up
+with the experiments and the lab as they stand.
+
+Order after 09: 10, 12, 13 and 14 in parallel; 11 after 10 (both
+change `models/gpt.py`); 15 last.
+
 ## The shelf
 
 A module goes on the shelf when it has a paper with a claim, a failure
