@@ -4307,6 +4307,26 @@ and 12.02, which fail with "missing:" and the fetch command without them):
   instruction model, GPT-2's bits before); a tiny run twice.
 `./learn check-skeleton research 12`: ok, 5 s (12.01 fails at pad, 12.02 at
 LoRA, 12.03 at words, 12.04 at at_accuracy).
+With module 12, the whole track (modules 00 to 09, 12 and 14; load 9 to 14,
+other agents' runs going): `./learn test research` 52 tests, all pass, 21
+min 19 s (12.01 67.0 s, 12.02 76.4, 12.03 78.2, 12.04 76.5); `./learn
+check-skeleton research` ok, 53 s; `./learn check-timeline research` ok, 6
+min 57 s at load 10 to 19, the project has 198 files at 12.01, 249 at 12.02
+(49 of them the recorded run), 251 at 12.03, 252 at 12.04, and 255 at 14.01
+(it was 174 before module 12); `./learn selftest` ok (269 tests); `./learn
+check` reports exactly eight problems, `research/12.0N` and
+`research/14.0N: test has no lesson doc`.
+
+The default runs' times, each run twice back to back, with the load before
+each (the same digits every time): classify 58 and 60 s at load 14 to 16
+(43 s at load 6 to 8 earlier; 99 and 71 s at load 36 to 68); lora 15 and
+15 s at load 10 to 11 (22 and 24 s at load 37 to 45); instruct 57 and 55 s
+at load 15 (50 s at load 9 to 11; 58 and 56 s at load 18 to 29);
+forgetting 38 and 36 s at load 12 to 15 (41 and 41 s at load 12 to 18).
+classify and instruct are the slowest; none passed 55 s at a load under 6
+(none was run at a load under 6: the machine never got there). If one
+must be cut: classify's small_steps=400 or sizes=[100,1000], instruct's
+steps=60 (not measured at these settings).
 
 ### For the harness, and what a page writer meets
 
