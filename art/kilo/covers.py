@@ -42,6 +42,11 @@ the size the cover names (the reference kilo.c, or the project at 02.01 for 02):
       holding "anwhat each line was"; the same run's Ctrl-Z and Ctrl-R check the swap drawn
       (the row gets that text and the record "andwhat each line was", and back).
 
+  09  (an extension) captured when this runs, by figs09a.py's capture_cover(): the project at
+      09.04 with NOTES.md's init.lua (its Ctrl-D mapping drawn), on "local x = 1\\nprint(x)\\n"
+      on a terminal 8 x 30; Ctrl-D: the row doubled, the cursor still on row 0. The names in
+      the table's column are kilo --api-info's at 09.09 (25 functions).
+
 Text in these SVGs is placed a run of non-spaces at a time, at its column: SVG
 collapses runs of spaces, and a screen's columns must line up.
 
@@ -757,6 +762,94 @@ def card():
 
 COVERS = {"00": workbench, "01": terminal, "02": screen, "03": viewer, "04": editor, "05": search,
           "06": highlighting, "07": language_server, "08": undo}
+
+
+# ------------------------------------------------------------------ 09 an API, and Lua on top of it (an extension)
+#
+# Its entries go into the tables above from here (MODULES, ICONS, COVERS), so that each module's lines
+# stay apart from the others'.
+
+def api_and_lua():
+    """An init.lua's Ctrl-D mapping calls three names in a column of the API's functions; set_lines
+    changes the rows of the screen. Captured by figs09a.py's capture_cover()."""
+    import figs09a
+    try:
+        cap = figs09a.capture_cover()
+    finally:
+        figs09a.cleanup()
+    init, after, names = cap["init"], cap["after"], cap["names"]
+    calls = ["get_cursor", "get_lines", "set_lines"]           # lines 1, 2, 3 of the mapping
+    for k, name in enumerate(calls, 1):
+        assert f"kilo.api.{name}(" in init[k] and name in names, (k, name)
+    shown = calls + ["set_cursor", "save", "set_keymap", "feed_key", "create_autocmd", "add_highlight", "input"]
+    assert all(s in names for s in shown) and len(set(shown)) == len(shown)
+    row = cap["before"].cursor[0]
+    line = cap["before"].lines[row]
+    assert after.lines[row] == after.lines[row + 1] == line
+    a = Art("k09", "An init.lua's Ctrl-D mapping calls get_cursor, get_lines and set_lines, three names in the "
+                   "column of the API's functions; set_lines puts a copy of the row under it on kilo's screen")
+    pitch = 19
+    top = 62                                                   # the column's first name, the mapping's line 1
+    # the script, each call's name in the accent
+    size = 8.6
+    c = cw(size)
+    sx = 24
+    a.text(14, 20, "init.lua", "tm", 11)
+    a.box(14, top - pitch - 14, 280, 5 * pitch + 8, "s fs", rx=8)
+    for k, text in enumerate(init):
+        y = top + (k - 1) * pitch
+        name = calls[k - 1] if 1 <= k <= 3 else None
+        if name:
+            at = text.index(name)
+            a.mono(sx, y, text[:at], "t", size)
+            a.mono(sx + at * c, y, name, "ta", size, 700)
+            a.mono(sx + (at + len(name)) * c, y, text[at + len(name):], "t", size)
+        else:
+            a.mono(sx, y, text, "t", size)
+    # the column: the boundary
+    cx0, cwd = 322, 96
+    nsize = 9.6
+    a.text(cx0, 20, f"kilo.api: {len(names)} functions", "ta", 11, weight=600)
+    a.box(cx0, top - pitch + 2, cwd, (len(shown) + 1) * pitch + 4, "a af", rx=8)
+    for k, name in enumerate(shown):
+        y = top + k * pitch
+        a.text(cx0 + 10, y, name, "ta", nsize, weight=700 if name == "set_lines" else None, mono=True)
+    a.text(cx0 + 10, top + len(shown) * pitch, f"and {len(names) - len(shown)} more", "tm", 10)
+    # each call, from the script's box to its name
+    for k, name in enumerate(calls):
+        y = top + k * pitch - 3.5
+        a.line(296, y, cx0 - 2, y, "a" if name == "set_lines" else "s", arrow=True)
+    # the screen after Ctrl-D, its row 1 the copy
+    rh, scw = 15, 5.1
+    tx, ty = 457, top + 2 * pitch - rh - rh * 0.72 + 3.5
+    a.text(tx - 7, ty - 12, "kilo, 8 x 30, after Ctrl-D", "tm", 11)
+    a.box(tx - 7, ty - 4, 30 * scw + 14, len(after.lines) * rh + 8, "s fs", rx=8)
+    n = len(after.lines)
+    for r, text in enumerate(after.lines):
+        b = ty + r * rh + rh * 0.72
+        if r == row + 1:
+            a.fill(tx - 3, ty + r * rh + 1, len(text) * scw + 6, rh - 2, "af", 2)
+            a.mono(tx, b, text, "ta", scw / 0.6, 700)
+        elif r == n - 2:
+            a.fill(tx - 1, ty + r * rh + 1, 30 * scw + 2, rh - 2, "t", 1.5)
+            a.mono(tx, b, text, "f", scw / 0.6)
+        else:
+            a.mono(tx, b, text, "t", scw / 0.6)
+    cr, cc = after.cursor
+    a.box(tx + cc * scw - 0.5, ty + cr * rh + 1.5, scw + 1, rh - 3, "a", rx=1)
+    ya = top + 2 * pitch - 3.5
+    a.line(cx0 + cwd + 2, ya, tx - 9, ya, "a", arrow=True)
+    a.mono(tx - 7, ty + n * rh + 24, f"set_lines({row + 1}, {row + 1}, {{'{line}'}})", "tm", 9.5)
+    a.text(24, 288, "A script calls a table of functions. The table does not know whether there is a screen.",
+           "tm", 11.5)
+    return a
+
+
+MODULES["09"] = "09-api-and-lua"
+# the editor's box, the script's smaller box docked into its top edge, and the call going in
+ICONS["09"] = '<rect x="3" y="9" width="14" height="8" rx="2"/><rect x="7" y="3" width="6" height="6" rx="1.5"/>' \
+              '<path d="M10 9v4"/>'
+COVERS["09"] = api_and_lua
 
 
 def main():

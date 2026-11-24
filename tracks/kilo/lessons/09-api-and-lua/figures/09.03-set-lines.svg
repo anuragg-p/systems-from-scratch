@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 292" fill="none">
+<title>set_lines(start, end, lines) on the same five rows, four times: a change, an insert, a delete, and a call refused before anything changed</title>
+<defs><marker id="f0903a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0903a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0903a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">kilo at 09.03: each call on the same five rows, and the rows after it</text>
+<text class="tm" x="60" y="72" font-size="10.5">before</text>
+<text class="tm" x="420" y="72" font-size="10.5">after</text>
+<rect class="s f" x="60" y="84" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="52" y="98" font-size="9.5" text-anchor="end">0</text>
+<text class="t mono" x="68" y="98" font-size="10.5">a</text>
+<rect class="s f" x="60" y="108" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="52" y="122" font-size="9.5" text-anchor="end">1</text>
+<text class="t mono" x="68" y="122" font-size="10.5">b</text>
+<rect class="s f" x="60" y="132" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="52" y="146" font-size="9.5" text-anchor="end">2</text>
+<text class="t mono" x="68" y="146" font-size="10.5">c</text>
+<rect class="s f" x="60" y="156" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="52" y="170" font-size="9.5" text-anchor="end">3</text>
+<text class="t mono" x="68" y="170" font-size="10.5">d</text>
+<rect class="s f" x="60" y="180" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="52" y="194" font-size="9.5" text-anchor="end">4</text>
+<text class="t mono" x="68" y="194" font-size="10.5">e</text>
+<g class="step"><title>set_lines(1, 3, {'X', 'Y'}): rows 1 and 2 are deleted, then the two lines put in where they were.</title>
+<path class="a" d="M218 108 L224 108 L224 152 L218 152" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="230" y="134" font-size="10" font-weight="700">[1, 3)</text>
+<text class="ta" x="315" y="46" font-size="12" font-weight="700" text-anchor="middle">a change</text>
+<text class="t mono" x="238.86" y="64" font-size="9.4" font-weight="600">set_lines(1,</text>
+<text class="t mono" x="312.18" y="64" font-size="9.4" font-weight="600">3,</text>
+<text class="t mono" x="329.1" y="64" font-size="9.4" font-weight="600">{&#x27;X&#x27;,</text>
+<text class="t mono" x="362.94" y="64" font-size="9.4" font-weight="600">&#x27;Y&#x27;})</text>
+<line class="a" x1="262" y1="150" x2="372" y2="150" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903a-aa)"/>
+<rect class="s f" x="420" y="84" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="98" font-size="9.5" text-anchor="end">0</text>
+<text class="t mono" x="428" y="98" font-size="10.5">a</text>
+<rect class="a af" x="420" y="108" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="122" font-size="9.5" text-anchor="end">1</text>
+<text class="ta mono" x="428" y="122" font-size="10.5" font-weight="600">X</text>
+<rect class="a af" x="420" y="132" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="146" font-size="9.5" text-anchor="end">2</text>
+<text class="ta mono" x="428" y="146" font-size="10.5" font-weight="600">Y</text>
+<rect class="s f" x="420" y="156" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="170" font-size="9.5" text-anchor="end">3</text>
+<text class="t mono" x="428" y="170" font-size="10.5">d</text>
+<rect class="s f" x="420" y="180" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="194" font-size="9.5" text-anchor="end">4</text>
+<text class="t mono" x="428" y="194" font-size="10.5">e</text>
+<text class="tm" x="420" y="218" font-size="10">5 rows</text>
+</g>
+<g class="step"><title>set_lines(2, 2, {'new'}): an empty range, so nothing is deleted; the line goes in before row 2.</title>
+<line class="a" x1="56" y1="130" x2="224" y2="130" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="230" y="134" font-size="10" font-weight="700">[2, 2)</text>
+<text class="ta" x="315" y="46" font-size="12" font-weight="700" text-anchor="middle">an insert</text>
+<text class="t mono" x="247.32" y="64" font-size="9.4" font-weight="600">set_lines(2,</text>
+<text class="t mono" x="320.64" y="64" font-size="9.4" font-weight="600">2,</text>
+<text class="t mono" x="337.56" y="64" font-size="9.4" font-weight="600">{&#x27;new&#x27;})</text>
+<line class="a" x1="262" y1="150" x2="372" y2="150" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903a-aa)"/>
+<rect class="s f" x="420" y="84" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="98" font-size="9.5" text-anchor="end">0</text>
+<text class="t mono" x="428" y="98" font-size="10.5">a</text>
+<rect class="s f" x="420" y="108" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="122" font-size="9.5" text-anchor="end">1</text>
+<text class="t mono" x="428" y="122" font-size="10.5">b</text>
+<rect class="a af" x="420" y="132" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="146" font-size="9.5" text-anchor="end">2</text>
+<text class="ta mono" x="428" y="146" font-size="10.5" font-weight="600">new</text>
+<rect class="s f" x="420" y="156" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="170" font-size="9.5" text-anchor="end">3</text>
+<text class="t mono" x="428" y="170" font-size="10.5">c</text>
+<rect class="s f" x="420" y="180" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="194" font-size="9.5" text-anchor="end">4</text>
+<text class="t mono" x="428" y="194" font-size="10.5">d</text>
+<rect class="s f" x="420" y="204" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="218" font-size="9.5" text-anchor="end">5</text>
+<text class="t mono" x="428" y="218" font-size="10.5">e</text>
+<text class="tm" x="420" y="242" font-size="10">6 rows</text>
+</g>
+<g class="step"><title>set_lines(1, 3, {}): no lines, so rows 1 and 2 are deleted and what was below them moves up.</title>
+<path class="a" d="M218 108 L224 108 L224 152 L218 152" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="230" y="134" font-size="10" font-weight="700">[1, 3)</text>
+<text class="ta" x="315" y="46" font-size="12" font-weight="700" text-anchor="middle">a delete</text>
+<text class="t mono" x="261.42" y="64" font-size="9.4" font-weight="600">set_lines(1,</text>
+<text class="t mono" x="334.74" y="64" font-size="9.4" font-weight="600">3,</text>
+<text class="t mono" x="351.66" y="64" font-size="9.4" font-weight="600">{})</text>
+<line class="a" x1="262" y1="150" x2="372" y2="150" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903a-aa)"/>
+<rect class="s f" x="420" y="84" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="98" font-size="9.5" text-anchor="end">0</text>
+<text class="t mono" x="428" y="98" font-size="10.5">a</text>
+<rect class="s f" x="420" y="108" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="122" font-size="9.5" text-anchor="end">1</text>
+<text class="t mono" x="428" y="122" font-size="10.5">d</text>
+<rect class="s f" x="420" y="132" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="146" font-size="9.5" text-anchor="end">2</text>
+<text class="t mono" x="428" y="146" font-size="10.5">e</text>
+<text class="tm" x="420" y="170" font-size="10">3 rows</text>
+</g>
+<g class="step"><title>set_lines(0, 1, {'a', 'b', 'c\nd'}): line 3 holds a newline. Everything is checked before anything changes, so the call fails with "set_lines: a line cannot hold a newline (line 3)" and the five rows are as they were.</title>
+<path class="a" d="M218 84 L224 84 L224 104 L218 104" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="230" y="98" font-size="10" font-weight="700">[0, 1)</text>
+<text class="t" x="315" y="46" font-size="12" font-weight="700" text-anchor="middle">refused</text>
+<text class="t mono" x="216.3" y="64" font-size="9.4" font-weight="600">set_lines(0,</text>
+<text class="t mono" x="289.62" y="64" font-size="9.4" font-weight="600">1,</text>
+<text class="t mono" x="306.54" y="64" font-size="9.4" font-weight="600">{&#x27;a&#x27;,</text>
+<text class="t mono" x="340.38" y="64" font-size="9.4" font-weight="600">&#x27;b&#x27;,</text>
+<text class="t mono" x="368.58" y="64" font-size="9.4" font-weight="600">&#x27;c\nd&#x27;})</text>
+<line class="s" x1="262" y1="150" x2="372" y2="150" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0903a-ah)"/>
+<text class="ta" x="262" y="176" font-size="10">set_lines: a line cannot</text>
+<text class="ta" x="262" y="190" font-size="10">hold a newline (line 3)</text>
+<rect class="s f" x="420" y="84" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="98" font-size="9.5" text-anchor="end">0</text>
+<text class="t mono" x="428" y="98" font-size="10.5">a</text>
+<rect class="s f" x="420" y="108" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="122" font-size="9.5" text-anchor="end">1</text>
+<text class="t mono" x="428" y="122" font-size="10.5">b</text>
+<rect class="s f" x="420" y="132" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="146" font-size="9.5" text-anchor="end">2</text>
+<text class="t mono" x="428" y="146" font-size="10.5">c</text>
+<rect class="s f" x="420" y="156" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="170" font-size="9.5" text-anchor="end">3</text>
+<text class="t mono" x="428" y="170" font-size="10.5">d</text>
+<rect class="s f" x="420" y="180" width="150" height="20" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="412" y="194" font-size="9.5" text-anchor="end">4</text>
+<text class="t mono" x="428" y="194" font-size="10.5">e</text>
+</g>
+<text class="tm" x="24" y="276" font-size="10.5">Rows count from 0 and a range [start, end) holds start but not end. Built from editorDelRow() and editorInsertRow().</text>
+</svg>

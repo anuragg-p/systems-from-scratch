@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 316" fill="none">
+<title>The API&#x27;s table in kilo.c at 09.02: the entry for get_lines, its fields, and what kilo --api-info prints for each of the six entries</title>
+<defs><marker id="f0902a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">kilo.c at 09.02: an entry of the table const ApiFunc API[], the one for get_lines</text>
+<rect class="s fs" x="24" y="64" width="556" height="42" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="57.04" y="80" font-size="9.6">{&quot;get_lines&quot;,</text>
+<text class="t mono" x="137.68" y="80" font-size="9.6">{API_INTEGER,API_INTEGER},</text>
+<text class="t mono" x="293.2" y="80" font-size="9.6">{&quot;start&quot;,&quot;end&quot;},</text>
+<text class="t mono" x="391.12" y="80" font-size="9.6">2,</text>
+<text class="t mono" x="408.4" y="80" font-size="9.6">API_LINES,</text>
+<text class="t mono" x="471.76" y="80" font-size="9.6">apiGetLines,</text>
+<text class="t mono" x="62.8" y="97" font-size="9.6">&quot;the</text>
+<text class="t mono" x="91.6" y="97" font-size="9.6">rows</text>
+<text class="t mono" x="120.4" y="97" font-size="9.6">[start,</text>
+<text class="t mono" x="166.48" y="97" font-size="9.6">end),</text>
+<text class="t mono" x="201.04" y="97" font-size="9.6">counted</text>
+<text class="t mono" x="247.12" y="97" font-size="9.6">from</text>
+<text class="t mono" x="275.92" y="97" font-size="9.6">0&quot;},</text>
+<path class="a" d="M62.8 66 L62.8 60 L126.16 60 L126.16 66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="94.48" y="50" font-size="9.5" font-weight="600" text-anchor="middle">the name a script calls</text>
+<path class="a" d="M137.68 66 L137.68 60 L281.68 60 L281.68 66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="209.68" y="50" font-size="9.5" font-weight="600" text-anchor="middle">the arguments&#x27; types</text>
+<path class="a" d="M293.2 66 L293.2 60 L379.6 60 L379.6 66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="336.4" y="50" font-size="9.5" font-weight="600" text-anchor="middle">their names</text>
+<path class="a" d="M391.12 66 L391.12 60 L396.88 60 L396.88 66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="394" y="38" font-size="9.5" font-weight="600" text-anchor="middle">count</text>
+<path class="a" d="M408.4 66 L408.4 60 L460.24 60 L460.24 66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="434.32" y="50" font-size="9.5" font-weight="600" text-anchor="middle">the result</text>
+<path class="a" d="M471.76 66 L471.76 60 L535.12 60 L535.12 66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="503.44" y="50" font-size="9.5" font-weight="600" text-anchor="middle">the C function</text>
+<path class="a" d="M62.8 97 L62.8 103 L287.44 103 L287.44 97" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="62.8" y="120" font-size="9.5" font-weight="600">what it does, for --api-info</text>
+<text class="tm" x="24" y="152" font-size="11">kilo --api-info at 09.02: the table printed, a line per entry, no Lua started</text>
+<text class="tm" x="24" y="172" font-size="9.5">name</text>
+<text class="tm" x="124" y="172" font-size="9.5">arguments</text>
+<text class="tm" x="304" y="172" font-size="9.5">returns</text>
+<text class="tm" x="372" y="172" font-size="9.5">what it does</text>
+<text class="t mono" x="24" y="191" font-size="9.6" font-weight="600">line_count</text>
+<text class="t mono" x="304" y="191" font-size="9.6">integer</text>
+<text class="tm" x="372" y="191" font-size="9.5">the number of rows in the file</text>
+<rect class="af" x="18" y="196" width="604" height="18" rx="3"/>
+<text class="ta mono" x="24" y="209" font-size="9.6" font-weight="700">get_lines</text>
+<text class="ta mono" x="124" y="209" font-size="9.6">start:</text>
+<text class="ta mono" x="164.32" y="209" font-size="9.6">integer,</text>
+<text class="ta mono" x="216.16" y="209" font-size="9.6">end:</text>
+<text class="ta mono" x="244.96" y="209" font-size="9.6">integer</text>
+<text class="ta mono" x="304" y="209" font-size="9.6">lines</text>
+<text class="t" x="372" y="209" font-size="9.5">the rows [start, end), counted from 0</text>
+<text class="t mono" x="24" y="227" font-size="9.6" font-weight="600">get_cursor</text>
+<text class="t mono" x="304" y="227" font-size="9.6">position</text>
+<text class="tm" x="372" y="227" font-size="9.5">the cursor&#x27;s {row, col}, col a byte of the row</text>
+<text class="t mono" x="24" y="245" font-size="9.6" font-weight="600">get_name</text>
+<text class="t mono" x="304" y="245" font-size="9.6">string</text>
+<text class="tm" x="372" y="245" font-size="9.5">the file&#x27;s name</text>
+<text class="t mono" x="24" y="263" font-size="9.6" font-weight="600">is_modified</text>
+<text class="t mono" x="304" y="263" font-size="9.6">boolean</text>
+<text class="tm" x="372" y="263" font-size="9.5">true when the file has unsaved changes</text>
+<text class="t mono" x="24" y="281" font-size="9.6" font-weight="600">message</text>
+<text class="t mono" x="124" y="281" font-size="9.6">text:</text>
+<text class="t mono" x="158.56" y="281" font-size="9.6">string</text>
+<text class="tm mono" x="304" y="281" font-size="9.6">(none)</text>
+<text class="tm" x="372" y="281" font-size="9.5">show text in the message line</text>
+<text class="tm" x="24" y="306" font-size="10.5">By 09.09 the same table has 25 entries, and --api-info prints 25 lines.</text>
+</svg>

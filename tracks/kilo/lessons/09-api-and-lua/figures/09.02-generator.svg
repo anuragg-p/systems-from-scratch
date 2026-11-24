@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>Neovim generates its API&#x27;s table from the C declarations and serves it three ways, Lua, RPC and --api-info; kilo writes its table by hand and serves it two ways, Lua and --api-info</title>
+<defs><marker id="f0902c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">Neovim v0.12.6, from its sources; kilo at 09.02</text>
+<text class="t" x="24" y="46" font-size="13" font-weight="700">Neovim</text>
+<rect class="s f" x="60" y="56" width="280" height="48" rx="6" stroke-width="1.5"/>
+<text class="t" x="200" y="74" font-size="11.5" font-weight="700" text-anchor="middle">the C declarations</text>
+<text class="tm mono" x="200" y="90" font-size="9.5" text-anchor="middle">src/nvim/api/*.h: functions on typed Objects</text>
+<line class="s" x1="200" y1="105" x2="200" y2="124" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0902c-ah)"/>
+<text class="tm" x="208" y="119" font-size="9.5">read at build time</text>
+<rect class="a af" x="60" y="126" width="280" height="48" rx="6" stroke-width="1.5"/>
+<text class="ta" x="200" y="144" font-size="11.5" font-weight="700" text-anchor="middle">the generator</text>
+<text class="tm mono" x="200" y="160" font-size="9.5" text-anchor="middle">src/gen/gen_api_dispatch.lua</text>
+<line class="a" x1="200" y1="175" x2="84" y2="204" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0902c-aa)"/>
+<line class="a" x1="200" y1="175" x2="200" y2="204" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0902c-aa)"/>
+<line class="a" x1="200" y1="175" x2="316" y2="204" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0902c-aa)"/>
+<text class="ta" x="210" y="192" font-size="9.5">writes</text>
+<rect class="s f" x="24" y="206" width="110" height="60" rx="6" stroke-width="1.5"/>
+<text class="t" x="79" y="224" font-size="11.5" font-weight="700" text-anchor="middle">Lua: vim.api</text>
+<text class="tm mono" x="79" y="240" font-size="9.5" text-anchor="middle">nlua_api_&lt;name&gt;</text>
+<rect class="s f" x="142" y="206" width="110" height="60" rx="6" stroke-width="1.5"/>
+<text class="t" x="197" y="224" font-size="11.5" font-weight="700" text-anchor="middle">RPC</text>
+<text class="tm" x="197" y="240" font-size="9.5" text-anchor="middle">the msgpack-RPC</text>
+<text class="tm" x="197" y="253" font-size="9.5" text-anchor="middle">handlers</text>
+<rect class="s f" x="260" y="206" width="110" height="60" rx="6" stroke-width="1.5"/>
+<text class="t" x="315" y="224" font-size="11.5" font-weight="700" text-anchor="middle">--api-info</text>
+<text class="tm" x="315" y="240" font-size="9.5" text-anchor="middle">the metadata,</text>
+<text class="tm mono" x="315" y="253" font-size="9.5" text-anchor="middle">msgpack</text>
+<text class="t" x="412" y="46" font-size="13" font-weight="700">kilo</text>
+<rect class="s f" x="412" y="56" width="204" height="48" rx="6" stroke-width="1.5"/>
+<text class="t" x="514" y="74" font-size="11.5" font-weight="700" text-anchor="middle">the C functions</text>
+<text class="tm mono" x="514" y="90" font-size="9.5" text-anchor="middle">kilo.c: apiGetLines, ...</text>
+<line class="s" x1="514" y1="105" x2="514" y2="124" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0902c-ah)"/>
+<text class="tm" x="522" y="119" font-size="9.5">listed by hand</text>
+<rect class="a af" x="412" y="126" width="204" height="48" rx="6" stroke-width="1.5"/>
+<text class="ta" x="514" y="144" font-size="11.5" font-weight="700" text-anchor="middle">the table, in kilo.c</text>
+<text class="tm mono" x="514" y="160" font-size="9.5" text-anchor="middle">const ApiFunc API[]</text>
+<line class="a" x1="514" y1="175" x2="462" y2="204" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0902c-aa)"/>
+<line class="a" x1="514" y1="175" x2="566" y2="204" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0902c-aa)"/>
+<rect class="s f" x="412" y="206" width="98" height="60" rx="6" stroke-width="1.5"/>
+<text class="t" x="461" y="224" font-size="11.5" font-weight="700" text-anchor="middle">Lua: kilo.api</text>
+<text class="tm" x="461" y="240" font-size="9.5" text-anchor="middle">made when Lua</text>
+<text class="tm" x="461" y="253" font-size="9.5" text-anchor="middle">starts</text>
+<rect class="s f" x="518" y="206" width="98" height="60" rx="6" stroke-width="1.5"/>
+<text class="t" x="567" y="224" font-size="11.5" font-weight="700" text-anchor="middle">--api-info</text>
+<text class="tm" x="567" y="240" font-size="9.5" text-anchor="middle">text: apiInfo()</text>
+<line class="m" x1="394" y1="40" x2="394" y2="276" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="24" y="296" font-size="10.5">Neovim&#x27;s one table serves Lua, other programs over RPC, and --api-info. A function added to src/nvim/api/ is</text>
+<text class="tm" x="24" y="311" font-size="10.5">in all three; one added to kilo.c is in neither until its line is in the table.</text>
+</svg>

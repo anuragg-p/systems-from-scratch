@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 318" fill="none">
+<title>kilo.api.get_lines(0, 2) through the one dispatcher: two Lua numbers, checked against the entry&#x27;s types, made into ApiValues for apiGetLines, the lines it returns, and a Lua table of them on the stack</title>
+<defs><marker id="f0902b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0902b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11">kilo at 09.02 on notes.txt, this line typed at Ctrl-E; the steps of scriptDispatch() for get_lines</text>
+<text class="t mono" x="24" y="38" font-size="10" font-weight="600">table.concat(kilo.api.get_lines(0,</text>
+<text class="t mono" x="234" y="38" font-size="10" font-weight="600">2),</text>
+<text class="t mono" x="258" y="38" font-size="10" font-weight="600">&#x27;</text>
+<text class="t mono" x="270" y="38" font-size="10" font-weight="600">|</text>
+<text class="t mono" x="282" y="38" font-size="10" font-weight="600">&#x27;)</text>
+<rect class="s fs" x="236" y="52" width="168" height="58" rx="6" stroke-width="1.5"/>
+<text class="tm" x="320" y="67" font-size="9.5" text-anchor="middle">upvalue 1: the entry</text>
+<text class="t mono" x="246" y="84" font-size="10.5" font-weight="700">get_lines</text>
+<text class="t mono" x="246" y="100" font-size="9">integer,</text>
+<text class="t mono" x="294.6" y="100" font-size="9">integer</text>
+<text class="t mono" x="337.8" y="100" font-size="9">-&gt;</text>
+<text class="t mono" x="354" y="100" font-size="9">lines</text>
+<text class="t" x="127" y="136" font-size="11.5" font-weight="700" text-anchor="middle">the dispatcher&#x27;s stack</text>
+<g class="step"><title>kilo.api.get_lines is scriptDispatch, with the entry for get_lines as its upvalue. Called with 0 and 2, its stack holds the two Lua values; the entry says it takes two integers.</title>
+<rect class="a af" x="52" y="254" width="150" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta" x="60" y="271.5" font-size="9.5">integer</text>
+<text class="ta mono" x="194" y="272" font-size="10.5" font-weight="700" text-anchor="end">0</text>
+<text class="t mono" x="44" y="272" font-size="10.5" font-weight="600" text-anchor="end">1</text>
+<text class="tm mono" x="210" y="272" font-size="10.5">-2</text>
+<rect class="a af" x="52" y="222" width="150" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta" x="60" y="239.5" font-size="9.5">integer</text>
+<text class="ta mono" x="194" y="240" font-size="10.5" font-weight="700" text-anchor="end">2</text>
+<text class="t mono" x="44" y="240" font-size="10.5" font-weight="600" text-anchor="end">2</text>
+<text class="tm mono" x="210" y="240" font-size="10.5">-1</text>
+<path class="m" d="M232 242 C 252 202, 206 92, 234 88" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0902b-am)"/>
+<text class="t" x="272" y="160" font-size="10.5">n = lua_gettop(L): 2. The entry is the light</text>
+<text class="t" x="272" y="175" font-size="10.5">userdata in the closure&#x27;s upvalue: the same C</text>
+<text class="t" x="272" y="190" font-size="10.5">function serves every name in kilo.api.</text>
+</g>
+<g class="step"><title>The checks, before anything else: 2 arguments, as the entry says; each a Lua number with no fraction, so an integer. A wrong count or type would be a Lua error here, and get_lines would never run.</title>
+<rect class="s f" x="52" y="254" width="150" height="28" rx="4" stroke-width="1.5"/>
+<text class="tm" x="60" y="271.5" font-size="9.5">integer</text>
+<text class="t mono" x="194" y="272" font-size="10.5" font-weight="600" text-anchor="end">0</text>
+<text class="t mono" x="44" y="272" font-size="10.5" font-weight="600" text-anchor="end">1</text>
+<text class="tm mono" x="210" y="272" font-size="10.5">-2</text>
+<rect class="s f" x="52" y="222" width="150" height="28" rx="4" stroke-width="1.5"/>
+<text class="tm" x="60" y="239.5" font-size="9.5">integer</text>
+<text class="t mono" x="194" y="240" font-size="10.5" font-weight="600" text-anchor="end">2</text>
+<text class="t mono" x="44" y="240" font-size="10.5" font-weight="600" text-anchor="end">2</text>
+<text class="tm mono" x="210" y="240" font-size="10.5">-1</text>
+<text class="tm" x="272" y="152" font-size="10.5">scriptCheck(), argument by argument</text>
+<rect class="a af" x="272" y="161" width="330" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta" x="280" y="176" font-size="10" font-weight="700">count</text>
+<text class="t" x="364" y="176" font-size="10">2 arguments</text>
+<text class="t mono" x="472" y="176" font-size="10">expected 2</text>
+<text class="ta" x="594" y="176" font-size="10" font-weight="700" text-anchor="end">yes</text>
+<rect class="a af" x="272" y="187" width="330" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta" x="280" y="202" font-size="10" font-weight="700">1 (start)</text>
+<text class="t" x="364" y="202" font-size="10">a Lua number, 0</text>
+<text class="t mono" x="472" y="202" font-size="10">expected integer</text>
+<text class="ta" x="594" y="202" font-size="10" font-weight="700" text-anchor="end">yes</text>
+<rect class="a af" x="272" y="213" width="330" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta" x="280" y="228" font-size="10" font-weight="700">2 (end)</text>
+<text class="t" x="364" y="228" font-size="10">a Lua number, 2</text>
+<text class="t mono" x="472" y="228" font-size="10">expected integer</text>
+<text class="ta" x="594" y="228" font-size="10" font-weight="700" text-anchor="end">yes</text>
+</g>
+<g class="step"><title>scriptTake() makes each argument an ApiValue of the entry's type, and the dispatcher calls the C function: apiGetLines(args, 2, &amp;err). It knows nothing of Lua.</title>
+<rect class="s f" x="52" y="254" width="150" height="28" rx="4" stroke-width="1.5"/>
+<text class="tm" x="60" y="271.5" font-size="9.5">integer</text>
+<text class="t mono" x="194" y="272" font-size="10.5" font-weight="600" text-anchor="end">0</text>
+<text class="t mono" x="44" y="272" font-size="10.5" font-weight="600" text-anchor="end">1</text>
+<text class="tm mono" x="210" y="272" font-size="10.5">-2</text>
+<rect class="s f" x="52" y="222" width="150" height="28" rx="4" stroke-width="1.5"/>
+<text class="tm" x="60" y="239.5" font-size="9.5">integer</text>
+<text class="t mono" x="194" y="240" font-size="10.5" font-weight="600" text-anchor="end">2</text>
+<text class="t mono" x="44" y="240" font-size="10.5" font-weight="600" text-anchor="end">2</text>
+<text class="tm mono" x="210" y="240" font-size="10.5">-1</text>
+<text class="tm" x="272" y="152" font-size="10.5">ApiValue args[2], from scriptTake()</text>
+<rect class="a af" x="272" y="162" width="150" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="280" y="179" font-size="9.5">API_INTEGER</text>
+<text class="ta mono" x="414" y="179" font-size="10.5" font-weight="700" text-anchor="end">0</text>
+<rect class="a af" x="272" y="194" width="150" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="280" y="211" font-size="9.5">API_INTEGER</text>
+<text class="ta mono" x="414" y="211" font-size="10.5" font-weight="700" text-anchor="end">2</text>
+<line class="a" x1="430" y1="190" x2="458" y2="190" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0902b-aa)"/>
+<text class="ta mono" x="464" y="194" font-size="9.6" font-weight="700">apiGetLines(args,2,&amp;err)</text>
+<text class="tm" x="272" y="244" font-size="10.5">kilo.c&#x27;s function: rows and bytes, no Lua</text>
+</g>
+<g class="step"><title>apiGetLines returns an ApiValue of type lines: two strings it allocated, copies of rows 0 and 1, which the dispatcher will free.</title>
+<rect class="s f" x="52" y="254" width="150" height="28" rx="4" stroke-width="1.5"/>
+<text class="tm" x="60" y="271.5" font-size="9.5">integer</text>
+<text class="t mono" x="194" y="272" font-size="10.5" font-weight="600" text-anchor="end">0</text>
+<text class="t mono" x="44" y="272" font-size="10.5" font-weight="600" text-anchor="end">1</text>
+<text class="tm mono" x="210" y="272" font-size="10.5">-2</text>
+<rect class="s f" x="52" y="222" width="150" height="28" rx="4" stroke-width="1.5"/>
+<text class="tm" x="60" y="239.5" font-size="9.5">integer</text>
+<text class="t mono" x="194" y="240" font-size="10.5" font-weight="600" text-anchor="end">2</text>
+<text class="t mono" x="44" y="240" font-size="10.5" font-weight="600" text-anchor="end">2</text>
+<text class="tm mono" x="210" y="240" font-size="10.5">-1</text>
+<text class="tm" x="272" y="152" font-size="10.5">ApiValue ret: API_LINES, count 2</text>
+<rect class="a af" x="272" y="162" width="200" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="280" y="178" font-size="9.5">[0]</text>
+<text class="ta mono" x="306" y="178" font-size="10.5" font-weight="700">hello</text>
+<text class="ta mono" x="343.8" y="178" font-size="10.5" font-weight="700">world</text>
+<rect class="a af" x="272" y="192" width="200" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="280" y="208" font-size="9.5">[1]</text>
+<text class="ta mono" x="306" y="208" font-size="10.5" font-weight="700">second</text>
+<text class="ta mono" x="350.1" y="208" font-size="10.5" font-weight="700">line</text>
+<text class="tm" x="272" y="236" font-size="10.5">copies, allocated by apiGetLines: the dispatcher frees them</text>
+</g>
+<g class="step"><title>scriptPushIn(), in a protected call of its own, makes them a Lua table of two strings on the stack; apiFree() frees the C copy; the dispatcher returns 1, and the script gets the table.</title>
+<rect class="s f" x="52" y="254" width="150" height="28" rx="4" stroke-width="1.5"/>
+<text class="tm" x="60" y="271.5" font-size="9.5">integer</text>
+<text class="t mono" x="194" y="272" font-size="10.5" font-weight="600" text-anchor="end">0</text>
+<text class="t mono" x="44" y="272" font-size="10.5" font-weight="600" text-anchor="end">1</text>
+<text class="tm mono" x="210" y="272" font-size="10.5">-3</text>
+<rect class="s f" x="52" y="222" width="150" height="28" rx="4" stroke-width="1.5"/>
+<text class="tm" x="60" y="239.5" font-size="9.5">integer</text>
+<text class="t mono" x="194" y="240" font-size="10.5" font-weight="600" text-anchor="end">2</text>
+<text class="t mono" x="44" y="240" font-size="10.5" font-weight="600" text-anchor="end">2</text>
+<text class="tm mono" x="210" y="240" font-size="10.5">-2</text>
+<rect class="a af" x="52" y="190" width="150" height="28" rx="4" stroke-width="1.5"/>
+<text class="ta" x="60" y="207.5" font-size="9.5">table</text>
+<text class="ta mono" x="194" y="208" font-size="10.5" font-weight="700" text-anchor="end">{2 strings}</text>
+<text class="t mono" x="44" y="208" font-size="10.5" font-weight="600" text-anchor="end">3</text>
+<text class="tm mono" x="210" y="208" font-size="10.5">-1</text>
+<text class="tm" x="272" y="152" font-size="10.5">returned to the script</text>
+<rect class="a af" x="272" y="162" width="236" height="56" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="282" y="182" font-size="10" font-weight="700">t[1]</text>
+<text class="ta mono" x="322" y="182" font-size="10">&quot;hello</text>
+<text class="ta mono" x="364" y="182" font-size="10">world&quot;</text>
+<text class="ta mono" x="282" y="204" font-size="10" font-weight="700">t[2]</text>
+<text class="ta mono" x="322" y="204" font-size="10">&quot;second</text>
+<text class="ta mono" x="370" y="204" font-size="10">line&quot;</text>
+<text class="tm" x="272" y="244" font-size="10.5">table.concat of it, in the message line</text>
+<rect class="s fs" x="272" y="252" width="236" height="22" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="280" y="267" font-size="10">hello</text>
+<text class="t mono" x="316" y="267" font-size="10">world</text>
+<text class="t mono" x="352" y="267" font-size="10">|</text>
+<text class="t mono" x="364" y="267" font-size="10">second</text>
+<text class="t mono" x="406" y="267" font-size="10">line</text>
+</g>
+</svg>
