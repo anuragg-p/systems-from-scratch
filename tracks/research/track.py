@@ -555,3 +555,21 @@ DATA["experiments/recorded/gpt/*"] = "the long run of experiments/gpt.py (08.04)
 # The run writes its checkpoint beside the record; a learner who runs it again gets one there. It is weights, not
 # part of the record: never shown or materialized, and not committed.
 HIDDEN.append("experiments/recorded/*/model.safetensors")
+
+
+# ---------------------------------------------------------------- module 09: GPT-2, the tokenizer and the real weights
+#
+# Kept apart from the tables above, as modules 06 to 08's parts are. tokens/ (09.01 on) is a package of its own, as
+# models/ is: byte pair encoding (bpe.py) and GPT-2's tokenizer (gpt2.py). Not "tokenizers", which would hide the
+# installed library of that name. 09.01 needs no download; 09.02 and 09.03 need GPT-2's files (python3 -m data.fetch
+# gpt2), 09.04 TinyStories (python3 -m data.fetch tinystories).
+
+SOURCES.append("tokens/*.py")
+FILES_FROM["tokens/__init__.py"] = "09.01"
+PACKAGES = PACKAGES + ("tokens",)
+
+EXPERIMENTS.update({
+    "bpe": ("09.01", ["seeds=1", "steps=5", "layers=1", "width=16", "context=16", "sizes=[256,300]", "vocab=300",
+                      "windows=10", "simple_merges=1"], r"s of counting, training and scoring on cpu"),
+})
+DATASET_OF.update({"bpe": None})
