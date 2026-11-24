@@ -414,3 +414,53 @@ teaches only the buffer (plans/dsa.md).
 - All pass on macOS; on Debian trixie and Alpine 3.22 (the 07 containers)
   every test, check-skeleton of 09 and check-timeline, every 09 project
   with gcc -Werror. Lessons and art follow, from NOTES.md.
+
+## Module 09's lessons, art and read (2026-11-25)
+
+- 10 lessons and the module page, from a lesson design, on four writers'
+  branches: 09.01 to 09.03 and the module page, 09.04 to 09.06, 09.07 to
+  09.09, each running its lessons' examples on the projects as written out
+  (NOTES.md 09, "what the lessons ran"); and 09.10, a lab, written after
+  the review, on the three plugins built on the code's branch
+  (plugins/vi.lua, colour.lua and find.lua: only Lua, no line of C; test
+  0910). The art on two branches, from an art design: a cover and the icon
+  (redrawn as a plug), the map in every lesson (three rows under the core's
+  grid: kilo.c's side of the API, then Lua and the guards, then the scripts
+  and no screen; archmap.py), and 12 figures for each half, art/kilo/
+  figs09a.py for 09.01 to 09.05 (five stepped: 09.01 stack, 09.02
+  dispatch, 09.03 set-lines, 09.04 reference, 09.05 nesting) and
+  figs09b.py for 09.06 to 09.10.
+- The read of the track's card and cover, the module page and 09.01 to
+  09.05 (in order, on the site in light and dark and at 390 px, Back and
+  Next on every stepped figure; every Run it and Break it typed again
+  through `./learn run` as written, on an 8 x 80 or 8 x 72 pseudo-
+  terminal). 09.01's fetch was run exactly as written in a fresh `./learn
+  files` project: the checksum was the lesson's, the first make built
+  Lua's 32 files and kilo in 3.6 s (2.5 s user), kilo 318072 bytes.
+  Found and fixed: 09.01's "Where this fits" put "Lua itself" under the
+  interpreter, where the map has one box, Lua, for both; the protected-call
+  caption said Left and Right of a figure drawn above and below; the stack
+  caption put the 2 "after the protected call" where the frame has it
+  after lua_call(), inside it; the checksum, inline, made the page scroll
+  sideways at 390 px (now a block); and Break it said how to get the
+  terminal back only after the run (now before it, `stty sane`). 09.03 and
+  09.04 gave the bar's rows, from 1, beside the API's, from 0, without
+  saying which ("row 3 now", "row 2, after the b", "row 1", "row 2"): each
+  now says, and 09.03 says once that the bar counts from 1. 09.05: `new `
+  showed as "new" (the dropped trailing space) and is "`new` and a space";
+  its Break it warns before the key that hangs the editor (a second
+  terminal; `reset`). The module page links its ten lessons (07's and
+  08's pages list none: the site lists lessons from the files).
+- Found fine: every figure against its text and the runs (the cover's
+  Ctrl-D screen; the registry's 4 5 6, 5 6 7, 4 6 7; 12 names in kilo.api
+  at 09.04; the tick and save time lines; the nesting frames' word
+  counts), every message, screen, byte count and Break it result of the
+  five lessons (09.04's `-3.7060546875` from a fresh start only), the
+  lessons' editor claims against NOTES.md 09 (Zed in its confirmed wording,
+  no "sandbox"), the init file started the same way in every lesson that
+  has one, no dead link, nothing naming NOTES.md, a test or an agent.
+  NOTES.md 09: Zed's cell in "The notable editors" says what was confirmed,
+  not "a sandbox"; the lines that said 09.10 was not built are current.
+- 09.06 to 09.10: see the commits of the second read.
+- `./learn verify` passes 09.01 to 09.05; `./learn check` lists nothing for
+  kilo; `./learn test kilo` passes.
