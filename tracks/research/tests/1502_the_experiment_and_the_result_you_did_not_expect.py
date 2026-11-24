@@ -47,18 +47,15 @@ def test(t):
 
 
 def runs_in(d):
+    """A recorded run, packed (runs.jsonl, one line a run, each file's text): {label: [(config, summary, log rows)]}
+    in seed order."""
     out = {}
-    for label in sorted(os.listdir(d)):
-        if os.path.isdir(os.path.join(d, label)):
-            for seed in sorted(int(s[4:]) for s in os.listdir(os.path.join(d, label)) if s.startswith("seed")):
-                run = os.path.join(d, label, f"seed{seed}")
-                with open(os.path.join(run, "config.json")) as f:
-                    c = json.load(f)
-                with open(os.path.join(run, "summary.json")) as f:
-                    s = json.load(f)
-                with open(os.path.join(run, "log.jsonl")) as f:
-                    rows = [json.loads(line) for line in f if line.strip()]
-                out.setdefault(label, []).append((c, s, rows))
+    with open(os.path.join(d, "runs.jsonl")) as f:
+        packed = [json.loads(line) for line in f if line.strip()]
+    for r in sorted(packed, key=lambda r: (r["label"], r["seed"])):
+        files = r["files"]
+        rows = [json.loads(line) for line in files["log.jsonl"].splitlines() if line.strip()]
+        out.setdefault(r["label"], []).append((json.loads(files["config.json"]), json.loads(files["summary.json"]), rows))
     return out
 
 

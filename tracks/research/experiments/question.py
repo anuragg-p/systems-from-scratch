@@ -13,6 +13,7 @@
     judge(rule, ...)    "held", "did not hold" or "not settled", by a prediction's rule
     budget(...)         the minutes a plan of runs will take, from the seconds runs took
     read_runs(dir)      the runs a script wrote, read back: settings and numbers of every seed
+    pack(dir)           a recorded run's folders made into one file, runs.jsonl; unpack(dir, into) gives them back
     choose(found)       each arm's rate at each depth, from the search's validation bits    # @from 15.02
     gaps(bits, depths)  the gap at each depth, its paired interval and Welch's              # @from 15.02
     results(dir)        depth.py's runs read back: the search, the runs, the control        # @from 15.02
@@ -33,6 +34,7 @@ published, and 08.03's.
 
 import json
 import os
+import shutil
 from collections import namedtuple
 
 import torch
@@ -236,20 +238,67 @@ def budget(seconds, depths, runs, arms=len(ARMS)):
 # Every run a script wrote under directory, read back from the files 00.02's
 # Run leaves: {label: [(settings, summary) of each seed, in seed order]},
 # the settings from config.json (every setting the run used, its seed among
-# them) and the numbers from summary.json.
+# them) and the numbers from summary.json. A recorded run may be packed
+# (pack): its files are read from runs.jsonl instead, the same text.
 def read_runs(directory):
     out = {}
+    for label, seed, files in runs_in(directory):
+        out.setdefault(label, []).append((json.loads(files["config.json"]), json.loads(files["summary.json"])))
+    return out
+# @end
+
+
+PACKED = "runs.jsonl"
+RUN_FILES = ("config.json", "log.jsonl", "summary.json")
+
+
+def runs_in(directory):
+    """Every run under directory as (label, seed, {file name: its text}), by label and then seed: from the folders
+    00.02's Run writes (label/seed<k>/...), or from a pack of them (runs.jsonl)."""
+    packed = os.path.join(directory, PACKED)
+    if os.path.isfile(packed):
+        with open(packed) as f:
+            return [(r["label"], r["seed"], r["files"]) for r in map(json.loads, f) if r]
+    out = []
     for label in sorted(os.listdir(directory)):
         d = os.path.join(directory, label)
         if not os.path.isdir(d):
             continue
         for seed in sorted(int(s[4:]) for s in os.listdir(d) if s.startswith("seed")):
-            with open(os.path.join(d, f"seed{seed}", "config.json")) as f:
-                settings = json.load(f)
-            with open(os.path.join(d, f"seed{seed}", "summary.json")) as f:
-                out.setdefault(label, []).append((settings, json.load(f)))
+            files = {}
+            for name in RUN_FILES:
+                with open(os.path.join(d, f"seed{seed}", name)) as f:
+                    files[name] = f.read()
+            out.append((label, seed, files))
     return out
+
+
+# @build 15.01 pack
+# A recorded run made into one file: every run folder under directory
+# (label/seed<k>/ with config.json, log.jsonl and summary.json), in order
+# of label and seed, written as one line of runs.jsonl, {"label", "seed",
+# "files": each file's text, verbatim}; checked by reading it back, then
+# the folders removed. A record of hundreds of runs is then one file, and
+# nothing in it is lost: unpack writes the folders again, byte for byte.
+def pack(directory):
+    runs = runs_in(directory)
+    with open(os.path.join(directory, PACKED), "w") as f:
+        for label, seed, files in runs:
+            f.write(json.dumps({"label": label, "seed": seed, "files": files}) + "\n")
+    assert runs_in(directory) == runs
+    for label in {label for label, _, _ in runs}:
+        shutil.rmtree(os.path.join(directory, label))
+    return len(runs)
 # @end
+
+
+def unpack(directory, into):
+    """A packed record's run folders written again under into, byte for byte as the runs wrote them."""
+    for label, seed, files in runs_in(directory):
+        os.makedirs(os.path.join(into, label, f"seed{seed}"), exist_ok=True)
+        for name, text in files.items():
+            with open(os.path.join(into, label, f"seed{seed}", name), "w") as f:
+                f.write(text)
 
 
 # @build 15.02 choose

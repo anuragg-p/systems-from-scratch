@@ -5367,14 +5367,17 @@ need to match one with them?
 
 ```
 experiments/question.py  15.01   QUESTION, BEFORE (08.03's numbers), RELATED, PREDICTIONS (7), SMALLEST, LEVEL,
-                                 POWER, ARMS; pair, trained, judge, budget, read_runs (regions); rule_text
+                                 POWER, ARMS; pair, trained, judge, budget, read_runs, pack (regions); runs_in,
+                                 unpack, rule_text
                          15.02   choose, gaps (regions); results (an @from block): depth.py's runs read back
 experiments/pilot.py     15.01   the pilot (no regions: FILES_FROM)
 experiments/depth.py     15.02   search, Wider (regions); widen, extra_units, table, draw, main
 experiments/paper.py     15.03   defaults, command, abstract, verdicts (regions); gather, paper, surprises, main
-experiments/recorded/pilot/      15.01's recorded pilot (depths 1 and 8, 4 pairs; output.txt)
-experiments/recorded/depth/      15.02's recorded experiment (output.txt, bits.svg, gap.svg)
-experiments/recorded/followup/   15.02's follow-up past the top of the search (depth/, output.txt)
+experiments/recorded/pilot/      15.01's recorded pilot (depths 1 and 8, 4 pairs): runs.jsonl (packed), output.txt
+experiments/recorded/depth/      15.02's recorded experiment: runs.jsonl (282 runs, packed), output.txt, bits.svg,
+                                 gap.svg
+experiments/recorded/followup/   15.02's follow-up past the top of the search: depth/runs.jsonl, its figures,
+                                 output.txt
 experiments/recorded/paper/      paper.txt, as paper.py wrote it from the two records
 tests/1501_... to 1503_...       one a lesson
 ```
@@ -5546,10 +5549,15 @@ boundary).
 
 ### 15.02 The experiment, and the result you did not expect
 
-The recorded experiment (experiments/recorded/depth: search-blocks<d>-<arm>-lr<r>/seed0, blocks<d>-<arm>/seed1 to
-seed22, control-blocks4-wider/seed1 to seed22; output.txt, bits.svg, gap.svg):
+The recorded experiment (experiments/recorded/depth, packed into runs.jsonl
+from search-blocks<d>-<arm>-lr<r>/seed0, blocks<d>-<arm>/seed1 to seed22,
+control-blocks4-wider/seed1 to seed22; output.txt, bits.svg, gap.svg):
 
     python3 -m experiments.depth "depths=[1,2,4,6,8]" "rates=[0.0015,0.003,0.006,0.012]" seeds=22 steps=300 every=100 control=4 out=experiments/recorded
+    python3 -c "from experiments.question import pack; pack('experiments/recorded/depth')"
+
+(and the same pack for experiments/recorded/pilot and
+experiments/recorded/followup/depth)
 
 2817 s by its own clock (02:03:42 to 02:50:39 on 2026-11-25), load 9 to 19
 (other agents training; 2.2 to 2.5 minutes a seed at load 15 to 19, about
@@ -5632,8 +5640,10 @@ to 3 again, the same bytes (cmp of every log.jsonl and summary.json): a
 second command, in another folder, made the recorded runs again. The other
 depths' edges (2, 6 none, 8) were not followed up.
 The recorded runs, the hour: the pilot 157 s, the experiment 2817 s, the
-follow-up 96 s: 3070 s, 51 min 10 s, at load 8 to 19. Files: 938 (pilot 49,
-depth 849, followup 39, paper 1), 245 KB. No weights.
+follow-up 96 s: 3070 s, 51 min 10 s, at load 8 to 19. As the runs wrote
+them, 938 files (pilot 49, depth 849, followup 39, paper 1), 245 KB;
+packed, 11 files (a runs.jsonl a record, the figures, the outputs, the
+paper). No weights.
 
 The default (`python3 -m experiments.depth`): depths 1 and 2, rates 0.003
 and 0.006, 2 pairs, 150 steps; then the record. Both models at both depths
@@ -5815,11 +5825,19 @@ without their lessons yet, and another track's).
   timeline), DATASET_OF (none), pilot.py placed at 15.01 by FILES_FROM,
   and the four recorded folders (pilot 15.01, depth and followup 15.02,
   paper 15.03) first in FILES_FROM with DATA lines.
-- The recorded experiment is 849 files (282 runs, three files each, and
-  its figures and output). The Code of 15.02 shows every one as a data
-  block, as 14.04's 55: the harness quirk plans/research.md lists (one
-  collapsed block for a DATA glob) makes that page very long until it is
-  fixed. Not worked around: the runs keep 00.02's one folder a seed.
+- The records are packed (question.pack), a workaround in the track for a
+  harness quirk plans/research.md lists: The code shows every new data
+  file as a block of its own. Unpacked, the recorded experiment was 849
+  files (282 runs, three files each) and 15.02's page was about 430,000 px
+  tall (a full-page screenshot: 1200 x 430,939), The code standing between
+  The idea and Run it; 15.01's 49 pilot files would have been as long as
+  14.04's page. Packed: one runs.jsonl a record, each line a run with its
+  three files' text verbatim; read_runs reads a pack or folders; unpack
+  writes the folders back byte for byte (checked on all three records
+  against the folders as the runs wrote them, before they were removed,
+  and by 15.01's test on a fixture). The fix belongs in harness/ (one
+  folded block for a DATA glob); then the records could be unpacked again
+  with one call each, and the readers would not change.
 - Lead-in names: question.py, depth.py and paper.py define results, texts,
   table, search, choose, gaps, widen, paper, seconds, blocks, gather, para,
   took, surprises; a "###" heading that holds one of these words is pulled

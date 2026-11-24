@@ -228,4 +228,5 @@ The text: data/tinyshakespeare.txt, 1,115,394 bytes, SHA-256
    python3 -m experiments.paper
 
 Each run's config.json holds every setting it used and its seed; the commands above are made from
-them.
+them. The records keep their runs packed, one line a run in runs.jsonl with each file's text
+(experiments/question.py's pack); its unpack writes the folders back, byte for byte.

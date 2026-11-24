@@ -394,7 +394,8 @@ def paper(r, cfg):
             *(["   " + command(r["followup"]["settings"])] if r["followup"] else []),
             "   python3 -m experiments.paper", ""]
     out.append(para("Each run's config.json holds every setting it used and its seed; the commands above are made "
-                    "from them.", w))
+                    "from them. The records keep their runs packed, one line a run in runs.jsonl with each file's "
+                    "text (experiments/question.py's pack); its unpack writes the folders back, byte for byte.", w))
     return out
 
 

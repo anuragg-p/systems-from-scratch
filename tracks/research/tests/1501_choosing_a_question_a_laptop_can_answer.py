@@ -23,18 +23,15 @@ def read(path):
 
 
 def runs_in(d):
+    """A recorded run, packed (runs.jsonl, one line a run, each file's text): {label: [(config, summary, log rows)]}
+    in seed order."""
     out = {}
-    for label in sorted(os.listdir(d)):
-        if os.path.isdir(os.path.join(d, label)):
-            for seed in sorted(int(s[4:]) for s in os.listdir(os.path.join(d, label)) if s.startswith("seed")):
-                run = os.path.join(d, label, f"seed{seed}")
-                with open(os.path.join(run, "config.json")) as f:
-                    c = json.load(f)
-                with open(os.path.join(run, "summary.json")) as f:
-                    s = json.load(f)
-                with open(os.path.join(run, "log.jsonl")) as f:
-                    rows = [json.loads(line) for line in f if line.strip()]
-                out.setdefault(label, []).append((c, s, rows))
+    with open(os.path.join(d, "runs.jsonl")) as f:
+        packed = [json.loads(line) for line in f if line.strip()]
+    for r in sorted(packed, key=lambda r: (r["label"], r["seed"])):
+        files = r["files"]
+        rows = [json.loads(line) for line in files["log.jsonl"].splitlines() if line.strip()]
+        out.setdefault(r["label"], []).append((json.loads(files["config.json"]), json.loads(files["summary.json"]), rows))
     return out
 
 
@@ -187,3 +184,18 @@ def inside(S):
     back = q.read_runs(os.path.join(cfg.out, "pilot"))
     assert [s["val_bits"] for _, s in back["blocks1-none"]] == [3.0, 4.0]
     assert [c["seed"] for c, _ in back["blocks1-none"]] == [0, 1] and back["blocks1-none"][0][0]["lr"] == 0.003
+
+    # pack: the folders made into runs.jsonl and removed; read_runs the same; unpack gives the bytes back
+    d = os.path.join(cfg.out, "pilot")
+    before = {}
+    for label in os.listdir(d):
+        for seed in os.listdir(os.path.join(d, label)):
+            for name in q.RUN_FILES:
+                with open(os.path.join(d, label, seed, name), "rb") as f:
+                    before[label, seed, name] = f.read()
+    assert q.pack(d) == len(before) // 3 and os.listdir(d) == ["runs.jsonl"]
+    assert q.read_runs(d) == back
+    q.unpack(d, os.path.join(cfg.out, "again"))
+    for (label, seed, name), data in before.items():
+        with open(os.path.join(cfg.out, "again", label, seed, name), "rb") as f:
+            assert f.read() == data, (label, seed, name)

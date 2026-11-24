@@ -50,8 +50,9 @@ Computed, for the built modules, from the formulas and settings of the track's o
     14  the recorded long run of 14.03 (tracks/research/experiments/recorded/grokking/): every seed's accuracy
         curves and its two 99% steps; 14.04's recorded ablations: the start's and no weight decay's results;
         the paper's span is figure 1's caption (under 1e3, close to 1e6)
-    15  15.02's recorded experiment read from tracks/research/experiments/recorded/depth/: each depth's gap (test bits
-        without positions minus with them, pair by pair), its mean and paired 95% interval, the runs it made; the
+    15  15.02's recorded experiment read from tracks/research/experiments/recorded/depth/runs.jsonl (packed, one line a
+        run): each depth's gap (test bits without positions minus with them, pair by pair), its mean and paired 95%
+        interval, the runs it made; the
         pairs the recorded pilot asked for (tracks/research/experiments/recorded/pilot/output.txt); 08.03's 0.065
 Where a cover prints a number the lessons print, the script asserts it is the same number, so a
 change to the track that moves it stops this script instead of leaving the cover wrong.
@@ -1468,12 +1469,14 @@ def result_numbers():
     each depth's gaps (test bits without positions minus with them, pair by pair) and their mean and paired 95%
     interval, the pairs a depth ran, the runs in all, and the pairs the recorded pilot asked for (its output.txt)."""
     rec = os.path.join(ROOT, "tracks", "research", "experiments", "recorded")
+    with open(os.path.join(rec, "depth", "runs.jsonl")) as f:      # the record, packed: one line a run
+        packed = [json.loads(line) for line in f if line.strip()]
 
     def test_bits(label):
-        found = sorted(glob.glob(os.path.join(rec, "depth", label, "seed*", "summary.json")),
-                       key=lambda p: int(os.path.basename(os.path.dirname(p))[4:]))
-        return [json.load(open(p))["test_bits"] for p in found]
-    depths = sorted(int(os.path.basename(p)[6:].split("-")[0]) for p in glob.glob(os.path.join(rec, "depth", "blocks*-none")))
+        return [json.loads(r["files"]["summary.json"])["test_bits"]
+                for r in sorted((r for r in packed if r["label"] == label), key=lambda r: r["seed"])]
+    depths = sorted(int(r["label"][6:].split("-")[0]) for r in packed if r["label"].startswith("blocks")
+                    and r["label"].endswith("-none") and r["seed"] == 1)
     gaps = {d: [a - b for a, b in zip(test_bits(f"blocks{d}-none"), test_bits(f"blocks{d}-learned"))] for d in depths}
 
     def interval(xs):                    # the mean and a 95% t interval (13.02's interval; t from its table)
@@ -1482,7 +1485,7 @@ def result_numbers():
         sd = math.sqrt(sum((x - m) ** 2 for x in xs) / (n - 1))
         t = {22: 2.0796}[n]              # Student's t, 21 degrees of freedom, 97.5%
         return m, m - t * sd / math.sqrt(n), m + t * sd / math.sqrt(n)
-    runs = len(glob.glob(os.path.join(rec, "depth", "*", "seed*", "summary.json")))
+    runs = len(packed)
     pairs = int(open(os.path.join(rec, "pilot", "output.txt")).read().split(" pairs (13.02")[0].split()[-1])
     got = {"depths": depths, "gaps": {d: interval(g) for d, g in gaps.items()}, "pairs": len(gaps[depths[0]]),
            "runs": runs, "asked": pairs}

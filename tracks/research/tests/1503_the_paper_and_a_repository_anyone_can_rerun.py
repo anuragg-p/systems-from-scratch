@@ -16,7 +16,6 @@ import shlex
 import shutil
 
 DEPTH = "experiments/recorded/depth"
-PILOT = "experiments/recorded/pilot"
 PAPER = "experiments/recorded/paper"
 
 
@@ -41,8 +40,8 @@ def test(t):
                     "8. Limits", "9. To make every number again"):
         t.check(f"\n{section}\n" in text, f"the paper should have a section {section!r}")
     t.check(len(re.findall(r"^   (held|did not hold|not settled)$", text, re.M)) == 7, "a verdict for each prediction")
-    with open(os.path.join(t.root, DEPTH, "blocks1-none", "seed1", "config.json")) as f:
-        cfg = json.load(f)
+    record = packed(t)
+    cfg = json.loads(record["blocks1-none", 1]["config.json"])
     lines = [line.strip() for line in text.splitlines() if line.startswith("   python3 -m experiments.depth")]
     main = [line for line in lines if f"seeds={cfg['seeds']}" in line]
     t.check(len(main) == 1, f"the paper should give the experiment's command once: {lines}")
@@ -61,26 +60,23 @@ def test(t):
     # two pairs (an interval needs two), it makes the recorded runs of those pairs again, byte for byte.
     clean = os.path.join(t.tmp, "clean")
     shutil.copytree(t.root, clean, ignore=shutil.ignore_patterns("__pycache__", "runs", "recorded"))
-    one = {"depths": "[1]", "rates": f"[{cfg_rate(t)}]", "seeds": "2", "control": "0"}
+    rates = {json.loads(record[f"blocks1-{arm}", 1]["config.json"])["lr"] for arm in ("none", "learned")}
+    t.check(len(rates) == 1, f"both models at one block should run at one rate: {rates}")
+    one = {"depths": "[1]", "rates": f"[{rates.pop()}]", "seeds": "2", "control": "0"}
     args = [f"{k}={one.get(k, v)}" for k, v in given.items() if k != "out"]
     r = T.experiment(t, "depth", *args, root=clean)
     for arm in ("none", "learned"):
         for seed in (1, 2):
             for name in ("log.jsonl", "summary.json"):
-                got = read(os.path.join(r.runs, f"blocks1-{arm}", f"seed{seed}", name))
-                want = read(os.path.join(t.root, DEPTH, f"blocks1-{arm}", f"seed{seed}", name))
-                t.check(got == want, f"a clean copy, from the paper's command, gave another "
-                                     f"blocks1-{arm}/seed{seed}/{name}")
+                got = read(os.path.join(r.runs, f"blocks1-{arm}", f"seed{seed}", name)).decode()
+                t.check(got == record[f"blocks1-{arm}", seed][name], f"a clean copy, from the paper's command, gave "
+                                                                      f"another blocks1-{arm}/seed{seed}/{name}")
 
 
-def cfg_rate(t):
-    """The rate the recorded search chose for both models at one block (they chose the same)."""
-    rates = set()
-    for arm in ("none", "learned"):
-        with open(os.path.join(t.root, DEPTH, f"blocks1-{arm}", "seed1", "config.json")) as f:
-            rates.add(json.load(f)["lr"])
-    t.check(len(rates) == 1, f"both models at one block should run at one rate: {rates}")
-    return rates.pop()
+def packed(t):
+    """The recorded experiment's runs, as packed in runs.jsonl: {(label, seed): {file name: its text}}."""
+    with open(os.path.join(t.root, DEPTH, "runs.jsonl")) as f:
+        return {(r["label"], r["seed"]): r["files"] for r in map(json.loads, f)}
 
 
 def inside(S):
@@ -100,7 +96,7 @@ def inside(S):
     assert paper.command(settings, d) == 'python3 -m experiments.made "lrs=[0.3,0.1]" name_it=\'y\' out=runs', \
         paper.command(settings, d)
     assert paper.command(dict(settings, lrs=[0.1, 0.01], name_it="x"), d) == "python3 -m experiments.made out=runs"
-    assert paper.command(json.load(open("experiments/recorded/pilot/blocks1-none/seed0/config.json"))) == \
+    assert paper.command(q.read_runs("experiments/recorded/pilot")["blocks1-none"][0][0]) == \
         'python3 -m experiments.pilot "depths=[1,8]" seeds=4 out=experiments/recorded'
 
     # the paper from a fixture of runs whose numbers are known
