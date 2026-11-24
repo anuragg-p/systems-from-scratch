@@ -1,0 +1,47 @@
+1. Module 07's ladder, bits per character on the test text:
+   every character equally likely                             6.022
+   single characters                                          4.850
+   pairs (add-k 0.1)                                          3.599
+   add-k, context 4, k 0.03 (the best on validation)          2.629
+   deleted interpolation, contexts up to 7                    2.409
+   07.02's network, 5 characters (its short run)              2.474
+   07.02's network, 5 characters (its long run, 20 minutes)   2.346
+   07.02's network and interpolation, half each (long run, 5) 2.294
+   07.02's network and interpolation, half each (long run, 8) 2.283
+   07.03's recurrent network (its short run)                  2.540
+   07.03's recurrent network, 5000 steps (1 seed)             2.369
+
+2. The GPT: 6 blocks of 6 heads, width 192, windows of 256: 2,731,200 weights.
+   2800 steps of 32 windows (22.8 passes over the training text), AdamW 0.002 (weight decay 0.1),
+   100 steps of warmup then a cosine to 0; 2 seeds each. Bits per character (each character with 64 or more before it):
+   dropout 0.0: test 2.361 +- 0.02564 (min 2.343, max 2.379, 2 seeds)
+                validation 2.098 +- 0.01694 (min 2.086, max 2.11, 2 seeds)
+                validation curve (64 windows) lowest at step 1800 (2.040, end 2.089), 2000 (2.027, end 2.056)
+   dropout 0.2: test 2.226 +- 0.01542 (min 2.216, max 2.237, 2 seeds)
+                validation 2.015 +- 0.01929 (min 2.002, max 2.029, 2 seeds)
+                validation curve (64 windows) lowest at step 2600 (1.998, end 1.998), 2799 (2.027, end 2.027)
+   dropout 0.2 against 0.0, test: t = -6.4
+   curves in experiments/recorded/gpt/curves.svg
+
+3. The checkpoint: dropout 0.2, seed 0 (the lowest validation bits), saved to experiments/recorded/gpt/model.safetensors;
+   loaded back, the same scores, number for number: True
+
+4. 500 characters from it, after a newline:
+
+   thou makest awhile fild can examply in the strength
+   our conduction.
+   My son of bloody Coriolanus Capulet,
+   He reign with committed, true nember their peace
+   And almost behind a cheech to muzzer thee.
+   So I fearful free it, my lord, say, if thou dost of wine.
+   My lord of night, but I cannot not from myself?
+   . How do I see to live thee, speak show, will I rather?
+
+   POLIXENES:
+   O force disvolutation out a good. Thou wilt away, I fair,
+   at thy grief thief, and more than my brothers.
+
+   AUTOLYCUS:
+   One comes th
+
+3371 s of counting, training and scoring on cpu

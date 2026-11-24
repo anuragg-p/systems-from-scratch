@@ -52,12 +52,19 @@ models/ngram.py         07.02   context_codes, lookup, NGram, mixture_weights: c
 models/rnn.py           07.03   RNNCell, RNN: the recurrent cell by hand, unrolled in a loop
 models/attention.py     07.04   attend(scores, values), Additive: attention, kept apart from its scores
 models/seq2seq.py       07.04   Encoder, Decoder, AttentionDecoder, Seq2Seq (forward, generate)
+models/gpt.py           08.01   causal_mask, self_attend, SelfAttention (one head: query, key, value, out)
+                        08.02   SelfAttention's heads (@from); gelu, MLP, Block, GPT (no positions yet)
+                        08.03   Positions; GPT's positions=True (@from): the file modules 09 to 14 start from
 experiments/<name>.py   one per lesson (below); loop.py (03.01) and deep.py (04.01) are shared code
                         06.03   images.py: the PyTorch-era loop, tensors(dev, ...), train_epoch, evaluate
                         07.02   sequences.py: bits, contexts, context_bits, sample;  07.03 windows, window_bits
+                        08.01   language.py: train, the loop module 08 shares;  08.02 attention_maps, looks
+                        08.04   language.py: held_bits (and train's held), save, load;  08.05 top_k, top_p, generate
 experiments/recorded/   06.04   the long run of resnet.py, recorded (DATA in track.py; see "Long runs")
                         07.02   recorded/nplm/: the long run of nplm.py
+                        08.04   recorded/gpt/: the long run of gpt.py (no weights: model.safetensors is not shipped)
 tests/                  NNLL_*.py one per lesson; support.py, helpers for the PyTorch comparisons
+                        08.02   support.py: gpt_numpy and its pieces, the GPT again in float64 numpy
 ```
 
 From 06.02 the project needs PyTorch too (`pip install torch`; the CPU build
@@ -331,6 +338,11 @@ Times: the default run, `python3 -m experiments.<name>`, wall clock.
 | 07.02 | nplm (short; the long run, 20 minutes: see 07.02) | 38.6 |
 | 07.03 | rnn | 46.4 |
 | 07.04 | attention | 37.0 |
+| 08.01 | self_attention | 15.2 |
+| 08.02 | heads | 46.8 |
+| 08.03 | positions | 38.9 |
+| 08.04 | gpt (short; the long run, 56 minutes: see 08.04) | 35.1 |
+| 08.05 | sampling (no checkpoint: trains its own small GPT; with 08.04's long-run checkpoint 85 s) | 36.9 |
 
 06.01 to 06.04 were timed twice, the second time with other agents' runs
 going (load average 6 to 8): conv 26.4 and 27.0, switch 3.7 and 4.1, cifar
@@ -347,6 +359,18 @@ settings took up to 1.5 times as long (rnn 57 to 73 s at 800 steps), the
 defaults were cut to these (07.02's network 2500 to 2000 steps, 07.03's 800
 to 600, 07.04's 1200 to 1000; their entries give both sets of numbers).
 On a machine with nothing else running they should be faster still.
+
+08.01 to 08.05 were timed twice in a row with the defaults (10 threads),
+the machine never quiet: a virtual machine took 4 to 5 cores the whole
+time, load average 4.6 to 7.6 during the runs: self_attention 15.2 and
+15.1, heads 46.8 and 44.8, positions 38.9 and 38.9, gpt 35.1 and 33.0,
+sampling 35.0 and 36.9; the same output both times. Earlier, with other
+agents' runs going as well (load 10 to 18), the same settings took two to
+three times as long (heads 101 s, positions 88, sampling 72 to 110), the
+10 threads spending nearly as much time in the system as in the work;
+with OMP_NUM_THREADS=1 at load 5 to 8 heads took 45 s and positions 39:
+these small models gain nothing from threads. heads is the module's
+slowest default.
 
 Spike 1 (engine speed): one MNIST epoch (784-100-10, batches of 128, SGD)
 takes 0.14 s on the engine, 0.23 s on PyTorch; 0.41 s against 0.38 s with
@@ -1214,6 +1238,500 @@ whole rows 0.595 at 5, 0.001 at 10. Seed 0 writes 2 8 0 5 6 0 3 8 0 1 for 8
 shows it): it says that copying one's weights into the other gives the
 same states.
 
+### Module 08: the transformer, a GPT
+
+models/gpt.py is built over 08.01 to 08.03 and is the file modules 09 to
+14 start from (see "For module 09 and after" below for its names, the
+GPT-2 mapping and how to use it). Regions: causal_mask, self_attend,
+SelfAttention (08.01); gelu, MLP, Block, GPT (08.02); Positions (08.03).
+@from blocks: SelfAttention gains `heads` at 08.02 (its signature, the
+cut into heads in qkv, the join in forward); GPT gains `positions` at
+08.03 (its signature, the Positions it makes, the add in embed). The
+docstring's later lines carry one-line `# @from` markers, as data/fetch.py's
+does. Every experiment of the module builds the model its own settings
+name, so its numbers do not move when a later lesson changes the file:
+08.01's OneHead uses SelfAttention with heads left at 1, and 08.02's GPTs
+pass positions=False from 08.03 on (an @from block in heads.py's build).
+Measured: self_attention at 08.01 and heads at 08.02 give the same bytes
+in log.jsonl and summary.json in the project at their lesson and at the
+end of the track.
+
+What the learner already built is used under its name: layer norm
+(04.04, nn.LayerNorm, eps 1e-5 as GPT-2's), residual connections (04.05,
+the adds in Block.forward), AdamW (03.04), warmup and cosine decay
+(03.05, lab.warmup_cosine through LambdaLR), dropout (05.02, F.dropout),
+gradient clipping (07.03, clip_grad_norm_), embeddings (07.02,
+nn.Embedding), attend (07.04), bits, windows and window_bits (07.02,
+07.03), sample (07.02). New in the module: self-attention, heads, GELU,
+the block, tied output, GPT-2's start, learned positions, top-k, top-p.
+
+experiments/language.py is the module's shared loop (NOTES on 07 asked
+for one outside the experiments): train(model, cfg, run, dev, ids,
+held=None) (08.01; `held` from 08.04): each step cfg.batch windows of
+cfg.context characters from random places (run.rng), bits, AdamW with
+weight decay on the tensors of 2 or more dimensions only (matrices and
+embeddings, as nanoGPT does; biases and layer norms none), the
+rate warmed up over cfg.warmup steps then a cosine to 0, clipped to
+cfg.clip; a log row every cfg.every steps. attention_maps and looks
+(08.02); held_bits, save and load (08.04); top_k, top_p and generate
+(08.05).
+
+GPT starts as GPT-2 does, as nanoGPT reads it: every weight normal with
+sd 0.02, biases 0, layer norms 1 and 0, attention's out and the MLP's
+down by 1/sqrt(2 x layers) smaller. Read at the sources: Radford et al.
+(2019), section 2.3, "We scale the weights of residual layers at
+initialization by a factor of 1/sqrt(N) where N is the number of
+residual layers" (two to a block, so N = 2 x layers); OpenAI's
+src/model.py draws every conv1d weight with sd 0.02, wte with 0.02, wpe
+with 0.01 (ours: 0.02; and the 1/sqrt(N) is not in that file, which has
+no training code). With the output tied to the embedding, nn.Embedding's
+own start (sd 1) would give scores of sd about sqrt(width) and a first
+loss far above log2 65 (reasoned, not measured; not a lesson).
+
+**08.01 Self-attention with a causal mask (Vaswani et al. 2017, section
+3.2.1).** experiments/self_attention.py: OneHead (an embedding of 128, one
+SelfAttention of width 128, a Linear layer to the 65 scores), windows of
+32 characters, batches of 32, 600 steps, AdamW 0.003 with weight decay 0.1,
+50 steps of warmup then a cosine, clipped to 1, 3 seeds.
+1. The footnote in numbers (queries and keys of d numbers of variance 1,
+   1000 queries over 32 positions): the sd of q . k is 3.99, 7.91, 15.99,
+   31.77 at d = 16, 64, 256, 1024 (sqrt(d)); the mean largest softmax
+   weight 0.630, 0.812, 0.912, 0.951; the gradient back through the
+   softmax (the length, for a random weighting of its output) 2.51e-01,
+   1.73e-01, 9.20e-02, 5.13e-02. Divided by sqrt(d): sd 1.01, 1.00, 1.00,
+   0.99, largest weight 0.163 to 0.165, gradient 2.27e-01 to 2.32e-01 at
+   every d. Trained: divided `3.581 +- 0.006225`, not divided `3.752 +-
+   0.02092`, t = +13.6. At width 64 (spike, 600 steps of windows of 64)
+   the trained difference was nothing (3.649 against 3.660, t = +0.8), at
+   128 it shows (3.604 against 3.771, t = +7.9), and at 256 (1500 steps)
+   3.588 against 3.859, t = +8.2: the division matters once a head is
+   wide, as the paper's "for large values of d_k" says. Our q and k come
+   from nn.Linear's start (variance about a third of their input's), so
+   their scores' sd is about sqrt(d)/3, not the footnote's sqrt(d).
+2. The mask. Changed from the plan's failure, which needs positions: the
+   plan said the loss without the mask falls towards nothing. Without
+   positions (they are 08.03's) a query cannot find the next position:
+   keys are made from what is at a position, not where, so the unmasked
+   model sees the window as a bag of characters that includes the ones to
+   come, and its loss falls only a little below the masked model's.
+   Measured (bits per character): the last training batch, masked `3.527
+   +- 0.04386`, no mask `3.25 +- 0.05688` (t = -6.7); the test text read
+   as in training (every position of windows of 32, the future in view
+   without the mask) `3.567 +- 0.008395` against `3.259 +- 0.07179` (t =
+   -7.4); the test text, each character from the 32 before it only (the
+   window that ends before it, its last position's scores: last_bits),
+   `3.581 +- 0.006225` against `4.2 +- 0.08714` (t = +12.3). So the
+   lesson's failure as found: the loss says the unmasked model is better,
+   on held-out text too, and asked honestly it is far worse. Its text
+   (seed 0, 300 characters after a newline) falls into one character
+   ("thy hm me me m my? me me m ... rrrrrrrrr..."): longest run of one
+   character 75, against 4 for the masked model's and 2 in the test text;
+   07.02's count model (interpolation up to 5) scores it 5.581 bits per
+   character against the masked model's 5.232 and the test text's 2.416.
+   The samples are not noise, as the plan expected: they are one
+   character over and over. Spike with learned positions added (the 08.01
+   one head, width 64, windows of 64, 1500 steps, 2 seeds; scratch code,
+   not in the project): without the mask the training batch falls to 0.068
+   and 0.061 bits and validation to 0.064 and 0.065 (it copies the next
+   character), with the mask 3.32 and 3.43; it writes newline after
+   newline. That is the plan's failure, and 08.03 can show it if the page
+   wants it (it would need a OneHead with positions; not built).
+3. A window of 32 test characters with its last changed: masked, the
+   largest change in the scores at the 31 positions before it 0, positions
+   changed 0; no mask 1.01, all 31.
+15.2 and 15.1 s with 10 threads at load 5 to 6 (a virtual machine taking
+4 to 5 cores); 32 s at load 12.5; the same digits each time, and the
+same as a run with OMP_NUM_THREADS=4. The plan's "A test: changing a later token
+leaves every earlier output unchanged, exactly" is held by the tests of
+08.01 (SelfAttention, OneHead), 08.02 (GPT without positions) and 08.03
+(GPT with positions): torch.equal, not a tolerance.
+Paper, read at the source (arXiv 1706.03762v7): "We suspect that for
+large values of d_k, the dot products grow large in magnitude, pushing
+the softmax function into regions where it has extremely small
+gradients. To counteract this effect, we scale the dot products by
+1/sqrt(d_k)." Footnote 4: "To illustrate why the dot products get large,
+assume that the components of q and k are independent random variables
+with mean 0 and variance 1. Then their dot product, q . k = sum_{i=1}^{d_k}
+q_i k_i, has mean 0 and variance d_k." The divisor is the head's size,
+d_k, which is the width only with one head (08.02 divides by width /
+heads). Section 3.2.3 is where the paper masks: "We need to prevent
+leftward information flow in the decoder to preserve the auto-regressive
+property. We implement this inside of scaled dot-product attention by
+masking out (setting to -inf) all values in the input of the softmax
+which correspond to illegal connections." (Its -inf is the symbol; every
+quote here was checked against the PDF.)
+
+**08.02 Many heads, and the residual stream (Vaswani et al. 2017,
+section 3.2.2 and table 3).** experiments/heads.py: width 64, windows of
+32, 300 steps of 32, AdamW 0.003, 3 seeds; no positions (08.03). Bits per
+character on the test text, each character with 16 or more before it:
+1. The obvious way deeper, 08.01's attention layer after layer (Stack: an
+   embedding, SelfAttention after SelfAttention, a Linear layer): 1 layer
+   25,025 weights `3.727 +- 0.02901`, 4 layers 74,945 `4.598 +- 0.005443`,
+   t = +51.2. Four are far worse than one (the four sit near 4.6, worse
+   than single-character counts' 4.85 only a little).
+2. Blocks (pre-norm: x + attention(norm1(x)), then x + mlp(norm2(x)), a
+   last layer norm, tied output): 1 block of 4 heads 54,272 weights `3.503
+   +- 0.005772`, 4 blocks 204,224 `3.407 +- 0.009038`, t = -15.4.
+3. Heads at the same weights: 4 blocks, 1 head of 64 `3.433 +- 0.01583`,
+   4 heads of 16 `3.407 +- 0.009038`, t = -2.4: four heads a little better,
+   not beyond doubt at 3 seeds. The paper's table 3 rows (A) (English to
+   German, dev perplexity per word piece / BLEU): h = 1 5.29 / 24.9; 4
+   5.00 / 25.5; 8 (base) 4.92 / 25.8; 16 4.91 / 25.8; 32 5.01 / 25.4; its
+   text: "While single-head attention is 0.9 BLEU worse than the best
+   setting, quality also drops off with too many heads." Rows (C), depth: N
+   = 2 6.11 / 23.7, 4 5.19 / 25.3, 8 4.88 / 25.5 (base 6). Ours points the
+   same way at a far smaller size, the heads less clearly.
+4. Where each head looks (seed 0 of 4 blocks of 4 heads, 575 windows of
+   the test text, positions 16 to 31; how far back on average, the weight
+   on its own position, on the one before): block 1 all four heads near
+   equal weights (11.1 to 11.7 back, 0.04 to 0.06 each; equal weights would
+   be 11.8 and 0.04); deeper blocks a little sharper (block 3, a head at
+   0.16 on itself, another 8.4 back). Without positions a head can choose
+   only by what is at a position; the little sharpening in deeper blocks
+   is the order the mask lets in (08.03, part 1). Seed 0's weights on the
+   first 32 test characters are in runs/heads/blocks4-heads4/seed0/
+   summary.json ("window": the 32 character numbers; "weights": 4 blocks
+   x 4 heads x 32 x 32, 4 decimals): the figure's data.
+Tried: 500 steps (3 seeds, OMP_NUM_THREADS=4, the machine busy, 109 s):
+stack 3.635 / 4.521 (t = +41.3), blocks 3.460 / 3.293 (t = -27.5), heads
+3.331 / 3.293 (t = -3.7), the same story; at 2 layers and 500 steps the
+stack's failure is small (3.635 against 3.680, t = +2.1) and the heads
+3.412 against 3.380 (t = -4.3); with 16 heads of 4 (2 blocks, 600 steps,
+windows of 64) 3.361 against 4 heads' 3.385 and 1 head's 3.417, and twice
+the time of one head. The default is 4 layers at 300 steps for the
+minute.
+46.8 and 44.8 s with 10 threads at load 5 to 6 (a virtual machine taking
+4 to 5 cores); 101 s at load 12 to 14 (80 s of it system time: the 10
+threads fighting for cores); 45 s with OMP_NUM_THREADS=1 at load 5 to 8.
+The same digits every way. The slowest default of the module; fewer
+steps or layers=3 would shorten it, with what effect on the table not
+measured.
+
+**08.03 Where am I: position embeddings (Vaswani et al. 2017, section
+3.5).** experiments/positions.py, the same settings as 08.02 (4 blocks of
+4 heads, width 64, windows of 32, 300 steps, 3 seeds).
+1. The plan's exact test does not hold as stated for a GPT of more than
+   one block, and the lesson changes: the scores at the last position are
+   the same for any order of the characters before it only with one block.
+   Measured in float64, the last of 32 test characters, the 31 before it
+   in 5 other orders: 1 block without positions, the largest change in a
+   score 3.55e-15 (2.66e-15 in another run: rounding); 4 blocks without
+   positions 2.44; 4 blocks with learned positions 4.24. Why: in one block
+   the last position's query meets a set of keys and values, each made
+   from one character alone; from the second block on, each position's
+   vector holds what its first-block attention saw, and with the mask that
+   is the characters up to it, which depends on the order. The causal mask
+   gives the model order without any positions. Haviv, Ram, Press, Izsak
+   and Levy (2022), "Transformer Language Models without Positional
+   Encodings Still Learn Positional Information" (arXiv 2203.16634; its
+   abstract read, not the paper): causal language models without
+   positions "are still competitive with standard models", and "We
+   conjecture that causal attention enables the model to infer the number
+   of predecessors that each token can attend to, thereby approximating
+   its absolute position." The test holds the one-block case at 1e-12 and
+   the two-block and positions cases above it.
+2. Bits: no positions `3.407 +- 0.009038` (the same models as 08.02's 4
+   blocks of 4 heads: same settings and seeds), learned positions `3.342 +-
+   0.009945`, t = -8.4. Positions help, by 0.065 bits at this size, not by
+   the gulf the bag-of-characters picture suggests (part 1 says why).
+3. Past the context length (seed 0): with learned positions a window of
+   128 is "ValueError: 128 positions, but there are learned vectors for
+   32" (Positions refuses it; nn.Embedding would have raised an
+   IndexError); read with only the last 32 before each character it scores
+   3.351. Without positions any length runs: windows of 32, 64 and 128 from
+   the test text, bits at positions 0 to 31 / 32 to 63 / 64 to 127: n = 1
+   3.399; n = 2 3.410 / 3.537; n = 4 3.410 / 3.543 / 3.682. Worse the
+   further past the trained length: what it learned of order from the mask
+   is tied to the lengths it saw. The paper chose sinusoids "because it may
+   allow the model to extrapolate to sequence lengths longer than the ones
+   encountered during training", and found learned ones "nearly identical"
+   (table 3 row (E): 4.92 / 25.7 against the base 4.92 / 25.8); sinusoids
+   are not built here; module 10's rotary positions are the track's answer.
+4. Where the heads look with positions (seed 0): block 1's heads now
+   differ (8.0, 7.9, 11.0 and 5.2 back; one head 0.14 on itself and 0.16
+   on the one before); no head is a clean "previous character" head after
+   300 steps. The models are short-trained. 08.04's long-run model was not
+   looked at this way (attention_maps takes any GPT, and load() gives
+   one back from its checkpoint).
+38.9 and 38.9 s with 10 threads at load 6 to 7 (a virtual machine taking
+4 to 5 cores); 88 s at load 13 to 14; 39 s with OMP_NUM_THREADS=1 at load
+3 to 5. The 08.01 failure with positions (spike under 08.01, part
+2) belongs here if the page wants the plan's dramatic version.
+
+**08.04 Training a GPT on Shakespeare.** experiments/gpt.py: GPT with
+learned positions trained by language.train (AdamW, weight decay 0.1 on
+the matrices and embeddings, warmup then cosine to 0, clipped to 1),
+each of `dropouts` for `seeds` seeds; every `every` steps the bits of a
+fixed batch of `held` validation windows (rng 0) go to the log beside
+the training batch's (train's held, held_bits). Scored at the end with
+window_bits, each character with context / 4 or more before it, on the
+test text and on the validation text. 07's ladder is printed first: the
+count models computed again (ladder: equal chances 6.022, single
+characters 4.850, pairs 3.599, add-k best on validation context 4 with k
+0.03 2.629, deleted interpolation up to 7 2.409: 07's own numbers to the
+last digit), its networks quoted from their runs (NETWORKS in gpt.py:
+2.474, 2.346, 2.294, 2.283, 2.540, 2.369). The checkpoint: the model with
+the lowest validation bits of the run, saved with save() to
+<out>/gpt/model.safetensors (metadata: config, steps, seed, val_bits),
+loaded back with load(), the same scores (torch.equal); then 500
+characters from it (07.02's sample, temperature 1, seed 0).
+The default (short) run: 4 blocks of 4 heads, width 64, windows of 64
+(208,320 weights), 300 steps of 32 (0.6 passes), AdamW 0.003, warmup 50,
+2 dropouts x 2 seeds: dropout 0 test `3.332 +- 0.01587` (validation
+3.322), dropout 0.2 `3.474 +- 0.004561` (3.475), t = +12.1; every
+validation curve lowest at its last point (step 299); checkpoint dropout
+0, seed 1, the same scores loaded back. Below the pair model, far above
+every model of 07 but the pair and single counts: in a minute the GPT
+has not caught up (it has seen 0.6 of the text once). Its text is
+07.01-like gibberish with speakers' names and line breaks. 35.1 and 33.0
+s with 10 threads at load 5 to 6. The page's Run it shows the table and
+dropout costing; where validation turns up, and dropout curing it, are
+the long run's (no minute of CPU gets near 15 million characters).
+
+The long run, recorded in experiments/recorded/gpt/ (config.json,
+log.jsonl and summary.json of each dropout and seed; curves.svg, every
+run's training batch dashed and validation windows solid; output.txt,
+what it printed). Its checkpoint (model.safetensors, 10.9 MB) was moved
+out: no weights are shipped.
+
+    python3 -m experiments.gpt layers=6 heads=6 width=192 context=256 batch=32 steps=2800 lr=0.002 warmup=100 every=100 seeds=2 out=experiments/recorded
+
+6 blocks of 6 heads, width 192, windows of 256 (2,731,200 weights), 2800
+steps of 32 windows (22.9 million characters, 22.8 passes), AdamW 0.002,
+weight decay 0.1, warmup 100 then cosine to 0, clipped to 1; dropout 0
+and 0.2, 2 seeds each. 3371 s by its own clock, 56 min 12 s of wall clock
+(18:16:30 to 19:12:42), 10 threads, a virtual machine taking 4 to 5
+cores and other agents' runs coming and going (load 5 to 11; a step took
+0.29 to 0.32 s, dropout's a little longer). Two seeds, not three: three
+would have been about 85 minutes; four runs of 2800 steps were what the
+hour holds, and 2800 is what it takes to see the curve turn.
+Bits per character, each character with 64 or more before it:
+- dropout 0: test `2.361 +- 0.02564` (2.343, 2.379), validation `2.098 +-
+  0.01694` (2.086, 2.11). The validation windows' curve is lowest at step
+  1800 (2.040) and 2000 (2.027), then rises to 2.089 and 2.056 at the end;
+  the last training batch 1.45 and 1.55 bits.
+- dropout 0.2: test `2.226 +- 0.01542` (2.216, 2.237), validation `2.015
+  +- 0.01929` (2.002, 2.029). The curve still falls, or is flat, at the
+  end (lowest 1.998 at 2600, 2.027 at 2799); the last training batch
+  (with the dropping) 1.83 and 1.91.
+- dropout 0.2 against 0, test: t = -6.4.
+Where validation turns up: without dropout, at about step 1800 to 2000,
+after 15 to 16 million characters (15 to 16 passes over the training
+text), while the training batch keeps falling: from there the model
+learns the training plays at the cost of the held-out ones (0.03 to 0.05
+bits back up on the validation windows by the end, and its test bits
+2.361 against 2.257 for the same model stopped at 1500 steps, below).
+What dropout does about it: with dropout 0.2 the curve does not turn up
+in 2800 steps, and the model ends 0.08 bits lower on validation and 0.135
+lower on test than without; the gap between the training batch and the
+validation windows is about 0.15 bits at the end against 0.5 to 0.65
+without.
+The checkpoint is dropout 0.2, seed 0 (the lowest validation bits,
+2.002).
+Beside 07's ladder (test): equal chances 6.022, single characters 4.850,
+pairs 3.599, add-k context 4 2.629, interpolation up to 7 2.409; 07.02's
+network 2.474 (short) and 2.346 (long), mixed with interpolation 2.294 (5)
+and 2.283 (8); 07.03's recurrent network 2.540 (short) and 2.369 (5000
+steps, 1 seed). The GPT chosen on validation (dropout 0.2): both seeds
+below every one of them; the mean 0.057 below 07's best (the mix at 8;
+the worse seed 0.046), 0.120 below 07.02's network alone, 0.143 below the
+recurrent network's 5000 steps, 0.183 below interpolation. In perplexity
+per character 2^2.226 = 4.68 against 2^2.283 = 4.87, 4% lower. Without
+dropout, run this long, it is worse than 07.02's network mixed with
+interpolation (2.361 against 2.283), and than 07.02's network alone
+(2.346): overfitting has given back all of the gain. The
+test holds the turn-up without dropout, dropout's lower validation bits,
+and every seed of the chosen setting below 2.283.
+The text (dropout 0.2, seed 0, 500 characters after a newline) has verse
+lines, capitals, speakers' names (POLIXENES, AUTOLYCUS: The Winter's
+Tale's, in the training text), real words in Shakespeare's rhythm, and
+some made ones ("cheech", "muzzer", "disvolutation"): "thou makest awhile
+fild can examply in the strength / our conduction. / My son of bloody
+Coriolanus Capulet, / He reign with committed, true nember their peace /
+And almost behind a cheech to muzzer thee. / So I fearful free it, my
+lord, say, if thou dost of wine." Passable verse at a glance, as the
+outline asks; not sense.
+An earlier recording, replaced by this one (the same settings but 1500
+steps; 29 min 26 s, load 5 to 18): dropout 0 test `2.257 +- 0.005479`
+(2.253, 2.261), validation 2.052, the curves lowest at their last point;
+dropout 0.2 test `2.378 +- 0.01022`, validation 2.211, t = +14.7. At
+1500 steps nothing had turned up and dropout only cost (0.12 bits on
+test). It was replaced because it could not show what 08.04 is about
+(where validation turns up and what dropout does), and an hour held a
+run that does. Its numbers say something too: the best of the four runs
+without dropout is the one stopped at 1500 steps (2.257 on test, against
+2.361 at 2800); stopping early does part of dropout's job, and dropout at
+2800 steps does better than either (2.226). The 1500-step text: "Thy
+father had self Warwick exhally daregels, / Bear of thy hounty here hath
+good beheld!".
+Spike, the size and the length (what I tried). Explored on the Apple GPU
+(mps) for speed, each run given the steps the CPU makes in 570 s (9.5
+minutes) at its CPU time a step (10 threads, load about 4: 107, 162, 240,
+390, 523 ms for the sizes below), windows of 256, batches of 32, lr 1e-3,
+warmup 100, weight decay 0.1, 1 seed; validation / test bits at the end:
+- 4 blocks of 4 heads, width 128 (834,432 weights), 5327 steps: 2.054 /
+  2.287; dropout 0.2: 2.169 / 2.349.
+- 4 x 192, 6 heads (1,841,472), 3518 steps: 2.076 / 2.291; 0.2: 2.124 /
+  2.311.
+- 6 x 192, 6 heads (2,731,200), 2375 steps: 2.038 / 2.259; 0.2: 2.149 /
+  2.337.
+- 6 x 256, 8 heads (4,821,248), 1461 steps: 2.065 / 2.242; 0.2: 2.255 /
+  2.418.
+- 6 x 384 (10.8M): not measured (its run was stopped by mistake).
+In every one the validation windows' curve was lowest at its last point:
+within 9.5 minutes of CPU nothing turns up, and dropout 0.2 only costs.
+Where it does turn up (mps, no dropout unless said): 6 x 192 at lr 1e-3
+with the cosine stretched over 10000 steps (stopped at 3000): lowest 2.133
+at step 2500, then 2.179 and 2.185 (training batch 1.61); 6 x 192 at lr
+2e-3, cosine over 3700 (stopped at 2400): lowest 2.113 at 2100, 2.161 at
+2400; 6 x 256 at lr 1e-3 over 2300: lowest 2.101 at 1800, 2.103 at the
+end, and test 2.290, worse than the same model's 2.242 after 1461 steps
+(the longer run fits the training plays better and The Tempest worse);
+with dropout 0.2 the same model was still falling at 1800 (2.165), behind.
+So on this text a GPT of a few million weights starts to overfit after
+about 15 to 20 million characters (15 to 20 passes): four runs of 1500
+steps (12 million each, the first recording) fall just short of it, four
+of 2800 (the recording) go past it.
+Longer still (mps, 1 seed, the long run's settings but 3700 steps, the
+cosine over all of them; 431 and 397 s on mps, 18 to 20 minutes a run on
+this CPU at 0.29 to 0.32 s a step): dropout 0.2 ends at validation 1.987,
+test 2.225, its validation windows still falling at the end (lowest 2.035
+at 3300; training batch 1.73); without dropout the curve is lowest at
+1700 (2.110) and higher at every point after (2.129 at 2000, 2.193 at
+2400, 2.319 at 3000, 2.385 at the end), the training batch down to 1.207
+bits: validation 2.349, test 2.618, worse than 07.02's deleted
+interpolation (2.409) and about level with its best add-k (2.629). The
+same story as the recording, louder: test 2.225 against 2.618. The
+recording at 2800 steps with dropout (2.226) is as good as this longer
+run's (2.225).
+
+**08.05 Sampling: temperature, top-k and top-p (Holtzman et al. 2020).**
+experiments/sampling.py. The functions are experiments/language.py's:
+top_k(scores, k), top_p(scores, p) (the nucleus: in order of chance, a
+symbol is kept while the chances before it add up to less than p, so the
+fewest whose chances reach p; equal chances in symbol order, sort's
+stable=True), generate(model, prompts, n, generator, temperature, k, p)
+(batched, temperature then top-k then top-p, as transformers orders
+them; temperature 0 is greedy). The model: the checkpoint 08.04 leaves
+(experiments/recorded/gpt/model.safetensors when the learner has rerun
+the long run with the recorded command, else runs/gpt/model.safetensors
+from 08.04's default run), else, with none (as in verify, which replays
+each lesson in its own copy), a GPT trained here: 4 blocks of 4 heads,
+width 64, windows of 64, 600 steps, seed 0. checkpoint=PATH takes one,
+checkpoint=none never does (the test uses it, so a learner's runs/ cannot
+change what it checks). The output's first line says which.
+16 prompts: the first 32 characters of 16 speeches of the test text,
+evenly spread (a speech starts after a blank line); 200 characters after
+each; 3 seeds of the sampling (greedy once: it has no chance in it).
+Perplexity: 2 to the model's bits per character of the 200 (its own
+chances, before any cut; each character scored from at least the 32
+before it, in windows as 07.03's window_bits). Repetition: the paper's
+(its figure 9: "A phrase (minimum length 2) is considered a repetition
+when it repeats at least three times at the end of the generation"), on
+characters.
+The default run (the small model):
+
+    the text itself    8.898                       0.0%
+    greedy             2.766 (no chance in it)     100.0%
+    pure sampling      9.128 +- 0.1918 (3 seeds)   0.0%
+    sampling, t=0.9    7.688 +- 0.05169            0.0%
+    sampling, t=0.7    5.821 +- 0.1142             0.0%
+    top-k=5            5.232 +- 0.1573             0.0%
+    nucleus, p=0.95    7.512 +- 0.2581             0.0%
+
+Greedy ends in a loop after every prompt (both passages shown: " the the
+the ..."; perplexity 2.77, a third of the text's 8.90). Pure sampling is about as unlikely to the
+model as the text itself (9.13 against 8.90, 2.6% above); every cut makes
+the text more likely to the model (t=0.9 7.69, nucleus 0.95 7.51, t=0.7
+5.82, top-k 5 5.23). The closest to the text is pure sampling, not the
+nucleus. No sampled passage of 200 characters ends in a loop.
+The paper's table 1 (GPT-2 Large, 5,000 passages of up to 200 word
+pieces, WebText; perplexity / repetition %): human 12.38 / 0.28; greedy
+1.50 / 73.66; beam b=16 1.48 / 28.94; stochastic beam 19.20 / 0.32; pure
+sampling 22.73 / 0.22; sampling t=0.9 10.25 / 0.66; top-k=40 6.88 / 0.78;
+top-k=640 13.82 / 0.28; top-k=40, t=0.7 3.48 / 8.86; nucleus p=0.95 13.13 /
+0.36. Its claims, quoted from the paper (arXiv 1904.09751v2): abstract,
+"maximization-based decoding methods such as beam search lead to
+degeneration - output text that is bland, incoherent, or gets stuck in
+repetitive loops" (its dash); section 4.2, "We see that perplexity of
+text obtained from pure sampling is worse than the perplexity of the
+gold. This indicates that the model is confusing itself", and "Nucleus
+Sampling obtains closest perplexity to human text, as shown in Table 1";
+figure 9, "Sampling with temperatures lower than 0.9 severely increase
+repetition".
+What held at this size: greedy's degeneration (held, strongly: every
+passage a loop, perplexity a third of the text's; the paper's 73.66%).
+What did not: pure sampling's text is only a little less likely to the
+model than the text (its perplexity 2.6% above, where the paper's is 84%
+above), and so the nucleus,
+which cuts the tail, moves the text further from the text's perplexity
+(7.51 against 8.90), not closer; and low temperatures do not loop on
+characters in 200 steps. Why, as far as measured: with 65 characters the
+tail the nucleus cuts is small (the paper's argument is about tens of
+thousands of word pieces, each unlikely, together a large share), and a
+character model's own perplexity is small to begin with. Top-k at the
+paper's k = 40 cuts 25 of 65 characters, almost nothing of the
+distribution: spike (the same model and seeds), top-k=40 gave 8.991
+against pure sampling's 9.128, its first passage the same as pure
+sampling's for its first 100 characters (the same draws until a cut
+character would have been drawn); and top-k=40 with t=0.7 the same as
+t=0.7 alone (5.823 against 5.821), the same first passage. So the default
+lists top-k=5 instead, and the page should say why. Beam search, Self-BLEU,
+the Zipf coefficient and HUSE are not run.
+With 08.04's long-run checkpoint (`checkpoint=` the file the long run
+saved: dropout 0.2, seed 0, 6 blocks of 6 heads, width 192, windows of
+256, 2800 steps, validation 2.002; 85 s, not a default run), the same
+prompts and seeds:
+
+    the text itself    4.908                       0.0%
+    greedy             1.867 (no chance in it)     0.0%
+    pure sampling      3.195 +- 0.0529 (3 seeds)   0.0%
+    sampling, t=0.9    2.859 +- 0.03311            0.0%
+    sampling, t=0.7    2.565 +- 0.05808            0.0%
+    top-k=5            2.654 +- 0.1118             0.0%
+    nucleus, p=0.95    2.911 +- 0.06012            0.0%
+
+With the better model even pure sampling writes text the model finds far
+more likely than the text itself (3.20 against 4.91): the paper's
+"perplexity of text obtained from pure sampling is worse than the
+perplexity of the gold" does not hold here at all, and the nucleus is
+again further from the text than pure sampling (2.91). Greedy is still
+the most likely (1.87) and starts to repeat ("What shall I see the state
+of the state of the world?", "And thou art the state of thy soul state,
+/ And thou art the state of thy so") but no passage ends in a phrase
+three times over within 200 characters: the paper's measure counts only
+loops at the end. Part of why pure sampling is so far below the text:
+the test text (the end of The Shrew, then The Tempest, whose names the
+model never saw; 07's Data: every model is 0.2 bits worse on test than
+on validation) is harder for the model than its own writing. Spike
+(scratch code: the same functions on 16 speeches of the validation text,
+3 seeds): the text itself 3.653, pure sampling `3.189 +- 0.1307` (min
+3.093, max 3.338): still 13% below the text, beyond the spread. With the
+first recording's checkpoint (dropout 0, 1500 steps, validation 2.049)
+the same spike gave 3.724 against `3.547 +- 0.1945` (5% below, within
+the spread), and the test table text 5.025, greedy 2.224, pure sampling
+3.481, t=0.9 3.224, t=0.7 2.739, top-k=5 2.819, nucleus 3.125. So the
+model trained with dropout finds its own samples more likely, against
+the text, than the one without; why is not measured. The paper's human
+text was from the same distribution as GPT-2's training data (held-out
+WebText), so validation is the fairer ground; the experiment keeps test,
+as the track scores everything on test, and the page should say so. The
+paper's 84% above is seen with neither model nor text. The texts are
+visibly better than the small model's (prompt 1, pure sampling: "Of
+fortune misinously house I say. / Thou liest me thou, to a bed, I love
+thee."; t=0.7: "but I'll not swear / What shall say you to the
+conveyary of a / bed better in the sun of conscience").
+The test checks the cuts against a direct computation on small scores,
+generate against an argmax loop and against counted draws from a fixed
+distribution (4000 draws, within 0.03), and the short run's story:
+greedy below half the text's perplexity and looping in half the passages
+or more, pure sampling within 15% of the text, t=0.7, top-k=5 and the
+nucleus each below 95% of pure sampling's.
+35.0 and 36.9 s with 10 threads at load 5 to 7 (a virtual machine
+taking 4 to 5 cores); 72 and 110 s earlier at load 10 to 16 with other
+agents' runs going. The same output each time.
+
 ## For module 08: what module 07 leaves ready
 
 - The text: `from data import shakespeare`; `shakespeare.split("train")`
@@ -1265,6 +1783,123 @@ same states.
   on it says the count models of ngram.py are not networks and that file is
   numpy only. A module 08 that adds a numpy-only model keeps it true the
   same way.
+
+## For module 09 and after: the GPT module 08 leaves
+
+**Building, training, saving, loading, sampling.** From the project's top:
+
+    import torch
+    from models.gpt import GPT
+    from experiments.language import train, save, load, generate, top_k, top_p
+    from experiments.sequences import window_bits
+
+    config = dict(vocab=65, context=256, layers=6, heads=6, width=192, dropout=0.2, bias=True, positions=True)
+    model = GPT(**config)                     # scores = model(ids): ids (batch, T) int64 -> (batch, T, vocab)
+    train(model, cfg, run, dev, ids, held)   # cfg: steps batch context lr warmup weight_decay clip every (lab.config)
+    save(model, config, "runs/gpt/model.safetensors", steps=..., seed=..., val_bits=...)
+    model, notes = load("runs/gpt/model.safetensors", dev)          # eval mode; notes["config"] is config
+    drawn = generate(model, prompts, 200, torch.Generator().manual_seed(0), temperature=1.0, k=None, p=0.95)
+    bits = window_bits(model, test_ids, model.context - 64 + 1, 64)  # bits per character, as 07.03 scores
+
+The config above is 08.04's long run's best (2.226 bits per character on
+the test text after 2800 steps at lr 0.002; its checkpoint is not
+shipped, so a module that
+needs a trained character model trains one in its run, or loads the
+learner's from experiments/recorded/gpt/ or runs/gpt/ as sampling.py
+does). load() needs only the file: the metadata holds the config.
+generate(model, prompts, n, generator, temperature, k, p) is batched over
+the rows of prompts (batch, P), reads the last model.context symbols at
+each step (no cache of keys and values: each step is a whole forward, so
+the cost grows with the window; module 11's), temperature 0 is greedy;
+top_k(scores, k) and top_p(scores, p) are functions on the scores alone
+(any vocabulary, GPT-2's 50257 too). GPT(..., positions=False) has no
+position vectors and reads any length.
+
+**Configuration** (GPT's arguments; GPT-2's own names in brackets): vocab
+(vocab_size, n_vocab), context (n_positions, n_ctx), layers (n_layer),
+heads (n_head), width (n_embd), dropout (resid_pdrop and embd_pdrop; GPT-2
+has attn_pdrop on the attention weights too, which we do not have: it
+matters only in training), bias (GPT-2 has every bias), positions. GPT-2
+small is GPT(vocab=50257, context=1024, layers=12, heads=12, width=768,
+dropout=0.0, bias=True): 124,439,808 weights, GPT-2 small's count (the
+output tied to the embedding is counted once). A GPT of L blocks has V W +
+context W + L (12 W^2 + 13 W) + 2 W weights (the test holds the formula
+without positions).
+
+**Parameter names and shapes, ours against GPT-2's checkpoint.** Read
+from the published file itself, not from memory: the 14,283-byte header of
+https://huggingface.co/openai-community/gpt2/resolve/main/model.safetensors
+(fetched with two HTTP Range requests on 2026-11-24; the repository at
+commit 607a30d783dfa663caf39e06633721c8d4cfcd7e; the file 548,105,171
+bytes, its X-Linked-ETag 248dfc3911869ec493c76e65bf2fcf7f615828b0254c12b473182f0f81d3a707,
+which for a Git LFS file on that site is its SHA-256: 09.03's fetch pins
+it after checking). 160 tensors, all F32, metadata {"format": "pt"}; the
+names have no "transformer." in front (transformers' own state_dict has
+it); there is no lm_head (tied to wte). For each block i (0 to 11), W = 768:
+
+    ours                                   shape        GPT-2 (model.safetensors)     shape        how
+    tokens.weight                          [V, W]       wte.weight                    [50257, 768] as is
+    positions.weight                       [ctx, W]     wpe.weight                    [1024, 768]  as is
+    blocks.i.norm1.weight / .bias          [W]          h.i.ln_1.weight / .bias       [768]        as is
+    blocks.i.attention.query.weight        [W, W]       h.i.attn.c_attn.weight        [768, 2304]  columns 0:768, transposed
+    blocks.i.attention.key.weight          [W, W]         "                                        columns 768:1536, transposed
+    blocks.i.attention.value.weight        [W, W]         "                                        columns 1536:2304, transposed
+    blocks.i.attention.query/key/value.bias [W]         h.i.attn.c_attn.bias          [2304]       0:768, 768:1536, 1536:2304
+    blocks.i.attention.out.weight / .bias  [W, W], [W]  h.i.attn.c_proj.weight / .bias [768, 768]  weight transposed (square!)
+    blocks.i.norm2.weight / .bias          [W]          h.i.ln_2.weight / .bias       [768]        as is
+    blocks.i.mlp.up.weight / .bias         [4W, W]      h.i.mlp.c_fc.weight / .bias   [768, 3072]  weight transposed
+    blocks.i.mlp.down.weight / .bias       [W, 4W]      h.i.mlp.c_proj.weight / .bias [3072, 768]  weight transposed
+    norm.weight / .bias                    [W]          ln_f.weight / .bias           [768]        as is
+    (none)                                              h.i.attn.bias                 [1, 1, 1024, 1024]  skip
+
+Transposed: every weight of GPT-2's four Conv1D layers (c_attn, attn's
+c_proj, c_fc, mlp's c_proj), which keep a weight as (inputs, outputs) and
+compute x @ W + b (transformers' pytorch_utils.Conv1D: "Basically works
+like a linear layer but the weights are transposed"; OpenAI's
+src/model.py conv1d: tf.matmul(x, w) with w of shape [1, nx, nf]), where
+nn.Linear keeps (outputs, inputs) and computes x @ W.T + b. attn.c_proj is
+square, so a missing transpose loads without complaint and gives wrong
+logits. The embeddings and the layer norms are as they are. h.i.attn.bias
+is not a bias: it is the causal mask as a buffer of ones and zeros (12 of
+them, 48 MB of the file); transformers no longer puts it in its
+state_dict (4.57.6 here), the file still has it. c_attn holds query, key
+and value side by side in that order (transformers splits it with
+.split(split_size, dim=2) into query, key, value; OpenAI's tf.split(c, 3,
+axis=2) into q, k, v). The test of 08.03 builds transformers'
+GPT2LMHeadModel (random weights, a small configuration, eager attention),
+moves its weights into our GPT with exactly this mapping (from_gpt2 in
+tests/0803_...py: 09.03 can lift it) and gets the same logits to 1e-10 in
+float64.
+
+**The rest of what must agree, checked in the reference code.** GELU:
+GPT-2's config says activation_function "gelu_new", which transformers'
+ACT2CLS maps to NewGELUActivation, 0.5 x (1 + tanh(sqrt(2 / pi) (x +
+0.044715 x^3))); OpenAI's src/model.py gelu is the same formula; ours,
+models/gpt.py's gelu, is that formula (equal to F.gelu(approximate="tanh")
+to the last bit here, and as fast). Not the exact erf GELU (F.gelu's
+default). Layer norm eps 1e-5 (layer_norm_epsilon; OpenAI's norm(...,
+epsilon=1e-5)); nn.LayerNorm's default. Pre-norm blocks with a last norm
+(ln_f), as ours. Scores divided by sqrt(64), the head's size. The mask:
+ours -inf, transformers torch.finfo(dtype).min, OpenAI -1e10: the same
+softmax wherever a row has something unmasked, which the causal mask
+always leaves. Positions are absolute, 0 to 1023 (no offset). The output
+is the hidden state times wte transposed.
+
+**What modules 10 and 11 are meant to replace, and where.** Module 10:
+the layer norms (Block's norm1, norm2 and GPT's norm: nn.LayerNorm), the
+MLP (models/gpt.py's MLP: up, gelu, down; SwiGLU adds a gate), the
+positions (Positions, added in GPT.embed; rotary ones turn q and k
+instead, in SelfAttention.qkv or self_attend), and grouped-query
+attention (SelfAttention's key and value with fewer heads). Module 11:
+self_attend, for F.scaled_dot_product_attention(q, k, v, is_causal=True)
+(the tests of 08.01 and 08.02 already compare the two at 1e-12 in
+float64), and a cache of keys and values for generate. GPT's start (the
+loop in its __init__) finds the layers by name: "norm" in a name means a
+norm, names ending in attention.out.weight and mlp.down.weight are the
+two that add into the stream; a replacement that renames them must keep
+the loop right. attention_maps (experiments/language.py) rebuilds each
+block's weights from block.norm1, block.attention.qkv, a.mask and a.scale;
+it must follow those changes too.
 
 ## Tests
 
@@ -1346,6 +1981,68 @@ which now counts the pair model's 3.599 again and reads 07.02's recorded
 run. Verifying 07.01 to 07.04 replays nplm, rnn and attention twice each,
 the 5000-step rnn once (about 130 s) and the Break its: about ten minutes.
 
+With module 08 (a virtual machine taking 4 to 5 cores, load average
+about 5): `./learn test research` 40 tests, all pass, 8 min 43 s; module
+08's five 2 min 49 s (08.01 15.2 s, 08.02 38.5, 08.03 42.2, 08.04 39.9,
+08.05 33.3). An earlier full run at load 6 to 11 took 11 min 15 s. Module
+08's five tests, each its differential
+checks first (in float64 unless said), then its experiment: 08.01:
+causal_mask; self_attend against loops over positions for every head,
+with and without the mask and the division (1e-12), and against
+F.scaled_dot_product_attention (1e-12); SelfAttention against its
+definition; a later position changes nothing before it (torch.equal), in
+SelfAttention and in OneHead, and does without the mask; last_bits
+against a direct sum; at_the_start's spreads; then self_attention (2
+seeds): no mask lower as trained by 0.15 and higher from the past by
+0.3, not divided higher by 0.08, the masked text not one character over
+and over and the unmasked one's so, the last-character change 0 and not
+0; a tiny run twice, byte for byte. 08.02: gelu against F.gelu
+(1e-14); SelfAttention with 3 heads against tests/support.py's loops and
+against F.scaled_dot_product_attention (1e-12); MLP; a Block and a GPT
+without positions against support.gpt_numpy (1e-10; in float32 1e-5);
+causality; the weight count V W + L (12 W^2 + 13 W) + 2 W and GPT-2's
+start (sds 0.02 and 0.02 / sqrt(2 L)); attention_maps (rows add to 1, 0
+above the diagonal, the first block's output from them) and looks on a
+known map; then heads (2 seeds): the stack worse by 0.3, 4 blocks better
+by 0.05, 4 heads below 1 head; the logged weights' shape; a tiny run
+twice. 08.03: Positions and its refusal; a GPT with positions against
+gpt_numpy (1e-10); causality; shuffled for 1 block (same), 2 blocks and
+positions (not); transformers' GPT2LMHeadModel against our GPT through
+the GPT-2 mapping (1e-10; skipped with a printed line if transformers is
+not installed); then positions (2 seeds): positions lower by 0.03, the
+shuffle line's three cases, the ValueError, bits rising past the
+context; a tiny run twice. 08.04: held_bits; train's held rows; save and
+load (the same scores; the safetensors library reads the file, its
+metadata and every tensor); ladder's first rows equal to 07's; lowest;
+the recorded long run (every file, the curve in every log, no weights;
+without dropout every seed's curve turns up by more than 0.02 before the
+end, dropout's validation bits are the lower, every seed of the setting
+chosen on validation below 2.283); then gpt (the default, 2 seeds): below the pair model, the
+checkpoint and curves written, read back the same, the validation curve
+falling; a tiny run twice, checkpoint included, byte for byte;
+LEARN_RERUN_LONG=1 runs the long run again. 08.05: top_k and top_p
+against a direct computation on two rows of scores for every k and eight
+p; generate against counted draws (4000) from a fixed distribution with
+each cut and a temperature, greedy against an argmax loop, k = 1 equal
+to greedy, the same generator the same symbols, the window cut to
+model.context; repeats; continuation_bits against a direct sum; then
+sampling (2 seeds, checkpoint=none): greedy's perplexity below half the
+text's and its loops, pure sampling within 15% of the text, t = 0.7,
+top-k 5 and the nucleus below 95% of pure sampling; a checkpoint written
+by save is used when given; a tiny run twice.
+08.03's comparison with transformers imports it in the test's own python
+(a few seconds; the tests may use it, the project never does). The long
+run is rerun only with LEARN_RERUN_LONG=1 (about an hour). `./learn
+check-skeleton research` ok, 33 s (40 lessons, each fails at its stub:
+08.01 at causal_mask, 08.02 at gelu, 08.03 at Positions, 08.04 at
+held_bits, 08.05 at top_k). `./learn check-timeline research` ok, 2 min
+16 s (5 min 12 s at load 10 to 30); the project has 153 files at 08.01, 154 at 08.02, 155 at 08.03,
+170 at 08.04 (13 of them the recorded run, which track.py places at 08.04
+with its glob first) and 171 at 08.05; 06.04 still 98 and 07.02 145.
+`./learn selftest` ok (269 tests). `./learn check` reports exactly nine
+problems, `research/07.0N` and `research/08.0N: test has no lesson doc`;
+nothing else.
+
 ## For the harness work and module 06
 
 - verify_tools() names python3 and numpy only. MNIST is a download, not a
@@ -1372,3 +2069,12 @@ the 5000-step rnn once (about 130 s) and the Break its: about ten minutes.
   already does; then each module's recorded run needs only its own line.
 - (07) Module 07 needs no download, so its session blocks need only
   needs="torch" from 07.02 on; 07.01 is numpy only and needs nothing.
+- (08) The same glob order again: track.py's module-08 part puts
+  "experiments/recorded/gpt/*" first. Module 08 needs no download either:
+  needs="torch" for all five lessons. gpt.py writes its checkpoint,
+  model.safetensors, into the run's folder, and so into
+  experiments/recorded/gpt/ when the long run is made again; the harness
+  reads the disk, not git, so track.py adds
+  "experiments/recorded/*/model.safetensors" to HIDDEN: never listed,
+  shown or materialized. The recorded one was moved out before the commit
+  (no weights are shipped).

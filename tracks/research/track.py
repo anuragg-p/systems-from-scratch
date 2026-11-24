@@ -526,3 +526,32 @@ DATA["data/tinyshakespeare.txt"] = "Tiny Shakespeare, from Andrej Karpathy's cha
 # narrower glob goes first.
 FILES_FROM = {"experiments/recorded/nplm/*": "07.02", **FILES_FROM}
 DATA["experiments/recorded/nplm/*"] = "the long run of experiments/nplm.py (07.02), recorded on the machine in NOTES.md"
+
+
+# ---------------------------------------------------------------- module 08: the transformer, a GPT
+#
+# Kept apart from the tables above, as modules 06 and 07's parts are. models/gpt.py is built up over 08.01 to 08.03
+# (regions, and @from blocks where a later lesson changes code an earlier one wrote), and experiments/language.py
+# is the loop the module's experiments share. The text ships with the project, so nothing needs a download.
+
+EXPERIMENTS.update({
+    "self_attention": ("08.01", ["seeds=1", "steps=5", "sizes=[16]", "length=20", "orders=2"],
+                       r"s of training and scoring on cpu"),
+    "heads": ("08.02", ["seeds=1", "steps=5", "layers=2"], r"s of training and scoring on cpu"),
+    "positions": ("08.03", ["seeds=1", "steps=5", "layers=2", "orders=2", "longer=[2]"],
+                  r"s of training and scoring on cpu"),
+    "gpt": ("08.04", ["seeds=1", "steps=6", "layers=1", "width=16", "context=16", "every=2", "held=4", "orders=2",
+                      "length=20"], r"s of counting, training and scoring on cpu"),
+    "sampling": ("08.05", ["seeds=1", "steps=5", "prompts=2", "length=8", "context=16", "prompt=8", "checkpoint=none"],
+                 r"s of training, sampling and scoring on cpu"),
+})
+DATASET_OF.update({"self_attention": None, "heads": None, "positions": None, "gpt": None, "sampling": None})
+
+# The long run of 08.04, recorded as 06.04's and 07.02's are (experiments/gpt.py with out=experiments/recorded): every
+# config.json, log.jsonl and summary.json, the curves and what it printed; not its checkpoint (no weights are shipped).
+# As module 07's part says, the first glob that matches a file places it, so this narrower one goes first too.
+FILES_FROM = {"experiments/recorded/gpt/*": "08.04", **FILES_FROM}
+DATA["experiments/recorded/gpt/*"] = "the long run of experiments/gpt.py (08.04), recorded on the machine in NOTES.md"
+# The run writes its checkpoint beside the record; a learner who runs it again gets one there. It is weights, not
+# part of the record: never shown or materialized, and not committed.
+HIDDEN.append("experiments/recorded/*/model.safetensors")
