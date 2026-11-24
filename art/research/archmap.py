@@ -14,15 +14,16 @@ The map is the whole core (modules 00 to 15) as layers, the lab under everything
     research      13 experiments that hold up | 14 the reproduction | 15 your own result
     models        06 image networks | 07 language models | 08 the GPT | 09 real weights |
                   10 today's architecture | 11 fast | 12 fine-tuning
-    experiments   a curve | two groups | digits | deep networks | generalisation | images
-    the data      points | MNIST | augment | CIFAR-10
+    experiments   a curve | two groups | digits | deep networks | generalisation | images | language
+    the data      points | MNIST | augment | CIFAR-10 | Shakespeare
     the engine    nudge | values | tensors | losses | layers | optimisers | convolution
     the lab       runs | seeds | plots | checkpoints | checks | devices
     ------------  the current module's lessons, one box each (as dsa's strip)
 
 (Until module 06 the data was a column beside the experiments and the engine; module 06 gave
 the engine and the experiments a seventh and sixth piece, and the data a fourth, which a column
-had no room for, so the data became a row of its own.)
+had no room for, so the data became a row of its own. Module 07 adds the text to the data, the
+language experiments, and the language models' piece, which its 07.02 to 07.04 share.)
 
 In each lesson's copy, that lesson's piece (LESSONS below: exactly one per lesson) is drawn in
 the accent colour, every piece whose code has arrived by that lesson (PIECES: the lesson it
@@ -64,7 +65,7 @@ PIECES = {
     "15": ("research", "your own result", "15", None),
     # models: models/, one file per network family (06 on); the modules after 06 not built yet
     "06": ("models", "image networks", "06", "06.02"),
-    "07": ("models", "language models", "07", None),
+    "07": ("models", "language models", "07", "07.02"),
     "08": ("models", "the GPT", "08", None),
     "09": ("models", "real weights", "09", None),
     "10": ("models", "today's architecture", "10", None),
@@ -77,11 +78,13 @@ PIECES = {
     "deep": ("experiments", "deep networks", "module 04", "04.01"),
     "general": ("experiments", "generalisation", "module 05", "05.01"),
     "images": ("experiments", "images", "module 06", "06.01"),
+    "text": ("experiments", "language", "module 07", "07.01"),
     # the data: data/
     "points": ("data", "points", "made from a seed", "01.04"),
     "mnist": ("data", "MNIST", "fetched once", "03.01"),
     "augment": ("data", "augment", "new images every pass", "05.03"),
     "cifar": ("data", "CIFAR-10", "fetched once", "06.03"),
+    "shakespeare": ("data", "Shakespeare", "shipped, 1.1 MB", "07.01"),
     # the engine: engine/
     "nudge": ("engine", "nudge", "gradient check", "01.01"),
     "values": ("engine", "values", "autograd", "01.02"),
@@ -132,6 +135,10 @@ LESSONS = [
     ("06.02", "One import: the same script on PyTorch", "devices", "one import"),
     ("06.03", "A convolutional network on CIFAR-10", "cifar", "CIFAR-10"),
     ("06.04", "ResNet: the plain network against the residual one", "06", "ResNet"),
+    ("07.01", "Counting pairs: a bigram model, and the loss to beat", "shakespeare", "counting pairs"),
+    ("07.02", "Embeddings and a network: a neural language model", "07", "embeddings"),
+    ("07.03", "A recurrent network, and how it forgets", "07", "a recurrent network"),
+    ("07.04", "Attention: looking back at every position", "07", "attention"),
 ]
 
 MODULE_TITLES = {
@@ -142,6 +149,7 @@ MODULE_TITLES = {
     "04": "Deep networks that train",
     "05": "Generalisation",
     "06": "Images: convolution and residual networks",
+    "07": "Language models, from counting to attention",
 }
 
 # The rows, top to bottom: key -> its label over the row.
@@ -149,7 +157,7 @@ ROWS = {
     "research": "research",
     "models": "models: the networks experiments share",
     "experiments": "experiments: one script per lesson",
-    "data": "the data: fetched once, or made",
+    "data": "the data: fetched once, shipped, or made",
     "engine": "the engine: PyTorch's names, in numpy (PyTorch itself from 06.02 on)",
     "lab": "the lab: under every run",
 }

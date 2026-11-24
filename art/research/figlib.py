@@ -80,6 +80,7 @@ MODULE_DIRS = {
     "04": "04-deep-networks",
     "05": "05-generalisation",
     "06": "06-images",
+    "07": "07-language-models",
 }
 
 
