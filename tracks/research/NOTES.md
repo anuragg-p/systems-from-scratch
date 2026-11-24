@@ -3546,3 +3546,96 @@ right: x - y "about the same amount of data", not run); S5 (the paper's
 figure 1 center and figure 2 left are on S5; ours on x/y, which the claims
 table says beside each). Thilak et al.'s slingshot paper and the Omnigrok
 body were not read. Nothing was run on Linux.
+
+### The lessons (written 2026-11-24, after the code)
+
+Four lessons, the module page, 14 figures (art/research/figs14.py) and the
+cover (art/outlines/research_art.py, from the recorded runs, its numbers
+asserted). Read at the source for the pages, beyond what is above:
+- S. Keshav, "How to Read a Paper", the PDF the outline links (3 pages),
+  whole: the three passes (2.1 first pass, five to ten minutes, and its
+  "five Cs"; 2.2 second, the figures, "Are the axes properly labeled? Are
+  results shown with error bars"; 2.3 third, "attempt to virtually
+  re-implement the paper: that is, making the same assumptions as the
+  authors, re-create the work"). 14.01 cites only these.
+- J. Schulman, "An Opinionated Guide to ML Research" (posted 2020/01/24),
+  whole: "Personal Development" ("I recommend spending a lot of time
+  reimplementing ideas from papers, and comparing your results to the
+  published ones"; "where the desired level of performance is known") and
+  "Keep a Notebook, and Review". Cited in 14.01 and 14.04's Go deeper.
+- The grokking PDF again, whole, with figure 1 (page 1), figure 2 (page 3)
+  and figure 4 (page 7) looked at: the readings above agree (figure 1's
+  training passes 99% near 5 x 10^2 to 7 x 10^2, validation leaves chance
+  near 5 x 10^4; figure 2 left, minibatch Adam near 0 at 50% and AdamW with
+  weight decay 1 near 100 from about 40%; figure 4's chance line about 2.3
+  and peak about 20 near 10^5). Figure 1's red training curve has brief
+  dips after 10^3, as ours does. Section 3.1 states the delay in other
+  words than the caption ("starts increasing beyond chance level only
+  after 1000 times more optimization steps"), where the caption's own "very
+  little evidence of any generalization until 10^5" is a hundred times;
+  14.01 says so. Section 3.1's "For larger dataset sizes, the training and
+  validation curves tend to track each other more closely" is 14.02's
+  reason for 35%. Appendix A.3 on the second descent of the loss being
+  perhaps not Nakkiran et al.'s double descent, cited in 14.03.
+- openai/grok at 3d64b1d8c1d5 again: README.md (the command
+  `./scripts/train.py`), scripts/train.py (parses training.add_args and
+  trains), and training.py's argument defaults: math_operator "+",
+  train_data_pct 5, weight_decay 0, max_lr 1e-3, warmup_steps 10, n_layers
+  2, d_model 128, n_heads 4. So the README's command trains x + y on 5% of
+  the equations without weight decay (14.01). data.py: make_data's shuffle
+  with RandomState(seed=0) and its default seed (the one split),
+  "<|eos|> ... <|eos|>" around every equation; ArithmeticIterator's
+  min(512, ceil(n / 2)) and its smaller last batch. training.py's _step
+  (loss on everything after "=") and _accuracy (an equation right only when
+  every token after "=" is). transformer.py: no explicit initialisation
+  anywhere (PyTorch's own start).
+- Nanda et al. again: section 3 (no LayerNorm, untied), figure 7 looked at
+  (page 8: the sum of squares peaks near 3650 at about epoch 1000 and is
+  near 1000 from about 14k on: the norm to about 0.52 of its peak), section
+  5.3 ("when networks are provided with enough data, there is no longer a
+  gap between the train and test losses"), appendix D.1's sentence and
+  figure 27 looked at (page 28: weight decay 0.3 groks at about 15k to 25k
+  epochs over its seeds, 3.0 at about 2k to 4k; the caption "Less
+  aggressive weight decay leads to slower grokking").
+- Omnigrok (Liu, Michaud and Tegmark), the arXiv abstract page (v2, 23 Mar
+  2023): the abstract only, as above. 14.04's Go deeper says so.
+
+Measured for the pages (this machine, load 11 to 14, other agents
+training; one run each unless said):
+- The weights' norm at the start, 27.45, is mostly the layer norms: 5
+  layer norms of 128 (two a block and the last), 640 gains at 1 and 640
+  biases at 0, give sqrt(640) = 25.30; the other 408,960 numbers give
+  10.64. Started 10 times larger (scaled_start leaves the layer norms),
+  109.4. Nanda et al.'s model has no layer norm, so our norm_falls ratio
+  (0.926) and their 0.53 do not measure the same thing; the logs do not
+  hold the two parts apart. 14.03, How it works, shows it as a session.
+- 14.02's Break it: batch=543 at 35% (3259 = 6 x 543 + 1, a last batch of
+  one equation each pass): after 350 steps training accuracy `0.02557 +-
+  0.0009374`, validation 0.01828, training loss 4.517 (3 seeds, 47 s): no
+  memorising at all, against 0.964 with 512. The same with the paper's
+  batch at fraction=0.33 (3073 = 6 x 512 + 1): training 0.02473 after 350
+  steps (44 s); at fraction=0.332 (a last batch of 20): 0.1171 (47 s).
+  fraction=0.5 at 350 steps: training 0.1861, validation 0.05019 (seed 0
+  0.307 and 0.11, the others 0.15 and 0.10 with validation near chance):
+  not decisive in 350 steps, so 14.02's figure draws 14.04's recorded 50%
+  runs instead.
+- 14.03's Break it: weight_decay=0.0, 350 steps: every seed training 1.000
+  (99% by step 350), validation 0.01625, validation loss 6.111 (1.34 times
+  a guess's, its highest at the last step), the norm 34.4, 34.4, 34.7 at
+  the end (with weight decay 27.4, 27.2, 26.9). 52 s.
+- 14.04's Break it: late's rule ("about", 1000) made ("above", 1.0): the
+  report prints "held: 10, of 10 claims". Nothing else changes.
+- The default runs as the pages show them: claims 1.2 s; grokking at 14.02
+  42 s and at 14.03 37 s (load 13); ablations and report under a second.
+  Every number on the pages is the same as above; the seconds vary.
+
+"Held in direction only": the report's verdicts are 9 held and 1 did not
+hold, by the rules of predictions.py. 14.04 and figs14.py's verdicts figure
+read two of the nine as held in direction only: a direction rule (above or
+below a line) that held where the paper's number is more than 3 times
+further from the rule's line, on a log scale, than ours (the factor
+"about" allows). That marks loss_rises (ln 9 = 2.20 against ln 1.16 =
+0.15) and norm_falls (0.63 against 0.077), and no other (less_data 1.39
+against 1.17, more_decay the middle of 2 to 4, 1.04, against 1.38,
+near_chance 1.61 against 0.73; decay's "about 0" has no log). It is a
+reading made after the runs, said so on the page, and changes no verdict.

@@ -63,9 +63,9 @@ ROOT = figlib.ROOT
 # one can still bring a piece's code (00.03 brings the plots, 02.05 the checkpoint file, 03.01
 # the optimisers' first one): that piece is solid from then on, never in the accent for it.
 PIECES = {
-    # research (not built yet)
+    # research (13 and 15 not built yet)
     "13": ("research", "experiments that hold up", "13", None),
-    "14": ("research", "the reproduction", "14", None),
+    "14": ("research", "the reproduction", "14", "14.01"),
     "15": ("research", "your own result", "15", None),
     # models: models/, one file per network family (06 on); the modules after 09 not built yet
     "06": ("models", "image networks", "06", "06.02"),
@@ -154,6 +154,10 @@ LESSONS = [
     ("09.02", "GPT-2's tokenizer: the same ids as tiktoken", "tokens", "GPT-2's tokenizer"),
     ("09.03", "Loading GPT-2: the same logits as the reference", "09", "loading GPT-2"),
     ("09.04", "Pretraining on TinyStories: a model that tells a story", "tinystories", "TinyStories"),
+    ("14.01", "Reading a paper for what it claims", "14", "reading for claims"),
+    ("14.02", "The experiment from the text: modular arithmetic", "14", "the experiment"),
+    ("14.03", "The figure: memorise first, generalise much later", "14", "the figure"),
+    ("14.04", "Ablations, and the report", "14", "ablations, report"),
 ]
 
 MODULE_TITLES = {
@@ -167,6 +171,7 @@ MODULE_TITLES = {
     "07": "Language models, from counting to attention",
     "08": "The transformer: a GPT",
     "09": "GPT-2: the tokenizer and the real weights",
+    "14": "Reproduce a paper: grokking",
 }
 
 # The rows, top to bottom: key -> its label over the row.

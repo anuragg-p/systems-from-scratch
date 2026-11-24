@@ -83,6 +83,7 @@ MODULE_DIRS = {
     "07": "07-language-models",
     "08": "08-transformer",
     "09": "09-gpt-2",
+    "14": "14-grokking",
 }
 
 
