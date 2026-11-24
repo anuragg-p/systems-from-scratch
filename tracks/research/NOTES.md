@@ -2143,6 +2143,20 @@ with its glob first) and 171 at 08.05; 06.04 still 98 and 07.02 145.
 `./learn selftest` ok (269 tests). `./learn check` reports exactly nine
 problems, `research/07.0N` and `research/08.0N: test has no lesson doc`;
 nothing else.
+With module 08's pages (lessons agent, 2026-11-24; another agent training
+on the machine, load 7 to 13): `./learn verify --fresh research 08` ok in
+534 s (08.01 55 s, 08.02 154 s with its seeds=3 run, 08.03 119, 08.04
+103, 08.05 103); inside it 08.01's default printed 44 s and 08.02's 2-seed
+default 43 s. `./learn test research 08` all 5 pass, 3 min 46 s, after
+the 2-seed cut. `./learn check` ok, no problems; `./learn check-skeleton
+research` ok; `./learn check-timeline research` ok (153 to 171 files at
+08.01 to 08.05, as before); `./learn selftest` ok (269 tests). Two things
+a writer here meets: `./learn verify --static` takes another project's
+file named in backticks (`model.py`, `gpt_train.py`) for this project's,
+so a Go deeper line that names one needs a `mention ... outside`
+annotation; and a transcript pasted by hand can be a character off (a
+line of 300 sampled characters was): check each line against the run's
+saved output before verifying.
 
 ## For the harness work and module 06
 
