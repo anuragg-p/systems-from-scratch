@@ -121,6 +121,11 @@ def table(found, runs, control, cfg, out=None):
     seeds = len(runs[depths[0], "none"])
     test = {k: [s["test_bits"] for s in v] for k, v in runs.items()}
     val = {k: [s["val_bits"] for s in v] for k, v in runs.items()}
+    if seeds < 2:                                     # an interval needs two pairs or more
+        print("\n   Test bits per character, one pair: " + "; ".join(
+            f"{d} block{'s' * (d > 1)} none {test[d, 'none'][0]:.4f}, learned {test[d, 'learned'][0]:.4f}"
+            for d in depths) + "\n   (no interval, and no verdict, from one pair)")
+        return {}
     print(f"\n   Test bits per character, {seeds} fresh seeds (1 to {seeds}), each arm at its chosen rate; the gap is "
           f"none minus learned,\n   seed by seed, with its {q.LEVEL:.0%} interval paired and as two independent sets "
           f"(Welch):")
@@ -205,8 +210,8 @@ def main():
             control.setdefault(d, []).append(q.trained(model, at, run, dev, data, test=True))
     print(f"1 to 5. {cfg.steps} steps of {cfg.batch} windows of {cfg.context}, width {cfg.width}, {cfg.heads} heads, "
           f"depths {', '.join(map(str, cfg.depths))}:")
-    table(found, runs, control, cfg, os.path.join(cfg.out, cfg.name))
-    print(f"   figures in {os.path.join(cfg.out, cfg.name, 'bits.svg')} and gap.svg")
+    if table(found, runs, control, cfg, os.path.join(cfg.out, cfg.name)):
+        print(f"   figures in {os.path.join(cfg.out, cfg.name, 'bits.svg')} and gap.svg")
 
     recorded = os.path.join(cfg.recorded, "depth")
     if os.path.isdir(recorded) and os.path.abspath(recorded) != os.path.abspath(f"{cfg.out}/{cfg.name}"):

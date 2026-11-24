@@ -4,13 +4,15 @@ defaults() reads an experiment's CONFIG from its source without importing it; co
 that made a run, from its config.json alone, every list quoted. The paper built from a small fixture of runs
 written here has the fixture's numbers in it: the gap and its interval, the pairs the pilot asked for, every
 verdict. On the recorded runs the paper is printed as written, its abstract four sentences, its commands the
-recorded runs' own; and those commands are true: the recorded experiment's config.json, run again on short
-settings in a clean copy of the project, gives the same bytes as in the project itself.
+recorded runs' own; and the experiment's command is true: given as the paper prints it, cut to one depth, one rate and
+one pair, in a clean copy of the project with no runs and no records, it makes the recorded runs of that pair again.
 """
 
+import hashlib
 import json
 import os
 import re
+import shlex
 import shutil
 
 DEPTH = "experiments/recorded/depth"
@@ -41,31 +43,44 @@ def test(t):
     t.check(len(re.findall(r"^   (held|did not hold|not settled)$", text, re.M)) == 7, "a verdict for each prediction")
     with open(os.path.join(t.root, DEPTH, "blocks1-none", "seed1", "config.json")) as f:
         cfg = json.load(f)
-    want = (f'python3 -m experiments.depth "depths={cfg["depths"]!r}" "rates={cfg["rates"]!r}" seeds={cfg["seeds"]} '
-            f'steps={cfg["steps"]} every={cfg["every"]} control={cfg["control"]} out={cfg["out"]}').replace(", ", ",")
-    t.check(want in text, f"the paper should give the experiment's command, {want!r}:\n{text[-1500:]}")
+    lines = [line.strip() for line in text.splitlines() if line.startswith("   python3 -m experiments.depth")]
+    main = [line for line in lines if f"seeds={cfg['seeds']}" in line]
+    t.check(len(main) == 1, f"the paper should give the experiment's command once: {lines}")
+    words = shlex.split(main[0])
+    given = dict(w.split("=", 1) for w in words[3:])
+    for key in ("depths", "rates", "seeds", "steps", "every", "control", "out"):
+        t.check(given.get(key) == (cfg[key] if isinstance(cfg[key], str) else json.dumps(cfg[key]).replace(" ", "")),
+                f"the paper's command should give {key}={cfg[key]!r}: {main[0]}")
+    t.check(set(given) == {"depths", "rates", "seeds", "steps", "every", "control", "out"},
+            f"the command should give the settings that differ from depth.py's defaults, no others: {main[0]}")
     with open(os.path.join(t.root, "data", "tinyshakespeare.txt"), "rb") as f:
-        import hashlib
         digest = hashlib.sha256(f.read()).hexdigest()
     t.check(digest in text, "the paper should give the text's SHA-256")
 
-    # The commands are true: the recorded experiment's settings, made short, in a clean copy and in the project
+    # The command is true: run in a clean copy of the project (no runs, no records), cut to one depth, one rate and
+    # two pairs (an interval needs two), it makes the recorded runs of those pairs again, byte for byte.
     clean = os.path.join(t.tmp, "clean")
     shutil.copytree(t.root, clean, ignore=shutil.ignore_patterns("__pycache__", "runs", "recorded"))
-    short = ["depths=[1,2]", "rates=[0.003]", "seeds=1", "steps=6", "every=2", "control=2"]
-    settings = [f"{k}={json.dumps(v).replace(' ', '')}" for k, v in cfg.items()
-                if k not in ("name", "label", "seed", "lr", "out") and k not in {s.split("=")[0] for s in short}]
-    a = T.experiment(t, "depth", *settings, *short)
-    b = T.experiment(t, "depth", *settings, *short, root=clean)
-    for run in ("search-blocks2-learned-lr0.003/seed0", "blocks1-none/seed1", "blocks2-learned/seed1",
-                "control-blocks2-wider/seed1"):
-        for name in ("config.json", "log.jsonl", "summary.json"):
-            got = [read(os.path.join(x.runs, run, name)) for x in (a, b)]
-            if name == "config.json":
-                got = [json.loads(g) for g in got]
-                for g in got:
-                    g.pop("out")
-            t.check(got[0] == got[1], f"a clean copy gave another {run}/{name}")
+    one = {"depths": "[1]", "rates": f"[{cfg_rate(t)}]", "seeds": "2", "control": "0"}
+    args = [f"{k}={one.get(k, v)}" for k, v in given.items() if k != "out"]
+    r = T.experiment(t, "depth", *args, root=clean)
+    for arm in ("none", "learned"):
+        for seed in (1, 2):
+            for name in ("log.jsonl", "summary.json"):
+                got = read(os.path.join(r.runs, f"blocks1-{arm}", f"seed{seed}", name))
+                want = read(os.path.join(t.root, DEPTH, f"blocks1-{arm}", f"seed{seed}", name))
+                t.check(got == want, f"a clean copy, from the paper's command, gave another "
+                                     f"blocks1-{arm}/seed{seed}/{name}")
+
+
+def cfg_rate(t):
+    """The rate the recorded search chose for both models at one block (they chose the same)."""
+    rates = set()
+    for arm in ("none", "learned"):
+        with open(os.path.join(t.root, DEPTH, f"blocks1-{arm}", "seed1", "config.json")) as f:
+            rates.add(json.load(f)["lr"])
+    t.check(len(rates) == 1, f"both models at one block should run at one rate: {rates}")
+    return rates.pop()
 
 
 def inside(S):
@@ -130,4 +145,4 @@ def inside(S):
     assert len(paper.abstract(r)) == 4 and all(s.endswith(".") for s in paper.abstract(r))
     assert sum(line.strip() in ("held", "did not hold", "not settled") for line in lines) == 7
     for p in q.PREDICTIONS:
-        assert f"{p.key}: {p.says}" in text
+        assert f"{p.key}: {p.says}" in " ".join(text.split())

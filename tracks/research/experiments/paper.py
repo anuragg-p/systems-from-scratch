@@ -403,7 +403,7 @@ def surprises(r):
     number from r. Written after the runs, and said so in the section."""
     out = []
     rates, lo_rate = sorted(r["cfg"].rates), q.BEFORE["lr"]
-    if lo_rate in rates and 4 in r["depths"]:
+    if lo_rate in rates and 4 in r["depths"] and searched_gap(r, 4):
         g = {x: r["found"][4, "none"][x] - r["found"][4, "learned"][x] for x in rates}
         gain = {arm: r["found"][4, arm][lo_rate] - r["found"][4, arm][r["chosen"][4, arm]] for arm in q.ARMS}
         out.append(
@@ -445,9 +445,11 @@ def surprises(r):
 
 
 def correlation(xs, ys):
+    """Pearson's correlation of two lists; nan when either does not vary."""
     mx, my = lab.mean(xs), lab.mean(ys)
     sxy = sum((x - mx) * (y - my) for x, y in zip(xs, ys))
-    return sxy / (sum((x - mx) ** 2 for x in xs) * sum((y - my) ** 2 for y in ys)) ** 0.5
+    norm = (sum((x - mx) ** 2 for x in xs) * sum((y - my) ** 2 for y in ys)) ** 0.5
+    return sxy / norm if norm else float("nan")
 
 
 def main():
