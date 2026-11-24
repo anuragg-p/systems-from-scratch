@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 318" fill="none">
 <title>Four things a script cannot do in kilo, the piece of an editor each would need, and that piece in Neovim</title>
 <defs><marker id="f0910b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0910b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0910b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
-<text class="tm" x="24" y="22" font-size="11">what NOTES.md (09) leaves out of kilo on purpose, and Neovim&#x27;s name for each piece, from its source and docs</text>
+<text class="tm" x="24" y="22" font-size="11">what kilo leaves out on purpose, and Neovim&#x27;s name for each piece, from its source and documentation</text>
 <text class="tm" x="24" y="50" font-size="10" font-weight="600">a script cannot</text>
 <text class="tm" x="196" y="50" font-size="10" font-weight="600">it would need</text>
 <text class="tm" x="406" y="50" font-size="10" font-weight="600">in Neovim</text>

@@ -3772,29 +3772,24 @@ projects at each lesson, with track.py's Editor and Screen (12 x 60 for
 
 ### Figures 09.06 to 09.10 (art/kilo/figs09b.py)
 
-Run for the figures (each run is in the generator, on the lesson's project):
+Run for the figures on the lessons' own files and init.lua, beyond what the
+lessons ran (each run is in the generator):
 
-- **The C stack while input() waits** (09.07, GOTO, Ctrl-O; a scratch build
+- **The C stack while input() waits** (09.07, add.c, Ctrl-O, `8`; a copy
   whose editorPrompt() writes backtrace() to a file), innermost first:
   editorPrompt, apiInput, scriptDispatch, precallC, luaD_precall,
   luaV_execute, luaD_callnoyield, lua_callk, scriptCallIn, precallC,
   luaD_precall, luaD_callnoyield, luaD_rawrunprotected, luaD_pcall,
   lua_pcallk, scriptProtected, scriptCall, editorScriptKey,
   editorProcessKeypress, main: two key loops on one stack.
-- **quit(true) in a mapped function** (09.07, a scratch build writing a line
-  at each point): the mark is set; the function's next line runs (it wrote a
-  file) and lua_pcall returns, depth 0; editorAfterKey() calls exit(0); at
-  exit scriptStop() puts the terminal back, then lua_close. Status 0, and
-  the change typed before it not saved.
-- **Two namespaces on the same rows** (09.06): create_namespace('numbers')
-  and ('trailing') give 1 and 2; `clear_namespace(create_namespace('numbers'))`
-  at the prompt takes the yellow and leaves every reversed cell.
-- **A highlight does not move** (09.06): put on row 1, bytes 4 to 8 ("word"),
-  Enter at the top leaves it on row 1 (now "t li" of "first line"); with a
-  TextChanged function that finds the word again it is on row 2.
-- **The same file through both doors** (09.09): UPPER with `kilo -l`, and
-  through a key mapped to `dofile('upper.lua')`, both leave HELLO / WORLD /
-  123 and say `2 lines upper-cased` (on standard output; in the message line).
+- **The lesson's Ctrl-X** (09.07, `x` typed and taken back, then Ctrl-X; a
+  copy writing a line at each point): apiQuit sets the mark inside the Lua
+  call; lua_pcall returns, depth 0; editorAfterKey() calls exit(0);
+  scriptStop() closes the state (depth 0). Status 0, add.c saved, the
+  terminal back.
+- **09.08's lines at the prompt** in one session on notes.txt: after
+  `s = string.rep('x', 100 * 2^20)` Lua held 25.8 KB, after the table grown
+  for ever 25.2 KB (the lesson: "a number near 26").
 
 ## Other behaviour of the original, kept
 

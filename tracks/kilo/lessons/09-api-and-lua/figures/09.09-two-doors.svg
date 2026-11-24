@@ -1,21 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 358" fill="none">
 <title>Two ways into the same API: the keyboard and the screen, or kilo -l with a script; main() takes the second before any of the screen&#x27;s work</title>
 <defs><marker id="f0909a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0909a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0909a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
-<text class="tm" x="24" y="22" font-size="11">kilo at 09.09, UPPER of 0909 as upper.lua, on notes.txt (hello / World / 123), each way</text>
+<text class="tm" x="24" y="22" font-size="11">kilo at 09.09 on notes.txt (hello / World / 123), each way; upper.lua as the lesson makes it</text>
 <text class="t" x="24" y="52" font-size="11" font-weight="700">the keyboard and the screen</text>
 <text class="t mono" x="24" y="70" font-size="9.5">$</text>
 <text class="t mono" x="35.4" y="70" font-size="9.5">./kilo</text>
 <text class="t mono" x="75.3" y="70" font-size="9.5">notes.txt</text>
-<text class="tm" x="24" y="90" font-size="10">Ctrl-U, mapped in init.lua:</text>
-<text class="t mono" x="24" y="104" font-size="9.5">dofile(&#x27;upper.lua&#x27;)</text>
-<text class="tm" x="24" y="128" font-size="10">the screen after:</text>
+<text class="tm" x="24" y="92" font-size="10">raw mode, the window, init.lua,</text>
+<text class="tm" x="24" y="105" font-size="10">the loop: a frame, a key</text>
+<text class="tm" x="24" y="128" font-size="10">the screen:</text>
 <rect class="s fs" x="24" y="132" width="129.6" height="64" rx="5" stroke-width="1.5"/>
-<text class="t mono" x="30" y="146.08" font-size="9.33">HELLO</text>
-<text class="t mono" x="30" y="160.08" font-size="9.33">WORLD</text>
+<text class="t mono" x="30" y="146.08" font-size="9.33">hello</text>
+<text class="t mono" x="30" y="160.08" font-size="9.33">World</text>
 <text class="t mono" x="30" y="174.08" font-size="9.33">123</text>
-<text class="t mono" x="30" y="188.08" font-size="9.33">2</text>
-<text class="t mono" x="41.2" y="188.08" font-size="9.33">lines</text>
-<text class="t mono" x="74.8" y="188.08" font-size="9.33">upper-cased</text>
+<rect class="t" x="29" y="179" width="119.6" height="12" rx="1.5"/>
+<text class="f mono" x="30" y="188.08" font-size="9.33">notes.txt</text>
+<text class="f mono" x="86" y="188.08" font-size="9.33">-</text>
+<text class="f mono" x="97.2" y="188.08" font-size="9.33">3</text>
+<text class="f mono" x="108.4" y="188.08" font-size="9.33">lines</text>
 <text class="tm" x="186" y="52" font-size="10">main() at 09.09</text>
 <rect class="m fs" x="186" y="58" width="226" height="193" rx="5" stroke-width="1.5"/>
 <text class="t mono" x="194" y="72.15" font-size="8.2">int</text>
@@ -88,9 +90,9 @@
 <text class="ta" x="430" y="257" font-size="10" font-weight="600">the screen.</text>
 <rect class="a af" x="150" y="290" width="340" height="24" rx="6" stroke-width="1.5"/>
 <text class="ta" x="320" y="306" font-size="11" font-weight="700" text-anchor="middle">kilo.api: the same 24 functions, the same rows</text>
-<line class="s" x1="172" y1="98" x2="172" y2="287" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909a-ah)"/>
+<line class="s" x1="172" y1="214" x2="172" y2="287" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909a-ah)"/>
 <line class="s" x1="468" y1="280" x2="468" y2="287" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909a-ah)"/>
 <line class="a" x1="414" y1="93.55" x2="427" y2="93.55" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0909a-aa)"/>
-<text class="t" x="24" y="334" font-size="10.5">Both leave notes.txt as HELLO / WORLD / 123 and say &quot;2 lines upper-cased&quot;: in the message line;</text>
-<text class="t" x="24" y="348" font-size="10.5">with -l, on standard output, and kilo&#x27;s status is 0.</text>
+<text class="t" x="24" y="334" font-size="10.5">The editor showed notes.txt as it is. Under -l, upper.lua changed two rows and saved them, HELLO / WORLD / 123;</text>
+<text class="t" x="24" y="348" font-size="10.5">&quot;2 lines upper-cased&quot; went to standard output, and kilo&#x27;s status was 0.</text>
 </svg>

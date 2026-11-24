@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 338" fill="none">
 <title>The count hook in kilo at 09.08: every 100000 instructions it looks at the keyboard; a Ctrl-C there raises interrupted, which goes up to the protected call</title>
 <defs><marker id="f0908a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0908a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0908a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
-<text class="tm" x="24" y="22" font-size="11">kilo at 09.08 with INIT of 0908: Ctrl-T runs while true do end; a second later a b c, then Ctrl-C</text>
+<text class="tm" x="24" y="22" font-size="11">kilo at 09.08 on notes.txt with the lesson&#x27;s init.lua: unsaved typed, Ctrl-T; a second later a b c, then Ctrl-C</text>
 <line class="m" x1="40" y1="96" x2="470" y2="96" stroke-width="1.5" stroke-linecap="round"/>
 <line class="m" x1="40" y1="93" x2="40" y2="99" stroke-width="1.5" stroke-linecap="round"/>
 <line class="m" x1="44" y1="93" x2="44" y2="99" stroke-width="1.5" stroke-linecap="round"/>
@@ -136,7 +136,7 @@
 <rect class="a af" x="24" y="182" width="330" height="19" rx="3" stroke-width="1.5"/>
 <text class="ta" x="32" y="195" font-size="9.5" font-weight="700">scriptHook: the count set to 1; where + &quot;interrupted&quot;; lua_error</text>
 <rect class="m f" x="24" y="205" width="330" height="19" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
-<text class="tm" x="32" y="218" font-size="9.5">init.lua:2, the function mapped to &lt;C-t&gt;: unwound</text>
+<text class="tm" x="32" y="218" font-size="9.5">init.lua:1, the function mapped to &lt;C-t&gt;: unwound</text>
 <rect class="m f" x="24" y="228" width="330" height="19" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
 <text class="tm" x="32" y="241" font-size="9.5">scriptCallIn, and Lua&#x27;s own frames: unwound</text>
 <rect class="s f" x="24" y="251" width="330" height="19" rx="3" stroke-width="1.5"/>
@@ -148,13 +148,15 @@
 <text class="tm" x="440" y="176" font-size="10">the screen after: row 0, and</text>
 <text class="tm" x="440" y="189" font-size="10">the message line</text>
 <rect class="s fs" x="440" y="196" width="176" height="40" rx="4" stroke-width="1.5"/>
-<text class="t mono" x="448" y="210" font-size="10">safe</text>
-<text class="t mono" x="478" y="210" font-size="10">text</text>
-<text class="ta mono" x="448" y="228" font-size="10" font-weight="700">init.lua:2:</text>
+<text class="t mono" x="448" y="210" font-size="10">unsaved</text>
+<text class="t mono" x="496" y="210" font-size="10">the</text>
+<text class="t mono" x="520" y="210" font-size="10">first</text>
+<text class="t mono" x="556" y="210" font-size="10">line</text>
+<text class="ta mono" x="448" y="228" font-size="10" font-weight="700">init.lua:1:</text>
 <text class="ta mono" x="520" y="228" font-size="10" font-weight="700">interrupted</text>
-<text class="t" x="440" y="254" font-size="10">Row 0 as it was: the a b c never</text>
-<text class="t" x="440" y="267" font-size="10">reached it. Then ok and Ctrl-S</text>
-<text class="t" x="440" y="280" font-size="10">saved &quot;ok safe text&quot;.</text>
+<text class="t" x="440" y="254" font-size="10">The a b c never reached the</text>
+<text class="t" x="440" y="267" font-size="10">text. Then Ctrl-S: &quot;23 bytes</text>
+<text class="t" x="440" y="280" font-size="10">written on disk&quot;.</text>
 <text class="tm" x="24" y="312" font-size="10">Redis sets the same kind of hook: lua_sethook(lua,luaMaskCountHook,LUA_MASKCOUNT,100000) (src/script_lua.c).</text>
-<text class="tm" x="24" y="326" font-size="10">Neovim&#x27;s executor.c has no lua_sethook.</text>
+<text class="tm" x="24" y="326" font-size="10">Neovim&#x27;s Lua glue (src/nvim/lua/executor.c and the files beside it) calls no lua_sethook.</text>
 </svg>
