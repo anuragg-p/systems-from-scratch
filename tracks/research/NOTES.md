@@ -23,7 +23,9 @@ engine/autograd.py      02.02   gradcheck(f, inputs): backward against the nudge
 engine/nn/__init__.py   02.04   (file comes with 02.04, holding only `functional`)
                         02.05   Parameter Module Linear ReLU Tanh Sequential
                         04.03   BatchNorm1d, Sigmoid;  04.04 LayerNorm;  05.02 Dropout
+                        06.01   Conv2d MaxPool2d Flatten (the last names the engine gains)
 engine/nn/functional.py 02.04   relu tanh log_softmax softmax cross_entropy;  05.02 dropout
+                        06.01   conv2d max_pool2d (and _windows, _scatter: windows as a view, and back)
 engine/nn/init.py       04.02   calculate_gain normal_ uniform_ zeros_ ones_ xavier_* kaiming_*
 engine/optim/__init__.py 03.01  Optimizer, SGD;  03.02 momentum (dampening, nesterov);  03.03 Adam;  03.04 AdamW
 engine/optim/lr_scheduler.py 03.05  LambdaLR
@@ -33,14 +35,25 @@ lab/plot.py             00.03   ticks, lines(): SVG line plots of plain elements
 lab/safetensors.py      02.05   save_file, load_file, read_header (numpy arrays; the library's numpy API)
 lab/schedule.py         03.05   warmup_cosine
 lab/checks.py           04.06   the five checks
+lab/devices.py          06.02   device(torch, name), clock(torch, dev): where a PyTorch run computes, and its time
 data/points.py          01.04   two_groups: two moons from a seed
 data/fetch.py           03.01   the explicit download, pinned sizes and SHA-256 (whole, no regions)
+                        06.03   cifar10: one archive, resumed if dropped, unpacked, every file pinned (@from blocks)
 data/mnist.py           03.01   read_idx, load(split, n, standardise)
+data/cifar.py           06.03   read_records, load(split, n): CIFAR-10's binary records, standardised per channel
 data/__init__.py        03.01   batches(n, size, rng)
-data/augment.py         05.03   shift(x, k, rng, fill)
+data/augment.py         05.03   shift(x, k, rng, fill);  06.03 crop_flip(x, pad, rng)
+models/__init__.py      06.02   (no regions) the networks experiments share, one file each
+models/convnet.py       06.02   convnet(torch, width): 3 convolutions and a Linear layer, on either library
+models/resnet.py        06.04   Block, ResNet; resnet(n, residual, width), layers(model): He et al.'s CIFAR network
 experiments/<name>.py   one per lesson (below); loop.py (03.01) and deep.py (04.01) are shared code
+                        06.03   images.py: the PyTorch-era loop, tensors(dev, ...), train_epoch, evaluate
+experiments/recorded/   06.04   the long run of resnet.py, recorded (DATA in track.py; see "Long runs")
 tests/                  NNLL_*.py one per lesson; support.py, helpers for the PyTorch comparisons
 ```
+
+From 06.02 the project needs PyTorch too (`pip install torch`; the CPU build
+is enough), and from 06.03 CIFAR-10 (`python3 -m data.fetch cifar10`).
 
 Run everything from the project's top: `python3 -m experiments.<name>
 [key=value ...]`. `./learn run research --at 03.01 -- mnist_lr "lrs=[0.1]"`
@@ -81,6 +94,93 @@ summary.json, and SVG plots in `runs/<name>/`); `out=DIR` moves them.
   as diverged; a plot breaks its line there.
 - The engine's float type is float32, as PyTorch's; the PyTorch comparisons
   in the tests are in float64 (`model.double()`).
+
+## Conventions from 06.02 on (PyTorch era)
+
+Every script from 06.02 on, and every module after 06, keeps these, with
+the ones above where they still apply (settings, runs, seeds, spread,
+Welch's t). The template is experiments/cifar.py (06.03); resnet.py
+(06.04) is the same with a long run.
+
+- **`import torch`, not the engine line.** A PyTorch-era script imports
+  torch itself (`import torch`, `from torch import nn`, `import
+  torch.nn.functional as F`); the learner's code still imports only numpy
+  and torch (no torchvision, no DataLoader). Engine-era scripts (00.01 to
+  06.01) keep `import engine as torch`, and the tests still run them on
+  both (`on_torch`). The engine gains nothing after 06.01. switch.py
+  (06.02) is the one script that imports both, by their own names.
+- **Device.** Every PyTorch-era experiment has a `device` setting, default
+  `"cpu"`: `dev = lab.device(torch, cfg.device)`. `device=auto` takes
+  cuda, then mps, then cpu; `cuda` and `mps` name one. Models go there
+  with `.to(dev)`, data with `tensors(dev, ...)`. lab imports no engine,
+  so lab/devices.py takes torch as its first argument. A page's numbers
+  and times are CPU numbers (verify replays them); a page may quote an MPS
+  time from these notes, never run one. What MPS does here: 06.02's
+  network 12 times PyTorch's CPU step (5.0 against 62 ms), ResNet-20 30
+  times (12 against 396 ms a batch of 128), ResNet-56 31 times (37
+  against 1158 ms); 06.03's default run only 5 times (8 s against 42 s:
+  small batches of a small network spend their time in Python, not on the
+  GPU). Worth it for anything past a few minutes.
+- **Seeds and determinism.** As before: the data, its order and its
+  augmentation from the run's numpy generator (`run.rng`); starting
+  weights from `torch.manual_seed(run.seed)` just before the model is
+  built (it seeds every device's generator). Same seed, same machine,
+  same device: the same digits, byte for byte in log.jsonl and
+  summary.json (the 06.02 and 06.03 tests hold it). Measured on the CPU:
+  a ResNet-8 trained 10 steps gives the same bytes run after run and with
+  1, 4 or 10 threads, so the scripts set no thread count and do not call
+  torch.use_deterministic_algorithms. MPS gave the same bytes run after
+  run in that test too, but other digits than the CPU (a loss of 2.295255
+  against 2.295246 after 10 steps): never compare a GPU's numbers with a
+  page's. Across machines the last digits can differ, as before. PyTorch
+  uses 10 threads here (the performance cores); 4 were faster for
+  ResNet-20 (440 against 320 images a second) with other runs going, but
+  that is this machine's, so nothing sets it.
+- **Data to tensors.** data/ reads with numpy (data/cifar.py like
+  data/mnist.py) and returns numpy arrays; the script turns a whole set
+  into one tensor on the device once (experiments/images.py's
+  `tensors(dev, x, y)`), an augmented training set once a pass. A batch is
+  `x[idx]`, `idx = torch.from_numpy(positions).to(dev)`, the positions from
+  `data.batches(n, size, run.rng)`. No copy from numpy per batch.
+- **models/.** One file per network family, imported by experiments
+  (`from models.resnet import resnet`). models/convnet.py takes the
+  library as its first argument (06.02 builds it on both); every later
+  model imports torch and subclasses nn.Module (resnet.py: Block, ResNet).
+  A model file holds the network only; training lives in experiments.
+- **Shared loops.** experiments/images.py (06.03) is the image
+  classifiers' loop: `train_epoch(model, opt, x, y, batch, rng,
+  scheduler=None)` returns the pass's mean loss and accuracy (the sums stay
+  tensors on the device and are read once a pass: `.item()` makes the CPU
+  wait for the device), `evaluate(model, x, y)` scores in eval mode
+  without a graph and puts the model back in train mode. A module whose
+  data is not images writes its own loop file the same way (07 on:
+  sequences of tokens). An experiment still never imports another.
+- **Timing.** `lab.clock(torch, dev)` is time.perf_counter once the device
+  is done (torch.cuda.synchronize, torch.mps.synchronize); a GPU time taken
+  without it is the time to queue the work. Times are printed, never
+  written to log.jsonl or summary.json (they stay byte-identical). On a
+  page every time is a `vary`.
+- **Long runs.** A module's one long run (at most 60 minutes on the CPU)
+  is the lesson's own script with bigger settings, written with
+  `out=experiments/recorded`, so it lands in
+  `experiments/recorded/<name>/<label>/seed<k>/` (config.json, log.jsonl,
+  summary.json), with its curves (`*.svg`) and what it printed
+  (`output.txt`) in `experiments/recorded/<name>/`; all committed, about
+  100 KB for 06.04. Log once a pass, not every step, to keep the files
+  small. track.py names `experiments/recorded/*` in FILES_FROM (the lesson)
+  and DATA (shown as its first lines). Every config.json holds every
+  setting, so the command is recovered from it; the test checks the
+  recorded run's files and its result, and reruns it only with
+  LEARN_RERUN_LONG=1. The script's default run is a short version, under
+  60 s, printing the same table.
+- **Verify.** verify_tools() cannot name a tool for some lessons only, and
+  `needs=` looks for a program on PATH. So track.py's pytorch_era_tools()
+  writes empty programs `torch` and `cifar10` into build/tools/research/
+  when this python imports torch and when CIFAR-10 is in the cache, and
+  names them (their folder goes on verify's PATH). Every session block from
+  06.02 on says `needs="torch"`, from 06.03 on `needs="torch cifar10"`:
+  on a machine without them the lesson is "missing", not failed, and the
+  lessons before 06.02 replay as before. No harness change.
 
 ## How the timeline works in a Python track (for whoever writes regions next)
 
@@ -129,6 +229,31 @@ No harness change was needed. The rules this track follows:
 - Pixels are standardised with MNIST's own training mean and sd (0.1307,
   0.3081) unless `standardise=False` (03.03 and 03.04 use the paper's 0..1
   scale). `load` caches per process: never change its arrays in place.
+- **CIFAR-10** (06.03 on): the binary version, from the dataset's own page,
+  https://www.cs.toronto.edu/~kriz/cifar-10-binary.tar.gz (which now
+  redirects to cave.cs.toronto.edu; urllib follows it), fetched only by
+  `python3 -m data.fetch cifar10` into `$LEARN_CACHE/cifar10/`. The archive
+  is 170,052,171 bytes, SHA-256 c4a38c50...a1dd pinned in fetch.py; its MD5
+  is c32a1d4ab5d03f1284b67883e8d87530, the one the page publishes. Seven
+  files are taken out of it (tarfile, by name, no extractall) and kept only
+  if each matches its pinned size and SHA-256: data_batch_1..5.bin and
+  test_batch.bin (30,730,000 bytes each: 10,000 records of a label byte and
+  3072 pixel bytes, red then green then blue, row by row) and
+  batches.meta.txt (61 bytes, the class names); the archive is deleted.
+  The server is slow and drops connections: my first download died at 117
+  MB after 30 minutes, so fetch_archive resumes a partial `.part` with an
+  HTTP Range request, up to five times (tested: a cut archive finished its
+  last 1 MB through the redirect in 15 s). Missing, a script stops with
+  exit 1 and `cifar10 is missing: it is not in ... Fetch it once with:
+  python3 -m data.fetch cifar10`; a test fails with `missing: CIFAR-10 is
+  not in ...`; check-timeline expects the line (track.py DATASET_OF names
+  the experiments that need it). Its page states no licence and asks that
+  the tech report be cited (Krizhevsky 2009); NOTICE has the line.
+- CIFAR-10's images are standardised per channel with the training set's
+  own mean (0.4914, 0.4822, 0.4465) and sd (0.2470, 0.2435, 0.2616) on the
+  0..1 scale (measured over all 50,000; data/cifar.py's MEAN and STD).
+  `load(split, n)` reads only as many files as n needs and caches per
+  process, as mnist.load does.
 
 ## The lessons: code, default run, time, and what held
 
@@ -161,6 +286,14 @@ Times: the default run, `python3 -m experiments.<name>`, wall clock.
 | 05.02 | regularise | 29.9 |
 | 05.03 | augment | 20.8 |
 | 05.04 | double_descent | 5.8 |
+| 06.01 | conv (engine) | 27.0 |
+| 06.02 | switch | 4.1 |
+| 06.03 | cifar | 43.4 |
+| 06.04 | resnet (short; the long run, 40 minutes: see 06.04) | 53.5 |
+
+06.01 to 06.04 were timed twice, the second time with other agents' runs
+going (load average 6 to 8): conv 26.4 and 27.0, switch 3.7 and 4.1, cifar
+42.1 and 43.4, resnet about 50 and 53.5. Same digits both times.
 
 Spike 1 (engine speed): one MNIST epoch (784-100-10, batches of 128, SGD)
 takes 0.14 s on the engine, 0.23 s on PyTorch; 0.41 s against 0.38 s with
@@ -435,6 +568,242 @@ noise"; here the peak does not need it: with `noise=0` it is 86.8% against
 88.3%, and only the error either side of it falls (p = 200 24.2%, 10000
 12.0%). The docstring and 05.04 say so.
 
+**06.01 Convolution: the same weights at every position.** The engine gains
+F.conv2d(input, weight, bias=None, stride=1, padding=0), F.max_pool2d(input,
+kernel_size, stride=None, padding=0), nn.Conv2d(in_channels, out_channels,
+kernel_size, stride=1, padding=0, bias=True) (starting as Linear does,
+uniform +-1/sqrt(in_channels kh kw), which is PyTorch's default),
+nn.MaxPool2d and nn.Flatten(start_dim=1, end_dim=-1); stride, padding and
+kernel_size take a number or a pair. Every window is a view
+(np.lib.stride_tricks.sliding_window_view, `_windows`), the windows become
+the rows of one matrix (the copy numpy makes) and one `@` with the filters
+is the convolution; the way back is the matrix product's (02.03), then
+`_scatter` adds each window's gradient back onto the pixels it read, one
+strided add per place in the kernel. Values and gradients equal PyTorch's
+at 1e-6 in float64 for every stride and padding tried (the test), gradcheck
+clean. Max pooling sends the gradient to the first of equal largest
+numbers, as PyTorch's CPU kernel does. No avg_pool2d: it was written and
+dropped, nothing uses it (06.04's ResNet averages with `x.mean((2, 3))` on
+PyTorch). One pass over 10,000 digits with the experiment's network takes
+about 1.4 s on the engine.
+conv, three parts, 10,000 training digits, 2 passes of SGD (lr 0.05,
+momentum 0.9, batches of 64), 3 seeds, test on 5,000 digits:
+1. Moved k pixels (a quarter of the test digits up, down, left, right;
+   blank comes in): fully connected 784-100-10 (79,510 weights) k = 0..4:
+   `0.911`, `0.851`, `0.638`, `0.404`, `0.234`; convolutional (two 3 by 3
+   convolutions of 8 and 16 filters, each with relu and 2 by 2 max
+   pooling, then Linear 784 to 10: 9,098 weights) `0.949`, `0.926`,
+   `0.825`, `0.640`, `0.427`; t = +5.3 at k = 0, +16.8 at k = 2, +20.6 at
+   k = 4. Held: the network with a ninth of the weights is better
+   unmoved and loses less. Did not hold, and is the lesson's honest second
+   half: it is far from shift-proof. At 4 pixels it keeps 0.43.
+2. Why: test digit 0 (a 7) moved 4 pixels up through the trained network,
+   seed 0: after the first convolution, rows 1-22 of the moved digit's
+   maps equal rows 5-26 of the unmoved one's, largest difference 0
+   (exactly); after the second pooling the 7 by 7 maps, rows 1-4 equal
+   rows 2-5, again 0. The features are all there, moved one cell; the
+   Linear layer has a weight per place and reads another digit: scores
+   move by up to 15, the prediction goes from 7 to 2. So: convolution
+   is equivariant (exactly), the network is not invariant. Two 2 by 2
+   poolings turn a move of 4 pixels into a move of exactly one cell, and
+   other moves into other maps; neither is ignored. Spike, not in the default
+   run: replacing the Linear head with an average over every position
+   (global average pooling, conv 16-32-32) makes the network far more
+   tolerant (0.91 at k = 0, 0.74 to 0.75 at k = 4) but it needs 3 passes
+   and 10 s a run to get there, too slow for the minute; after 1 or 2
+   passes it is still at 0.68 to 0.89 unmoved.
+3. Pixels shuffled by one permutation (each run draws its own from
+   run.rng, the same for its training and test digits): fully connected
+   `0.898` (t = -1.2 against unshuffled: no difference beyond noise; the
+   shuffled run is a different draw of batch order, so its digits are not
+   the unshuffled run's), convolutional `0.821` (t = -8.9). Still well
+   above chance: the Linear head can learn from any arrangement, the
+   convolutions' locality no longer helps.
+26 s on the engine; on PyTorch (the line changed) 19 s and the same table
+within the spread (fc 0.914 .. 0.236, conv 0.945 .. 0.412, shuffled 0.902
+and 0.829). The two "largest difference 0" lines came out exact on both
+here; the test checks the engine's only.
+
+**06.02 One import: the same script on PyTorch.** Changed from the plan's
+failure. The plan said the engine is too slow for what comes next; on this
+machine's CPU that is not much of a failure: the engine's convolution is
+numpy's matrix product (Apple Accelerate), and PyTorch's macOS arm64 build
+has no oneDNN (torch.backends.mkldnn.is_available() is False), so its CPU
+convolution, the backward above all, is a slow path. Measured, a training
+step of models/convnet.py (width 32, batches of 128): engine 116 and 119
+ms in two runs, PyTorch on the CPU 62 and 54 ms (1.9 and 2.2 times),
+PyTorch on the Apple GPU 5.0 ms (23 times the engine). ResNet-20's 19
+convolutions without batch norm (a scratch script, not in the project):
+engine 728 ms, PyTorch CPU 359 ms, MPS 10 ms. The lesson's case for the
+switch is
+therefore: (1) the GPU, 12 to 36 times PyTorch's own CPU on these networks
+and only from PyTorch; (2) what the next lessons need that the engine does
+not have (BatchNorm2d for ResNet, then embeddings, attention, mixed
+precision, published weights), each another engine lesson. A CPU build
+with oneDNN (Linux x86) may make PyTorch's CPU convolution much faster
+than here: not measured (spike 9), so do not claim it. Say "about twice
+as fast on this laptop's CPU", never "a thousand times".
+switch, default (cpu): part 1, float64, one SGD-with-momentum step on 128
+random images, 3 seeds: the loss differs by 1.3e-16, every gradient by at
+most 4.7e-17, every weight after the step by at most 2.4e-17 (relative):
+the same arithmetic in another order. Part 2, float32, the same start and
+the same 11 batches: the losses agree to 7 digits for 4 steps and drift to
+1.8e-5 by step 10 (rounding in another order, growing through the steps;
+the loss does not fall: random labels). Times (vary): engine 116 ms,
+PyTorch 62 ms, a pass over 50,000 images 45 s against 24 s; in the second
+run 119 and 54 ms, 46 and 21 s. 3.7 s.
+device=auto adds a column for mps: its losses match the engine's to 7
+digits for longer than the CPU's do; 5 ms a step, 2 s a pass.
+06.01's conv.py with `import torch` instead of the engine line: 19 s
+against 26 s, the same table within the spread (06.01 above): that is the
+"one import" demonstration for the page.
+lab/devices.py: `device(torch, name)`, `clock(torch, dev)`; models/convnet.py:
+`convnet(torch, width=32)`, 113,738 weights at 32, 33,834 at 16 (06.03's).
+
+**06.03 A convolutional network on CIFAR-10.** cifar: the first 2000
+training images, 12 passes, batches of 64, SGD momentum 0.9, 3 seeds, test
+on 2000 test images; fully connected 3072-256-10 (789,258 weights) at lr
+0.01, convolutional (models/convnet.py, width 16: 33,834 weights) at lr
+0.02. In the sweep the fully connected network got 0.38 to 0.40 at 0.01,
+0.33 to 0.35 at 0.02 and 0.16 to 0.31 at 0.04 and 0.05; the convolutional
+one about the same at 0.01 and 0.02 (0.509 and 0.515 at 4000 images x 10
+passes, 0.473 and 0.462 at 2000 x 16), but with crops and flips 0.01 left
+it undertrained (2000 x 16: 0.470 against 0.497), so 0.02 for both of its
+rows. Training / test
+accuracy / gap: fully connected `0.962` / `0.380` / 0.582; convolutional
+`0.799` / `0.455` / 0.344; with crops and flips (pad 4, random 32 by 32
+window, mirrored half the time, new every pass) `0.564` / `0.486` / 0.078.
+t = +8.1 (convolutional against fully connected), +3.0 (crops and flips
+against without). 42 s on the CPU, 8 s on mps (the same table within the
+spread).
+Held: the convolutional network with 1/23 of the weights is better on test
+images, and memorises far less. Crops and flips: the gap closes from 0.34
+to 0.08, the test accuracy rises 3 points. How much they buy depends on
+the length of training: in the sweep, at 3000 images and 10 passes they
+did not raise test accuracy at all (t = -2.1, lr 0.02, on mps), at 2000
+and 16 passes by 3.5 points (t = +4.5), at 1000 and 30 passes by 6
+(t = +2.5). Augmentation pays when the network would otherwise memorise;
+say "here, 3 points", not "always". No paper's claim is run here (the
+dataset's report and LeNet are reading); He et al.'s numbers come in 06.04.
+
+**06.04 ResNet (He et al. 2015, section 4.2, figure 6 and table 6).**
+models/resnet.py is the paper's CIFAR-10 network: a 3 by 3 convolution of
+16 filters, three stages of n blocks (16, 32, 64 filters on 32, 16, 8
+pixels; the first convolution of stages 2 and 3 steps 2), global average
+pooling (`x.mean((2, 3))`), Linear to 10; batch norm after every
+convolution (convolutions without bias), He's normal start (fan_in, 04.02).
+6n + 2 layers with weights; 75,290 / 269,722 / 464,154 / 658,586 /
+853,018 / 1,727,962 weights for 8 / 20 / 32 / 44 / 56 / 110 layers, the
+paper's 0.27M, 0.46M, 0.66M, 0.85M and 1.7M (table 6). The shortcut is
+option A, the one the paper uses on CIFAR-10: the identity, and where a
+block halves the map and doubles the filters, every second pixel of every
+second row (`x[:, :, ::2, ::2]`) with zero channels appended (`F.pad(x,
+(0, 0, 0, 0, 0, extra))`; the paper does not say where the zeros go, we
+put them after). So plain and residual have exactly the same weights,
+names and count. The paper's training: SGD momentum 0.9, weight decay
+1e-4, batches of 128, lr 0.1 divided by 10 at 32k and 48k of 64k steps,
+crops and flips on 45k/5k train/validation, per-pixel mean subtracted.
+Ours: the same but the rate (see below), the steps (the schedule's drops
+at half and three quarters of ours), the data (the first n_train training
+images; per-channel standardisation, 06.03) and no validation split (the
+claim is about training error).
+The claim, in the paper's terms (section 4.2, figure 6 left and middle,
+and figure 1): the deeper plain network has the higher training error;
+with shortcuts the deeper network is not worse, and in the paper better.
+
+The long run, recorded in experiments/recorded/resnet/ (config.json,
+log.jsonl and summary.json of every network and seed; plain.svg and
+residual.svg, training error dashed and test error solid per pass, as the
+paper's figure 6 draws them; output.txt, what it printed):
+
+    python3 -m experiments.resnet "depths=[20,56]" width=16 n_train=4000 n_test=1000 epochs=8 batch=128 lr=0.01 seeds=3 out=experiments/recorded
+
+4000 training images, 8 passes (256 steps), 3 seeds, test on 1000.
+Training error % at the end (scored after training, in eval mode, on the
+4000 images without crops): plain 20 `71.9 +- 1.51` (70.3, 73.3, 72.1),
+plain 56 `81.8 +- 2.96` (78.4, 83.5, 83.5), t = +5.2: every seed of the
+deeper plain network ends above every seed of the shallower. Residual 20
+`59.2 +- 0.694`, residual 56 `55.0 +- 1.88` (53.7, 54.1, 57.1), t = -3.7:
+the deeper one is better, as in the paper. Test error: plain 73.4 and
+81.6, residual 61.0 and 57.5. Both halves of the claim held, in the
+paper's own pair of depths (its figure 1) and width, on 4000 images.
+The curves: the plain networks separate from the first pass (training
+error after it 86.4 against 89.0 on average) and stay apart; the residual
+56 is below the residual 20 from pass 1 on (82.3 against 82.9, then 65.0
+against 66.7 at pass 4). 39.7 minutes of training, 39 min 45 s wall clock
+in all, on the CPU (10 threads, about 2.2 cores busy: PyTorch's CPU
+convolution backward is mostly one thread here), with other agents'
+runs going (load average 5 to 10); a run alone should be a little
+faster. On mps the same settings took 1.5 minutes (spike, below).
+
+Short (default) run, resnet: 800 training images, 3 passes, batches
+of 64, lr 0.01, 2 seeds, 8 and 20 layers (the 56-layer network is too slow
+for a minute of CPU: 1.14 s a step of 128): plain 8 `78.5 +- 3.89`, plain
+20 `85.7 +- 0.795` (t = +2.6); residual 8 `78.4 +- 1.77`, residual 20 `75.8
++- 3.27` (t = -1.0); test 82.1, 87.4, 78.8, 78.4. 53 s with other runs
+going (0.9 minutes of training). The same kind of table and the same
+direction, but 39 steps is barely training: the residual half is within
+noise there, the long run is the evidence. Two seeds only, for time; say
+so. The test checks the plain half (+2) and that residual 20 is far below
+plain 20 (-4), not the residual half.
+
+What the lesson must not say: that this reproduces the paper's figure
+(our networks are a few hundred steps into training; the paper's errors
+are a few percent); that 0.1 "fails" (it is too large for these deep
+networks at the start of training, which the paper itself says of its
+110-layer one); that 20 against 56 shows the same at every rate (at 0.02
+the residual networks are level, at 0.1 the deeper one is far behind).
+Our number beside the paper's: the paper's table 6 test error is 8.75%
+for ResNet-20 and 6.97% for ResNet-56 (6.61 +- 0.16 for 110 over five
+runs); the paper gives the plain networks only as curves (figure 6 left:
+plain-56 above plain-20; figure 1 the same pair). Ours, in the long run:
+training error 59.2 and 55.0 (residual 20 and 56), 71.9 and 81.8
+(plain); test error 61.0 and 57.5, 73.4 and 81.6. The direction holds;
+the size is nowhere near.
+
+Spike 3 (which depths, width, images and passes show plain against
+residual in under 60 minutes of CPU). Explored on the Apple GPU (about 30
+times the CPU here; the same seeds give other last digits but the same
+behaviour), then run on the CPU. Training error % at the end, plain
+shallow/deep (t), residual shallow/deep (t); 2 seeds unless said.
+- [8, 20], 2000 images x 4 passes, lr 0.1: 66.7/70.7 (+2.7), 64.5/61.2
+  (-1.9). 5000 x 10: 46.4/56.0 (+5.1), 47.9/45.8 (-1.0). 10000 x 10:
+  35.6/43.7 (+2.9), 37.2/34.5 (-2.2). Both halves, but 8 layers is not one
+  of the paper's networks.
+- [20, 56] at the paper's lr 0.1: 5000 x 9, 1 seed: 59.7/76.6 and
+  49.7/77.4: the deeper residual network is as bad as the deeper plain
+  one. Without crops and flips the same (52.0/75.2, 37.0/71.3). Batches of
+  64 (twice the steps): 52.9/83.7 (+8.2), 48.5/80.2. 10000 x 15, 1 seed:
+  37.7/70.4, 26.8/46.3. Its log shows why: the first pass ends at a loss
+  above log(10), then the network sits near 2.27 (training error 85 to 90%)
+  for several passes, the "slightly too large to start converging" the
+  paper reports for 110 layers. At this length 56 layers behave like the
+  paper's 110.
+- [14, 32] lr 0.1, 5000 x 10: 50.1/63.7 (+11.4), 45.2/57.1 (+5.9).
+  [20, 32] lr 0.1, 7500 x 10: 48.3/59.0 (+3.6), 38.2/44.8 (+5.5). The
+  plain half holds everywhere; the residual half fails at 0.1.
+- The paper's remedy for 110 layers (0.01 until the training error is
+  below 80%, about 400 steps, then 0.1): as a fixed 400 steps it came to
+  0.01 for most of these short runs ([20, 32] 7500 x 10: 52.2/59.0 (+9.6),
+  42.7/40.6 (-3.0)); going back to 0.1 after it broke the deep residual
+  network again ([20, 56] 10000 x 15, 1 seed: 37.6/78.6). Dropped: a
+  lower rate throughout is simpler and is what worked.
+- The rate, [20, 32], 6000 x 10: 0.01: 65.4/70.5 (+3.3), 51.5/48.6
+  (-3.9); 0.02: 57.0/62.7 (+3.2), 44.5/44.0 (-2.9); 0.05: 47.7/57.7
+  (+4.9), 40.2/40.5 (+1.2). [20, 56], 5000 x 9: 0.01: 68.2/81.7 (+4.5),
+  55.0/51.0 (-16.0); 0.02: 60.5/80.2 (+2.8), 48.8/49.4 (+0.7); 0.05:
+  55.5/76.2 (+13.1), 47.0/66.0 (+2.8, the two seeds 59.2 and 72.9).
+- Chosen: the paper's figure-1 pair, 20 and 56 layers, width 16 (the
+  paper's), lr 0.01, 4000 images, 8 passes, batches of 128, 3 seeds. On
+  the GPU first: 71.1/85.8 (+10.3), 59.4/55.4 (-6.9); with 10 passes
+  68.5/85.0 (+11.9), 56.6/52.8 (-10.5). Cost on the CPU: ResNet-20 about
+  320 images a second, ResNet-56 about 110 (10 threads; a step of 128 is
+  0.40 s and 1.14 s), so 4000 x 8 x 3 seeds was estimated at 50 minutes
+  (it took 40); 5000 x 9 would be over the hour.
+- Width 8 saves less than half on the CPU (ResNet-20 0.24 s a step
+  against 0.40 s; ResNet-56 0.68 against 1.14) and the short run at width
+  8 showed neither half (82.0 against 84.2, t = -0.7); width stays 16.
+
 ## Tests
 
 `./learn test research`: 27 tests, all pass, 3 min 22 s. Each runs its
@@ -451,14 +820,40 @@ short settings, has exactly the engine names of NAMES, and gives the
 ordinary errors above (46 s). The tests need PyTorch and safetensors
 (`pip install safetensors`); the project itself needs only numpy.
 
+With module 06 (timed with other agents' runs going, load average 4 to 8):
+`./learn test research` 31 tests, all pass, 5 min 11 s, module 06's four
+2 min 2 s (06.01 27 s: the differential checks, conv with 2 seeds, conv on
+PyTorch; 06.02 7 s: lab.device and lab.clock against a stand-in torch, the
+step against PyTorch at 1e-10 to 1e-12, switch twice, byte for byte;
+06.03 31 s: the record reader on a file written by the test, crop_flip,
+train_epoch and evaluate, then with CIFAR-10 the real files' shapes and
+classes, cifar with 2 seeds and 10 passes, and a tiny run twice, byte for
+byte; 06.04 57 s: the networks' shape, weights and shortcut, the recorded
+long run's files and result, then the short run). 06.03 and 06.04 need
+CIFAR-10 (`need(t, "cifar10")`, after the checks that do not). The long
+run is rerun only with LEARN_RERUN_LONG=1 (about 40 minutes).
+`./learn check-skeleton research` ok, 27 s (31 lessons, each fails at its
+stub). `./learn check-timeline research` ok, 70 s; the project has 50
+files at 06.01, 54 at 06.02, 57 at 06.03 and 98 at 06.04 (41 of them the
+recorded run). `./learn selftest` ok (269 tests). `./learn check` reports
+exactly four problems, `research/06.0N: test has no lesson doc`, until the
+pages are written; nothing else.
+
 ## For the harness work and module 06
 
 - verify_tools() names python3 and numpy only. MNIST is a download, not a
   program, so `needs=` cannot see it; the plan's `./learn fetch` and a
   "missing" for downloads are still to do (data/fetch.py is what it should
-  call).
-- `models/` does not exist yet: 00 to 05 build their small networks inside
-  each experiment (deep.py and loop.py take the engine as an argument).
-  06.02's "one import" is already true of every engine-era script here.
+  call). Since module 06: verify_tools() also names `torch` and `cifar10`
+  as empty programs when this machine has them (see "Conventions from
+  06.02 on", Verify), a work-around inside the track. What the harness
+  would need to do it properly: verify_tools(lesson) (tools for one
+  lesson), or a track hook that `needs=` asks about a name, so a Python
+  package or a download can be "missing" without a program on PATH. The
+  same hook would let 03.01 to 05.04 say needs="mnist".
+- `models/` exists from 06.02 (convnet.py, then resnet.py at 06.04); 00 to
+  05 build their small networks inside each experiment (deep.py and loop.py
+  take the engine as an argument). 06.02's "one import" is true of every
+  engine-era script here.
 - `experiments/` is the plan's `papers/<name>/`: one file per lesson, since
   most of 00 to 05 are not papers.

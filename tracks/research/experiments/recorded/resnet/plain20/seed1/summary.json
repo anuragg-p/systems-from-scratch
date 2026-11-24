@@ -1,0 +1,6 @@
+{
+ "layers": 20,
+ "test_error": 75.9,
+ "train_error": 73.32499999999999,
+ "train_loss": 1.90280029296875
+}

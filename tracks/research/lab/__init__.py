@@ -7,3 +7,4 @@ from lab.run import Config, Run, config, read_log                  # @from 00.02
 from lab.stats import mean, sd, spread, welch_t                     # @from 00.03
 from lab.plot import Line, lines                                    # @from 00.03
 from lab.schedule import warmup_cosine                              # @from 03.05
+from lab.devices import device, clock                               # @from 06.02

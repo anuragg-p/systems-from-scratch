@@ -220,8 +220,11 @@ Upstream   None. The engine (engine/) is written from scratch in numpy and
            so that one script runs on either by changing one import line,
            and it is checked against PyTorch: the internal tests compare
            its values and gradients with PyTorch's, and run every
-           experiment on PyTorch as well. PyTorch is used by the internal
-           tests only; the project itself needs only numpy.
+           experiment on PyTorch as well. Up to lesson 06.01 PyTorch is
+           used by the internal tests only and the project needs only
+           numpy; from 06.02 on the project's scripts import PyTorch
+           itself, which the learner installs (none of it is in this
+           repository).
 Format     safetensors (https://github.com/huggingface/safetensors,
            Apache-2.0): lab/safetensors.py writes and reads checkpoints in
            that file format (a header length, a JSON header, the raw
@@ -229,9 +232,9 @@ Format     safetensors (https://github.com/huggingface/safetensors,
            (save_file, load_file). The format only: no code of the library
            is in the track. The internal tests use the library to open
            what the track writes, and the other way round.
-Ours       All of the code (engine/, lab/, data/, experiments/), the
-           lessons, and the internal checks (tracks/research/track.py and
-           tests/). Lessons that run a paper's claim again name the paper
+Ours       All of the code (engine/, lab/, data/, models/, experiments/),
+           the recorded long run (experiments/recorded/), the lessons, and
+           the internal checks (tracks/research/track.py and tests/). Lessons that run a paper's claim again name the paper
            and link to it; no text or figure of a paper is copied, and
            every curve is drawn from the track's own runs.
 
@@ -247,6 +250,21 @@ Data       MNIST, the handwritten digits of Yann LeCun, Corinna Cortes and
 Licence    As read at the source on 2026-11-14: MNIST's own page states no
            licence and no longer serves the files; Keras gives CC BY-SA
            3.0, Hugging Face MIT. Nothing of it is redistributed here.
+Data       CIFAR-10, by Alex Krizhevsky, Vinod Nair and Geoffrey Hinton:
+           the binary version, one archive of 170,052,171 bytes (its MD5
+           matches the one the dataset's page publishes). Not in this
+           repository, and never downloaded by a build, a test or a
+           lesson: the learner fetches it once, with python3 -m data.fetch
+           cifar10, from the dataset's own page
+           (https://www.cs.toronto.edu/~kriz/cifar.html), into a cache
+           outside the project; the archive and each of the seven files
+           taken out of it are kept only if their sizes and SHA-256 match
+           the ones pinned in fetch.py.
+Licence    As read at the source on 2026-11-14 and 2026-11-24 (the page now
+           redirects to cave.cs.toronto.edu): CIFAR-10's page states no
+           licence and asks that the tech report be cited (Krizhevsky,
+           "Learning Multiple Layers of Features from Tiny Images", 2009).
+           Nothing of it is redistributed here.
 Generated  The two groups of points (data/points.py) are made from a seed
            when a script runs; none is stored.
 
