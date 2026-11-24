@@ -49,18 +49,19 @@ CLAIM = ("Dao et al. (2022): \"FlashAttention trains Transformers faster than ex
 
 # @build 11.03 kept_bytes
 # The bytes autograd keeps for the backward pass while work() runs: every
-# tensor it saves is counted as it is saved (a saved_tensors_hooks pair
-# whose pack counts and keeps the tensor as it is). Returns (bytes, what
-# work returned).
+# tensor it saves passes through pack (a saved_tensors_hooks pair, which
+# keeps it as it is), and each piece of memory is counted once, however
+# many operations save it (the weights are saved by the softmax and by
+# the product with the values). Returns (bytes, what work returned).
 def kept_bytes(work):
-    total = [0]
+    seen = {}
 
     def pack(t):
-        total[0] += t.numel() * t.element_size()
+        seen[t.untyped_storage().data_ptr()] = t.untyped_storage().nbytes()
         return t
     with torch.autograd.graph.saved_tensors_hooks(pack, lambda t: t):
         out = work()
-    return total[0], out
+    return sum(seen.values()), out
 # @end
 
 
