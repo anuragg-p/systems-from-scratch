@@ -200,6 +200,9 @@ def cc_path(t):
     UBSan into a directory of its own (once per tree per run)."""
     if not os.environ.get("CC_SANITIZE"):
         return os.path.join(t.root, "cc")
+    # The compiler frees nothing, as chibicc frees nothing: it exits soon after. On Linux, ASan's
+    # leak checker would say so at every exit (macOS's ASan has none).
+    os.environ.setdefault("ASAN_OPTIONS", "detect_leaks=0")
     with _san_lock:
         if t.root not in _san:
             out = tempfile.mkdtemp(prefix="cc-sanitize-")
@@ -232,11 +235,8 @@ def _text(b):
 def compile(t, src, *flags):
     """./cc FLAGS FILE, FILE holding src: (status, stdout, stderr)."""
     name = _write(t, src)
-    env = dict(os.environ)
-    env.setdefault("ASAN_OPTIONS", "detect_leaks=0")    # the compiler frees nothing, as chibicc
     try:
-        r = subprocess.run([cc_path(t)] + list(flags) + [name], cwd=t.tmp, capture_output=True,
-                           timeout=60, env=env)
+        r = subprocess.run([cc_path(t)] + list(flags) + [name], cwd=t.tmp, capture_output=True, timeout=60)
     except subprocess.TimeoutExpired:
         raise Fail(f"./cc did not stop within 60 s on {src!r}")
     err = _text(r.stderr)
