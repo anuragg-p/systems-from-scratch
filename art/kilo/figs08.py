@@ -521,8 +521,8 @@ def records0801():
 
     f = F8("f0801a", "Three keys at 08.01 and the records each one makes, in the order they are made: a "
            "character typed, Enter in the middle of a row, Backspace at the start of one", 344)
-    f.text(24, 22, "kilo at 08.01 on notes.txt, NOTES.md's keys: three of them, the rows before and after each, "
-           "and its records", "tm", 11)
+    f.text(24, 22, "kilo at 08.01 on notes.txt, keys Down, \"and \", Enter, Backspace: three of them, with the "
+           "records each made", "tm", 11)
     XK, XB, XA, XR, WR = 24, 132, 296, 450, 166
     f.text(XK, 48, "the key", "tm", 10.5)
     f.text(XB, 48, "the rows before", "tm", 10.5)
@@ -737,8 +737,8 @@ def swap0802():
 
     f = F8("f0802a", "One U_CHG record and its row: Ctrl-Z swaps their texts, and Ctrl-R, applying the same "
            "record again, swaps them back", 236)
-    f.text(24, 22, "kilo at 08.02 on notes.txt, NOTES.md's keys: the second Backspace's step, one record",
-           "tm", 11)
+    f.text(24, 22, "kilo at 08.02 on notes.txt, after Down, \"and \", Enter, Backspace, Backspace: the last key's "
+           "step, one record", "tm", 11)
     SZ = 12.5
     cw = cwid(SZ)
     BW = 250
@@ -878,8 +878,7 @@ def runs0803():
 
     f = F8("f0803a", "Keys on a time line, each with the kind undoKey() gives it, and the steps they make: a step "
            "is a run of keys of one kind, and any other key ends it", 288)
-    f.text(24, 22, "kilo at 08.03: the kind of each key, from a build that logged undoKey(), and the steps on the "
-           "undo stack", "tm", 11)
+    f.text(24, 22, "kilo at 08.03: the kind undoKey() gives each key, and the steps on the undo stack", "tm", 11)
     def line(y, title, keys, recs, total, x=24, gap=10):
         f.text(24, y, title, "t", 11.5, weight=700)
         f.text(616, y, total, "ta", 11.5, "end", 700)
@@ -900,8 +899,9 @@ def runs0803():
             f.brace_h(lo + 1, hi - 1, y + 33, "a", up=True)
             n = recs[step - 1]
             f.text((lo + hi) / 2, y + 22, f"step {step}: {n} record{'s' if n != 1 else ''}", "ta", 10, "middle", 600)
-    line(48, "NOTES.md's keys, on notes.txt", ka, recs_a, f"{len(ka)} keys, {len(recs_a)} steps")
-    line(160, "a, Left, b on a file of one empty row (test 0803)", kb, recs_b, f"{len(kb)} keys, {len(recs_b)} steps",
+    line(48, "Down, \"and \", Enter, Backspace, Backspace on notes.txt", ka, recs_a,
+         f"{len(ka)} keys, {len(recs_a)} steps")
+    line(160, "a, Left, b on a file of one empty row", kb, recs_b, f"{len(kb)} keys, {len(recs_b)} steps",
          x=60, gap=64)
     notes(f, 24, 266, "undoKey(c), before each key acts, closes the open step when the key is \"other\" or of "
           "another kind than the keys before it. A key that closes it and changes nothing makes no step.",
@@ -926,7 +926,8 @@ def one_record0803():
 
     f = F8("f0803b", f"The bytes the history holds after a line of 60 characters is typed into an empty row: "
            f"{b1} as one step of one record, {b60} as 60 steps", 214)
-    f.text(24, 22, "the tree's own kilo, its count of the history after the last key (KILO_TEST_UNDO_LOG)", "tm", 11)
+    f.text(24, 22, "the bytes kilo's history holds after the last key, a line of 60 characters typed into an empty "
+           "row", "tm", 11)
     X0, W = 24, 560
     scale = W / b60
     f.text(X0, 56, "60 characters as one step: a run of typing (08.03)", "t", 11.5, weight=700)
@@ -1051,8 +1052,8 @@ def bound0804():
     f = F8("f0804b", f"The history against its bound: with a bound of {bound} bytes, twelve one-record steps keep "
            f"the newest ten, the two oldest dropped and the saved point taken down with them; and kilo's own 8 MB "
            f"against a row bigger than all of it", 318)
-    f.text(24, 22, f"the tree's kilo with test 0804's bound, {bound} bytes: Enter six times, Ctrl-S, Enter six times "
-           f"more, on an empty file", "tm", 11)
+    f.text(24, 22, f"kilo with UNDO_MAX_BYTES made {bound}: Enter six times, Ctrl-S, Enter six times more, on an "
+           f"empty file", "tm", 11)
     CW, X0, Y = 40, 90, 74
     for i in range(12):
         x = X0 + i * (CW + 4)
@@ -1070,8 +1071,8 @@ def bound0804():
     sx = X0 + 6 * (CW + 4) - 2
     f.line(sx, Y - 2, sx, Y + 44, "a")
     f.text(sx + 6, Y + 46, "saved after step 6: U.saved was 6, now 4", "ta", 10.5)
-    f.text(24, Y + 82, "Each new record past the bound drops the oldest steps first; the counts after each key "
-           f"never pass {bound}.", "tm", 10.5)
+    f.text(24, Y + 82, "Each new record past the bound drops the oldest steps first; the bytes held never pass "
+           f"{bound}.", "tm", 10.5)
     # kilo's own bound against one row bigger than all of it
     y = 196
     f.text(24, y, "kilo's own bound, UNDO_MAX_BYTES: 8 MB", "t", 11.5, weight=700)
