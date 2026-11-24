@@ -2193,3 +2193,547 @@ saved output before verifying.
   "experiments/recorded/*/model.safetensors" to HIDDEN: never listed,
   shown or materialized. The recorded one was moved out before the commit
   (no weights are shipped).
+
+## Module 14: reproduce a paper, grokking
+
+Built by one agent on 2026-11-24, on the reference machine above (Apple M4
+Pro, Python 3.12.7, numpy 2.4.3, PyTorch 2.10.0, 10 threads by default),
+shared all the while with another agent's training (load 4 to 14). Every
+time below says its load.
+
+### The files
+
+```
+data/modular.py          14.01   SYMBOLS, divide, OPERATIONS, equations, tokens, split, names: the paper's data
+experiments/predictions.py 14.01 PAPER, NANDA, SETUP, Claim, CLAIMS, verdict: the claims as predictions (no main)
+experiments/claims.py    14.01   memoriser; prints SETUP, CLAIMS and the baselines
+experiments/arithmetic.py 14.02  log_steps, score, train: the loop module 14 shares (as language.py is 08's)
+                         14.03   weight_norm, first_step, milestones; train logs the norm (@from)
+                         14.04   train's stop (@from); scaled_start, read_seeds, read_runs, median_steps
+experiments/grokking.py  14.02   the experiment from the text (no region: FILES_FROM); 14.03's part 3 (@from)
+experiments/ablations.py 14.04   settings, sweep: three sweeps, one setting changed at a time
+experiments/report.py    14.04   norm_ratio, outcomes, changes: the reproduction report, from the logs
+experiments/recorded/grokking/   14.03's long run (3 seeds, 5000 steps); recorded/ablations/ 14.04's runs
+```
+
+An experiment never imports another (06.02's convention), so the claims
+live in predictions.py, which claims.py prints and report.py judges, and
+the loop lives in arithmetic.py, which grokking.py and ablations.py share.
+models/gpt.py is not changed: every run builds GPT(V, 4, layers=2,
+heads=4, width=128) (vocabulary p + 4, context 4: the model reads a, op,
+b, = and is scored on its guess at c at the last of them).
+
+### What was read, at the source
+
+- Power, Burda, Edwards, Babuschkin and Misra (2022), "Grokking:
+  Generalization Beyond Overfitting on Small Algorithmic Datasets", arXiv
+  2201.02177v1 (the only version), the PDF from arxiv.org, read whole (10
+  pages: sections 1 to 4, appendix A.1 to A.5). Figures 1, 2 and 4 looked
+  at closely (rendered at 300 to 600 dpi); 3, 5, 6 and 7 looked at, not used.
+  The set-up, quoted (each is in predictions.SETUP with its place):
+  appendix A.1.1, "(for a prime number p = 97)", x/y "for 0 <= x < p,
+  0 < y < p", "equations of the form <x><op><y><=><x o y>", "For each
+  training run, we chose a fraction of all available equations at random
+  and declared them to be the training set, with the rest of equations
+  being the validation set."; A.1.2, "a standard decoder-only transformer
+  ... with causal attention masking, and calculated loss and accuracy only
+  on the answer part of the equation", "a transformer with 2 layers, width
+  128, and 4 attention heads, with a total of about 4 x 10^5 non-embedding
+  parameters", "AdamW optimizer with learning rate 10^-3, weight decay 1,
+  beta1 = 0.9, beta2 = 0.98, linear learning rate warmup over the first 10
+  updates, minibatch size 512 or half of training dataset size (whichever
+  was smaller) and optimization budget of 10^5 gradient updates", "we
+  chose not to anneal the learning rate"; for section 3.1.1 "5 x 10^5
+  optimization steps"; for section 3.1 (figure 1) "we increased the
+  optimization budget to 10^6, and used Adam optimizer with no weight
+  decay"; "3 random seeds, with the exception of experiments in section
+  3.1.1, where we've aggregated results over 7 random seeds". (The paper's
+  symbols are written in ASCII here: the circle as o, beta as beta, the
+  angle brackets as < >.)
+  The claims, quoted, are in predictions.CLAIMS with their places. Read off
+  the figures (by eye, so good to a factor of about 2 on a log axis):
+  figure 1 left, the training curve passes 99% at about 700 steps, the
+  validation curve leaves chance at about 3 x 10^4 to 5 x 10^4 and reaches
+  99% at about 5 x 10^5 to 10^6 (lighter curves, other seeds, later);
+  figure 1 center (S5, median steps to 99% validation): about 1.1e5 at 30%
+  of the data, 2.5e4 at 40%, 1.4e4 at 50%, 1.5e4 at 60%, 6.5e3 at 70%,
+  2.7e3 at 80%; figure 2 right (best validation accuracy in 10^5 steps,
+  weight decay 1, mean of 3 seeds): x/y about 0.35 at 20% of the data and
+  1.0 from 25%, x - y from 25%, x + y from about 20%; figure 2 left (S5):
+  AdamW with weight decay 1 generalises from about 35 to 40% of the data,
+  minibatch Adam without it only from about 85%; figure 4, the validation
+  loss of figure 1's run rises from about 2.3 (its chance line) at 10^2 to
+  a peak of about 20 near 8 x 10^4 and is back near 0 at 10^6.
+- The authors' code, github.com/openai/grok (MIT), at commit 3d64b1d8c1d5
+  (2024-03-16, the default branch main): README.md, scripts/train.py,
+  grok/data.py and grok/transformer.py whole; grok/training.py's
+  arguments, data loaders, scheduler, optimizer (CustomAdamW), _accuracy,
+  _step and train. Not read: measure.py, metrics.py, visualization.py, the
+  notebook, the other scripts. What the code does that the text does not
+  say:
+  - Each equation is "<|eos|> a op b = c <|eos|>" (7 tokens; the model
+    reads the first 6), and the loss and accuracy are over every token
+    after "=": c and the end token. The end token is always the same, so
+    the loss of a guess is (ln 97 + 0) / 2 = 2.29: that is figure 4's
+    "Chance level loss" line at about 2.3, which is not ln 97 = 4.57. An
+    equation counts as right only when both tokens are. We score c alone,
+    as the text says ("only on the answer part of the equation"): a guess
+    is 4.575 nats here. Figure 4's peak of about 20 is so about 9 times
+    its chance line; predictions.CLAIMS compares like with like.
+  - Division is built as a = b x c for c in 0..96, b in 1..96: the same
+    9312 equations as x/y for 0 < y.
+  - The split: the equations are shuffled once with
+    np.random.RandomState(seed=0) and the first train_pct % taken, so every
+    run of a given fraction has the same split; only the starting weights
+    and the batches change with the seed. The text says each run chose its
+    fraction at random; data/modular.py follows the text (a split for each
+    seed). Not measured whether it matters.
+  - The model (transformer.py): post-norm blocks (LayerNorm(x +
+    attention(x)), then LayerNorm(a + MLP(a))), no last norm; ReLU; no
+    bias in any Linear layer (the layer norms have theirs); fixed
+    sinusoidal positions; an output Linear layer of its own (not tied);
+    every layer left at PyTorch's own start (nn.Embedding N(0, 1),
+    nn.Linear uniform within 1/sqrt(inputs)); the vocabulary is 239 tokens
+    (2 special, 20 operator symbols, 97 residues, 120 permutations).
+  - CustomAdamW over self.parameters(): weight decay on every weight,
+    biases and layer norms too, as p <- p (1 - lr wd), PyTorch's AdamW
+    form; ours is torch.optim.AdamW on every weight, the same.
+  - The warmup: lr = step / 10 x max_lr for step <= 10 (so the first
+    update is at rate 0) and max_lr after; ours (03.05's warmup_cosine with
+    floor 1) is (step + 1) / 10 for the first 10 updates. A one-step
+    difference, not measured.
+  - Batches: min(512, ceil(n / 2)), a new random order each pass, the last
+    batch of a pass smaller (n mod 512 equations); ours the same
+    (data.batches). The validation set is scored whole after every pass.
+  - Its argparse default weight_decay is 0; the paper's runs set 1.
+- Nanda, Chan, Lieberum, Smith and Steinhardt (2023), "Progress measures
+  for grokking via mechanistic interpretability", arXiv 2301.05217v3 (ICLR
+  2023), read: section 3 (the set-up: one layer, d = 128, 4 heads, ReLU,
+  learned positions, no LayerNorm, untied, P = 113, 30% of the pairs, full
+  batch, AdamW at 0.001, weight decay 1, 40,000 epochs; "After around
+  10,000 epochs, the network generalizes"), 5.1 to 5.3, appendix C.2.2 and
+  D.1, figures 2, 7, 20, 26 and 27. Not read: section 4 (the mechanism)
+  beyond its summary, the other appendices. Figure 7 (bottom right): the
+  sum of squared weights peaks at about 3600 near epoch 1,000 and falls to
+  about 2000 by 10k and about 1000 by 14k (the norm, its square root, from
+  60 to 32: 0.53 of its peak). Appendix D.1 contradicts itself, and its
+  figure: the sentence says "Smaller amounts of weight decay lead to
+  slower grokking, while larger amounts of weight decay lead to faster
+  grokking", then "it takes around 3k epochs for models to grok with weight
+  decay lambda = 0.3, 5-10k epochs ... with lambda = 1.0, and 20k epochs ...
+  with lambda = 3.0" (the numbers say the opposite); figure 27 shows weight
+  decay 0.3 grokking at about 15 to 25k epochs and 3.0 at about 3 to 4k,
+  agreeing with the sentence. predictions.CLAIMS takes the sentence and the
+  figure. Section C.2.2: with P = 53, "With the original weight decay
+  setting of lambda = 1, we found that the models never generalized.
+  However, increasing the weight decay to lambda = 5 does allow the model to
+  grok." (A smaller prime is not a faster problem; spike 8 below agrees.)
+  Figure 26: no weight decay, no grokking in 40,000 epochs.
+- Liu, Michaud and Tegmark (2023), "Omnigrok: Grokking Beyond Algorithmic
+  Data", arXiv 2210.01117: the abstract only, read for the start finding
+  below (it explains grokking by "the mismatch between training and test
+  losses" against the weights' norm, and says "we are able to eliminate
+  grokking for algorithmic datasets"). Its body was not read: a page may
+  cite the abstract's words, nothing more.
+- Not read: Keshav's "How to Read a Paper" and Schulman's guide (the
+  outline lists them for the pages; nothing in the code uses them).
+
+### Our model against the paper's
+
+models/gpt.py's GPT at the paper's depth, width and heads (2 blocks, width
+128, 4 heads, MLP 512): 410,240 weights, 396,800 of them outside the
+embeddings and positions (the paper: "about 4 x 10^5 non-embedding
+parameters"; theirs, counted from transformer.py, has no biases and an
+untied output). Every way it differs from the paper's code (report.py's
+MODEL prints them; none of them is in the paper's text, which says only
+"a standard decoder-only transformer ... with causal attention masking"):
+pre-norm blocks and a last layer norm (theirs post-norm, none); GELU
+(theirs ReLU); learned positions (theirs fixed sinusoids); output tied to
+the embedding (theirs a Linear layer of its own); biases in every Linear
+layer (theirs none); GPT-2's start, sd 0.02 (theirs PyTorch's own, the
+embedding sd 1); a vocabulary of p + 4 tokens (theirs 239); the model reads
+4 tokens and is scored on c alone (theirs reads 6, scored on c and an end
+token). Which of these decides the result was measured (spike 8, part 2):
+the start. With GPT-2's small start the model generalises as fast as it
+memorises at the paper's 50%; with a start 3 or 10 times larger, or
+PyTorch's, it memorises and stays at chance, as the paper's figure 1. The
+paper's whole model rebuilt in scratch code does the same with PyTorch's
+start and fails to memorise with GPT-2's. Norm placement, activation,
+positions and the tie were not each measured alone.
+
+### 14.01 Reading a paper for what it claims
+
+data/modular.py: tokens 0 to p - 1 are the residues, p is "=", p + 1, + 2,
++ 3 are "+", "-", "/" (SYMBOLS); equations(97, "/") has 9312 rows (b from
+1), "+" and "-" 9409. divide uses Fermat's little theorem, pow(b, p - 2,
+p); 20 / 15 = 66 mod 97 (66 x 15 = 990 = 10 x 97 + 20) is the example
+claims.py prints. split shuffles with numpy's default_rng(seed) and takes
+round(fraction x n): 4656 at 50%, 3259 at 35% (6053 to validate).
+experiments/claims.py prints SETUP (12 settings, each with its quote and
+place), the ten claims of predictions.CLAIMS (8 from the paper, 2 from
+Nanda et al.), each with its place, its words, the paper's setting, what we
+measure, the paper's number and the rule; then the baselines at the
+paper's 50%: a guess 1/97 = 0.0103, loss ln 97 = 4.575 nats; the memoriser
+(the training table, else the commonest training answer) training 1,
+validation `0.007016 +- 0.001295` (3 splits; at 35% `0.007875 +-
+0.001009`): below a guess, because the commonest answer of the training
+set is the one most used up there, so the rarest in the rest. 0.2 s.
+The rules, fixed before any run (predictions.py): "about" is within a
+factor of 3 (a number read off a log axis); "below" and "above" are the
+direction; a lower bound ("more than 6000 steps") settles "above" and can
+rule out "below" and "about", nothing else.
+
+### 14.02 The experiment from the text: modular arithmetic
+
+experiments/grokking.py with arithmetic.py's train: x/y mod 97, AdamW at
+0.001, betas 0.9 and 0.98, weight decay 1 on every weight, warmup over 10
+updates then constant, batches of 512 (or half the training set), the loss
+and accuracy of the guess at c only; accuracy and loss on the whole
+training and validation sets at log_steps (0, then per_decade a factor of
+ten, and the last). The default: 35% of the equations (3259 to train on,
+6053 to validate), 350 steps, 3 seeds, 5 measurements a decade.
+After 350 steps: training accuracy `0.964 +- 0.04124` (0.9165 to 0.9911),
+validation accuracy `0.02027 +- 0.00539` (0.014 to 0.023: a guess 0.0103),
+training loss `0.7171 +- 0.2552` nats, validation loss `4.906 +- 0.576`
+(above a guess's 4.575: it is rising). One seed (1) reached 99% on training
+at step 350; part 3 (14.03's) prints "never" for the rest. 35 s and 32 s
+at load 5.6 to 6.3 (another agent training); the same bytes twice. That is
+the failure the module starts from: stopped here, a learner would report a
+model that memorises and does not generalise.
+Why 35% and not the paper's 50%: with our GPT at 50% (spike 8, part 1)
+training and validation accuracy rise together (630/630 with or without
+weight decay), so there is no failure to see; a learner can run
+`fraction=0.5` (the same 35 s) and see validation climbing with training.
+Why 350 steps and 5 measurements a decade: memorising takes 350 to 450
+steps on this set-up, and 3 seeds of 400 steps with 10 a decade took 49 s
+at load 7: too close to the minute.
+The paper's set-up is quoted in grokking.py's CONFIG comment and printed by
+claims.py; what differs from it in every run: the fraction (35%), the steps
+(350 here, 5000 in 14.03, at most 6000 in 14.04, against 10^5, and figure
+1's 10^6 with Adam without weight decay), the model (above), the split (a
+new one each seed, as the text says, not the code's one fixed split), the
+loss on c alone (the text; the code adds the end token), and the warmup's
+first step (ours at a tenth of the rate, the code's at 0). Training
+accuracy is measured on the whole training set at each measured step (the
+code averages the batches of a pass as it trains).
+
+### Spike 8: where a laptop sees the late generalising
+
+What a step costs: the paper's model reads 512 equations of 4 tokens a
+step, about 5 GFLOP forward and backward; on this CPU 31 to 35 ms at load
+4 to 7 (43 ms at load 13; 140 GFLOP/s, the same with 1, 4 or 10 threads),
+and scoring both splits whole (9312 equations) 120 to 155 ms. So 10^5
+steps is about an hour for one seed, figure 1's 10^6 about ten hours: the
+paper's budget does not fit, and an hour of CPU holds about 100,000 steps
+for everything. Explored on the Apple GPU (mps, 7 to 8 ms a step, at every
+batch size from 64 to 512) to save the CPU, then confirmed on it. In the
+list, "a/b" is the first measured step at which training / validation
+accuracy was 99% or more, "never" not within the run, x/y mod 97, AdamW at
+0.001 with betas 0.9 and 0.98, warmup 10, batches of 512 unless said, one
+seed unless said; "ours" is models/gpt.py's GPT as it starts (GPT-2's
+start, every weight with sd 0.02).
+
+1. The paper's own fraction, 50%, with ours: no grokking at all. Weight
+   decay 1: 630/630 (CPU, seed 0); without weight decay (figure 1's Adam)
+   630/630, 501/501, 630/794 (seeds 0 to 2): it generalises as it
+   memorises, and needs no weight decay to.
+2. What decides it: the start. At 50% without weight decay (figure 1's
+   optimiser), 5000 to 10000 steps:
+   - ours with every weight 3 times larger (sd 0.06): 316/never, validation
+     0.025 at 5000, its loss up to 10.5 (2.3 times a guess's);
+   - 10 times larger: 630/never, 0.012, loss up to 16.6;
+   - every layer back to PyTorch's own start (reset_parameters; with our
+     tied output the scores start huge, a first loss of 112): 1995/never
+     at 10000 (CPU), 0.016;
+   - the paper's model as its code builds it (scratch code, not in the
+     project: post-norm, ReLU, untied output, sinusoidal positions,
+     PyTorch's start): 501/never at 10000, validation 0.017, its loss up to
+     16.3 at 6309: figure 1's first 10^4 steps as the paper draws them;
+   - the paper's model with GPT-2's start: it does not even memorise
+     cleanly (training 0.97, validation 0.06 at 5000).
+   So with a small start the model generalises at once; with a large one
+   it memorises, and its validation loss climbs, as in figures 1 and 4.
+   With weight decay 1 at 50%: the paper's model 1258/5011; ours 10 times
+   larger 501/3981, 630/3162, 794/3162 (seeds 0 to 2): grokking at the
+   paper's fraction, 4 to 8 times later; ours 3 times larger 398/1000,
+   398/630, 501/794 (validation already 0.19 to 0.70 when training reached
+   99%: no clean delay); ours with PyTorch's start (CPU) 2511/5000,
+   validation 0.25 at the first; with PyTorch's start and an untied output
+   1000/2511.
+3. Less data, with ours and weight decay 1 (the paper's own pointer: the
+   late generalising is "typical ... for dataset sizes that were close to
+   the minimal dataset size for which the network generalized within the
+   allotted optimization budget", section 3.1):
+   - 40%: 501/1258 (2.5 times later);
+   - 35%: 398/2511, 398/1995, 501/2511 (seeds 0 to 2; 5 to 6.3 times
+     later; validation 0.016 to 0.029 at the first): chosen;
+   - 33%: all three seeds stuck near a guess for thousands of steps
+     (training 0.18 to 0.21, validation 0.15 at 12000; CPU agrees for
+     seed 0). 33% of 9312 is 3073 = 6 x 512 + 1: every pass ends with a
+     batch of one equation, and Adam takes a full-sized step on it. At
+     33.2% (3092, a last batch of 20) seed 0 trains (1584/1584). The
+     authors' iterator has the same smaller last batch, so their code
+     would meet this too at such a fraction; a lesson on reproduction can
+     use it as a detail no paper reports.
+   - 30%: 316/never in 15000 (CPU, seed 0: validation 0.057, creeping up,
+     a slingshot at 1258 where training accuracy fell to 0.72), 316/3981,
+     398/6000 (seeds 1 and 2): longer and less certain;
+   - 25%: 251/never in 5000.
+   With ours 3 times larger at 35%: 199/2511, 199/1995, 199/2511 (10 to
+   12.6 times later: a larger start memorises sooner, generalises no
+   sooner); 10 times larger 398/5000 (seed 1).
+4. Weight decay, with ours: at 40%, none 398/never in 8000 (validation
+   0.03, its loss up to 11.85), 0.3 398/5011, 1 501/1258, 3 never memorises
+   first (training and validation rise together, 0.80 and 0.76 at 8000,
+   unsteady); at 35%, none 316/never in 8000 (loss up to 12.7), 0.3
+   316/6309 and 316/3981, 3 5011/5011 (no memorising first).
+5. A smaller prime is slower, not faster (as Nanda et al. found for 53): at
+   50% with weight decay 1, p = 23 79/never in 5000 (validation 0.17), 31
+   125/never (0.18; with weight decay 3 0.15; without, 0.045), 47 316/1258
+   (training accuracy unsteady, 0.915 at the end), 47 at 40% 100/never
+   (0.21). No problem small enough to grok inside a minute was found, so
+   14.04's default reads its recorded runs.
+
+The choice: the paper's set-up as its text gives it (x/y mod 97, AdamW,
+weight decay 1, the rate, betas, warmup and batch), our GPT as built, and
+one change, 35% of the equations instead of figure 1's 50%: the smallest
+change that shows memorising first and generalising later on every seed
+inside the hour. Not figure 1's Adam without weight decay: at 35% and 40%
+that never generalises within 8000 steps, where the paper's needed close to
+10^6. The start, the difference that decides it, is 14.04's third
+ablation, at the paper's 50%.
+
+### 14.03 The figure: memorise first, generalise much later
+
+The long run, recorded in experiments/recorded/grokking/ (seed0 to seed2:
+config.json, log.jsonl, summary.json; accuracy.svg and loss.svg, log step
+axes, training dashed red and validation green as the paper's figure 1
+colours them, loss.svg with a guess's ln 97 as a grey line; norm.svg;
+output.txt, what it printed):
+
+    python3 -m experiments.grokking steps=5000 per_decade=20 out=experiments/recorded
+
+x/y mod 97, 35% of the equations, the paper's AdamW set-up, 3 seeds of 5000
+steps, measured at 64 steps (20 a decade, so a "first step at 99%" is known
+to within 12%). 428 s by its own clock (21:52:05 to 21:59:14), load 4.6 to
+7.3 (another agent training), about 30 ms a step with the measuring.
+Measured (seed 0, 1, 2):
+- training accuracy first at 99%: step 398, 354, 446 (`399 +- 46`);
+- validation accuracy then: 0.0162, 0.0240, 0.0289 (a guess: 0.0103);
+- validation accuracy first at 99%: step 2238, 1778, 2511 (`2.18e+03 +-
+  370`); its first step at 10% or more: 1584, 1000, 1584;
+- how many times later: 5.6, 5.0, 5.6 (`5.43 +- 0.349`): about 0.7 of a
+  decade on the log axis, where the paper's figure 1 has three;
+- the validation loss rises while the training loss falls: from 4.64 to
+  4.66 at the start (a guess: 4.575) to its peak, 5.83, 5.02 and 5.31 nats
+  (1.27, 1.10 and 1.16 times a guess's, `1.18 +- 0.0897`) at steps 562, 501
+  and 794, after training accuracy passed 99%; then it falls, to 0.080,
+  0.042 and 0.034 at the end. The paper's figure 4: about 9 times its
+  chance line (but figure 1's run had no weight decay; see 14.04, part 1,
+  where ours without it reaches about 2.5 times a guess's and keeps
+  climbing);
+- the weights' norm: 27.4 at the start (GPT-2's start); its highest 27.6
+  (step 1584), 27.5 (step 0), 28.6 (step 1995); when validation reached
+  99%, 25.5, 23.0, 27.2 (0.93, 0.84 and 0.95 of the highest before then);
+  at the end 26.2, 23.7, 23.6. It barely moves: weight decay 1 at rate
+  0.001 takes a thousandth off each step, and the gradient puts it back.
+  Nanda et al.'s figure 7 (a larger start, full batch) halves the norm
+  (0.53) between memorising and generalising;
+- at the end both accuracies 1.000 on every seed; the losses 0.048
+  (training) and 0.052 (validation) nats.
+Brief spikes: every seed has a step or two where training accuracy drops
+for a moment (seed 0 at 1122 to 0.910, at 1584 to 0.959 and at 3981 to
+0.925; seed 1 at 2238 to 0.895; seed 2 at 1000 to 0.928 and 1584 to
+0.959), each back within a measurement or two. Nanda et al. (appendix
+C.2.2) say two-layer models' grokking "is complicated by the slingshot
+mechanism (Thilak et al., 2022)" (not read; whether these dips are it is
+not measured).
+The figure's shape is the paper's: training near 100% by step 400 while
+validation sits at chance, then validation climbing from about step 1000
+to 99% by 1800 to 2500. "Much later" is 5 to 6 times later here, not the
+paper's thousand.
+
+### 14.04 Ablations, and the report
+
+experiments/ablations.py: three sweeps, one setting changed at a time from
+14.03's run, each setting 3 seeds; a run stops at the first measured step
+(10 a decade) at which validation accuracy is 99% (stop=True in
+arithmetic.train), else at 6000 steps. A setting two sweeps share is run
+once (settings()). Recorded in experiments/recorded/ablations/ (a folder
+per setting, fraction<f>-decay<wd>-start<s>, seed0 to seed2 in each;
+output.txt, what it printed):
+
+    python3 -m experiments.ablations train=True out=experiments/recorded
+
+1634 s by its own clock (21:59:14 to 22:26:29, load 5.7 to 10.3; 18 runs).
+With 14.03's 428 s the module's recorded runs took 2062 s, 34 min 24 s of
+wall clock, inside the hour. "a/b" is training / validation 99%:
+1. Weight decay, 40% of the equations: none: 398/never, 398/never,
+   398/never (best validation accuracy 0.027, 0.071, 0.077 in 6000 steps;
+   the validation loss up to 2.6, 2.48 and 2.22 times a guess's, at steps
+   5011, 3162 and 1995; the norm from 27.4 up to about 45); 0.3: 398/3981,
+   398/3981, 398/2511 (median 3981; the norm up to 33, then down to 24 to
+   27); 1: 501/1258, 501/1000, 501/1000 (median 1000).
+2. The fraction, weight decay 1: 35% 398/2511, 398/1995, 501/2511 (median
+   2511; the same runs as 14.03's, measured at 10 a decade instead of 20);
+   40% median 1000 (above); 50% 630/630, 630/794, and seed 2 never: it
+   neither memorised nor generalised, stuck from step 600 on near training
+   0.67 and validation 0.34 (0.80 and 0.27 at 6000): at the paper's own
+   fraction one seed of three found neither solution in 6000 steps. Median
+   794. So k (steps ~ 1 / fraction^k, 35% to 50%) = ln(2511 / 794) /
+   ln(0.5 / 0.35) = 3.23, where figure 1 (center) gives about 4 on S5 from
+   30% to 50%; and training 99% comes sooner with less data (398 at 35%
+   against 630 at 50%), as section 3.1.1 says.
+3. The start, 50% of the equations, weight decay 1: GPT's own (GPT-2's,
+   sd 0.02): 630/630, 630/794, never/never (1.0 and 1.3 times later: no
+   grokking); every weight but the layer norms' 10 times larger
+   (scaled_start): 501/3981, 630/3981, 794/3162 (7.9, 6.3 and 4.0 times
+   later; validation accuracy 0.012 when training reached 99%), the norm
+   from 109 down to 23.5, 27.2 and 33.6 when validation reached 99% (0.21
+   to 0.31 of its start: the fall Nanda et al.'s figure 7 shows, which
+   GPT-2's small start does not need). At the paper's fraction and with
+   the paper's text's optimiser, a large start is what brings back the
+   late generalising. (Spike 8 has the same without weight decay: GPT's
+   own start generalises at once, 3 or 10 times larger never in 5000.)
+The default (train=False) trains nothing: a minute of CPU holds about 1500
+steps of this model (30 ms a step, measured above), and no setting of the
+table generalises in that (the fastest, 50% with GPT's own start, needs
+about 630 steps for one seed, 1900 for three; spike 8 found no smaller
+problem that groks sooner). It reads the recorded runs and prints their
+table, in 1.0 s; the page should say so, and give train=True's time (about
+27 minutes at load 6 to 10).
+
+experiments/report.py reads the two recorded folders (settings figure= and
+ablations=), computes each claim's number (outcomes), judges it by its
+rule (predictions.verdict), lists what differs from the paper's set-up
+(changes, against predictions.SETUP) and how the model differs (MODEL,
+words only), and what the start did; it prints the report and writes it to
+<out>/report/report.txt. 0.9 s. Every number in it comes from a log or a
+config.json; the paper's numbers and the rules come from predictions.py.
+The report on the recorded runs (ours: the median of 3 seeds):
+
+    claim         the paper                    ours                                 verdict
+    memorise      under 1000 steps             398 (398, 354, 446)                  held
+    near_chance   about 0.01                   0.024 (0.0162, 0.024, 0.0289)        held (below 0.05)
+    late          about 1000 times later       5.62 (5.62, 5.02, 5.63)              did not hold
+    generalise    about 0.99                   1.0 (every seed)                     held
+    loss_rises    about 9 times its chance     1.16 (1.27, 1.10, 1.16)              held (above 1)
+    less_data     k about 4 (S5)               3.23 (35%: 2511, 50%: 794)           held (above 1)
+    train_sooner  below 1                      0.632 (35%: 398, 50%: 630)           held
+    decay         about 0 without (S5, 50%)    0.0583 at 40% (0.027, 0.071, 0.077)  held (below 0.5)
+    more_decay    about 2 to 4 (Nanda)         3.98 (0.3: 3981, 1: 1000)            held (above 1)
+    norm_falls    about 0.53 (Nanda)           0.926 (0.926, 0.839, 0.95)           held (below 1)
+
+9 held, 1 did not hold. What a page may say about each:
+- memorise, near_chance, generalise: held as the paper states them, at
+  35% of the equations and the text's AdamW (not figure 1's 50% and Adam).
+- late: did not hold. Figure 1's thousand-fold delay is figure 1's set-up:
+  Adam without weight decay for 10^6 steps, and the paper's large start.
+  With the text's weight decay 1 ours is 5 to 6 times later; without
+  weight decay (14.04, part 1) it never generalises within 6000 steps, so
+  the paper's 10^6 cannot be checked in an hour (it would be about ten
+  hours a seed on this CPU).
+- loss_rises: held in direction only; 1.1 to 1.3 times a guess's, where
+  figure 4 shows about 9 times its chance line. Without weight decay ours
+  climbs to 2.2 to 2.6 times and is still climbing at 6000 (part 1), the
+  shape of figure 4's first 10^4 steps.
+- less_data: held; k = 3.23 on x/y between 35% and 50%, figure 1's S5
+  about 4 between 30% and 50%: the same steepness, on another operation
+  and range. Below 35% our runs are erratic (spike 8: 33% stuck, 30% one
+  seed in three not by 15000).
+- train_sooner: held.
+- decay: held: without weight decay no seed generalises at 40% in 6000
+  steps; with it every seed does by 1258. At 50% with GPT's own start (spike
+  8, part 1) weight decay makes no difference: the model generalises at
+  once either way.
+- more_decay: held, and close to Nanda et al.'s numbers (0.3 about 4
+  times slower than 1 here; their figure 27 about 2 to 4).
+- norm_falls: held in direction only (0.93 of the highest), far from
+  Nanda et al.'s 0.53 for GPT's own small start; with the start 10 times
+  larger (part 3) the norm falls to 0.21 to 0.31 of where it began.
+
+### Tests (module 14)
+
+`./learn test research 14`: all 4 pass, 1 min 58 s at load 6 to 7 (14.01
+1.2 s, 14.02 43.9 s, 14.03 62.9 s, 14.04 9.8 s). Each runs its exact checks
+first (inside()), then its experiment:
+- 14.01: every pair once for +, - and / at p = 5, 7 and 97 (b from 1 for
+  division), every c right (c x b = a mod p for division), the tokens a, op,
+  b, =, c; split disjoint, covering, round(fraction x n), seeded; divide's
+  ZeroDivisionError; the claims' fields and rules; verdict on every rule
+  and a lower bound; the memoriser right on every training equation and
+  near chance (its validation accuracy is the commonest training answer's
+  share); then claims.py's output (chance 0.0103, the memoriser under 0.03).
+- 14.02: log_steps; score against a direct sum of -ln p(c); train with
+  torch.optim.AdamW and data.batches watched (betas, the weight decay on
+  every weight in one group, the rate 1/10, ..., 1 over 10 updates then
+  constant, batches of half of 44 equations), the log at log_steps, a tiny
+  table learned; then the default: every seed's training accuracy over 0.9
+  and validation under 0.05, the log from 0 to 350 with both splits, the
+  validation loss 2 nats or more above the training loss, the curves; a
+  tiny run twice, the same bytes.
+- 14.03: weight_norm against the norm of every weight laid end to end;
+  first_step and milestones on a log written by hand; the recorded run
+  (every seed's config the same but the seed, the log from 0 to 5000 with
+  the norm, the three curves, output.txt; every seed memorised under 1000
+  steps with validation under 0.05 then, validation 99% three or more times
+  later, its loss above ln 97 between the two, the norm lower at the second
+  than at its highest); then a run at 50% of 800 steps, 2 seeds (both
+  accuracies reach 99%, the norm lower than at the start), and a tiny run
+  twice. LEARN_RERUN_LONG=1 runs the long run again from its config (about
+  7 minutes).
+- 14.04: settings and its sharing; median_steps; scaled_start (the layer
+  norms untouched); read_seeds, read_runs, sweep, norm_ratio and outcomes on
+  a fixture of runs written with lab.Run whose answers are known; changes;
+  the recorded ablations (every setting, 3 seeds, each stopped at its 99%
+  or at 6000; without weight decay no seed generalises, with 1 every one;
+  the median steps fall as the fraction grows; 10 times the start more than
+  twice as late); the default's table (every median as the summaries give
+  it); the report (printed as written, memorise equal to the summaries'
+  median, a verdict for each of the 10 claims, the fraction named as
+  changed); a tiny train=True sweep twice, the same bytes, and the report on
+  it. The ablations are not rerun by any test (half an hour).
+`./learn check-skeleton research 14` ok, 4.6 s (14.01 fails at equations,
+14.02 at log_steps, 14.03 at weight_norm, 14.04 at settings).
+
+### For the harness, and what a page writer meets
+
+- No harness change. track.py's module-14 part (last in the file) adds
+  the four experiments to EXPERIMENTS, places experiments/grokking.py at
+  14.02 by FILES_FROM (all its code is in arithmetic.py's regions and
+  @from blocks: no region of its own), and puts
+  "experiments/recorded/grokking/*" (14.03) and
+  "experiments/recorded/ablations/*" (14.04) before 06.04's wider glob, as
+  modules 07 and 08 do, with DATA lines for both.
+- The timeline at 14.02 shows arithmetic.py with train's 14.02 form (no
+  norm in the log, no stop, measure without its return) and grokking.py
+  without part 3; 14.03 adds weight_norm, first_step, milestones and part
+  3; 14.04 the stop and the readers. checked with ./learn files research
+  --at 14.02.
+- Nothing in the module downloads anything: a session block from 14.02 on
+  says needs="torch"; 14.01 is numpy only.
+- 14.04's default trains nothing: it reads experiments/recorded/ablations,
+  which the project has from 14.04 (FILES_FROM), so verify replays it in
+  a second or two. train=True makes the runs again (about half an hour).
+- 14.01's lesson has 06.02's convention to explain: predictions.py (no
+  main) holds what claims.py prints and report.py judges, because an
+  experiment never imports another.
+
+### Checked, and not checked
+
+Checked at the source: every quote of the paper in predictions.py and here
+(the PDF's text, extracted with pdftotext and read against the page
+images); the figures' readings (by eye at 300 to 600 dpi: a factor of
+about 2 on their log axes); the authors' code at the commit named; Nanda
+et al.'s set-up, figures 7, 26 and 27 and the D.1 contradiction; the
+Omnigrok abstract. Not checked: why figure 1's validation curve leaves
+chance near 5 x 10^4 (no explanation in the paper); whether the code's
+fixed split or its end-token loss changes our results (not run); norm
+placement, activation, positions, the tie and the biases one at a time
+(only the start was isolated, and the paper's whole model rebuilt in
+scratch code); learning rates other than 10^-3 (the paper: a window of
+"within 1 order of magnitude"); other operations than x/y (figure 2,
+right: x - y "about the same amount of data", not run); S5 (the paper's
+figure 1 center and figure 2 left are on S5; ours on x/y, which the claims
+table says beside each). Thilak et al.'s slingshot paper and the Omnigrok
+body were not read. Nothing was run on Linux.
