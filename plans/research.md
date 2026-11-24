@@ -25,20 +25,17 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-Modules 06 to 09 and 14 are on master whole: code, tests, twenty-one
+Modules 06 to 10 and 14 are on master whole: code, 53 tests, twenty-six
 lessons, module pages, figures and covers; each module's `./learn
 verify --fresh` passed on its lessons' branch (08: 534 s; 09: 315 s;
-14: 201 s). That is 48 of the core's 70 lessons, pushed on 2026-11-24
-up to module 09. 08.02's default run is 2 seeds (3 took 82 s on a
-loaded machine); its heads comparison is inside the noise at 2 seeds
-and the page runs that part at 3 as well. Module 10's code is on master
-(RMSNorm, rotary positions, SwiGLU, grouped-query attention, SmolLM2
-loaded, the recorded ablation table; 53 tests). In work, each by an
-agent in its own worktree: module 10's lessons, and the code of modules
-11, 12 and 13. Agents that add to
-track.py, NOTES.md and the art generators at the same time are merged
-by hand, keeping each block; the maps are then drawn again
-(`python3 -B art/research/archmap.py`).
+10: 524 s; 14: 201 s). That is 53 of the core's 70 lessons, pushed on
+2026-11-24 up to module 09 and 14's code. 08.02's default run is 2
+seeds (3 took 82 s on a loaded machine); its heads comparison is inside
+the noise at 2 seeds and the page runs that part at 3 as well. In work,
+each by an agent in its own worktree: the code of modules 11, 12 and
+13. Agents that add to track.py, NOTES.md and the art generators at the
+same time are merged by hand, keeping each block; the maps are then
+drawn again (`python3 -B art/research/archmap.py`).
 
 The owner asked for more speed (2026-11-24): the limit of three agents
 is lifted. Timings taken while four or five agents run are not to be

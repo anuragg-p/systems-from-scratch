@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 316" fill="none">
+<title>The norm alone, forward and backward, at the GPT&#x27;s size and at SmolLM2&#x27;s width: PyTorch&#x27;s layer norm, layer norm written out as RMSNorm is, RMSNorm, and PyTorch&#x27;s RMSNorm; the median of 100 calls taking turns, in one run with other work on the machine</title>
+<defs><marker id="alone1001-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="alone1001-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="alone1001-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="20" y="28" font-size="11.5" font-weight="700">32 x 64 x 64: 131,072 numbers, the GPT&#x27;s activations</text>
+<text class="t mono" x="178" y="53" font-size="11" text-anchor="end">nn.LayerNorm</text>
+<rect class="s fs" x="186" y="42" width="81.42" height="18" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="273.42" y="55" font-size="10.5">0.414 ms</text>
+<text class="t mono" x="178" y="79" font-size="11" text-anchor="end">layer norm written out</text>
+<rect class="s f" x="186" y="68" width="330" height="18" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="522" y="81" font-size="10.5">1.678 ms</text>
+<text class="ta mono" x="178" y="105" font-size="11" font-weight="700" text-anchor="end">RMSNorm (ours)</text>
+<rect class="a af" x="186" y="94" width="219.08" height="18" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="411.08" y="107" font-size="10.5">1.114 ms</text>
+<text class="t mono" x="178" y="131" font-size="11" text-anchor="end">nn.RMSNorm</text>
+<rect class="m fs" x="186" y="120" width="220.66" height="18" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="412.66" y="133" font-size="10.5">1.122 ms</text>
+<text class="ta" x="620" y="28" font-size="10.5" font-weight="600" text-anchor="end">RMSNorm / written-out layer norm: 0.66</text>
+<text class="t" x="20" y="168" font-size="11.5" font-weight="700">8 x 512 x 576: 2,359,296 numbers, a batch at SmolLM2&#x27;s width</text>
+<text class="t mono" x="178" y="193" font-size="11" text-anchor="end">nn.LayerNorm</text>
+<rect class="s fs" x="186" y="182" width="87.57" height="18" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="279.57" y="195" font-size="10.5">1.123 ms</text>
+<text class="t mono" x="178" y="219" font-size="11" text-anchor="end">layer norm written out</text>
+<rect class="s f" x="186" y="208" width="330" height="18" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="522" y="221" font-size="10.5">4.232 ms</text>
+<text class="ta mono" x="178" y="245" font-size="11" font-weight="700" text-anchor="end">RMSNorm (ours)</text>
+<rect class="a af" x="186" y="234" width="232.06" height="18" rx="2" stroke-width="1.5"/>
+<text class="ta mono" x="424.06" y="247" font-size="10.5">2.976 ms</text>
+<text class="t mono" x="178" y="271" font-size="11" text-anchor="end">nn.RMSNorm</text>
+<rect class="m fs" x="186" y="260" width="238.84" height="18" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="430.84" y="273" font-size="10.5">3.063 ms</text>
+<text class="ta" x="620" y="168" font-size="10.5" font-weight="600" text-anchor="end">RMSNorm / written-out layer norm: 0.70</text>
+<text class="tm" x="20" y="302" font-size="10.5">Written alike, RMSNorm does about two thirds of the work. PyTorch&#x27;s layer norm, one kernel of its own, is faster than either.</text>
+</svg>

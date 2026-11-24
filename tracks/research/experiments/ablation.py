@@ -42,8 +42,8 @@ CONFIG = dict(layers=4, heads=4, width=64, context=64, batch=32, steps=80, lr=0.
 CLAIMS = {
     "RMSNorm": "Zhang and Sennrich (2019): \"comparable performance\" to layer norm, \"7%~64%\" less time; a "
                "Transformer base on WMT14 English-German, 26.8 BLEU against 26.6, 6.9% faster (TensorFlow, a V100)",
-    "rotary": "Su et al. (2021): \"faster convergence\" than BERT's learned positions in pre-training (a figure, no "
-              "numbers); 27.5 BLEU against 27.3 on WMT14 English-German",
+    "rotary": "Su et al. (2021): \"faster convergence\" than BERT in pre-training (a figure, no numbers); 27.5 "
+              "BLEU against 27.3 on WMT14 English-German",
     "SwiGLU": "Shazeer (2020): log-perplexity 1.944 against GELU's 1.983 after 65,536 steps (a T5 base of 12 + 12 "
               "layers, d_model 768, on C4), parameters and computation matched",
     "grouped-query": "Ainslie et al. (2023): \"quality close to multi-head attention\" with less to read when "
