@@ -540,5 +540,16 @@ EXPERIMENTS.update({
     "heads": ("08.02", ["seeds=1", "steps=5", "layers=2"], r"s of training and scoring on cpu"),
     "positions": ("08.03", ["seeds=1", "steps=5", "layers=2", "orders=2", "longer=[2]"],
                   r"s of training and scoring on cpu"),
+    "gpt": ("08.04", ["seeds=1", "steps=6", "layers=1", "width=16", "context=16", "every=2", "held=4", "orders=2",
+                      "length=20"], r"s of counting, training and scoring on cpu"),
 })
-DATASET_OF.update({"self_attention": None, "heads": None, "positions": None})
+DATASET_OF.update({"self_attention": None, "heads": None, "positions": None, "gpt": None})
+
+# The long run of 08.04, recorded as 06.04's and 07.02's are (experiments/gpt.py with out=experiments/recorded): every
+# config.json, log.jsonl and summary.json, the curves and what it printed; not its checkpoint (no weights are shipped).
+# As module 07's part says, the first glob that matches a file places it, so this narrower one goes first too.
+FILES_FROM = {"experiments/recorded/gpt/*": "08.04", **FILES_FROM}
+DATA["experiments/recorded/gpt/*"] = "the long run of experiments/gpt.py (08.04), recorded on the machine in NOTES.md"
+# The run writes its checkpoint beside the record; a learner who runs it again gets one there. It is weights, not
+# part of the record: never shown or materialized, and not committed.
+HIDDEN.append("experiments/recorded/*/model.safetensors")
