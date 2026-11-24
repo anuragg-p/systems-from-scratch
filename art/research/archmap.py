@@ -27,7 +27,11 @@ language experiments, and the language models' piece, which its 07.02 to 07.04 s
 adds the GPT, models/gpt.py, the piece of 08.01 to 08.04; its 08.05, the sampler, is the
 language experiments' piece, which modules 07 and 08 share. Module 09 adds two pieces to the data,
 tokens (tokens/: byte pair encoding in 09.01, GPT-2's tokenizer in 09.02) and TinyStories (09.04),
-and lights the models' real weights (models/gpt2.py, 09.03); its experiments are language ones.)
+and lights the models' real weights (models/gpt2.py, 09.03); its experiments are language ones.
+Module 10 lights today's architecture, the pieces models/gpt.py gains as arguments of GPT (RMSNorm,
+rotary positions, SwiGLU, grouped heads), the piece of all five of its lessons: SmolLM2's loading
+(10.04) is that piece in use, and its ablation (10.05) compares them; its experiments are language
+ones too.)
 
 In each lesson's copy, that lesson's piece (LESSONS below: exactly one per lesson) is drawn in
 the accent colour, every piece whose code has arrived by that lesson (PIECES: the lesson it
@@ -72,7 +76,7 @@ PIECES = {
     "07": ("models", "language models", "07", "07.02"),
     "08": ("models", "the GPT", "08", "08.01"),
     "09": ("models", "real weights", "09", "09.03"),
-    "10": ("models", "today's architecture", "10", None),
+    "10": ("models", "today's architecture", "10", "10.01"),
     "11": ("models", "fast", "11", None),
     "12": ("models", "fine-tuning", "12", None),
     # experiments: experiments/<name>.py, one per lesson, here by module
@@ -82,7 +86,7 @@ PIECES = {
     "deep": ("experiments", "deep networks", "module 04", "04.01"),
     "general": ("experiments", "generalisation", "module 05", "05.01"),
     "images": ("experiments", "images", "module 06", "06.01"),
-    "text": ("experiments", "language", "modules 07-09", "07.01"),
+    "text": ("experiments", "language", "modules 07-10", "07.01"),
     # the data: data/
     "points": ("data", "points", "made from a seed", "01.04"),
     "mnist": ("data", "MNIST", "fetched once", "03.01"),
@@ -154,6 +158,11 @@ LESSONS = [
     ("09.02", "GPT-2's tokenizer: the same ids as tiktoken", "tokens", "GPT-2's tokenizer"),
     ("09.03", "Loading GPT-2: the same logits as the reference", "09", "loading GPT-2"),
     ("09.04", "Pretraining on TinyStories: a model that tells a story", "tinystories", "TinyStories"),
+    ("10.01", "RMSNorm: normalising with less", "10", "RMSNorm"),
+    ("10.02", "Rotary positions: turning instead of adding", "10", "rotary positions"),
+    ("10.03", "A gated MLP: SwiGLU", "10", "SwiGLU"),
+    ("10.04", "Grouped-query attention, and loading a current open model", "10", "grouped heads, SmolLM2"),
+    ("10.05", "Which change paid: an ablation table", "10", "the ablation table"),
     ("14.01", "Reading a paper for what it claims", "14", "reading for claims"),
     ("14.02", "The experiment from the text: modular arithmetic", "14", "the experiment"),
     ("14.03", "The figure: memorise first, generalise much later", "14", "the figure"),
@@ -171,6 +180,7 @@ MODULE_TITLES = {
     "07": "Language models, from counting to attention",
     "08": "The transformer: a GPT",
     "09": "GPT-2: the tokenizer and the real weights",
+    "10": "Today's architecture",
     "14": "Reproduce a paper: grokking",
 }
 
