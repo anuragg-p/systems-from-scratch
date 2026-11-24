@@ -537,5 +537,6 @@ DATA["experiments/recorded/nplm/*"] = "the long run of experiments/nplm.py (07.0
 EXPERIMENTS.update({
     "self_attention": ("08.01", ["seeds=1", "steps=5", "sizes=[16]", "length=20", "orders=2"],
                        r"s of training and scoring on cpu"),
+    "heads": ("08.02", ["seeds=1", "steps=5", "layers=2"], r"s of training and scoring on cpu"),
 })
-DATASET_OF.update({"self_attention": None})
+DATASET_OF.update({"self_attention": None, "heads": None})
