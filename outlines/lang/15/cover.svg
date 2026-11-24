@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>From the tree to a program a machine can load</title>
+<defs><marker id="l15-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l15-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l15-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="51" y="99" width="22" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="62" y="114.2" font-size="12" font-weight="600" text-anchor="middle">+</text>
+<rect class="s f" x="25" y="135" width="22" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="36" y="150.2" font-size="12" font-weight="600" text-anchor="middle">a</text>
+<rect class="s f" x="77" y="135" width="22" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="88" y="150.2" font-size="12" font-weight="600" text-anchor="middle">*</text>
+<rect class="s f" x="59" y="171" width="22" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="70" y="186.2" font-size="12" font-weight="600" text-anchor="middle">b</text>
+<rect class="s f" x="95" y="171" width="22" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="106" y="186.2" font-size="12" font-weight="600" text-anchor="middle">c</text>
+<line class="s" x1="52.61" y1="123" x2="45.39" y2="133" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="71.39" y1="123" x2="78.61" y2="133" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="81.5" y1="159" x2="76.5" y2="169" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="94.5" y1="159" x2="99.5" y2="169" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="62" y="88" font-size="11.5" font-weight="700" text-anchor="middle">tree</text>
+<line class="s" x1="122" y1="144" x2="141" y2="144" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l15-ah)"/>
+<rect class="s fs" x="144" y="118" width="106" height="52" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="154" y="139" font-size="11">t1 := b * c</text>
+<text class="t mono" x="154" y="157" font-size="11">t2 := a + t1</text>
+<text class="t" x="197" y="88" font-size="11.5" font-weight="700" text-anchor="middle">three-address code</text>
+<line class="s" x1="252" y1="144" x2="271" y2="144" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l15-ah)"/>
+<rect class="s fs" x="274" y="118" width="118" height="52" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="284" y="139" font-size="11">mul t1, a1, a2</text>
+<text class="t mono" x="284" y="157" font-size="11">add t0, a0, t1</text>
+<text class="t" x="333" y="88" font-size="11.5" font-weight="700" text-anchor="middle">assembly</text>
+<line class="s" x1="394" y1="144" x2="413" y2="144" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l15-ah)"/>
+<path class="s f" d="M416 106 H468 L476 114 V140 H416 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M468 106 V114 H476" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="446" y="127" font-size="11" text-anchor="middle">main.o</text>
+<path class="s f" d="M416 148 H468 L476 156 V182 H416 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M468 148 V156 H476" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="446" y="169" font-size="11" text-anchor="middle">lib.o</text>
+<text class="t" x="446" y="88" font-size="11.5" font-weight="700" text-anchor="middle">object files</text>
+<line class="a" x1="478" y1="144" x2="499" y2="144" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l15-aa)"/>
+<rect class="a af" x="502" y="104" width="114" height="80" rx="8" stroke-width="1.5"/>
+<rect class="a f" x="510" y="112" width="98" height="30" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="517" y="131.5" font-size="11" font-weight="700">0x1000</text>
+<text class="t mono" x="563.2" y="131.5" font-size="11">main.o</text>
+<rect class="a f" x="510" y="146" width="98" height="30" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="517" y="165.5" font-size="11" font-weight="700">0x1040</text>
+<text class="t mono" x="563.2" y="165.5" font-size="11">lib.o</text>
+<text class="ta" x="559" y="88" font-size="11.5" font-weight="700" text-anchor="middle">program</text>
+<text class="ta" x="489" y="212" font-size="11.5" font-weight="600" text-anchor="middle">the linker gives every</text>
+<text class="ta" x="489" y="228" font-size="11.5" font-weight="600" text-anchor="middle">name an address</text>
+</svg>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>A small machine: registers, memory, and one instruction at a time</title>
+<defs><marker id="l05-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l05-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l05-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="50" font-size="11">registers</text>
+<text class="t mono" x="24" y="81" font-size="12" font-weight="600">pc</text>
+<rect class="s fs" x="60" y="62" width="76" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="98" y="80.2" font-size="12" text-anchor="middle">0x1008</text>
+<text class="t mono" x="24" y="111" font-size="12" font-weight="600">sp</text>
+<rect class="s fs" x="60" y="92" width="76" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="98" y="110.2" font-size="12" text-anchor="middle">0x8000</text>
+<text class="t mono" x="24" y="141" font-size="12" font-weight="600">a0</text>
+<rect class="s fs" x="60" y="122" width="76" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="98" y="140.2" font-size="12" text-anchor="middle">0</text>
+<text class="t mono" x="24" y="171" font-size="12" font-weight="600">t0</text>
+<rect class="s fs" x="60" y="152" width="76" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="98" y="170.2" font-size="12" text-anchor="middle">6</text>
+<text class="t mono" x="24" y="201" font-size="12" font-weight="600">t1</text>
+<rect class="s fs" x="60" y="182" width="76" height="28" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="98" y="200.2" font-size="12" text-anchor="middle">7</text>
+<text class="tm" x="176" y="64" font-size="11">memory</text>
+<rect class="s f" x="176" y="76" width="146" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="188" y="95" font-size="12">li t0, 6</text>
+<text class="tm mono" x="332" y="95" font-size="11">0x1000</text>
+<rect class="s f" x="176" y="106" width="146" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="188" y="125" font-size="12">li t1, 7</text>
+<text class="tm mono" x="332" y="125" font-size="11">0x1004</text>
+<rect class="a af" x="176" y="136" width="146" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="188" y="155" font-size="12" font-weight="700">mul a0, t0, t1</text>
+<text class="tm mono" x="332" y="155" font-size="11">0x1008</text>
+<rect class="s f" x="176" y="166" width="146" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="188" y="185" font-size="12">ret</text>
+<text class="tm mono" x="332" y="185" font-size="11">0x100c</text>
+<path class="a" d="M138 76 H155 V151 H173" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#l05-aa)"/>
+<rect class="s f" x="493" y="64" width="50" height="24" rx="12" stroke-width="1.5"/>
+<text class="t" x="518" y="80.03" font-size="11.5" font-weight="600" text-anchor="middle">fetch</text>
+<rect class="s f" x="539.73" y="151" width="57" height="24" rx="12" stroke-width="1.5"/>
+<text class="t" x="568.23" y="167.03" font-size="11.5" font-weight="600" text-anchor="middle">decode</text>
+<rect class="s f" x="436.27" y="151" width="63" height="24" rx="12" stroke-width="1.5"/>
+<text class="t" x="467.77" y="167.03" font-size="11.5" font-weight="600" text-anchor="middle">execute</text>
+<path class="s" d="M548.3 84.55 A58 58 0 0 1 574.84 145.56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#l05-ah)"/>
+<path class="s" d="M553.31 180.01 A58 58 0 0 1 482.69 180.01" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#l05-ah)"/>
+<path class="s" d="M461.16 145.56 A58 58 0 0 1 487.7 84.55" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#l05-ah)"/>
+<text class="t mono" x="265.4" y="256" font-size="14" font-weight="600">42 = 00101010</text>
+</svg>

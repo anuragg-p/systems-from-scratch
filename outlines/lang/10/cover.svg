@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>An object, its class&#x27;s table of methods, and a call that goes through it</title>
+<defs><marker id="l10-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l10-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l10-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="66" y="70" font-size="13" font-weight="700" text-anchor="middle">s</text>
+<rect class="s f" x="24" y="80" width="84" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="66" y="99.2" font-size="12" font-weight="600" text-anchor="middle">vptr</text>
+<rect class="s f" x="24" y="110" width="84" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="66" y="129.2" font-size="12" text-anchor="middle">w = 3</text>
+<rect class="s f" x="24" y="140" width="84" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="66" y="159.2" font-size="12" text-anchor="middle">h = 4</text>
+<text class="t mono" x="204" y="70" font-size="12.5" font-weight="700" text-anchor="middle">Rect</text>
+<rect class="s f" x="164" y="80" width="80" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="204" y="99.2" font-size="12" text-anchor="middle">area</text>
+<rect class="s f" x="164" y="110" width="80" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="204" y="129.2" font-size="12" text-anchor="middle">draw</text>
+<line class="s" x1="110" y1="95" x2="162" y2="95" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l10-ah)"/>
+<rect class="s fs" x="304" y="56" width="108" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="358" y="74.2" font-size="12" text-anchor="middle">Rect.area</text>
+<rect class="s fs" x="304" y="132" width="108" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="358" y="150.2" font-size="12" text-anchor="middle">Square.area</text>
+<rect class="s fs" x="304" y="208" width="108" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="358" y="226.2" font-size="12" text-anchor="middle">Shape.draw</text>
+<path class="s" d="M246 95 H274 V70 H302" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#l10-ah)"/>
+<path class="s" d="M246 125 H274 V222 H302" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#l10-ah)"/>
+<text class="t mono" x="520" y="121" font-size="12.5" font-weight="700" text-anchor="middle">Square</text>
+<rect class="a af" x="480" y="131" width="80" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="520" y="150.2" font-size="12" font-weight="700" text-anchor="middle">area</text>
+<rect class="s f" x="480" y="161" width="80" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="520" y="180.2" font-size="12" text-anchor="middle">draw</text>
+<text class="tm" x="520" y="210" font-size="10.5" text-anchor="middle">a subclass of Rect</text>
+<line class="a" x1="478" y1="146" x2="414" y2="146" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l10-aa)"/>
+<path class="s" d="M478 176 H446 V222 H414" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#l10-ah)"/>
+<text class="t mono" x="218.6" y="270" font-size="13" font-weight="600"><tspan x="218.6">s.area()</tspan><tspan x="296.6">-&gt;</tspan><tspan x="327.8">s.vptr[0](s)</tspan></text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Type inference: constraints, then one substitution that satisfies them</title>
+<defs><marker id="l07-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l07-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l07-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s fs" x="234.6" y="30" width="170.8" height="36" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="248.6" y="53" font-size="14" font-weight="600">fn inc(x) = x + 1</text>
+<text class="t" x="108" y="104" font-size="12" font-weight="700" text-anchor="middle">what the checker knows</text>
+<rect class="s f" x="24" y="118" width="168" height="120" rx="10" stroke-width="1.5"/>
+<text class="t" x="327" y="104" font-size="12" font-weight="700" text-anchor="middle">constraints</text>
+<rect class="s f" x="226" y="118" width="202" height="120" rx="10" stroke-width="1.5"/>
+<text class="t" x="538" y="104" font-size="12" font-weight="700" text-anchor="middle">solved</text>
+<rect class="s f" x="460" y="118" width="156" height="120" rx="10" stroke-width="1.5"/>
+<text class="t mono" x="38" y="150" font-size="12">x : &#x27;a</text>
+<text class="t mono" x="38" y="182" font-size="12">1 : int</text>
+<text class="t mono" x="38" y="214" font-size="12">+ : int, int -&gt; int</text>
+<rect class="a af" x="240" y="133" width="80" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="250" y="150" font-size="12.5" font-weight="700">&#x27;a = int</text>
+<text class="tm" x="240" y="172" font-size="10.5">from x being an operand of +</text>
+<text class="t mono" x="240" y="214" font-size="12">result = int</text>
+<text class="t mono" x="474" y="150" font-size="12">&#x27;a := int</text>
+<rect class="a af" x="468" y="197" width="140" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="478" y="214" font-size="12.5" font-weight="700">inc : int -&gt; int</text>
+<line class="s" x1="194" y1="178" x2="222" y2="178" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l07-ah)"/>
+<line class="s" x1="430" y1="178" x2="456" y2="178" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l07-ah)"/>
+</svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>One name, two answers: static scope and dynamic scope</title>
+<defs><marker id="l03-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l03-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l03-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s fs" x="24" y="102" width="238" height="98" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="36" y="124" font-size="11.5">var x = 1</text>
+<text class="t mono" x="36" y="146" font-size="11.5">fn show() { write x }</text>
+<text class="t mono" x="36" y="168" font-size="11.5">fn test() { var x = 2; show() }</text>
+<text class="t mono" x="36" y="190" font-size="11.5">test()</text>
+<rect class="s f" x="284" y="22" width="332" height="120" rx="10" stroke-width="1.5"/>
+<text class="t" x="298" y="43" font-size="12.5" font-weight="700">static scope</text>
+<rect class="af" x="426.1" y="87" width="10.2" height="15" rx="3" stroke-width="1.5"/>
+<rect class="af" x="325.3" y="57" width="10.2" height="15" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="298" y="68" font-size="12"><tspan x="298">var</tspan><tspan x="326.8" class="ta">x</tspan><tspan x="341.2">= 1</tspan></text>
+<text class="t mono" x="298" y="98" font-size="12"><tspan x="298">fn show() { write</tspan><tspan x="427.6" class="ta">x</tspan><tspan x="442">}</tspan></text>
+<text class="t mono" x="298" y="128" font-size="12">fn test() { var x = 2; show() }</text>
+<path class="a" d="M431.2 85 V85 Q431.2 81 427.2 81 H334.4 Q330.4 81 330.4 77 V74" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#l03-aa)"/>
+<text class="ta" x="600" y="102" font-size="13" font-weight="700" text-anchor="end">writes 1</text>
+<rect class="s f" x="284" y="158" width="332" height="120" rx="10" stroke-width="1.5"/>
+<text class="t" x="298" y="179" font-size="12.5" font-weight="700">dynamic scope</text>
+<rect class="af" x="426.1" y="223" width="10.2" height="15" rx="3" stroke-width="1.5"/>
+<rect class="af" x="411.7" y="253" width="10.2" height="15" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="298" y="204" font-size="12">var x = 1</text>
+<text class="t mono" x="298" y="234" font-size="12"><tspan x="298">fn show() { write</tspan><tspan x="427.6" class="ta">x</tspan><tspan x="442">}</tspan></text>
+<text class="t mono" x="298" y="264" font-size="12"><tspan x="298">fn test() { var</tspan><tspan x="413.2" class="ta">x</tspan><tspan x="427.6">= 2; show() }</tspan></text>
+<path class="a" d="M431.2 239 C431.2 249 416.8 245 416.8 250" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#l03-aa)"/>
+<text class="ta" x="600" y="238" font-size="13" font-weight="700" text-anchor="end">writes 2</text>
+</svg>
