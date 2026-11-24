@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>One number becomes a running program, and gcc must agree</title>
+<defs><marker id="c00-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="c00-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="c00-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<path class="s f" d="M24 72 H58 L68 82 V120 H24 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M58 72 V82 H68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="46" y="101" font-size="15" font-weight="700" text-anchor="middle">42</text>
+<line class="s" x1="70" y1="96" x2="98" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
+<rect class="s f" x="100" y="76" width="72" height="40" rx="8" stroke-width="1.5"/>
+<text class="t" x="136" y="93" font-size="11.5" font-weight="600" text-anchor="middle">your</text>
+<text class="t" x="136" y="107" font-size="11.5" font-weight="600" text-anchor="middle">compiler</text>
+<line class="s" x1="174" y1="96" x2="202" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
+<rect class="s fs" x="204" y="70" width="88" height="52" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="214" y="87" font-size="10.5">main:</text>
+<text class="t mono" x="214" y="101" font-size="10.5"><tspan x="226.6">li a0, 42</tspan></text>
+<text class="t mono" x="214" y="115" font-size="10.5"><tspan x="226.6">ret</tspan></text>
+<line class="s" x1="294" y1="96" x2="322" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
+<rect class="s f" x="324" y="80" width="58" height="32" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="353" y="100" font-size="11.5" text-anchor="middle">as + ld</text>
+<line class="s" x1="384" y1="96" x2="412" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
+<rect class="s f" x="414" y="70" width="80" height="52" rx="8" stroke-width="1.5"/>
+<text class="t" x="454" y="88" font-size="11" font-weight="600" text-anchor="middle">bare RISC-V</text>
+<text class="t" x="454" y="101" font-size="11" text-anchor="middle">machine</text>
+<text class="t" x="454" y="114" font-size="11" text-anchor="middle">in QEMU</text>
+<line class="s" x1="496" y1="96" x2="522" y2="96" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-ah)"/>
+<rect class="a af" x="524" y="84" width="92" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta" x="570" y="100" font-size="11" font-weight="600" text-anchor="middle">exit status 42</text>
+<path class="m f" d="M24 180 H58 L68 190 V228 H24 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="m" d="M58 180 V190 H68" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="46" y="209" font-size="15" font-weight="700" text-anchor="middle">42</text>
+<line class="m" x1="70" y1="204" x2="164" y2="204" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-am)" stroke-dasharray="4 4"/>
+<rect class="m f" x="166" y="188" width="152" height="32" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="242" y="208" font-size="11" text-anchor="middle">gcc, for the same machine</text>
+<line class="m" x1="320" y1="204" x2="412" y2="204" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-am)" stroke-dasharray="4 4"/>
+<rect class="m f" x="414" y="188" width="80" height="32" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="454" y="208" font-size="11" text-anchor="middle">same machine</text>
+<line class="m" x1="496" y1="204" x2="522" y2="204" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c00-am)" stroke-dasharray="4 4"/>
+<rect class="a af" x="524" y="192" width="92" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta" x="570" y="208" font-size="11" font-weight="600" text-anchor="middle">exit status 42</text>
+<line class="a" x1="570" y1="108" x2="570" y2="192" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="a f" cx="570" cy="150.0" r="11" stroke-width="1.5"/>
+<path class="a" d="M564.5 147.0 H575.5 M564.5 153.0 H575.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="550" y="154.0" font-size="11.5" font-weight="600" text-anchor="end">the test: both agree</text>
+</svg>

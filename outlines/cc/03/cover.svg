@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>A while loop is a label, a test, a branch out and a jump back</title>
+<defs><marker id="c03-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="c03-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="c03-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="142" font-size="12">while (i &lt; n)</text>
+<text class="t mono" x="24" y="162" font-size="12"><tspan x="38.4">i = i + 1;</tspan></text>
+<rect class="s f" x="214" y="50" width="150" height="36" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="226" y="73" font-size="11.5" font-weight="700">.L1</text>
+<text class="t" x="264" y="73" font-size="11.5"><tspan class="t">test: </tspan><tspan class="t mono">i &lt; n</tspan></text>
+<rect class="s f" x="214" y="126" width="150" height="36" rx="8" stroke-width="1.5"/>
+<text class="t" x="264" y="149" font-size="11.5"><tspan class="t">body: </tspan><tspan class="t mono">i = i + 1</tspan></text>
+<rect class="s f" x="214" y="214" width="150" height="36" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="226" y="237" font-size="11.5" font-weight="700">.L2</text>
+<text class="t" x="264" y="237" font-size="11.5"><tspan class="t">after the loop</tspan></text>
+<line class="s" x1="244" y1="86" x2="244" y2="124" stroke-width="1.5" stroke-linecap="round" marker-end="url(#c03-ah)"/>
+<text class="tm" x="252" y="110" font-size="10.5">true: falls through</text>
+<path class="s" d="M364 68 H392 V232 H366" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#c03-ah)"/>
+<text class="t mono" x="400" y="146" font-size="11.5" font-weight="600">bge</text>
+<text class="tm" x="400" y="162" font-size="10.5">false: leave</text>
+<path class="a" d="M214 144 H186 V68 H212" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#c03-aa)"/>
+<text class="ta mono" x="178" y="110" font-size="11.5" font-weight="600" text-anchor="end">j .L1</text>
+<rect class="s fs" x="470" y="96" width="146" height="110" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="482" y="118" font-size="11.5">.L1:</text>
+<text class="t mono" x="482" y="138" font-size="11.5"><tspan x="495.8">bge t0, t1, .L2</tspan></text>
+<text class="t mono" x="482" y="158" font-size="11.5"><tspan x="495.8">...body...</tspan></text>
+<text class="t mono" x="482" y="178" font-size="11.5"><tspan x="495.8">j .L1</tspan></text>
+<text class="t mono" x="482" y="198" font-size="11.5">.L2:</text>
+</svg>
