@@ -4,6 +4,7 @@
     python3 -m data.fetch cifar10    CIFAR-10, one archive of 170,052,171 bytes, unpacked  # @from 06.03
     python3 -m data.fetch gpt2       GPT-2 small: its vocabulary, merges and weights, 549,603,790 bytes  # @from 09.02
     python3 -m data.fetch tinystories   TinyStories: 64 MiB of its training stories, its validation stories  # @from 09.04
+    python3 -m data.fetch smollm2    SmolLM2-135M: its configuration, tokenizer and weights, 271,169,470 bytes  # @from 10.04
     python3 -m data.fetch            what can be fetched, and whether it is here
 
 Nothing else in the track downloads anything. A script that needs a dataset
@@ -45,6 +46,15 @@ under the CDLA-Sharing-1.0 licence its card gives. Not all of it: the
 first 64 MiB of TinyStories-train.txt (the file the paper's models were
 trained on; it is 1.9 GB), fetched as one range of bytes, and the whole
 of TinyStories-valid.txt, 19 MB, for stories no model here trains on.
+# @end
+# @from 10.04
+
+SmolLM2-135M (Allal et al., "SmolLM2: When Smol Goes Big", 2025): Hugging
+Face's small open model, from the HuggingFaceTB/SmolLM2-135M repository
+at one fixed commit, under the Apache-2.0 licence its model card gives:
+its configuration (config.json), its tokenizer (tokenizer.json, and
+tokenizer_config.json, which the tests' reference reads) and its weights
+in bfloat16 (model.safetensors).
 # @end
 """
 
@@ -99,6 +109,18 @@ DATASETS = {
             "valid.txt": (19447282, "94e431816c4cce81ff71e4408ff8d3bda9a42e8d2663986697c3954288cb38b4"),
         },
         "ranges": {"train.txt": ("TinyStories-train.txt", 0), "valid.txt": ("TinyStories-valid.txt", 0)},
+    },
+    # @end
+    # @from 10.04
+    "smollm2": {
+        "url": "https://huggingface.co/HuggingFaceTB/SmolLM2-135M/resolve/93efa2f097d58c2a74874c7e644dbc9b0cee75a2/",
+        "each": True,
+        "files": {
+            "config.json": (704, "1d556eab73b69c7f11f64c557a2f9c6f440bd4c6b89bb2584a6b498c92603843"),
+            "tokenizer.json": (2104556, "9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c"),
+            "tokenizer_config.json": (3658, "4bb9af56a342753d39374f4016a16574cab299fe088e896f425ce3c433f61424"),
+            "model.safetensors": (269060552, "80521b40281d6ce74e35c9282c22539e75aa0ac8578892b2a59955ef78d55da1"),
+        },
     },
     # @end
 }

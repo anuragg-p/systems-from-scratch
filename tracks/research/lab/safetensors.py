@@ -25,6 +25,7 @@ import numpy as np
 DTYPES = {"F64": np.float64, "F32": np.float32, "F16": np.float16, "I64": np.int64, "I32": np.int32,
           "I16": np.int16, "I8": np.int8, "U8": np.uint8, "BOOL": np.bool_}
 CODES = {np.dtype(v): k for k, v in DTYPES.items()}
+DTYPES["BF16"] = np.uint16    # read as its 16 bits, then widened by bfloat16() (load_file); never written  # @from 10.04
 
 
 # @build 02.05 save_file
@@ -94,6 +95,10 @@ def load_file(filename):
             count = int(np.prod(spec["shape"]))
             out[name] = np.fromfile(f, dtype=dtype, count=count).reshape(spec["shape"]).astype(
                 dtype.newbyteorder("="), copy=False)
+            # @from 10.04
+            if spec["dtype"] == "BF16":
+                out[name] = bfloat16(out[name])
+            # @end
     return out
     # @else
     # with open(filename, "rb") as f:
@@ -122,6 +127,18 @@ def load_file(filename):
     #     raise ValueError(f"{filename}: {len(data) - end} bytes after the last tensor")
     # return out
     # @end
+# @end
+
+
+# @build 10.04 bfloat16
+# bfloat16 numbers (BF16), given as their 16 bits (an array of uint16),
+# as the float32 numbers they are; numpy has no bfloat16. A bfloat16 is
+# the top half of a float32: the sign, the 8 bits of the exponent and the
+# first 7 of the 23 bits of the fraction. So the 16 bits moved into the
+# top half of 32 (the bottom half zeros) and read as a float32 are the
+# same number, exactly.
+def bfloat16(bits):
+    return (bits.astype(np.uint32) << 16).view(np.float32)
 # @end
 
 
