@@ -291,6 +291,29 @@ fit the list. The order is ours and not upstream's (it reaches pointers
 at commit 20 and block scope at 44), so a region's code may be simpler at
 its own lesson than in the finished file; that is what `@from` is for.
 
+## The book, lesson by lesson (modules 00 to 02)
+
+The sections of Programming Language Pragmatics, 4th edition, that each
+lesson ends with, read in the text before being listed here. A lesson
+names them by number and title and says nothing the section does not.
+
+  00.01  1.4 Compilation and Interpretation; 1.6 An Overview of
+         Compilation (1.6.3 Target Code Generation)
+  00.02  15.4 Address Space Organization; 15.5 Assembly; 15.6 Linking
+  00.03  1.6.2 Semantic Analysis and Intermediate Code Generation (what
+         a language defines and what it leaves to run time)
+  01.01  2.1.1 Tokens and Regular Expressions; 2.2 Scanning
+  01.02  2.2 Scanning (the longest possible token)
+  01.03  2.2 Scanning
+  01.04  2.2 Scanning (comments)
+  01.05  2.2.4 Lexical Errors; 2.3.5 Syntax Errors (companion site)
+  02.01  2.1.2 Context-Free Grammars; 2.3.1 Recursive Descent
+  02.02  2.1.3 Derivations and Parse Trees; 1.6.2 (the syntax tree)
+  02.03  15.3 Code Generation (15.3.1 An Attribute Grammar Example)
+  02.04  6.1.1 Precedence and Associativity
+  02.05  6.1 Expression Evaluation
+  02.06  15.3.2 Register Allocation
+
 ## Extensions (each `optional: true`; not started)
 
 Each stands on the finished core and is independent of the others, as
