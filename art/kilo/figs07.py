@@ -38,8 +38,9 @@ and clangd that logs every frame (body and time) and changes nothing.
                      small driver, on {"a":[1,"x"]}, and on 65 nested arrays for the cap
   07.03-escapes      the same driver's bytes for four strings
   07.04-two-ways     NOTES.md's wake-up counts and delays (scratch builds that counted, and timed
-                     runs), checked against its words; where the key and the message fall in the
-                     second is drawn, not measured: the message waits the measured median
+                     runs), checked against its words, and what the 2 wake-ups at 07.04 were;
+                     where the key and the message fall in the second is drawn, not measured: the
+                     message waits the measured median
   07.04-poll-set     stepped: the project at 07.04 with POLL_PATCH, which logs each poll()'s array
                      and what came back; the queue frame at 07.05 (the first lesson that sends more
                      than the pipe holds: a 300 KB file to a server that waits before reading)
@@ -1423,11 +1424,14 @@ def notes0704():
     the test's reads of the terminal for the delays), checked word for word."""
     block = notes_section("07.04 Keys and the server at once: poll()")
     text = " ".join(block.split())
-    for s in ("53 wakeups at 07.03 (10.6 a second), 2 at 07.04", "Idle for 5 s",
+    for s in ("53 wakeups at 07.03 (about 10 a second, one per 0.1 s timeout), 2 at 07.04", "Idle for 5 s",
+              "counted over the whole run, from kilo's start to the Ctrl-Q that ends it",
+              "they are the server's answer to initialize", "the Ctrl-Q that ended the run",
+              "none in the 5 idle seconds between",
               "07.03 min 1.4 ms, median 45.5 ms, max 100.3 ms", "07.04 min 0.1 ms, median 0.2 ms, max 0.7 ms",
               "20 runs each"):
         assert s in text, s
-    return {"wake": (53, 2, 5), "rate": 10.6, "old": (1.4, 45.5, 100.3), "new": (0.1, 0.2, 0.7), "runs": 20}
+    return {"wake": (53, 2, 5), "old": (1.4, 45.5, 100.3), "new": (0.1, 0.2, 0.7), "runs": 20}
 
 
 def two_ways0704():
@@ -1480,8 +1484,8 @@ def two_ways0704():
     message(y1, msg_t, seen, True)
     f.text(tx(seen) + 6, y1 + 30, f"seen at the next look: {m['old'][1]} ms later (the median of "
            f"{m['runs']} runs), up to {m['old'][2]:g} ms", "ta", 10.5, "end" if seen > 0.5 else "start")
-    f.text(24, y1 + 52, f"idle, it wakes {m['rate']:g} times a second: {m['wake'][0]} in {m['wake'][2]} s, "
-           "with nothing to do", "t", 11)
+    f.text(24, y1 + 52, f"idle, it wakes about 10 times a second, with nothing to do: {m['wake'][0]} times in "
+           f"a run left idle for {m['wake'][2]} s", "t", 11)
 
     y2 = 240
     axis(y2, "07.04", "poll() sleeps until the keyboard or the server has something")
@@ -1491,7 +1495,8 @@ def two_ways0704():
     message(y2, msg_t, msg_t + new_med, False)
     f.text(tx(msg_t) + 2, y2 + 30, f"seen at once: {m['new'][1]} ms later (the median), up to {m['new'][2]} ms",
            "ta", 10.5, "middle")
-    f.text(24, y2 + 52, f"idle, it wakes {m['wake'][1]} times in {m['wake'][2]} s", "t", 11)
+    f.text(24, y2 + 52, f"idle, it does not wake: {m['wake'][1]} times in that run, for the server's answer to "
+           "initialize and for the Ctrl-Q that ended it", "t", 11)
     return f
 
 

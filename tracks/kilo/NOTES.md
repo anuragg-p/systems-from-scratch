@@ -1347,8 +1347,15 @@ do not (an error, at once).
 Measured with scratch builds that count: at 07.03, calls to lspPump (one
 per read() that times out); at 07.04, returns from poll(); written at exit.
 Idle for 5 s with the scripted server running: **53 wakeups at 07.03
-(10.6 a second), 2 at 07.04** (the pause, and the server's answer). The
-delay from the server writing its answer to kilo's frame with it reaching
+(about 10 a second, one per 0.1 s timeout), 2 at 07.04**, counted over
+the whole run, from kilo's start to the Ctrl-Q that ends it. The 2 are
+not idle ones. Taken again for the read through (each wake-up logged
+with its time and revents): they are the server's answer to initialize
+(the server's output readable) and the Ctrl-Q that ended the run (the
+keyboard), and there are none in the 5 idle seconds between; at 07.03
+that run had 54 in all, 49 of them in the 5 idle seconds. With clangd,
+idle for 10 s: 07.03 98 in the idle seconds (101 in all), 07.04 none (2
+in all, clangd's answer and the Ctrl-Q). The delay from the server writing its answer to kilo's frame with it reaching
 the terminal (the server's log of its write and the test's read of the
 pseudo-terminal, both on Python's monotonic clock), 20 runs each, two
 sets: **07.03 min 1.4 ms, median 45.5 ms, max 100.3 ms (and 12.4, 56.4,

@@ -37,7 +37,7 @@
 <text class="ta" x="396.06" y="74" font-size="10.5" font-weight="600" text-anchor="end">the server&#x27;s message</text>
 <path class="a" d="M400.06 108 L400.06 112 L424.9 112 L424.9 108" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 <text class="ta" x="430.9" y="130" font-size="10.5" text-anchor="end">seen at the next look: 45.5 ms later (the median of 20 runs), up to 100.3 ms</text>
-<text class="t" x="24" y="152" font-size="11">idle, it wakes 10.6 times a second: 53 in 5 s, with nothing to do</text>
+<text class="t" x="24" y="152" font-size="11">idle, it wakes about 10 times a second, with nothing to do: 53 times in a run left idle for 5 s</text>
 <text class="t" x="24" y="190" font-size="12" font-weight="700">07.04</text>
 <text class="tm" x="68.99" y="190" font-size="10.5">poll() sleeps until the keyboard or the server has something</text>
 <line class="m" x1="70" y1="240" x2="616" y2="240" stroke-width="1.5" stroke-linecap="round"/>
@@ -63,5 +63,5 @@
 <line class="a" x1="400.06" y1="218" x2="400.06" y2="234" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0704a-aa)"/>
 <text class="ta" x="396.06" y="214" font-size="10.5" font-weight="600" text-anchor="end">the server&#x27;s message</text>
 <text class="ta" x="402.06" y="270" font-size="10.5" text-anchor="middle">seen at once: 0.2 ms later (the median), up to 0.7 ms</text>
-<text class="t" x="24" y="292" font-size="11">idle, it wakes 2 times in 5 s</text>
+<text class="t" x="24" y="292" font-size="11">idle, it does not wake: 2 times in that run, for the server&#x27;s answer to initialize and for the Ctrl-Q that ended it</text>
 </svg>
