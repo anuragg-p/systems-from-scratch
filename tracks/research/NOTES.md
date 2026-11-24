@@ -1246,7 +1246,8 @@ same states.
   2.409; 07.02's network at 5 characters 2.474 (short run) and 2.346 (long
   run), mixed with interpolation 2.294 (long, 5) and 2.283 (long, 8);
   07.03's RNN 2.540 (short run, 600 steps; 800 steps 2.487; 5000 steps, 1
-  seed, 2.369).
+  seed, 2.375 as its page runs it with the committed code, where an earlier
+  spike printed 2.369).
 - Shared loops: module 07 has none like images.train_epoch (each script's
   train is its own: random positions, streams, or tasks); 08 may write one
   in sequences.py or its own file, never in an experiment.
@@ -1335,6 +1336,15 @@ run), 147 at 07.03 and 150 at 07.04; 06.04 still has 98 (track.py puts
 selftest` ok (269 tests). `./learn check` reports exactly eight problems,
 `research/06.0N` and `research/07.0N: test has no lesson doc`; nothing
 else.
+With module 07's pages (lessons agent, 2026-11-24): `./learn check` ok, no
+problems; `./learn check-timeline research` ok (101, 145, 147 and 150
+files at 07.01 to 07.04); `./learn check-skeleton research` ok; `./learn
+selftest` ok (269 tests). Module 07's figures come from
+art/research/figs07.py (about four minutes of runs; RESEARCH_FIGS_CACHE
+keeps them while drawing), its cover from art/outlines/research_art.py,
+which now counts the pair model's 3.599 again and reads 07.02's recorded
+run. Verifying 07.01 to 07.04 replays nplm, rnn and attention twice each,
+the 5000-step rnn once (about 130 s) and the Break its: about ten minutes.
 
 ## For the harness work and module 06
 
