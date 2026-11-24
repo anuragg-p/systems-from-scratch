@@ -15,7 +15,7 @@ runs it, or from the recorded long run the page shows:
   06.02  python3 -m experiments.switch: the printed float64 table, and float32's losses from its
          log; the clock's timeline is a schematic
   06.03  CIFAR-10's first training record, read by data.cifar.read_records; data.augment.crop_flip
-         on that image with np.random.default_rng(0); python3 -m experiments.cifar (3 seeds)
+         on that image with np.random.default_rng(2) (the first seed whose four draws mirror two); python3 -m experiments.cifar (3 seeds)
   06.04  the networks of models/resnet.py (their layers and weights counted); the recorded long run,
          experiments/recorded/resnet/ (its logs, as committed); python3 -m experiments.resnet (the
          page's short run, 2 seeds)
@@ -59,13 +59,20 @@ def comma(n):
     return f"{n:,}"
 
 
-def grid(f, x, y, values, cell, lo=None, hi=None, cls="t", frame="m", signed=False):
+def grid(f, x, y, values, cell, lo=None, hi=None, cls="t", frame="m", signed=False, photo=False):
     """A map of numbers as squares of one fill class at an opacity from 0 (lo or below) to 1 (hi);
     signed: negative numbers in the foreground and positive in the accent, each scaled by the largest
-    size. Squares of equal opacity on a row are drawn as one path, to keep the file small."""
+    size; photo: brightness, so the opacity of the foreground runs the other way (1 at lo), which
+    shows a photograph as it is on a light page and as its negative on a dark one (the theme's
+    colours are all a figure has). Squares of equal opacity on a row are drawn as one path, to keep
+    the file small."""
     rows = len(values)
     cols = len(values[0])
     flat = [v for row in values for v in row]
+    if photo:
+        values = [[-v for v in row] for row in values]
+        lo, hi = -(max(flat) if hi is None else hi), -(min(flat) if lo is None else lo)
+        flat = [-v for v in flat]
     if signed:
         top = max(abs(v) for v in flat) or 1
     else:
@@ -431,6 +438,259 @@ def clock0602():
     return f
 
 
+# ------------------------------------------------------------------ 06.03
+
+RECORD_CODE = """
+import json
+import numpy as np
+from data import cifar, fetch
+raw = np.fromfile(fetch.path("cifar10", "data_batch_1.bin"), dtype=np.uint8)
+x, y = cifar.read_records(fetch.path("cifar10", "data_batch_1.bin"))
+with open(fetch.path("cifar10", "batches.meta.txt")) as f:
+    names = [line.strip() for line in f if line.strip()]
+img = x[0]
+assert raw[0] == y[0] and (raw[1:3073].reshape(3, 32, 32) == img).all()
+print(json.dumps({"bytes": int(raw.size), "label": int(y[0]), "name": names[int(y[0])],
+                  "head": raw[:8].tolist(), "green": raw[1025:1029].tolist(), "blue": raw[2049:2053].tolist(),
+                  "planes": (img / 255).round(2).tolist()}))
+"""
+
+
+def record0603():
+    d = in_project("06.03", RECORD_CODE)
+    if d["bytes"] != 10000 * 3073:
+        raise SystemExit(f"data_batch_1.bin: {d['bytes']} bytes, not 10,000 records of 3073")
+    f = Fig("record0603", f"CIFAR-10's first training record, as data_batch_1.bin holds it: a label byte, then "
+                          f"1024 bytes of red, 1024 of green, 1024 of blue, each 32 rows of 32", 292)
+    x0, x1, y0, h = 20, 620, 34, 30
+    lw = 46
+    cw = (x1 - x0 - lw) / 3
+    f.text(x0, 20, "one record: 3073 bytes, and the next record starts straight after it", "tm", 11)
+    f.rect(x0, y0, lw, h, "a af", 2)
+    f.text(x0 + lw / 2, y0 + 19, str(d["label"]), "ta", 13, "middle", 700, mono=True)
+    f.text(x0 + lw / 2, y0 + h + 15, "label", "ta", 10.5, "middle")
+    starts = (d["head"][1:5], d["green"], d["blue"])
+    for k, (name, first) in enumerate(zip(("red", "green", "blue"), starts)):
+        bx = x0 + lw + k * cw
+        f.rect(bx, y0, cw, h, "s fs", 2)
+        f.text(bx + 8, y0 + 19, " ".join(str(v) for v in first) + " ...", "t", 11, mono=True)
+        f.text(bx + cw / 2, y0 + h + 15, f"{name}: 1024 bytes, row by row", "tm", 10.5, "middle")
+    cell = 3
+    py = 120
+    f.text(x0, py - 18, f"the same 3072 bytes as an array of shape (3, 32, 32), each byte 0 to 255; "
+                        f"label {d['label']} is {d['name']}", "t", 11.5, weight=600)
+    for k, name in enumerate(("red", "green", "blue")):
+        gx = x0 + k * 130
+        grid(f, gx, py, d["planes"][k], cell, 0, 1, "t", photo=True)
+        f.text(gx + 48, py + 96 + 16, name, "t", 11, "middle")
+    nx = x0 + 3 * 130 + 10
+    for i, line in enumerate(("read_records: the file as bytes,", "in rows of 3073; the first byte of",
+                              "a row is its label, the rest its", "pixels, reshaped to (3, 32, 32).",
+                              "", "load: scaled to 0..1, then each", "channel standardised with the",
+                              "training set's mean and sd")):
+        f.text(nx, py + 10 + 14 * i, line, "tm", 10.5)
+    return f
+
+
+CROPS_CODE = """
+import json
+import numpy as np
+from data import cifar
+from data.augment import crop_flip
+x, y = cifar.load("train", 1)
+batch = np.repeat(x[:1], 4, axis=0)
+out = crop_flip(batch, 4, np.random.default_rng(2))
+rng = np.random.default_rng(2)                    # the same draws, in crop_flip's order
+down, across, flip = rng.integers(0, 9, 4), rng.integers(0, 9, 4), rng.random(4) < 0.5
+padded = np.pad(batch, ((0, 0), (0, 0), (4, 4), (4, 4)))
+for i in range(4):
+    want = padded[i, :, down[i]:down[i] + 32, across[i]:across[i] + 32]
+    assert np.array_equal(out[i], want[:, :, ::-1] if flip[i] else want), i
+gray = lambda a: np.clip((a * cifar.STD[:, None, None] + cifar.MEAN[:, None, None]).mean(0), 0, 1).round(2).tolist()
+print(json.dumps({"image": gray(x[0]), "padded": gray(padded[0]), "crops": [gray(o) for o in out],
+                  "down": down.tolist(), "across": across.tolist(), "flip": flip.tolist(),
+                  "name": cifar.CLASSES[int(y[0])]}))
+"""
+
+
+def crops0603():
+    d = in_project("06.03", CROPS_CODE)
+    f = Fig("crops0603", f"CIFAR-10's first training image, a {d['name']}, padded by 4 pixels of the average colour, "
+                         f"and four crops and mirror images crop_flip made of it (the mean of the three channels "
+                         f"drawn)", 236)
+    cell = 2.6
+    x0, y0 = 20, 44
+    f.text(x0, 24, "as it is, 32 by 32", "t", 11, weight=600)
+    grid(f, x0, y0, d["image"], cell, 0, 1, "t", photo=True)
+    px = x0 + 32 * cell + 34
+    f.text(px, 24, "padded, 40 by 40", "t", 11, weight=600)
+    grid(f, px, y0, d["padded"], cell, 0, 1, "t", photo=True)
+    f.line(x0 + 32 * cell + 6, y0 + 16 * cell, px - 6, y0 + 16 * cell, "s", arrow=True)
+    for i in range(4):                               # each crop's window on the padded image
+        f.add(f'<rect class="a" x="{px + d["across"][i] * cell:.1f}" y="{y0 + d["down"][i] * cell:.1f}" '
+              f'width="{32 * cell:.1f}" height="{32 * cell:.1f}" stroke-width="1.25" stroke-dasharray="3 2"/>')
+    cx = px + 40 * cell + 30
+    gap = (620 - cx - 4 * 32 * cell) / 3
+    f.text(cx, 24, "what four passes see: a new crop, mirrored half the time", "ta", 11, weight=600)
+    for i, crop in enumerate(d["crops"]):
+        gx = cx + i * (32 * cell + gap)
+        grid(f, gx, y0, crop, cell, 0, 1, "t", photo=True)
+        dr, dc = d["down"][i] - 4, d["across"][i] - 4
+        if d["flip"][i]:                         # the mirror image moves the other way across
+            dc = -dc
+        moved =", ".join(p for p in ((f"{abs(dr)} {'up' if dr > 0 else 'down'}" if dr else ""),
+                                      (f"{abs(dc)} {'left' if dc > 0 else 'right'}" if dc else "")) if p) or "centred"
+        f.text(gx + 16 * cell, y0 + 32 * cell + 15, f"pass {i + 1}", "ta", 10.5, "middle", 600)
+        f.text(gx + 16 * cell, y0 + 32 * cell + 29, moved, "tm", 10, "middle")
+        f.text(gx + 16 * cell, y0 + 32 * cell + 42, "mirrored" if d["flip"][i] else "not mirrored", "tm", 10, "middle")
+    f.text(x0, 214, "The dashed squares are the four windows on the padded image. A window that starts at its top "
+                    "left shows the picture moved", "tm", 10.5)
+    f.text(x0, 228, "4 pixels down and right; where the window passes the edge, the padding comes in.", "tm", 10.5)
+    return f
+
+
+def gap0603():
+    r = figart.experiment("cifar", at="06.03")
+    ways = [("fc", "fully\nconnected", "s"), ("conv", "convolu-\ntional", "s"), ("conv-augmented", "crops and\nflips", "a")]
+    f = Fig("gap0603", "Accuracy on the 2000 training images and on 2000 test images, three ways, three seeds each: "
+                       "a ring per seed, the bar their mean, the whisker from the lowest seed to the highest", 270)
+    for i, (key, title) in enumerate((("test_accuracy", "test accuracy"), ("train_accuracy", "training accuracy"))):
+        groups = [(name, seeds_of(r.runs, label, key), style) for label, name, style in ways]
+        figart.seeds_chart(f, (10 + 315 * i, 8, 305, 256), groups, ylabel=title, ylim=(0.3, 1) if i else (0.3, 0.55))
+    return f
+
+
+# ------------------------------------------------------------------ 06.04
+
+COUNT_CODE = """
+import json
+from models.resnet import layers, resnet
+out = []
+for n in (1, 3, 9):
+    for residual in (False, True):
+        m = resnet(n, residual)
+        out.append([n, residual, layers(m), sum(p.numel() for p in m.parameters())])
+print(json.dumps(out))
+"""
+
+PAPER_WEIGHTS = {20: "0.27M", 56: "0.85M"}      # He et al., table 6 (# params), as the page quotes it
+
+
+def resnet0604():
+    counts = in_project("06.04", COUNT_CODE)
+    by = {}
+    for n, residual, nl, w in counts:
+        by.setdefault(nl, set()).add(w)
+    if any(len(ws) != 1 for ws in by.values()):
+        raise SystemExit(f"plain and residual should have the same weights: {counts}")
+    f = Fig("resnet0604", "He et al.'s network for CIFAR-10, 6n + 2 layers with weights: plain, or with a shortcut "
+                          "around every pair of convolutions (the residual network)", 330)
+    y, h = 40, 44
+    parts = [("image", "3 x 32 x 32", "m f", 62), ("conv 3 x 3", "16 maps", "s f", 70),
+             ("stage 1", "n blocks: 16 maps,\n32 by 32", "a af", 104), ("stage 2", "n blocks: 32 maps,\n16 by 16", "a af", 104),
+             ("stage 3", "n blocks: 64 maps,\n8 by 8", "a af", 104), ("mean", "of each map:\n64 numbers", "s f", 70),
+             ("Linear", "10 scores", "s f", 58)]
+    gap = (620 - 20 - sum(p[3] for p in parts)) / (len(parts) - 1)
+    x = 20
+    centres = []
+    for name, sub, cls, w in parts:
+        f.rect(x, y, w, h, cls, 6, dash=cls.startswith("m"))
+        tcls = "ta" if cls.startswith("a") else "t"
+        f.text(x + w / 2, y + 17, name, tcls, 11.5, "middle", 700)
+        for k, line in enumerate(sub.split("\n")):
+            f.text(x + w / 2, y + 31 + 11 * k, line, "tm", 9.5, "middle")
+        centres.append((x, w))
+        x += w + gap
+    for (xa, wa), (xb, _) in zip(centres, centres[1:]):
+        f.line(xa + wa + 1, y + h / 2, xb - 1, y + h / 2, "s", arrow=True)
+    f.text(20, y - 14, "batch norm after every convolution, then relu; the first convolution of stages 2 and 3 "
+                       "steps 2 pixels, halving the maps", "tm", 10.5)
+    # one block, plain and residual, under stage 2's first block
+    by_, bh = 126, 26
+    f.text(20, by_, "a block: two 3 by 3 convolutions", "t", 11.5, weight=700)
+    for k, (title, res) in enumerate((("plain", False), ("residual", True))):
+        bx = 20 + k * 312
+        yy = by_ + 36                              # the chain's centre line is yy + 22
+        f.text(bx, yy - 12, title, "ta" if res else "t", 11, weight=700)
+        chain = [("x", 20), ("conv, BN, relu", 96), ("conv, BN", 66)] + ([("+", 24)] if res else []) + [("relu", 40)]
+        cx = bx
+        plus = None
+        for i, (label, w) in enumerate(chain):
+            if i:
+                f.line(cx - 10, yy + 22, cx - 2, yy + 22, "s", arrow=True)
+            if label == "x":
+                f.text(cx + 6, yy + 26, "x", "t", 12, weight=700, mono=True)
+            elif label == "+":
+                f.circle(cx + 12, yy + 22, 11, "a af")
+                f.text(cx + 12, yy + 27, "+", "ta", 14, "middle", 700, mono=True)
+                plus = cx + 12
+            else:
+                f.rect(cx, yy + 22 - bh / 2, w, bh, "s f", 5)
+                f.text(cx + w / 2, yy + 26, label, "t", 10.5, "middle")
+            cx += w + 12
+        if res:
+            f.path(f"M{bx + 9} {yy + 13} L{bx + 9} {yy - 4} L{plus} {yy - 4} L{plus} {yy + 10}", "a", arrow=True)
+            f.text((bx + 9 + plus) / 2 + 20, yy - 9, "the shortcut: x itself", "ta", 10.5, "middle", 600)
+    # option A, where a block halves the maps and doubles them
+    oy = 236
+    f.text(20, oy, "Where a block halves the maps and doubles their number, the shortcut is the paper's option A, "
+                   "with no weights:", "t", 11)
+    f.text(20, oy + 17, "every second pixel of every second row, x[:, :, ::2, ::2], then as many maps of zeros as "
+                        "the block adds. So plain and residual", "tm", 10.5)
+    f.text(20, oy + 32, "networks of one depth have exactly the same weights:", "tm", 10.5)
+    tx = 20
+    rows = [(nl, list(by[nl])[0]) for nl in sorted(by)]
+    for i, (nl, w) in enumerate(rows):
+        n = (nl - 2) // 6
+        s = f"n = {n}: {nl} layers, {comma(w)} weights" + (f" (paper: {PAPER_WEIGHTS[nl]})" if nl in PAPER_WEIGHTS else "")
+        f.text(tx, oy + 56 + 16 * i, s, "ta" if nl in PAPER_WEIGHTS else "t", 11, mono=True)
+    return f
+
+
+def long_runs():
+    """The recorded long run: {(kind, depth): seed folders}, its config."""
+    d = os.path.join(figlib.TRACK, "experiments", "recorded", "resnet")
+    cfg = figart.config(figart.seed_dirs(os.path.join(d, "plain20"))[0])
+    out = {}
+    for kind in ("plain", "residual"):
+        for depth in cfg["depths"]:
+            out[kind, depth] = figart.seed_dirs(os.path.join(d, f"{kind}{depth}"))
+    return out, cfg
+
+
+def long0604():
+    runs, cfg = long_runs()
+    shallow, deep = cfg["depths"]
+    f = Fig("long0604", f"The recorded long run: training error (dashed, counted during each pass on its crops and "
+                        f"flips) and test error (solid) after each pass, {shallow} and {deep} layers, mean of "
+                        f"{cfg['seeds']} seeds, the band from the lowest seed to the highest", 300)
+    for i, kind in enumerate(("plain", "residual")):
+        series = []
+        for depth, style in ((shallow, "s"), (deep, "a")):
+            for key, dash in (("train_error", True), ("test_error", False)):
+                xs, mean, lo, hi = figart.over_seeds(runs[kind, depth], key, x="epoch")
+                label = f"{depth} layers" if not dash else ""
+                series.append(figart.Series(label, xs, mean, style, dash, lo if dash else None, hi if dash else None))
+        ax = figart.plot(f, (8 + 316 * i, 6, 308, 288), series, xlabel="pass over the training images",
+                         ylabel=f"{kind}: error %", ylim=(45, 95), yticks=[50, 60, 70, 80, 90],
+                         xticks=list(range(1, cfg["epochs"] + 1)), legend="end")
+    return f
+
+
+def short0604():
+    r = figart.experiment("resnet", at="06.04")
+    cfg = figart.config(figart.seed_dirs(os.path.join(r.runs, "plain8"))[0])
+    shallow, deep = cfg["depths"]
+    groups = []
+    for kind, style in (("plain", "s"), ("residual", "a")):
+        for depth in (shallow, deep):
+            groups.append((f"{kind}\n{depth} layers", seeds_of(r.runs, f"{kind}{depth}", "train_error"), style))
+    f = Fig("short0604", f"The page's short run: training error after {cfg['epochs']} passes over {cfg['n_train']} "
+                         f"images, {cfg['seeds']} seeds each: a ring per seed, the bar their mean", 260)
+    figart.seeds_chart(f, (8, 4, 624, 252), groups, ylabel="training error %", ylim=(70, 90))
+    return f
+
+
 FIGS = [
     ("06.01-slide", slide0601),
     ("06.01-moved", moved0601),
@@ -438,6 +698,12 @@ FIGS = [
     ("06.02-import", import0602),
     ("06.02-same", same0602),
     ("06.02-clock", clock0602),
+    ("06.03-record", record0603),
+    ("06.03-crops", crops0603),
+    ("06.03-gap", gap0603),
+    ("06.04-resnet", resnet0604),
+    ("06.04-long", long0604),
+    ("06.04-short", short0604),
 ]
 
 
