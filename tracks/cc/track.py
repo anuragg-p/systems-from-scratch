@@ -371,8 +371,10 @@ class Tok:
         return isinstance(other, Tok) and vars(self) == vars(other)
 
     def __repr__(self):
+        """As --tokens prints it: "1:3 punct +", "1:5 num 20 20", "1:11 eof"."""
+        text = f" {self.text}" if self.text else ""
         v = "" if self.value is None else f" {self.value}"
-        return f"{self.line}:{self.col} {self.kind} {self.text}{v}"
+        return f"{self.line}:{self.col} {self.kind}{text}{v}"
 
 
 def tokens(t, src):
@@ -443,6 +445,46 @@ def write(t, name, text):
     with open(path, "wb") as f:
         f.write(text.encode("latin-1") if isinstance(text, str) else text)
     return path
+
+
+class Scratch:
+    """What the fixtures need of a test's t, for work done on another thread: the same tree
+    under test, and a scratch directory of its own (inside t's)."""
+
+    def __init__(self, root, tmp):
+        self.root, self.tmp = root, tmp
+        os.makedirs(tmp, exist_ok=True)
+
+    def check(self, cond, message):
+        if not cond:
+            raise Fail(message)
+
+
+def parallel(t, fn, items, jobs=None):
+    """fn(ctx, item) for every item, on jobs threads (the CPUs, at most 8), each thread with a
+    Scratch of its own. Fails naming every item that failed (the first ten shown)."""
+    import queue
+    from concurrent.futures import ThreadPoolExecutor
+    jobs = jobs or min(8, os.cpu_count() or 1)
+    free = queue.Queue()
+    for i in range(jobs):
+        free.put(Scratch(t.root, os.path.join(t.tmp, f"w{i}")))
+
+    def work(item):
+        ctx = free.get()
+        try:
+            fn(ctx, item)
+            return None
+        except Fail as e:
+            return f"{item!r}: {e}"
+        finally:
+            free.put(ctx)
+
+    tools()
+    with ThreadPoolExecutor(jobs) as pool:
+        bad = [r for r in pool.map(work, items) if r]
+    if bad:
+        raise Fail(f"{len(bad)} of {len(items)} failed:\n" + "\n".join(bad[:10]))
 
 
 # ---------------------------------------------------------------- the compiler's own source

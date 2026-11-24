@@ -99,11 +99,13 @@ void error_tok(Token *tok, char *fmt, ...) {
 }
 
 // Is tok the punctuator or keyword op? Its text must be op, all of it.
+// (chibicc compares with memcmp, which may read tok->len bytes of op even
+// when op is shorter; strncmp stops at op's '\0'.)
 bool equal(Token *tok, char *op) {
   // @build 01.01 equal
   // True when the token's text, tok->len characters at tok->loc, is the
   // same as op and op has no more characters after them.
-  return memcmp(tok->loc, op, tok->len) == 0 && op[tok->len] == '\0';
+  return strncmp(tok->loc, op, tok->len) == 0 && op[tok->len] == '\0';
   // @end
 }
 
