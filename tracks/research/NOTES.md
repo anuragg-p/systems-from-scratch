@@ -1196,6 +1196,23 @@ well (1.00 at 5, 0.80 at 10, 0.41 at 20, 0.26 at 40) while attention gives
 1.00, 0.99, 0.87, 0.42: it holds less well than on the copy (a one-way
 encoder's states know less of what comes after them); the default stays
 the copy, where attention holds.
+For the page (lessons agent): attention.py's table now pads each spread to
+48 characters (they ran to 48 and broke the columns at 38); no number
+changed. The default run took 69 s once with another agent's runs going
+(37 to 38 s before). Seed 0's length-30 example: the largest weight is on
+input i for steps 0 to 12, then on positions 28, 20, 29, 9, 17, ...; 15 of
+30 written wrong (step 11 is wrong on the diagonal too). attend() on scores
+0, 1, 2 over values 1, 2, 3: weights 0.09, 0.2447, 0.6652, sum 2.5752 (a
+session on the page). The page's Break it makes attend's weights equal
+(`torch.full_like(scores, 1 / scores.shape[-1])`): the attention models'
+last batch 1.0 to 1.5 nats; symbols right 1 at 2, 0.804 at 5 (t = +14.1
+against no attention: the mean of the encoder states is more than its last
+state), 0.3 at 10, then no better than without (0.154 at 20, 0.119 at 40);
+whole rows 0.595 at 5, 0.001 at 10. Seed 0 writes 2 8 0 5 6 0 3 8 0 1 for 8
+6 5 2 3 0 0 0 1 8: the input's symbols, each as often, in another order.
+43 s. models/rnn.py's docstring no longer mentions the test (the site
+shows it): it says that copying one's weights into the other gives the
+same states.
 
 ## For module 08: what module 07 leaves ready
 

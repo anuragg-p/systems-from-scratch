@@ -444,6 +444,366 @@ def near0702():
     return f
 
 
+# ------------------------------------------------------------------ 07.03
+
+def rnn_run():
+    return figart.experiment("rnn", at="07.03")
+
+
+UNROLL_TEXT = "First Citizen"
+UNROLL_CODE = """
+import json, tempfile
+import torch
+import torch.nn.functional as F
+import lab
+from data import shakespeare
+from experiments import rnn
+from experiments.sequences import window_bits
+cfg = lab.config(rnn.CONFIG, ["out=" + tempfile.mkdtemp()])
+V = len(shakespeare.chars())
+dev = torch.device("cpu")
+train, test = (torch.from_numpy(shakespeare.split(s)) for s in ("train", "test"))
+model, norms = rnn.train(cfg, lab.Run(cfg, 0, label="text"), dev, train, V)
+score = window_bits(lambda x: model(x)[0], test, cfg.span, cfg.warm)
+ids = torch.from_numpy(shakespeare.encode(%r))[None]
+with torch.no_grad():
+    states, h = model.rnn(model.embed(ids))
+    p = F.softmax(model.out(states), dim=-1)[0]
+vocab = shakespeare.chars()
+steps = []
+for t in range(ids.shape[1]):
+    top = p[t].topk(3)
+    steps.append({"state": states[0, t, :32].tolist(), "flat": int((states[0, t].abs() > 0.9).sum()),
+                  "guesses": [[vocab[int(i)], float(v)] for v, i in zip(top.values, top.indices)]})
+print(json.dumps({"bits": score, "hidden": cfg.hidden, "steps": steps}))
+""" % UNROLL_TEXT
+
+
+def unroll0703():
+    """The stepped figure: the seed-0 text network of the page's run reads a line a character at a time."""
+    d = in_project("07.03", UNROLL_CODE)
+    printed = figart.value(rnn_run().out, r"seed 0: (\S+) bits")
+    if f"{d['bits']:.3f}" != f"{printed:.3f}":
+        raise SystemExit(f"the network trained here scores {d['bits']}, the page's seed 0 {printed}")
+    text, hidden = UNROLL_TEXT, d["hidden"]
+    f = Fig("unroll0703", f"The recurrent network of the page's run (seed 0) reading the first line of the training "
+                          f"text a character at a time: the same cell at every step, its state carried to the next",
+            316)
+    x0, cw, gap = 22, 30, 16
+    xs = [x0 + i * (cw + gap) for i in range(len(text))]
+    f.text(x0, 20, "the characters, read one at a time", "tm", 11)
+    f.text(x0, 136, f"the state after each: the first 32 of its {hidden} numbers (accent above 0, the other colour "
+                    f"below)", "tm", 11)
+    f.text(x0, 238, "its chances for the next character, the three highest", "tm", 11)
+    for i, c in enumerate(text):
+        f.rect(xs[i], 30, cw, 26, "m f", 3, dash=True)
+        f.text(xs[i] + cw / 2, 48, shown(c), "tm", 12, "middle", mono=True)
+    for t, st in enumerate(d["steps"]):
+        said = lambda c: "a space" if c == " " else repr(c)
+        cap = f"Reads {said(text[t])}" + (", from a state of zeros" if t == 0 else "") + ": "
+        g = st["guesses"]
+        nxt = text[t + 1] if t + 1 < len(text) else None
+        cap += f"the most likely next is {said(g[0][0])} ({g[0][1]:.2f})"
+        if nxt is not None:
+            right = [x for x in g if x[0] == nxt]
+            cap += (f"; what came, {said(nxt)}, is among its three best ({right[0][1]:.2f})" if right
+                    else f"; what came, {said(nxt)}, is not among its three best")
+        cap += f". {st['flat']} of the {hidden} numbers of its state are beyond 0.9 in size."
+        with steps.step(f, cap):
+            for i in range(t + 1):
+                lit = i == t
+                f.rect(xs[i], 30, cw, 26, "a af" if lit else "s f", 3)
+                f.text(xs[i] + cw / 2, 48, shown(text[i]), "ta" if lit else "t", 12, "middle", 700 if lit else None,
+                       mono=True)
+                f.circle(xs[i] + cw / 2, 88, 11, "a af" if lit else "s f")
+                f.text(xs[i] + cw / 2, 92, "h", "ta" if lit else "t", 11, "middle", 600, mono=True)
+                f.line(xs[i] + cw / 2, 58, xs[i] + cw / 2, 75, "a" if lit else "s", arrow=True)
+                if i:
+                    f.line(xs[i - 1] + cw / 2 + 12, 88, xs[i] + cw / 2 - 13, 88, "a" if lit else "s", arrow=True)
+            f.text(xs[t] + cw / 2, 116, "the same cell", "ta", 10, "middle")
+            cell = 17
+            for k, v in enumerate(st["state"]):
+                X, Y = x0 + (k % 16) * (cell + 2), 146 + (k // 16) * (cell + 2)
+                op = round(min(1.0, abs(v)), 1)
+                if op >= 0.1:
+                    f.add(f'<rect class="{"fa" if v > 0 else "t"}" x="{X}" y="{Y}" width="{cell}" height="{cell}" '
+                          f'fill-opacity="{op}"/>')
+                f.rect(X, Y, cell, cell, "m", 0)
+            sx = x0 + 16 * (cell + 2) + 20
+            f.text(sx, 160, f"{st['flat']} of {hidden}", "ta", 13, weight=700)
+            f.text(sx, 176, "beyond 0.9 in size:", "tm", 10.5)
+            f.text(sx, 190, "tanh's flat ends", "tm", 10.5)
+            for k, (c, v) in enumerate(g):
+                X = x0 + k * 150
+                ok = nxt is not None and c == nxt
+                f.rect(X, 248, max(2, 110 * v), 16, "a af" if ok else "s fs", 2)
+                f.text(X, 280, f"{shown(c)!r} {v:.2f}", "ta" if ok else "t", 11.5, weight=700 if ok else None,
+                       mono=True)
+            if nxt is not None:
+                f.text(x0 + 450, 260, f"what came: {shown(nxt)!r}", "t", 11.5, weight=600, mono=True)
+            f.text(x0, 304, "accent: the character that came next; _ is a space", "tm", 10.5)
+    steps.check(f.svg())
+    return f
+
+
+def uses0703():
+    out = rnn_run().out
+    ws = [int(m.group(1)) for m in re.finditer(r"^   w = +(\d+): ", out, re.M)]
+    bits = [figart.value(out, rf"^   w = +{w}: (\S+)$") for w in ws]
+    pairs = 3.599
+    if f"{pairs:.3f}" not in bigram_run().out:
+        raise SystemExit("07.01's pair model is not at 3.599")
+    f = Fig("uses0703", "What the trained network uses (seed 0): bits per character on the test text when only the "
+                        "last w characters it read are the real ones before each character, the rest from another "
+                        "place", 290)
+    ax = figart.Axes(f, 60, 30, 560, 200, (-0.5, len(ws) - 0.5), (2, 10.5))
+    ax.draw(xticks=[], yticks=[2, 4, 6, 8, 10], xlabel="w, the real characters at the end of the 64 it read")
+    f.text(ax.x - 6, 22, "bits per character", "tm", 11.5)
+    for i, w in enumerate(ws):
+        f.text(ax.px(i), ax.y + ax.h + 16, str(w), "tm", 10.5, "middle", mono=True)
+    ax.hline(math.log2(65), "equal chances 6.022", side="right")
+    ax.hline(pairs, "07.01's pairs 3.599", side="right")
+    pts = [(ax.px(i), ax.py(b)) for i, b in enumerate(bits)]
+    f.polyline(pts, "a", False, 2)
+    for i, b in enumerate(bits):
+        f.circle(ax.px(i), ax.py(b), 3.5, "a fa")
+        f.text(ax.px(i) + (8 if i < 4 else 0), ax.py(b) - 8, f"{b:.3f}", "ta", 10, "start" if i < 4 else "middle",
+               mono=True)
+    k16 = ws.index(16)
+    f.add(f'<rect class="af" x="{ax.px(k16) - 12:.1f}" y="{ax.y + 1}" width="{ax.px(len(ws) - 1) - ax.px(k16) + 24:.1f}" '
+          f'height="{ax.h - 2}" fill-opacity="0.6"/>')
+    f.text(ax.px(k16) - 4, ax.py(9.4), "past 16 characters, nothing it", "ta", 11, weight=600)
+    f.text(ax.px(k16) - 4, ax.py(9.4) + 14, "reads changes the score", "ta", 11)
+    return f
+
+
+def recall0703():
+    r = rnn_run()
+    delays = figart.config(figart.seed_dirs(os.path.join(r.runs, "text"))[0])["delays"]
+    groups = [(f"T = {T}", [figart.summary(x)["accuracy"] for x in figart.seed_dirs(os.path.join(r.runs, f"recall{T}"))],
+               "a") for T in delays]
+    f = Fig("recall0703", "The recall task: accuracy on 1000 new sequences after T blanks, 3 seeds each: a ring per "
+                          "seed, the bar their mean", 260)
+    ax = figart.seeds_chart(f, (8, 4, 624, 252), groups, ylabel="accuracy", ylim=(0, 1.05),
+                            yticks=[0, 0.25, 0.5, 0.75, 1])
+    ax.hline(0.125, "chance: 0.125", side="left")
+    return f
+
+
+def gradient_rows(out):
+    """Part 4's table: [(name, radius, [six gradients])] and the k it was printed for."""
+    ks = [int(k) for k in re.findall(r"k = (\d+)", out.split("4. The gradient")[1].splitlines()[1])]
+    rows = []
+    for line in out.split("4. The gradient")[1].splitlines()[2:]:
+        m = re.match(r"^ +(\S.*?) +(\d+\.\d\d)  ((?: +\S+)+)$", line)
+        if not m:
+            break
+        rows.append((m.group(1).strip(), float(m.group(2)), [float(v) for v in m.group(3).split()]))
+    return ks, rows
+
+
+def gradient0703():
+    ks, rows = gradient_rows(rnn_run().out)
+    f = Fig("gradient0703", "The gradient that reaches the input k steps back from the answer: the recall network as "
+                            "it starts, its recurrent weights rescaled to other spectral radii, and the trained text "
+                            "network", 344)
+    ax = figart.Axes(f, 66, 30, 400, 250, (0, max(ks)), (1e-24, 1e4), False, True)
+    ax.draw(xticks=ks, yticks=[1e-24, 1e-20, 1e-16, 1e-12, 1e-8, 1e-4, 1, 1e4],
+            xlabel="k, steps back from the answer")
+    f.text(ax.x - 6, 22, "size of the gradient (log scale)", "tm", 11.5)
+    ends = []
+    for name, rad, g in rows:
+        trained = name.startswith("the text network")
+        start = name.startswith("the recall network")
+        style = "a" if trained else ("s" if start else "m")
+        pts = [(k, v) for k, v in zip(ks, g) if v > 0]
+        ax.curve([k for k, _ in pts], [v for _, v in pts], style, dash=not (trained or start), width=2 if trained else 1.75)
+        for k, v in pts:
+            ax.dot(k, v, f"{style} {'fa' if trained else 'f'}", 2.5)
+        if len(pts) < len(ks):
+            k, v = pts[-1]
+            ax.note(k, v, "then 0", "tm", 10, "start", dx=6, dy=4)
+        label = ("trained text network, radius" if trained else "as it starts, radius" if start else "radius")
+        ends.append([ax.py(pts[-1][1]) + 3.5, f"{label} {rad:.2f}", style, ax.px(pts[-1][0])])
+    ends.sort()
+    for i in range(1, len(ends)):
+        ends[i][0] = max(ends[i][0], ends[i - 1][0] + 13)
+    for y, label, style, x in ends:
+        f.text(ax.x + ax.w + 8, y, label, figart.TEXT[style], 10.5)
+    f.text(66, 338, "Dashed: the same starting weights with the recurrent matrix scaled to the radius shown.", "tm", 10.5)
+    return f
+
+
+# ------------------------------------------------------------------ 07.04
+
+def attention_run():
+    return figart.experiment("attention", at="07.04")
+
+
+def examples_of(seed=0):
+    """The weights of the attention runs' examples (seed's summary.json): [{input, written, weights}]."""
+    return figart.summary(os.path.join(attention_run().runs, "attention", f"seed{seed}"))["examples"]
+
+
+def seq2seq0704():
+    cfg = figart.config(os.path.join(attention_run().runs, "attention", "seed0"))
+    h = cfg["hidden"]
+    f = Fig("seq2seq0704", f"An encoder and a decoder, both 07.03's recurrent cell with a state of {h}. Without "
+                           f"attention the decoder starts from the encoder's last state and has nothing else; with "
+                           f"attention, every step also takes a weighted sum of all the encoder's states", 380)
+    inp, n = [8, 6, 5, 2], 4
+    step = 54
+
+    def chain(x0, y, names, cls, tcls):
+        xs = [x0 + i * step for i in range(len(names))]
+        for i, lab in enumerate(names):
+            f.circle(xs[i], y, 13, cls)
+            f.text(xs[i], y + 4, lab, tcls, 10.5, "middle", 600, mono=True)
+            if i:
+                f.line(xs[i - 1] + 14, y, xs[i] - 15, y, "s", arrow=True)
+        return xs
+
+    for panel, (y0, title) in enumerate(((20, "without attention"), (190, "with attention"))):
+        lit = "a af" if panel else "s f"
+        f.text(20, y0, title, "ta" if panel else "t", 12.5, weight=700)
+        by, cy = y0 + 22, y0 + 82
+        ex = chain(120, cy, ["h1", "h2", "h3", "h4"], "s f", "t")
+        dx = chain(410, cy, ["s1", "s2", "s3", "s4"], lit, "ta" if panel else "t")
+        f.text(ex[0] - 22, cy + 4, "encoder", "t", 11, "end", 600)
+        f.text(dx[-1] + 22, cy + 4, "decoder", "ta" if panel else "t", 11, "start", 600)
+        for i, v in enumerate(inp):
+            f.rect(ex[i] - 12, by, 24, 20, "s fs", 3)
+            f.text(ex[i], by + 14, str(v), "t", 11, "middle", mono=True)
+            f.line(ex[i], by + 21, ex[i], cy - 15, "s", arrow=True)
+            f.rect(dx[i] - 12, by, 24, 20, lit, 3)
+            f.text(dx[i], by + 14, str(v), "ta" if panel else "t", 11, "middle", mono=True)
+            f.line(dx[i], cy - 14, dx[i], by + 22, "s", arrow=True)
+        f.text(ex[0] - 22, by + 14, "reads", "tm", 10.5, "end")
+        f.text(dx[-1] + 22, by + 14, "writes", "tm", 10.5)
+        f.line(ex[-1] + 14, cy, dx[0] - 15, cy, "s", arrow=True)
+        f.text((ex[-1] + dx[0]) / 2, cy - 8, f"one vector of {h}", "tm", 10.5, "middle")
+        if panel:
+            k = 2                                     # the decoder's third step looks back at every encoder state
+            for i in range(n):
+                on = i == k
+                f.path(f"M{ex[i]} {cy + 14} C {ex[i]} {cy + 62}, {dx[k]} {cy + 62}, {dx[k]} {cy + 16}",
+                       "a" if on else "m", arrow=on, dash=not on)
+            f.text(ex[0] - 12, cy + 70, "step 3: a score for every encoder state, a softmax over the scores, and the "
+                                        "states' weighted sum", "ta", 10.5)
+    f.text(20, 372, "Training gives the decoder the right symbol before each step; writing, it is given the symbol it "
+                    "wrote last.", "tm", 10.5)
+    return f
+
+
+def step0704():
+    """The stepped figure: seed 0's length-10 example, a decoder step at a time."""
+    ex = examples_of(0)[0]
+    out = attention_run().out
+    printed = re.search(r"input (\[[\d, ]+\]):", out).group(1)
+    if json.loads(printed) != ex["input"]:
+        raise SystemExit(f"the summary's example {ex['input']} is not the one the run printed, {printed}")
+    x, wr, ws = ex["input"], ex["written"], ex["weights"]
+    n = len(x)
+    f = Fig("step0704", "The attention decoder of the page's run (seed 0) copying its first example: at each step, "
+                        "its weights over the 10 input positions, and the symbol it wrote", 270)
+    x0, cw, gap = 110, 40, 8
+    xs = [x0 + i * (cw + gap) for i in range(n)]
+    f.text(20, 40, "input", "t", 11.5, weight=600)
+    f.text(20, 206, "written", "t", 11.5, weight=600)
+    f.text(20, 130, "weights", "ta", 11.5, weight=600)
+    for i, v in enumerate(x):
+        f.rect(xs[i], 22, cw, 26, "s fs", 3)
+        f.text(xs[i] + cw / 2, 40, str(v), "t", 12.5, "middle", 600, mono=True)
+        f.text(xs[i] + cw / 2, 62, f"position {i}" if i == 0 else str(i), "tm", 9.5, "middle")
+        f.rect(xs[i], 188, cw, 26, "m f", 3, dash=True)
+    base, top = 170, 76
+    f.line(xs[0] - 4, base, xs[-1] + cw + 4, base, "m")
+    for t in range(n):
+        w = ws[t]
+        best = max(range(n), key=lambda j: w[j])
+        cap = (f"Step {t}: most weight, {w[best]:.2f}, on input position {best}, the symbol {x[best]}; it writes "
+               f"{wr[t]}" + (", right." if wr[t] == x[t] else f", where {x[t]} was right."))
+        with steps.step(f, cap):
+            for j in range(n):
+                hgt = (base - top) * w[j]
+                if hgt > 0.5:
+                    f.rect(xs[j] + 6, base - hgt, cw - 12, hgt, "a af" if j == best else "s fs", 1)
+                if w[j] >= 0.05:
+                    f.text(xs[j] + cw / 2, base - hgt - 4, f"{w[j]:.2f}", "ta" if j == best else "tm", 9.5, "middle",
+                           mono=True)
+            f.add(f'<rect class="a" x="{xs[best] - 2}" y="20" width="{cw + 4}" height="30" rx="4" stroke-width="2"/>')
+            for i in range(t + 1):
+                lit = i == t
+                f.rect(xs[i], 188, cw, 26, "a af" if lit else "s f", 3)
+                f.text(xs[i] + cw / 2, 206, str(wr[i]), "ta" if lit else "t", 12.5, "middle", 700 if lit else None,
+                       mono=True)
+            f.text(20, 250, f"step {t}: the weights add up to {sum(w):.2f}", "tm", 10.5)
+    steps.check(f.svg())
+    return f
+
+
+def length0704():
+    r = attention_run()
+    cfg = figart.config(os.path.join(r.runs, "attention", "seed0"))
+    lengths = cfg["lengths"]
+    series = []
+    for label, name, style in (("no-attention", "no attention", "s"), ("attention", "attention", "a")):
+        per = [[figart.summary(d)["symbols_right"][str(n)] for d in figart.seed_dirs(os.path.join(r.runs, label))]
+               for n in lengths]
+        series.append(figart.Series(name, lengths, [sum(p) / len(p) for p in per], style,
+                                    lo=[min(p) for p in per], hi=[max(p) for p in per]))
+    f = Fig("length0704", f"Copying random symbols: the fraction written right, greedily, on {cfg['tested']} new "
+                          f"inputs of each length; trained on lengths {cfg['shortest']} to {cfg['longest']}; mean "
+                          f"of {cfg['seeds']} seeds, the band from the lowest seed to the highest", 300)
+    ax = figart.plot(f, (8, 6, 624, 288), series, xlabel="length of the input", ylabel="symbols written right",
+                     ylim=(0, 1.05), xticks=lengths, yticks=[0, 0.2, 0.4, 0.6, 0.8, 1], legend="top")
+    ax.hline(1 / cfg["symbols"], f"chance: {1 / cfg['symbols']:.2f}", side="left")
+    ax.vline(cfg["longest"])
+    ax.note(cfg["longest"], 0.55, "the longest", "tm", 10.5, "start", dx=5)
+    ax.note(cfg["longest"], 0.55, f"trained on: {cfg['longest']}", "tm", 10.5, "start", dx=5, dy=14)
+    for s in series:
+        for n, v in zip(s.xs, s.ys):
+            ax.dot(n, v, "a fa" if s.style == "a" else "s f", 3)
+            if s.style == "s" and v > 0.99:
+                continue
+            ax.note(n, v, f"{v:.2f}" if v < 0.995 else "1", "ta" if s.style == "a" else "t", 10, "middle",
+                    dy=-9 if s.style == "a" else 15)
+    return f
+
+
+def weights0704():
+    exs = examples_of(0)
+    f = Fig("weights0704", "The attention weights of seed 0's two examples: a row for each output step, a column for "
+                           "each input position, darker for more weight; the outputs it wrote wrong are marked", 400)
+    for k, (ex, x0, cell) in enumerate(((exs[0], 34, 16), (exs[1], 300, 9.4))):
+        x, wr, ws = ex["input"], ex["written"], ex["weights"]
+        n = len(x)
+        y0 = 58
+        wrong = [i for i in range(n) if wr[i] != x[i]]
+        f.text(x0, 20, f"length {n}" + (", trained on" if n <= 20 else ", longer than any trained on"),
+               "t", 11.5, weight=600)
+        f.text(x0, 36, f"{n - len(wrong)} of {n} written right", "tm", 10.5)
+        for i in range(n):
+            for j in range(n):
+                v = ws[i][j]
+                op = round(min(1.0, v), 1)
+                if op >= 0.1:
+                    f.add(f'<rect class="fa" x="{x0 + j * cell:.1f}" y="{y0 + i * cell:.1f}" width="{cell}" '
+                          f'height="{cell}" fill-opacity="{op}"/>')
+            if i in wrong:
+                f.text(x0 + n * cell + 6, y0 + i * cell + cell - 1.5, "x", "ta", 9 if cell < 12 else 11, weight=700,
+                       mono=True)
+        f.rect(x0, y0, n * cell, n * cell, "m", 0)
+        f.text(x0 + n * cell / 2, y0 + n * cell + 16, "input position", "tm", 10.5, "middle")
+        f.text(x0 - 4, y0 + 10, "step", "tm", 9.5, "end")
+    lost = next((i for i, w in enumerate(exs[1]["weights"]) if max(range(len(w)), key=lambda j: w[j]) != i), None)
+    f.text(34, 270, "The diagonal: at step i the most weight is on", "tm", 10.5)
+    f.text(34, 284, "input i, the symbol to copy there.", "tm", 10.5)
+    if lost is not None:
+        f.text(300, 392, f"At step {lost} its largest weight leaves the diagonal for the first time.", "tm", 10.5)
+    return f
+
+
 FIGS = [
     ("07.01-table", table0701),
     ("07.01-surprise", surprise0701),
@@ -452,6 +812,14 @@ FIGS = [
     ("07.02-nplm", nplm0702),
     ("07.02-scores", scores0702),
     ("07.02-near", near0702),
+    ("07.03-unroll", unroll0703),
+    ("07.03-uses", uses0703),
+    ("07.03-recall", recall0703),
+    ("07.03-gradient", gradient0703),
+    ("07.04-seq2seq", seq2seq0704),
+    ("07.04-step", step0704),
+    ("07.04-length", length0704),
+    ("07.04-weights", weights0704),
 ]
 
 
