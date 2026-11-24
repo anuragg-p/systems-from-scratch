@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 344" fill="none">
+<title>Each prediction, written before any run, beside its outcome by its own rule</title>
+<defs><marker id="verdicts1502-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="verdicts1502-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="verdicts1502-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="16" y="22" font-size="11.5" font-weight="700">prediction, and its rule</text>
+<text class="t" x="210" y="22" font-size="11.5" font-weight="700">ours</text>
+<text class="t" x="624" y="22" font-size="11.5" font-weight="700" text-anchor="end">verdict</text>
+<rect class="s f" x="12" y="34" width="616" height="34" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="22" y="48" font-size="10.5" font-weight="700">one_block</text>
+<text class="tm" x="22" y="62" font-size="10">held if the mean gap at 1 block is the largest</text>
+<text class="t mono" x="210" y="48" font-size="10.5">0.288</text>
+<text class="t" x="618" y="48" font-size="11" font-weight="700" text-anchor="end">held</text>
+<rect class="s f" x="12" y="74" width="616" height="34" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="22" y="88" font-size="10.5" font-weight="700">shrinks</text>
+<text class="tm" x="22" y="102" font-size="10">held if the mean gap falls at every step of depth</text>
+<text class="t mono" x="210" y="88" font-size="10.5">0.288, 0.271, 0.201, 0.141, 0.124</text>
+<text class="t" x="618" y="88" font-size="11" font-weight="700" text-anchor="end">held</text>
+<rect class="s f" x="12" y="114" width="616" height="34" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="22" y="128" font-size="10.5" font-weight="700">size_one</text>
+<text class="tm" x="22" y="142" font-size="10">held if the gap&#x27;s interval at 1 block is all above 0.1</text>
+<text class="t mono" x="210" y="128" font-size="10.5">0.288, 0.278, 0.298</text>
+<text class="t" x="618" y="128" font-size="11" font-weight="700" text-anchor="end">held</text>
+<rect class="a af" x="12" y="154" width="616" height="34" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="22" y="168" font-size="10.5" font-weight="700">again</text>
+<text class="tm" x="22" y="182" font-size="10">held if the mean gap at 4 blocks is within 0.0325 to 0.13</text>
+<text class="t mono" x="210" y="168" font-size="10.5">0.201</text>
+<text class="ta" x="618" y="168" font-size="11" font-weight="700" text-anchor="end">did not hold</text>
+<rect class="s f" x="12" y="194" width="616" height="34" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="22" y="208" font-size="10.5" font-weight="700">not_closed</text>
+<text class="tm" x="22" y="222" font-size="10">held if the gap&#x27;s interval at the deepest is all above 0</text>
+<text class="t mono" x="210" y="208" font-size="10.5">0.124, 0.113, 0.135</text>
+<text class="t" x="618" y="208" font-size="11" font-weight="700" text-anchor="end">held</text>
+<rect class="s f" x="12" y="234" width="616" height="34" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="22" y="248" font-size="10.5" font-weight="700">depth_no_substitute</text>
+<text class="tm" x="22" y="262" font-size="10">held if Welch&#x27;s interval (none at the deepest, learned at 4 blocks) is above 0</text>
+<text class="t mono" x="210" y="248" font-size="10.5">0.193, 0.183, 0.202</text>
+<text class="t" x="618" y="248" font-size="11" font-weight="700" text-anchor="end">held</text>
+<rect class="s f" x="12" y="274" width="616" height="34" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="22" y="288" font-size="10.5" font-weight="700">not_weights</text>
+<text class="tm" x="22" y="302" font-size="10">held if it closes under 25% of the gap at 4 blocks</text>
+<text class="t mono" x="210" y="288" font-size="10.5">-0.018</text>
+<text class="t" x="618" y="288" font-size="11" font-weight="700" text-anchor="end">held</text>
+<text class="tm" x="16" y="336" font-size="10.5">6 of 7 held; the others are shaded.</text>
+</svg>

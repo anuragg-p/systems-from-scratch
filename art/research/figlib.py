@@ -85,6 +85,7 @@ MODULE_DIRS = {
     "09": "09-gpt-2",
     "10": "10-todays-architecture",
     "14": "14-grokking",
+    "15": "15-your-own-result",
 }
 
 

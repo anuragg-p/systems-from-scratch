@@ -1,0 +1,159 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The gap, no positions minus learned, against blocks: each pair (small dots), the mean, its paired 95% interval (solid bar) and Welch&#x27;s on the same runs (dashed, to its right); the ring: 08.03&#x27;s 0.065</title>
+<defs><marker id="gap1502-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="gap1502-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="gap1502-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="64" y="253.5" font-size="10.5" text-anchor="end">0</text>
+<line class="m" x1="70" y1="189.9" x2="610" y2="189.9" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="193.35" font-size="10.5" text-anchor="end">0.1</text>
+<line class="m" x1="70" y1="129.7" x2="610" y2="129.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="133.2" font-size="10.5" text-anchor="end">0.2</text>
+<line class="m" x1="70" y1="69.6" x2="610" y2="69.6" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="64" y="73.06" font-size="10.5" text-anchor="end">0.3</text>
+<line class="m" x1="130" y1="250" x2="130" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="130" y="266" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="190" y1="250" x2="190" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="190" y="266" font-size="10.5" text-anchor="middle">2</text>
+<line class="m" x1="310" y1="250" x2="310" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="310" y="266" font-size="10.5" text-anchor="middle">4</text>
+<line class="m" x1="430" y1="250" x2="430" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="430" y="266" font-size="10.5" text-anchor="middle">6</text>
+<line class="m" x1="550" y1="250" x2="550" y2="254" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="550" y="266" font-size="10.5" text-anchor="middle">8</text>
+<rect class="m" x="70" y="30" width="540" height="220" rx="0" stroke-width="1.5"/>
+<text class="tm" x="340" y="282" font-size="11.5" text-anchor="middle">blocks</text>
+<text class="tm" x="64" y="22" font-size="11.5">gap, bits per character</text>
+<line class="m" x1="70" y1="237.97" x2="610" y2="237.97" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="606" y="232.97" font-size="10.5" text-anchor="end">the smallest gap worth finding, 0.02</text>
+<circle class="m" cx="120" cy="63.84" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="46.3" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="73.79" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="76.03" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="92.08" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="58.92" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="82.86" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="82.7" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="62.35" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="82.62" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="85.14" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="66.02" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="105.47" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="56.26" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="92.37" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="77.29" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="78.1" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="88.25" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="72.65" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="85.59" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="77.2" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="120" cy="81.26" r="1.6" stroke-width="1.5"/>
+<line class="a" x1="130" y1="82.72" x2="130" y2="70.65" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="139" y1="82.8" x2="139" y2="70.57" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="a fa" cx="130" cy="76.69" r="4" stroke-width="1.5"/>
+<text class="ta" x="144" y="80.69" font-size="10.5">0.288</text>
+<circle class="m" cx="180" cy="55.82" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="72.7" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="105.08" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="92.84" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="66.64" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="68.91" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="76.12" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="151.69" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="79.18" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="124.96" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="69.68" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="84.74" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="101.89" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="102.63" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="77.36" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="90.02" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="89.34" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="74.64" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="80.83" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="82.34" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="88.2" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="180" cy="81.77" r="1.6" stroke-width="1.5"/>
+<line class="a" x1="190" y1="96.44" x2="190" y2="77.87" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="199" y1="96.72" x2="199" y2="77.59" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="a fa" cx="190" cy="87.15" r="4" stroke-width="1.5"/>
+<text class="ta" x="204" y="91.15" font-size="10.5">0.271</text>
+<circle class="m" cx="300" cy="101.84" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="127.73" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="138.83" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="152.81" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="123.77" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="104.74" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="157.29" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="128.24" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="118.96" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="141.81" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="119.71" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="133.14" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="114.15" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="112.72" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="140.1" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="126.09" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="118.03" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="122.71" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="152.83" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="131.58" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="128.25" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="300" cy="140.87" r="1.6" stroke-width="1.5"/>
+<line class="a" x1="310" y1="135.54" x2="310" y2="122.3" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="319" y1="135.65" x2="319" y2="122.19" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="a fa" cx="310" cy="128.92" r="4" stroke-width="1.5"/>
+<text class="ta" x="324" y="132.92" font-size="10.5">0.201</text>
+<circle class="m" cx="420" cy="187.22" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="175.69" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="151.58" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="162.07" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="200.24" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="160.66" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="163.11" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="167.68" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="164.67" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="163.56" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="142.51" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="158.7" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="161" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="167.06" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="148.21" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="161.32" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="159.61" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="178.36" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="139.8" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="165.78" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="191.12" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="420" cy="161.27" r="1.6" stroke-width="1.5"/>
+<line class="a" x1="430" y1="171.52" x2="430" y2="158.59" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="439" y1="170.88" x2="439" y2="159.23" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="a fa" cx="430" cy="165.06" r="4" stroke-width="1.5"/>
+<text class="ta" x="444" y="169.06" font-size="10.5">0.141</text>
+<circle class="m" cx="540" cy="185.23" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="164.28" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="168.7" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="150.84" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="165.79" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="159.61" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="195.98" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="178.46" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="167.8" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="193.02" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="161.11" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="183.51" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="183.08" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="187.52" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="195.03" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="173.24" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="157.2" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="202.46" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="191.83" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="171.34" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="170" r="1.6" stroke-width="1.5"/>
+<circle class="m" cx="540" cy="151.92" r="1.6" stroke-width="1.5"/>
+<line class="a" x1="550" y1="182.07" x2="550" y2="168.65" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="559" y1="181.67" x2="559" y2="169.05" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle class="a fa" cx="550" cy="175.36" r="4" stroke-width="1.5"/>
+<text class="ta" x="564" y="179.36" font-size="10.5">0.124</text>
+<polyline class="a" points="130.0,76.7 190.0,87.2 310.0,128.9 430.0,165.1 550.0,175.4" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="310" cy="210.9" r="4.5" stroke-width="1.5"/>
+<text class="tm" x="320" y="222.9" font-size="10.5">08.03: 0.065</text>
+</svg>

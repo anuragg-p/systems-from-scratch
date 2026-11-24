@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 250" fill="none">
+<title>Where each published comparison sits on the depth axis, and where this module&#x27;s runs sit: 1 to 8 blocks, below every one of them</title>
+<defs><marker id="known1501-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="known1501-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="known1501-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="173.77" y1="190" x2="173.77" y2="194" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="173.77" y="206" font-size="10.5" text-anchor="middle">1</text>
+<line class="m" x1="247.62" y1="190" x2="247.62" y2="194" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="247.62" y="206" font-size="10.5" text-anchor="middle">2</text>
+<line class="m" x1="321.48" y1="190" x2="321.48" y2="194" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="321.48" y="206" font-size="10.5" text-anchor="middle">4</text>
+<line class="m" x1="395.33" y1="190" x2="395.33" y2="194" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="395.33" y="206" font-size="10.5" text-anchor="middle">8</text>
+<line class="m" x1="438.52" y1="190" x2="438.52" y2="194" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="438.52" y="206" font-size="10.5" text-anchor="middle">12</text>
+<line class="m" x1="512.38" y1="190" x2="512.38" y2="194" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="512.38" y="206" font-size="10.5" text-anchor="middle">24</text>
+<line class="m" x1="572" y1="190" x2="572" y2="194" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="572" y="206" font-size="10.5" text-anchor="middle">42</text>
+<text class="tm" x="380" y="222" font-size="11.5" text-anchor="middle">blocks (layers), log scale</text>
+<line class="m" x1="150" y1="190" x2="610" y2="190" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="16" y="65.25" font-size="11" font-weight="600">Irie et al. 2019</text>
+<text class="tm" x="16" y="78.25" font-size="10">word-level, LibriSpeech</text>
+<circle class="s f" cx="438.52" cy="66.25" r="4" stroke-width="1.5"/>
+<circle class="s f" cx="512.38" cy="66.25" r="4" stroke-width="1.5"/>
+<circle class="s f" cx="572" cy="66.25" r="4" stroke-width="1.5"/>
+<text class="t" x="16" y="102.75" font-size="11" font-weight="600">Haviv et al. 2022</text>
+<text class="tm" x="16" y="115.75" font-size="10">125M to 1.3B weights, the Pile</text>
+<line class="s" x1="438.52" y1="103.75" x2="512.38" y2="103.75" stroke-width="1.5" stroke-linecap="round"/>
+<circle class="s f" cx="438.52" cy="103.75" r="4" stroke-width="1.5"/>
+<circle class="s f" cx="512.38" cy="103.75" r="4" stroke-width="1.5"/>
+<text class="tm" x="16" y="140.25" font-size="11" font-weight="600">Kazemnejad et al. 2023</text>
+<text class="tm" x="16" y="153.25" font-size="10">a proof: layer 1 finds a position</text>
+<line class="m" x1="173.77" y1="141.25" x2="247.62" y2="141.25" stroke-width="1.5" stroke-linecap="round" marker-end="url(#known1501-am)"/>
+<text class="tm" x="173.77" y="134.25" font-size="10">computes</text>
+<text class="tm" x="253.62" y="145.25" font-size="10">uses</text>
+<text class="ta" x="16" y="174" font-size="11" font-weight="700">this module</text>
+<text class="tm" x="16" y="187" font-size="10">64 wide, Tiny Shakespeare</text>
+<circle class="a fa" cx="173.77" cy="175" r="4" stroke-width="1.5"/>
+<circle class="a fa" cx="247.62" cy="175" r="4" stroke-width="1.5"/>
+<circle class="a fa" cx="321.48" cy="175" r="4" stroke-width="1.5"/>
+<circle class="a fa" cx="364.67" cy="175" r="4" stroke-width="1.5"/>
+<circle class="a fa" cx="395.33" cy="175" r="4" stroke-width="1.5"/>
+<text class="tm" x="16" y="238" font-size="10.5">The published comparisons start at 12 layers; the proof needs a token that marks each input&#x27;s start, which our windows lack.</text>
+</svg>
