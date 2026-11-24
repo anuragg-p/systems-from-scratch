@@ -695,6 +695,11 @@ TWELVE = {
                              "methods=['lora']"], r"s of reading, training and scoring on cpu", ["gpt2"]),
 }
 
+# lora.py and instruct.py have no region of their own (their lessons' code is models/lora.py, data/instructions.py and
+# experiments/tuning.py's regions), so they are placed here.
+FILES_FROM["experiments/lora.py"] = "12.02"
+FILES_FROM["experiments/instruct.py"] = "12.03"
+
 DATASET_FILES["banking77"] = {"train.csv": 839073, "test.csv": 239961, "categories.json": 2036}
 DATASET_NAMES["banking77"] = "Banking77 (its training and test questions, and its 77 intents)"
 TOOLS["banking77"] = lambda: have_dataset("banking77")

@@ -35,8 +35,8 @@ import torch
 import torch.nn.functional as F
 
 import lab
-from data import banking77, shakespeare                                            # @from 12.04
-from data import fetch, tinystories                                                # @from 12.04
+from data import banking77
+from data import fetch, shakespeare, tinystories                                   # @from 12.04
 from experiments.tuning import accuracy, fit, pad, vectors
 from experiments.tuning import moved, text_bits, weights                           # @from 12.04
 from models import gpt2 as M
@@ -46,11 +46,16 @@ from tokens import gpt2
 
 CONFIG = dict(ranks=[1, 4, 8], alpha=8, demo_steps=10, timed=5, train=False,
               methods=["head", "lora1", "lora4", "lora8", "full"], seeds=3, steps=600, batch=16, lr=6.25e-5, lora_lr=0.001,
-              head_lr=0.003, weight_decay=0.0, warmup=0.06, every=150, valid=1000, standardise_from=1000,
-              untuned_tokens=2048, stories=50, questions=0, tested=0, scored_tokens=0,
-              recorded="experiments/recorded/lora", device="cpu")
-# questions, tested and scored_tokens cut the training questions, the test questions and Shakespeare's test text scored
-# at the end to their first so many (0: all of them), for a quick run of train=True.
+              head_lr=0.003, weight_decay=0.0, warmup=0.06, every=150, valid=1000, standardise_from=1000, questions=0,
+              tested=0, recorded="experiments/recorded/lora", device="cpu")
+# questions and tested cut the training and the test questions to their first so many (0: all of them), for a quick run
+# of train=True.
+# @from 12.04
+# What else the run measures as it trains (12.04): the bits on the first untuned_tokens tokens of Shakespeare's test
+# text at every evaluation; at the end, on the first scored_tokens of it (0: all) and on the first `stories` held-out
+# TinyStories.
+CONFIG.update(untuned_tokens=2048, stories=50, scored_tokens=0)
+# @end
 
 
 def method_settings(cfg, method):
