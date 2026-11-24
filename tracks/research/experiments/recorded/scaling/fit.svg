@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+<line x1="64" y1="135.9" x2="490" y2="135.9" stroke="currentColor" stroke-opacity="0.15"/>
+<text x="58" y="139.9" font-size="11" text-anchor="end" fill="currentColor">5</text>
+<line x1="127.5" y1="314" x2="127.5" y2="318" stroke="currentColor"/>
+<text x="127.5" y="331" font-size="11" text-anchor="middle" fill="currentColor">1e5</text>
+<line x1="192.6" y1="314" x2="192.6" y2="318" stroke="currentColor"/>
+<text x="192.6" y="331" font-size="11" text-anchor="middle" fill="currentColor">2e5</text>
+<line x1="278.7" y1="314" x2="278.7" y2="318" stroke="currentColor"/>
+<text x="278.7" y="331" font-size="11" text-anchor="middle" fill="currentColor">5e5</text>
+<line x1="343.8" y1="314" x2="343.8" y2="318" stroke="currentColor"/>
+<text x="343.8" y="331" font-size="11" text-anchor="middle" fill="currentColor">1e6</text>
+<line x1="408.9" y1="314" x2="408.9" y2="318" stroke="currentColor"/>
+<text x="408.9" y="331" font-size="11" text-anchor="middle" fill="currentColor">2e6</text>
+<rect x="64" y="34" width="426" height="280" fill="none" stroke="currentColor"/>
+<text x="277.0" y="352" font-size="12" text-anchor="middle" fill="currentColor">weights, embeddings not counted (N)</text>
+<text x="14" y="174.0" font-size="12" text-anchor="middle" fill="currentColor" transform="rotate(-90 14 174.0)">bits per token, held out</text>
+<circle cx="322.1" cy="204.9" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="322.1" cy="205.2" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="322.1" cy="202.7" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="64.0" cy="49.3" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="64.0" cy="46.7" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="64.0" cy="54.0" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="139.1" cy="90.4" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="139.1" cy="95.1" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="139.1" cy="91.6" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="192.6" cy="119.1" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="192.6" cy="124.6" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="192.6" cy="114.2" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="268.3" cy="172.8" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="268.3" cy="169.4" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<circle cx="268.3" cy="163.0" r="2.5" fill="#1f77b4" opacity="1.0"/>
+<polyline points="64.0,47.5 490.0,301.3" fill="none" stroke="#2ca02c" stroke-width="1.6" stroke-opacity="0.8" stroke-dasharray="5 3"/>
+<polyline points="451.9,288.7 451.9,268.4" fill="none" stroke="#ff7f0e" stroke-width="1.6" stroke-opacity="1.0"/>
+<circle cx="451.9" cy="274.3" r="2.5" fill="#d62728" opacity="1.0"/>
+<circle cx="451.9" cy="276.6" r="2.5" fill="#d62728" opacity="1.0"/>
+<line x1="502" y1="42" x2="522" y2="42" stroke="#1f77b4" stroke-width="2.5"/>
+<text x="528" y="46" font-size="11" fill="currentColor">fitted</text>
+<line x1="502" y1="60" x2="522" y2="60" stroke="#2ca02c" stroke-width="2.5"/>
+<text x="528" y="64" font-size="11" fill="currentColor">power law</text>
+<line x1="502" y1="78" x2="522" y2="78" stroke="#ff7f0e" stroke-width="2.5"/>
+<text x="528" y="82" font-size="11" fill="currentColor">95% interval</text>
+<line x1="502" y1="96" x2="522" y2="96" stroke="#d62728" stroke-width="2.5"/>
+<text x="528" y="100" font-size="11" fill="currentColor">held back</text>
+</svg>
