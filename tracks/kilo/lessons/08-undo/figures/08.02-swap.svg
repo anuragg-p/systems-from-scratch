@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 236" fill="none">
+<title>One U_CHG record and its row: Ctrl-Z swaps their texts, and Ctrl-R, applying the same record again, swaps them back</title>
+<defs><marker id="f0802a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0802a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0802a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 08.02 on notes.txt, after Down, &quot;and &quot;, Enter, Backspace, Backspace: the last key&#x27;s step, one record</text>
+<g class="step"><title>After the second Backspace: its step is one record, U_CHG of row 1, holding the row as it was, "and what each line was". The row is "andwhat each line was".</title>
+<text class="t" x="24" y="62" font-size="12" font-weight="700">E.row[1]</text>
+<text class="tm" x="274" y="62" font-size="10.5" text-anchor="end">the row</text>
+<rect class="s f" x="24" y="74" width="250" height="46" rx="7" stroke-width="1.5"/>
+<text class="t mono" x="38" y="103" font-size="12.5">&quot;andwhat</text>
+<text class="t mono" x="105.5" y="103" font-size="12.5">each</text>
+<text class="t mono" x="143" y="103" font-size="12.5">line</text>
+<text class="t mono" x="180.5" y="103" font-size="12.5">was&quot;</text>
+<text class="t" x="366" y="62" font-size="12" font-weight="700">U_CHG at 1</text>
+<text class="tm" x="616" y="62" font-size="10.5" text-anchor="end">on the undo stack</text>
+<rect class="a af" x="366" y="74" width="250" height="46" rx="7" stroke-width="1.5"/>
+<rect class="af" x="409" y="88" width="9.5" height="19" rx="2"/>
+<path class="a" d="M411.35 100 L411.35 103 L416.15 103 L416.15 100" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="380" y="103" font-size="12.5">&quot;and</text>
+<text class="t mono" x="417.5" y="103" font-size="12.5">what</text>
+<text class="t mono" x="455" y="103" font-size="12.5">each</text>
+<text class="t mono" x="492.5" y="103" font-size="12.5">line</text>
+<text class="t mono" x="530" y="103" font-size="12.5">was&quot;</text>
+<text class="tm" x="24" y="156" font-size="10.5">the record keeps what the row was; the row has the change</text>
+</g>
+<g class="step"><title>Ctrl-Z: undoApply() takes the row's text into the record, then puts the record's text in the row. The two texts have changed places. The record is still U_CHG, and its step goes on the redo stack.</title>
+<text class="t" x="24" y="62" font-size="12" font-weight="700">E.row[1]</text>
+<text class="tm" x="274" y="62" font-size="10.5" text-anchor="end">the row</text>
+<rect class="s f" x="24" y="74" width="250" height="46" rx="7" stroke-width="1.5"/>
+<rect class="af" x="67" y="88" width="9.5" height="19" rx="2"/>
+<path class="a" d="M69.35 100 L69.35 103 L74.15 103 L74.15 100" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="38" y="103" font-size="12.5">&quot;and</text>
+<text class="t mono" x="75.5" y="103" font-size="12.5">what</text>
+<text class="t mono" x="113" y="103" font-size="12.5">each</text>
+<text class="t mono" x="150.5" y="103" font-size="12.5">line</text>
+<text class="t mono" x="188" y="103" font-size="12.5">was&quot;</text>
+<text class="t" x="366" y="62" font-size="12" font-weight="700">U_CHG at 1</text>
+<text class="tm" x="616" y="62" font-size="10.5" text-anchor="end">on the redo stack</text>
+<rect class="a af" x="366" y="74" width="250" height="46" rx="7" stroke-width="1.5"/>
+<text class="t mono" x="380" y="103" font-size="12.5">&quot;andwhat</text>
+<text class="t mono" x="447.5" y="103" font-size="12.5">each</text>
+<text class="t mono" x="485" y="103" font-size="12.5">line</text>
+<text class="t mono" x="522.5" y="103" font-size="12.5">was&quot;</text>
+<path class="a" d="M358 88 L282 88" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0802a-aa)"/>
+<path class="a" d="M282 106 L358 106" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0802a-aa)"/>
+<text class="ta" x="320" y="138" font-size="11.5" font-weight="700" text-anchor="middle">Ctrl-Z</text>
+<text class="tm" x="24" y="156" font-size="10.5">the record now keeps what Ctrl-Z took: the change itself</text>
+</g>
+<g class="step"><title>Ctrl-R applies the same record again: the same swap. The row has the change back, the record what the row was, and the step goes back on the undo stack, as before Ctrl-Z.</title>
+<text class="t" x="24" y="62" font-size="12" font-weight="700">E.row[1]</text>
+<text class="tm" x="274" y="62" font-size="10.5" text-anchor="end">the row</text>
+<rect class="s f" x="24" y="74" width="250" height="46" rx="7" stroke-width="1.5"/>
+<text class="t mono" x="38" y="103" font-size="12.5">&quot;andwhat</text>
+<text class="t mono" x="105.5" y="103" font-size="12.5">each</text>
+<text class="t mono" x="143" y="103" font-size="12.5">line</text>
+<text class="t mono" x="180.5" y="103" font-size="12.5">was&quot;</text>
+<text class="t" x="366" y="62" font-size="12" font-weight="700">U_CHG at 1</text>
+<text class="tm" x="616" y="62" font-size="10.5" text-anchor="end">on the undo stack</text>
+<rect class="a af" x="366" y="74" width="250" height="46" rx="7" stroke-width="1.5"/>
+<rect class="af" x="409" y="88" width="9.5" height="19" rx="2"/>
+<path class="a" d="M411.35 100 L411.35 103 L416.15 103 L416.15 100" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="380" y="103" font-size="12.5">&quot;and</text>
+<text class="t mono" x="417.5" y="103" font-size="12.5">what</text>
+<text class="t mono" x="455" y="103" font-size="12.5">each</text>
+<text class="t mono" x="492.5" y="103" font-size="12.5">line</text>
+<text class="t mono" x="530" y="103" font-size="12.5">was&quot;</text>
+<path class="a" d="M358 88 L282 88" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0802a-aa)"/>
+<path class="a" d="M282 106 L358 106" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0802a-aa)"/>
+<text class="ta" x="320" y="138" font-size="11.5" font-weight="700" text-anchor="middle">Ctrl-R</text>
+<text class="tm" x="24" y="156" font-size="10.5">as before Ctrl-Z: undo and redo are one act, applying a record</text>
+</g>
+<text class="tm" x="24" y="196" font-size="10.5">The other two types change too as they are applied: U_INS deletes its row and becomes U_DEL with that</text>
+<text class="tm" x="24" y="210" font-size="10.5">row&#x27;s text; U_DEL inserts its text and becomes U_INS.</text>
+</svg>

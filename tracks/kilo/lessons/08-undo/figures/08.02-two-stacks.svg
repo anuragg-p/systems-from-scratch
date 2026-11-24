@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 236" fill="none">
+<title>The undo stack and the redo stack as a, b, Ctrl-Z, Ctrl-Z, Ctrl-R and c are pressed: Ctrl-Z moves a step from one to the other, Ctrl-R moves it back, and a new edit empties the redo stack</title>
+<defs><marker id="f0802b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0802b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0802b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">kilo at 08.02 on notes.txt, row 0: every key a step; each step here is one record</text>
+<text class="tm" x="64" y="198" font-size="10.5">the undo stack: Ctrl-Z takes its top</text>
+<text class="tm" x="352" y="198" font-size="10.5">the redo stack: Ctrl-R takes its top</text>
+<line class="s" x1="56" y1="182" x2="296" y2="182" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="344" y1="182" x2="584" y2="182" stroke-width="1.5" stroke-linecap="round"/>
+<g class="step"><title>a: undoSave() keeps row 0 as it was, "undo keeps", in a new step on the undo stack.</title>
+<rect class="a af" x="24" y="40" width="22" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta" x="35" y="55" font-size="10.5" font-weight="600" text-anchor="middle">a</text>
+<text class="tm" x="110" y="56" font-size="10.5">E.row[0]</text>
+<text class="t mono" x="170" y="56" font-size="12">aundo</text>
+<text class="t mono" x="213.2" y="56" font-size="12">keeps</text>
+<rect class="a" x="176.7" y="46.2" width="8.2" height="12" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="64" y="140" width="224" height="30" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="153" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="t mono" x="72" y="165" font-size="9.5">&quot;undo</text>
+<text class="t mono" x="106.2" y="165" font-size="9.5">keeps&quot;</text>
+</g>
+<g class="step"><title>b: another step, keeping "aundo keeps". The redo stack is empty.</title>
+<rect class="a af" x="24" y="40" width="22" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta" x="35" y="55" font-size="10.5" font-weight="600" text-anchor="middle">b</text>
+<text class="tm" x="110" y="56" font-size="10.5">E.row[0]</text>
+<text class="t mono" x="170" y="56" font-size="12">abundo</text>
+<text class="t mono" x="220.4" y="56" font-size="12">keeps</text>
+<rect class="a" x="183.9" y="46.2" width="8.2" height="12" rx="1" stroke-width="1.5"/>
+<rect class="s f" x="64" y="140" width="224" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="153" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="t mono" x="72" y="165" font-size="9.5">&quot;undo</text>
+<text class="t mono" x="106.2" y="165" font-size="9.5">keeps&quot;</text>
+<rect class="a af" x="64" y="104" width="224" height="30" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="117" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="t mono" x="72" y="129" font-size="9.5">&quot;aundo</text>
+<text class="t mono" x="111.9" y="129" font-size="9.5">keeps&quot;</text>
+</g>
+<g class="step"><title>Ctrl-Z: the top step comes off the undo stack, is applied (its record now holds "abundo keeps") and goes on the redo stack.</title>
+<rect class="a af" x="24" y="40" width="49.28" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta" x="48.64" y="55" font-size="10.5" font-weight="600" text-anchor="middle">Ctrl-Z</text>
+<text class="tm" x="110" y="56" font-size="10.5">E.row[0]</text>
+<text class="t mono" x="170" y="56" font-size="12">aundo</text>
+<text class="t mono" x="213.2" y="56" font-size="12">keeps</text>
+<rect class="a" x="183.9" y="46.2" width="8.2" height="12" rx="1" stroke-width="1.5"/>
+<rect class="s f" x="64" y="140" width="224" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="153" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="t mono" x="72" y="165" font-size="9.5">&quot;undo</text>
+<text class="t mono" x="106.2" y="165" font-size="9.5">keeps&quot;</text>
+<rect class="a af" x="352" y="140" width="224" height="30" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="360" y="153" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="t mono" x="360" y="165" font-size="9.5">&quot;abundo</text>
+<text class="t mono" x="405.6" y="165" font-size="9.5">keeps&quot;</text>
+</g>
+<g class="step"><title>Ctrl-Z again: the next step moves too. On the redo stack the step undone last is on top.</title>
+<rect class="a af" x="24" y="40" width="49.28" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta" x="48.64" y="55" font-size="10.5" font-weight="600" text-anchor="middle">Ctrl-Z</text>
+<text class="tm" x="110" y="56" font-size="10.5">E.row[0]</text>
+<text class="t mono" x="170" y="56" font-size="12">undo</text>
+<text class="t mono" x="206" y="56" font-size="12">keeps</text>
+<rect class="a" x="183.9" y="46.2" width="8.2" height="12" rx="1" stroke-width="1.5"/>
+<rect class="s f" x="352" y="140" width="224" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="360" y="153" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="t mono" x="360" y="165" font-size="9.5">&quot;abundo</text>
+<text class="t mono" x="405.6" y="165" font-size="9.5">keeps&quot;</text>
+<rect class="a af" x="352" y="104" width="224" height="30" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="360" y="117" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="t mono" x="360" y="129" font-size="9.5">&quot;aundo</text>
+<text class="t mono" x="399.9" y="129" font-size="9.5">keeps&quot;</text>
+</g>
+<g class="step"><title>Ctrl-R: the top of the redo stack is applied and moves back to the undo stack: the a is back.</title>
+<rect class="a af" x="24" y="40" width="49.28" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta" x="48.64" y="55" font-size="10.5" font-weight="600" text-anchor="middle">Ctrl-R</text>
+<text class="tm" x="110" y="56" font-size="10.5">E.row[0]</text>
+<text class="t mono" x="170" y="56" font-size="12">aundo</text>
+<text class="t mono" x="213.2" y="56" font-size="12">keeps</text>
+<rect class="a" x="183.9" y="46.2" width="8.2" height="12" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="64" y="140" width="224" height="30" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="153" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="t mono" x="72" y="165" font-size="9.5">&quot;undo</text>
+<text class="t mono" x="106.2" y="165" font-size="9.5">keeps&quot;</text>
+<rect class="s f" x="352" y="140" width="224" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="360" y="153" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="t mono" x="360" y="165" font-size="9.5">&quot;abundo</text>
+<text class="t mono" x="405.6" y="165" font-size="9.5">keeps&quot;</text>
+</g>
+<g class="step"><title>c: a new edit. Its record opens a new step, and undoSave() frees the redo stack first: the b can never be redone. (At 08.02 undo and redo leave the cursor where b left it, so the c goes in after "au".)</title>
+<rect class="a af" x="24" y="40" width="22" height="22" rx="5" stroke-width="1.5"/>
+<text class="ta" x="35" y="55" font-size="10.5" font-weight="600" text-anchor="middle">c</text>
+<text class="tm" x="110" y="56" font-size="10.5">E.row[0]</text>
+<text class="t mono" x="170" y="56" font-size="12">aucndo</text>
+<text class="t mono" x="220.4" y="56" font-size="12">keeps</text>
+<rect class="a" x="191.1" y="46.2" width="8.2" height="12" rx="1" stroke-width="1.5"/>
+<rect class="s f" x="64" y="140" width="224" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="72" y="153" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="t mono" x="72" y="165" font-size="9.5">&quot;undo</text>
+<text class="t mono" x="106.2" y="165" font-size="9.5">keeps&quot;</text>
+<rect class="a af" x="64" y="104" width="224" height="30" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="72" y="117" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="t mono" x="72" y="129" font-size="9.5">&quot;aundo</text>
+<text class="t mono" x="111.9" y="129" font-size="9.5">keeps&quot;</text>
+<rect class="m f" x="352" y="140" width="224" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="360" y="153" font-size="9.5" font-weight="700">U_CHG at 0</text>
+<text class="tm mono" x="360" y="165" font-size="9.5">&quot;abundo</text>
+<text class="tm mono" x="405.6" y="165" font-size="9.5">keeps&quot;</text>
+<text class="tm" x="568" y="153" font-size="9.5" text-anchor="end">freed</text>
+</g>
+</svg>
