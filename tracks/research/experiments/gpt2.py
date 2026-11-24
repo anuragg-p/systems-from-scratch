@@ -33,7 +33,7 @@ from models.gpt2 import from_gpt2
 from tokens import gpt2
 
 CONFIG = dict(warm=64, prompt="The meaning of life is", hello="Hello, I'm a language model,", shown=5, greedy=20,
-              wrong_windows=2, test_tokens=0, prompts=8, prompt_tokens=32, length=40, seeds=2,
+              wrong_windows=2, test_tokens=0, prompts=8, prompt_tokens=16, length=40, seeds=2,
               methods=[["greedy", 0.0, 0, None], ["pure sampling", 1.0, 0, None], ["sampling, t=0.9", 0.9, 0, None],
                        ["sampling, t=0.7", 0.7, 0, None], ["top-k=40", 1.0, 40, None], ["nucleus, p=0.95", 1.0, 0, 0.95]],
               device="cpu")

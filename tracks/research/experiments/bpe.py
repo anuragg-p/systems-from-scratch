@@ -31,7 +31,7 @@ from experiments.sequences import per_character, window_bits
 from models.gpt import GPT
 from tokens import bpe
 
-CONFIG = dict(window=256, windows=2000, simple_merges=3, sizes=[256, 512, 1024, 2048, 4096], shown=24,
+CONFIG = dict(window=256, windows=2000, simple_merges=3, sizes=[256, 512, 1024, 2048], shown=24,
               vocab=2048, layers=4, heads=4, width=64, context=64, batch=32, steps=300, lr=0.003, warmup=50,
               weight_decay=0.1, clip=1.0, every=50, seeds=2, device="cpu")
 WORD = re.compile(r"[A-Za-z]+")
