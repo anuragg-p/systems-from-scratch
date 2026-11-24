@@ -25,19 +25,20 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-Modules 06 to 10 and 14 are on master whole: code, 53 tests, twenty-six
-lessons, module pages, figures and covers; each module's `./learn
-verify --fresh` passed on its lessons' branch (08: 534 s; 09: 315 s;
-10: 524 s; 14: 201 s). That is 53 of the core's 70 lessons, pushed on
-2026-11-24 up to module 09 and 14's code. 08.02's default run is 2
-seeds (3 took 82 s on a loaded machine); its heads comparison is inside
-the noise at 2 seeds and the page runs that part at 3 as well. Module
-12's and 13's code is on master too (61 tests). In work, each by an
-agent in its own worktree: module 11's code, the lessons of modules 12
-and 13, and module 15 whole (its one experiment and its lessons, by
-one agent). Agents that add to track.py, NOTES.md and the art generators at the
-same time are merged by hand, keeping each block; the maps are then
-drawn again (`python3 -B art/research/archmap.py`).
+Modules 06 to 10, 13 and 14 are on master whole: code, tests,
+thirty lessons, module pages, figures and covers; each module's
+`./learn verify --fresh` passed on its lessons' branch (08: 534 s; 09:
+315 s; 10: 524 s; 13: 274 s; 14: 201 s). That is 57 of the core's 70
+lessons, pushed on 2026-11-24 up to module 09 and 14's code. 08.02's
+default run is 2 seeds (3 took 82 s on a loaded machine); its heads
+comparison is inside the noise at 2 seeds and the page runs that part
+at 3 as well (13.02 settles it at 10). Module 12's code is on master
+too (61 tests). In work, each by an agent in its own worktree: module
+11's code, module 12's lessons, and module 15 whole (its one experiment
+and its lessons, by one agent). Agents that add to track.py, NOTES.md
+and the art generators at the same time are merged by hand, keeping
+each block; the maps are then drawn again
+(`python3 -B art/research/archmap.py`).
 
 The owner asked for more speed (2026-11-24): the limit of three agents
 is lifted. Timings taken while four or five agents run are not to be
