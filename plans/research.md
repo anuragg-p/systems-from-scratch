@@ -31,8 +31,11 @@ verify --fresh` passed on its lessons' branch (08: 534 s; 09: 315 s;
 14: 201 s). That is 48 of the core's 70 lessons, pushed on 2026-11-24
 up to module 09. 08.02's default run is 2 seeds (3 took 82 s on a
 loaded machine); its heads comparison is inside the noise at 2 seeds
-and the page runs that part at 3 as well. In work, each by an agent in
-its own worktree: the code of modules 10, 12 and 13. Agents that add to
+and the page runs that part at 3 as well. Module 10's code is on master
+(RMSNorm, rotary positions, SwiGLU, grouped-query attention, SmolLM2
+loaded, the recorded ablation table; 53 tests). In work, each by an
+agent in its own worktree: module 10's lessons, and the code of modules
+11, 12 and 13. Agents that add to
 track.py, NOTES.md and the art generators at the same time are merged
 by hand, keeping each block; the maps are then drawn again
 (`python3 -B art/research/archmap.py`).
@@ -309,9 +312,25 @@ Built, as found:
   the validation loss rises in between, 1.16 times a guess's against
   the paper's about 9 (direction only).
 
+- 10.01 Zhang and Sennrich (2019): RMSNorm 3.561 against layer norm's
+  3.563 bits (comparable: held). Its saving in time did not hold on
+  this CPU: a step is 11 to 18% slower, because nn.LayerNorm is one
+  fused kernel; written out the same way, RMSNorm takes 0.7 of the time.
+- 10.02 Su et al. (2021): the score depends on the offset only (3.8e-13
+  in float64). 3.248 against learned positions' 3.563 at 150 steps.
+  Longer windows run but get worse: 3.265, 3.30 at twice the trained
+  length, 3.56 at four times.
+- 10.03 Shazeer (2020): SwiGLU at equal weights is behind at 150 steps
+  (+0.033) and ahead once trained a while (-0.067 in the long run).
+- 10.04 Ainslie et al. (2023): half the key and value heads cost +0.001
+  bits. SmolLM2-135M's logits and ids equal transformers'; 1.405 bits
+  per character on Shakespeare's test text (GPT-2: 1.851), a text it
+  may have been trained on.
+- 10.05 The recorded table (4 blocks of 128, 2000 steps, 3 seeds, 42
+  minutes): base 2.337; RMSNorm +0.013 and grouped-query +0.009 (not
+  beyond noise); rotary -0.060; SwiGLU -0.067; all four -0.089.
+
 Still the plan:
-- 10.01 to 10.03 RMSNorm, RoPE, SwiGLU: each against the piece it
-  replaced, same parameters, several seeds; 10.05 is the table.
 - 11.03 FlashAttention, 11.04 mixed precision: the same numbers, sooner.
 - 12.02 LoRA: close to full fine-tuning with a small fraction of weights.
 - 13.04 Scaling laws: loss as a power law in size, used to predict.
@@ -359,6 +378,20 @@ Still the plan:
 - 14.02's default stays at 350 steps (training accuracy 0.96, not yet
   99%): the recorded seeds pass 99% between steps 354 and 446, so 400
   would not show it for every seed either.
+
+## Decisions after module 10's code (Fable, 2026-11-25)
+
+- Rotary's angles are made again on every call (18 to 52% of a step).
+  Left as it is in module 10, whose page says the step is slower and
+  why; module 11 finds it by profiling and fixes it, its first "the
+  same numbers, sooner".
+- 10.04 does not say SmolLM2 never saw Shakespeare.
+- RMSNorm's speed claim is reported as not holding here, with the
+  reason measured.
+- Module 11: 11.02's profile leads to Rotary; 11.03 is PyTorch's fused
+  attention in place of self_attend; 11.06's one more optimisation is a
+  cache of keys and values for writing text, which 10.04's grouped
+  heads halve. Its recorded benchmark is taken only on a quiet machine.
 
 ## Directions for 07 to 15 (Fable, 2026-11-24)
 
