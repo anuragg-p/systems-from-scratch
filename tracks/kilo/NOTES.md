@@ -1600,7 +1600,10 @@ written with `./learn files` before the module existed and after, compared
 with `diff -r`: identical; and no line of 06 or 07 is in an 08 project).
 kilo.c at 08.01, 08.02, 08.03 and 08.04 is 1249, 1304, 1352 and 1389 lines
 (1068 at 05.02); each of the four builds with `-Wall -W -pedantic -std=c99
--Werror`. The lessons are not written yet: this section is for them.
+-Werror`. The lessons (08.01 to 08.04), the module page and the art were
+made from this section on 2026-11-24 and read through on 2026-11-25; what
+they needed beyond it is under "Added by the lesson writer" and "Added by
+the read", at the end of this section.
 
 The design (records, hooks, steps, the saved point, the bound, the keys)
 was fixed by the coordinator before the code was written; where the code
@@ -2467,6 +2470,20 @@ Ctrl-Z, `before it changed` again, cursor 3,1; Ctrl-Z, `what each line
 was`, cursor 2,1; Ctrl-R, cursor 2,4; Ctrl-R, cursor 3,5. At 08.04, a
 letter typed and deleted (`a`, Backspace) leaves the text the file and
 the status bar "(modified)"; two Ctrl-Z, and it is not.
+
+### Added by the read (2026-11-25)
+
+- 08.01's Break it on Linux: the project at 08.01 with the loop first to
+  last, built with make in the module 07 Debian container (trixie, glibc
+  2.41, gcc 14.2, aarch64), on a 10x44 pseudo-terminal with Run it's keys,
+  eight Ctrl-Z, Down, Down, `X`, Ctrl-Z: kilo prints `free(): double free
+  detected in tcache 2` and is killed by signal 6 (SIGABRT), ECHO and
+  ICANON left off. On the Mac, again: `./learn run` exits 251 (SIGTRAP).
+- Every Run it and Break it of the four lessons was typed again through
+  `./learn run` (after `./learn files` and the printf, as written): the
+  screens, cursors and messages are the lessons', but for the message
+  line, which still shows the HELP line or `51 bytes written on disk` when
+  the keys come within its 5 seconds.
 
 ## 09 An API, and Lua on top of it (an extension)
 
