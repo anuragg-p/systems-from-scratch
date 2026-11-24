@@ -40,9 +40,9 @@ CONFIG = dict(n_train=10000, hidden=256, epochs=2, batch=128, lr=0.004, runs=32,
 # @build 13.03 hold_back
 # Two disjoint halves of n test examples, drawn once from rng (a numpy
 # Generator) before anything is run: A, the one choices are made on, and
-# B, held back, the one the choice never sees. (MNIST's test images are
-# in an order, the first half written by one group of people and the
-# second by another, so the halves are drawn at random, not cut.)
+# B, held back, the one the choice never sees. (A file of test examples
+# can be in an order, easier ones first: MNIST's is, as part 1 measures.
+# So the halves are drawn at random, not cut.)
 def hold_back(n, rng):
     order = rng.permutation(n)
     return np.sort(order[:n // 2]), np.sort(order[n // 2:])
@@ -157,6 +157,9 @@ def choose_by_test(cfg, dev):
           f"over {cfg.n_train:,} images),\n   only the seed differs. Test error, %, on half A ({len(a):,} images) and "
           f"half B ({len(b):,}), drawn at random before any run:")
     print(f"   A: {lab.spread(errors_a)}\n   B: {lab.spread(errors_b)}")
+    cut = len(tx) // 2
+    print(f"   (Cut in file order instead, the first {cut:,} test images are {100 * wrong[:cut].mean() / cfg.runs:.2f}% "
+          f"wrong and the last {len(tx) - cut:,} {100 * wrong[cut:].mean() / cfg.runs:.2f}%, on average over the runs.)")
     print(f"   Of A's spread over the runs (variance {sd_a ** 2:.4f}), B shares {shared:.4f} (their covariance): the "
           f"runs really differing.\n   The rest, {luck:.4f} (sd {luck ** 0.5:.3f}), is the luck of A's images. (A coin "
           f"for each of {len(a):,} images at {p:.1%} wrong would give sd {100 * (p * (1 - p) / len(a)) ** 0.5:.3f}.)")

@@ -77,7 +77,8 @@ def run_one(cfg, name, lr, seed, label, data, dev):
     for epoch in range(cfg.epochs):
         loss, _ = train_epoch(model, opt, x, y, cfg.batch, run.rng)
         run.log(epoch=epoch + 1, loss=loss)
-    return run.finish(optimiser=name, lr=lr, val_error=1 - evaluate(model, *val)[1], test_error=1 - evaluate(model, *test)[1])
+    return run.finish(optimiser=name, lr=lr, val_error=1 - evaluate(model, *val)[1],
+                      test_error=1 - evaluate(model, *test)[1])
 # @end
 
 
@@ -108,7 +109,8 @@ def main():
     for name, ts in trials.items():
         low, high = ranges[name]
         print(f"   {name:8s} ({low:g} to {high:g}): " + "  ".join(
-            f"{t['lr']:.2g}: {100 * t['val_error']:.2f}/{100 * t['test_error']:.2f}" for t in sorted(ts, key=lambda t: t["lr"])))
+            f"{t['lr']:.2g}: {100 * t['val_error']:.2f}/{100 * t['test_error']:.2f}"
+            for t in sorted(ts, key=lambda t: t["lr"])))
         best[name] = min(ts, key=lambda t: t["val_error"])
         print(f"   {'':8s} chosen on validation: lr {best[name]['lr']:.3g} ({100 * best[name]['val_error']:.2f}% on "
               f"validation)")
