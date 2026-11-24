@@ -25,6 +25,9 @@ Computed, for the built modules, from the formulas and settings of the track's o
     03  SGD, momentum 0.8 and Adam in 03.02's valley, and 03.05's warmup and cosine schedule
     04  the spread over a batch at every relu of 04.02's 30-layer network for its three starts
         (random inputs in place of MNIST), and each start's factor sqrt(n Var(w) / 2)
+    06  a 3 by 3 kernel on a 6 by 6 image, and 06.04's recorded long run read from
+        tracks/research/experiments/recorded/resnet/: the training error of each network at the
+        end, the mean of its seeds' summaries
 Where a cover prints a number the lessons print, the script asserts it is the same number, so a
 change to the track that moves it stops this script instead of leaving the cover wrong.
 Also computed: the double-descent curve in 05 (random ReLU features, least squares), the
@@ -48,6 +51,7 @@ Module 00's cover needs numpy, as the track does.
 """
 import glob
 import html
+import json
 import math
 import os
 import random
@@ -770,10 +774,21 @@ def res_conv():
         blk(cx, 70, 60, "ReLU")
         a.line(cx, 70, cx, 52, arrow=True)
         a.text(cx, 46, "y", size=12, anchor="middle", mono=True)
-    a.text(392, 262, "y = relu(F(x))", "tm", 10.5, "middle", mono=True)
-    a.text(528, 262, "y = relu(F(x) + x)", "ta", 10.5, "middle", mono=True)
-    a.text(24, 288, "He et al. 2015, CIFAR-10: a plain 56-layer network trains worse than a plain 20-layer one; "
-                    "with shortcuts, 56 layers beat 20.", "tm", 10.5)
+    a.text(392, 258, "y = relu(F(x))", "tm", 10.5, "middle", mono=True)
+    a.text(528, 258, "y = relu(F(x) + x)", "ta", 10.5, "middle", mono=True)
+    # 06.04's recorded long run: its training error at the end, mean over seeds, as the lesson prints it
+    rec = os.path.join(ROOT, "tracks", "research", "experiments", "recorded", "resnet")
+    err = {}
+    for name in ("plain20", "plain56", "residual20", "residual56"):
+        runs = sorted(glob.glob(os.path.join(rec, name, "seed*", "summary.json")))
+        vals = [json.load(open(p))["train_error"] for p in runs]
+        err[name] = f"{sum(vals) / len(vals):.1f}"
+    assert err == {"plain20": "71.9", "plain56": "81.8", "residual20": "59.2", "residual56": "55.0"}, err  # 06.04
+    a.text(24, 280, "He et al. 2015 on CIFAR-10, run here at laptop size (4000 images, 8 passes, 3 seeds), "
+                    "training error at the end:", "tm", 10.5)
+    a.text(24, 294, f"plain {err['plain20']}% at 20 layers, {err['plain56']}% at 56; residual {err['residual20']}% "
+                    f"at 20, {err['residual56']}% at 56: the deeper plain worse, the deeper residual better.",
+           "tm", 10.5)
     return a
 
 

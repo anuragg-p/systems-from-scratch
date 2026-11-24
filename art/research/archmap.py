@@ -12,12 +12,17 @@ From Python, write_map("03.02") does the same for one lesson and returns the fil
 The map is the whole core (modules 00 to 15) as layers, the lab under everything:
 
     research      13 experiments that hold up | 14 the reproduction | 15 your own result
-    models        06 images | 07 language models | 08 the GPT | 09 real weights |
+    models        06 image networks | 07 language models | 08 the GPT | 09 real weights |
                   10 today's architecture | 11 fast | 12 fine-tuning
-    experiments   a curve | two groups | digits | deep networks | generalisation    the data:
-    the engine    nudge | values | tensors | losses | layers | optimisers                points, MNIST, augment
-    the lab       runs | seeds | plots | checkpoints | checks
+    experiments   a curve | two groups | digits | deep networks | generalisation | images
+    the data      points | MNIST | augment | CIFAR-10
+    the engine    nudge | values | tensors | losses | layers | optimisers | convolution
+    the lab       runs | seeds | plots | checkpoints | checks | devices
     ------------  the current module's lessons, one box each (as dsa's strip)
+
+(Until module 06 the data was a column beside the experiments and the engine; module 06 gave
+the engine and the experiments a seventh and sixth piece, and the data a fourth, which a column
+had no room for, so the data became a row of its own.)
 
 In each lesson's copy, that lesson's piece (LESSONS below: exactly one per lesson) is drawn in
 the accent colour, every piece whose code has arrived by that lesson (PIECES: the lesson it
@@ -57,8 +62,8 @@ PIECES = {
     "13": ("research", "experiments that hold up", "13", None),
     "14": ("research", "the reproduction", "14", None),
     "15": ("research", "your own result", "15", None),
-    # models (not built yet)
-    "06": ("models", "images", "06", None),
+    # models: models/, one file per network family (06 on); the modules after 06 not built yet
+    "06": ("models", "image networks", "06", "06.02"),
     "07": ("models", "language models", "07", None),
     "08": ("models", "the GPT", "08", None),
     "09": ("models", "real weights", "09", None),
@@ -71,6 +76,12 @@ PIECES = {
     "digits": ("experiments", "digits", "module 03", "03.01"),
     "deep": ("experiments", "deep networks", "module 04", "04.01"),
     "general": ("experiments", "generalisation", "module 05", "05.01"),
+    "images": ("experiments", "images", "module 06", "06.01"),
+    # the data: data/
+    "points": ("data", "points", "made from a seed", "01.04"),
+    "mnist": ("data", "MNIST", "fetched once", "03.01"),
+    "augment": ("data", "augment", "new images every pass", "05.03"),
+    "cifar": ("data", "CIFAR-10", "fetched once", "06.03"),
     # the engine: engine/
     "nudge": ("engine", "nudge", "gradient check", "01.01"),
     "values": ("engine", "values", "autograd", "01.02"),
@@ -78,16 +89,14 @@ PIECES = {
     "losses": ("engine", "losses", "cross-entropy", "02.04"),
     "layers": ("engine", "layers", "nn.Module", "02.05"),
     "optim": ("engine", "optimisers", "SGD to AdamW", "03.01"),
-    # the data: data/
-    "points": ("data", "points", "made from a seed", "01.04"),
-    "mnist": ("data", "MNIST", "fetched once", "03.01"),
-    "augment": ("data", "augment", "shifted digits", "05.03"),
+    "conv": ("engine", "convolution", "Conv2d, pooling", "06.01"),
     # the lab: lab/
     "runs": ("lab", "runs", "config, seed, log", "00.02"),
     "seeds": ("lab", "seeds", "spread, Welch's t", "00.03"),
     "plots": ("lab", "plots", "curves from logs", "00.03"),
     "ckpt": ("lab", "checkpoints", "safetensors files", "02.05"),
     "checks": ("lab", "checks", "five bug checks", "04.06"),
+    "devices": ("lab", "devices", "the CPU or a GPU", "06.02"),
 }
 
 # Every lesson: (id, title as the outline has it, its one piece, its label in the strip).
@@ -119,6 +128,10 @@ LESSONS = [
     ("05.02", "Weight decay and dropout", "layers", "dropout"),
     ("05.03", "More data for free: augmentation", "augment", "augmentation"),
     ("05.04", "Double descent: when a bigger model overfits less", "general", "double descent"),
+    ("06.01", "Convolution: the same weights at every position", "conv", "convolution"),
+    ("06.02", "One import: the same script on PyTorch", "devices", "one import"),
+    ("06.03", "A convolutional network on CIFAR-10", "cifar", "CIFAR-10"),
+    ("06.04", "ResNet: the plain network against the residual one", "06", "ResNet"),
 ]
 
 MODULE_TITLES = {
@@ -128,14 +141,16 @@ MODULE_TITLES = {
     "03": "Optimisers: from the plain step to AdamW",
     "04": "Deep networks that train",
     "05": "Generalisation",
+    "06": "Images: convolution and residual networks",
 }
 
 # The rows, top to bottom: key -> its label over the row.
 ROWS = {
     "research": "research",
-    "models": "models",
+    "models": "models: the networks experiments share",
     "experiments": "experiments: one script per lesson",
-    "engine": "the engine: PyTorch's names, in numpy",
+    "data": "the data: fetched once, or made",
+    "engine": "the engine: PyTorch's names, in numpy (PyTorch itself from 06.02 on)",
     "lab": "the lab: under every run",
 }
 
@@ -143,9 +158,8 @@ ROWS = {
 LEFT, RIGHT = 14, 626
 GAP = 6                              # between two pieces of a row
 SPACE = 12                           # from a row's boxes down to the next row's label
-DATA_W = 104                         # the data's column, right of the experiments and the engine
 TOP = 6
-HEIGHTS = {"research": 36, "models": 46, "experiments": 40, "engine": 40, "lab": 40}
+HEIGHTS = {"research": 36, "models": 46, "experiments": 40, "data": 34, "engine": 40, "lab": 40}
 STRIP_H = 40
 
 
@@ -177,17 +191,10 @@ def placed():
     out = {}
     for row in ROWS:
         keys = [k for k, p in PIECES.items() if p[0] == row]
-        right = RIGHT - DATA_W - 2 * GAP if row in ("experiments", "engine") else RIGHT
-        w = (right - LEFT - GAP * (len(keys) - 1)) / len(keys)
+        w = (RIGHT - LEFT - GAP * (len(keys) - 1)) / len(keys)
         _, y, h = ROW_Y[row]
         for i, k in enumerate(keys):
             out[k] = (LEFT + i * (w + GAP), y, w, h)
-    data = [k for k, p in PIECES.items() if p[0] == "data"]
-    top = ROW_Y["experiments"][1]
-    bottom = ROW_Y["engine"][1] + HEIGHTS["engine"]
-    h = (bottom - top - 5 * (len(data) - 1)) / len(data)
-    for i, k in enumerate(data):
-        out[k] = (RIGHT - DATA_W, top + i * (h + 5), DATA_W, h)
     return out
 
 
@@ -231,11 +238,10 @@ def draw(lid, everything=None):
     boxes = placed()
     look = {"here": ("a af", "ta", "ta", 700), "built": ("s f", "t", "tm", 600), "later": ("m f", "tm", "tm", 500)}
 
-    # the row labels, and the data's over its column
+    # the row labels
     for row, label in ROWS.items():
         name, colon, rest = label.partition(": ")
         heading(f, LEFT, ROW_Y[row][0], name, colon + rest)
-    heading(f, RIGHT - DATA_W, ROW_Y["experiments"][0], "the data")
 
     for key, (row, name, sub, comes) in PIECES.items():
         x, y, w, h = boxes[key]
@@ -277,7 +283,8 @@ def draw(lid, everything=None):
     keys = [("a af", False, f"{lid}: this lesson", "ta"), ("s f", False, "built so far", "t"),
             ("m f", True, "still to come", "tm")]
     if everything:
-        keys[:2] = [("a af", False, f"{lid}: the tour, every piece built in modules 00 to 05", "ta")]
+        last = max(lesson(c)[0][:2] for *_, c in PIECES.values() if c is not None)
+        keys[:2] = [("a af", False, f"{lid}: the tour, every piece built in modules 00 to {last}", "ta")]
     for cls, dash, label, tcls in keys:
         f.rect(x, ly - 12, 20, 15, cls, 4, dash=dash)
         f.text(x + 27, ly, label, tcls, 12.5, weight=600 if tcls == "ta" else None)
