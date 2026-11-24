@@ -313,7 +313,12 @@ teaches only the buffer (plans/dsa.md).
   file saved after; steps; the saved point; the bound; random keys under
   ASan in five runs (sizes, a .c file, undo and redo in the mix, a small
   bound); 06's colours after an undo and 07's server sent the text after
-  one. ./learn test kilo (32), check-skeleton and check-timeline pass on
-  macOS. The editors' sources (Vim, Neovim, Emacs, Zed, Helix, VS Code) were
-  read at named tags and quoted in NOTES.md, with what could not be
-  confirmed. Lessons and art follow, from NOTES.md.
+  one. The core's 0101 typed Ctrl-Z and expected it in the text; its last
+  check now takes either, as module 08 is in the tree or not (NOTES.md 08,
+  "Found on the way"). ./learn test kilo (32), check-skeleton and
+  check-timeline pass on macOS; the module's tests and timeline also on
+  Debian and Alpine (the 07 containers), where every 08 project builds with
+  gcc -Werror.
+- The editors' sources (Vim, Neovim, Emacs, Zed, Helix, VS Code) were read
+  at named tags and quoted in NOTES.md, with what could not be confirmed.
+  Lessons and art follow, from NOTES.md.

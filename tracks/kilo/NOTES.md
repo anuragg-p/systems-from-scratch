@@ -1925,8 +1925,8 @@ before it changed
 
 and the keys Down, `and `, Enter, Backspace, Backspace (which leave
 `andwhat each line was`, cursor 2,4), then Ctrl-Z until "Nothing to undo",
-then Ctrl-R until "Nothing to redo". Rows 4 to 8 (`~`) are left out below;
-the status bar is in reverse video.
+then Ctrl-R until "Nothing to redo". Rows 5 to 8 (all `~`) are left out
+below; the status bar is in reverse video.
 
 ### 08.01 Remembering what a line was
 
@@ -2058,7 +2058,9 @@ test does.
 
 ### Measurements
 
-On the Mac (Apple M-series, macOS), kilo built as the tests build it.
+On the Mac (Apple M-series, macOS): the bytes read from KILO_TEST_UNDO_LOG
+with the tree's own build (the finished editor), the times with the project
+at 08.04 built with make.
 
 - **A 60-character line typed into an empty row**: as one step (a run of
   typing, 08.03), 57 bytes held: one step (32), one record (24) and the
@@ -2348,7 +2350,8 @@ https://raw.githubusercontent.com/microsoft/vscode/1.147.0/ + the path.
 - An element of the edit stack, `src/vs/editor/common/model/editStack.ts`
   40-47 (SingleModelEditStackElement's data): `beforeCursorState`,
   `afterCursorState`, `changes: TextChange[]`, with before and after
-  version ids and line endings; a TextChange (`core/textChange.ts` 35-39)
+  version ids and line endings; a TextChange
+  (`src/vs/editor/common/core/textChange.ts` 35-39)
   is `oldPosition, oldText, newPosition, newText`. pushEditOperation
   (428-432) applies the edits and keeps their inverses: `const
   inverseEditOperations = this._model.applyEdits(editOperations, true,
@@ -2362,9 +2365,10 @@ https://raw.githubusercontent.com/microsoft/vscode/1.147.0/ + the path.
   (`return normalizeOperationType(previousTypingOperation) !==
   normalizeOperationType(typingOperation);`); Enter (581-582)
   `shouldPushStackElementBefore: true`; a cursor move pushes one
-  (`browser/coreCommands.ts` 607, 611: `viewModel.model.pushStackElement();`);
-  a delete that spans lines too (`cursor/cursorDeleteOperations.ts`
-  183-184).
+  (`src/vs/editor/browser/coreCommands.ts` 607, 611:
+  `viewModel.model.pushStackElement();`);
+  a delete that spans lines too
+  (`src/vs/editor/common/cursor/cursorDeleteOperations.ts` 183-184).
 - A line, not a tree: `src/vs/platform/undoRedo/common/undoRedoService.ts`
   284-292, pushElement: "remove the future" ... `this._future = [];`.
 
