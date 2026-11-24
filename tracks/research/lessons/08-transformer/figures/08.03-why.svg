@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 336" fill="none">
+<title>Why the mask lets order in, on a window of four: block 1 at each position sums only the characters up to it, so after a swap of the first two, positions 0 and 1 sum something new and block 2&#x27;s last position reads something new</title>
+<defs><marker id="why0803-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="why0803-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="why0803-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="30" y="22" font-size="11.5" font-weight="700">one order</text>
+<rect class="s f" x="30" y="34" width="40" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="50" y="51" font-size="12.5" font-weight="700" text-anchor="middle">a</text>
+<text class="tm" x="50" y="72" font-size="9.5" text-anchor="middle">position 0</text>
+<rect class="s f" x="95.71" y="34" width="40" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="115.71" y="51" font-size="12.5" font-weight="700" text-anchor="middle">b</text>
+<text class="tm" x="115.71" y="72" font-size="9.5" text-anchor="middle">1</text>
+<rect class="s f" x="161.43" y="34" width="40" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="181.43" y="51" font-size="12.5" font-weight="700" text-anchor="middle">c</text>
+<text class="tm" x="181.43" y="72" font-size="9.5" text-anchor="middle">2</text>
+<rect class="s f" x="227.14" y="34" width="40" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="247.14" y="51" font-size="12.5" font-weight="700" text-anchor="middle">x</text>
+<text class="tm" x="247.14" y="72" font-size="9.5" text-anchor="middle">3</text>
+<text class="tm" x="30" y="96" font-size="10.5">block 1, at each position: its query, over the keys it may see</text>
+<rect class="a af" x="30" y="106" width="284" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="122" font-size="10.5">position 0: query a, over {a}</text>
+<rect class="a af" x="30" y="136" width="284" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="38" y="152" font-size="10.5">position 1: query b, over {a, b}</text>
+<rect class="s f" x="30" y="166" width="284" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="38" y="182" font-size="10.5">position 2: query c, over {a, b, c}</text>
+<rect class="s f" x="30" y="196" width="284" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="38" y="212" font-size="10.5">position 3: query x, over {a, b, c, x}</text>
+<line class="s" x1="172" y1="230" x2="172" y2="250" stroke-width="1.5" stroke-linecap="round" marker-end="url(#why0803-ah)"/>
+<rect class="a af" x="30" y="254" width="284" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta" x="172" y="271" font-size="11" font-weight="600" text-anchor="middle">block 2, last position: reads all four</text>
+<text class="t" x="340" y="22" font-size="11.5" font-weight="700">the first two swapped</text>
+<rect class="s f" x="340" y="34" width="40" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="360" y="51" font-size="12.5" font-weight="700" text-anchor="middle">b</text>
+<text class="tm" x="360" y="72" font-size="9.5" text-anchor="middle">position 0</text>
+<rect class="s f" x="405.71" y="34" width="40" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="425.71" y="51" font-size="12.5" font-weight="700" text-anchor="middle">a</text>
+<text class="tm" x="425.71" y="72" font-size="9.5" text-anchor="middle">1</text>
+<rect class="s f" x="471.43" y="34" width="40" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="491.43" y="51" font-size="12.5" font-weight="700" text-anchor="middle">c</text>
+<text class="tm" x="491.43" y="72" font-size="9.5" text-anchor="middle">2</text>
+<rect class="s f" x="537.14" y="34" width="40" height="24" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="557.14" y="51" font-size="12.5" font-weight="700" text-anchor="middle">x</text>
+<text class="tm" x="557.14" y="72" font-size="9.5" text-anchor="middle">3</text>
+<text class="tm" x="340" y="96" font-size="10.5">block 1, at each position: its query, over the keys it may see</text>
+<rect class="a af" x="340" y="106" width="284" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="348" y="122" font-size="10.5">position 0: query b, over {b}</text>
+<rect class="a af" x="340" y="136" width="284" height="24" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="348" y="152" font-size="10.5">position 1: query a, over {a, b}</text>
+<rect class="s f" x="340" y="166" width="284" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="348" y="182" font-size="10.5">position 2: query c, over {a, b, c}</text>
+<rect class="s f" x="340" y="196" width="284" height="24" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="348" y="212" font-size="10.5">position 3: query x, over {a, b, c, x}</text>
+<line class="s" x1="482" y1="230" x2="482" y2="250" stroke-width="1.5" stroke-linecap="round" marker-end="url(#why0803-ah)"/>
+<rect class="a af" x="340" y="254" width="284" height="26" rx="4" stroke-width="1.5"/>
+<text class="ta" x="482" y="271" font-size="11" font-weight="600" text-anchor="middle">block 2, last position: reads all four</text>
+<text class="tm" x="30" y="302" font-size="10.5">Accent: what differs between the two orders. Positions 2 and 3 sum the same set either way; 0 and 1 do not.</text>
+<text class="tm" x="30" y="317" font-size="10.5">With one block, every key and value the last position weighs comes from one character alone: the same set either way.</text>
+<text class="tm" x="30" y="332" font-size="10.5">Without the mask, every position of block 1 would sum all four, and block 2 too would see one set.</text>
+</svg>

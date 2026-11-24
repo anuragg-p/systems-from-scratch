@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 374" fill="none">
+<title>One real distribution: the chances the page&#x27;s model gives the character after &#x27;BAPTISTA:\nNot in my house, Lucen&#x27;, in order, and what each way of choosing keeps of them</title>
+<defs><marker id="cuts0805-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="cuts0805-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="cuts0805-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="22" font-size="11">after &#x27;BAPTISTA:\nNot in my house, Lucen&#x27; the text has &#x27;t&#x27;; the model&#x27;s 14 likeliest characters, in order:</text>
+<text class="ta mono" x="161" y="48" font-size="11" font-weight="700" text-anchor="middle">t</text>
+<text class="t mono" x="183" y="48" font-size="11" font-weight="700" text-anchor="middle">_</text>
+<text class="t mono" x="205" y="48" font-size="11" font-weight="700" text-anchor="middle">e</text>
+<text class="t mono" x="227" y="48" font-size="11" font-weight="700" text-anchor="middle">c</text>
+<text class="t mono" x="249" y="48" font-size="11" font-weight="700" text-anchor="middle">s</text>
+<text class="t mono" x="271" y="48" font-size="11" font-weight="700" text-anchor="middle">i</text>
+<text class="t mono" x="293" y="48" font-size="11" font-weight="700" text-anchor="middle">,</text>
+<text class="t mono" x="315" y="48" font-size="11" font-weight="700" text-anchor="middle">g</text>
+<text class="t mono" x="337" y="48" font-size="11" font-weight="700" text-anchor="middle">d</text>
+<text class="t mono" x="359" y="48" font-size="11" font-weight="700" text-anchor="middle">o</text>
+<text class="t mono" x="381" y="48" font-size="11" font-weight="700" text-anchor="middle">a</text>
+<text class="t mono" x="403" y="48" font-size="11" font-weight="700" text-anchor="middle">.</text>
+<text class="t mono" x="425" y="48" font-size="11" font-weight="700" text-anchor="middle">&#x27;</text>
+<text class="t mono" x="447" y="48" font-size="11" font-weight="700" text-anchor="middle">n</text>
+<text class="tm" x="464" y="48" font-size="10">+ 51 more</text>
+<text class="t" x="24" y="96" font-size="11.5" font-weight="700">plain sampling</text>
+<line class="m" x1="146" y1="126" x2="462" y2="126" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s fs" x="153" y="93.57" width="16" height="32.43" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="161" y="90.57" font-size="8.5" text-anchor="middle">.22</text>
+<rect class="s fs" x="175" y="106.23" width="16" height="19.77" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="183" y="103.23" font-size="8.5" text-anchor="middle">.14</text>
+<rect class="s fs" x="197" y="110.67" width="16" height="15.33" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="205" y="107.67" font-size="8.5" text-anchor="middle">.11</text>
+<rect class="s fs" x="219" y="116.32" width="16" height="9.68" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="241" y="116.47" width="16" height="9.53" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="263" y="118.47" width="16" height="7.53" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="285" y="119.34" width="16" height="6.66" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="307" y="119.8" width="16" height="6.2" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="329" y="120.33" width="16" height="5.67" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="351" y="120.39" width="16" height="5.61" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="373" y="121.37" width="16" height="4.63" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="395" y="122.94" width="16" height="3.06" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="417" y="123.25" width="16" height="2.75" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="439" y="123.59" width="16" height="2.41" rx="1" stroke-width="1.5"/>
+<text class="tm" x="472" y="104" font-size="10">all 65 characters, as they are</text>
+<text class="tm" x="472" y="118" font-size="10">the other 51: 0.091 together</text>
+<text class="t" x="24" y="166" font-size="11.5" font-weight="700">temperature 0.7</text>
+<line class="m" x1="146" y1="196" x2="462" y2="196" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s fs" x="153" y="146.49" width="16" height="49.51" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="161" y="143.49" font-size="8.5" text-anchor="middle">.34</text>
+<rect class="s fs" x="175" y="171.59" width="16" height="24.41" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="183" y="168.59" font-size="8.5" text-anchor="middle">.17</text>
+<rect class="s fs" x="197" y="179.03" width="16" height="16.97" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="205" y="176.03" font-size="8.5" text-anchor="middle">.12</text>
+<rect class="s fs" x="219" y="187.2" width="16" height="8.8" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="241" y="187.39" width="16" height="8.61" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="263" y="189.85" width="16" height="6.15" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="285" y="190.84" width="16" height="5.16" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="307" y="191.34" width="16" height="4.66" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="329" y="191.9" width="16" height="4.1" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="351" y="191.96" width="16" height="4.04" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="373" y="192.93" width="16" height="3.07" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="395" y="194.3" width="16" height="1.7" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="417" y="194.54" width="16" height="1.46" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="439" y="194.79" width="16" height="1.21" rx="1" stroke-width="1.5"/>
+<text class="tm" x="472" y="174" font-size="10">all 65, the likely ones likelier</text>
+<text class="tm" x="472" y="188" font-size="10">the other 51: 0.032 together</text>
+<text class="ta" x="24" y="236" font-size="11.5" font-weight="700">top-k = 5</text>
+<line class="m" x1="146" y1="266" x2="462" y2="266" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a af" x="153" y="212" width="16" height="54" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="161" y="209" font-size="8.5" text-anchor="middle">.37</text>
+<rect class="a af" x="175" y="233.08" width="16" height="32.92" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="183" y="230.08" font-size="8.5" text-anchor="middle">.23</text>
+<rect class="a af" x="197" y="240.48" width="16" height="25.52" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="205" y="237.48" font-size="8.5" text-anchor="middle">.18</text>
+<rect class="a af" x="219" y="249.88" width="16" height="16.12" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="241" y="250.13" width="16" height="15.87" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="271" y="263" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="293" y="263" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="315" y="263" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="337" y="263" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="359" y="263" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="381" y="263" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="403" y="263" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="425" y="263" font-size="9" text-anchor="middle">0</text>
+<text class="tm mono" x="447" y="263" font-size="9" text-anchor="middle">0</text>
+<text class="tm" x="472" y="244" font-size="10">the 5 likeliest, scaled to add up to 1</text>
+<text class="tm" x="472" y="258" font-size="10">the other 51: 0.000 together</text>
+<text class="ta" x="24" y="306" font-size="11.5" font-weight="700">nucleus, p = 0.95</text>
+<line class="m" x1="146" y1="336" x2="462" y2="336" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a af" x="153" y="301.99" width="16" height="34.01" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="161" y="298.99" font-size="8.5" text-anchor="middle">.24</text>
+<rect class="a af" x="175" y="315.27" width="16" height="20.73" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="183" y="312.27" font-size="8.5" text-anchor="middle">.14</text>
+<rect class="a af" x="197" y="319.93" width="16" height="16.07" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="205" y="316.93" font-size="8.5" text-anchor="middle">.11</text>
+<rect class="a af" x="219" y="325.85" width="16" height="10.15" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="241" y="326" width="16" height="10" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="263" y="328.1" width="16" height="7.9" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="285" y="329.02" width="16" height="6.98" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="307" y="329.5" width="16" height="6.5" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="329" y="330.06" width="16" height="5.94" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="351" y="330.12" width="16" height="5.88" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="373" y="331.15" width="16" height="4.85" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="395" y="332.79" width="16" height="3.21" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="417" y="333.12" width="16" height="2.88" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="439" y="333.47" width="16" height="2.53" rx="1" stroke-width="1.5"/>
+<text class="tm" x="472" y="314" font-size="10">the fewest reaching 0.95: 18</text>
+<text class="tm" x="472" y="328" font-size="10">the other 51: 0.047 together</text>
+<text class="tm" x="24" y="366" font-size="10.5">The bars of each row are its chances after the cut, on one scale.</text>
+</svg>

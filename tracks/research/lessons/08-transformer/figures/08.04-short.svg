@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 290" fill="none">
+<title>The page&#x27;s short run: bits per character of the training batch (dashed) and of the 64 validation windows (solid), every 50 steps, two seeds each without dropout and with 0.2: every validation curve still falling at the end</title>
+<defs><marker id="short0804-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="short0804-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="short0804-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="54" y="233.5" font-size="10.5" text-anchor="end">3.2</text>
+<line class="m" x1="60" y1="166.7" x2="310" y2="166.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="170.17" font-size="10.5" text-anchor="end">3.6</text>
+<line class="m" x1="60" y1="103.3" x2="310" y2="103.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="54" y="106.83" font-size="10.5" text-anchor="end">4</text>
+<text class="tm mono" x="54" y="43.5" font-size="10.5" text-anchor="end">4.4</text>
+<line class="m" x1="60" y1="230" x2="60" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="60" y="246" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="143.61" y1="230" x2="143.61" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="143.61" y="246" font-size="10.5" text-anchor="middle">100</text>
+<line class="m" x1="227.22" y1="230" x2="227.22" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="227.22" y="246" font-size="10.5" text-anchor="middle">200</text>
+<rect class="m" x="60" y="40" width="250" height="190" rx="0" stroke-width="1.5"/>
+<text class="tm" x="185" y="262" font-size="11.5" text-anchor="middle">step</text>
+<text class="t" x="54" y="32" font-size="11.5" font-weight="700">dropout 0.0</text>
+<polyline class="s" points="101.8,106.0 143.6,157.1 185.4,184.0 227.2,194.7 269.0,201.3 310.0,207.4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="101.8,125.1 143.6,160.9 185.4,177.5 227.2,199.4 269.0,205.8 310.0,208.2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="m" points="101.8,124.7 143.6,162.6 185.4,179.3 227.2,193.5 269.0,210.6 310.0,213.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="101.8,124.3 143.6,164.5 185.4,186.6 227.2,202.5 269.0,210.5 310.0,213.7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="tm mono" x="354" y="233.5" font-size="10.5" text-anchor="end">3.2</text>
+<line class="m" x1="360" y1="166.7" x2="610" y2="166.7" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="354" y="170.17" font-size="10.5" text-anchor="end">3.6</text>
+<line class="m" x1="360" y1="103.3" x2="610" y2="103.3" stroke-width="0.75" stroke-opacity="0.6"/>
+<text class="tm mono" x="354" y="106.83" font-size="10.5" text-anchor="end">4</text>
+<text class="tm mono" x="354" y="43.5" font-size="10.5" text-anchor="end">4.4</text>
+<line class="m" x1="360" y1="230" x2="360" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="360" y="246" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="443.61" y1="230" x2="443.61" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="443.61" y="246" font-size="10.5" text-anchor="middle">100</text>
+<line class="m" x1="527.22" y1="230" x2="527.22" y2="234" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="527.22" y="246" font-size="10.5" text-anchor="middle">200</text>
+<rect class="m" x="360" y="40" width="250" height="190" rx="0" stroke-width="1.5"/>
+<text class="tm" x="485" y="262" font-size="11.5" text-anchor="middle">step</text>
+<text class="t" x="354" y="32" font-size="11.5" font-weight="700">dropout 0.2</text>
+<polyline class="s" points="401.8,90.0 443.6,143.7 485.4,163.3 527.2,168.6 569.0,176.1 610.0,174.7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="401.8,116.7 443.6,154.5 485.4,165.2 527.2,183.9 569.0,189.0 610.0,191.1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="m" points="401.8,112.6 443.6,150.0 485.4,156.9 527.2,164.9 569.0,182.3 610.0,183.7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<polyline class="a" points="401.8,120.8 443.6,158.8 485.4,174.2 527.2,182.0 569.0,188.2 610.0,190.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="s" points="60.0,278.0 82.0,278.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
+<text class="t" x="88" y="282" font-size="11">training batch</text>
+<polyline class="a" points="189.2,278.0 211.2,278.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="217.16" y="282" font-size="11">validation windows</text>
+</svg>

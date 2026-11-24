@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 312" fill="none">
+<title>Learned positions at the page&#x27;s sizes: the character&#x27;s row of the embedding table and the position&#x27;s row of the position table, 64 numbers each, added into the start of the residual stream</title>
+<defs><marker id="add0803-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="add0803-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="add0803-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s fs" x="60" y="54" width="120" height="170" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="55" y="142.5" font-size="10.5" text-anchor="end">65</text>
+<text class="tm mono" x="120" y="49" font-size="10.5" text-anchor="middle">64</text>
+<text class="t" x="120" y="34" font-size="11.5" font-weight="600" text-anchor="middle">the embedding table</text>
+<text class="tm mono" x="120" y="244" font-size="10" text-anchor="middle">65 x 64 = 4,160 weights</text>
+<rect class="a af" x="230" y="54" width="120" height="100" rx="3" stroke-width="1.5"/>
+<text class="tm mono" x="225" y="107.5" font-size="10.5" text-anchor="end">32</text>
+<text class="tm mono" x="290" y="49" font-size="10.5" text-anchor="middle">64</text>
+<text class="ta" x="290" y="34" font-size="11.5" font-weight="600" text-anchor="middle">the position table</text>
+<text class="tm mono" x="290" y="174" font-size="10" text-anchor="middle">32 x 64 = 2,048 weights</text>
+<text class="tm" x="290" y="190" font-size="10" text-anchor="middle">a row for each place, 0 to 31</text>
+<rect class="s f" x="68" y="92" width="104" height="8" rx="1" stroke-width="1.5"/>
+<text class="t" x="120" y="114" font-size="10" text-anchor="middle">the row of &#x27;N&#x27;</text>
+<rect class="a f" x="238" y="62" width="104" height="8" rx="1" stroke-width="1.5"/>
+<text class="ta" x="290" y="84" font-size="10" text-anchor="middle">row 0</text>
+<path class="s" d="M172 96 H 200 V 196 H 392 V 128" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#add0803-ah)"/>
+<path class="a" d="M342 66 H 392 V 104" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#add0803-aa)"/>
+<circle class="a af" cx="392" cy="116" r="10" stroke-width="1.5"/>
+<text class="ta mono" x="392" y="120.5" font-size="14" font-weight="700" text-anchor="middle">+</text>
+<line class="a" x1="403" y1="116" x2="416" y2="110" stroke-width="1.5" stroke-linecap="round" marker-end="url(#add0803-aa)"/>
+<rect class="s f" x="420" y="100" width="26" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="433" y="114.5" font-size="11.5" font-weight="600" text-anchor="middle">N</text>
+<text class="ta mono" x="454" y="114.5" font-size="11">+  place 0</text>
+<text class="t mono" x="540" y="114.5" font-size="11">-&gt; 64 numbers</text>
+<rect class="s f" x="420" y="126" width="26" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="433" y="140.5" font-size="11.5" font-weight="600" text-anchor="middle">o</text>
+<text class="ta mono" x="454" y="140.5" font-size="11">+  place 1</text>
+<text class="t mono" x="540" y="140.5" font-size="11">-&gt; 64 numbers</text>
+<rect class="s f" x="420" y="152" width="26" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="433" y="166.5" font-size="11.5" font-weight="600" text-anchor="middle">t</text>
+<text class="ta mono" x="454" y="166.5" font-size="11">+  place 2</text>
+<text class="t mono" x="540" y="166.5" font-size="11">-&gt; 64 numbers</text>
+<rect class="s f" x="420" y="178" width="26" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="433" y="192.5" font-size="11.5" font-weight="600" text-anchor="middle">_</text>
+<text class="ta mono" x="454" y="192.5" font-size="11">+  place 3</text>
+<text class="t mono" x="540" y="192.5" font-size="11">-&gt; 64 numbers</text>
+<rect class="s f" x="420" y="204" width="26" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="433" y="218.5" font-size="11.5" font-weight="600" text-anchor="middle">i</text>
+<text class="ta mono" x="454" y="218.5" font-size="11">+  place 4</text>
+<text class="t mono" x="540" y="218.5" font-size="11">-&gt; 64 numbers</text>
+<rect class="s f" x="420" y="230" width="26" height="20" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="433" y="244.5" font-size="11.5" font-weight="600" text-anchor="middle">n</text>
+<text class="ta mono" x="454" y="244.5" font-size="11">+  place 5</text>
+<text class="t mono" x="540" y="244.5" font-size="11">-&gt; 64 numbers</text>
+<text class="tm" x="420" y="268" font-size="10.5">each position starts the stream as</text>
+<text class="tm" x="420" y="283" font-size="10.5">its character&#x27;s row plus its place&#x27;s row</text>
+<text class="tm" x="60" y="302" font-size="10.5">Past place 31 the table has no row: a longer window is refused.</text>
+</svg>
