@@ -13,7 +13,8 @@ alike (1, 1.0, '1', '1.0', ' 1', x'31', NULL, ...): with an index, with an INTEG
 PRIMARY KEY and with neither, the rows must be the same, and EXPLAIN QUERY PLAN must
 say SEARCH exactly where sqlite3 does (sqlite3IndexAffinityOk). EXPLAIN names the
 lookups; with a few thousand rows and a two-page cache, DB_STATS shows a lookup reads
-a small part of the pages a scan reads.
+a small part of the pages a scan reads. Then 300 cases of the fuzzer with joins over
+tables with random indexes, and the kept sqllogictest scripts of joins.
 """
 
 import os
@@ -309,5 +310,10 @@ def test(t):
     t.check(rowid.out == scan.out and len(rowid.lines()) == 200 and rp * 3 < sp,
             f"a rowid lookup should ask for far fewer pages than a scan: {rp} against {sp}")
 
-    # SQLite's own joins, read with lookups now
-    tr.sqllogictest(t, have=("join",))
+    # a quick slice of the fuzzer: random joins over tables with random indexes, which are
+    # now looked up (another seed than 08.02's, so other cases)
+    tr.fuzz(t, "join,leftjoin", n=300, seed=3)
+
+    # SQLite's own joins, read with lookups now (select4's tables have indexes, and its joins
+    # are on their columns), and random/groupby's joins of two and three tables
+    tr.sqllogictest(t, have=("join",), scripts=J.SLT_JOINS + ["test/random/groupby/slt_good_0.test"])

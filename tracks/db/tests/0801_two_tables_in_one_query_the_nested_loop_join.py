@@ -9,9 +9,10 @@ Every query also runs with a two-page cache, so pages are evicted in the middle 
 a join, and must give the same answer. Where sqlite3 also reads the tables in the
 written order (CROSS JOIN, automatic indexes off, sent to sqlite3 only) the rows
 come out in the same order and EXPLAIN QUERY PLAN prints the same lines. Errors are
-sqlite3's; what 08.01 does not have is refused by name. Then the one-table core is
-untouched: 05.03's test (its plans, and the sqllogictest slice), and the slice
-again with joins no longer skipped.
+sqlite3's; what 08.01 does not have is refused by name. Then 300 cases of the fuzzer
+with inner joins; the one-table core is untouched: 05.03's test (its plans, and the
+sqllogictest slice); and a slice of the kept sqllogictest scripts of joins, with joins
+no longer skipped.
 """
 
 import os
@@ -343,6 +344,11 @@ def compare(t, a, b, sql, theirs_first="", sort=False):
     return ours
 
 
+# The kept sqllogictest scripts with the most joins (tests/sqllogictest/README.md): select4's
+# comma joins of up to three indexed tables, and random/select's joins of two and three.
+SLT_JOINS = ["test/select4.test", "test/random/select/slt_good_0.test", "test/random/select/slt_good_1.test"]
+
+
 def listing(queries, sep=True):
     return "".join(f"{q};\n" + ("SELECT '--';\n" if sep else "") for q in queries)
 
@@ -413,7 +419,10 @@ def test(t):
     t.check(st["evictions"] > 100 and len(r.lines()) == 900,
             f"the two-page cache should evict pages mid-join: {st}, {len(r.lines())} rows")
 
+    # a quick slice of the fuzzer: random tables, rows and inner joins, against sqlite3
+    tr.fuzz(t, "join", n=300, seed=1)
+
     # the one-table core is untouched: 05.03's test (plans, EXPLAIN, the sqllogictest slice)
     load_test(os.path.join(os.path.dirname(os.path.abspath(__file__)), "0503_choosing_a_plan_and_explain.py")).test(t)
-    # and the slice again, with SQL that joins no longer skipped
-    tr.sqllogictest(t, have=("join",))
+    # and the sqllogictest scripts of joins, with SQL that joins no longer skipped
+    tr.sqllogictest(t, have=("join",), scripts=SLT_JOINS)

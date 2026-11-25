@@ -14,8 +14,8 @@ query also runs with a two-page cache, over tables of thousands of rows with mor
 groups or distinct rows, so pages are evicted between output rows while the operators hold
 their state. HAVING terms on GROUP BY terms are checked on the rows, and the grouping sort
 takes ORDER BY's directions, as in sqlite3 (both found by the fuzzer). Errors are sqlite3's.
-Then a quick fuzzer slice, 08.04's test, and the sqllogictest slice with GROUP BY and
-DISTINCT no longer skipped.
+Then a quick fuzzer slice, 08.04's test, and a slice of the kept sqllogictest scripts that
+group and take DISTINCT, with GROUP BY and DISTINCT no longer skipped.
 """
 
 import os
@@ -441,9 +441,12 @@ def test(t):
                        "HAVING count(*) > 10 ORDER BY 2 DESC, 1;\n")
 
     # a quick slice of the fuzzer: random GROUP BY, HAVING and DISTINCT queries, against sqlite3
-    tr.fuzz(t, "join,aggregate,groupby,distinct", n=300, seed=1)
+    tr.fuzz(t, "join,leftjoin,aggregate,groupby,distinct", n=300, seed=1)
 
     # aggregates over the whole input, and the join and the core, are untouched: 08.04's test
     load_test(os.path.join(os.path.dirname(os.path.abspath(__file__)), "0804_aggregates_one_row_from_many.py")).test(t)
-    # and the sqllogictest slice, with SQL that groups or takes DISTINCT no longer skipped
-    tr.sqllogictest(t, have=("join", "aggregate", "groupby", "distinct"))
+    # and the kept sqllogictest scripts that group and take DISTINCT (random/groupby, and
+    # random/select's and random/aggregates' DISTINCT), with that SQL no longer skipped
+    tr.sqllogictest(t, have=("join", "aggregate", "groupby", "distinct"),
+                    scripts=["test/random/groupby/slt_good_0.test", "test/random/groupby/slt_good_9.test",
+                             "test/random/select/slt_good_1.test", "test/random/aggregates/slt_good_106.test"])

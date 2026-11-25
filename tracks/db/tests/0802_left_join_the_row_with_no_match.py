@@ -11,7 +11,8 @@ joins and LEFT mixed with inner joins in both orders; empty tables on either sid
 two-page cache; and many rows with text that must be kept. Rows come out in the order
 sqlite3 gives with automatic indexes off (a LEFT JOIN pins the order in sqlite3), and
 EXPLAIN QUERY PLAN prints its " LEFT-JOIN". An ON that names a table to its right is
-sqlite3's error; RIGHT and FULL JOIN are still refused by name.
+sqlite3's error; RIGHT and FULL JOIN are still refused by name. Then 300 cases of the
+fuzzer with LEFT joins, and the kept sqllogictest scripts that hold LEFT JOINs.
 """
 
 import os
@@ -270,3 +271,10 @@ def test(t):
     st = tr.stats(r.err)
     t.check(st["evictions"] > 100 and len(r.lines()) == 2000,
             f"the two-page cache should evict pages mid-join: {st}, {len(r.lines())} rows")
+
+    # a quick slice of the fuzzer: random tables, rows and joins, LEFT ones too, against sqlite3
+    tr.fuzz(t, "join,leftjoin", n=300, seed=1)
+    # and the kept sqllogictest scripts that hold LEFT JOINs (random/aggregates: a few each,
+    # most past the quick slice, so SLT=full runs them all), with joins no longer skipped
+    tr.sqllogictest(t, have=("join",), scripts=["test/random/aggregates/slt_good_106.test",
+                                                "test/random/aggregates/slt_good_60.test"])

@@ -38,9 +38,10 @@ Fixtures the lesson tests use:
     sqlite_bin()        the newest sqlite3 found ($SQLITE3 overrides)
     sqllogictest(t, have=(), scripts=None)
                         SQLite's sqllogictest corpus through ./db (tests/sqllogictest,
-                        its README.md): a quick slice, or every kept script with
-                        SLT=full in the environment; have names what module 08 added
-                        (join, aggregate, ...), which is then run instead of skipped
+                        its README.md): a quick slice, or every record with SLT=full in
+                        the environment, of every kept script or of the scripts named;
+                        have names what module 08 added (join, aggregate, ...), which
+                        is then run instead of skipped
     keeps_unique(root)  does the project at root keep UNIQUE and PRIMARY KEY
                         constraints (08.07)? A core test that checks the refusal
                         before it checks what 08.07 makes of the same SQL instead
@@ -789,13 +790,15 @@ def sqllogictest(t, have=(), scripts=None):
     also with ./db's skips and rewrites, a check that those lose nothing). have: the
     runner's --have categories, SQL the engine has from module 08 on (join, aggregate,
     groupby, distinct, subquery, unique), which is then run, not skipped. scripts: files
-    or directories to run instead of the kept scripts. Returns the summaries; fails with
-    them on any failed record."""
-    runner = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tests", "sqllogictest", "runner.py")
+    or directories to run instead of all the kept scripts, relative to tests/sqllogictest
+    ("test/select1.test"), the slice that suits a lesson. Returns the summaries; fails
+    with them on any failed record."""
+    here = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tests", "sqllogictest")
+    runner = os.path.join(here, "runner.py")
     full = os.environ.get("SLT") == "full"
     passes = [["--engine", "sqlite3"]] + ([["--engine", "sqlite3", "--like-db"]] if full else [])
     passes.append(["--db", os.path.join(t.root, "db")])
-    extra_args = (["--have", ",".join(have)] if have else []) + list(scripts or [])
+    extra_args = (["--have", ",".join(have)] if have else []) + [os.path.join(here, s) for s in scripts or []]
     out = []
     for extra in passes:
         argv = [sys.executable, runner] + ([] if full else ["--quick"]) + extra + extra_args

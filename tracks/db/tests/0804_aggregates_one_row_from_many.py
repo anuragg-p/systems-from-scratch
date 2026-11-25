@@ -10,12 +10,18 @@ still gives its one row. An aggregate where none may be (WHERE, ON, LIMIT, insid
 aggregate) and a wrong number of arguments are errors in both engines. Every query also
 runs with a two-page cache, over tables of thousands of rows whose text spills to
 overflow pages. Then a quick fuzzer slice; the core and the join are untouched: 08.01's
-test; and the sqllogictest slice with aggregates no longer skipped.
+test; and a slice of the kept sqllogictest scripts of aggregates, with aggregates no
+longer skipped.
 """
 
 import os
 
 from harness.core import load_test
+
+# The kept sqllogictest scripts with the most aggregates (tests/sqllogictest/README.md).
+SLT_AGGREGATES = ["test/select1.test", "test/select2.test", "test/select3.test",
+                  "test/random/aggregates/slt_good_106.test", "test/random/aggregates/slt_good_60.test",
+                  "test/random/expr/slt_good_54.test"]
 
 SHOP = """CREATE TABLE customers(id INTEGER PRIMARY KEY, name TEXT, city TEXT);
 CREATE TABLE orders(id INTEGER PRIMARY KEY, customer_id INTEGER, total INTEGER);
@@ -331,10 +337,12 @@ def test(t):
     compare(t, a3, b3, "SELECT max(p.pad), count(*) FROM p, q WHERE q.id < 3;\n")
 
     # a quick slice of the fuzzer: random tables, rows and aggregate queries, against sqlite3
-    tr.fuzz(t, "join,aggregate", n=300, seed=1)
+    tr.fuzz(t, "join,leftjoin,aggregate", n=300, seed=1)
 
     # the join and the one-table core are untouched: 08.01's test (it runs 05.03's too)
     load_test(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            "0801_two_tables_in_one_query_the_nested_loop_join.py")).test(t)
-    # and the sqllogictest slice, with SQL that aggregates no longer skipped
-    tr.sqllogictest(t, have=("join", "aggregate"))
+    # and the kept sqllogictest scripts of aggregates, with SQL that aggregates no longer
+    # skipped: select1-3 (aggregates beside correlated subqueries, which wait for 08.06),
+    # random/aggregates (over joins too) and random/expr (aggregates of expressions)
+    tr.sqllogictest(t, have=("join", "aggregate"), scripts=SLT_AGGREGATES)
