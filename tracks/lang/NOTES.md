@@ -889,3 +889,75 @@ Replayed in the lessons (exact):
   only by `read`: `n = getint();` undeclared, motec status 1.
 - gcd.s ending in `ret` instead of `call exit` runs lines 19 and 20 for ever: after `call
   putint`, ra is 48, line 19's address (01.01 says so; not shown as a run).
+
+## Found while lessons 01.05 to 01.08 were written
+
+Run on the project as `./learn run lang --at NN.LL` leaves it, on the Apple M4 Pro Mac above,
+2026-11-25.
+
+Read, for what the lessons say about other systems:
+
+- Crafting Interpreters, by Robert Nystrom, chapter 4, "Scanning"
+  (https://craftinginterpreters.com/scanning.html, fetched 2026-11-25): a scanner for Lox, in
+  Java; a token holds a type, the lexeme, a literal value and a line, and no column; the
+  longest-match rule is named "maximal munch"; a word is scanned whole as an identifier and only
+  then looked up among the reserved words (its example: `orchid` is one name, not `or` and
+  `chid`); comments and white space are scanned and dropped. 01.06 cites it.
+- Crafting Interpreters, chapter 6, "Parsing Expressions"
+  (https://craftinginterpreters.com/parsing-expressions.html, fetched 2026-11-25): recursive
+  descent; section 6.2, "Recursive Descent Parsing", has a table from grammar notation to code
+  (a terminal: match and consume a token; a nonterminal: a call to its rule's function; `|`: an
+  `if` or `switch`; `*` or `+`: a `while` or `for`; `?`: an `if`); a rule for each level of
+  precedence; "GCC, V8 (the JavaScript VM in Chrome), Roslyn (the C# compiler written in C#) and
+  many other heavyweight production language implementations use recursive descent"; it needs no
+  parser generator "like Yacc, Bison or ANTLR". 01.07 cites it (the table, the levels, GCC and V8).
+- `man 3 setjmp` on this Mac: setjmp returns 0; longjmp makes the program continue as if that
+  setjmp had returned the value given; objects keep their values as of the longjmp, except
+  automatic ones not declared volatile that changed between the two calls. 01.05 relies on it:
+  mote0's table of names is static, and prompt()'s locals do not change between its setjmp and a
+  longjmp.
+
+Found in the code:
+
+- **01.06's Break it as designed leaves gcd.mote alone.** With the one-character operators tried
+  first, gcd.mote scans exactly as before (the same 30 lines; compared with cmp): its only
+  two-character operators, `!=` and `:=`, start with characters that are no operator alone, so
+  the table's order matters only for `<=` and `>=`. sum.mote and primes.mote fail, each at 5:10:
+  `programs/sum.mote:5:10: unexpected character '='`. The lesson uses sum.mote and says why
+  gcd.mote still scans.
+- **The prompt cannot be typed into by `./learn verify`.** track.py has no VERIFY_PROMPTS, so
+  `> ` and `. ` are not prompts to the verifier, and a `lines N-M typed` rule types its line as
+  soon as the echo of the last one shows, before mote0 prints its prompt: the first try typed
+  `> while x > 4 do` whole (screen: `> > while x > 4 do`, then `line 2: expected a statement`).
+  01.05 shows the session from a real run on this Mac (`skip`) and replays the same lines from a
+  file. From a file the prompts still print, with no echo: `> > . . > 4` / `> line 6: y has no
+  value yet` / `> 28` / `> `. At a terminal on this Mac, Control-D at the prompt echoes `^D`.
+- **01.05's title fails the verifier's word check.** "a test runner" matches `test (suite|harness|
+  runner)` in harness/verify.py's FORBIDDEN, and the `# NN.LL Title` heading must equal the title,
+  so `./learn check` and `./learn verify lang 01.05` report line 7 whatever the lesson says. Any
+  lesson whose Related line names 01.05 by its title will be reported the same way.
+- A `read` at the prompt without the line that drops the rest of the number's line (tried on a
+  copy): the prompt asks twice (`> > write n * 2`) and an error after it says `line 4` for the
+  third line typed. With it, `printf 'read n\n12\nwrite n * 2\n' | ./mote0` prints `> > 24` and
+  `> `.
+- A missing `end` is reported at the end-of-file token (`noend.mote:3:15: expected 'end'`, the eof
+  at 3:15 for a file whose last line is `    i := i - 1`).
+- The parse tree of `write 1 + 2 * 3` is 15 lines; with 01.07's Break it (term joins `+ -`, expr
+  joins `* /`) it parses to a tree of the same size grouping `1 + 2` first, and gcd.mote's tree
+  falls from 64 lines to 62 (each subtraction loses a `term`).
+- The leaves of `--parse-tree` (lines of two words) are the tokens of `--tokens` (lines of three,
+  the eof line excluded): `cmp` finds them the same, 29 lines.
+- The static rule and the run disagree both ways: the rule accepts maybe.mote, which stops when
+  run (`maybe.mote:4: x has no value yet` from mote0), and refuses a
+  program that runs well, where a loop's second pass reads what its first pass set:
+  `i := 0 / while i < 2 do / if i > 0 then / write y / end / y := i / i := i + 1 / end` is
+  `later.mote:4:15: y is used before anything gives it a value`, and mote0 prints 0. 01.08 shows
+  both.
+- `write 10 - 3 - 2` prints as `write (- (- 10 3) 2)` and `write (1 - 2) * 3` as
+  `write (* (- 1 2) 3)`: the source's parentheses leave nothing in the syntax tree.
+- 01.08's Break it (enter the target before analysing the right side) makes `x := x + 1` as a first
+  statement give `:= x#1 (+ x#1 1)`.
+- A copy of the project made with `cp -R` and a file of it edited within the same second was not
+  rebuilt by `make -s` (`make -B` was needed): this Mac's make appears to compare times to the
+  second. A reader edits seconds after the build, and every Break it's `make -s` in the
+  verifier's replays did rebuild.
