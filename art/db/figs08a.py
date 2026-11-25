@@ -77,12 +77,17 @@ cover: the five joined pairs are OUTPUT's; "London 4 100" is the London rows of 
   page 2 and leaves 5, 6, 7, 8, 9, 10, 4 in that order, page 2 again between leaves, 3,028 in all.
   --check gets 7 and 3,028 from DB_STATS: that query's page requests less those of
   SELECT o.id FROM orders o WHERE o.id = 358 alone.
-08.03-cost: COST_SQL on shop.big.db (no index) and on a copy with INDEX_SQL (134 pages), DB_STATS=1:
-  page requests are cache hits + misses (as NOTES explains: with the default 500-page cache each
-  page is read from the file once whatever the plan, 69 or 134). The bars are the page requests;
-  the times are the median of 7 runs to /dev/null on an Apple M4 Pro (856, 12.0 and 10.7 ms; NOTES
-  has 873, 14 and 13), printed as "about N ms": they vary from run to run, so --check prints them
-  and does not compare them.
+08.03-cost: the lesson's "Run it", in its order, on one shop.big.db with DB_STATS=1: COST[0] with no
+  index; then INDEX_SQL (the file grows to 134 pages); then COST[1] and COST[2], the index still in
+  the schema. Page requests are cache hits + misses; with the default 500-page cache each page is
+  read from the file once whatever the plan: 69, 134 and 69 pages read (COST's pages). The third
+  is 200,727, not the 200,724 it is on a file with no index: with the index in the schema every
+  statement starts with 11 requests, not 8 (NOTES, 08.03, "For the lesson"). The nested loop is
+  1000 x 60,236 (one scan of orders: three requests a row, as cursor_next, settle and cursor_load
+  each ask for the leaf, plus leaf changes) + 3,028 (the scan of customers) + 8 = 60,239,036. The
+  bars are the page requests; the times are the lesson's (0.861, 0.012 and 0.010 s; the median of
+  7 runs here was 856, 12.0 and 10.7 ms), printed as "about N ms": they vary from run to run, so
+  --check prints its own and does not compare them.
 """
 import os
 import re
@@ -194,14 +199,16 @@ CUST_LEAF_RANGE = (1, 168)                    # leaf 5's rowids, where customer 
 LOOK_ROW = (3, "customer 3", "Rome")
 LOOK_REQ, SWEEP_REQ = 7, 3028                 # page requests for order 358's customer, each way
 
-# the same join three ways on shop.py's file: (FROM, how the inner side is read, with the index?,
-# page requests, ms)
-COST_SQL = "SELECT c.name, o.id, o.total FROM {} ON o.customer_id = c.id;"
+# the same join three ways on shop.py's file, as the lesson runs them, in its order (INDEX_SQL
+# between the first and the second): (tables, ON, how the inner side is read, page requests,
+# pages read, ms)
+COST_SQL = "SELECT c.name, o.id, o.total FROM {} ON {};"
 COST = [
-    ("customers c JOIN orders o", "scan orders, per customer", False, 60239036, 860),
-    ("customers c JOIN orders o", "index lookup, per customer", True, 147241, 12),
-    ("orders o JOIN customers c", "rowid lookup, per order", False, 200724, 11),
+    ("customers c JOIN orders o", "o.customer_id = c.id", "scan orders, per customer", 60239036, 69, 860),
+    ("customers c JOIN orders o", "o.customer_id = c.id", "index lookup, per customer", 147241, 134, 12),
+    ("orders o JOIN customers c", "c.id = o.customer_id", "rowid lookup, per order", 200727, 69, 10),
 ]
+ORDERS_SCAN = 60236                           # page requests of one scan of orders, less the statement's 8
 
 # ------------------------------------------------------------------ the shared look
 
@@ -739,27 +746,30 @@ def lookup0803():
 
 
 def cost0803():
-    f = Fig("f0803c", "The same join three ways on shop.py's file: page requests, and time beside them", 292)
-    f.text(24, 22, COST_SQL.format("..."), "tm", 10.5, None, None, True)
-    f.text(24, 38, f"on shop.py's file, {SHOP_ROWS[1]} rows out each way", "tm", 10.5)
+    f = Fig("f0803c", "The same join three ways on shop.py's file: page requests, and time beside them", 306)
+    f.text(24, 22, COST_SQL.format("...", "..."), "tm", 10.5, None, None, True)
+    f.text(24, 38, f"on shop.py's file, {SHOP_ROWS[1]} rows out each way, in this order: no index, then "
+           "CREATE INDEX orders_customer", "tm", 10.5)
     X0, WMAX = 214, 240
     top = max(c[3] for c in COST)
-    for i, (frm, how, ix, req, ms) in enumerate(COST):
-        y = 54 + i * 58
-        f.text(X0 - 12, y + 16, frm, "t", 10.5, "end", None, True)
-        f.text(X0 - 12, y + 31, how, "tm", 10.5, "end")
+    for i, (frm, on, how, req, read, ms) in enumerate(COST):
+        y = 52 + i * 60
+        f.text(X0 - 12, y + 14, frm, "t", 10.5, "end", None, True)
+        f.text(X0 - 12, y + 28, "ON " + on, "tm", 10, "end", None, True)
+        f.text(X0 - 12, y + 43, how, "tm", 10.5, "end")
         w = max(3, WMAX * req / top)
-        f.rect(X0, y + 4, w, 24, "s fs" if i == 0 else "a fa", 3)
-        f.text(X0 + w + 8, y + 20, f"{req:,} page requests", "t" if i == 0 else "ta", 11, None, 600)
-        f.text(X0 + w + 8, y + 36, f"about {ms} ms", "tm", 10.5)
-    f.line(24, 228, 616, 228, "m")
-    f.text(24, 246, f"The nested loop asks for every page of orders once per customer: {SHOP_ROWS[0]} scans of "
-           f"{SHOP_ROWS[1]} rows.", "t", 11)
+        f.rect(X0, y + 6, w, 24, "s fs" if i == 0 else "a fa", 3)
+        f.text(X0 + w + 8, y + 22, f"{req:,} page requests", "t" if i == 0 else "ta", 11, None, 600)
+        f.text(X0 + w + 8, y + 38, f"about {ms} ms", "tm", 10.5)
+    f.line(24, 240, 616, 240, "m")
+    f.text(24, 258, f"The nested loop scans all of orders once per customer: {SHOP_ROWS[0]} x {ORDERS_SCAN:,} "
+           "requests, about three a row.", "t", 11)
     ratios = [round(top / c[3]) for c in COST[1:]]
-    f.text(24, 263, f"To scale, the two lower bars would be under a pixel long: 1/{ratios[0]} and 1/{ratios[1]} "
+    f.text(24, 275, f"To scale, the two lower bars would be under a pixel long: 1/{ratios[0]} and 1/{ratios[1]} "
            "of the first.", "tm", 10.5)
-    f.text(24, 280, f"Page requests are cache hits plus misses; from the file each way reads {SHOP_PAGES} pages "
-           f"({SHOP_PAGES_IX} with the index).", "tm", 10.5)
+    reads = [c[4] for c in COST]
+    f.text(24, 292, f"Page requests are cache hits plus misses. Pages read from the file: {reads[0]}, {reads[1]} and "
+           f"{reads[2]}, each page once.", "tm", 10.5)
     return f
 
 
@@ -990,7 +1000,7 @@ def check():
         same(f"08.03: EXPLAIN QUERY PLAN ... {frm[5:]}", got[-1], "`--" + line)
 
     # 08.03: shop.py's file, its pages, and what the lookup and the scan ask for
-    big, bigx = os.path.join(d, "shop.big.db"), os.path.join(d, "shop.bigx.db")
+    big = os.path.join(d, "shop.big.db")
     run_at(big, None, "08.03", stdin=shop_sql())
     same("shop.py's file: customers and orders", [len(run_at(big, f"SELECT id FROM {t};", "08.03"))
                                                    for t in ("customers", "orders")], list(SHOP_ROWS))
@@ -1014,22 +1024,28 @@ def check():
                                           for q in (LOOK_SQL, SWEEP_SQL)], ["`--" + LADDER[0][3], "`--SCAN c"])
     same("page requests for order 358's customer: lookup, scan", (look - alone, sweep - alone), (LOOK_REQ, SWEEP_REQ))
 
-    # 08.03: the same join three ways
-    with open(big, "rb") as a, open(bigx, "wb") as b:
-        b.write(a.read())
-    run_at(bigx, INDEX_SQL, "08.03")
-    same("with the index: pages", os.path.getsize(bigx) // 4096, SHOP_PAGES_IX)
+    # 08.03: the same join three ways, as the lesson runs them: on the one file, the first with no
+    # index, then CREATE INDEX, then the other two with the index in the schema
     binary = os.path.join(REPO, "build", "at", "db", "08.03", "db")    # what ./learn run just built
-    for frm, how, ix, req, ms in COST:
-        path, sql = (bigx if ix else big), COST_SQL.format(frm)
-        lines, got, read = run_at(path, sql, "08.03", stats=True)
-        same(f"page requests, {frm}, {how}: rows, requests, pages read", (len(lines), got, read),
-             (SHOP_ROWS[1], req, SHOP_PAGES_IX if ix else SHOP_PAGES))
+    _, base, _ = run_at(big, "SELECT 1;", "08.03", stats=True)
+    _, scan_o, _ = run_at(big, "SELECT id FROM orders;", "08.03", stats=True)
+    _, scan_c, _ = run_at(big, "SELECT id FROM customers;", "08.03", stats=True)
+    same("one scan of orders, less the statement's own requests", scan_o - base, ORDERS_SCAN)
+    same("the nested loop: customers x one scan of orders + the scan of customers + the statement's own",
+         SHOP_ROWS[0] * (scan_o - base) + (scan_c - base) + base, COST[0][3])
+    for i, (frm, on, how, req, read, ms) in enumerate(COST):
+        if i == 1:
+            run_at(big, INDEX_SQL, "08.03")
+            same("with the index: pages", os.path.getsize(big) // 4096, SHOP_PAGES_IX)
+        sql = COST_SQL.format(frm, on)
+        lines, got, pages = run_at(big, sql, "08.03", stats=True)
+        same(f"{frm} ON {on}, {how}: rows, page requests, pages read", (len(lines), got, pages),
+             (SHOP_ROWS[1], req, read))
         ts = []
         for _ in range(7):
             with open(os.devnull, "w") as dn:
                 t = time.perf_counter()
-                subprocess.run([binary, path, sql], stdout=dn, check=True)
+                subprocess.run([binary, big, sql], stdout=dn, check=True)
                 ts.append((time.perf_counter() - t) * 1000)
         print(f"   time, median of 7: {statistics.median(ts):.1f} ms (the figure says about {ms} ms)")
 
