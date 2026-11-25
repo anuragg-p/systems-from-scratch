@@ -54,6 +54,10 @@ static int conjuncts(Expr *e, Expr **out, int n, int max)
  * INTEGER PRIMARY KEY column is the rowid under another name. */
 static int is_column(Table *t, Expr *e, int col)
 {
+    // @from 08.06
+    if (e->depth)
+        return 0;        /* a column of a query outside: a constant here */
+    // @end
     if (col == ROWID)
         return e->op == E_ROWID || (e->op == E_COLUMN && t->rowid_col >= 0 && e->col == t->rowid_col);
     return e->op == E_COLUMN && e->col == col;
@@ -67,6 +71,22 @@ typedef struct Bounds {
     int lo_incl, hi_incl;
 } Bounds;
 
+// @from 08.06
+/* True if comparing column col (or ROWID) with v compares its values as
+ * stored, so a lookup of v finds every row the comparison holds for
+ * (sqlite3IndexAffinityOk in sqlite3's where.c). A constant has no
+ * affinity and never converts the column; a name from the query outside
+ * and a scalar subquery have their column's. A numeric one makes a TEXT or
+ * BLOB column compare as a number: '5' = 5 holds, which a lookup of 5
+ * would miss. v NULL: nothing to compare. */
+static int same_values(Table *t, int col, Expr *v)
+{
+    int aff = col == ROWID ? AFF_INTEGER : t->cols[col].affinity;
+    int numeric = aff == AFF_INTEGER || aff == AFF_REAL || aff == AFF_NUMERIC;
+    return !v || numeric || !(v->aff == AFF_INTEGER || v->aff == AFF_REAL || v->aff == AFF_NUMERIC);
+}
+// @end
+
 /* Collects into b what terms[0..n) say about column col (or ROWID).
  * Comparisons written constant-first are flipped so the column is always
  * on the left. */
@@ -75,6 +95,10 @@ static void find_bounds(Table *t, Expr **terms, int n, int col, Bounds *b)
     memset(b, 0, sizeof *b);
     for (int i = 0; i < n; i++) {
         Expr *e = terms[i];
+        // @from 08.06
+        if (!same_values(t, col, e->a) || !same_values(t, col, e->b) || !same_values(t, col, e->c))
+            continue;    /* still checked on every row, but it does not choose the rows */
+        // @end
         if (e->op == E_BETWEEN && is_column(t, e->a, col) && is_constant(e->b) && is_constant(e->c)) {
             if (!b->lo) {
                 b->lo = e->b;
@@ -306,6 +330,12 @@ static int last_table(Expr *e)
 {
     if (!e)
         return -1;
+    // @from 08.06
+    if (e->depth)
+        return -1;       /* a name from the query outside: a constant here */
+    if (e->sub)          /* a subquery: as if it named every table of this query */
+        return e->q->scope.outer->nfrom - 1;
+    // @end
     if (e->op == E_COLUMN)
         return e->tab == 0 && e->tcol == TCOL_ROWID ? 1 : e->tab;
     int k = last_table(e->a);
