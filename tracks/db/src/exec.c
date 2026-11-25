@@ -40,6 +40,14 @@ static Op *new_op(Db *db, const char *name, int (*next)(Op *, Row **))
     return op;
 }
 
+// @from 08.04
+static void aggregate_free(Op *op);
+// @end
+// @from 08.05
+struct Set;
+static void set_free(struct Set *s);
+// @end
+
 /* Frees op and every operator below it, with the cursors and buffers each
  * owns. */
 void op_close(Op *op)
@@ -49,6 +57,14 @@ void op_close(Op *op)
         cursor_close(&op->cur);
         cursor_close(&op->icur);  // @from 05.02
         buf_free(&op->key);  // @from 05.02
+        // @from 08.04
+        if (op->q)                      /* an Aggregate: its rows, and its aggregates' state */
+            aggregate_free(op);
+        // @end
+        // @from 08.05
+        set_free(op->set);              /* a Distinct's set of rows seen */
+        free(op->dvals);
+        // @end
         // @from 08.01
         if (op->table || op->inner)     /* a scan and a join allocate the row they hand out */
             free(op->row.cols);
@@ -590,6 +606,631 @@ Op *op_join(Db *db, Op *left, Op *inner, FromItem *item, Table *left_table, int 
     op->lwidth = item->base;
     op->row.cols = xcalloc((size_t)width, sizeof(Value));
     op->row.ncols = width;
+    return op;
+}
+// @end
+
+// @from 08.04
+/* Frees what arena a holds, its last chunk too. */
+static void arena_free(Arena *a)
+{
+    if (a->head) {
+        arena_reset(a);
+        free(a->head);
+        a->head = NULL;
+    }
+}
+// @end
+
+// @from 08.05
+/* ------------------------------------------------------------ a set of rows seen (08.05) */
+
+/* A hash set of lists of values: the results SELECT DISTINCT has handed
+ * up, or the values a DISTINCT aggregate has stepped. Two lists are the
+ * same when value_compare() finds each pair of values equal, NULL equal
+ * to NULL and 1 equal to 1.0, as they are in the record compare of the
+ * temporary index sqlite3 uses for the same job. The table is open
+ * addressing: a list sits in the slot its hash picks, or in the next free
+ * one after it; it is never more than half full. */
+typedef struct SetSlot {
+    u64 hash;
+    Value *vals;                 /* a copy of the list, in the set's arena; NULL: a free slot */
+} SetSlot;
+
+typedef struct Set {
+    int nvals;                   /* values in each list */
+    SetSlot *slots;
+    size_t cap;                  /* slots, a power of two */
+    size_t n;                    /* lists held */
+    Arena arena;                 /* the lists, and their text and blobs */
+} Set;
+
+#define SET_MIN 16               /* slots of an empty set */
+
+/* Returns a new, empty set of lists of nvals values. */
+static Set *set_new(int nvals)
+{
+    Set *s = xcalloc(1, sizeof *s);
+    s->nvals = nvals;
+    s->cap = SET_MIN;
+    s->slots = xcalloc(s->cap, sizeof *s->slots);
+    return s;
+}
+
+/* Empties s, back to its first size (a set that grew for one big group
+ * is not swept whole for each small one after it). */
+static void set_clear(Set *s)
+{
+    arena_reset(&s->arena);
+    if (s->cap != SET_MIN) {
+        free(s->slots);
+        s->cap = SET_MIN;
+        s->slots = xcalloc(s->cap, sizeof *s->slots);
+    } else {
+        memset(s->slots, 0, s->cap * sizeof *s->slots);
+    }
+    s->n = 0;
+}
+
+static void set_free(Set *s)
+{
+    if (!s)
+        return;
+    arena_free(&s->arena);
+    free(s->slots);
+    free(s);
+}
+
+/* The hash of the list vals[0..n): FNV-1a over each value's type and
+ * bytes. Equal lists must hash alike, so a number hashes by its value: a
+ * real that is a whole number in range hashes as the integer it equals
+ * (1.0 as 1, -0.0 as 0), any other real by its bits. */
+static u64 set_hash(const Value *vals, int n)
+{
+    u64 h = 14695981039346656037ULL;
+    for (int i = 0; i < n; i++) {
+        const Value *v = &vals[i];
+        u8 num[8];
+        const u8 *p = num;
+        size_t len = 0;
+        int tag = v->type;
+        if (v->type == V_INT || v->type == V_REAL) {
+            double r = v->r;
+            if (v->type == V_INT || (r == floor(r) && r >= -9223372036854775808.0 && r < 9223372036854775808.0)) {
+                i64 x = v->type == V_INT ? v->i : (i64)r;
+                tag = V_INT;
+                memcpy(num, &x, 8);
+            } else {
+                memcpy(num, &r, 8);
+            }
+            len = 8;
+        } else if (v->type == V_TEXT || v->type == V_BLOB) {
+            p = (const u8 *)v->s;
+            len = (size_t)v->n;
+        }
+        h = (h ^ (u8)tag) * 1099511628211ULL;
+        for (size_t k = 0; k < len; k++)
+            h = (h ^ p[k]) * 1099511628211ULL;
+    }
+    // @internal
+    /* DB_SET_COLLIDE=1 (the tests) folds every hash into four values, so
+     * that lists collide and lookups walk long runs of slots. */
+    static int collide = -1;
+    if (collide < 0)
+        collide = getenv("DB_SET_COLLIDE") != NULL;
+    if (collide)
+        h &= 3;
+    // @end
+    return h;
+}
+
+/* True if the lists a and b of n values are the same list. */
+static int same_list(const Value *a, const Value *b, int n)
+{
+    for (int i = 0; i < n; i++)
+        if (value_compare(&a[i], &b[i]) != 0)
+            return 0;
+    return 1;
+}
+
+/* Puts the list vals into s unless an equal one is there already.
+ * Returns 1 if it was new (a copy of it is now in s, text and blobs
+ * too), 0 if it had been seen. */
+static int set_add(Set *s, const Value *vals)
+{
+    int n = s->nvals;
+    // @build 08.05 a row not seen before
+    // Hash the list (set_hash) and look from the slot its low bits pick,
+    // one slot at a time, for a list with that hash whose values all
+    // compare equal (same_list): found means seen before. A free slot ends
+    // the search: the list is new, and a copy of it (keep() for text and
+    // blobs, into the set's arena) goes in that slot. Once more than half
+    // the slots are taken, double them and move each list to the slot its
+    // hash picks in the new table, so runs of taken slots stay short.
+    u64 h = set_hash(vals, n);
+    size_t mask = s->cap - 1, i;
+    for (i = h & mask; s->slots[i].vals; i = (i + 1) & mask)
+        if (s->slots[i].hash == h && same_list(s->slots[i].vals, vals, n))
+            return 0;
+    Value *copy = arena_alloc(&s->arena, (size_t)n * sizeof(Value));
+    for (int k = 0; k < n; k++)
+        copy[k] = keep(&s->arena, vals[k]);
+    s->slots[i].hash = h;
+    s->slots[i].vals = copy;
+    if (2 * ++s->n > s->cap) {
+        size_t cap = 2 * s->cap;
+        SetSlot *slots = xcalloc(cap, sizeof *slots);
+        for (size_t j = 0; j < s->cap; j++) {
+            if (!s->slots[j].vals)
+                continue;
+            size_t k = s->slots[j].hash & (cap - 1);
+            while (slots[k].vals)
+                k = (k + 1) & (cap - 1);
+            slots[k] = s->slots[j];
+        }
+        free(s->slots);
+        s->slots = slots;
+        s->cap = cap;
+    }
+    return 1;
+    // @end
+}
+// @end
+
+// @from 08.04
+/* ------------------------------------------------------------ Aggregate (08.04) */
+
+/* Empties aggregate a's running state, for a new group. */
+static void agg_clear(Agg *a)
+{
+    a->n = a->isum = 0;
+    a->rsum = a->rerr = 0.0;
+    a->approx = a->overflow = 0;
+    memset(&a->best, 0, sizeof a->best);
+    arena_reset(&a->hold);
+    // @from 08.05
+    if (a->seen)
+        set_clear(a->seen);
+    // @end
+}
+
+/* Adds r to a's double sum, keeping the part each addition rounds away
+ * in a->rerr: the Kahan-Babushka-Neumaier sum of SQLite's func.c, which
+ * makes ten 0.1s add up to exactly 1.0. */
+static void kbn_add(Agg *a, double r)
+{
+    double s = a->rsum, t = s + r;
+    if (fabs(s) > fabs(r))
+        a->rerr += (s - t) + r;
+    else
+        a->rerr += (r - t) + s;
+    a->rsum = t;
+}
+
+/* Adds the integer i to a's double sum. One past 2^52 a double cannot hold
+ * every integer, so a big one goes in as two parts that it can. */
+static void kbn_add_int(Agg *a, i64 i)
+{
+    if (i <= -4503599627370496LL || i >= 4503599627370496LL) {
+        i64 low = i % 16384;
+        kbn_add(a, (double)(i - low));
+        kbn_add(a, (double)low);
+    } else {
+        kbn_add(a, (double)i);
+    }
+}
+
+/* Switches a's sum from exact integers to the double sum, starting it
+ * from the integer sum so far. */
+static void kbn_start(Agg *a)
+{
+    i64 i = a->isum;
+    if (i <= -4503599627370496LL || i >= 4503599627370496LL) {
+        i64 low = i % 16384;
+        a->rsum = (double)(i - low);
+        a->rerr = (double)low;
+    } else {
+        a->rsum = (double)i;
+        a->rerr = 0.0;
+    }
+    a->approx = 1;
+}
+
+/* Steps aggregate a with v, its argument's value on one more row (count(*)
+ * has none: v is NULL). For min() and max(), returns 1 if this row did not
+ * set the value, which decides whether a bare column comes from it; the
+ * others return 0. */
+static int agg_step(Agg *a, Value v)
+{
+    // @build 08.04 step: one more row
+    // count(*) counts every row, count(x) every x that is not NULL. sum,
+    // total and avg add v as sum_operand() reads it (NULL adds nothing):
+    // exactly, in isum, while every value is an integer and the sum fits;
+    // from the first value that is not an integer, or the first overflow,
+    // in the compensated double sum (kbn_start, then kbn_add or
+    // kbn_add_int). An overflow is remembered, and forgotten when a real
+    // comes after it, as in func.c. min and max keep the first value no
+    // later one beats (value_compare), copied into a->hold; NULL never
+    // wins, and a row that does not set the value returns 1.
+    switch (a->fn) {
+    case AGG_COUNT_STAR:
+        a->n++;
+        return 0;
+    case AGG_COUNT:
+        if (v.type != V_NULL)
+            a->n++;
+        return 0;
+    case AGG_SUM: case AGG_TOTAL: case AGG_AVG: {
+        Value x = sum_operand(&v);
+        if (x.type == V_NULL)
+            return 0;
+        a->n++;
+        if (!a->approx) {
+            i64 s;
+            if (x.type == V_INT && !__builtin_add_overflow(a->isum, x.i, &s)) {
+                a->isum = s;
+                return 0;
+            }
+            a->overflow = x.type == V_INT;
+            kbn_start(a);
+        } else if (x.type == V_REAL) {
+            a->overflow = 0;
+        }
+        if (x.type == V_INT)
+            kbn_add_int(a, x.i);
+        else
+            kbn_add(a, x.r);
+        return 0;
+    }
+    }
+    if (v.type == V_NULL)
+        return a->best.type != V_NULL;
+    if (a->best.type != V_NULL) {
+        int c = value_compare(&a->best, &v);
+        if (a->fn == AGG_MAX ? c >= 0 : c <= 0)
+            return 1;
+    }
+    arena_reset(&a->hold);
+    a->best = keep(&a->hold, v);
+    return 0;
+    // @end
+}
+
+/* Sets *out to aggregate a's answer over the rows it was stepped with.
+ * Returns 0, or -1 with the error set (sum's integer overflow). */
+static int agg_finish(Agg *a, Value *out)
+{
+    // @build 08.04 finish: the answer
+    // count: the count. sum: NULL when no value was added, the integer
+    // sum when every value was an integer, else the double sum plus its
+    // error term (the sum alone if the error term is no longer finite),
+    // and "integer overflow" if the integers overflowed with no real after
+    // them. total: the same, always a real, 0.0 for nothing. avg: that
+    // real over the count, NULL for nothing. min, max: the value kept,
+    // NULL if none. A real that is NaN is NULL.
+    double r = a->approx ? a->rsum + (isfinite(a->rerr) ? a->rerr : 0.0) : (double)a->isum;
+    memset(out, 0, sizeof *out);
+    switch (a->fn) {
+    case AGG_COUNT_STAR: case AGG_COUNT:
+        out->type = V_INT;
+        out->i = a->n;
+        return 0;
+    case AGG_SUM:
+        if (a->n == 0)
+            return 0;
+        if (a->approx && a->overflow)
+            return err("integer overflow");
+        if (!a->approx) {
+            out->type = V_INT;
+            out->i = a->isum;
+            return 0;
+        }
+        break;
+    case AGG_AVG:
+        if (a->n == 0)
+            return 0;
+        r /= (double)a->n;
+        break;
+    case AGG_TOTAL:
+        break;
+    default:
+        *out = a->best;
+        return 0;
+    }
+    if (!isnan(r)) {
+        out->type = V_REAL;
+        out->r = r;
+    }
+    return 0;
+    // @end
+}
+
+/* Makes r the group's own row, what a bare column reads: a copy of its
+ * values in op->grp, which always holds the query's width of values. A
+ * row of one table holds only its columns and carries its rowid beside
+ * them; the copy puts that rowid in the slot after the columns, where the
+ * Aggregate's rows keep it. */
+static void take_row(Op *op, Row *r)
+{
+    int w = op->q->width;
+    arena_reset(&op->grpa);
+    memset(op->grp.cols, 0, (size_t)w * sizeof(Value));
+    for (int i = 0; i < r->ncols && i < w; i++)
+        op->grp.cols[i] = keep(&op->grpa, r->cols[i]);
+    if (r->ncols < w) {
+        op->grp.cols[r->ncols].type = V_INT;
+        op->grp.cols[r->ncols].i = r->rowid;
+    }
+    op->grp.ncols = w;
+    op->grp.rowid = r->rowid;
+    // @from 08.05
+    /* The group's first row: keep its GROUP BY values, which a result
+     * column that is a GROUP BY term shows (group_keys). The Sort below
+     * evaluated the same terms on this row, so they cannot fail here. */
+    if (op->ingroup == 0) {
+        arena_reset(&op->keya);
+        for (int j = 0; j < op->q->s->ngroup; j++) {
+            Value v;
+            if (eval(op->db, op->q->s->group[j], r, &v) < 0)
+                memset(&v, 0, sizeof v);
+            op->keys[j] = keep(&op->keya, v);
+        }
+    }
+    // @end
+}
+
+/* Finishes the current group into op->row: the group's own row (all NULL
+ * for a group of no rows, the one row of an empty input), then each
+ * aggregate's answer, all copied into op->outa so that they outlast the
+ * state, which is cleared for the next group. Returns 0, or -1 with the
+ * error set. */
+static int group_done(Op *op)
+{
+    Query *q = op->q;
+    int w = q->width;
+    for (int i = 0; i < w; i++) {
+        if (op->ingroup)
+            op->row.cols[i] = keep(&op->outa, op->grp.cols[i]);
+        else
+            memset(&op->row.cols[i], 0, sizeof(Value));
+    }
+    op->row.rowid = op->ingroup ? op->grp.rowid : 0;
+    for (int k = 0; k < q->naggs; k++) {
+        Value v;
+        if (agg_finish(&q->aggs[k], &v) < 0)
+            return -1;
+        op->row.cols[w + k] = keep(&op->outa, v);
+        agg_clear(&q->aggs[k]);
+    }
+    // @from 08.05
+    for (int j = 0; j < q->s->ngroup; j++)
+        op->row.cols[w + q->naggs + j] = keep(&op->outa, op->keys[j]);
+    op->row.ncols = w + q->naggs + q->s->ngroup;
+    // @else
+    // op->row.ncols = w + q->naggs;
+    // @end
+    op->ingroup = 0;
+    return 0;
+}
+
+// @from 08.05
+/* Returns 1 if row r starts a new group, 0 if it is one more row of the
+ * current one, -1 with the error set. */
+static int new_group(Op *op, Row *r)
+{
+    Stmt *s = op->q->s;
+    // @build 08.05 a new group starts
+    // The rows come sorted by the GROUP BY terms, so a group is a run of
+    // rows on which every term has the same value. Evaluate each term on r
+    // and on the group's own row (op->grp: any row of the group has the
+    // group's values) and compare them with value_compare(), as the sort
+    // did: two NULLs are equal, and so are 1 and 1.0. One that differs
+    // means r starts a new group.
+    for (int j = 0; j < s->ngroup; j++) {
+        Value a, b;
+        if (eval(op->db, s->group[j], r, &a) < 0 || eval(op->db, s->group[j], &op->grp, &b) < 0)
+            return -1;
+        if (value_compare(&a, &b) != 0)
+            return 1;
+    }
+    return 0;
+    // @end
+}
+
+/* For a DISTINCT aggregate: returns 1 if v is new to the current group
+ * (it is now remembered), 0 if the group has stepped an equal value. */
+static int distinct_new(Agg *a, Value v)
+{
+    // @build 08.05 DISTINCT inside an aggregate
+    // Each value steps the aggregate once per group. Keep the values it
+    // has stepped in a set of its own, made the first time one comes
+    // (agg_clear() empties it when a group starts), and say whether v was
+    // new to it (set_add). NULL is a value like any other here: the first
+    // one is stepped, and the aggregates skip it themselves.
+    if (!a->seen)
+        a->seen = set_new(1);
+    return set_add(a->seen, &v);
+    // @end
+}
+// @end
+
+// @from 08.05
+/* Hands up one row per group: the group's own row (q->width values), then
+ * one value per aggregate, which the E_AGG nodes above read by slot, then
+ * the GROUP BY values of the group's first row. Without GROUP BY the whole
+ * input is one group, and an empty input gives that row too; with GROUP BY
+ * the input comes sorted by the group's key and each run of rows with the
+ * same key is a group. */
+// @else
+// /* Hands up one row: the group's own row (q->width values), then one
+//  * value per aggregate, which the E_AGG nodes above read by slot. All the
+//  * input is one group, and an empty input gives its row too. */
+// @end
+static int aggregate_next(Op *op, Row **out)
+{
+    Db *db = op->db;
+    Query *q = op->q;
+    // @build 08.04 one row from many
+    // Pull rows from the child until it runs out. On each row step every
+    // aggregate, in order: evaluate its argument on the row, agg_step().
+    // Then the row becomes the group's own row (take_row) if it is the
+    // group's first, or, when the query has a min() or max(), whenever
+    // the last of those took it (op->hit clear): the rules sqlite3's
+    // bytecode follows. Reset db->rowa after each row. When the child is
+    // done, finish the group (group_done) and hand up its row; later calls
+    // hand up nothing. The row handed up lives in op->outa until the next
+    // call.
+    if (op->done)
+        return 0;
+    arena_reset(&op->outa);
+    for (;;) {
+        Row *r;
+        int rc = op->child->next(op->child, &r);
+        if (rc < 0)
+            return -1;
+        // @from 08.05
+        if (rc == 0 && q->s->ngroup && !op->ingroup) {
+            op->done = 1;
+            return 0;                     /* GROUP BY over no rows: no groups */
+        }
+        int starts = 0;
+        if (rc == 1 && q->s->ngroup && op->ingroup && (starts = new_group(op, r)) < 0)
+            return -1;
+        if (starts && group_done(op) < 0)    /* r ends the group: finish it, then step r */
+            return -1;
+        // @end
+        if (rc == 0) {
+            op->done = 1;
+            if (group_done(op) < 0)
+                return -1;
+            *out = &op->row;
+            return 1;
+        }
+        for (int k = 0; k < q->naggs; k++) {
+            Agg *a = &q->aggs[k];
+            Value v = {0};
+            if (a->arg && eval(db, a->arg, r, &v) < 0)
+                return -1;
+            // @from 08.05
+            if (a->distinct && !distinct_new(a, v))
+                continue;                 /* the group has had this value */
+            // @end
+            if (a->fn == AGG_MIN || a->fn == AGG_MAX)
+                op->hit = agg_step(a, v);
+            else
+                agg_step(a, v);
+        }
+        if (op->ingroup == 0 || (q->minmax && !op->hit))
+            take_row(op, r);
+        op->ingroup++;
+        arena_reset(&db->rowa);
+        // @from 08.05
+        if (starts) {
+            *out = &op->row;              /* the group r ended */
+            return 1;
+        }
+        // @end
+    }
+    // @end
+}
+
+/* Returns the Aggregate of q over child: its rows are the group's own row
+ * (q->width values), then one value per aggregate of q. The aggregates'
+ * state is cleared here, so a plan made again for the same query starts
+ * afresh. */
+Op *op_aggregate(Db *db, Op *child, Query *q)
+{
+    Op *op = new_op(db, "Aggregate", aggregate_next);
+    op->child = child;
+    op->q = q;
+    // @from 08.05
+    op->row.cols = xcalloc((size_t)(q->width + q->naggs + q->s->ngroup) + 1, sizeof(Value));
+    op->keys = xcalloc((size_t)q->s->ngroup + 1, sizeof(Value));
+    // @else
+    // op->row.cols = xcalloc((size_t)(q->width + q->naggs) + 1, sizeof(Value));
+    // @end
+    op->grp.cols = xcalloc((size_t)q->width + 1, sizeof(Value));
+    Buf b = {0};
+    for (int k = 0; k < q->naggs; k++) {
+        const char *s = expr_text(&db->stmt, q->aggs[k].call);
+        if (k)
+            buf_put(&b, ", ", 2);
+        buf_put(&b, s, strlen(s));
+        agg_clear(&q->aggs[k]);
+    }
+    // @from 08.05
+    for (int j = 0; j < q->s->ngroup; j++) {
+        const char *s = expr_text(&db->stmt, q->s->group[j]);
+        buf_put(&b, j ? ", " : b.n ? " by " : "by ", j ? 2 : b.n ? 4 : 3);
+        buf_put(&b, s, strlen(s));
+    }
+    // @end
+    op->detail = b.n ? arena_strndup(&db->stmt, (const char *)b.p, b.n) : NULL;
+    buf_free(&b);
+    return op;
+}
+
+/* Frees what op_aggregate() and the aggregates' state hold. */
+static void aggregate_free(Op *op)
+{
+    free(op->row.cols);
+    free(op->grp.cols);
+    arena_free(&op->grpa);
+    arena_free(&op->outa);
+    // @from 08.05
+    free(op->keys);
+    arena_free(&op->keya);
+    // @end
+    for (int k = 0; k < op->q->naggs; k++) {
+        Agg *a = &op->q->aggs[k];
+        arena_free(&a->hold);
+        // @from 08.05
+        set_free(a->seen);
+        a->seen = NULL;
+        // @end
+    }
+}
+// @end
+
+// @from 08.05
+/* ------------------------------------------------------------ Distinct (08.05) */
+
+/* Passes on a row only if its result, the values of the result
+ * expressions on it, has not been handed up before: SELECT DISTINCT keeps
+ * the first row of each result, in the order the rows come. */
+static int distinct_next(Op *op, Row **out)
+{
+    for (;;) {
+        int rc = op->child->next(op->child, out);
+        if (rc <= 0)
+            return rc;
+        for (int i = 0; i < op->ndcols; i++)
+            if (eval(op->db, op->dcols[i], *out, &op->dvals[i]) < 0)
+                return -1;
+        if (set_add(op->set, op->dvals))
+            return 1;
+        arena_reset(&op->db->rowa);
+    }
+}
+
+/* Returns the Distinct over child for the result expressions cols. */
+Op *op_distinct(Db *db, Op *child, Expr **cols, int ncols)
+{
+    Op *op = new_op(db, "Distinct", distinct_next);
+    op->child = child;
+    op->dcols = cols;
+    op->ndcols = ncols;
+    op->dvals = xcalloc((size_t)ncols + 1, sizeof(Value));
+    op->set = set_new(ncols);
+    Buf b = {0};
+    for (int i = 0; i < ncols; i++) {
+        const char *s = expr_text(&db->stmt, cols[i]);
+        if (i)
+            buf_put(&b, ", ", 2);
+        buf_put(&b, s, strlen(s));
+    }
+    op->detail = arena_strndup(&db->stmt, (const char *)b.p, b.n);
+    buf_free(&b);
     return op;
 }
 // @end
@@ -1276,6 +1917,337 @@ static int join_order_target(Expr *e, int i, Expr **cols, const char **names, in
     return 0;
 }
 
+// @from 08.04
+/* The aggregate function e calls (AGG_COUNT_STAR ... AGG_MAX), or -1 if e
+ * is no aggregate call; -2 with the error set for an aggregate called
+ * with the wrong number of arguments, or one this engine lacks. count()
+ * is count(*); min() and max() of two or more values are not aggregates
+ * but sqlite3's scalar min and max. */
+static int agg_fn(Expr *e)
+{
+    static const struct { const char *name; int fn; } fns[] = {
+        {"count", AGG_COUNT}, {"sum", AGG_SUM}, {"total", AGG_TOTAL}, {"avg", AGG_AVG},
+        {"min", AGG_MIN}, {"max", AGG_MAX},
+    };
+    if (e->op != E_FUNC)
+        return -1;
+    if (strcasecmp(e->name, "group_concat") == 0 || strcasecmp(e->name, "string_agg") == 0) {
+        err("%s is not supported", e->name);
+        return -2;
+    }
+    for (size_t i = 0; i < sizeof fns / sizeof fns[0]; i++) {
+        if (strcasecmp(e->name, fns[i].name) != 0)
+            continue;
+        if (fns[i].fn == AGG_COUNT && e->nlist == 0)
+            return AGG_COUNT_STAR;
+        if (e->nlist == 1)
+            return fns[i].fn;
+        if ((fns[i].fn == AGG_MIN || fns[i].fn == AGG_MAX) && e->nlist > 1)
+            return -1;
+        err("wrong number of arguments to function %s()", e->name);
+        return -2;
+    }
+    return -1;
+}
+
+/* True if a and b are the same expression, as sqlite3 tells two aggregate
+ * calls apart (expr.c, sqlite3ExprCompare): the same operators, literals
+ * and functions, names bound to the same slot. */
+static int same_expr(Expr *a, Expr *b)
+{
+    if (!a || !b)
+        return a == b;
+    int op = a->op == E_AGG ? E_FUNC : a->op;
+    if (op != (b->op == E_AGG ? E_FUNC : b->op) || a->nlist != b->nlist)
+        return 0;
+    if (op == E_INT || op == E_REAL || op == E_STR || op == E_BLOB)
+        return a->v.type == b->v.type && value_compare(&a->v, &b->v) == 0;
+    if (op == E_COLUMN && a->col != b->col)
+        return 0;
+    if (op == E_FUNC && strcasecmp(a->name, b->name) != 0)
+        return 0;
+    if (a->distinct != b->distinct)  // @from 08.05
+        return 0;  // @from 08.05
+    if (!same_expr(a->a, b->a) || !same_expr(a->b, b->b) || !same_expr(a->c, b->c))
+        return 0;
+    for (int i = 0; i < a->nlist; i++)
+        if (!same_expr(a->list[i], b->list[i]))
+            return 0;
+    return 1;
+}
+
+/* Lists the call e of aggregate function fn in q->aggs, unless the same
+ * call is there already, and returns its number. */
+static int agg_add(Db *db, Query *q, Expr *e, int fn)
+{
+    for (int k = 0; k < q->naggs; k++)
+        if (same_expr(q->aggs[k].call, e))
+            return k;
+    if ((q->naggs & (q->naggs - 1)) == 0) {      /* 0, 1, 2, 4, ...: full, make it twice as big */
+        Agg *aggs = arena_alloc(&db->stmt, (size_t)(q->naggs ? 2 * q->naggs : 1) * sizeof(Agg));
+        if (q->naggs)
+            memcpy(aggs, q->aggs, (size_t)q->naggs * sizeof(Agg));
+        q->aggs = aggs;
+    }
+    Agg *a = &q->aggs[q->naggs];
+    memset(a, 0, sizeof *a);
+    a->fn = fn;
+    a->call = e;
+    a->arg = fn == AGG_COUNT_STAR ? NULL : e->list[0];
+    a->distinct = e->distinct;  // @from 08.05
+    if (fn == AGG_MIN || fn == AGG_MAX)
+        q->minmax = 1;
+    return q->naggs++;
+}
+
+/* Finds the aggregate calls in e, an expression of query q. misuse is NULL
+ * where aggregates may be (what is evaluated above the Aggregate: the
+ * result columns, ORDER BY of an aggregate query), else the error an
+ * aggregate there is, which names it ("misuse of aggregate function %s()"
+ * in WHERE, LIMIT and inside another aggregate). Each call is listed once
+ * in q->aggs (agg_add) and its node becomes E_AGG, read from the slot past
+ * the FROM's values where the Aggregate hands up its answer. Returns 0, or
+ * -1 with the error set. */
+static int find_aggs(Db *db, Query *q, Expr *e, const char *misuse)
+{
+    // @build 08.04 find the aggregates
+    // A node that is E_AGG already was found through a node a result
+    // column shares (ORDER BY 2), or is a copy of one: fine where
+    // aggregates may be, an error where they may not. A call agg_fn()
+    // knows is an aggregate: an error under misuse; else its arguments
+    // are searched with misuse set (an aggregate inside an aggregate is
+    // an error), it is listed, and its node rewritten in place: op E_AGG,
+    // col q->width + its number (name and arguments stay, for EXPLAIN).
+    // Anything else: search its operands and arguments.
+    if (!e)
+        return 0;
+    if (e->op == E_AGG)
+        return misuse ? err(misuse, e->name) : 0;
+    int fn = agg_fn(e);
+    if (fn == -2)
+        return -1;
+    if (fn >= 0) {
+        if (misuse)
+            return err(misuse, e->name);
+        for (int i = 0; i < e->nlist; i++)
+            if (find_aggs(db, q, e->list[i], "misuse of aggregate function %s()") < 0)
+                return -1;
+        // @from 08.05
+        if (e->distinct && e->nlist != 1)
+            return err("DISTINCT aggregates must have exactly one argument");
+        // @end
+        e->col = q->width + agg_add(db, q, e, fn);
+        e->op = E_AGG;
+        return 0;
+    }
+    if (find_aggs(db, q, e->a, misuse) < 0 || find_aggs(db, q, e->b, misuse) < 0 ||
+        find_aggs(db, q, e->c, misuse) < 0)
+        return -1;
+    for (int i = 0; i < e->nlist; i++)
+        if (find_aggs(db, q, e->list[i], misuse) < 0)
+            return -1;
+    return 0;
+    // @end
+}
+
+/* In e, an expression evaluated on the Aggregate's rows, a rowid of the
+ * query's one table becomes the column in the slot it has there (slot),
+ * so that it is NULL for the row an empty input gives, as in sqlite3. The
+ * arguments of an aggregate are left alone: they are evaluated on the
+ * table's own rows. */
+static void rowid_from_slot(Expr *e, int slot)
+{
+    if (!e || e->op == E_AGG)
+        return;
+    if (e->op == E_ROWID) {
+        e->op = E_COLUMN;
+        e->col = slot;
+        e->tcol = TCOL_ROWID;
+        return;
+    }
+    rowid_from_slot(e->a, slot);
+    rowid_from_slot(e->b, slot);
+    rowid_from_slot(e->c, slot);
+    for (int i = 0; i < e->nlist; i++)
+        rowid_from_slot(e->list[i], slot);
+}
+// @end
+
+// @from 08.05
+/* Returns a copy of e, every node of it, in the statement arena. */
+static Expr *copy_expr(Db *db, Expr *e)
+{
+    if (!e)
+        return NULL;
+    Expr *c = arena_alloc(&db->stmt, sizeof *c);
+    *c = *e;
+    c->a = copy_expr(db, e->a);
+    c->b = copy_expr(db, e->b);
+    c->c = copy_expr(db, e->c);
+    if (e->nlist) {
+        c->list = arena_alloc(&db->stmt, (size_t)e->nlist * sizeof(Expr *));
+        for (int i = 0; i < e->nlist; i++)
+            c->list[i] = copy_expr(db, e->list[i]);
+    }
+    return c;
+}
+
+/* In *pe, an expression of GROUP BY or HAVING, a bare name that no table
+ * of the FROM has a column of (nor is a rowid's name) but that is the
+ * alias of a result column becomes a copy of that column's expression,
+ * as sqlite3 reads such a name (resolve.c, lookupName: the alias is the
+ * last place it looks). */
+static void use_aliases(Db *db, Query *q, Expr **pe)
+{
+    Expr *e = *pe;
+    if (!e)
+        return;
+    if (e->op == E_COLUMN && !e->qual && !(q->scope.nfrom && (strcasecmp(e->name, "rowid") == 0 ||
+        strcasecmp(e->name, "oid") == 0 || strcasecmp(e->name, "_rowid_") == 0))) {
+        for (int k = 0; k < q->scope.nfrom; k++) {
+            Table *t = q->scope.from[k].t;
+            for (int c = 0; c < t->ncols; c++)
+                if (strcasecmp(t->cols[c].name, e->name) == 0)
+                    return;
+        }
+        for (int i = 0; i < q->s->ncols; i++) {
+            ResultCol *rc = &q->s->cols[i];
+            if (rc->e && rc->alias && strcasecmp(rc->alias, e->name) == 0) {
+                *pe = copy_expr(db, rc->e);
+                return;
+            }
+        }
+        return;
+    }
+    use_aliases(db, q, &e->a);
+    use_aliases(db, q, &e->b);
+    use_aliases(db, q, &e->c);
+    for (int i = 0; i < e->nlist; i++)
+        use_aliases(db, q, &e->list[i]);
+}
+
+/* Binds q's GROUP BY terms as sqlite3 reads them (resolve.c,
+ * resolveOrderGroupBy): a whole number k is result column k, and there
+ * must be one; anything else is an expression, whose bare names may be
+ * result columns' aliases (use_aliases). A term that is a result column
+ * is a copy of it: the result column is read above the Aggregate, the
+ * term below it. An aggregate in a term is an error. Returns 0, or -1
+ * with the error set. */
+static int group_resolve(Db *db, Query *q)
+{
+    Stmt *s = q->s;
+    for (int i = 0; i < s->ngroup; i++) {
+        Expr *e = s->group[i];
+        if (e->op == E_INT) {
+            if (e->v.i < 1 || e->v.i > q->ncols)
+                return err("%d%s GROUP BY term out of range - should be between 1 and %d", i + 1, ordinal(i + 1),
+                           q->ncols);
+            s->group[i] = copy_expr(db, q->cols[e->v.i - 1]);
+        } else {
+            use_aliases(db, q, &s->group[i]);
+            if (resolve_names(db, s->group[i], &q->scope) < 0)
+                return -1;
+        }
+        if (find_aggs(db, q, s->group[i], "aggregate functions are not allowed in the GROUP BY clause") < 0)
+            return -1;
+    }
+    return 0;
+}
+
+/* A result column that is the same expression as a GROUP BY term, and more
+ * than a column's name, shows that term's value on the group's first row,
+ * which the Aggregate hands up after the aggregates' answers: sqlite3
+ * points such a column at the register holding the group's key (select.c,
+ * sqlite3ExprToRegister). It differs from evaluating the column on the
+ * group's own row only when a min() or max() made a later row that, and
+ * the key looks different there (1.0 against 1). Call it with every
+ * aggregate found. */
+static void group_keys(Db *db, Query *q)
+{
+    Stmt *s = q->s;
+    for (int j = 0; j < s->ngroup; j++) {
+        int col = -1;
+        for (int i = 0; i < q->ncols; i++)
+            if (same_expr(s->group[j], q->cols[i]))
+                col = i;                  /* the last one, as resolveOrderGroupBy() does */
+        if (col < 0 || q->cols[col]->op == E_COLUMN || q->cols[col]->op == E_ROWID)
+            continue;
+        Expr *k = arena_alloc(&db->stmt, sizeof *k);
+        k->op = E_COLUMN;
+        k->name = expr_text(&db->stmt, q->cols[col]);
+        k->col = q->width + q->naggs + j;
+        k->aff = q->cols[col]->aff;
+        q->cols[col] = k;
+    }
+}
+// @end
+
+// @from 08.04
+// @from 08.05
+/* Finds q's aggregates (find_aggs) and decides whether q is an aggregate
+ * query: it is if its result columns call an aggregate, or it has GROUP
+ * BY (group_resolve binds its terms). Its ORDER BY may call aggregates
+ * then (and HAVING, which only an aggregate query may have), but WHERE,
+ * ON, LIMIT and OFFSET never. The errors are sqlite3's texts: an aggregate
+ * in the ORDER BY of a query that is not an aggregate query, or in an ON
+ * of one that is, gets the shorter "misuse of aggregate: f()". Above the
+ * Aggregate the one table's rowid is read from its slot (rowid_from_slot),
+ * and a result column that is a GROUP BY term from its own (group_keys).
+ * Returns 0, or -1 with the error set. */
+// @else
+// /* Finds q's aggregates (find_aggs) and decides whether q is an aggregate
+//  * query: it is if its result columns call an aggregate. Its ORDER BY may
+//  * call aggregates then, but WHERE, ON, LIMIT and OFFSET never. The errors
+//  * are sqlite3's texts: an aggregate in the ORDER BY of a query that is not
+//  * an aggregate query, or in an ON of one that is, gets the shorter
+//  * "misuse of aggregate: f()". Above the Aggregate the one table's rowid
+//  * is read from its slot (rowid_from_slot). Returns 0, or -1 with the
+//  * error set. */
+// @end
+static int resolve_aggregates(Db *db, Query *q)
+{
+    Stmt *s = q->s;
+    const char *misuse = "misuse of aggregate function %s()", *shorter = "misuse of aggregate: %s()";
+    for (int i = 0; i < q->ncols; i++)
+        if (find_aggs(db, q, q->cols[i], NULL) < 0)
+            return -1;
+    // @from 08.05
+    if (group_resolve(db, q) < 0)
+        return -1;
+    q->aggregate = q->naggs > 0 || s->ngroup > 0;
+    if (s->having) {
+        if (!q->aggregate)
+            return err("HAVING clause on a non-aggregate query");
+        use_aliases(db, q, &s->having);
+        if (resolve_names(db, s->having, &q->scope) < 0 || find_aggs(db, q, s->having, NULL) < 0)
+            return -1;
+    }
+    // @else
+    // q->aggregate = q->naggs > 0;
+    // @end
+    if (find_aggs(db, q, s->where, misuse) < 0)
+        return -1;
+    for (int k = 0; k < q->scope.nfrom; k++)
+        if (find_aggs(db, q, q->scope.from[k].on, q->aggregate ? shorter : misuse) < 0)
+            return -1;
+    for (int i = 0; i < s->norder; i++)
+        if (find_aggs(db, q, s->order[i].e, q->aggregate ? NULL : shorter) < 0)
+            return -1;
+    if (find_aggs(db, q, s->limit, misuse) < 0 || find_aggs(db, q, s->offset, misuse) < 0)
+        return -1;
+    group_keys(db, q);  // @from 08.05
+    if (q->aggregate && q->scope.nfrom == 1) {
+        int slot = q->scope.from[0].t->ncols;
+        for (int i = 0; i < q->ncols; i++)
+            rowid_from_slot(q->cols[i], slot);
+        for (int i = 0; i < s->norder; i++)
+            rowid_from_slot(s->order[i].e, slot);
+        rowid_from_slot(s->having, slot);  // @from 08.05
+    }
+    return 0;
+}
+// @end
+
 /* Makes the SELECT s ready to plan, into q. Binds each FROM item to its
  * table (no such table; a table this engine cannot read is refused) and
  * gives it its place in the joined row: its columns and then its rowid,
@@ -1377,6 +2349,12 @@ static int select_resolve(Db *db, Stmt *s, Scope *outer, Query *q)
         return -1;
     q->cols = cols;
     q->ncols = n;
+    // @from 08.04
+    /* With every name bound: which calls are aggregates, and whether this
+     * is an aggregate query. */
+    if (resolve_aggregates(db, q) < 0)
+        return -1;
+    // @end
     return 0;
 }
 // @end

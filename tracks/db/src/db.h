@@ -317,6 +317,7 @@ enum {
     E_OR, E_AND, E_EQ, E_NE, E_LT, E_LE, E_GT, E_GE, E_IS, E_ISNOT,
     E_ADD, E_SUB, E_MUL, E_DIV, E_REM, E_CONCAT,
     E_ISNULL, E_NOTNULL, E_BETWEEN, E_NOTBETWEEN, E_IN, E_NOTIN, E_LIKE, E_NOTLIKE,
+    E_AGG,                       /* an aggregate call, once found: its answer's slot in the row */ // @from 08.04
     E_FUNC,
 };
 
@@ -334,6 +335,8 @@ typedef struct Expr {
     struct Expr *a, *b, *c;      /* operands; c is BETWEEN's upper bound */
     struct Expr **list;          /* IN list and function arguments */
     int nlist;
+    int star;                    /* f(*), which is f() written for count */ // @from 08.04
+    int distinct;                /* f(DISTINCT x) */ // @from 08.05
 } Expr;
 
 typedef struct ColumnDef {
@@ -420,6 +423,13 @@ typedef struct Stmt {
     /* PRAGMA name [= value] */
     const char *pragma_value;
     const char *sql;             /* CREATE: the text stored in sqlite_schema */
+    // @from 08.05
+    /* SELECT */
+    Expr **group;                /* GROUP BY terms */
+    int ngroup;
+    Expr *having;
+    int distinct;                /* SELECT DISTINCT */
+    // @end
 } Stmt;
 
 typedef struct Parser {
@@ -512,6 +522,7 @@ int eval(struct Db *db, Expr *e, Row *row, Value *out);
 void print_value(FILE *f, const Value *v);
 void format_real(double r, char *buf, size_t n);
 const char *expr_text(Arena *a, Expr *e);  // @from 04.02
+Value sum_operand(const Value *v);        /* what sum() adds for v */ // @from 08.04
 int resolve_expr(Expr *e, Table *t, const char *alias);
 // @from 08.01
 /* The tables a query's names can refer to: its FROM clause. */
@@ -572,7 +583,45 @@ struct Op {
     int have_outer;              /* Join: an outer row is in the first lwidth slots */
     int lwidth;                  /* Join: slots taken by the tables before the inner one */
     // @end
+    // @from 08.04
+    struct Query *q;             /* Aggregate: the query, whose aggregates hold the running state */
+    Row grp;                     /* Aggregate: the group's own row, what a bare column reads */
+    Arena grpa;                  /* Aggregate: grp's text and blobs, kept */
+    Arena outa;                  /* Aggregate: the row handed up, kept until the next call */
+    i64 ingroup;                 /* Aggregate: rows of the current group stepped so far */
+    int hit;                     /* Aggregate: the last min() or max() did not take the last row */
+    // @end
+    // @from 08.05
+    Value *keys;                 /* Aggregate: the GROUP BY values of the group's first row */
+    Arena keya;                  /* Aggregate: their text and blobs, kept */
+    struct Set *set;             /* Distinct: the result rows seen so far */
+    Expr **dcols;                /* Distinct: the result expressions */
+    int ndcols;
+    Value *dvals;                /* Distinct: their values on the row being looked at */
+    // @end
 };
+
+// @from 08.04
+enum { AGG_COUNT_STAR, AGG_COUNT, AGG_SUM, AGG_TOTAL, AGG_AVG, AGG_MIN, AGG_MAX };
+
+/* One aggregate call of a query, and its running state: cleared for each
+ * group, stepped once per row, finished into the group's answer. */
+typedef struct Agg {
+    int fn;                      /* AGG_COUNT_STAR ... AGG_MAX */
+    Expr *call;                  /* the call as written, for EXPLAIN and its name */
+    Expr *arg;                   /* its argument, NULL for count(*) */
+    /* the running state */
+    i64 n;                       /* values counted: count's answer, and how many values sum adds */
+    i64 isum;                    /* sum, total, avg: the sum while every value is an integer */
+    double rsum, rerr;           /* and as a double with its error term once one is not (func.c's SumCtx) */
+    int approx;                  /* a value that is not an integer was added: rsum is the sum */
+    int overflow;                /* the integer sum overflowed (an error for sum, unless a real follows) */
+    Value best;                  /* min, max: the best value so far; V_NULL until one is seen */
+    Arena hold;                  /* best's text or blob, kept */
+    int distinct;                /* f(DISTINCT x) */ // @from 08.05
+    struct Set *seen;            /* DISTINCT: the values this group has stepped */ // @from 08.05
+} Agg;
+// @end
 
 // @from 08.01
 /* A SELECT, bound and ready to plan. */
@@ -582,6 +631,12 @@ typedef struct Query {
     Expr **cols;                 /* the result expressions, * expanded */
     int ncols;
     int width;                   /* values in a row of its FROM: every table's columns and rowid */
+    // @from 08.04
+    Agg *aggs;                   /* the aggregate calls the query makes, each once */
+    int naggs;
+    int aggregate;               /* an aggregate query: a row per group of rows, not per row */
+    int minmax;                  /* it has a min() or max(): the group's row is the row that set it */
+    // @end
 } Query;
 // @end
 
@@ -605,6 +660,7 @@ void explain_tree(struct Db *db, Stmt *s, Plan *plan);
 int plan_select(struct Db *db, Query *q, Plan *plan);
 void explain_join_plan(struct Db *db, Plan *plan);
 // @end
+void explain_select_plan(struct Db *db, Plan *plan);  // @from 08.04
 // @from 05.02
 Op *op_scan(struct Db *db, Table *t, Access *acc);
 // @else
@@ -614,6 +670,8 @@ Op *op_filter(struct Db *db, Op *child, Expr *pred);  // @from 04.02
 Op *op_sort(struct Db *db, Op *child, OrderTerm *order, int norder);  // @from 04.03
 Op *op_limit(struct Db *db, Op *child, i64 limit, i64 offset);  // @from 04.03
 Op *op_join(struct Db *db, Op *left, Op *inner, FromItem *item, Table *left_table, int width);  // @from 08.01
+Op *op_aggregate(struct Db *db, Op *child, Query *q);  // @from 08.04
+Op *op_distinct(struct Db *db, Op *child, Expr **cols, int ncols);  // @from 08.05
 void op_close(Op *op);
 // @end
 
