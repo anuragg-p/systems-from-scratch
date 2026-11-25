@@ -1260,6 +1260,64 @@ Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
   tuple." Its joinquals are the ON, its "otherqual" the WHERE terms pushed
   into the join: the same split as here, kept on one node.
 
+Read and run for the lesson text (the 08.02 writer; SQLite 3.54.1, the
+scratchpad tree, VERSION 3.54.1, manifest.uuid 555e07ef...):
+
+- A correction to the block above: sqlite3WhereEnd jumps to
+  `pLevel->addrFirst` (where.c 7736), which wherecode.c 2831 sets to the
+  address of the "record LEFT JOIN hit" instruction itself, so the NULL
+  row goes back to the hit, not to just after it (the research file's
+  listing agrees: `Goto 0 9`, and 9 is `Integer 1 1`). Setting the flag
+  to 1 there is what stops a second NULL row (`IfPos` at the loop's end).
+- OUTER JOIN strength reduction: select.c 7881-7907, in sqlite3Select's
+  loop over the FROM items: "If terms of the i-th table are used in the
+  WHERE clause in such a way that the i-th table cannot be the NULL row
+  of a join, then perform the appropriate simplification. This is called
+  "OUTER JOIN strength reduction" in the SQLite documentation."; the test
+  `(pItem->fg.jointype & (JT_LEFT|JT_LTORJ))!=0 &&
+  sqlite3ExprImpliesNonNullRow(p->pWhere, pItem->iCursor, ...)`, then
+  `pItem->fg.jointype &= ~(JT_LEFT|JT_OUTER);` and `unsetJoinExpr(...)`.
+  The proof: expr.c sqlite3ExprImpliesNonNullRow (7150), "Return true
+  ... if expression p can only be true if at least one column of table
+  iTab is non-null"; its walker impliesNotNullRow (7019): "False
+  positives ... are deadly, but false-negatives ... is a harmless missed
+  optimization"; TK_ISNULL, TK_IS, TK_FUNCTION, TK_CASE and others end
+  the walk (7032-7048); for AND/OR both sides must imply it (7057).
+  Once JT_LEFT is cleared, whereLoopAddAll (4972) no longer adds the
+  prerequisites that pin the order, so the planner may reorder.
+- sqlite3 3.54.1 on shop.db (EXPLAIN QUERY PLAN): `... LEFT JOIN orders o
+  ON o.customer_id = c.id AND o.total > 25` is `SCAN c`, `BLOOM FILTER ON
+  o (customer_id=?)`, `SEARCH o USING AUTOMATIC PARTIAL COVERING INDEX
+  (customer_id=?) LEFT-JOIN`; the same with `WHERE o.total > 25` is `SCAN
+  o`, `SEARCH c USING INTEGER PRIMARY KEY (rowid=?)` (reduced, then
+  reordered); `WHERE o.id IS NULL`, `WHERE o.total > 25 OR o.id IS NULL`
+  and `WHERE coalesce(o.total, 0) > 25` keep LEFT-JOIN with c outside
+  (the last rejects the NULL row too: a missed reduction, not an error);
+  `LEFT JOIN orders o WHERE o.customer_id = c.id` (the ON moved to WHERE)
+  is reduced and reordered like the second.
+- Fetched for Go deeper: sqlite.org/optoverview.html, section 7 (#joins),
+  "outer joins are neither commutative nor associative and hence will
+  not be reordered"; section 16
+  (#the_outer_join_strength_reduction_optimization), "A LEFT or RIGHT
+  JOIN can be converted into an ordinary (INNER) JOIN ... if there are
+  terms in the WHERE clause that guarantee the same result after
+  simplification"; select.c at tag version-3.54.1 on GitHub shows the
+  code above; nodeNestloop.c at REL_18_7 on GitHub shows the lines of the
+  PostgreSQL bullet above.
+- Run on ./db at 08.02 (sqlite3 gives the same rows): `orders o LEFT JOIN
+  customers c ON c.id = o.customer_id JOIN customers m ON m.city = c.city
+  WHERE o.id >= 14` gives 14|Chen|Ada, 14|Chen|Chen (order 15's NULL row
+  fails the inner ON); with `LEFT JOIN customers m` also 15||; writing
+  the inner join first (`orders o JOIN customers m ON m.city = c.city
+  LEFT JOIN customers c ON ...`) gives the two 14 rows, no 15: an inner
+  ON naming a LEFT JOIN's table is checked above that join either way.
+  With one LEFT and one inner join and the same ONs, the order of the
+  two joins never changes the rows; which table is written first does.
+- The rowid slot, verified: with left_join's NULL loop stopped one short
+  (`i < op->row.ncols - 1`), `SELECT c.name, o.id, o.rowid ...` prints
+  `Dee||15` (the last order the scan read) and `WHERE o.rowid IS NULL`
+  prints nothing; `WHERE o.id IS NULL` still prints Dee.
+
 ### 08.03 An index for the inner loop
 
 Regions: src/plan.c `choose_join_access` "choose how to read the inner
