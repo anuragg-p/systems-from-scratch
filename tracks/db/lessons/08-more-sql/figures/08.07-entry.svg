@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 262" fill="none">
+<title>An entry of the unique index and of an ordinary index on the same column: the same bytes</title>
+<defs><marker id="f0807c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0807c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0807c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">row 3 of users, (3, &#x27;chen@x.io&#x27;, &#x27;Chen&#x27;): its entry in each index, leaf page 3, cell 2, 14 bytes</text>
+<text class="ta" x="24" y="70" font-size="12" font-weight="700" text-anchor="None">UNIQUE</text>
+<text class="tm mono" x="24" y="86" font-size="10.5" text-anchor="None">sqlite_autoindex_users_1</text>
+<text class="tm" x="24" y="101" font-size="10.5">users.db</text>
+<rect class="s f" x="218" y="58" width="40" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="238" y="77" font-size="11.5" text-anchor="middle">0d</text>
+<text class="tm" x="238" y="50" font-size="10.5" text-anchor="middle">size 13</text>
+<rect class="s fs" x="258" y="58" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="275" y="77" font-size="11.5" text-anchor="middle">03</text>
+<text class="tm" x="275" y="50" font-size="10.5" text-anchor="middle">hdr</text>
+<rect class="s fs" x="292" y="58" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="309" y="77" font-size="11.5" text-anchor="middle">1f</text>
+<text class="tm" x="309" y="50" font-size="10.5" text-anchor="middle">email</text>
+<rect class="s fs" x="326" y="58" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="343" y="77" font-size="11.5" text-anchor="middle">01</text>
+<text class="tm" x="343" y="50" font-size="10.5" text-anchor="middle">rowid</text>
+<rect class="a af" x="360" y="58" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="372" y="77" font-size="11.5" text-anchor="middle">63</text>
+<rect class="a af" x="384" y="58" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="396" y="77" font-size="11.5" text-anchor="middle">68</text>
+<rect class="a af" x="408" y="58" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="420" y="77" font-size="11.5" text-anchor="middle">65</text>
+<rect class="a af" x="432" y="58" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="444" y="77" font-size="11.5" text-anchor="middle">6e</text>
+<rect class="a af" x="456" y="58" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="468" y="77" font-size="11.5" text-anchor="middle">40</text>
+<rect class="a af" x="480" y="58" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="492" y="77" font-size="11.5" text-anchor="middle">78</text>
+<rect class="a af" x="504" y="58" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="516" y="77" font-size="11.5" text-anchor="middle">2e</text>
+<rect class="a af" x="528" y="58" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="540" y="77" font-size="11.5" text-anchor="middle">69</text>
+<rect class="a af" x="552" y="58" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="564" y="77" font-size="11.5" text-anchor="middle">6f</text>
+<rect class="a af" x="576" y="58" width="40" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="596" y="77" font-size="11.5" text-anchor="middle">03</text>
+<text class="tm" x="596" y="50" font-size="10.5" text-anchor="middle">rowid 3</text>
+<text class="t" x="24" y="132" font-size="12" font-weight="700" text-anchor="None">ordinary</text>
+<text class="tm mono" x="24" y="148" font-size="10.5" text-anchor="None">users_email</text>
+<text class="tm" x="24" y="163" font-size="10.5">plain.db</text>
+<rect class="s f" x="218" y="120" width="40" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="238" y="139" font-size="11.5" text-anchor="middle">0d</text>
+<rect class="s fs" x="258" y="120" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="275" y="139" font-size="11.5" text-anchor="middle">03</text>
+<rect class="s fs" x="292" y="120" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="309" y="139" font-size="11.5" text-anchor="middle">1f</text>
+<rect class="s fs" x="326" y="120" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="343" y="139" font-size="11.5" text-anchor="middle">01</text>
+<rect class="a af" x="360" y="120" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="372" y="139" font-size="11.5" text-anchor="middle">63</text>
+<rect class="a af" x="384" y="120" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="396" y="139" font-size="11.5" text-anchor="middle">68</text>
+<rect class="a af" x="408" y="120" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="420" y="139" font-size="11.5" text-anchor="middle">65</text>
+<rect class="a af" x="432" y="120" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="444" y="139" font-size="11.5" text-anchor="middle">6e</text>
+<rect class="a af" x="456" y="120" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="468" y="139" font-size="11.5" text-anchor="middle">40</text>
+<rect class="a af" x="480" y="120" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="492" y="139" font-size="11.5" text-anchor="middle">78</text>
+<rect class="a af" x="504" y="120" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="516" y="139" font-size="11.5" text-anchor="middle">2e</text>
+<rect class="a af" x="528" y="120" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="540" y="139" font-size="11.5" text-anchor="middle">69</text>
+<rect class="a af" x="552" y="120" width="24" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="564" y="139" font-size="11.5" text-anchor="middle">6f</text>
+<rect class="a af" x="576" y="120" width="40" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="596" y="139" font-size="11.5" text-anchor="middle">03</text>
+<text class="tm" x="468" y="50" font-size="10.5" text-anchor="middle">&#x27;chen@x.io&#x27;, 9 bytes</text>
+<text class="tm" x="238" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="275" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="309" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="343" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="372" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="396" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="420" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="444" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="468" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="492" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="516" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="540" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="564" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<text class="tm" x="596" y="109" font-size="12" font-weight="600" text-anchor="middle">=</text>
+<path class="a" d="M360 160 L360 166 L576 166 L576 160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M576 160 L576 166 L616 166 L616 160" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="468" y="184" font-size="11" font-weight="600" text-anchor="middle">the key: the email</text>
+<text class="ta" x="616" y="184" font-size="11" font-weight="600" text-anchor="end">then the rowid</text>
+<line class="m" x1="24" y1="202" x2="616" y2="202" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="24" y="222" font-size="11">Nothing in an entry, or in its page, says unique: page 3 is the same in both files, as sqlite3 writes it.</text>
+<text class="tm" x="24" y="240" font-size="10.5">Unique is a check made before each write. The files differ only on page 1, in sqlite_schema: the CREATE</text>
+<text class="tm" x="24" y="255" font-size="10.5">TABLE text, and the index&#x27;s row (its name, and NULL here where users_email&#x27;s row has its CREATE INDEX).</text>
+</svg>

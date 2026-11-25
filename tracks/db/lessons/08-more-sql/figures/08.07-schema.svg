@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 378" fill="none">
+<title>sqlite_schema for users: the table&#x27;s row, and its automatic index&#x27;s row with no sql</title>
+<defs><marker id="f0807b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0807b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0807b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">page 1 of users.db: the two rows of sqlite_schema, as ./db wrote them (sqlite3 reads the same)</text>
+<rect class="s f" x="24" y="36" width="288" height="204" rx="8" stroke-width="1.5"/>
+<text class="t" x="36" y="56" font-size="11.5" font-weight="700" text-anchor="None">row 1</text>
+<text class="tm mono" x="36" y="83" font-size="10.5" text-anchor="None">type</text>
+<rect class="s f" x="100" y="68" width="49" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="124.5" y="81.96" font-size="11" text-anchor="middle">table</text>
+<text class="tm mono" x="36" y="109" font-size="10.5" text-anchor="None">name</text>
+<rect class="s f" x="100" y="94" width="49" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="124.5" y="107.96" font-size="11" text-anchor="middle">users</text>
+<text class="tm mono" x="36" y="135" font-size="10.5" text-anchor="None">tbl_name</text>
+<rect class="s f" x="100" y="120" width="49" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="124.5" y="133.96" font-size="11" text-anchor="middle">users</text>
+<text class="tm mono" x="36" y="161" font-size="10.5" text-anchor="None">rootpage</text>
+<rect class="a af" x="100" y="146" width="28" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="114" y="159.96" font-size="11" text-anchor="middle">2</text>
+<line class="a" x1="132" y1="156" x2="154" y2="156" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0807b-aa)"/>
+<text class="t" x="160" y="160" font-size="10.5">page 2: the table&#x27;s B-tree</text>
+<text class="tm mono" x="36" y="187" font-size="10.5" text-anchor="None">sql</text>
+<rect class="s f" x="100" y="172" width="200" height="56" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="108" y="187" font-size="10.5" text-anchor="None">CREATE TABLE users(id INTEGER</text>
+<text class="t mono" x="108" y="203" font-size="10.5" text-anchor="None">PRIMARY KEY, email TEXT</text>
+<text class="t mono" x="108" y="219" font-size="10.5" text-anchor="None">UNIQUE, name TEXT)</text>
+<rect class="s f" x="328" y="36" width="288" height="204" rx="8" stroke-width="1.5"/>
+<text class="t" x="340" y="56" font-size="11.5" font-weight="700" text-anchor="None">row 2</text>
+<text class="tm mono" x="340" y="83" font-size="10.5" text-anchor="None">type</text>
+<rect class="s f" x="404" y="68" width="49" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="428.5" y="81.96" font-size="11" text-anchor="middle">index</text>
+<text class="tm mono" x="340" y="109" font-size="10.5" text-anchor="None">name</text>
+<rect class="s f" x="404" y="94" width="174.4" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="491.2" y="107.96" font-size="11" text-anchor="middle">sqlite_autoindex_users_1</text>
+<text class="tm mono" x="340" y="135" font-size="10.5" text-anchor="None">tbl_name</text>
+<rect class="s f" x="404" y="120" width="49" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="428.5" y="133.96" font-size="11" text-anchor="middle">users</text>
+<text class="tm mono" x="340" y="161" font-size="10.5" text-anchor="None">rootpage</text>
+<rect class="a af" x="404" y="146" width="28" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="418" y="159.96" font-size="11" text-anchor="middle">3</text>
+<line class="a" x1="436" y1="156" x2="458" y2="156" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0807b-aa)"/>
+<text class="ta" x="464" y="160" font-size="10.5">page 3: the index&#x27;s B-tree</text>
+<text class="tm mono" x="340" y="187" font-size="10.5" text-anchor="None">sql</text>
+<rect class="m f" x="404" y="172" width="60" height="20" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="434" y="185.96" font-size="10" text-anchor="middle">NULL</text>
+<text class="tm" x="476" y="187" font-size="10.5">no CREATE text</text>
+<text class="tm" x="24" y="266" font-size="11">row 2 as stored: its record header ends in serial type 00, a NULL, which takes no bytes</text>
+<rect class="s f" x="24" y="276" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="41" y="295" font-size="11.5" text-anchor="middle">29</text>
+<text class="tm" x="41" y="320" font-size="10.5" text-anchor="middle">size</text>
+<rect class="s f" x="58" y="276" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="75" y="295" font-size="11.5" text-anchor="middle">02</text>
+<text class="tm" x="75" y="320" font-size="10.5" text-anchor="middle">rowid</text>
+<rect class="s fs" x="92" y="276" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="109" y="295" font-size="11.5" text-anchor="middle">06</text>
+<text class="tm" x="109" y="320" font-size="10.5" text-anchor="middle">hdr</text>
+<rect class="s fs" x="126" y="276" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="143" y="295" font-size="11.5" text-anchor="middle">17</text>
+<text class="tm" x="143" y="320" font-size="10.5" text-anchor="middle">type</text>
+<rect class="s fs" x="160" y="276" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="177" y="295" font-size="11.5" text-anchor="middle">3d</text>
+<text class="tm" x="177" y="320" font-size="10.5" text-anchor="middle">name</text>
+<rect class="s fs" x="194" y="276" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="211" y="295" font-size="11.5" text-anchor="middle">17</text>
+<text class="tm" x="211" y="320" font-size="10.5" text-anchor="middle">tbl</text>
+<rect class="s fs" x="228" y="276" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="245" y="295" font-size="11.5" text-anchor="middle">01</text>
+<text class="tm" x="245" y="320" font-size="10.5" text-anchor="middle">root</text>
+<rect class="a af" x="262" y="276" width="34" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="279" y="295" font-size="11.5" text-anchor="middle">00</text>
+<text class="tm" x="279" y="320" font-size="10.5" text-anchor="middle">sql</text>
+<rect class="s f" x="296" y="276" width="50" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="321" y="295" font-size="11.5" text-anchor="middle">index</text>
+<rect class="s f" x="346" y="276" width="184" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="438" y="295" font-size="11.5" text-anchor="middle">sqlite_autoindex_users_1</text>
+<rect class="s f" x="530" y="276" width="50" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="555" y="295" font-size="11.5" text-anchor="middle">users</text>
+<rect class="a af" x="580" y="276" width="32" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="596" y="295" font-size="11.5" text-anchor="middle">03</text>
+<text class="tm" x="454" y="320" font-size="10.5" text-anchor="middle">the values: type, name, tbl_name, rootpage; nothing for sql</text>
+<line class="m" x1="24" y1="334" x2="616" y2="334" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="24" y="354" font-size="11">id INTEGER PRIMARY KEY makes no index (it is the rowid), so email&#x27;s UNIQUE is the table&#x27;s index _1.</text>
+<text class="tm" x="24" y="371" font-size="10.5">At every open the CREATE text is parsed again, its UNIQUE named _1 again, and that name finds this row.</text>
+</svg>
