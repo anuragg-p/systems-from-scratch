@@ -32,7 +32,6 @@ struct Token {
 Token *scan(const char *file, const char *src);
 bool equal(Token *tok, const char *text);           // a keyword or an operator, by its text
 // An error at a place in the source: FILE:LINE:COL: message, and status 1.
-_Noreturn void error_at(int line, int col, const char *fmt, ...);
 _Noreturn void error_tok(Token *tok, const char *fmt, ...);
 
 // @from 01.07
