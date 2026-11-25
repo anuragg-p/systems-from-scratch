@@ -19,7 +19,7 @@ figlib.LESSONS = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os
                               "tracks", "db", "lessons")
 
 MODULES = {"00": "00-workbench", "01": "01-pages", "02": "02-btree", "03": "03-sql", "04": "04-queries",
-           "05": "05-indexes", "06": "06-transactions", "07": "07-fast"}
+           "05": "05-indexes", "06": "06-transactions", "07": "07-fast", "08": "08-more-sql"}
 
 # The pieces: key -> (name, what it does in a few words, x, y, w).
 W, H = 106, 50
@@ -69,6 +69,7 @@ LESSONS = [
     ("07.01", "Reading the benchmark", set(), ALL),
     ("07.02", "Where the time goes", set(), {"btree", "pager", "journal"}),
     ("07.03", "One more optimisation, measured", {"btree"}, None),
+    ("08.07", "UNIQUE: a constraint is an index lookup", {"cat"}, {"cat", "btree"}),
 ]
 
 
