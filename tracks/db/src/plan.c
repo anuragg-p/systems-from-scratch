@@ -382,9 +382,15 @@ static int plan_top(Db *db, Query *q, Plan *plan, Op *op)
     if (q->aggregate) {
         // @from 08.05
         if (s->ngroup) {
+            /* Ascending, unless ORDER BY has as many terms: then each term
+             * takes the direction of the ORDER BY term in its place, as in
+             * sqlite3 (select.c, sqlite3CopySortOrder). It decides the order
+             * of the rows that ORDER BY finds equal. */
             OrderTerm *by = arena_alloc(&db->stmt, (size_t)s->ngroup * sizeof(OrderTerm));
-            for (int j = 0; j < s->ngroup; j++)
+            for (int j = 0; j < s->ngroup; j++) {
                 by[j].e = s->group[j];
+                by[j].desc = s->norder == s->ngroup && s->order[j].desc;
+            }
             op = op_sort(db, op, by, s->ngroup);
         }
         // @end

@@ -41,6 +41,7 @@ CREATE TABLE w(a, b, c); INSERT INTO w VALUES ('w1', NULL, 1), ('w2', 3, 1), ('w
 CREATE TABLE ss(h, x); INSERT INTO ss VALUES (1, 10), (1, 11), (2, 12);
 CREATE TABLE d(x); INSERT INTO d VALUES (1.0), (1), (2), (2), (NULL), (NULL), (3);
 CREATE TABLE d2(x); INSERT INTO d2 VALUES (1), (1.0), (2);
+CREATE TABLE hv(g, x); INSERT INTO hv VALUES (1, 5), (2, 9223372036854775807), (2, 1);
 CREATE TABLE mix(v, n); INSERT INTO mix VALUES (1, 1), ('1', 2), (1.0, 3), (X'31', 4), (NULL, 5), ('a', 6), (2, 7), (NULL, 8),
   (2.0, 9), ('a', 10), (X'31', 11), (-0.0, 12), (0, 13), ('', 14), (9223372036854775807, 15), (9.2233720368547758e18, 16),
   (1.5, 17), (1.5, 18);
@@ -66,6 +67,15 @@ GROUP_QUERIES = [
     "SELECT h, g, count(*) FROM t GROUP BY h, g",
     "SELECT g, count(*) AS n FROM t GROUP BY g ORDER BY count(*) DESC, g LIMIT 2",
     "SELECT g, count(*) FROM t GROUP BY g ORDER BY g DESC",
+    # rows ORDER BY finds equal come in the groups' order, which takes ORDER BY's direction
+    # when the two clauses have as many terms (select.c, sqlite3CopySortOrder)
+    "SELECT g, count(*) FROM t GROUP BY g ORDER BY count(*) DESC",
+    "SELECT g, count(*) FROM t GROUP BY g ORDER BY count(*)",
+    "SELECT g, count(*) FROM t GROUP BY g ORDER BY count(*) DESC LIMIT 2",
+    "SELECT g, count(*) FROM t GROUP BY g HAVING count(*) > 1 ORDER BY count(*) DESC",
+    "SELECT h, x > 2, count(*) FROM t GROUP BY h, x > 2 ORDER BY count(*) DESC, 1 DESC",
+    "SELECT h, x > 2, count(*) FROM t GROUP BY h, x > 2 ORDER BY count(*), 1",
+    "SELECT h, g, count(*) FROM t GROUP BY h, g ORDER BY count(*) DESC",
     "SELECT x % 2 AS parity, count(*) FROM t GROUP BY x % 2",
     "SELECT x % 2 AS parity, count(*) FROM t GROUP BY 1",
     "SELECT x % 2 AS parity, count(*) FROM t GROUP BY parity",
@@ -88,6 +98,19 @@ GROUP_QUERIES = [
     "SELECT g FROM t GROUP BY g HAVING min(h) = 1 AND max(h) = 2",
     "SELECT count(*), sum(x) FROM t HAVING sum(x) > 20",
     "SELECT count(*), sum(x) FROM t WHERE 0 HAVING count(*) = 0",
+    # a HAVING term that reads only GROUP BY terms and constants is checked on the rows, in
+    # WHERE (select.c, havingToWhere): a group it rules out is never finished, and only the
+    # rows it keeps are counted (found by the fuzzer, seed 2, cases 1287 and 2335)
+    "SELECT g, sum(x) FROM hv GROUP BY g HAVING g = 1",
+    "SELECT g, sum(x) FROM hv GROUP BY g HAVING g = 1 AND count(*) > 0",
+    "SELECT g, sum(x) FROM hv GROUP BY g HAVING sum(x) > 0 AND g < 2",
+    "SELECT g, sum(x) FROM hv GROUP BY g HAVING 0.0",
+    "SELECT g, sum(x) FROM hv GROUP BY g HAVING NULL",
+    "SELECT g FROM hv GROUP BY g HAVING g = 2 OR count(*) = 1",
+    "SELECT v, count(*), min(w) FROM k GROUP BY v HAVING typeof(v) = 'integer'",
+    "SELECT v, count(*), min(w) FROM k GROUP BY v HAVING typeof(v) = 'real'",
+    "SELECT v, count(*) FROM k GROUP BY v HAVING v + 0 = 1 AND count(*) > 0",
+    "SELECT g, h, count(*) FROM t GROUP BY g, h HAVING h = 2 AND g IS NOT NULL AND count(*) = 1",
     # groups of groups: no aggregate, aggregates only in ORDER BY or HAVING, keys not shown
     "SELECT g FROM t GROUP BY g",
     "SELECT h FROM t GROUP BY h, g ORDER BY h, g",
@@ -219,6 +242,8 @@ ERRORS = [
     ("SELECT count(DISTINCT) FROM p", "DISTINCT aggregates must have exactly one argument"),
     ("SELECT g FROM t GROUP BY nope", "no such column: nope"),
     ("SELECT g FROM t GROUP BY g HAVING nope > 1", "no such column: nope"),
+    ("SELECT g, sum(x) FROM hv GROUP BY g HAVING 0", "integer overflow"),
+    ("SELECT g, sum(x) FROM hv GROUP BY g HAVING count(*) = 1", "integer overflow"),
     ("SELECT g FROM t WHERE count(*) > 1 GROUP BY g", "misuse of aggregate function count()"),
     ("SELECT DISTINCT nope FROM t", "no such column: nope"),
     ("SELECT DISTINCT FROM t", 'near "FROM": syntax error'),
@@ -248,7 +273,7 @@ PLANS = [
 EXPLAIN_GROUPS = """Sort by sum(total) DESC
   Filter (count(*) > 1)
     Aggregate count(*), sum(total) by city
-      Sort by city
+      Sort by city DESC
         Filter (o.customer_id = c.id)
           Join
             Scan customers AS c

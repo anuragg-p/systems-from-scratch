@@ -2154,6 +2154,55 @@ static int group_resolve(Db *db, Query *q)
     return 0;
 }
 
+/* True if e reads nothing but GROUP BY terms and constants, so that it has
+ * the same value on every row of a group (expr.c,
+ * sqlite3ExprIsConstantOrGroupBy). */
+static int group_constant(Stmt *s, Expr *e)
+{
+    if (!e)
+        return 1;
+    for (int j = 0; j < s->ngroup; j++)
+        if (same_expr(e, s->group[j]))
+            return 1;
+    if (e->op == E_COLUMN || e->op == E_ROWID || e->op == E_AGG)
+        return 0;
+    if (!group_constant(s, e->a) || !group_constant(s, e->b) || !group_constant(s, e->c))
+        return 0;
+    for (int i = 0; i < e->nlist; i++)
+        if (!group_constant(s, e->list[i]))
+            return 0;
+    return 1;
+}
+
+/* Appends to *out, ANDed, each term of e (split at its ANDs) that is not a
+ * HAVING term sqlite3 checks in WHERE instead: one that reads only GROUP BY
+ * terms and constants and is not the literal 0 (select.c, havingToWhere,
+ * which moves it so an index can find the rows). Those go to the end of
+ * q's WHERE. The rows that come out are the same, but a group the term
+ * rules out is never finished, so its sum cannot overflow, and of a group
+ * whose rows differ in a way the key does not (1 and 1.0) only the rows the
+ * term keeps are counted. */
+static void having_to_where(Db *db, Stmt *s, Expr *e, Expr **out)
+{
+    if (e->op == E_AND) {
+        having_to_where(db, s, e->a, out);
+        having_to_where(db, s, e->b, out);
+        return;
+    }
+    Expr **to = out;
+    if (!(e->op == E_INT && e->v.i == 0) && group_constant(s, e))
+        to = &s->where;
+    if (*to) {
+        Expr *and = arena_alloc(&db->stmt, sizeof *and);
+        and->op = E_AND;
+        and->col = and->aff = -1;
+        and->a = *to;
+        and->b = e;
+        e = and;
+    }
+    *to = e;
+}
+
 /* A result column that is the same expression as a GROUP BY term, and more
  * than a column's name, shows that term's value on the group's first row,
  * which the Aggregate hands up after the aggregates' answers: sqlite3
@@ -2221,6 +2270,11 @@ static int resolve_aggregates(Db *db, Query *q)
         use_aliases(db, q, &s->having);
         if (resolve_names(db, s->having, &q->scope) < 0 || find_aggs(db, q, s->having, NULL) < 0)
             return -1;
+        if (s->ngroup) {
+            Expr *having = s->having;
+            s->having = NULL;
+            having_to_where(db, s, having, &s->having);
+        }
     }
     // @else
     // q->aggregate = q->naggs > 0;
