@@ -1929,13 +1929,16 @@ Facts worth knowing for the text:
 - sqllogictest (run from build/, `--have join,aggregate,groupby,distinct`,
   fetched from the pinned commit, not kept): select1.test 337 records run
   of 1031, select2.test 339 of 1031, select3.test 1051 of 3351 (the rest
-  subqueries and CASE), random/aggregates/slt_good_0..5 52242 of 83887,
-  random/groupby/slt_good_0..5 57902 of 64430 (the rest onlyif mysql,
-  CAST, CASE, nullif, parenthesised and LEFT joins): all passed, and
-  sqlite3's integrity_check ok on every file.
+  subqueries and CASE), random/aggregates/slt_good_0..5 52245 of 83887,
+  random/groupby/slt_good_0..5 57903 of 64430 (the rest onlyif mysql,
+  CAST, CASE, nullif and parenthesised joins): all passed, and sqlite3's
+  integrity_check ok on every file (after 08.02 and 08.03 were merged).
 - The fuzzer (tests/fuzz, features core,join,aggregate,groupby,distinct):
   seeds 1 and 2, 3000 cases each, and seed 5 with a sanitizer build and a
-  two-page cache: no difference after the two fixes above.
+  two-page cache: no difference after the two fixes above. After 08.02 and
+  08.03 were merged: seed 1 again (3000), seed 7 with leftjoin and unique
+  too (1500), seed 8 with leftjoin under the sanitizer and a two-page cache
+  (1000): 0 failing.
 
 Break it (all verified, on a copy of the reference):
 
