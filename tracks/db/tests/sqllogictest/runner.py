@@ -351,6 +351,8 @@ class Plan:
                 if limit is not None and count > limit:
                     break
             if r.kind in ("hash-threshold", "halt", "bad"):
+                if r.kind == "halt" and self._conds(r):
+                    continue            # a halt for another engine: "onlyif mssql" then "halt"
                 self.items.append((r, None, None, None))
                 if r.kind == "halt":
                     break

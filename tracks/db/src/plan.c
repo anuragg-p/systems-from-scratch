@@ -72,18 +72,25 @@ typedef struct Bounds {
 } Bounds;
 
 // @from 08.06
-/* True if comparing column col (or ROWID) with v compares its values as
- * stored, so a lookup of v finds every row the comparison holds for
- * (sqlite3IndexAffinityOk in sqlite3's where.c). A constant has no
- * affinity and never converts the column; a name from the query outside
- * and a scalar subquery have their column's. A numeric one makes a TEXT or
- * BLOB column compare as a number: '5' = 5 holds, which a lookup of 5
- * would miss. v NULL: nothing to compare. */
+/* True if a lookup of v in column col (or ROWID) finds every row for which
+ * comparing col with v holds. The lookup gives v col's affinity
+ * (bound_value()); the comparison gives each side the affinity the pair
+ * calls for (eval_compare()). For v with no affinity, as any constant, that
+ * is col's, and the two agree. From 08.06 v can be a name from the query
+ * outside or a scalar subquery, which have their column's affinity, and
+ * then they differ: when v's is numeric and col's is not ('5' = 5 holds
+ * for a TEXT column, but a lookup of 5 finds no '5'), and when col's is
+ * TEXT and v's BLOB (the comparison keeps v's 5 a number, the lookup makes
+ * it '5'). Such a term is still checked on every row; it does not choose
+ * the rows. v NULL: nothing to compare with. */
 static int same_values(Table *t, int col, Expr *v)
 {
     int aff = col == ROWID ? AFF_INTEGER : t->cols[col].affinity;
-    int numeric = aff == AFF_INTEGER || aff == AFF_REAL || aff == AFF_NUMERIC;
-    return !v || numeric || !(v->aff == AFF_INTEGER || v->aff == AFF_REAL || v->aff == AFF_NUMERIC);
+    if (!v || v->aff < 0 || aff == AFF_INTEGER || aff == AFF_REAL || aff == AFF_NUMERIC)
+        return 1;
+    if (v->aff == AFF_INTEGER || v->aff == AFF_REAL || v->aff == AFF_NUMERIC)
+        return 0;
+    return !(aff == AFF_TEXT && v->aff == AFF_BLOB);
 }
 // @end
 

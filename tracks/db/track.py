@@ -41,6 +41,8 @@ Fixtures the lesson tests use:
     keeps_unique(root)  does the project at root keep UNIQUE and PRIMARY KEY
                         constraints (08.07)? A core test that checks the refusal
                         before it checks what 08.07 makes of the same SQL instead
+    has_subqueries(root)
+                        does the project at root run subqueries (08.06)?
 
 Tests are internal. A lesson's test runs the whole engine, so with that
 lesson's code cut out it fails at the stub: "db: NN.LL: ... not written yet".
@@ -247,6 +249,11 @@ def timeline_boot(lesson_id):
         steps += [(JOIN_QUERY, _rows("two|three", "three|four", "four|five"))]
         if k < (8, 2):
             steps += [("SELECT * FROM t LEFT JOIN t AS u ON u.id = t.b;", _refused("LEFT JOIN is not supported"))]
+        # 08.06: a subquery run once (IN) and one per row (EXISTS, naming the outer t)
+        if k < (8, 6):
+            steps += [(SUBQUERY_QUERY, _refused("subqueries are not supported"))]
+        else:
+            steps += [(SUBQUERY_QUERY, _rows("two", "four"))]
     # The 08.07 extension: UNIQUE is an index, and a duplicate is refused as sqlite3 refuses it.
     if (3, 3) <= k < (8, 7):
         steps += [("CREATE TABLE u(a UNIQUE, b);", _refused("UNIQUE is not supported"))]
@@ -260,6 +267,9 @@ def timeline_boot(lesson_id):
 
 # 08.01 on: a self-join of the REPL's table t, each row with the row whose id is one more.
 JOIN_QUERY = "SELECT x.a, y.a FROM t AS x JOIN t AS y ON y.id = x.id + 1 ORDER BY x.id;"
+# 08.06 on: the rows of t whose next row is there, and whose b some other row's b exceeds.
+SUBQUERY_QUERY = ("SELECT a FROM t WHERE id + 1 IN (SELECT id FROM t) AND EXISTS (SELECT 1 FROM t AS u WHERE u.b > t.b) "
+                  "ORDER BY id;")
 
 
 def timeline_after(root, lesson_id):
@@ -681,6 +691,16 @@ def keeps_unique(root):
     try:
         with open(os.path.join(root, "src", "schema.c"), errors="replace") as f:
             return "sqlite_autoindex_" in f.read()
+    except OSError:
+        return False
+
+
+def has_subqueries(root):
+    """Does the project at root run subqueries (08.06, an extension)? Before it they are
+    refused ("subqueries are not supported")."""
+    try:
+        with open(os.path.join(root, "src", "parse.c"), errors="replace") as f:
+            return "parse_subquery" in f.read()
     except OSError:
         return False
 

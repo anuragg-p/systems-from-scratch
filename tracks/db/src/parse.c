@@ -48,6 +48,7 @@ void parser_init(Parser *ps, const char *sql, Arena *arena)
     ps->sql = sql;
     ps->z = sql;
     ps->arena = arena;
+    ps->depth = 0;  // @from 08.06
     advance(ps);
 }
 

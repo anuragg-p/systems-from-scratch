@@ -2,4 +2,5 @@
 # Annotate a lesson (README.md, "Verifying a lesson"), make ./learn verify db <id> pass,
 # then delete its line here. ./learn check runs the static checks on every lesson not listed.
 08.01
+08.06
 08.07
