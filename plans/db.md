@@ -65,29 +65,54 @@ crash. Judged with real benchmarks against sqlite3 on the same machine.
 Built one at a time once the core engine is in, because they share files.
 Each gets build regions, internal tests and its own benchmark.
 
-08 A server and an event loop
-  08.01 A blocking TCP server, one client at a time
-  08.02 A wire protocol: framing requests and results
-  08.03 Non-blocking sockets and a poll() loop
-  08.04 kqueue/epoll, timers and slow clients (backpressure)
-  08.05 A client program and a C client library
-  Benchmark: queries/sec and p50/p99 latency with 1, 10 and 100
-  concurrent clients; the blocking server as the baseline.
-09 Many readers, one writer
-  09.01 File locks and what they protect
-  09.02 Readers on a snapshot while a writer commits (WAL)
-  09.03 Checkpoints
-  Benchmark: read throughput while a writer runs.
-10 More SQL
-  10.01 Joins (nested loop, then index nested loop)
-  10.02 Aggregates and GROUP BY
-  10.03 Prepared statements and parameters
-11 Operating it
-  11.01 Backup while running
-  11.02 Replication: shipping the WAL to a follower
-  11.03 Metrics and slow-query logging
+08 More SQL (being built, 2026-11-25; see "Module 08" below)
+  08.01 Two tables in one query: the nested loop join
+  08.02 LEFT JOIN: the row with no match
+  08.03 An index for the inner loop
+  08.04 Aggregates: one row from many
+  08.05 GROUP BY, HAVING and DISTINCT
+  08.06 Subqueries: a query inside a query
+  08.07 UNIQUE: a constraint is an index lookup
+Not started, in the order proposed to the owner on 2026-11-25:
+  A planner that counts: ANALYZE and sqlite_stat1, cost estimates, join
+    order, pushing work down (needs 08's joins)
+  Fast, part two (more lessons in 07): freeblocks instead of rewriting a
+    page on delete, a sorted bulk index build
+  Many readers, one writer: file locks, readers on a snapshot while a
+    writer commits (WAL), checkpoints under load. Benchmark: read
+    throughput while a writer runs.
+  A server and an event loop: a blocking TCP server, a wire protocol,
+    non-blocking sockets and poll(), kqueue/epoll with timers and slow
+    clients, a client library, prepared statements and parameters.
+    Benchmark: queries/sec and p50/p99 latency with 1, 10 and 100 clients.
+    This is the only async work in the plan; the engine has none today.
+  Operating it: backup while running, shipping the WAL to a follower,
+    metrics and slow-query logging.
 
-Order: 08 first (it is what makes the engine a service), then 10, 09, 11.
+Order changed from the first plan (server first): a server on an engine
+that cannot join two tables shows sockets, not a database.
+
+## Module 08 (More SQL): how it is being built
+
+- Design by Fable, from SQLite 3.54.1's and PostgreSQL 18's source (read
+  at the tags, with real sqlite3 runs); code, lessons and art by Opus
+  agents. Left out and refused by name: NATURAL/USING, RIGHT and FULL
+  JOIN, subqueries in FROM, views, UNION, window functions, group_concat,
+  INSERT ... SELECT, INSERT OR ..., ON CONFLICT.
+- Decisions: a joined row is every table's values side by side (each table
+  owns ncols + 1 slots, the last its rowid), so eval() does not change;
+  joins run in the order written (choosing an order is the planner
+  module's); a condition is checked as soon as its tables are in the row;
+  GROUP BY sorts, as SQLite always does; DISTINCT uses a hash set and keeps
+  first-seen order, as sqlite3's output does; a subquery that names nothing
+  outside itself runs once; a one-table plain query runs the core's code
+  path unchanged.
+- Tests (the owner, 2026-11-25: everything backed by tests, so a learner
+  never meets a bug): a differential test per lesson against sqlite3,
+  sqllogictest with the module's features no longer skipped, a seeded
+  differential fuzzer (tests/fuzz), a sanitizer build with a two-page
+  cache, check-skeleton, check-timeline, the core lessons' projects byte
+  for byte unchanged, and ./learn verify on every transcript.
 
 ## Benchmarks (fixed workloads, 100k rows unless noted)
 
