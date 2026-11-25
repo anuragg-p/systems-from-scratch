@@ -1260,6 +1260,64 @@ Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
   tuple." Its joinquals are the ON, its "otherqual" the WHERE terms pushed
   into the join: the same split as here, kept on one node.
 
+Read and run for the lesson text (the 08.02 writer; SQLite 3.54.1, the
+scratchpad tree, VERSION 3.54.1, manifest.uuid 555e07ef...):
+
+- A correction to the block above: sqlite3WhereEnd jumps to
+  `pLevel->addrFirst` (where.c 7736), which wherecode.c 2831 sets to the
+  address of the "record LEFT JOIN hit" instruction itself, so the NULL
+  row goes back to the hit, not to just after it (the research file's
+  listing agrees: `Goto 0 9`, and 9 is `Integer 1 1`). Setting the flag
+  to 1 there is what stops a second NULL row (`IfPos` at the loop's end).
+- OUTER JOIN strength reduction: select.c 7881-7907, in sqlite3Select's
+  loop over the FROM items: "If terms of the i-th table are used in the
+  WHERE clause in such a way that the i-th table cannot be the NULL row
+  of a join, then perform the appropriate simplification. This is called
+  "OUTER JOIN strength reduction" in the SQLite documentation."; the test
+  `(pItem->fg.jointype & (JT_LEFT|JT_LTORJ))!=0 &&
+  sqlite3ExprImpliesNonNullRow(p->pWhere, pItem->iCursor, ...)`, then
+  `pItem->fg.jointype &= ~(JT_LEFT|JT_OUTER);` and `unsetJoinExpr(...)`.
+  The proof: expr.c sqlite3ExprImpliesNonNullRow (7150), "Return true
+  ... if expression p can only be true if at least one column of table
+  iTab is non-null"; its walker impliesNotNullRow (7019): "False
+  positives ... are deadly, but false-negatives ... is a harmless missed
+  optimization"; TK_ISNULL, TK_IS, TK_FUNCTION, TK_CASE and others end
+  the walk (7032-7048); for AND/OR both sides must imply it (7057).
+  Once JT_LEFT is cleared, whereLoopAddAll (4972) no longer adds the
+  prerequisites that pin the order, so the planner may reorder.
+- sqlite3 3.54.1 on shop.db (EXPLAIN QUERY PLAN): `... LEFT JOIN orders o
+  ON o.customer_id = c.id AND o.total > 25` is `SCAN c`, `BLOOM FILTER ON
+  o (customer_id=?)`, `SEARCH o USING AUTOMATIC PARTIAL COVERING INDEX
+  (customer_id=?) LEFT-JOIN`; the same with `WHERE o.total > 25` is `SCAN
+  o`, `SEARCH c USING INTEGER PRIMARY KEY (rowid=?)` (reduced, then
+  reordered); `WHERE o.id IS NULL`, `WHERE o.total > 25 OR o.id IS NULL`
+  and `WHERE coalesce(o.total, 0) > 25` keep LEFT-JOIN with c outside
+  (the last rejects the NULL row too: a missed reduction, not an error);
+  `LEFT JOIN orders o WHERE o.customer_id = c.id` (the ON moved to WHERE)
+  is reduced and reordered like the second.
+- Fetched for Go deeper: sqlite.org/optoverview.html, section 7 (#joins),
+  "outer joins are neither commutative nor associative and hence will
+  not be reordered"; section 16
+  (#the_outer_join_strength_reduction_optimization), "A LEFT or RIGHT
+  JOIN can be converted into an ordinary (INNER) JOIN ... if there are
+  terms in the WHERE clause that guarantee the same result after
+  simplification"; select.c at tag version-3.54.1 on GitHub shows the
+  code above; nodeNestloop.c at REL_18_7 on GitHub shows the lines of the
+  PostgreSQL bullet above.
+- Run on ./db at 08.02 (sqlite3 gives the same rows): `orders o LEFT JOIN
+  customers c ON c.id = o.customer_id JOIN customers m ON m.city = c.city
+  WHERE o.id >= 14` gives 14|Chen|Ada, 14|Chen|Chen (order 15's NULL row
+  fails the inner ON); with `LEFT JOIN customers m` also 15||; writing
+  the inner join first (`orders o JOIN customers m ON m.city = c.city
+  LEFT JOIN customers c ON ...`) gives the two 14 rows, no 15: an inner
+  ON naming a LEFT JOIN's table is checked above that join either way.
+  With one LEFT and one inner join and the same ONs, the order of the
+  two joins never changes the rows; which table is written first does.
+- The rowid slot, verified: with left_join's NULL loop stopped one short
+  (`i < op->row.ncols - 1`), `SELECT c.name, o.id, o.rowid ...` prints
+  `Dee||15` (the last order the scan read) and `WHERE o.rowid IS NULL`
+  prints nothing; `WHERE o.id IS NULL` still prints Dee.
+
 ### 08.03 An index for the inner loop
 
 Regions: src/plan.c `choose_join_access` "choose how to read the inner
@@ -1487,6 +1545,513 @@ Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
   (mergejoin, nestloop, hash: its steps 1-4). The choice: an index costs a
   write on every INSERT and lives in the file; a hash table costs a pass
   over the inner table on every query.
+### 08.04 Aggregates: one row from many
+
+Regions: src/exec.c `agg_step` "step: one more row", `agg_finish` "finish:
+the answer", `aggregate_next` "one row from many", `find_aggs` "find the
+aggregates".
+
+Also added (@from 08.04): in db.h E_AGG (before E_FUNC), Expr.star, the
+AGG_ enum and Agg (one call and its running state: n, isum, rsum and rerr,
+approx, overflow, best and its arena), Query.aggs, naggs, aggregate and
+minmax, the Aggregate's Op fields (q, grp, grpa, outa, ingroup, hit), the
+prototypes of op_aggregate, explain_select_plan and sum_operand; in parse.c
+`f(*)` (f with no arguments, as sqlite3 reads it), `f(ALL x)`, and the
+refusals "DISTINCT aggregates are not supported" and "HAVING is not
+supported"; in expr.c sum_operand, E_AGG in eval (a slot, as a column) and
+in expr_write (the call as written, `count(*)` too), eval_func's "misuse
+of aggregate: f()" for a call that was not found as an aggregate; in exec.c
+arena_free, agg_clear, kbn_add, kbn_add_int, kbn_start, take_row,
+group_done, op_aggregate, aggregate_free (from op_close), agg_fn, same_expr,
+agg_add, rowid_from_slot, resolve_aggregates and its call at the end of
+select_resolve; in plan.c plan_top, plan_select's first lines (the core's
+plan_query only for a query of one table with no aggregate) and its tail
+(plan_top), plan_line, explain_select_plan and the dispatch to it at the
+top of explain_query_plan.
+
+Before (08.04 cut out): every SELECT stops, `SELECT 1 + 1;` too, because
+every query looks for aggregates in its result columns:
+
+```
+$ ./db shop.db "SELECT * FROM customers;"
+db: 08.04: find the aggregates not written yet          (exit 3)
+```
+
+Before, in the project at 08.01 (and 08.02, 08.03):
+
+```
+$ ./db shop.db "SELECT count(*) FROM orders;"
+Error: aggregate functions are not supported: count
+```
+
+After (shop.db; sqlite3 3.54.1 prints the same but for reals, 17 digits:
+26.666666666666668):
+
+```
+SELECT count(*), count(customer_id), sum(total), total(total), avg(total), min(total), max(total) FROM orders;
+6|5|160|160.0|26.6666666666667|5|50
+SELECT count(*), sum(total), typeof(sum(total)), avg(total), typeof(avg(total)) FROM orders WHERE total > 1000;
+0||null||null
+SELECT c.name, max(o.total) FROM customers c JOIN orders o ON o.customer_id = c.id;
+Ada|50
+SELECT name, count(*) FROM customers;
+Ada|4
+SELECT rowid, count(*) FROM orders WHERE 0;
+|0
+EXPLAIN SELECT count(*), sum(o.total) FROM customers c JOIN orders o ON o.customer_id = c.id WHERE c.city = 'London';
+Aggregate count(*), sum(o.total)
+  Filter (o.customer_id = c.id)
+    Join
+      Filter (c.city = 'London')
+        Scan customers AS c
+      Scan orders AS o
+EXPLAIN QUERY PLAN SELECT count(*), sum(total) FROM orders WHERE id > 11;
+QUERY PLAN
+`--SEARCH orders USING INTEGER PRIMARY KEY (rowid>?)
+```
+
+Errors, ./db and sqlite3 alike (sqlite3 prefixes "Parse error"):
+
+```
+SELECT count(*) FROM orders WHERE count(*) > 1;     Error: misuse of aggregate function count()
+SELECT max(count(*)) FROM orders;                   Error: misuse of aggregate function count()
+SELECT count(total, id) FROM orders;                Error: wrong number of arguments to function count()
+SELECT id FROM orders ORDER BY count(*);            Error: misuse of aggregate: count()
+SELECT sum(x) FROM big;                             Error: integer overflow     (big: 9223372036854775807, 1)
+```
+
+The shorter "misuse of aggregate: f()" is sqlite3's for an aggregate it
+meets while coding a query that is not an aggregate query (expr.c), and for
+one in the ON of a query that is (sqlite3 does not resolve ON with the
+WHERE clause's rules there; run, not read); "misuse of aggregate function
+f()" for WHERE, LIMIT, OFFSET, the ON of a query that is not one, and
+inside another aggregate (resolve.c, resolveExprStep: an aggregate's
+arguments are resolved with NC_AllowAgg cleared). The argument count is
+checked first: `count(a, b)` in WHERE is "wrong number of arguments".
+Refused by ./db, run by sqlite3: `group_concat is not supported`,
+`string_agg is not supported`.
+
+The figure 08.04-step.svg, from a run of the reference with a trace after
+each row the Aggregate steps (`SELECT count(*), count(customer_id),
+sum(total) FROM orders;`, rows in rowid order; the group's own row stays
+order 10, the first):
+
+```
+after order 10 (customer 1,    total 30):  count(*) 1  count(customer_id) 1  sum(total) 30
+after order 11 (customer 3,    total 15):  count(*) 2  count(customer_id) 2  sum(total) 45
+after order 12 (customer 1,    total 50):  count(*) 3  count(customer_id) 3  sum(total) 95
+after order 13 (customer 2,    total 20):  count(*) 4  count(customer_id) 4  sum(total) 115
+after order 14 (customer 3,    total 5):   count(*) 5  count(customer_id) 5  sum(total) 120
+after order 15 (customer NULL, total 40):  count(*) 6  count(customer_id) 5  sum(total) 160   (NULL skipped)
+finish: 6|5|160
+```
+
+For 08.04-functions.svg (each from func.c, SQLite 3.54.1; the research
+file, A2, quotes the lines):
+
+| function | state | a step | the finish | empty input |
+|---|---|---|---|---|
+| count(*) | n | n + 1 | n, an integer | 0 |
+| count(x) | n | n + 1 unless x is NULL | n | 0 |
+| sum(x) | isum; rsum, rerr; approx; overflow | add x (NULL: nothing), exactly while all integers | integer, or real once a real or text came; "integer overflow" | NULL |
+| total(x) | as sum | as sum | always a real | 0.0 |
+| avg(x) | as sum, n | as sum | the real sum / n | NULL |
+| min(x), max(x) | best | keep x if it beats best (value_compare); NULL never | best | NULL |
+
+Facts worth knowing for the text:
+
+- The Aggregate's row: the group's own row (the query's width: for orders
+  alone 4 slots, its three columns and its rowid in slot 3), then one slot
+  per aggregate. `count(*)` above is slot 4, `count(customer_id)` 5,
+  `sum(total)` 6: find_aggs rewrote each call into an E_AGG node with that
+  col, so eval() reads it like a column. Two calls written the same share a
+  slot (same_expr: `max(total)` and `MAX(total)` are one), as sqlite3
+  shares them (select.c, the AggInfo; expr.c sqlite3ExprCompare).
+- The group's own row, what a bare column reads (select.c,
+  updateAccumulator, read for this lesson; the research file A5): the
+  first row, unless the query has min() or max(): then each row the last of
+  them in the query took (op->hit is sqlite3's regHit: every min() or max()
+  clears it before its step, minmaxStep sets it when the row does not win,
+  so the last one decides; a NULL while nothing is kept does not set it,
+  so with only NULLs every row is taken and the last row wins). `SELECT a,
+  max(b), min(b) FROM p` gives the min row, `a, min(b), max(b)` the max
+  row. An empty input: all NULL, rowid too (one table's rowid is read from
+  its slot above the Aggregate, rowid_from_slot, for this: `SELECT rowid,
+  count(*) FROM orders WHERE 0` is `|0` in both).
+- The compensated sum is func.c's Kahan-Babushka-Neumaier step, copied:
+  `SELECT sum(x) = 1.0` over ten rows of 0.1 is 1 in both; added one by one
+  it would be 0.99999999999999989. kb (1e100, 1.0, -1e100): 1.0 in both, 0.0
+  added naively. An integer beyond 2^52 goes in as two parts (a multiple of
+  16384 and the rest), so no bit is lost (kahanBabuskaNeumaierStepInt64).
+- sum's types: integers stay an integer (isum, overflow checked); the
+  first value that is not an integer (a real, text that is not all an
+  integer, a blob) switches to the real sum started from isum. Text that is
+  all an integer adds as that integer (sum('12') is 12, an integer); other
+  text adds the number it starts with, or 0 (sum('abc') is 0.0, a real),
+  which is sqlite3_value_numeric_type then sqlite3_value_double
+  (sum_operand). An overflow is an error even if later integers bring the
+  sum back (9223372036854775807, 1, -1); a real after it clears it
+  (9223372036854775807, 1, 0.5 is 9.2233720368547758e+18), as func.c's
+  `p->ovrfl = 0`. total and avg never fail.
+- The error comes at the finish, before any of the row is printed:
+  `SELECT count(*), sum(x) FROM big` prints nothing and the error.
+- No sort for ORDER BY on the one row: sqlite3 drops it too (select.c,
+  `sSort.pOrderBy = 0` after the aggregate without GROUP BY). EXPLAIN QUERY
+  PLAN prints no "USE TEMP B-TREE FOR ORDER BY" in either.
+- Pages: the Aggregate drains its input before its one row, and the
+  statement loop calls pager_shrink only between output rows, so nothing is
+  evicted mid-aggregate (20000 orders with DB_STATS: pages read 61,
+  evictions 0), as for a Sort since 04.03. What the operator keeps across
+  calls to its child (the group's row, min and max) is still copied (keep()
+  into grpa and each Agg's arena): the rows of the child are good until its
+  next call only, and db->rowa is reset after each row.
+- A query of one table with no aggregate still takes plan_query() exactly
+  (design invariant 4): plan_select's first test.
+- Measured (1000 customers, 20000 orders: customer_id = i * 7919 % 1000 + 1,
+  total = i * 37 % 100 + 1): `SELECT count(*), sum(total), avg(total),
+  min(total), max(total) FROM orders` 20000|1010000|50.5|1|100, under 0.01 s
+  in both engines.
+
+Break it (all verified, on a copy of the reference):
+
+1. kbn_add's compensation out (`a->rsum += x.r;` in agg_step for a real):
+   over ten 0.1s `SELECT sum(x), sum(x) = 1.0, total(x), avg(x) FROM tenth`
+   prints `1.0|0|1.0|0.1`: the sum looks right at 15 digits and is not
+   equal to 1.0 (sqlite3: `1.0|1|1.0|0.1`). kb's sum is 0.0, not 1.0.
+2. Take every row as the group's own row (`if (1)` for the take_row test):
+   `SELECT name, count(*) FROM customers` prints `Dee|4` (sqlite3 `Ada|4`),
+   `SELECT a, max(b) FROM p` `fifth|9` (sqlite3 `second|9`), and `SELECT
+   c.name, max(o.total) ...` `Chen|50` (sqlite3 `Ada|50`).
+3. Keep min and max without copying (`a->best = v;`): `SELECT max(name ||
+   '!'), min(city || '?') FROM customers` prints `Dee!  |Oslo?`: the best
+   pointed into db->rowa, which the next row's evaluation overwrote
+   (sqlite3: `Dee!|London?`).
+
+Known differences from sqlite3:
+
+- Reals print with 15 significant digits here, 17 in sqlite3 3.54.1 (avg of
+  the data set: 26.6666666666667 against 26.666666666666668; the sum of
+  three 0.1s: 0.3 against 0.30000000000000004). The values are the same
+  doubles; the tests compare them as numbers.
+- No shortcuts: sqlite3 counts `SELECT count(*) FROM t` with OP_Count on
+  the table's or the smallest index's B-tree (select.c, isSimpleCount), and
+  reads a lone min(x) or max(x) from the end of an index on x
+  (minMaxQuery). EXPLAIN QUERY PLAN says `SEARCH t` for a lone max(x) even
+  with no index, `SCAN t` here; with an index on x a bare column of `SELECT
+  y, max(x)` can come from another row of equal x there (the index holds
+  equal values in rowid order and is read from its end). The OP_Count line
+  names the table, not its alias (select.c, explainSimpleCount): `EXPLAIN
+  QUERY PLAN SELECT count(*) FROM customers AS x` is `SCAN customers` in
+  sqlite3, `SCAN x` here, as for any other aggregate in both.
+- group_concat and string_agg are refused; FILTER, an ORDER BY inside the
+  call and window functions are syntax errors; min() and max() of two or
+  more values are "no such function" (the core has no scalar min or max).
+- `f(*)` for a function that is not an aggregate is "no such function"
+  here, "wrong number of arguments" in sqlite3 (the core's message).
+- An aggregate in UPDATE, DELETE or INSERT is "misuse of aggregate: f()"
+  here (eval_func), "misuse of aggregate function f()" in sqlite3.
+- `SELECT count(*) AS c FROM t WHERE c > 1`: "no such column: c" here (no
+  aliases in WHERE, the core), "misuse of aggregate: count()" in sqlite3.
+
+Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7; the
+research file quotes the lines):
+
+- SQLite keeps no row of slots: AggInfo lists every aggregate call (aFunc,
+  each with a register for its context) and every column the result reads
+  (aCol, the "accumulators"); updateAccumulator emits OP_AggStep per call
+  per row and loads the bare columns unless regHit says not to, and
+  finalizeAggFunctions OP_AggFinal (select.c). The state of each call is
+  an opaque block from sqlite3_aggregate_context(), zeroed, which the
+  step and finish functions of func.c interpret: the empty-input answers
+  come from a finish that finds no context.
+- PostgreSQL's transition state is an ordinary SQL value with a declared
+  type (pg_aggregate.dat): avg(int4) keeps an int8 count and sum and
+  returns numeric, exact; sum(int4) is int8 and cannot overflow; NULLs are
+  skipped by the executor for strict transition functions. And it refuses
+  bare columns (parse_agg.c: must appear in the GROUP BY clause or be used
+  in an aggregate function).
+
+### 08.05 GROUP BY, HAVING and DISTINCT
+
+Regions: src/exec.c `new_group` "a new group starts", `set_add` "a row not
+seen before", `distinct_new` "DISTINCT inside an aggregate".
+
+Also added (@from 08.05): in db.h Stmt.group, ngroup, having and distinct,
+Expr.distinct, Agg.distinct and seen, the Op fields keys and keya
+(Aggregate) and set, dcols, ndcols, dvals (Distinct), op_distinct's
+prototype; in parse.c SELECT DISTINCT, the GROUP BY list and HAVING after
+WHERE, `f(DISTINCT x)`; in expr.c DISTINCT in expr_write; in exec.c the
+set (SetSlot, Set, set_new, set_clear, set_free, set_hash with its
+`@internal` DB_SET_COLLIDE, same_list), three blocks in aggregate_next
+(no rows for GROUP BY over nothing; a row that starts a group finishes the
+last first; a DISTINCT aggregate skips a value it has had), take_row's
+GROUP BY values of a group's first row, group_done's slots for them,
+op_aggregate's "by ..." detail, agg_clear emptying the sets, copy_expr,
+use_aliases, group_resolve, group_constant, having_to_where, group_keys,
+the GROUP BY and HAVING part of resolve_aggregates, distinct_next and
+op_distinct; in plan.c plan_top's Sort on the GROUP BY terms (in ORDER BY's
+directions when the clauses have as many terms), the HAVING Filter and the
+Distinct; explain_select_plan's GROUP BY, DISTINCT and count(DISTINCT)
+lines.
+
+Before (08.05 cut out): plain queries and aggregates run;
+
+```
+$ ./db shop.db "SELECT customer_id, count(*) FROM orders GROUP BY customer_id;"
+db: 08.05: a new group starts not written yet           (exit 3)
+$ ./db shop.db "SELECT DISTINCT city FROM customers;"
+db: 08.05: a row not seen before not written yet        (exit 3)
+$ ./db shop.db "SELECT count(DISTINCT city) FROM customers;"
+db: 08.05: DISTINCT inside an aggregate not written yet (exit 3)
+```
+
+Before, in the project at 08.04: `GROUP BY is not supported`, `HAVING is
+not supported`, `SELECT DISTINCT is not supported`, `DISTINCT aggregates
+are not supported`.
+
+After (shop.db; the same in sqlite3):
+
+```
+SELECT customer_id, count(*), sum(total) FROM orders GROUP BY customer_id;
+|1|40
+1|2|80
+2|1|20
+3|2|20
+SELECT city, count(*), sum(total) FROM customers c JOIN orders o ON o.customer_id = c.id GROUP BY city HAVING count(*) > 1 ORDER BY 3 DESC;
+London|4|100
+SELECT DISTINCT city FROM customers;
+London
+Paris
+Oslo
+SELECT count(DISTINCT city), count(city) FROM customers;
+3|4
+SELECT count(*) FROM customers HAVING count(*) > 3;
+4
+SELECT customer_id % 2 AS odd, count(*) FROM orders GROUP BY odd;
+|1
+0|1
+1|4
+EXPLAIN SELECT city, count(*), sum(total) FROM customers c JOIN orders o ON o.customer_id = c.id GROUP BY city HAVING count(*) > 1 ORDER BY 3 DESC;
+Sort by sum(total) DESC
+  Filter (count(*) > 1)
+    Aggregate count(*), sum(total) by city
+      Sort by city DESC
+        Filter (o.customer_id = c.id)
+          Join
+            Scan customers AS c
+            Scan orders AS o
+EXPLAIN QUERY PLAN (the same query)
+QUERY PLAN
+|--SCAN c
+|--SCAN o
+|--USE TEMP B-TREE FOR GROUP BY
+`--USE TEMP B-TREE FOR ORDER BY
+EXPLAIN SELECT DISTINCT city FROM customers ORDER BY city;
+Sort by city
+  Distinct city
+    Scan customers
+EXPLAIN QUERY PLAN SELECT count(DISTINCT city) FROM customers;
+QUERY PLAN
+|--USE TEMP B-TREE FOR count(DISTINCT)
+`--SCAN customers
+EXPLAIN SELECT customer_id, count(*), sum(total) FROM orders GROUP BY customer_id HAVING customer_id IS NOT NULL AND count(*) > 1;
+Filter (count(*) > 1)
+  Aggregate count(*), sum(total) by customer_id
+    Sort by customer_id
+      Filter (customer_id IS NOT NULL)
+        Scan orders
+```
+
+The last one: the HAVING term on the GROUP BY term went down to WHERE
+(below).
+
+Errors, ./db and sqlite3 alike: `aggregate functions are not allowed in
+the GROUP BY clause` (`GROUP BY count(*)`, `GROUP BY 2` when column 2 is
+one, an alias of one), `1st GROUP BY term out of range - should be between
+1 and 2` (`GROUP BY 3`, `GROUP BY 0`, `-1`), `HAVING clause on a
+non-aggregate query`, `DISTINCT aggregates must have exactly one argument`
+(`count(DISTINCT)`), `wrong number of arguments to function count()`
+(`count(DISTINCT a, b)`).
+
+The figure 08.05-groups.svg, from the traced run of `SELECT customer_id,
+count(*), sum(total) FROM orders GROUP BY customer_id;`: the Sort hands up
+the orders by customer_id, NULL first, equal keys in rowid order (the sort
+is stable); the state after each row, and each group's row as the next key
+closes it:
+
+```
+order 15 (NULL, 40):  count 1  sum 40
+                      key changes: group done  |1|40
+order 10 (1, 30):     count 1  sum 30
+order 12 (1, 50):     count 2  sum 80
+                      key changes: group done  1|2|80
+order 13 (2, 20):     count 1  sum 20
+                      key changes: group done  2|1|20
+order 11 (3, 15):     count 1  sum 15
+order 14 (3, 5):      count 2  sum 20
+                      input ends: group done   3|2|20
+```
+
+The figure 08.05-pipeline.svg, rows each operator handed up (counted by a
+traced copy of the reference, the query above with HAVING): Scan customers
+4; Scan orders 24 (6 per customer); Join 24; Filter (o.customer_id = c.id)
+5; Sort by city DESC 5 (Paris: Brook-13; London: Ada-10, Ada-12, Chen-11,
+Chen-14); Aggregate 2 (Paris|1|20, London|4|100); Filter (count(*) > 1) 1;
+Sort by sum(total) DESC 1; the result: London|4|100. (The GROUP BY sort is
+DESC here because ORDER BY has one term, DESC: see below.)
+
+The figure 08.05-distinct.svg: `SELECT DISTINCT city FROM customers` reads
+4 rows; London (Ada) new, Paris new, London (Chen) seen and stopped, Oslo
+new; the set ends with 3 lists; the Distinct hands up 3 rows, in that order.
+
+Facts worth knowing for the text:
+
+- Groups by sorting, the only way SQLite groups (select.c: a sorter, or an
+  index already in that order; no hash anywhere, the research file B1): a
+  Sort on the GROUP BY terms under the Aggregate, which closes a group when
+  a row's key differs (value_compare, so NULLs are one group and come
+  first, 1 and 1.0 are one group, 1 and '1' two). The sort is stable, so a
+  group's rows keep their order, and "the first row" of a group is
+  sqlite3's (its sorter keeps equal keys in insertion order).
+- The GROUP BY sort is ascending, but when ORDER BY has as many terms as
+  GROUP BY each term takes the direction of the ORDER BY term in its place
+  (select.c, sqlite3CopySortOrder: "If p2 exists and p1 and p2 have the
+  same number of terms, then change every term of p1 to have the same sort
+  order as p2"), whether or not the terms match. It shows in the order of
+  rows ORDER BY finds equal: `GROUP BY g ORDER BY count(*) DESC` lists the
+  tied groups b, a, NULL in both engines; ascending grouping would give
+  NULL, a, b. Found while measuring: 20000 orders `GROUP BY total % 10
+  ORDER BY 2 DESC` (every count 2000) came out 0..9 here and 9..0 in
+  sqlite3 until the directions were copied.
+- A HAVING term that reads only GROUP BY terms and constants (and is not
+  the literal 0) is checked in WHERE, on the rows, before grouping
+  (select.c, havingToWhere, with GROUP BY only; expr.c,
+  sqlite3ExprIsConstantOrGroupBy): having_to_where moves it. The rows that
+  come out are the same, except that a group it rules out is never
+  finished (so `sum` cannot overflow in it: found by the fuzzer, seed 2,
+  cases 1287 and 2335), and of a group whose rows differ where the key
+  does not, only the rows the term keeps count: `SELECT v, count(*) FROM k
+  GROUP BY v HAVING typeof(v) = 'integer'` over 1.0 and 1 gives 1|1 in both.
+- GROUP BY terms (resolve.c, resolveOrderGroupBy): a whole number is a
+  result column (1 .. N, else the out-of-range error); any other term is an
+  expression whose bare names are columns first and result aliases only
+  after (lookupName's NC_UEList fallback: `SELECT x % 2 AS h FROM s GROUP
+  BY h` groups by the column h). ORDER BY reads an alias first (the core's
+  order_target). HAVING takes aliases the same way as GROUP BY
+  (use_aliases). A term that is a result column is a copy of it: the term
+  is evaluated on the rows below the Aggregate, the column above it.
+- A result column that is the same expression as a GROUP BY term (and more
+  than a column) shows the term's value on the group's first row, not on
+  the group's own row: sqlite3 points it at the register holding the key
+  (select.c, sqlite3ExprToRegister; the last matching column, as
+  resolveOrderGroupBy keeps the last). group_keys and the key slots after
+  the aggregates do the same. `SELECT v + 0, typeof(v + 0), max(w) FROM k
+  WHERE w < 3 GROUP BY v + 0` (rows 1.0 then 1) prints `1.0|integer|2` in
+  both: the key from the first row, typeof from the max row.
+- DISTINCT: the first row of each distinct result, in the order rows come,
+  which is sqlite3's order with no index (it uses a temporary B-tree as an
+  unordered set: select.c codeDistinct, WHERE_DISTINCT_UNORDERED). Order of
+  work as in sqlite3 (selectInnerLoop): WHERE, groups, HAVING, DISTINCT,
+  ORDER BY, LIMIT and OFFSET.
+- The set: open addressing, a slot per list picked by the hash's low bits,
+  the next free one after it on a collision; it doubles past half full, and
+  goes back to 16 slots when a DISTINCT aggregate's set is emptied for a new
+  group (a set that grew for one big group is not swept whole for each
+  small one after it). The hash is FNV-1a over each value's type and bytes,
+  a real that is a whole number in range hashing as the integer it equals,
+  so 1 and 1.0 meet. The tests run every DISTINCT again with
+  DB_SET_COLLIDE=1 (an `@internal` test aid that folds every hash into four
+  values): 20000 rows, about 8000 distinct, 0.006 s, and 0.086 s with every
+  hash colliding.
+- DISTINCT inside an aggregate: a value steps the aggregate once per group;
+  the first NULL steps it too (count and sum skip it themselves), as
+  sqlite3's OP_Found compares NULLs equal. sum(DISTINCT x) takes its type
+  from whichever of 1 and 1.0 came first (6.0 over 1.0, 1, 2, 2, NULL,
+  NULL, 3; 3 over 1, 1.0, 2). And a value seen before skips the min() or
+  max() step entirely, op->hit included (updateAccumulator jumps past
+  OP_CollSeq as well as OP_AggStep), so the row it is on is taken if the
+  row before was: `SELECT c, a, max(DISTINCT b) FROM w GROUP BY c` gives
+  w6 where `max(b)` gives w4, in both engines.
+- Pages: GROUP BY's Aggregate reads from a Sort, whose rows are copies;
+  the Aggregate keeps the group's row, the first row's key and min and max
+  as copies too, because the statement loop evicts pages every 256 output
+  rows: the tests run 300 groups of rows holding 1000 to 6000-byte text
+  and blobs with a two-page cache. The Distinct keeps a copy of each list
+  (`SELECT DISTINCT v FROM longs` with DB_CACHE_PAGES=2: 300 rows, more
+  than 100 evictions).
+- Measured on the 20000 orders: `GROUP BY customer_id` (1000 groups),
+  `SELECT DISTINCT customer_id` (1000 rows), `count(DISTINCT customer_id),
+  count(DISTINCT total)` (1000|100): each under 0.01 s here and 0.01 to
+  0.03 s in sqlite3; pages read 61 each.
+- sqllogictest (run from build/, `--have join,aggregate,groupby,distinct`,
+  fetched from the pinned commit, not kept): select1.test 337 records run
+  of 1031, select2.test 339 of 1031, select3.test 1051 of 3351 (the rest
+  subqueries and CASE), random/aggregates/slt_good_0..5 52245 of 83887,
+  random/groupby/slt_good_0..5 57903 of 64430 (the rest onlyif mysql,
+  CAST, CASE, nullif and parenthesised joins): all passed, and sqlite3's
+  integrity_check ok on every file (after 08.02 and 08.03 were merged).
+- The fuzzer (tests/fuzz, features core,join,aggregate,groupby,distinct):
+  seeds 1 and 2, 3000 cases each, and seed 5 with a sanitizer build and a
+  two-page cache: no difference after the two fixes above. After 08.02 and
+  08.03 were merged: seed 1 again (3000), seed 7 with leftjoin and unique
+  too (1500), seed 8 with leftjoin under the sanitizer and a two-page cache
+  (1000): 0 failing.
+
+Break it (all verified, on a copy of the reference):
+
+1. Drop the Sort under the Aggregate (plan_top): the groups are the runs
+   the scan happens to give. `SELECT customer_id, count(*), sum(total) FROM
+   orders GROUP BY customer_id` prints six groups of one (1|1|30, 3|1|15,
+   1|1|50, 2|1|20, 3|1|5, |1|40); `GROUP BY city` on customers prints
+   London twice.
+2. Let a NULL key always start a new group (`a.type == V_NULL ||` in
+   new_group): `SELECT g, count(*) FROM t GROUP BY g` prints `|1` twice
+   where sqlite3 prints `|2`.
+3. Hash reals by their bits alone (drop the whole-number case in
+   set_hash): `SELECT DISTINCT v FROM k2` (1, then 1.0) prints both rows,
+   and `count(DISTINCT x), sum(DISTINCT x)` over d gives 4|7.0 (sqlite3
+   3|6.0): equal values in different slots are never compared.
+4. Do not empty the sets for a new group (drop set_clear from agg_clear):
+   `SELECT h, count(DISTINCT g), count(*) FROM t GROUP BY h` gives 2|1|4
+   for h = 2 (sqlite3 2|3|4): values the first group had are not new.
+
+Known differences from sqlite3:
+
+- sqlite3 groups through an index on the GROUP BY terms when there is one,
+  with no sort; a DESC index then gives the groups in descending order
+  with no ORDER BY (the research file B2). ./db always sorts.
+- With an ORDER BY that is the GROUP BY, sqlite3 drops its second sort;
+  ./db always sorts again, so EXPLAIN QUERY PLAN has one more "USE TEMP
+  B-TREE FOR ORDER BY" line (the rows are the same).
+- DISTINCT: sqlite3 reads an index in its order when one fits (the rows
+  then come out sorted) and skips the set when a UNIQUE NOT NULL column
+  or the rowid is in the list; `SELECT DISTINCT x ORDER BY x` it runs as a
+  GROUP BY. The rows are the same here (in first-seen order without ORDER
+  BY), and EXPLAIN QUERY PLAN differs in those cases; for `SELECT DISTINCT
+  1` (no FROM) sqlite3 prints no plan lines at all.
+- No COLLATE (the core): GROUP BY v COLLATE NOCASE is not available.
+- Aliases only as a whole GROUP BY or HAVING name or inside them, not in
+  WHERE (the core) or inside a larger ORDER BY term.
+- For 08.06: an aggregate inside a subquery that reads only the outer
+  query's columns belongs to the outer query in sqlite3; find_aggs never
+  looks into a subquery.
+
+Decide the boundary (from source; the research file, D, quotes them):
+
+- PostgreSQL chooses by cost between sorting and hashing for GROUP BY and
+  for DISTINCT (nodes.h AGG_SORTED, AGG_HASHED, AGG_MIXED; planner.c
+  add_paths_to_grouping_rel and create_final_distinct_paths; nodeUnique.c
+  over sorted input). Its hash aggregate spills to disk past work_mem *
+  hash_mem_multiplier, since 13 (nodeAgg.c, "Spilling To Disk"), and
+  hands groups up in hash-table order. DISTINCT and ORDER BY inside an
+  aggregate it does by sorting each aggregate's input.
+- SQLite always groups by sorting (or by an index), and keeps DISTINCT's
+  rows in an ordered B-tree index used as a set (OP_Found, OP_IdxInsert);
+  ./db groups by sorting like SQLite and keeps DISTINCT's rows in a hash
+  set. A hash set answers "seen?" in constant time on average but holds
+  every distinct row in memory, with no order; the B-tree can spill to
+  disk and keeps the rows sorted.
+
 ### 08.06 Subqueries: a query inside a query
 
 Regions: src/parse.c `parse_subquery` "a SELECT in parentheses"; src/expr.c
@@ -1739,6 +2304,19 @@ Known differences from sqlite3:
   constant").
 - From the core, unchanged: a result alias in WHERE still does not resolve
   (sqlite3 resolves it, in a subquery too).
+- An aggregate whose arguments name only columns of queries around its
+  subquery is refused: "aggregates of a query outside the subquery are not
+  supported: count()". sqlite3 makes it an aggregate of the nearest query
+  it names (resolve.c, the TK_FUNCTION case: while
+  sqlite3ReferencesSrcList() says the call names no table of a name
+  context, op2 counts one more context out), so `SELECT (SELECT
+  count(c.id)) FROM customers c` is one row, 4, there: the outer query
+  becomes an aggregate query because of a call written inside a subquery.
+  Doing that here means finding such calls from the outer query's
+  find_aggs, an E_AGG read from db->outer, and arguments evaluated with
+  their depth one less; left out. An aggregate with no column at all
+  (`count(*)`, `max(1)`) or with one of its own query stays that query's,
+  as in sqlite3.
 
 sqllogictest (runner.py --have subquery,join; select1-3.test fetched from
 the pinned commit c93ac416 into build/, not kept; in1 and in2 are kept):
@@ -1804,6 +2382,76 @@ lookups, inner and LEFT.
 After: seeds 11, 12 and 13 at 4000 cases with all five features, 0
 failing; the same seeds at 1500 cases on an ASan/UBSan build with
 `--db-env DB_CACHE_PAGES=2`, 0 failing.
+
+With 08.04 and 08.05 (merged last; the fuzzer with every feature,
+`core,join,leftjoin,aggregate,groupby,distinct,subquery,unique --n 4000
+--seed 11`, failed 134 cases), each change behind `@from 08.06`:
+
+- find_aggs steps over a subquery, but looks at x of x IN (SELECT ...)
+  (the 08.04 writer's note): a subquery's aggregates are found when it is
+  bound (resolve_subquery -> select_resolve -> resolve_aggregates), so
+  `WHERE total > (SELECT avg(total) FROM orders)` is no misuse, and an
+  aggregate query's result column can hold `(SELECT count(*) ...)`.
+- An aggregate whose arguments name only outer columns is refused by name
+  (outer_aggregate(); "Known differences" above).
+- rowid_from_slot (08.04: an aggregate query's own rowid read from its
+  slot, NULL for an empty input) also turned an outer query's rowid inside
+  the subquery into a slot of the subquery's row: "no such column: rowid"
+  (120 of the 134, as rowid, oid and _rowid_). It leaves a name with depth
+  > 0 alone. Such a name (E_ROWID of a one-table query outside) now knows
+  its slot too (e->col), and eval() reads that slot when the outer row is
+  wider than the table, which only an Aggregate's row is: so `SELECT
+  count(*), (SELECT t.rowid) FROM customers t WHERE 0` is `0|` as in
+  sqlite3, not `0|0` (found by reading; the fuzzer had not met it).
+- A name bound again kept its depth: GROUP BY r0, r0 the alias of
+  `upper(t1.oid)` with t1 outside, is a copy of that bound expression,
+  which group_resolve binds once more; resolve_outer then counted a second
+  step out ("no such column: oid"). resolve_names now sets depth 0 where
+  it finds a name.
+- EXISTS ignores DISTINCT and ORDER BY, as sqlite3 does (select.c,
+  IgnorableDistinct, `p->selFlags &= ~(u32)SF_Distinct`): `NOT EXISTS
+  (SELECT DISTINCT typeof(0.1) FROM t0 ... LIMIT 1 OFFSET 5)` counts all 6
+  rows of t0 there. resolve_subquery clears both for EXISTS.
+- same_expr (08.04: one Agg per distinct call) took any two subqueries for
+  the same expression (it compares operands, and a subquery has none):
+  `max((SELECT 1)), max((SELECT 2))` gave 1, 1. Only copies of one
+  subquery (GROUP BY 1) are the same now. (sqlite3ExprCompare calls any
+  two subqueries different: `if( combinedFlags & EP_xIsSelect ) return
+  2;`.)
+- group_constant (08.05: a HAVING term that reads only GROUP BY terms
+  moves to WHERE) took a subquery for a constant: `GROUP BY customer_id
+  HAVING (SELECT total) > 10` was checked on every row instead of on the
+  group's row (customer 3: 1 row counted, sqlite3 2). A subquery is not
+  constant there (the 08.05 writer's note; sqlite3's
+  exprNodeIsConstantOrGroupBy aborts on any subquery).
+- What the Aggregate and DISTINCT keep was already copied (agg_step's
+  best, the sets, take_row): a correlated subquery's answer in an
+  aggregate's argument or a DISTINCT result survives a two-page cache
+  (BIG_QUERIES in the test, under ASan).
+- An aggregate's answer has no affinity, a column's has: sqlite3 gives
+  `(SELECT max(total) FROM orders) = '50'` 0 and `(SELECT total FROM
+  orders WHERE id = 12) = '50'` 1; so does ./db (E_AGG's aff is -1, which
+  resolve_subquery hands on).
+
+After: seeds 11, 12 and 13 at 4000 cases with every feature, 0 failing;
+the same seeds at 1500 cases on an ASan/UBSan build with `--db-env
+DB_CACHE_PAGES=2`, 0 failing. sqllogictest from build/, `--have
+join,aggregate,groupby,distinct,subquery`:
+
+```
+select1.test                   1031 records:  531 run, all passed; 500 CASE
+select2.test                   1031 records:  550 run, all passed; 481 CASE
+select3.test                   3351 records: 1719 run, all passed; 1632 CASE
+in1.test                        216 records:  107 run, all passed; 65 INSERT ... SELECT, 42 IN with a table name, 2 onlyif mysql
+in2.test                         54 records:   53 run, all passed; 1 onlyif oracle
+random/aggregates/slt_good_0  13922 records: 8706 run, all passed; 3910 onlyif mysql, 1279 CAST, 27 parenthesised joins
+random/aggregates/slt_good_1  14128 records: 8807 run, all passed; 4116 onlyif mysql, 1170 CAST, 35 parenthesised joins
+random/aggregates/slt_good_2  14050 records: 8772 run, all passed; 4038 onlyif mysql, 1220 CAST, 20 parenthesised joins
+random/groupby/slt_good_0     10559 records: 9712 run, all passed; 547 onlyif mysql, 210 CAST, 63 nullif, 27 CASE
+random/groupby/slt_good_1     10718 records: 9609 run, all passed; 706 onlyif mysql, 240 CAST, 114 nullif, 49 CASE
+random/groupby/slt_good_2     10684 records: 9681 run, all passed; 672 onlyif mysql, 236 CAST, 73 nullif, 22 CASE
+the 15 kept scripts, with unique too: 80821 records, 80091 run, all passed
+```
 
 in1.test had never run: runner.py stopped at its `onlyif mssql` / `halt`
 as if the halt were for every engine. Fixed (a halt under onlyif/skipif

@@ -45,14 +45,14 @@ Format: `templates/outline.md`.
 ## Module 01 - Introduction
 
 - Goal: Know what a language implementation is made of, by building a small one of every kind the chapter shows and running one program through each.
-- You build: A small machine and a program in its assembly, the first programs in your own language, an interpreter that runs them from their text, a translator to C, a prompt and a test runner, and then a compiler phase by phase: scanner, parser, semantic analysis, a tree-walking interpreter, a code generator for your machine and an improver.
+- You build: A small machine and a program in its assembly, the first programs in your own language, an interpreter that runs them from their text, a translator to C, a prompt and a checker, and then a compiler phase by phase: scanner, parser, semantic analysis, a tree-walking interpreter, a code generator for your machine and an improver.
 - Value: Your language runs one program five ways that must all agree; every later chapter makes one of these pieces deeper, and the programs written here are the tests the whole track is held to.
 - Lessons:
   - 01.01 A machine, and a program written in its language (the chapter's opening)
   - 01.02 Your language, and the programs you want it to run (sections 1.1 to 1.3)
   - 01.03 An interpreter: the program run from its text (1.4 to Example 1.10)
   - 01.04 A translator: to C, and from there to the machine (1.4 from Example 1.11)
-  - 01.05 The tools around a language: a prompt and a test runner (1.5)
+  - 01.05 The tools around a language: a prompt and a checker (1.5)
   - 01.06 The phases of a compiler, and the first: a scanner (1.6 and the first half of 1.6.1)
   - 01.07 The parser: tokens into a tree (the rest of 1.6.1)
   - 01.08 Semantic analysis: the syntax tree and the symbol table (1.6.2 to Example 1.24)

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 296" fill="none">
+<title>How the inner table is read: three rules, tried in order; the first that matches wins</title>
+<defs><marker id="f0803a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0803a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0803a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm mono" x="24" y="20" font-size="10.5">on shop.db after CREATE INDEX orders_customer ON orders(customer_id);</text>
+<text class="tm" x="24" y="36" font-size="10.5">the rules choose how the table written second is read for each row of the first</text>
+<rect class="a af" x="24" y="48" width="592" height="58" rx="6" stroke-width="1.5"/>
+<circle class="a fa" cx="44" cy="67" r="10" stroke-width="1.5"/>
+<text class="t" x="44" y="71" font-size="11.5" font-weight="700" text-anchor="middle">1</text>
+<text class="t" x="62" y="71" font-size="11.5" font-weight="600">its rowid equals a value from the outer row</text>
+<text class="tm mono" x="62" y="86" font-size="10.5">FROM orders o JOIN customers c ON c.id = o.customer_id</text>
+<text class="ta mono" x="62" y="100" font-size="10.5" font-weight="600">SEARCH c USING INTEGER PRIMARY KEY (rowid=?)</text>
+<rect class="a af" x="24" y="114" width="592" height="58" rx="6" stroke-width="1.5"/>
+<circle class="a fa" cx="44" cy="133" r="10" stroke-width="1.5"/>
+<text class="t" x="44" y="137" font-size="11.5" font-weight="700" text-anchor="middle">2</text>
+<text class="t" x="62" y="137" font-size="11.5" font-weight="600">an index&#x27;s first column equals such a value</text>
+<text class="tm mono" x="62" y="152" font-size="10.5">FROM customers c JOIN orders o ON o.customer_id = c.id</text>
+<text class="ta mono" x="62" y="166" font-size="10.5" font-weight="600">SEARCH o USING INDEX orders_customer (customer_id=?)</text>
+<rect class="s fs" x="24" y="180" width="592" height="58" rx="6" stroke-width="1.5"/>
+<circle class="s f" cx="44" cy="199" r="10" stroke-width="1.5"/>
+<text class="t" x="44" y="203" font-size="11.5" font-weight="700" text-anchor="middle">3</text>
+<text class="t" x="62" y="203" font-size="11.5" font-weight="600">anything else</text>
+<text class="tm mono" x="62" y="218" font-size="10.5">FROM customers c JOIN orders o ON o.customer_id + 0 = c.id</text>
+<text class="t mono" x="62" y="232" font-size="10.5" font-weight="600">SCAN o</text>
+<text class="t" x="24" y="262" font-size="11">ON o.id = c.id AND o.customer_id = c.id fits rules 1 and 2: rule 1 is tried first, so the rowid wins</text>
+<text class="tm" x="24" y="279" font-size="10.5">a LEFT JOIN&#x27;s key must be in its own ON: ON 1 WHERE o.customer_id = c.id gives SCAN o LEFT-JOIN</text>
+</svg>

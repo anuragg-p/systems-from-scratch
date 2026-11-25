@@ -400,7 +400,7 @@ static int reads_at(Expr *e, int d)
 }
 
 /* reads_at() of every expression of the query q: its result columns, WHERE,
- * ONs and ORDER BY (LIMIT and OFFSET can name nothing). */
+ * ONs, ORDER BY, GROUP BY and HAVING (LIMIT and OFFSET can name nothing). */
 static int query_reads(Query *q, int d)
 {
     Stmt *s = q->s;
@@ -417,7 +417,12 @@ static int query_reads(Query *q, int d)
         int ko = reads_at(s->order[i].e, d);
         k = ko > k ? ko : k;
     }
-    return k;
+    for (int i = 0; i < s->ngroup; i++) {
+        int kg = reads_at(s->group[i], d);
+        k = kg > k ? kg : k;
+    }
+    int kh = reads_at(s->having, d);
+    return kh > k ? kh : k;
 }
 
 /* The items of the query subquery e stands in that its SELECT reads (its
@@ -592,23 +597,117 @@ int choose_join_access(Query *q, int k, Expr **terms, int nterms, Access *acc)
 }
 // @end
 
-/* Builds the operator tree for the query q. With one table it is
- * plan_query()'s plan, exactly as before joins came. A join is planned
- * left-deep, in the order the tables are written: a scan of item 0, then
- * for each later item a Join with a scan of it, each condition checked as
- * soon as the row holds every table it names; then a Sort for ORDER BY
- * (always: the planner does not know a join's order), then LIMIT/OFFSET. */
+// @from 08.04
+// @from 08.05
+/* Puts on top of op, which hands up the rows of q's FROM that pass WHERE,
+ * the rest of the query: for an aggregate query the Aggregate (over a
+ * Sort on the GROUP BY terms, which makes each group a run of rows, and
+ * under a Filter for HAVING); a Distinct for SELECT DISTINCT; then a Sort
+ * for ORDER BY (always, but for the one row of an aggregate query without
+ * GROUP BY: the order the rows come in is not known), then LIMIT/OFFSET.
+ * Sets plan->root; returns 0, or -1 with the error set. */
+// @else
+// /* Puts on top of op, which hands up the rows of q's FROM that pass WHERE,
+//  * the rest of the query: for an aggregate query the Aggregate, whose one
+//  * row needs no sort; for any other a Sort for ORDER BY (always: the order
+//  * the rows come in is not known); then LIMIT/OFFSET. Sets plan->root;
+//  * returns 0, or -1 with the error set. */
+// @end
+static int plan_top(Db *db, Query *q, Plan *plan, Op *op)
+{
+    Stmt *s = q->s;
+    if (q->aggregate) {
+        // @from 08.05
+        if (s->ngroup) {
+            /* Ascending, unless ORDER BY has as many terms: then each term
+             * takes the direction of the ORDER BY term in its place, as in
+             * sqlite3 (select.c, sqlite3CopySortOrder). It decides the order
+             * of the rows that ORDER BY finds equal. */
+            OrderTerm *by = arena_alloc(&db->stmt, (size_t)s->ngroup * sizeof(OrderTerm));
+            for (int j = 0; j < s->ngroup; j++) {
+                by[j].e = s->group[j];
+                by[j].desc = s->norder == s->ngroup && s->order[j].desc;
+            }
+            op = op_sort(db, op, by, s->ngroup);
+        }
+        // @end
+        op = op_aggregate(db, op, q);
+        // @from 08.05
+        if (s->having)
+            op = op_filter(db, op, s->having);
+        // @end
+    }
+    // @from 08.05
+    if (s->distinct)
+        op = op_distinct(db, op, q->cols, q->ncols);
+    // @end
+    /* An aggregate query without GROUP BY has one row, which needs no
+     * sort: sqlite3 drops its ORDER BY too (select.c, sSort.pOrderBy = 0). */
+    // @from 08.05
+    if (s->norder && !(q->aggregate && !s->ngroup)) {
+    // @else
+    // if (s->norder && !q->aggregate) {
+    // @end
+        plan->sorted = 1;
+        op = op_sort(db, op, s->order, s->norder);
+    }
+    if (s->limit) {
+        i64 l, o = 0;
+        if (const_int(db, s->limit, &l) < 0 || (s->offset && const_int(db, s->offset, &o) < 0)) {
+            op_close(op);
+            return -1;
+        }
+        op = op_limit(db, op, l, o < 0 ? 0 : o);
+    }
+    plan->root = op;
+    return 0;
+}
+// @end
+
+// @from 08.04
+/* Builds the operator tree for the query q. A query of one table that is
+ * no more than the core's (no aggregate, GROUP BY or DISTINCT) gets
+ * plan_query()'s plan, exactly as before joins came; any other query of
+ * one table gets the scan and filter of that plan, with the rest on top
+ * (plan_top). A join is planned left-deep, in the order the tables are
+ * written: a scan of item 0, then for each later item a Join with a scan
+ * of it, each condition checked as soon as the row holds every table it
+ * names; then the rest (plan_top). */
+// @else
+// /* Builds the operator tree for the query q. With one table it is
+//  * plan_query()'s plan, exactly as before joins came. A join is planned
+//  * left-deep, in the order the tables are written: a scan of item 0, then
+//  * for each later item a Join with a scan of it, each condition checked as
+//  * soon as the row holds every table it names; then a Sort for ORDER BY
+//  * (always: the planner does not know a join's order), then LIMIT/OFFSET. */
+// @end
 int plan_select(Db *db, Query *q, Plan *plan)
 {
     Stmt *s = q->s;
     Scope *sc = &q->scope;
-    if (sc->nfrom <= 1) {
+    // @from 08.04
+    // @from 08.05
+    if (sc->nfrom <= 1 && !q->aggregate && !s->distinct) {
+    // @else
+    // if (sc->nfrom <= 1 && !q->aggregate) {
+    // @end
+    // @else
+    // if (sc->nfrom <= 1) {
+    // @end
         if (plan_query(db, sc->nfrom ? sc->from[0].t : NULL, s->where, s->order, s->norder, s->limit, s->offset,
                        plan) < 0)
             return -1;
         plan->q = q;
         return 0;
     }
+    // @from 08.04
+    if (sc->nfrom <= 1) {
+        if (plan_query(db, sc->nfrom ? sc->from[0].t : NULL, s->where, NULL, 0, NULL, NULL, plan) < 0)
+            return -1;
+        plan->q = q;
+        return plan_top(db, q, plan, plan->root);
+    }
+    // @end
     memset(plan, 0, sizeof *plan);
     plan->q = q;
     plan->jacc = arena_alloc(&db->stmt, (size_t)sc->nfrom * sizeof(Access));
@@ -666,20 +765,24 @@ int plan_select(Db *db, Query *q, Plan *plan)
             op = op_filter(db, op, here);
     }
     // @end
-    if (s->norder) {
-        plan->sorted = 1;
-        op = op_sort(db, op, s->order, s->norder);
-    }
-    if (s->limit) {
-        i64 l, o = 0;
-        if (const_int(db, s->limit, &l) < 0 || (s->offset && const_int(db, s->offset, &o) < 0)) {
-            op_close(op);
-            return -1;
-        }
-        op = op_limit(db, op, l, o < 0 ? 0 : o);
-    }
-    plan->root = op;
-    return 0;
+    // @from 08.04
+    return plan_top(db, q, plan, op);
+    // @else
+    // if (s->norder) {
+    //     plan->sorted = 1;
+    //     op = op_sort(db, op, s->order, s->norder);
+    // }
+    // if (s->limit) {
+    //     i64 l, o = 0;
+    //     if (const_int(db, s->limit, &l) < 0 || (s->offset && const_int(db, s->offset, &o) < 0)) {
+    //         op_close(op);
+    //         return -1;
+    //     }
+    //     op = op_limit(db, op, l, o < 0 ? 0 : o);
+    // }
+    // plan->root = op;
+    // return 0;
+    // @end
 }
 // @end
 
@@ -690,6 +793,16 @@ int plan_select(Db *db, Query *q, Plan *plan)
 void explain_query_plan(Db *db, Stmt *s, Table *t, Plan *plan)
 {
     (void)s;
+    // @from 08.04
+    // @from 08.05
+    if (plan->q && (plan->q->aggregate || plan->q->s->distinct)) {
+    // @else
+    // if (plan->q && plan->q->aggregate) {
+    // @end
+        explain_select_plan(db, plan);
+        return;
+    }
+    // @end
     // @from 08.01
     if (plan->q && plan->q->scope.nfrom > 1) {
         explain_join_plan(db, plan);
@@ -777,6 +890,71 @@ void explain_join_plan(Db *db, Plan *plan)
     if (plan->sorted)
         fprintf(db->out, "`--USE TEMP B-TREE FOR ORDER BY\n");
 }
+
+// @from 08.04
+/* Prints EXPLAIN QUERY PLAN lines one behind: the line held is printed
+ * when the next one comes, so that the last one can be told apart. */
+static void plan_line(Db *db, char *held, size_t n, const char *line)
+{
+    if (held[0])
+        fprintf(db->out, "|--%s\n", held);
+    snprintf(held, n, "%s", line);
+}
+
+// @from 08.05
+/* EXPLAIN QUERY PLAN of a query with aggregates or DISTINCT, in sqlite3's
+ * words and order: with no GROUP BY, first a temporary B-tree for each
+ * DISTINCT aggregate; a line per table of the FROM, named by its alias if
+ * it has one; then the temporary B-trees of GROUP BY (and the DISTINCT
+ * aggregates after it), of SELECT DISTINCT and of ORDER BY. */
+// @else
+// /* EXPLAIN QUERY PLAN of a query with aggregates, in sqlite3's words: a
+//  * line per table of the FROM, named by its alias if it has one. */
+// @end
+void explain_select_plan(Db *db, Plan *plan)
+{
+    Query *q = plan->q;
+    Scope *sc = &q->scope;
+    char held[300] = "", line[300];
+    fprintf(db->out, "QUERY PLAN\n");
+    // @from 08.05
+    static const char *fn_names[] = {"count", "count", "sum", "total", "avg", "min", "max"};
+    Stmt *s = q->s;
+    for (int k = 0; k < q->naggs && !s->ngroup; k++) {
+        if (q->aggs[k].distinct) {
+            snprintf(line, sizeof line, "USE TEMP B-TREE FOR %s(DISTINCT)", fn_names[q->aggs[k].fn]);
+            plan_line(db, held, sizeof held, line);
+        }
+    }
+    // @end
+    if (sc->nfrom == 0)
+        plan_line(db, held, sizeof held, "SCAN CONSTANT ROW");
+    for (int k = 0; k < sc->nfrom; k++) {
+        FromItem *it = &sc->from[k];
+        access_line(line, sizeof line, it->alias ? it->alias : it->t->name, it->t,
+                    sc->nfrom == 1 ? &plan->acc : &plan->jacc[k]);
+        if (it->left)
+            strncat(line, " LEFT-JOIN", sizeof line - strlen(line) - 1);
+        plan_line(db, held, sizeof held, line);
+    }
+    // @from 08.05
+    if (s->ngroup) {
+        plan_line(db, held, sizeof held, "USE TEMP B-TREE FOR GROUP BY");
+        for (int k = 0; k < q->naggs; k++) {
+            if (q->aggs[k].distinct) {
+                snprintf(line, sizeof line, "USE TEMP B-TREE FOR %s(DISTINCT)", fn_names[q->aggs[k].fn]);
+                plan_line(db, held, sizeof held, line);
+            }
+        }
+    }
+    if (s->distinct)
+        plan_line(db, held, sizeof held, "USE TEMP B-TREE FOR DISTINCT");
+    // @end
+    if (plan->sorted)
+        plan_line(db, held, sizeof held, "USE TEMP B-TREE FOR ORDER BY");
+    fprintf(db->out, "`--%s\n", held);
+}
+// @end
 
 /* Prints op and the operators under it, depth levels in: a join's two
  * inputs come under it, its outer side first. */

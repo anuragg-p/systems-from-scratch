@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 518" fill="none">
-<title>Where 01.05 fits: The tools around a language: a prompt and a test runner</title>
+<title>Where 01.05 fits: The tools around a language: a prompt and a checker</title>
 <defs><marker id="map0105-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0105-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0105-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
 <path class="s" d="M249 29 L70 29 L70 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>
 <path class="s" d="M70 151 L70 410" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>

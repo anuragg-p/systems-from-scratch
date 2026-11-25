@@ -13,8 +13,9 @@ runs once (cache hits counted); a correlated one runs per row, and uses an index
 inner column. Tables of thousands of rows with text on overflow pages, under a two-page
 cache, check that nothing a subquery hands back points into an evicted page. Errors are
 sqlite3's; what 08.06 leaves out is refused by name. Then the sqllogictest slice with
-subqueries no longer skipped, and 300 cases of the fuzzer with subqueries, joins and LEFT
-JOINs. Joins and subqueries together: a lookup keyed by a subquery waits for the tables it
+subqueries no longer skipped, and 300 cases of the fuzzer with subqueries and all of
+08.01-08.05. Aggregates and subqueries together: a subquery's own aggregates anywhere, subqueries
+in GROUP BY, HAVING and aggregate arguments; an aggregate of the outer query is refused by name. Joins and subqueries together: a lookup keyed by a subquery waits for the tables it
 reads, and a LEFT JOIN's ON may hold subqueries that read the tables on its left.
 """
 
@@ -173,6 +174,66 @@ JOIN_QUERIES = [
     'SELECT c.name, o.id, ci.country FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND EXISTS (SELECT 1 FROM cities WHERE cities.name = c.city AND (SELECT o.total) > 10) JOIN cities ci ON ci.name = c.city ORDER BY c.id, o.id',
 ]
 
+# Aggregates (08.04-08.05) and subqueries together: a subquery's own aggregates (count, sum,
+# avg, min, max, DISTINCT) in every place a subquery goes; subqueries in GROUP BY, HAVING,
+# an aggregate's argument and DISTINCT; an aggregate's answer has no affinity, a column's has;
+# EXISTS ignores DISTINCT and ORDER BY, as sqlite3 does; HAVING with a subquery stays HAVING.
+AGG_QUERIES = [
+    'SELECT c.name, (SELECT count(*) FROM orders o WHERE o.customer_id = c.id), (SELECT sum(total) FROM orders o WHERE o.customer_id = c.id), (SELECT avg(total) FROM orders o WHERE o.customer_id = c.id) FROM customers c ORDER BY c.id',
+    'SELECT id, total FROM orders WHERE total > (SELECT avg(total) FROM orders) ORDER BY id',
+    'SELECT name FROM customers c WHERE (SELECT count(*) FROM orders o WHERE o.customer_id = c.id) >= 2 ORDER BY id',
+    'SELECT name FROM customers WHERE id IN (SELECT customer_id FROM orders GROUP BY customer_id HAVING count(*) > 1) ORDER BY id',
+    'SELECT name FROM customers WHERE id NOT IN (SELECT customer_id FROM orders GROUP BY customer_id HAVING sum(total) < 50) ORDER BY id',
+    'SELECT name FROM customers c WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id GROUP BY o.customer_id HAVING sum(o.total) > 30) ORDER BY id',
+    'SELECT name FROM customers c WHERE EXISTS (SELECT count(*) FROM orders o WHERE o.customer_id = c.id AND 0) ORDER BY id',
+    'SELECT name FROM customers c WHERE NOT EXISTS (SELECT max(total) FROM orders o WHERE o.customer_id = c.id HAVING max(total) IS NOT NULL) ORDER BY id',
+    'SELECT (SELECT count(*) FROM orders), (SELECT max(total) FROM orders WHERE total < 40), (SELECT min(name) FROM customers), (SELECT total(total) FROM orders WHERE 0), (SELECT count(DISTINCT customer_id) FROM orders)',
+    'SELECT city, count(*), (SELECT count(*) FROM orders) FROM customers GROUP BY city ORDER BY city',
+    'SELECT city, count(*) FROM customers c GROUP BY city HAVING (SELECT count(*) FROM orders o JOIN customers c2 ON c2.id = o.customer_id WHERE c2.city = c.city) > 1 ORDER BY city',
+    'SELECT city, count(*) FROM customers GROUP BY city HAVING count(*) > (SELECT count(*) FROM orders WHERE total > 40) ORDER BY city',
+    'SELECT customer_id, count(*) FROM orders GROUP BY customer_id HAVING (SELECT total) > 20 ORDER BY customer_id',
+    'SELECT customer_id, count(*) FROM orders GROUP BY customer_id HAVING (SELECT total) > 10 ORDER BY customer_id',
+    'SELECT customer_id, count(*), sum(total) FROM orders GROUP BY customer_id HAVING (SELECT total) < 20 OR (SELECT total) = 50 ORDER BY customer_id',
+    'SELECT customer_id, count(*), (SELECT total) FROM orders GROUP BY customer_id ORDER BY customer_id',
+    'SELECT customer_id, max(total), (SELECT name FROM customers WHERE id = customer_id) FROM orders GROUP BY customer_id ORDER BY customer_id',
+    'SELECT (SELECT city FROM customers WHERE id = customer_id) AS city, count(*), sum(total) FROM orders GROUP BY 1 ORDER BY 1',
+    'SELECT (SELECT city FROM customers WHERE id = customer_id) AS city, count(*) FROM orders GROUP BY city ORDER BY city',
+    'SELECT count(*) FROM orders GROUP BY (SELECT city FROM customers WHERE id = customer_id) ORDER BY 1',
+    "SELECT sum((SELECT id FROM customers WHERE id = customer_id)), max((SELECT name FROM customers WHERE id = customer_id)), count((SELECT 1 FROM customers WHERE id = customer_id AND city = 'London')) FROM orders",
+    "SELECT max((SELECT 1)), max((SELECT 2)), min((SELECT 'b')), min((SELECT 'a')) FROM customers",
+    'SELECT count(DISTINCT (SELECT city FROM customers WHERE id = customer_id)) FROM orders',
+    'SELECT DISTINCT (SELECT city FROM customers WHERE id = customer_id) FROM orders ORDER BY 1',
+    "SELECT DISTINCT customer_id IN (SELECT id FROM customers WHERE city = 'London') FROM orders ORDER BY 1",
+    'SELECT c.name FROM customers c ORDER BY (SELECT sum(total) FROM orders o WHERE o.customer_id = c.id) DESC, c.id',
+    'SELECT c.name, o.id FROM customers c JOIN orders o ON o.customer_id = c.id AND o.total = (SELECT max(total) FROM orders o2 WHERE o2.customer_id = c.id) ORDER BY c.id',
+    'SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.total > (SELECT avg(total) FROM orders) ORDER BY c.id, o.id',
+    'SELECT city, (SELECT count(*) FROM customers c2 WHERE c2.city = c.city) FROM customers c GROUP BY city ORDER BY 1',
+    'SELECT count(*), (SELECT count(*) FROM customers c2 WHERE c2.id < 3) FROM customers c WHERE c.id > (SELECT min(customer_id) FROM orders)',
+    'SELECT name FROM customers WHERE id = (SELECT customer_id FROM orders GROUP BY customer_id ORDER BY sum(total) DESC LIMIT 1)',
+    "SELECT (SELECT max(total) FROM orders) = '50', (SELECT total FROM orders WHERE id = 12) = '50', (SELECT min(name) FROM customers) = 'Ada'",
+    'SELECT name FROM customers c WHERE c.id IN (SELECT customer_id FROM orders o GROUP BY customer_id HAVING count(*) = (SELECT count(*) FROM orders o2 WHERE o2.customer_id = c.id)) ORDER BY 1',
+    'SELECT count(*) FROM orders o WHERE EXISTS (SELECT DISTINCT 1 FROM orders o2 WHERE o2.total < o.total ORDER BY 1 LIMIT 1 OFFSET 2)',
+    'SELECT o.id FROM orders o WHERE NOT EXISTS (SELECT DISTINCT o2.customer_id FROM orders o2 WHERE o2.total > o.total LIMIT 1 OFFSET 1) ORDER BY o.id',
+    'SELECT o.id, (SELECT DISTINCT o2.customer_id FROM orders o2 WHERE o2.total > o.total ORDER BY 1 LIMIT 1 OFFSET 1) FROM orders o ORDER BY o.id',
+    'SELECT c.id, (SELECT c.rowid FROM orders GROUP BY customer_id ORDER BY customer_id LIMIT 1), (SELECT count(*) FROM orders o WHERE o.customer_id = c.rowid GROUP BY o.customer_id ORDER BY c.rowid) FROM customers c ORDER BY c.id',
+    'SELECT c.id FROM customers c WHERE c.id IN (SELECT o.customer_id FROM orders o GROUP BY o.customer_id ORDER BY c.oid, o.customer_id) ORDER BY 1',
+    'SELECT c.id, o.id FROM customers c JOIN orders o ON o.customer_id = c.id WHERE o.id IN (SELECT upper(o.oid) AS r FROM orders o3 GROUP BY r) ORDER BY 2',
+    "SELECT c.id, (SELECT upper(c.city) AS r FROM orders o3 GROUP BY r HAVING r > 'M') FROM customers c ORDER BY 1",
+    # the rowid of the one table outside, read above its Aggregate: NULL for no rows
+    "SELECT count(*), (SELECT t.rowid) FROM customers t WHERE 0",
+    "SELECT city, max(id), (SELECT t.rowid), (SELECT t.oid + 1) FROM customers t GROUP BY city ORDER BY 1",
+    "SELECT max(id), (SELECT t._rowid_ * 10) FROM customers t WHERE id > 9",
+    "SELECT DISTINCT (SELECT t.rowid % 2) FROM customers t ORDER BY 1",
+]
+# Writes whose subqueries aggregate the table being written, run in order.
+AGG_WRITES = """UPDATE orders SET total = (SELECT count(*) FROM orders o2 WHERE o2.customer_id = orders.customer_id) * 100 WHERE customer_id IN (SELECT customer_id FROM orders GROUP BY customer_id HAVING count(*) > 1);
+SELECT * FROM orders ORDER BY id;
+DELETE FROM orders WHERE total < (SELECT avg(total) FROM orders);
+SELECT * FROM orders ORDER BY id;
+INSERT INTO orders VALUES ((SELECT max(id) FROM orders) + 1, (SELECT count(*) FROM customers), (SELECT sum(total) FROM orders)), ((SELECT max(id) FROM orders) + 2, NULL, (SELECT count(*) FROM orders));
+SELECT * FROM orders ORDER BY id;
+"""
+
 # Cut down from the fuzzer (tests/fuzz, seed 11, with 08.02-08.03 in): each failed before.
 FUZZED = [
     # a rowid lookup of p14 keyed by a subquery that reads p15 and p16, not in the row yet:
@@ -191,6 +252,20 @@ FUZZED = [
      "CREATE TABLE t2(e REAL, a INTEGER, d REAL);",
      "SELECT p3.a FROM t1 LEFT JOIN t2 p3 ON ((t1.e < p3.rowid) AND (NOT EXISTS (SELECT (10 || p3.e) FROM t1 AS q6 "
      "ORDER BY coalesce(id, X'FF', p3.d) DESC, q6.rowid))) JOIN t0 AS p4"),
+    # with 08.04-08.05 in: an outer one-table query's rowid inside an aggregate subquery was
+    # moved to the subquery's own rowid slot: "no such column: rowid"
+    ("CREATE TABLE t1(z INTEGER PRIMARY KEY, y); INSERT INTO t1 VALUES (NULL, 1.0);",
+     "SELECT (z IN (SELECT DISTINCT rowid FROM t1 AS q16 GROUP BY rowid, y ORDER BY rowid, (t1.rowid IS NOT NULL))) FROM t1"),
+    # GROUP BY r0, r0 the alias of upper(t1.oid): the copy was bound again, a second step out
+    ("CREATE TABLE t1(e PRIMARY KEY); CREATE TABLE t2(d INTEGER PRIMARY KEY); INSERT INTO t2 VALUES (NULL);",
+     "SELECT 1000000000000000.0 FROM t2 LEFT JOIN t1 WHERE (t1.oid NOT IN (SELECT upper(t1.oid) AS r0 FROM t2 AS q16 "
+     "GROUP BY rowid, r0, coalesce(q16.d, q16.rowid, 1.0) HAVING (t1.e = 576) ORDER BY upper(t1.oid), "
+     "(upper(t1.oid) || rowid) DESC, rowid DESC, upper(t1.oid), coalesce(q16.d, q16.rowid, 1.0)))"),
+    # EXISTS of SELECT DISTINCT ... OFFSET 5: sqlite3 counts every row, not the distinct ones
+    ("CREATE TABLE t0(e INTEGER NOT NULL); CREATE TABLE t1(b NUMERIC); "
+     "INSERT INTO t0 VALUES (1000), (1000), (1000), ('2'), ('2'), (1000); INSERT INTO t1 VALUES (1.0);",
+     "SELECT (NOT EXISTS (SELECT DISTINCT typeof(0.1) FROM t0 AS q8 WHERE ((255 = t1.b) OR (t1.b = t0.rowid)) "
+     "ORDER BY 1 DESC LIMIT 1 OFFSET 5)) FROM t1, t0 ORDER BY t0.rowid"),
 ]
 
 # One column of every affinity, each row holding the same "one" spelled another way (an
@@ -314,6 +389,11 @@ ERRORS_ALIKE = [
     "DELETE FROM customers WHERE id IN (SELECT 1, 2)",
     "INSERT INTO customers VALUES (9, (SELECT name), 'x')",
     "CREATE TABLE d(a DEFAULT ((SELECT 1)))",
+    "SELECT city, max(id), (SELECT name FROM customers WHERE id = max(c.id)) FROM customers c GROUP BY city",
+    "SELECT (SELECT count(*) FROM orders WHERE count(*) > 1)",
+    "SELECT (SELECT total FROM orders GROUP BY count(*))",
+    "SELECT name FROM customers WHERE id IN (SELECT customer_id FROM orders HAVING total > 1)",
+    "SELECT (SELECT 1 FROM orders HAVING count(*) > 1 AND total) FROM customers WHERE count(*) > 1",
 ]
 
 # What 08.06 does not build, refused by name (sqlite3 runs each of them).
@@ -321,6 +401,10 @@ REFUSED = [
     ("SELECT (SELECT x FROM (SELECT 1 AS x))", "subqueries in FROM are not supported"),
     ("SELECT name FROM customers WHERE id IN ids", "IN with a table name is not supported"),
     ("SELECT name FROM customers WHERE id NOT IN ids", "IN with a table name is not supported"),
+    ("SELECT (SELECT count(c.id)) FROM customers c",
+     "aggregates of a query outside the subquery are not supported: count()"),
+    ("SELECT (SELECT max(c.id) FROM orders WHERE total > 10) FROM customers c",
+     "aggregates of a query outside the subquery are not supported: max()"),
 ]
 
 # Writes whose subqueries read the table being written: what sqlite3 leaves, read back.
@@ -480,6 +564,13 @@ BIG_QUERIES = [
     "FROM p WHERE p.id % 700 = 0 ORDER BY 1",
     "SELECT p.id, (SELECT q.id FROM q WHERE q.note = (SELECT note FROM q AS q3 WHERE q3.id = p.id % 2000 + 1) ORDER BY q.id LIMIT 1) "
     "FROM p WHERE p.id % 33 = 0 ORDER BY 1",
+    # what a correlated subquery hands back, kept by an Aggregate (min, max, DISTINCT) and by DISTINCT
+    "SELECT q.pk % 7, count(*), max((SELECT p.pad FROM p WHERE p.id = q.pk)), min((SELECT note FROM q AS q2 WHERE q2.id = q.id)) "
+    "FROM q GROUP BY 1 ORDER BY 1",
+    "SELECT DISTINCT (SELECT p.name FROM p WHERE p.id = q.pk) FROM q ORDER BY 1",
+    "SELECT count(DISTINCT (SELECT p.pad FROM p WHERE p.id = q.pk)) FROM q",
+    "SELECT p.k, (SELECT max(note) FROM q WHERE q.pk = p.k), count(*) FROM p GROUP BY p.k "
+    "HAVING (SELECT count(*) FROM q WHERE q.pk = p.k) > 0 ORDER BY 1",
 ]
 
 # Then writes whose subqueries read big tables, the table written among them.
@@ -532,8 +623,12 @@ def test(t):
     r = tr.db(t, a, "SELECT " + "(SELECT " * 65 + "1" + ")" * 65 + ";\n", check=False)
     t.check(r.rc != 0 and "Error: too many levels of subqueries (at most 64)" in r.err, f"65 levels:\n{r}")
 
-    # joins and subqueries together; the fuzzer's cases, cut down
+    # joins and subqueries together; aggregates and subqueries together; the fuzzer's cases, cut down
     compare(t, a, b, listing(JOIN_QUERIES))
+    compare(t, a, b, listing(AGG_QUERIES))
+    a6, b6 = files(t, SHOP)
+    ours, theirs = tr.db(t, a6, AGG_WRITES).out, tr.sqlite(t, b6, AGG_WRITES).out
+    t.check(tr.same_output(ours, theirs), f"writes with aggregate subqueries:\n./db:\n{ours}\nsqlite3:\n{theirs}")
     for setup, q in FUZZED:
         fa, fb = files(t, setup.replace("; ", ";\n") + "\n")
         compare(t, fa, fb, f"{q};\n")
@@ -593,6 +688,7 @@ def test(t):
     t.check(sq == o1, "sqlite3 finds other rows for the EXISTS")
 
     # the sqllogictest slice, with subqueries (and joins) no longer skipped
-    tr.sqllogictest(t, have=("join", "subquery"))
-    # and a quick slice of the fuzzer, with subqueries anywhere it can put them, joins and LEFT JOINs
-    tr.fuzz(t, ("join", "leftjoin", "subquery"), n=300)
+    tr.sqllogictest(t, have=("join", "aggregate", "groupby", "distinct", "subquery"))
+    # and a quick slice of the fuzzer, with subqueries anywhere it can put them, and everything
+    # of module 08 before this lesson
+    tr.fuzz(t, ("join", "leftjoin", "aggregate", "groupby", "distinct", "subquery"), n=300)

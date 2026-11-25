@@ -62,7 +62,7 @@ LESSONS = [
     ("01.02", "Your language, and the programs you want it to run"),
     ("01.03", "An interpreter: the program run from its text"),
     ("01.04", "A translator: to C, and from there to the machine"),
-    ("01.05", "The tools around a language: a prompt and a test runner"),
+    ("01.05", "The tools around a language: a prompt and a checker"),
     ("01.06", "The phases of a compiler, and the first: a scanner"),
     ("01.07", "The parser: tokens into a tree"),
     ("01.08", "Semantic analysis: the syntax tree and the symbol table"),

@@ -321,7 +321,7 @@ $ ./mote0 wide.mote
 18000000126
 ```
 
-### 01.05 The tools around a language: a prompt and a test runner
+### 01.05 The tools around a language: a prompt and a checker
 
 - The prompt holds a block's lines until its end (it counts whiles and ifs against ends by their
   first word), then runs them with run(), the function a file's lines go through. An error
@@ -799,3 +799,175 @@ Other systems, read or run:
   cites the two approaches, the locality, and the factor of five, and says the languages differ.
 - www.cs.rochester.edu/~scott/pragmatics/: the 4th edition's page (Morgan Kaufmann), with the
   contents, errata and where to buy it; the book's text is not there.
+
+## Found while lessons 01.01 to 01.04 were written
+
+On 2026-11-25, on the same Mac (Apple M4 Pro, macOS 26.6.2, Apple clang 21.0.0, arm64). The
+book's files were not opened; what the lessons say of the book is from `plans/lang-01-lessons.md`.
+
+What was read outside, where, and what the lessons state from it:
+
+- The RISC-V unprivileged manual, `src/unpriv/intro.adoc` at main of
+  github.com/riscv/riscv-isa-manual: under "Base Instruction-Length Encoding", the base ISA's
+  instructions are fixed-length, 32 bits, aligned on 32-bit boundaries, and are stored in memory
+  as 16-bit little-endian parcels; under "Memory", a hart has one byte-addressable address space
+  for all memory accesses, and fetching an instruction is a memory read. 01.01: a RISC-V
+  instruction is 4 bytes; a real RISC-V computer keeps the program as numbers in the same memory
+  as its data and fetches each instruction from there by its address.
+- The RISC-V Assembly Programmer's Manual, `src/asm-manual.adoc` at main of
+  github.com/riscv-non-isa/riscv-asm-manual, again: the table "Pseudo Instructions" (section "A
+  listing of standard RISC-V pseudoinstructions"): `mv` is `addi rd, rs, 0`, `j` is `jal x0`,
+  `call` is `auipc x1` then `jalr x1` (two), `ble` is `bge` reversed, `beqz` is `beq rs, x0`; the
+  registers table under "General registers": x0 `zero` (hardwired to 0, ignores writes), x1 `ra`,
+  x2 `sp`, x9 `s1`, x10 `a0`. 01.01 states these.
+- The two repositories' front pages, before linking them in 01.01's Go deeper: the first holds
+  the sources of the RISC-V Instruction Set Manual (unprivileged and privileged volumes), the
+  second is the RISC-V Assembly Programmer's Manual.
+- www.cs.rochester.edu/~scott/pragmatics/: the 4th edition's page (Morgan Kaufmann), with
+  supplementary material, front matter, contents and errata; no full text. Every lesson links it.
+- craftinginterpreters.com/a-map-of-the-territory.html, chapter 2 of Crafting Interpreters, by
+  Robert Nystrom (named in the footer): sections 2.2.1 "Single-pass compilers", 2.2.2 "Tree-walk
+  interpreters", 2.2.3 "Transpilers" (source-to-source, C a common target). 01.03 links it for
+  the first two. 2.2.3 would suit 01.04's Go deeper too; it is not linked there, as the design
+  names no such reference.
+- cppreference.com, C: `c/language/integer_constant` (an unsuffixed decimal constant has the first
+  of int, long, long long that holds it; a leading 0 makes it octal), 01.04;
+  `c/language/operator_arithmetic` (a signed integer overflow is undefined; so is division by
+  zero), 01.01 and 01.04; `c/language/arithmetic_types` ("Data models": LP64 on Linux and macOS,
+  long 64 bits; LLP64 for the Win64 API, long 32 bits; the standard's minimum for long, 32
+  bits), 01.02.
+- gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html: `-fwrapv` makes the compiler assume that
+  signed overflow of addition, subtraction and multiplication wraps around, two's complement.
+  01.04 says GCC documents it and clang accepts it (motec runs clang with it here).
+- gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html: linemarkers, `# linenum filename flags`,
+  say which file and line the text after them came from; comments become spaces and directive
+  lines blank lines. 01.04, on `cc -E`.
+- sourceware.org/binutils/docs/binutils/nm.html (`T`: in the text, code, section; `U`:
+  undefined; lowercase usually local), 01.04; .../objdump.html (`-d`, and `--disassemble=symbol`
+  to start at a symbol and stop at the end of the function), 01.02's Linux command.
+- Arm's description of the A64 instruction CSEL, as rendered with Arm's copyright (release
+  2026-03) at www.scs.stanford.edu/~zyedidia/arm64/csel.html (Arm's own pages showed nothing
+  without scripts): the first source register is written to the destination if the condition
+  holds, else the second. 01.02 says only that the two `csel` pick one of two registers by the
+  last comparison. Not linked.
+
+Run here, shown in the lessons as one computer's output (`verify: skip`):
+
+- `cc -std=c11 -O2 -I. -S -o - programs/gcd.c` (01.02): `i` in x19, `bl _getint`, and a loop with
+  no branch for the if (cmp, two csel, two sub, cmp, b.ne). Apple's `objdump` is LLVM's;
+  `objdump -d --disassemble-symbols=_main gcd` shows 4 bytes an instruction, `bl _getint` as
+  94000013.
+- 01.04's stages on build/gcd.c: `cc -E` (rt.h pasted, its comment lines blank, line markers),
+  `cc -O1 -fwrapv -S` (three `bl`s, to `_getint` twice and `_putint`), `nm build/gcd.o` (`U
+  _getint`, `T _main`, `U _putint`, and two local labels, `t ltmp0`, `s ltmp1`).
+- motec's program for sum.mote has no loop: clang at -O1 works the sum out with a formula (a
+  `mul`, no backward branch). So 01.04 times gcd on `1 10000000` instead of sum: mote0 reads
+  70000004 lines (replayed by a fact), best of three 1.22 s; motec's program 0.010 s.
+- Translated, a division by zero is C's: `read a / b := 0 / write a / b` on 5 printed 5, status 0
+  (clang -O1). Not in the lesson after the trim; 01.04 says only that C leaves it undefined.
+- Translated, `write x / x := 1` prints 0 (the declaration's `= 0`), where mote0 stops with `x has
+  no value yet`; a name never given a value anywhere (`x := y + 1`) is not declared, and the C
+  compiler refuses it (`use of undeclared identifier 'y'`).
+- macOS's cmp says `cmp: EOF on stdin`; 01.02's Break it allows any `cmp: EOF on ...` line.
+
+Replayed in the lessons (exact):
+
+- gcd.s on 6 4 under `--trace`, whole (01.01); 14 instructions (a fact: the indented lines).
+- mote0's 88 lines for gcd on 1071 462: 3 before the loop, 7 on each of the 11 passes (the other
+  arm's lines are read to skip them), 7 to leave (the while line and the six read past), the
+  write. Each of lines 4 to 10 is read 12 times. A comment line in the loop: 100 (01.03).
+- `read i read j` on one line: mote0 says `expected the end of the line`; `x := 1 +` in an if
+  not taken: mote0 runs the program and never sees it (01.03).
+- The breaks. 01.01: labels as one pass would see them (`if (l && l->address > 4L * i) l =
+  NULL;` after the lookup): `machine: programs/gcd.s:9: no label 'done'`. 01.02: putint without
+  its line end: cmp reports EOF, status 1. 01.03: skip() without `depth++`: gcd prints nothing,
+  `programs/gcd.mote:10: expected a statement`, status 1, after 11 correct passes; on
+  primes.mote the same change never ends (the inner loop's search stops at the if's end, and
+  the run goes back to the outer while before `p := p + 1`), so the lesson names it and does not
+  run it. 01.04: find_names missing read's names: gcd.mote still compiles and prints 21 (its i
+  and j are also given values by `:=`), so the lesson shows sum.mote, whose `n` is given a value
+  only by `read`: `n = getint();` undeclared, motec status 1.
+- gcd.s ending in `ret` instead of `call exit` runs lines 19 and 20 for ever: after `call
+  putint`, ra is 48, line 19's address (01.01 says so; not shown as a run).
+
+## Found while lessons 01.05 to 01.08 were written
+
+Run on the project as `./learn run lang --at NN.LL` leaves it, on the Apple M4 Pro Mac above,
+2026-11-25.
+
+Read, for what the lessons say about other systems:
+
+- Crafting Interpreters, by Robert Nystrom, chapter 4, "Scanning"
+  (https://craftinginterpreters.com/scanning.html, fetched 2026-11-25): a scanner for Lox, in
+  Java; a token holds a type, the lexeme, a literal value and a line, and no column; the
+  longest-match rule is named "maximal munch"; a word is scanned whole as an identifier and only
+  then looked up among the reserved words (its example: `orchid` is one name, not `or` and
+  `chid`); comments and white space are scanned and dropped. 01.06 cites it.
+- Crafting Interpreters, chapter 6, "Parsing Expressions"
+  (https://craftinginterpreters.com/parsing-expressions.html, fetched 2026-11-25): recursive
+  descent; section 6.2, "Recursive Descent Parsing", has a table from grammar notation to code
+  (a terminal: match and consume a token; a nonterminal: a call to its rule's function; `|`: an
+  `if` or `switch`; `*` or `+`: a `while` or `for`; `?`: an `if`); a rule for each level of
+  precedence; "GCC, V8 (the JavaScript VM in Chrome), Roslyn (the C# compiler written in C#) and
+  many other heavyweight production language implementations use recursive descent"; it needs no
+  parser generator "like Yacc, Bison or ANTLR". 01.07 cites it (the table, the levels, GCC and V8).
+- `man 3 setjmp` on this Mac: setjmp returns 0; longjmp makes the program continue as if that
+  setjmp had returned the value given; objects keep their values as of the longjmp, except
+  automatic ones not declared volatile that changed between the two calls. 01.05 relies on it:
+  mote0's table of names is static, and prompt()'s locals do not change between its setjmp and a
+  longjmp.
+
+Found in the code:
+
+- **01.06's Break it as designed leaves gcd.mote alone.** With the one-character operators tried
+  first, gcd.mote scans exactly as before (the same 30 lines; compared with cmp): its only
+  two-character operators, `!=` and `:=`, start with characters that are no operator alone, so
+  the table's order matters only for `<=` and `>=`. sum.mote and primes.mote fail, each at 5:10:
+  `programs/sum.mote:5:10: unexpected character '='`. The lesson uses sum.mote and says why
+  gcd.mote still scans.
+- **The prompt cannot be typed into by `./learn verify`.** track.py has no VERIFY_PROMPTS, so
+  `> ` and `. ` are not prompts to the verifier, and a `lines N-M typed` rule types its line as
+  soon as the echo of the last one shows, before mote0 prints its prompt: the first try typed
+  `> while x > 4 do` whole (screen: `> > while x > 4 do`, then `line 2: expected a statement`).
+  01.05 shows the session from a real run on this Mac (`skip`) and replays the same lines from a
+  file. From a file the prompts still print, with no echo: `> > . . > 4` / `> line 6: y has no
+  value yet` / `> 28` / `> `. At a terminal on this Mac, Control-D at the prompt echoes `^D`.
+- **01.05's title fails the verifier's word check.** "a test runner" matches `test (suite|harness|
+  runner)` in harness/verify.py's FORBIDDEN, and the `# NN.LL Title` heading must equal the title,
+  so `./learn check` and `./learn verify lang 01.05` report line 7 whatever the lesson says. Any
+  lesson whose Related line names 01.05 by its title will be reported the same way.
+- A `read` at the prompt without the line that drops the rest of the number's line (tried on a
+  copy): the prompt asks twice (`> > write n * 2`) and an error after it says `line 4` for the
+  third line typed. With it, `printf 'read n\n12\nwrite n * 2\n' | ./mote0` prints `> > 24` and
+  `> `.
+- A missing `end` is reported at the end-of-file token (`noend.mote:3:15: expected 'end'`, the eof
+  at 3:15 for a file whose last line is `    i := i - 1`).
+- The parse tree of `write 1 + 2 * 3` is 15 lines; with 01.07's Break it (term joins `+ -`, expr
+  joins `* /`) it parses to a tree of the same size grouping `1 + 2` first, and gcd.mote's tree
+  falls from 64 lines to 62 (each subtraction loses a `term`).
+- The leaves of `--parse-tree` (lines of two words) are the tokens of `--tokens` (lines of three,
+  the eof line excluded): `cmp` finds them the same, 29 lines.
+- The static rule and the run disagree both ways: the rule accepts maybe.mote, which stops when
+  run (`maybe.mote:4: x has no value yet` from mote0), and refuses a
+  program that runs well, where a loop's second pass reads what its first pass set:
+  `i := 0 / while i < 2 do / if i > 0 then / write y / end / y := i / i := i + 1 / end` is
+  `later.mote:4:15: y is used before anything gives it a value`, and mote0 prints 0. 01.08 shows
+  both.
+- `write 10 - 3 - 2` prints as `write (- (- 10 3) 2)` and `write (1 - 2) * 3` as
+  `write (* (- 1 2) 3)`: the source's parentheses leave nothing in the syntax tree.
+- 01.08's Break it (enter the target before analysing the right side) makes `x := x + 1` as a first
+  statement give `:= x#1 (+ x#1 1)`.
+- A copy of the project made with `cp -R` and a file of it edited within the same second was not
+  rebuilt by `make -s` (`make -B` was needed): this Mac's make appears to compare times to the
+  second. A reader edits seconds after the build, and every Break it's `make -s` in the
+  verifier's replays did rebuild.
+
+## After the lessons landed (Fable, 2026-11-25)
+
+- 01.05 is retitled "The tools around a language: a prompt and a checker": the
+  course's word check refuses "test runner" in learner-facing text, and a
+  lesson's heading must be its title. The lesson file and its test are renamed.
+- `./mote0 --count` with no file is now a usage error (status 2): the prompt
+  never printed a count.
+- `motec` runs `${CC:-cc}`, as the Makefile runs `$(CC)`: a computer whose C
+  compiler is not called `cc` sets `CC`.

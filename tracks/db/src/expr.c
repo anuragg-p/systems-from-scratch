@@ -186,6 +186,26 @@ static double to_real(const Value *v)
     return n.type == V_INT ? (double)n.i : n.r;
 }
 
+// @from 08.04
+/* What sum(), total() and avg() add for v, read as func.c's sumStep reads
+ * its argument (sqlite3_value_numeric_type, then the integer or the
+ * double): NULL stays NULL (it is skipped), an integer stays one, and so
+ * does text that is all an integer; any other value is a real, text that
+ * is all a number giving that number, and other text and blobs the
+ * number they start with, or 0. */
+Value sum_operand(const Value *v)
+{
+    Value out = {0};
+    if (v->type == V_NULL || v->type == V_INT || v->type == V_REAL)
+        return *v;
+    if (v->type == V_TEXT && text_number(v->s, v->n, &out) == 2)
+        return out;
+    out.type = V_REAL;
+    out.r = to_real(v);
+    return out;
+}
+// @end
+
 /* Returns 1 for true, 0 for false, -1 for NULL: how a condition reads
  * a value. */
 int value_truth(const Value *v)
@@ -447,8 +467,10 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
         FromItem *it = &sc->from[k_hit];
         e->tab = k_hit;
         e->tcol = c_hit;
+        e->depth = 0;    /* found here (resolve_outer counts the steps out) */ // @from 08.06
         if (c_hit == TCOL_ROWID) {
             e->aff = AFF_INTEGER;
+            e->col = it->base + it->t->ncols;  /* its slot, where a join's (or an Aggregate's) row has it */ // @from 08.06
             if (sc->nfrom == 1)
                 e->op = E_ROWID;    /* one table: its rows carry the rowid */
             else
@@ -742,8 +764,13 @@ static int like(const char *p, int pn, const char *s, int sn)
     return j == sn;
 }
 
-/* Scalar functions. Aggregates are recognised only to refuse them with a
- * clear error. */
+// @from 08.04
+/* Scalar functions. An aggregate call evaluated here was not found as one
+ * (it is in a query that is not an aggregate query): an error. */
+// @else
+// /* Scalar functions. Aggregates are recognised only to refuse them with a
+//  * clear error. */
+// @end
 static int eval_func(Db *db, Expr *e, Row *row, Value *out)
 {
     Value args[16];
@@ -755,7 +782,11 @@ static int eval_func(Db *db, Expr *e, Row *row, Value *out)
     if (strcasecmp(f, "count") == 0 || strcasecmp(f, "sum") == 0 || strcasecmp(f, "avg") == 0 ||
         strcasecmp(f, "total") == 0 || strcasecmp(f, "group_concat") == 0 ||
         ((strcasecmp(f, "min") == 0 || strcasecmp(f, "max") == 0) && n == 1))
-        return err("aggregate functions are not supported: %s", f);
+        // @from 08.04
+        return err("misuse of aggregate: %s()", f);
+        // @else
+        // return err("aggregate functions are not supported: %s", f);
+        // @end
     if (strcasecmp(f, "typeof") == 0 && n == 1) {
         static const char *names[] = {"null", "integer", "real", "text", "blob"};
         const char *s = names[args[0].type];
@@ -833,6 +864,7 @@ int eval(Db *db, Expr *e, Row *row, Value *out)
     case E_INT: case E_REAL: case E_STR: case E_BLOB:
         *out = e->v;
         return 0;
+    case E_AGG:                  /* the Aggregate operator put its answer in a slot */ // @from 08.04
     case E_COLUMN:
         // @from 08.06
         if (e->depth)        /* a name from a query outside: that query's row */
@@ -844,8 +876,13 @@ int eval(Db *db, Expr *e, Row *row, Value *out)
         return 0;
     case E_ROWID:
         // @from 08.06
-        if (e->depth)
+        if (e->depth) {
             row = e->depth <= db->nouter ? db->outer[db->nouter - e->depth] : NULL;
+            if (row && e->col >= 0 && e->col < row->ncols) {
+                *out = row->cols[e->col];    /* an Aggregate's row: its slot, NULL for no rows */
+                return 0;
+            }
+        }
         // @end
         if (!row)
             return err("no such column: rowid");
@@ -1114,9 +1151,16 @@ static void expr_write(Buf *b, Expr *e)
         }
         buf_put(b, ")", 1);
         return;
+    case E_AGG:                  /* written as the call it was */ // @from 08.04
     case E_FUNC:
         buf_put(b, e->name, strlen(e->name));
         buf_put(b, "(", 1);
+        // @from 08.04
+        if (e->distinct)  // @from 08.05
+            buf_put(b, "DISTINCT ", 9);  // @from 08.05
+        if (e->star)
+            buf_put(b, "*", 1);
+        // @end
         for (int i = 0; i < e->nlist; i++) {
             if (i)
                 buf_put(b, ", ", 2);
