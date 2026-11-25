@@ -4872,6 +4872,15 @@ seconds as benchmark.py places them, the cache's x2.8 to x6.3 read from
   from "Module 11's sources" above or module 10's; nothing more was
   read. Micikevicius et al.'s author list is not given (not recorded
   here).
+- The checks (13:49 to about 14:20, load 8 to 21, other agents' work
+  running): `./learn verify --fresh research 11`, 9 min 53 s: 11.01 91 s,
+  11.02 45 s, 11.03 70 s, 11.05 154 s, 11.06 130 s ok; 11.04 failed on
+  its own regexes (numbered one line short), fixed, then ok in 153 s.
+  `./learn verify research 10.02` (110 s) and `10.05` (139 s) ok after
+  the correction; 00.01 ok. `./learn check` ok, with no research lesson
+  missing its page; `./learn check-skeleton research` ok (2 min 43 s at
+  load 18 to 20); `./learn selftest` ok (269 tests); `./learn
+  check-timeline research` ok, 18 min 21 s at load 9 to 22.
 
 ## Module 14: reproduce a paper, grokking
 
