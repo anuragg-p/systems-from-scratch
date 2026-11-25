@@ -356,6 +356,8 @@ def test(t):
         compare(t, a, b, f"{q};\n", theirs_first="PRAGMA automatic_index=OFF;\n")
     compare(t, a, b, "".join(f"EXPLAIN QUERY PLAN {q};\n" for q in PLANS), theirs_first="PRAGMA automatic_index=OFF;\n")
     for q, msg in REFUSED:
+        if msg == "subqueries are not supported" and tr.has_subqueries(t.root):
+            continue                    # 08.06 runs them
         r = tr.db(t, a, f"{q};\n", check=False)
         t.check(r.rc != 0 and f"Error: {msg}" in r.err, f"{q} should be refused with {msg!r}, but:\n{r}")
         tr.sqlite(t, b, f"{q};\n")     # sqlite3 runs it: a feature, not an error

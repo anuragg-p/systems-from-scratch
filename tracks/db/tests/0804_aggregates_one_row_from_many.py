@@ -170,7 +170,7 @@ EDGE_QUERIES = [
     "SELECT a, sum(b), max(b) - 9 FROM p",
 ]
 
-# Errors in both engines (errors_alike); the text after "Error: " must be sqlite3's.
+# Errors in both engines with the same text (same_error), which is this one.
 ERRORS = [
     ("SELECT * FROM p WHERE count(*) > 1", "misuse of aggregate function count()"),
     ("SELECT max(count(*)) FROM p", "misuse of aggregate function count()"),
@@ -187,12 +187,13 @@ ERRORS = [
     ("SELECT count(a, b) FROM p WHERE count(*) > 1", "wrong number of arguments to function count()"),
     ("SELECT a FROM p ORDER BY count(*)", "misuse of aggregate: count()"),
     ("SELECT a FROM p ORDER BY sum(b) + 1", "misuse of aggregate: sum()"),
-    ("SELECT count(*) AS c FROM p WHERE b > 1 AND max(b) > 1", "misuse of aggregate function max()"),
+    ("SELECT count(*) AS c FROM p WHERE b > 1 AND max(b) > 1", "misuse of aggregate: max()"),
     ("SELECT count(*) FROM p LIMIT count(*)", "misuse of aggregate function count()"),
     ("SELECT count(*) FROM p LIMIT 1 OFFSET max(1)", "misuse of aggregate function max()"),
     ("SELECT c.name FROM customers c JOIN orders o ON count(*) > 0", "misuse of aggregate function count()"),
     ("SELECT count(*) FROM customers c JOIN orders o ON sum(o.total) > 0", "misuse of aggregate: sum()"),
-    ("SELECT count(*) FROM customers c, orders o WHERE max(o.total) > 0", "misuse of aggregate function max()"),
+    ("SELECT count(*) FROM customers c, orders o WHERE max(o.total) > 0", "misuse of aggregate: max()"),
+    ("SELECT count(*) FROM orders WHERE count(*) > 1", "misuse of aggregate: count()"),
     ("SELECT sum(x) FROM big", "integer overflow"),
     ("SELECT sum(x) FROM big3", "integer overflow"),
     ("SELECT count(*), sum(x) FROM big WHERE x > 0", "integer overflow"),
@@ -267,11 +268,12 @@ def listing(queries):
 
 
 def errors(t, setup, cases):
-    """Each case is an error in both engines, with sqlite3's text."""
+    """Each case is an error in both engines, with the same text (same_error), which is
+    the text written here."""
     tr = t.track
     for sql, msg in cases:
-        r = tr.errors_alike(t, setup, f"{sql};\n")
-        t.check(f"Error: {msg}\n" in r.err, f"{sql}: ./db should say {msg!r}, said:\n{r.err}")
+        got = tr.same_error(t, setup, f"{sql};\n")
+        t.check(got == msg, f"{sql}: both engines say {got!r}, the test expects {msg!r}")
 
 
 def test(t):

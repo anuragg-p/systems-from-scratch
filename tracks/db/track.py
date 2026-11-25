@@ -19,6 +19,9 @@ Fixtures the lesson tests use:
                         (floats compared as numbers); returns the output
     errors_alike(t, setup, sql)
                         sql must fail in both engines
+    same_error(t, setup, sql)
+                        and with the same message (sqlite3's prefix and caret
+                        lines stripped: error_text); returns it
     integrity(t, path)  sqlite3's PRAGMA integrity_check must say ok
     crash(t, path, point, sql, env=None)
                         run sql with DB_CRASH=point: ./db must die there
@@ -41,6 +44,8 @@ Fixtures the lesson tests use:
     keeps_unique(root)  does the project at root keep UNIQUE and PRIMARY KEY
                         constraints (08.07)? A core test that checks the refusal
                         before it checks what 08.07 makes of the same SQL instead
+    has_subqueries(root)
+                        does the project at root run subqueries (08.06)?
     fuzz(t, features, n=300, seed=1)
                         the seeded differential fuzzer (tests/fuzz, its README.md):
                         n random cases written with the SQL of features, through ./db
@@ -257,6 +262,11 @@ def timeline_boot(lesson_id):
         steps += [("EXPLAIN QUERY PLAN " + JOIN_QUERY.replace(" ORDER BY x.id", ""),
                    _rows("QUERY PLAN", "|--SCAN x",
                          "`--SCAN y" if k < (8, 3) else "`--SEARCH y USING INTEGER PRIMARY KEY (rowid=?)"))]
+        # 08.06: a subquery run once (IN) and one per row (EXISTS, naming the outer t)
+        if k < (8, 6):
+            steps += [(SUBQUERY_QUERY, _refused("subqueries are not supported"))]
+        else:
+            steps += [(SUBQUERY_QUERY, _rows("two", "four"))]
     # The 08.07 extension: UNIQUE is an index, and a duplicate is refused as sqlite3 refuses it.
     if (3, 3) <= k < (8, 7):
         steps += [("CREATE TABLE u(a UNIQUE, b);", _refused("UNIQUE is not supported"))]
@@ -290,6 +300,9 @@ LEFT_QUERY = "SELECT t.a, u.a FROM t LEFT JOIN t AS u ON u.id = t.b ORDER BY t.i
 AGG_QUERY = "SELECT count(*), sum(b), avg(b), min(a), max(b) FROM t;"
 GROUP_QUERY = "SELECT b > 4, count(*), sum(b) FROM t GROUP BY 1 HAVING count(*) > 1;"
 DISTINCT_QUERY = "SELECT DISTINCT b > 4 FROM t;"
+# 08.06 on: the rows of t whose next row is there, and whose b some other row's b exceeds.
+SUBQUERY_QUERY = ("SELECT a FROM t WHERE id + 1 IN (SELECT id FROM t) AND EXISTS (SELECT 1 FROM t AS u WHERE u.b > t.b) "
+                  "ORDER BY id;")
 
 
 def timeline_after(root, lesson_id):
@@ -617,6 +630,36 @@ def errors_alike(t, setup, sql):
     return ours
 
 
+_ERROR_LINE = re.compile(r"^(?:Error: |(?:Parse|Runtime) error near line \d+: |Error near line \d+: |"
+                         r"(?:Parse|Runtime) error in \S+ command line argument: )(.*)$")
+
+
+def error_text(err):
+    """The message of the first error an engine printed on stderr: ./db's "Error: msg",
+    sqlite3's "Parse error near line N: msg" or "Runtime error near line N: msg" (the
+    caret lines under it dropped); None if there is none."""
+    for line in err.splitlines():
+        m = _ERROR_LINE.match(line)
+        if m:
+            return m.group(1).strip()
+    return None
+
+
+def same_error(t, setup, sql):
+    """sql must fail in both engines with the same message (error_text); returns it."""
+    a, b = path(t), path(t)
+    if setup:
+        db(t, a, setup)
+        sqlite(t, b, setup)
+    ours = db(t, a, sql, check=False)
+    theirs = sqlite(t, b, sql, check=False)
+    mine, real = error_text(ours.err), error_text(theirs.err)
+    t.check(real is not None, f"sqlite3 accepted {sql!r}; the test is wrong:\n{theirs}")
+    t.check(ours.rc != 0 and mine == real,
+            f"./db should fail {sql!r} with sqlite3's words\n  ./db:    {mine!r}\n  sqlite3: {real!r}\n{ours}")
+    return mine
+
+
 def integrity(t, path_):
     """The real sqlite3 checks every page, cell and index of the file."""
     r = sqlite(t, path_, "PRAGMA integrity_check;")
@@ -723,6 +766,16 @@ def keeps_unique(root):
     try:
         with open(os.path.join(root, "src", "schema.c"), errors="replace") as f:
             return "sqlite_autoindex_" in f.read()
+    except OSError:
+        return False
+
+
+def has_subqueries(root):
+    """Does the project at root run subqueries (08.06, an extension)? Before it they are
+    refused ("subqueries are not supported")."""
+    try:
+        with open(os.path.join(root, "src", "parse.c"), errors="replace") as f:
+            return "parse_subquery" in f.read()
     except OSError:
         return False
 

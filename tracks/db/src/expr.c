@@ -314,43 +314,67 @@ static int is_rowid_name(const char *s)
     return strcasecmp(s, "rowid") == 0 || strcasecmp(s, "oid") == 0 || strcasecmp(s, "_rowid_") == 0;
 }
 
+// @from 08.06
 /* Binds every column name in e to a column of t (whose name in this query
- * is alias, if it has one). A name that is not a column but is rowid, oid
- * or _rowid_ becomes E_ROWID. Returns -1 with an error for an unknown
+ * is alias, if it has one; t NULL: no table, as for INSERT's VALUES). A
+ * name that is not a column but is rowid, oid or _rowid_ becomes E_ROWID.
+ * It is resolve_names() on a scope of that one table, so a subquery in e
+ * (in UPDATE's SET and WHERE, DELETE's WHERE, INSERT's VALUES) is bound
+ * too, and can name t's columns. The scope lives in the statement's arena:
+ * a subquery's scope points at it. Returns -1 with an error for an unknown
  * name. */
-int resolve_expr(Expr *e, Table *t, const char *alias)
+int resolve_expr(Db *db, Expr *e, Table *t, const char *alias)
 {
-    if (!e)
-        return 0;
-    if (e->op == E_COLUMN) {
-        if (e->qual) {
-            int ok = t && (strcasecmp(e->qual, alias ? alias : t->name) == 0);
-            if (!ok)
-                return err("no such column: %s.%s", e->qual, e->name);
-        }
-        if (t) {
-            for (int i = 0; i < t->ncols; i++) {
-                if (strcasecmp(t->cols[i].name, e->name) == 0) {
-                    e->col = i;
-                    e->aff = t->cols[i].affinity;
-                    return 0;
-                }
-            }
-            if (is_rowid_name(e->name)) {
-                e->op = E_ROWID;
-                e->aff = AFF_INTEGER;
-                return 0;
-            }
-        }
-        return err("no such column: %s", e->name);
+    Scope *sc = arena_alloc(&db->stmt, sizeof *sc);
+    if (t) {
+        FromItem *it = arena_alloc(&db->stmt, sizeof *it);
+        it->table = t->name;
+        it->alias = alias;
+        it->t = t;
+        sc->from = it;
+        sc->nfrom = 1;
     }
-    if (resolve_expr(e->a, t, alias) < 0 || resolve_expr(e->b, t, alias) < 0 || resolve_expr(e->c, t, alias) < 0)
-        return -1;
-    for (int i = 0; i < e->nlist; i++)
-        if (resolve_expr(e->list[i], t, alias) < 0)
-            return -1;
-    return 0;
+    return resolve_names(db, e, sc);
 }
+// @else
+// /* Binds every column name in e to a column of t (whose name in this query
+//  * is alias, if it has one). A name that is not a column but is rowid, oid
+//  * or _rowid_ becomes E_ROWID. Returns -1 with an error for an unknown
+//  * name. */
+// int resolve_expr(Expr *e, Table *t, const char *alias)
+// {
+//     if (!e)
+//         return 0;
+//     if (e->op == E_COLUMN) {
+//         if (e->qual) {
+//             int ok = t && (strcasecmp(e->qual, alias ? alias : t->name) == 0);
+//             if (!ok)
+//                 return err("no such column: %s.%s", e->qual, e->name);
+//         }
+//         if (t) {
+//             for (int i = 0; i < t->ncols; i++) {
+//                 if (strcasecmp(t->cols[i].name, e->name) == 0) {
+//                     e->col = i;
+//                     e->aff = t->cols[i].affinity;
+//                     return 0;
+//                 }
+//             }
+//             if (is_rowid_name(e->name)) {
+//                 e->op = E_ROWID;
+//                 e->aff = AFF_INTEGER;
+//                 return 0;
+//             }
+//         }
+//         return err("no such column: %s", e->name);
+//     }
+//     if (resolve_expr(e->a, t, alias) < 0 || resolve_expr(e->b, t, alias) < 0 || resolve_expr(e->c, t, alias) < 0)
+//         return -1;
+//     for (int i = 0; i < e->nlist; i++)
+//         if (resolve_expr(e->list[i], t, alias) < 0)
+//             return -1;
+//     return 0;
+// }
+// @end
 
 // @from 08.01
 /* True if FROM item it answers to the qualifier q (q.c, q.*): to its alias
@@ -363,6 +387,30 @@ int answers_to(FromItem *it, const char *q)
         return strcasecmp(q, it->alias) == 0;
     return strcasecmp(q, it->t->name) == 0 || strcasecmp(q, it->table) == 0;
 }
+
+// @from 08.06
+/* e, a name, is in no table of scope sc, the FROM clause of a subquery:
+ * binds it in the queries around it, the nearest first, as each binds its
+ * own names, and counts in e->depth how many queries out its table is,
+ * which is where eval() finds its row while the subquery runs. A subquery
+ * that names anything outside itself is correlated: its answer can change
+ * with the outer row. Returns 0, or -1 with the error the outermost query
+ * gives ("no such column: x"). */
+static int resolve_outer(Db *db, Expr *e, Scope *sc)
+{
+    // @build 08.06 a name from the query outside
+    // Bind e in the scope outside, which looks further out itself if it
+    // must. Wherever it was found, that is one query further out from here
+    // than from there; and the query of this scope reads a row it does not
+    // own.
+    if (resolve_names(db, e, sc->outer) < 0)
+        return -1;
+    e->depth++;
+    sc->correlated = 1;
+    return 0;
+    // @end
+}
+// @end
 
 /* Binds every column name in e to a table of scope sc, the tables of a
  * SELECT's FROM clause: e->tab is the FROM item, e->tcol the column in its
@@ -408,6 +456,10 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
             hits = looked;
             c_hit = TCOL_ROWID;
         }
+        // @from 08.06
+        if (hits == 0 && sc->outer)     /* a name of a query around this one (two here are ambiguous here) */
+            return resolve_outer(db, e, sc);
+        // @end
         if (hits != 1) {
             const char *what = hits ? "ambiguous column name" : "no such column";
             return e->qual ? err("%s: %s.%s", what, e->qual, e->name) : err("%s: %s", what, e->name);
@@ -415,8 +467,10 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
         FromItem *it = &sc->from[k_hit];
         e->tab = k_hit;
         e->tcol = c_hit;
+        e->depth = 0;    /* found here (resolve_outer counts the steps out) */ // @from 08.06
         if (c_hit == TCOL_ROWID) {
             e->aff = AFF_INTEGER;
+            e->col = it->base + it->t->ncols;  /* its slot, where a join's (or an Aggregate's) row has it */ // @from 08.06
             if (sc->nfrom == 1)
                 e->op = E_ROWID;    /* one table: its rows carry the rowid */
             else
@@ -428,6 +482,13 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
         return 0;
         // @end
     }
+    // @from 08.06
+    if ((e->op >= E_EQ && e->op <= E_ISNOT) || e->op == E_BETWEEN || e->op == E_NOTBETWEEN ||
+        (e->sub && e->a && e->a->op == E_SUBQUERY))
+        return resolve_row_values(db, e, sc);    /* where a subquery of several columns is a row value */
+    if (e->sub)      /* a subquery: x of x IN (SELECT ...) is a name here, the SELECT a scope inside this one */
+        return resolve_names(db, e->a, sc) < 0 ? -1 : resolve_subquery(db, e, sc);
+    // @end
     if (resolve_names(db, e->a, sc) < 0 || resolve_names(db, e->b, sc) < 0 || resolve_names(db, e->c, sc) < 0)
         return -1;
     for (int i = 0; i < e->nlist; i++)
@@ -437,13 +498,27 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
 }
 // @end
 
-/* Returns 1 if e depends on no row at all, so it can be evaluated once. */
+// @from 08.06
+/* Returns 1 if e depends on no row of its query, so it can be evaluated
+ * once for the whole query. A name from a query outside is such a value:
+ * the outer row does not change while this query runs. A correlated
+ * subquery is not (it may read this query's row), nor is one not bound. */
+// @else
+// /* Returns 1 if e depends on no row at all, so it can be evaluated once. */
+// @end
 int is_constant(Expr *e)
 {
     if (!e)
         return 1;
+    // @from 08.06
     if (e->op == E_COLUMN || e->op == E_ROWID)
+        return e->depth > 0;
+    if (e->sub && (!e->q || e->correlated))
         return 0;
+    // @else
+    // if (e->op == E_COLUMN || e->op == E_ROWID)
+    //     return 0;
+    // @end
     if (!is_constant(e->a) || !is_constant(e->b) || !is_constant(e->c))
         return 0;
     for (int i = 0; i < e->nlist; i++)
@@ -451,6 +526,21 @@ int is_constant(Expr *e)
             return 0;
     return 1;
 }
+
+// @from 08.06
+/* Returns 1 if e holds a subquery anywhere. */
+int has_subquery(Expr *e)
+{
+    if (!e)
+        return 0;
+    if (e->sub || has_subquery(e->a) || has_subquery(e->b) || has_subquery(e->c))
+        return 1;
+    for (int i = 0; i < e->nlist; i++)
+        if (has_subquery(e->list[i]))
+            return 1;
+    return 0;
+}
+// @end
 
 /* ------------------------------------------------------------ evaluating */
 
@@ -779,11 +869,24 @@ int eval(Db *db, Expr *e, Row *row, Value *out)
         return 0;
     case E_AGG:                  /* the Aggregate operator put its answer in a slot */ // @from 08.04
     case E_COLUMN:
+        // @from 08.06
+        if (e->depth)        /* a name from a query outside: that query's row */
+            row = e->depth <= db->nouter ? db->outer[db->nouter - e->depth] : NULL;
+        // @end
         if (!row || e->col < 0 || e->col >= row->ncols)
             return err("no such column: %s", e->name);
         *out = row->cols[e->col];
         return 0;
     case E_ROWID:
+        // @from 08.06
+        if (e->depth) {
+            row = e->depth <= db->nouter ? db->outer[db->nouter - e->depth] : NULL;
+            if (row && e->col >= 0 && e->col < row->ncols) {
+                *out = row->cols[e->col];    /* an Aggregate's row: its slot, NULL for no rows */
+                return 0;
+            }
+        }
+        // @end
         if (!row)
             return err("no such column: rowid");
         set_int(out, row->rowid);
@@ -867,6 +970,10 @@ int eval(Db *db, Expr *e, Row *row, Value *out)
         return 0;
     }
     case E_IN: case E_NOTIN: {
+        // @from 08.06
+        if (e->sub)
+            return eval_subquery(db, e, row, out);
+        // @end
         if (eval(db, e->a, row, &a) < 0)
             return -1;
         if (a.type == V_NULL && e->nlist > 0) {   /* NULL IN () is false, as in sqlite3 */
@@ -908,6 +1015,10 @@ int eval(Db *db, Expr *e, Row *row, Value *out)
     }
     case E_FUNC:
         return eval_func(db, e, row, out);
+    // @from 08.06
+    case E_SUBQUERY: case E_EXISTS:
+        return eval_subquery(db, e, row, out);
+    // @end
     }
     return err("internal error: unknown expression %d", e->op);
 }
@@ -1022,9 +1133,20 @@ static void expr_write(Buf *b, Expr *e)
         buf_put(b, " AND ", 5);
         expr_write(b, e->c);
         return;
+    // @from 08.06
+    case E_SUBQUERY: case E_EXISTS:      /* the SELECT as it was written */
+        buf_put(b, e->op == E_EXISTS ? "EXISTS (" : "(", e->op == E_EXISTS ? 8 : 1);
+        buf_put(b, e->sub->sql, strlen(e->sub->sql));
+        buf_put(b, ")", 1);
+        return;
+    // @end
     case E_IN: case E_NOTIN:
         expr_write(b, e->a);
         buf_put(b, e->op == E_IN ? " IN (" : " NOT IN (", e->op == E_IN ? 5 : 9);
+        // @from 08.06
+        if (e->sub)
+            buf_put(b, e->sub->sql, strlen(e->sub->sql));
+        // @end
         for (int i = 0; i < e->nlist; i++) {
             if (i)
                 buf_put(b, ", ", 2);

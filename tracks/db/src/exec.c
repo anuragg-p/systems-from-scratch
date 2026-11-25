@@ -1657,12 +1657,33 @@ static int exec_insert(Db *db, Stmt *s)
         return err("table %s has %d columns but %d values were supplied", t->name, t->ncols, s->ncols);
     }
     Value *vals = arena_alloc(&db->stmt, (size_t)(t->ncols + 1) * sizeof(Value));
+    // @from 08.06
+    /* A subquery in VALUES may read t, and sqlite3 works out every row
+     * before it stores the first (insert.c: a SELECT that reads the table
+     * goes through a temporary table). So every value with a subquery in
+     * it is worked out here first, before anything is written. Its
+     * subqueries name no table outside them (VALUES has none), so they
+     * keep their answers for the second time, in the loop below. */
+    for (int r = 0; s->nrows > 1 && r < s->nrows; r++) {
+        for (int i = 0; i < nmap; i++) {
+            Value v;
+            if (has_subquery(s->rows[r][i]) &&
+                (resolve_expr(db, s->rows[r][i], NULL, NULL) < 0 || eval(db, s->rows[r][i], NULL, &v) < 0))
+                return -1;
+        }
+        arena_reset(&db->rowa);
+    }
+    // @end
     for (int r = 0; r < s->nrows; r++) {
         int given[1024] = {0};
         Value rowid = {0};
         for (int i = 0; i < nmap; i++) {
             Value v;
-            if (resolve_expr(s->rows[r][i], NULL, NULL) < 0 || eval(db, s->rows[r][i], NULL, &v) < 0)
+            // @from 08.06
+            if (resolve_expr(db, s->rows[r][i], NULL, NULL) < 0 || eval(db, s->rows[r][i], NULL, &v) < 0)
+            // @else
+            // if (resolve_expr(s->rows[r][i], NULL, NULL) < 0 || eval(db, s->rows[r][i], NULL, &v) < 0)
+            // @end
                 return -1;
             if (map[i] == -2) {
                 apply_affinity(&v, AFF_INTEGER, &db->rowa);
@@ -1802,10 +1823,18 @@ static int exec_update(Db *db, Stmt *s)
             cols[i] = t->rowid_col >= 0 ? t->rowid_col : -2;
         if (cols[i] == -1)
             return err("no such column: %s", s->names[i]);
-        if (resolve_expr(s->sets[i], t, NULL) < 0)
+        // @from 08.06
+        if (resolve_expr(db, s->sets[i], t, NULL) < 0)
+        // @else
+        // if (resolve_expr(s->sets[i], t, NULL) < 0)
+        // @end
             return -1;
     }
-    if (resolve_expr(s->where, t, NULL) < 0)
+    // @from 08.06
+    if (resolve_expr(db, s->where, t, NULL) < 0)
+    // @else
+    // if (resolve_expr(s->where, t, NULL) < 0)
+    // @end
         return -1;
     i64 *ids, n;
     if (collect_rowids(db, t, s->where, &ids, &n) < 0)
@@ -1925,7 +1954,11 @@ static int exec_delete(Db *db, Stmt *s)
         return err("no such table: %s", s->table);
     if (writable(db, t) < 0)
         return -1;
-    if (resolve_expr(s->where, t, NULL) < 0)
+    // @from 08.06
+    if (resolve_expr(db, s->where, t, NULL) < 0)
+    // @else
+    // if (resolve_expr(s->where, t, NULL) < 0)
+    // @end
         return -1;
     i64 *ids, n;
     if (collect_rowids(db, t, s->where, &ids, &n) < 0)
@@ -2094,6 +2127,8 @@ static int same_expr(Expr *a, Expr *b)
         return 0;
     if (op == E_FUNC && strcasecmp(a->name, b->name) != 0)
         return 0;
+    if (a->sub != b->sub)  /* subqueries: only copies of one (GROUP BY 1) are the same */ // @from 08.06
+        return 0;  // @from 08.06
     if (a->distinct != b->distinct)  // @from 08.05
         return 0;  // @from 08.05
     if (!same_expr(a->a, b->a) || !same_expr(a->b, b->b) || !same_expr(a->c, b->c))
@@ -2128,6 +2163,63 @@ static int agg_add(Db *db, Query *q, Expr *e, int fn)
     return q->naggs++;
 }
 
+// @from 08.06
+static void names_in_query(Query *q, int d, int *mine, int *outside);
+
+/* Notes in *mine whether e names a column of the query d levels out from
+ * its own (a name of depth d), in *outside whether it names one of a query
+ * further out; through the subqueries in it too. */
+static void names_in(Expr *e, int d, int *mine, int *outside)
+{
+    if (!e)
+        return;
+    if (e->op == E_COLUMN || e->op == E_ROWID) {
+        if (e->depth == d)
+            *mine = 1;
+        else if (e->depth > d)
+            *outside = 1;
+        return;
+    }
+    names_in(e->a, d, mine, outside);
+    names_in(e->b, d, mine, outside);
+    names_in(e->c, d, mine, outside);
+    for (int i = 0; i < e->nlist; i++)
+        names_in(e->list[i], d, mine, outside);
+    if (e->sub)
+        names_in_query(e->q, d + 1, mine, outside);
+}
+
+/* names_in() over every expression of the query q. */
+static void names_in_query(Query *q, int d, int *mine, int *outside)
+{
+    Stmt *s = q->s;
+    for (int i = 0; i < q->ncols; i++)
+        names_in(q->cols[i], d, mine, outside);
+    names_in(s->where, d, mine, outside);
+    for (int k = 0; k < s->nfrom; k++)
+        names_in(s->from[k].on, d, mine, outside);
+    for (int i = 0; i < s->norder; i++)
+        names_in(s->order[i].e, d, mine, outside);
+    for (int i = 0; i < s->ngroup; i++)
+        names_in(s->group[i], d, mine, outside);
+    names_in(s->having, d, mine, outside);
+}
+
+/* True if the arguments of aggregate call e name columns of queries
+ * around its own and none of its own. sqlite3 makes such a call an
+ * aggregate of the nearest query it names (resolve.c, the TK_FUNCTION
+ * case: sqlite3ReferencesSrcList() decides, one name context out at a
+ * time), so `SELECT (SELECT count(c.id)) FROM customers c` is one row, 4.
+ * This engine does not move an aggregate out of its subquery. */
+static int outer_aggregate(Expr *e)
+{
+    int mine = 0, outside = 0;
+    for (int i = 0; i < e->nlist; i++)
+        names_in(e->list[i], 0, &mine, &outside);
+    return outside && !mine;
+}
+// @end
+
 /* Finds the aggregate calls in e, an expression of query q. misuse is NULL
  * where aggregates may be (what is evaluated above the Aggregate: the
  * result columns, ORDER BY of an aggregate query), else the error an
@@ -2149,17 +2241,34 @@ static int find_aggs(Db *db, Query *q, Expr *e, const char *misuse)
     // Anything else: search its operands and arguments.
     if (!e)
         return 0;
+    // @from 08.06
+    if (e->sub)          /* a subquery's aggregates are its own (outer_aggregate()); x of x IN is ours */
+        return find_aggs(db, q, e->a, misuse);
+    // @end
     if (e->op == E_AGG)
         return misuse ? err(misuse, e->name) : 0;
     int fn = agg_fn(e);
     if (fn == -2)
         return -1;
     if (fn >= 0) {
+        // @from 08.06
+        /* An aggregate of a query outside: where sqlite3's resolver takes
+         * aggregates (all but the places of "misuse of aggregate function"),
+         * it is that query's, which this engine refuses once its arguments
+         * are looked at; elsewhere that misuse is the error, as in sqlite3. */
+        int outer = outer_aggregate(e);
+        if (outer && misuse && strncmp(misuse, "misuse of aggregate function", 28) != 0)
+            misuse = NULL;
+        // @end
         if (misuse)
             return err(misuse, e->name);
         for (int i = 0; i < e->nlist; i++)
             if (find_aggs(db, q, e->list[i], "misuse of aggregate function %s()") < 0)
                 return -1;
+        // @from 08.06
+        if (outer)
+            return err("aggregates of a query outside the subquery are not supported: %s()", e->name);
+        // @end
         // @from 08.05
         if (e->distinct && e->nlist != 1)
             return err("DISTINCT aggregates must have exactly one argument");
@@ -2188,6 +2297,8 @@ static void rowid_from_slot(Expr *e, int slot)
     if (!e || e->op == E_AGG)
         return;
     if (e->op == E_ROWID) {
+        if (e->depth)    /* the rowid of a query outside: its own row has it */ // @from 08.06
+            return;  // @from 08.06
         e->op = E_COLUMN;
         e->col = slot;
         e->tcol = TCOL_ROWID;
@@ -2289,6 +2400,8 @@ static int group_constant(Stmt *s, Expr *e)
 {
     if (!e)
         return 1;
+    if (e->sub)          /* a subquery counts as varying, as in sqlite3 */ // @from 08.06
+        return 0;  // @from 08.06
     for (int j = 0; j < s->ngroup; j++)
         if (same_expr(e, s->group[j]))
             return 1;
@@ -2366,8 +2479,10 @@ static void group_keys(Db *db, Query *q)
  * BY (group_resolve binds its terms). Its ORDER BY may call aggregates
  * then (and HAVING, which only an aggregate query may have), but WHERE,
  * ON, LIMIT and OFFSET never. The errors are sqlite3's texts: an aggregate
- * in the ORDER BY of a query that is not an aggregate query, or in an ON
- * of one that is, gets the shorter "misuse of aggregate: f()". Above the
+ * in the ORDER BY of a query that is not an aggregate query, or in the
+ * WHERE or an ON of one that is, gets the shorter "misuse of aggregate:
+ * f()" (sqlite3 lets it through its resolver there and stops at it in
+ * expr.c); elsewhere "misuse of aggregate function f()". Above the
  * Aggregate the one table's rowid is read from its slot (rowid_from_slot),
  * and a result column that is a GROUP BY term from its own (group_keys).
  * Returns 0, or -1 with the error set. */
@@ -2376,10 +2491,11 @@ static void group_keys(Db *db, Query *q)
 //  * query: it is if its result columns call an aggregate. Its ORDER BY may
 //  * call aggregates then, but WHERE, ON, LIMIT and OFFSET never. The errors
 //  * are sqlite3's texts: an aggregate in the ORDER BY of a query that is not
-//  * an aggregate query, or in an ON of one that is, gets the shorter
-//  * "misuse of aggregate: f()". Above the Aggregate the one table's rowid
-//  * is read from its slot (rowid_from_slot). Returns 0, or -1 with the
-//  * error set. */
+//  * an aggregate query, or in the WHERE or an ON of one that is, gets the
+//  * shorter "misuse of aggregate: f()" (sqlite3 lets it through its resolver
+//  * there and stops at it in expr.c); elsewhere "misuse of aggregate
+//  * function f()". Above the Aggregate the one table's rowid is read from
+//  * its slot (rowid_from_slot). Returns 0, or -1 with the error set. */
 // @end
 static int resolve_aggregates(Db *db, Query *q)
 {
@@ -2407,7 +2523,7 @@ static int resolve_aggregates(Db *db, Query *q)
     // @else
     // q->aggregate = q->naggs > 0;
     // @end
-    if (find_aggs(db, q, s->where, misuse) < 0)
+    if (find_aggs(db, q, s->where, q->aggregate ? shorter : misuse) < 0)
         return -1;
     for (int k = 0; k < q->scope.nfrom; k++)
         if (find_aggs(db, q, q->scope.from[k].on, q->aggregate ? shorter : misuse) < 0)
@@ -2447,6 +2563,7 @@ static int select_resolve(Db *db, Stmt *s, Scope *outer, Query *q)
     q->s = s;
     q->scope.from = s->from;
     q->scope.nfrom = s->nfrom;
+    q->scope.outer = outer;  // @from 08.06
     for (int k = 0; k < s->nfrom; k++) {
         FromItem *it = &s->from[k];
         it->t = find_table(db, it->table);
@@ -2537,6 +2654,269 @@ static int select_resolve(Db *db, Stmt *s, Scope *outer, Query *q)
     if (resolve_aggregates(db, q) < 0)
         return -1;
     // @end
+    return 0;
+}
+// @end
+
+// @from 08.06
+/* ------------------------------------------------------------ subqueries (08.06) */
+
+/* Binds subquery e, which stands in scope sc: its SELECT is made ready as
+ * any query is (select_resolve), with sc as the scope around it, where a
+ * name its own tables lack is looked for. A scalar or IN subquery must
+ * give one column, and sqlite3's words for it say "columns" whatever the
+ * number. A scalar subquery compares with its column's affinity, as that
+ * column would (sqlite3ExprAffinity in sqlite3's expr.c, TK_SELECT). Bound
+ * once: INSERT binds each row's values twice when it has a subquery.
+ * Returns 0, or -1 with the error set. */
+int resolve_subquery(Db *db, Expr *e, Scope *sc)
+{
+    if (e->q)
+        return 0;
+    Query *q = arena_alloc(&db->stmt, sizeof *q);
+    if (select_resolve(db, e->sub, sc, q) < 0)
+        return -1;
+    if (e->op != E_EXISTS && q->ncols != 1)
+        return err("sub-select returns %d columns - expected 1", q->ncols);
+    if (e->op == E_EXISTS) {
+        /* Whether there is a row does not depend on their order, and sqlite3
+         * drops DISTINCT too (select.c, IgnorableDistinct: "All of these
+         * destinations are also able to ignore the ORDER BY clause"), so
+         * that EXISTS (SELECT DISTINCT ... LIMIT 1 OFFSET 5) counts every
+         * row. */
+        e->sub->norder = 0;
+        e->sub->distinct = 0;
+    }
+    e->q = q;
+    e->correlated = q->scope.correlated;
+    if (e->op == E_SUBQUERY)
+        e->aff = q->cols[0]->aff;
+    return 0;
+}
+
+/* Values a subquery's SELECT gives per row, as its text has them (a *
+ * counts one); 1 for any other expression. */
+static int vector_size(Expr *e)
+{
+    return e && e->op == E_SUBQUERY ? e->sub->ncols : 1;
+}
+
+/* Binds the names in e, a comparison or BETWEEN, or x IN (SELECT ...)
+ * whose x is a subquery. A subquery of two or more values there is a row
+ * value, which sqlite3 compares value by value and this engine does not:
+ * against another of as many it is refused by name, else it is sqlite3's
+ * error, "row value misused" (resolve.c, resolveExprStep, the TK_EQ ...
+ * TK_BETWEEN case; it looks before it binds a name inside) or, for IN,
+ * "sub-select returns 1 columns - expected 2". Returns 0, or -1 with the
+ * error set. */
+int resolve_row_values(Db *db, Expr *e, Scope *sc)
+{
+    if (e->sub) {                            /* x IN (SELECT ...), x a subquery */
+        int n = vector_size(e->a), m = e->sub->ncols;
+        if (n > 1)
+            return n == m ? err("row values are not supported")
+                          : err("sub-select returns %d columns - expected %d", m, n);
+        return resolve_names(db, e->a, sc) < 0 ? -1 : resolve_subquery(db, e, sc);
+    }
+    int na = vector_size(e->a), nb = vector_size(e->b), nc = e->c ? vector_size(e->c) : na;
+    if ((e->op == E_IS || e->op == E_ISNOT) && e->b->op == E_NULL)
+        na = nb = nc = 1;    /* x IS NULL is no comparison to sqlite3 (TK_ISNULL): x is bound as one value */
+    if (na > 1 || nb > 1 || nc > 1)
+        return na == nb && nb == nc ? err("row values are not supported") : err("row value misused");
+    if (resolve_names(db, e->a, sc) < 0 || resolve_names(db, e->b, sc) < 0 || resolve_names(db, e->c, sc) < 0)
+        return -1;
+    return 0;
+}
+
+static int numeric_aff(int aff)
+{
+    return aff == AFF_INTEGER || aff == AFF_REAL || aff == AFF_NUMERIC;
+}
+
+/* The affinity x IN (SELECT y ...) compares with, given x's and y's (-1:
+ * none), applied to x and to every y (sqlite3's expr.c, exprINAffinity
+ * and sqlite3CompareAffinity): when both are columns, NUMERIC if either is
+ * numeric, else none (BLOB); when one is, its affinity; else none. It
+ * comes to what eval_compare() does for x = y. */
+static int in_affinity(int ax, int ay)
+{
+    if (ax >= 0 && ay >= 0)
+        return numeric_aff(ax) || numeric_aff(ay) ? AFF_NUMERIC : AFF_BLOB;
+    return ax >= 0 ? ax : ay;
+}
+
+/* For qsort(): the order of values. */
+static int value_cmp(const void *a, const void *b)
+{
+    return value_compare(a, b);
+}
+
+/* Is x in the set kept on e, an IN subquery that has run once? Returns 1
+ * yes, 0 no, -1 unknown: SQL's NULL. */
+static int set_lookup(Expr *e, Value x)
+{
+    // @build 08.06 IN a set that may hold NULL
+    // x NULL: unknown when there is anything at all to compare it with,
+    // a NULL included; no for an empty set. Else look for x by bisection
+    // in the sorted values (value_compare): found is yes. Not found: no,
+    // unless the set holds a NULL, which might have been x: unknown. So
+    // x NOT IN a set with a NULL is never true. These are sqlite3's
+    // answers (expr.c, sqlite3ExprCodeIN: steps 2 to 6).
+    if (x.type == V_NULL)
+        return e->nset > 0 || e->has_null ? -1 : 0;
+    int lo = 0, hi = e->nset;
+    while (lo < hi) {
+        int mid = lo + (hi - lo) / 2;
+        int c = value_compare(&e->set[mid], &x);
+        if (c == 0)
+            return 1;
+        if (c < 0)
+            lo = mid + 1;
+        else
+            hi = mid;
+    }
+    return e->has_null ? -1 : 0;
+    // @end
+}
+
+/* Runs the query of subquery e once, on row, the row of the query e stands
+ * in (NULL if there is none), into *out:
+ *   E_SUBQUERY   the first row's value, NULL if there is no row
+ *   E_EXISTS     1 if there is a row, else 0
+ *   E_IN/NOTIN   correlated: 1, 0 or NULL as x (with the comparison's
+ *                affinity aff applied) is in its rows; run once: nothing,
+ *                but every value is kept on e, sorted, for set_lookup()
+ * Returns 0, or -1 with the error set. */
+static int run_subquery(Db *db, Expr *e, Row *row, Value x, int aff, Value *out)
+{
+    Query *q = e->q;
+    int in = e->op == E_IN || e->op == E_NOTIN;
+    Arena rowa = db->rowa, stmt = db->stmt;     /* the caller's */
+    Arena *keepa = e->correlated ? &rowa : &db->once;
+    Value *set = NULL;
+    int nset = 0, cap = 0, any = 0, nulls = 0, found = 0, rc;
+    Plan plan;
+    Row *r;
+    memset(out, 0, sizeof *out);
+    memset(&plan, 0, sizeof plan);
+    // @build 08.06 run the query inside
+    // Push row, where a name from the query outside reads it, and give the
+    // run arenas of its own: its operators reset db->rowa, and its plan must
+    // not pile up in the statement's arena run after run. Plan the query
+    // and pull rows - and never call pager_shrink(): the caller's row
+    // points into pages. A scalar subquery stops at its first row, EXISTS
+    // too; IN run once takes every value, with the comparison's affinity;
+    // correlated, it stops at x (or at any row, for a NULL x). What must
+    // outlive the run is copied out (keep()) first: into db->once if it is
+    // kept for the statement, else into the caller's row arena. Then close
+    // the plan, give the arenas back and pop the row.
+    memset(&db->rowa, 0, sizeof db->rowa);
+    memset(&db->stmt, 0, sizeof db->stmt);
+    db->outer[db->nouter++] = row;
+    rc = plan_select(db, q, &plan);
+    while (rc == 0 && !found && (rc = plan.root->next(plan.root, &r)) == 1) {
+        Value v;
+        rc = 0;
+        any = 1;
+        if (e->op == E_EXISTS)
+            break;
+        if ((rc = eval(db, q->cols[0], r, &v)) < 0)
+            break;
+        if (!in) {
+            *out = keep(keepa, v);
+            break;
+        }
+        if (v.type == V_NULL) {
+            nulls = 1;
+        } else {
+            apply_affinity(&v, aff, &db->rowa);
+            if (e->correlated) {
+                found = x.type != V_NULL && value_compare(&v, &x) == 0;
+            } else {
+                if (nset == cap) {
+                    cap = cap ? 2 * cap : 64;
+                    set = xrealloc(set, (size_t)cap * sizeof *set);
+                }
+                set[nset++] = keep(&db->once, v);
+            }
+        }
+        if (e->correlated && x.type == V_NULL)
+            break;
+        arena_reset(&db->rowa);
+    }
+    op_close(plan.root);
+    db->nouter--;
+    arena_free(&db->rowa);
+    arena_free(&db->stmt);
+    db->rowa = rowa;
+    db->stmt = stmt;
+    if (rc < 0) {
+        free(set);
+        return -1;
+    }
+    if (e->op == E_EXISTS) {
+        out->type = V_INT;
+        out->i = any;
+    } else if (in && e->correlated) {
+        /* the answers of set_lookup(), from what the scan saw */
+        if (found || !(nulls || (x.type == V_NULL && any))) {
+            out->type = V_INT;
+            out->i = found;
+        }
+    } else if (in) {
+        qsort(set, (size_t)nset, sizeof *set, value_cmp);
+        e->set = arena_alloc(&db->once, (size_t)nset * sizeof *set + 1);
+        memcpy(e->set, set, (size_t)nset * sizeof *set);
+        e->nset = nset;
+        e->has_null = nulls;
+    }
+    free(set);
+    return 0;
+    // @end
+}
+
+/* Evaluates subquery e on row, the row of the query it stands in (NULL if
+ * there is none), into *out:
+ *   (SELECT ...)          its first row's value; NULL if there is no row
+ *   EXISTS (SELECT ...)   1 if it has a row, else 0
+ *   x IN (SELECT ...)     1 if x is one of its values, 0 if not, NULL if
+ *                         a NULL leaves that unknown; NOT IN the opposite
+ * One that names no table outside itself runs the first time it is needed
+ * and its answer is kept for the rest of the statement (SQLite: OP_Once),
+ * for IN the whole set; a correlated one runs again every time, since its
+ * outer row has changed. Returns 0, or -1 with the error set. */
+int eval_subquery(Db *db, Expr *e, Row *row, Value *out)
+{
+    if (!e->q)
+        return err("internal error: subquery not bound");
+    int in = e->op == E_IN || e->op == E_NOTIN, aff = -1;
+    Value x = {0};
+    if (in) {
+        if (eval(db, e->a, row, &x) < 0)
+            return -1;
+        aff = in_affinity(e->a->aff, e->q->cols[0]->aff);
+        apply_affinity(&x, aff, &db->rowa);
+    }
+    if (e->cached) {
+        *out = e->answer;
+    } else {
+        if (run_subquery(db, e, row, x, aff, out) < 0)
+            return -1;
+        if (!e->correlated) {
+            e->answer = *out;
+            e->cached = 1;
+        }
+    }
+    if (in && !e->correlated) {         /* its set is kept: look x up in it */
+        int t = set_lookup(e, x);
+        memset(out, 0, sizeof *out);
+        if (t >= 0) {
+            out->type = V_INT;
+            out->i = t;
+        }
+    }
+    if (e->op == E_NOTIN && out->type == V_INT)
+        out->i = !out->i;
     return 0;
 }
 // @end
@@ -2661,7 +3041,11 @@ static int explain_write(Db *db, Stmt *s)
     Table *t = find_table(db, s->table);
     if (!t)
         return err("no such table: %s", s->table);
-    if (resolve_expr(s->where, t, NULL) < 0)
+    // @from 08.06
+    if (resolve_expr(db, s->where, t, NULL) < 0)
+    // @else
+    // if (resolve_expr(s->where, t, NULL) < 0)
+    // @end
         return -1;
     Plan plan;
     if (plan_query(db, t, s->where, NULL, 0, NULL, NULL, &plan) < 0)
@@ -2936,6 +3320,7 @@ int db_exec(Db *db, const char *sql)
             rc = run_stmt(db, s);
         arena_reset(&db->rowa);  // @from 04.01
         arena_reset(&db->stmt);    /* the parser keeps nothing in it between statements */
+        arena_reset(&db->once);    /* nor do subqueries keep answers */ // @from 08.06
         if (rc < 0) {
             report(db);
             return -1;

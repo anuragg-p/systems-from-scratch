@@ -233,7 +233,7 @@ SELECT sum(DISTINCT x), typeof(sum(DISTINCT x)) FROM d;
 SELECT sum(DISTINCT x), typeof(sum(DISTINCT x)) FROM d2;
 """
 
-# Errors in both engines (errors_alike); the text after "Error: " must be sqlite3's.
+# Errors in both engines with the same text (same_error), which is this one.
 ERRORS = [
     ("SELECT count(*) FROM p GROUP BY count(*)", "aggregate functions are not allowed in the GROUP BY clause"),
     ("SELECT b, count(*) FROM p GROUP BY 2", "aggregate functions are not allowed in the GROUP BY clause"),
@@ -252,7 +252,7 @@ ERRORS = [
     ("SELECT g FROM t GROUP BY g HAVING nope > 1", "no such column: nope"),
     ("SELECT g, sum(x) FROM hv GROUP BY g HAVING 0", "integer overflow"),
     ("SELECT g, sum(x) FROM hv GROUP BY g HAVING count(*) = 1", "integer overflow"),
-    ("SELECT g FROM t WHERE count(*) > 1 GROUP BY g", "misuse of aggregate function count()"),
+    ("SELECT g FROM t WHERE count(*) > 1 GROUP BY g", "misuse of aggregate: count()"),
     ("SELECT DISTINCT nope FROM t", "no such column: nope"),
     ("SELECT DISTINCT FROM t", 'near "FROM": syntax error'),
     ("SELECT g FROM t GROUP BY", 'near ";": syntax error'),
@@ -374,11 +374,12 @@ def long_rows():
 
 
 def errors(t, setup, cases):
-    """Each case is an error in both engines, with sqlite3's text."""
+    """Each case is an error in both engines, with the same text (same_error), which is
+    the text written here."""
     tr = t.track
     for sql, msg in cases:
-        r = tr.errors_alike(t, setup, f"{sql};\n")
-        t.check(f"Error: {msg}\n" in r.err, f"{sql}: ./db should say {msg!r}, said:\n{r.err}")
+        got = tr.same_error(t, setup, f"{sql};\n")
+        t.check(got == msg, f"{sql}: both engines say {got!r}, the test expects {msg!r}")
 
 
 def test(t):

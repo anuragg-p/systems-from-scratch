@@ -50,6 +50,7 @@ void parser_init(Parser *ps, const char *sql, Arena *arena)
     ps->sql = sql;
     ps->z = sql;
     ps->arena = arena;
+    ps->depth = 0;  // @from 08.06
     advance(ps);
 }
 
@@ -156,6 +157,40 @@ static int hexval(char c)
 
 static Expr *parse_binary(Parser *ps, int min_prec);
 
+// @from 08.06
+static Stmt *new_stmt(Parser *ps, int kind);
+static int parse_select(Parser *ps, Stmt *s);
+
+/* Parses a subquery into e, a node of type E_SUBQUERY, E_EXISTS or
+ * E_IN/E_NOTIN: at the SELECT after a "(", the whole SELECT, then the ")".
+ * Returns e, or NULL with the error set. */
+static Expr *parse_subquery(Parser *ps, Expr *e)
+{
+    // @build 08.06 a SELECT in parentheses
+    // The SELECT is a statement of its own (parse_select) in e->sub, with
+    // its text, as written, in e->sub->sql for EXPLAIN. Its names are bound
+    // later, with the query around it. At most MAX_OUTER levels of
+    // subqueries, one inside another.
+    if (ps->depth == MAX_OUTER)
+        return err("too many levels of subqueries (at most %d)", MAX_OUTER), (Expr *)NULL;
+    const char *start = ps->tok.s;
+    e->sub = new_stmt(ps, S_SELECT);
+    ps->depth++;
+    int rc = parse_select(ps, e->sub);
+    ps->depth--;
+    if (rc < 0)
+        return NULL;
+    const char *end = ps->tok.s;
+    while (end > start && (end[-1] == ' ' || end[-1] == '\t' || end[-1] == '\n' || end[-1] == '\r'))
+        end--;
+    e->sub->sql = arena_strndup(ps->arena, start, (size_t)(end - start));
+    if (!expect(ps, TK_RP))
+        return NULL;
+    return e;
+    // @end
+}
+// @end
+
 /* A literal, a name, a function call, or a parenthesized expression. */
 static Expr *parse_primary(Parser *ps)
 {
@@ -218,14 +253,28 @@ static Expr *parse_primary(Parser *ps)
         return new_expr(ps, E_NULL);
     case TK_LP:
         advance(ps);
-        if (at(ps, TK_SELECT)) {
-            err("subqueries are not supported");
-            return NULL;
-        }
+        // @from 08.06
+        if (at(ps, TK_SELECT))
+            return parse_subquery(ps, new_expr(ps, E_SUBQUERY));
+        // @else
+        // if (at(ps, TK_SELECT)) {
+        //     err("subqueries are not supported");
+        //     return NULL;
+        // }
+        // @end
         e = parse_binary(ps, 1);
         if (!e || !expect(ps, TK_RP))
             return NULL;
         return e;
+    // @from 08.06
+    case TK_EXISTS:              /* EXISTS (SELECT ...); NOT EXISTS is NOT of it */
+        advance(ps);
+        if (!expect(ps, TK_LP))
+            return NULL;
+        if (!at(ps, TK_SELECT))
+            return syntax_error(ps);
+        return parse_subquery(ps, new_expr(ps, E_EXISTS));
+    // @end
     default:
         break;
     }
@@ -410,10 +459,19 @@ static Expr *parse_special(Parser *ps, Expr *left)
     if (accept(ps, TK_IN)) {
         Expr *e = new_expr(ps, neg ? E_NOTIN : E_IN);
         e->a = left;
+        // @from 08.06
+        if (is_name_token(ps->tok.type))
+            return err("IN with a table name is not supported"), (Expr *)NULL;
         if (!expect(ps, TK_LP))
             return NULL;
         if (at(ps, TK_SELECT))
-            return err("subqueries are not supported"), (Expr *)NULL;
+            return parse_subquery(ps, e);
+        // @else
+        // if (!expect(ps, TK_LP))
+        //     return NULL;
+        // if (at(ps, TK_SELECT))
+        //     return err("subqueries are not supported"), (Expr *)NULL;
+        // @end
         Expr *items[256];
         int n = 0;
         if (!at(ps, TK_RP)) {
@@ -1103,6 +1161,10 @@ static int parse_column_def(Parser *ps, Stmt *s, ColumnDef *d)
             } else if (!(d->dflt = parse_unary(ps))) {
                 return -1;
             }
+            // @from 08.06
+            if (has_subquery(d->dflt))      /* sqlite3's words for it */
+                return err("default value of column [%s] is not constant", d->name);
+            // @end
         } else if (accept(ps, TK_COLLATE)) {
             s->unsupported = "COLLATE";
             if (!parse_name(ps))
