@@ -1067,6 +1067,41 @@ section C, has the quoted lines for most):
   (where.c, whereLoopAddBtreeIndex) and uses it to drop a sort; EXPLAIN
   QUERY PLAN prints the same line as for any index.
 
+Read for the lesson's Decide the boundary (written after the code):
+
+- SQLite 3.54.1: sqlite3Insert calls sqlite3GenerateConstraintChecks
+  (insert.c 1565) and only then sqlite3CompleteInsertion (1581); update.c
+  does the same (1043, 1109). One writer: wal.c 3783 "There can only be a
+  single writer active at a time."; os.h 86, a RESERVED lock is held by a
+  single process at a time.
+- PostgreSQL REL_18_7, src/backend/access/nbtree/nbtinsert.c (fetched from
+  the tag on GitHub): _bt_doinsert (102) is called with the heap tuple
+  already stored ("By here, itup is filled in, including the TID.", 82;
+  executor/nodeModifyTable.c ExecInsert calls table_tuple_insert at 1233,
+  then ExecInsertIndexTuples at 1239). A key with any NULL skips the check
+  (115-137: "core code considers NULL unequal to every value, including
+  NULL"). _bt_search_insert returns the first leaf the key could be on,
+  write-locked (162-167); _bt_check_unique runs under that lock, which is
+  held until the insert: "only one would-be inserter can be making the
+  check at one time" (187-196). _bt_check_unique (408) walks the equal
+  entries; for each it checks the heap with a dirty snapshot
+  (table_index_fetch_tuple_check, 560), so entries of dead versions are not
+  conflicts; an in-progress inserter or deleter is returned as xwait
+  (586-597), and _bt_doinsert releases the page, calls XactLockTableWait
+  and starts the search over (213-232); a live duplicate is ereport ERROR
+  "duplicate key value violates unique constraint" (666-673). Several
+  entries with one key in a unique index are normal there (versions from
+  UPDATEs: nbtree/README, "Deduplication in unique indexes"). Immediate
+  unique indexes pass UNIQUE_CHECK_YES, deferrable ones UNIQUE_CHECK_PARTIAL
+  (executor/execIndexing.c 431-438).
+- SQLite's file format page (fileformat2.html, 2.6) says N in
+  sqlite_autoindex_TABLE_N increases "with each constraint seen"; the
+  source and the runs say a constraint that makes no index (the INTEGER
+  PRIMARY KEY, a repeat) takes no number. users(id INTEGER PRIMARY KEY,
+  email TEXT UNIQUE, name TEXT) gets sqlite_autoindex_users_1.
+- In a terminal, Homebrew sqlite3 3.54.1 prints query results in box mode;
+  a transcript needs `sqlite3 -list` (errors are unaffected).
+
 Known differences from sqlite3:
 
 - `SELECT * FROM t WHERE a = 5 ORDER BY b` with a UNIQUE: sqlite3 knows
