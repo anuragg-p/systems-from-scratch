@@ -2252,14 +2252,23 @@ static int find_aggs(Db *db, Query *q, Expr *e, const char *misuse)
         return -1;
     if (fn >= 0) {
         // @from 08.06
-        if (outer_aggregate(e))
-            return err("aggregates of a query outside the subquery are not supported: %s()", e->name);
+        /* An aggregate of a query outside: where sqlite3's resolver takes
+         * aggregates (all but the places of "misuse of aggregate function"),
+         * it is that query's, which this engine refuses once its arguments
+         * are looked at; elsewhere that misuse is the error, as in sqlite3. */
+        int outer = outer_aggregate(e);
+        if (outer && misuse && strncmp(misuse, "misuse of aggregate function", 28) != 0)
+            misuse = NULL;
         // @end
         if (misuse)
             return err(misuse, e->name);
         for (int i = 0; i < e->nlist; i++)
             if (find_aggs(db, q, e->list[i], "misuse of aggregate function %s()") < 0)
                 return -1;
+        // @from 08.06
+        if (outer)
+            return err("aggregates of a query outside the subquery are not supported: %s()", e->name);
+        // @end
         // @from 08.05
         if (e->distinct && e->nlist != 1)
             return err("DISTINCT aggregates must have exactly one argument");
@@ -2470,8 +2479,10 @@ static void group_keys(Db *db, Query *q)
  * BY (group_resolve binds its terms). Its ORDER BY may call aggregates
  * then (and HAVING, which only an aggregate query may have), but WHERE,
  * ON, LIMIT and OFFSET never. The errors are sqlite3's texts: an aggregate
- * in the ORDER BY of a query that is not an aggregate query, or in an ON
- * of one that is, gets the shorter "misuse of aggregate: f()". Above the
+ * in the ORDER BY of a query that is not an aggregate query, or in the
+ * WHERE or an ON of one that is, gets the shorter "misuse of aggregate:
+ * f()" (sqlite3 lets it through its resolver there and stops at it in
+ * expr.c); elsewhere "misuse of aggregate function f()". Above the
  * Aggregate the one table's rowid is read from its slot (rowid_from_slot),
  * and a result column that is a GROUP BY term from its own (group_keys).
  * Returns 0, or -1 with the error set. */
@@ -2480,10 +2491,11 @@ static void group_keys(Db *db, Query *q)
 //  * query: it is if its result columns call an aggregate. Its ORDER BY may
 //  * call aggregates then, but WHERE, ON, LIMIT and OFFSET never. The errors
 //  * are sqlite3's texts: an aggregate in the ORDER BY of a query that is not
-//  * an aggregate query, or in an ON of one that is, gets the shorter
-//  * "misuse of aggregate: f()". Above the Aggregate the one table's rowid
-//  * is read from its slot (rowid_from_slot). Returns 0, or -1 with the
-//  * error set. */
+//  * an aggregate query, or in the WHERE or an ON of one that is, gets the
+//  * shorter "misuse of aggregate: f()" (sqlite3 lets it through its resolver
+//  * there and stops at it in expr.c); elsewhere "misuse of aggregate
+//  * function f()". Above the Aggregate the one table's rowid is read from
+//  * its slot (rowid_from_slot). Returns 0, or -1 with the error set. */
 // @end
 static int resolve_aggregates(Db *db, Query *q)
 {
@@ -2511,7 +2523,7 @@ static int resolve_aggregates(Db *db, Query *q)
     // @else
     // q->aggregate = q->naggs > 0;
     // @end
-    if (find_aggs(db, q, s->where, misuse) < 0)
+    if (find_aggs(db, q, s->where, q->aggregate ? shorter : misuse) < 0)
         return -1;
     for (int k = 0; k < q->scope.nfrom; k++)
         if (find_aggs(db, q, q->scope.from[k].on, q->aggregate ? shorter : misuse) < 0)
@@ -2679,6 +2691,40 @@ int resolve_subquery(Db *db, Expr *e, Scope *sc)
     e->correlated = q->scope.correlated;
     if (e->op == E_SUBQUERY)
         e->aff = q->cols[0]->aff;
+    return 0;
+}
+
+/* Values a subquery's SELECT gives per row, as its text has them (a *
+ * counts one); 1 for any other expression. */
+static int vector_size(Expr *e)
+{
+    return e && e->op == E_SUBQUERY ? e->sub->ncols : 1;
+}
+
+/* Binds the names in e, a comparison or BETWEEN, or x IN (SELECT ...)
+ * whose x is a subquery. A subquery of two or more values there is a row
+ * value, which sqlite3 compares value by value and this engine does not:
+ * against another of as many it is refused by name, else it is sqlite3's
+ * error, "row value misused" (resolve.c, resolveExprStep, the TK_EQ ...
+ * TK_BETWEEN case; it looks before it binds a name inside) or, for IN,
+ * "sub-select returns 1 columns - expected 2". Returns 0, or -1 with the
+ * error set. */
+int resolve_row_values(Db *db, Expr *e, Scope *sc)
+{
+    if (e->sub) {                            /* x IN (SELECT ...), x a subquery */
+        int n = vector_size(e->a), m = e->sub->ncols;
+        if (n > 1)
+            return n == m ? err("row values are not supported")
+                          : err("sub-select returns %d columns - expected %d", m, n);
+        return resolve_names(db, e->a, sc) < 0 ? -1 : resolve_subquery(db, e, sc);
+    }
+    int na = vector_size(e->a), nb = vector_size(e->b), nc = e->c ? vector_size(e->c) : na;
+    if ((e->op == E_IS || e->op == E_ISNOT) && e->b->op == E_NULL)
+        na = nb = nc = 1;    /* x IS NULL is no comparison to sqlite3 (TK_ISNULL): x is bound as one value */
+    if (na > 1 || nb > 1 || nc > 1)
+        return na == nb && nb == nc ? err("row values are not supported") : err("row value misused");
+    if (resolve_names(db, e->a, sc) < 0 || resolve_names(db, e->b, sc) < 0 || resolve_names(db, e->c, sc) < 0)
+        return -1;
     return 0;
 }
 

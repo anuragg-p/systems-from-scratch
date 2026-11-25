@@ -19,6 +19,9 @@ Fixtures the lesson tests use:
                         (floats compared as numbers); returns the output
     errors_alike(t, setup, sql)
                         sql must fail in both engines
+    same_error(t, setup, sql)
+                        and with the same message (sqlite3's prefix and caret
+                        lines stripped: error_text); returns it
     integrity(t, path)  sqlite3's PRAGMA integrity_check must say ok
     crash(t, path, point, sql, env=None)
                         run sql with DB_CRASH=point: ./db must die there
@@ -625,6 +628,36 @@ def errors_alike(t, setup, sql):
     t.check(ours.rc != 0 and "Error:" in ours.err,
             f"./db should reject {sql!r} as sqlite3 does ({theirs.err.strip()}), but:\n{ours}")
     return ours
+
+
+_ERROR_LINE = re.compile(r"^(?:Error: |(?:Parse|Runtime) error near line \d+: |Error near line \d+: |"
+                         r"(?:Parse|Runtime) error in \S+ command line argument: )(.*)$")
+
+
+def error_text(err):
+    """The message of the first error an engine printed on stderr: ./db's "Error: msg",
+    sqlite3's "Parse error near line N: msg" or "Runtime error near line N: msg" (the
+    caret lines under it dropped); None if there is none."""
+    for line in err.splitlines():
+        m = _ERROR_LINE.match(line)
+        if m:
+            return m.group(1).strip()
+    return None
+
+
+def same_error(t, setup, sql):
+    """sql must fail in both engines with the same message (error_text); returns it."""
+    a, b = path(t), path(t)
+    if setup:
+        db(t, a, setup)
+        sqlite(t, b, setup)
+    ours = db(t, a, sql, check=False)
+    theirs = sqlite(t, b, sql, check=False)
+    mine, real = error_text(ours.err), error_text(theirs.err)
+    t.check(real is not None, f"sqlite3 accepted {sql!r}; the test is wrong:\n{theirs}")
+    t.check(ours.rc != 0 and mine == real,
+            f"./db should fail {sql!r} with sqlite3's words\n  ./db:    {mine!r}\n  sqlite3: {real!r}\n{ours}")
+    return mine
 
 
 def integrity(t, path_):

@@ -1701,7 +1701,8 @@ QUERY PLAN
 Errors, ./db and sqlite3 alike (sqlite3 prefixes "Parse error"):
 
 ```
-SELECT count(*) FROM orders WHERE count(*) > 1;     Error: misuse of aggregate function count()
+SELECT id FROM orders WHERE count(*) > 1;           Error: misuse of aggregate function count()
+SELECT count(*) FROM orders WHERE count(*) > 1;     Error: misuse of aggregate: count()
 SELECT max(count(*)) FROM orders;                   Error: misuse of aggregate function count()
 SELECT count(total, id) FROM orders;                Error: wrong number of arguments to function count()
 SELECT id FROM orders ORDER BY count(*);            Error: misuse of aggregate: count()
@@ -1710,11 +1711,15 @@ SELECT sum(x) FROM big;                             Error: integer overflow     
 
 The shorter "misuse of aggregate: f()" is sqlite3's for an aggregate it
 meets while coding a query that is not an aggregate query (expr.c), and for
-one in the ON of a query that is (sqlite3 does not resolve ON with the
-WHERE clause's rules there; run, not read); "misuse of aggregate function
-f()" for WHERE, LIMIT, OFFSET, the ON of a query that is not one, and
-inside another aggregate (resolve.c, resolveExprStep: an aggregate's
-arguments are resolved with NC_AllowAgg cleared). The argument count is
+one in the WHERE or an ON of a query that is (its resolver lets aggregates
+through there when the query has one, and the code generator stops at it;
+run, not read; an earlier draft of these notes, and of the test, had the
+longer text for WHERE, which errors_alike could not tell: the tests now
+compare the words with sqlite3's, track.py same_error); "misuse of
+aggregate function f()" for LIMIT, OFFSET, the WHERE and ON of a query
+that is not one, and inside another aggregate (resolve.c,
+resolveExprStep: an aggregate's arguments are resolved with NC_AllowAgg
+cleared). The argument count is
 checked first: `count(a, b)` in WHERE is "wrong number of arguments".
 Refused by ./db, run by sqlite3: `group_concat is not supported`,
 `string_agg is not supported`.
@@ -2516,6 +2521,19 @@ With 08.04 and 08.05 (merged last; the fuzzer with every feature,
   best, the sets, take_row): a correlated subquery's answer in an
   aggregate's argument or a DISTINCT result survives a two-page cache
   (BIG_QUERIES in the test, under ASan).
+- Error words, now compared with sqlite3's in the tests (track.py
+  same_error, which strips sqlite3's "Parse error near line N: " and the
+  caret lines). An aggregate of a query outside is sqlite3's misuse where
+  sqlite3's resolver takes no aggregates (WHERE of a query with none, ON,
+  LIMIT, inside another aggregate: "misuse of aggregate function max()"),
+  and refused only where sqlite3 would run it. A subquery of several
+  values compared, or in BETWEEN, is a row value: "row value misused",
+  which sqlite3 says before it binds any name in the comparison (resolve.c,
+  resolveExprStep, TK_EQ ... TK_BETWEEN; `nope = (SELECT 1, 2)` too); x IS
+  NULL is no comparison there ("sub-select returns 2 columns - expected
+  1"); `(SELECT 1, 2) IN (SELECT 1)` is "sub-select returns 1 columns -
+  expected 2" (resolve_row_values). Two of as many values, which sqlite3
+  compares, are "row values are not supported" here.
 - An aggregate's answer has no affinity, a column's has: sqlite3 gives
   `(SELECT max(total) FROM orders) = '50'` 0 and `(SELECT total FROM
   orders WHERE id = 12) = '50'` 1; so does ./db (E_AGG's aff is -1, which

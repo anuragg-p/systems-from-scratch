@@ -483,6 +483,9 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
         // @end
     }
     // @from 08.06
+    if ((e->op >= E_EQ && e->op <= E_ISNOT) || e->op == E_BETWEEN || e->op == E_NOTBETWEEN ||
+        (e->sub && e->a && e->a->op == E_SUBQUERY))
+        return resolve_row_values(db, e, sc);    /* where a subquery of several columns is a row value */
     if (e->sub)      /* a subquery: x of x IN (SELECT ...) is a name here, the SELECT a scope inside this one */
         return resolve_names(db, e->a, sc) < 0 ? -1 : resolve_subquery(db, e, sc);
     // @end

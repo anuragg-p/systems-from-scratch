@@ -693,6 +693,7 @@ int choose_join_access(Query *q, int k, Expr **terms, int nterms, Access *acc); 
 void explain_select_plan(struct Db *db, Plan *plan);  // @from 08.04
 // @from 08.06
 int resolve_subquery(struct Db *db, Expr *e, Scope *sc);
+int resolve_row_values(struct Db *db, Expr *e, Scope *sc);
 int eval_subquery(struct Db *db, Expr *e, Row *row, Value *out);
 // @end
 // @from 05.02

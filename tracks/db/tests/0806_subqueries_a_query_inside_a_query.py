@@ -347,14 +347,26 @@ def mixed_queries():
     return q
 
 
-# Errors in both engines (errors_alike); the first few also by sqlite3's exact words.
+# Errors in both engines, with the same text (same_error), which is this one.
 ERRORS = [
     ("SELECT (SELECT 1, 2)", "sub-select returns 2 columns - expected 1"),
     ("SELECT 1 IN (SELECT 1, 2)", "sub-select returns 2 columns - expected 1"),
     ("SELECT 1 IN (SELECT * FROM orders)", "sub-select returns 3 columns - expected 1"),
     ("SELECT (SELECT * FROM customers WHERE id = 1)", "sub-select returns 3 columns - expected 1"),
     ("SELECT (SELECT c.* FROM customers c, orders o)", "sub-select returns 3 columns - expected 1"),
-    ("SELECT name FROM customers WHERE (SELECT id, name FROM customers) = 1", "sub-select returns 2 columns - expected 1"),
+    # a subquery of several values compared is a row value: sqlite3 looks before it binds names
+    ("SELECT name FROM customers WHERE (SELECT id, name FROM customers) = 1", "row value misused"),
+    ("SELECT 1 BETWEEN (SELECT 1, 2) AND 2", "row value misused"),
+    ("SELECT nope = (SELECT 1, 2)", "row value misused"),
+    ("SELECT (SELECT 1, 2) IS NULL", "sub-select returns 2 columns - expected 1"),
+    ("SELECT (SELECT 1, 2) IN (SELECT 1)", "sub-select returns 1 columns - expected 2"),
+    ("SELECT (SELECT 1, 2) IN (1, 2)", "sub-select returns 2 columns - expected 1"),
+    # an aggregate of the outer query where the subquery may have none: sqlite3's misuse
+    ("SELECT (SELECT 1 FROM orders WHERE total > max(c.id)) FROM customers c", "misuse of aggregate function max()"),
+    ("SELECT (SELECT max(max(c.id))) FROM customers c", "misuse of aggregate function max()"),
+    ("SELECT (SELECT 1 FROM orders o JOIN customers x ON max(c.id) > 1) FROM customers c",
+     "misuse of aggregate function max()"),
+    ("SELECT (SELECT count(*) FROM orders WHERE count(*) > 1)", "misuse of aggregate: count()"),
     ("SELECT (SELECT nope FROM customers)", "no such column: nope"),
     ("SELECT (SELECT customers.nope FROM customers)", "no such column: customers.nope"),
     ("SELECT (SELECT zz.name FROM customers)", "no such column: zz.name"),
@@ -405,6 +417,12 @@ REFUSED = [
      "aggregates of a query outside the subquery are not supported: count()"),
     ("SELECT (SELECT max(c.id) FROM orders WHERE total > 10) FROM customers c",
      "aggregates of a query outside the subquery are not supported: max()"),
+    ("SELECT (SELECT count(*) FROM orders WHERE total > max(c.id)) FROM customers c",
+     "aggregates of a query outside the subquery are not supported: max()"),
+    ("SELECT (SELECT 1 FROM orders GROUP BY max(c.id)) FROM customers c",
+     "aggregates of a query outside the subquery are not supported: max()"),
+    ("SELECT (SELECT 1, 2) = (SELECT 3, 4)", "row values are not supported"),
+    ("SELECT (SELECT 1, 2) IN (SELECT 1, 2)", "row values are not supported"),
 ]
 
 # Writes whose subqueries read the table being written: what sqlite3 leaves, read back.
@@ -608,10 +626,10 @@ def test(t):
     a, b = files(t, SHOP)
     compare(t, a, b, listing(SHOP_QUERIES))
     for q, msg in ERRORS:
-        r = tr.errors_alike(t, SHOP, f"{q};\n")
-        t.check(f"Error: {msg}\n" in r.err, f"{q} should fail with {msg!r}, as sqlite3 does, but:\n{r}")
+        got = tr.same_error(t, SHOP, f"{q};\n")
+        t.check(got == msg, f"{q}: both engines say {got!r}, the test expects {msg!r}")
     for q in ERRORS_ALIKE:
-        tr.errors_alike(t, SHOP, f"{q};\n")
+        tr.same_error(t, SHOP, f"{q};\n")
     for q, msg in REFUSED:
         r = tr.db(t, a, f"{q};\n", check=False)
         t.check(r.rc != 0 and f"Error: {msg}" in r.err, f"{q} should be refused with {msg!r}, but:\n{r}")
