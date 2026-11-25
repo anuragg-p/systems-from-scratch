@@ -75,8 +75,9 @@ wb.c              the workbench program: show, check, time            00.01 on
 check.h check.c   how close is close, and the worst element           00.02
 bench.h bench.c   warm up, repeat, the fastest run                    00.03
 matmul.h          every matmul variant's prototype, the table of them 01.01 on
-matmul.c          matmul_ref, matmul_ijk; _ikj; _blocked              01.01-01.03
-matmul_simd.c     matmul_simd                                         01.04
+matmul.c          matmul_ref, matmul_ijk; matmul_ikj                  01.01-01.02
+matmul_simd.c     the vector type, mul_add_tile, matmul_simd          01.03
+matmul_blocked.c  MM_BLOCK, blocked_rows, matmul_blocked              01.04
 matmul_threads.c  matmul_threads                                      01.05
 blas.c            matmul_blas: the system's BLAS, when there is one   01.05
 mm.c              the matmul program: list, check, time               01.01 on
@@ -184,21 +185,36 @@ the table in the lesson that writes it (`@from`).
 - **matmul_ijk (01.01):** three loops in float, the inner one over k.
 - **matmul_ikj (01.02):** the two inner loops swapped: c's row zeroed, then
   for each k, `c[i][j] += a[i][k] * b[k][j]` along j. Reads b by rows.
-- **matmul_blocked (01.03):** ikj over tiles of `MM_BLOCK` (a constant the
-  reader changes in Break it; the agent picks the default by measuring
-  32 to 256 on both machines) so the pieces of a, b and c in use fit in the
-  cache.
-- **matmul_simd (01.04):** blocked, with the j loop written in vectors of 8
-  floats using the compiler's vector types (`__attribute__((vector_size(32)))`,
-  loads and stores through memcpy so any pointer is allowed, a scalar tail),
-  and four values of k taken at once so each vector of c is loaded and
-  stored once per four multiplies. One source for AVX2 and NEON; the lesson
-  shows the intrinsics it stands for in Decide the boundary.
+- **matmul_simd (01.03):** ikj with the j loop written in vectors, using
+  the compiler's vector types (`__attribute__((vector_size(N)))`, loads and
+  stores through memcpy so any pointer is allowed, a scalar tail), and four
+  values of p taken at once so each vector of c is loaded and stored once
+  per four multiplies. One source for AVX2 and NEON. The loops live in one
+  kernel that everything after reuses: `mul_add_tile(a, b, c, k, n, i0, i1,
+  p0, p1, j0, j1)` adds to c[i][j], for i and j in their ranges, the sum
+  over p in its range of a[i][p] * b[p][j]. matmul_simd is c set to 0 and
+  one call over everything.
+- **matmul_blocked (01.04):** the same kernel called a tile at a time:
+  `blocked_rows(a, b, c, k, n, i0, i1)` sets rows i0 to i1 of c to 0 and
+  runs mul_add_tile over tiles of `MM_BLOCK` rows, values of p and columns
+  (a constant the reader changes in Break it), so the pieces of b and c in
+  use stay in the cache.
 - **matmul_threads (01.05):** rows of c split evenly over pthreads (count
-  from `sysconf`, or `mm -t N`), each running the simd kernel on its rows.
+  from `sysconf`, or `mm -t N`), each calling blocked_rows on its rows.
 - **matmul_blas (01.05):** `cblas_sgemm` from Accelerate on macOS or
   OpenBLAS on Linux when make finds one; without one, `mm` says how to get
   it and the rest still works.
+
+**Why SIMD comes before blocking** (changed 2026-11-25, from the first
+build's measurements). The outline had blocking third and SIMD fourth, the
+order of most write-ups. Built that way, tiles around the scalar ikj loop
+were slower than ikj on both machines, at every n from 512 to 2048: the
+scalar loop holds about 7 GFLOP/s whatever n is, limited by its arithmetic,
+not by memory. With the arithmetic in vectors memory is the limit, and tiles
+pay: on the M4 Pro the vector kernel with tiles of 128 against none took
+32.8 against 49.4 ms at n = 1000 and 269 against 519 ms at n = 2000. So the
+order is ijk, ikj, simd, blocked, threads, each a step the reader measures.
+The scalar blocked variant is not in the track; its numbers are in NOTES.md.
 
 **Scalar means scalar.** `matmul.c` is compiled with the compiler's
 vectorizer off (the Makefile picks the flags for clang and gcc), or the
@@ -209,9 +225,11 @@ unasked. `matmul_simd.c` gets `-march=native` on x86-64.
 `mm list` names the variants built. `mm check` runs every variant over a
 fixed set of shapes against matmul_ref and prints one line each. `mm time
 [-n N] [-t T] [name...]` prints, per variant: min ms, GFLOP/s (2mkn
-operations), and how many times faster than ijk. Default n = 1024 unless
-the agent's measurements say ijk makes a lesson's transcript take over 30 s
-there; then 768.
+operations), and how many times faster than ijk. Default n = 1000: a round size that
+is not a power of two. At 1024, 1536 and 2048 every variant behaves
+differently (a step down a column of b is a whole number of pages, and
+rows land on the same cache sets); 01.02's Break it runs ijk at 1024 to
+show it.
 
 **The tolerance (01.01).** Inputs are rng_fill's, in [-1, 1). check_close
 with rtol = 1e-4 and atol = 1e-3: a float sum of k products of such numbers
@@ -243,7 +261,7 @@ of the tolerance, stop and report instead of loosening it.
   under emulation if Docker can run it with AVX2; otherwise that run is
   owed on the GPU machine and NOTES.md says so.
 - The ladder is real: on the machine the lessons are written on, at the
-  default n, each of ikj, blocked, simd, threads is faster than the one
+  default n, each of ikj, simd, blocked, threads is faster than the one
   before (a check for the author, run by hand and recorded in NOTES.md, not
   a unit test: speed is not asserted in the suite).
 - The repo's own: `./learn test gpu`, `check-skeleton gpu` (each lesson cut
