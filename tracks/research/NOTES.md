@@ -4689,6 +4689,24 @@ in a fresh python, then its experiment's default):
 - profile.py prints nothing on stderr (acc_events=True keeps the
   profiler's warning about cycles away).
 
+**With module 11** (the last pass, 2026-11-25, after the recorded
+benchmark): `./learn test research` 59 tests, all pass, 22.1 minutes of
+tests at load 3 to 34 (the wall clock said 1 h 23 min: the machine slept
+in the middle); module 11's six 3 min 30 s (11.01 39.3 s, 11.02 17.7,
+11.03 21.6, 11.04 35.0, 11.05 49.8, 11.06 46.3). An earlier full pass at
+load 11 to 18: 27 min 42 s. `./learn check-skeleton research` ok, 66 s
+(59 lessons; 11.01 fails at its stubs in lab/bench.py, 11.02 at
+piece_of, 11.03 at fused_attend, 11.04 at lost, 11.05 at accumulated,
+11.06 at Cache). `./learn check-timeline research` ok, 7 min 29 s at
+load 7 to 10; the project has 260 files at 11.01, then one more a lesson
+to 264 at 11.05, and 322 at 11.06 (58 of them the recorded benchmark).
+At load 34 to 46 an earlier pass failed from 08.02 on, every failure a
+short run that took more than the harness's 20 s for one step (heads,
+positions, gpt and so on, not module 11's): the timeline's step timeout
+is a fixed 20 s, which a machine that busy passes. `./learn selftest`
+ok (269 tests). `./learn check` reports only "test has no lesson doc"
+for 10.01 to 10.05 and 11.01 to 11.06.
+
 ## Module 14: reproduce a paper, grokking
 
 Built by one agent on 2026-11-24, on the reference machine above (Apple M4
