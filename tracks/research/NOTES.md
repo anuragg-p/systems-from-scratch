@@ -4790,6 +4790,25 @@ is a fixed 20 s, which a machine that busy passes. `./learn selftest`
 ok (269 tests). `./learn check` reports only "test has no lesson doc"
 for 10.01 to 10.05 and 11.01 to 11.06.
 
+**The planner's check of the recorded benchmark (2026-11-25, load 5.6
+to 9.9, after the merge).** Four rows taken again back to back, the same
+settings, 3 seeds, to a scratch folder (282 s): baseline 23.7 +- 0.677 s
+(recorded 22.7), twice the batch and rate 25.5 +- 0.8 (25.4), x1.08 (t
++3.0; recorded x1.12, t +2.3), all together 19.6 +- 0.362 (19.5), x0.83 (t
+-9.1; recorded x0.86, t -6.5), fused attention 19.3 +- 0.366 (19.7), x0.82
+(t -9.8; recorded x0.87, t -3.9); the steps to the target the same to the
+step (433, 297, 300, 434). So the recording stands as taken: its three
+rows at a higher load give the same picture when taken beside a baseline
+at the same load. A page gives the recorded numbers, with the loads the
+recording prints.
+
+**For module 10's pages, found by 11.02.** 10.02's page says its step is
+slower "because the angles are made again on every call". 11.02 measured
+it: the angles are 0.5% of a step and the turning itself, forward and
+backward, 15.8%; keeping the angles saves nothing measurable. The module
+11 lessons agent corrects 10.02's sentences (and any other page that
+repeats them).
+
 ## Module 14: reproduce a paper, grokking
 
 Built by one agent on 2026-11-24, on the reference machine above (Apple M4

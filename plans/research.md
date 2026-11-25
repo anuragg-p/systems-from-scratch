@@ -32,12 +32,12 @@ thirty-seven lessons, module pages, figures and covers; each module's
 64 of the core's 70 lessons, pushed on 2026-11-24 up to module 09 and
 14's code. 08.02's default run is 2 seeds (3 took 82 s on a loaded
 machine); its heads comparison is inside the noise at 2 seeds and the
-page runs that part at 3 as well (13.02 settles it at 10). In work, by
-an agent in its own worktree: module 11's code, whose recorded
-benchmark waits for a quiet machine. Then 11's lessons. Agents that add
-to track.py, NOTES.md and the art generators at the same time are
-merged by hand, keeping each block; the maps are then drawn again
-(`python3 -B art/research/archmap.py`).
+page runs that part at 3 as well (13.02 settles it at 10). Module 11's
+code is on master too (70 tests, every lesson of the core has its code).
+In work, by an agent in its own worktree: module 11's lessons, the last
+six. Agents that add to track.py, NOTES.md and the art generators at
+the same time are merged by hand, keeping each block; the maps are then
+drawn again (`python3 -B art/research/archmap.py`).
 
 The owner asked for more speed (2026-11-24): the limit of three agents
 is lifted. Timings taken while four or five agents run are not to be
@@ -383,8 +383,21 @@ Built, as found:
   Earlier work (Irie et al. 2019, Haviv et al. 2022, Kazemnejad et al.
   2023) answers part of it; the lesson says so.
 
+- 11 Fast, on 10.05's "all four" GPT. 11.02: the profile corrects
+  module 10's guess: rotary's angles are 0.5% of a step, the turning
+  itself 15.8%; keeping the angles gives the same weights bit for bit
+  and saves nothing. 11.03: PyTorch's fused attention, the same numbers
+  (2.7e-15), a step 1.29 to 1.42 times faster on this CPU; nothing on
+  the Apple GPU. 11.04: every fact of Micikevicius et al. about sixteen
+  bits held on this model's numbers; the speed did not: this build has
+  no fast 16-bit product on the CPU and a step is 8 to 29 times slower.
+  11.05: accumulation gives the large batch's gradient exactly and no
+  speed; time to a target barely moves with the batch. 11.06: a cache
+  of keys and values writes the same tokens 2.8 to 6.3 times faster on
+  SmolLM2. The recorded benchmark, time to 2.4 bits: fused attention
+  x0.87, twice the batch and rate x1.12 (slower), all together x0.86.
+
 Still the plan:
-- 11.03 FlashAttention, 11.04 mixed precision: the same numbers, sooner.
 
 ## Decisions after module 08's code (Fable, 2026-11-24)
 
@@ -484,6 +497,25 @@ Still the plan:
 - The next question the experiment points at (does the gap depend on
   the step budget) is left in the lesson as the reader's.
 - 15.03 links Peyton Jones's own page.
+
+## Decisions after module 11's code (Fable, 2026-11-25)
+
+- 11.02 stays as found: the fix the profile was expected to point at
+  does not pay, and the profile points at attention instead (11.03).
+  torch.compile is not taken (it needs a C++ compiler and moves the
+  last bits); it and AdamW's fused step are named in 11.06 as things
+  to try, with the spike's ranges given as a trial outside the page.
+- 10.02's pages gave the wrong reason for the slower step (the angles
+  made again on every call). The module 11 lessons agent corrects
+  them from 11.02's measurement.
+- The recorded benchmark stands as taken. Three of its rows ran at a
+  load of 2 to 11; four rows taken again back to back by the planner
+  at a load of 6 to 10 gave the same ratios within a few percent
+  (NOTES.md).
+- 11.05's default (58 s at a load of 6) is decided in the quiet pass.
+- check-timeline's fixed 20 s for one step fails earlier lessons at a
+  load of 30 and above: a failure of it on a loaded machine is run
+  again before it is believed.
 
 ## Directions for 07 to 15 (Fable, 2026-11-24)
 
