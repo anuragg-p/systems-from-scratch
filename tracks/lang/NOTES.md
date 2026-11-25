@@ -1013,3 +1013,62 @@ Found in the code:
   holds them; the site's view at 01.11 is unchanged but for scan.c and
   mote.h). `plans/lang.md` still names error_at in "Chapter 1 as built";
   it is not one of this step's files.
+
+## After the first read: lessons 01.01 to 01.05
+
+On 2026-11-25, on the same Mac (Apple M4 Pro, macOS 26.6.2, Apple clang 21.0.0). The book's files
+were not opened; what the lessons say of the book is from `plans/lang-01-lessons.md` and
+`plans/lang.md`.
+
+What changed:
+
+- A **way** has one meaning: a way of running a program written in your language, one of the five
+  columns `agree` prints at 01.11: `mote0` (01.03), the translator and the C compiler (01.04), the
+  tree walk (01.09), compiled for the machine (01.10), compiled and improved (01.11, `-O`).
+  `gcd.s`, written by hand, is not one of them: it is the measure the compiled code is set
+  against. 01.01's tour, 01.02's table row and its sentence on which lesson adds which way, 01.05
+  (two ways at 01.05, one more in each of 01.09, 01.10 and 01.11; a way is a column of `agree`,
+  not a road of the map) and the module page say so.
+- `01.01-five-ways.svg` redrawn: a "by hand" row set apart, "written for the machine directly",
+  then five numbered rows, each ending in 21; the fourth is scanner, parser, analysis, code
+  generator, the machine, the fifth adds the improver. The generator runs `mote -S` on the machine
+  too and asserts the five rows against `agree`'s five columns. New caption, the lesson's alt text.
+- Nobody but the course wrote `gcd.s`: 01.01 and 01.02 say "every decision is the writer's", and
+  `01.02-c-and-assembly.svg`'s legend reads "chosen by hand in 01.01".
+- **Read first** is a paragraph of its own in 01.01 to 01.05.
+- 01.01: all five pseudo-instructions of `gcd.s` and what each stands for; `rt.c` linked into the
+  C program by 01.02 and into the reader's by 01.04; the stepped figure's caption runs to the
+  program's end; chapter 5 named once as on the book's companion site, not in the printed volume
+  (`plans/lang.md`); the book's opening said plainly (higher-level languages, so that a program
+  outlives its machine); "the order is the book's" once.
+- `01.03-reread.svg`: a name is drawn in the table from the step that first gives it a value,
+  newest at the top, as `set()` puts a new name at the front of its list (the generator checks
+  `set()` for that); before line 2 the table shows "empty". Steps 2 and 3 say so; the other 23
+  captions were read against their frames and stand.
+- 01.04: each example number with what it is, from the plan's section 1.4 (Example 1.16 is
+  compiling languages usually interpreted; the text had called it bytecode). Go deeper names the
+  four files Run it leaves in `build/` and the preprocessor's output, which was only printed. The
+  `nm` block, rerun: `nm build/gcd.o | grep -E 'main|getint|putint'` gives `U _getint`,
+  `T _main`, `U _putint` (the plain `nm` also printed `t ltmp0` and `s ltmp1`, left out rather
+  than explained from no documentation). Two facts
+  share one paragraph in Break it.
+- 01.05: the computer is named only for `^D`, the one thing in the session it changes.
+- 01.02 and 01.05 each gain a Crafting Interpreters chapter in Go deeper (below).
+- `track.py` `SUMMARY` names the book, its edition and author, and the order: a chapter, then a
+  module.
+- `art/lang/figs_0101_0104.py`, `stages()`: it checked that `motec` runs `cc`; since `motec` runs
+  `${CC:-cc}` the check looks for that (the generator stopped there until it did).
+- Lines: 01.01 315, 01.02 314, 01.03 279, 01.04 341 (340 before this pass), 01.05 308.
+
+What was read:
+
+- GNU as 2.46.0 (`riscv64-elf-as -march=rv64im -mabi=lp64`) on `programs/gcd.s`, then
+  `riscv64-elf-objdump -d -M no-aliases`: each `call` is `auipc ra` then `jalr ra`; `mv s1, a0`
+  is `addi s1, a0, 0`; `ble s1, s2, smaller` is `bge s2, s1`; `j loop` is `jal zero`;
+  `li a0, 0` is `addi a0, zero, 0`. 14 lines, 18 instructions. 01.01 states the five.
+- craftinginterpreters.com/scanning.html, chapter 4 of Crafting Interpreters, by Robert Nystrom:
+  section 4.1, "The Interpreter Framework": given a file, jlox runs it; given none, a prompt
+  reads and runs a line at a time until the input ends (Control-D), and the error flag is reset
+  in that loop so that one mistake does not end the session. 01.05 links it.
+- craftinginterpreters.com/the-lox-language.html, chapter 3: a tour of the whole of Lox, informal
+  rather than a specification, before any interpreter is built. 01.02 links it.

@@ -8,10 +8,11 @@ files lang --at NN.LL into a temporary directory, then make -s; project()), and 
 so a change to the code stops this script instead of reaching a figure. Nothing is written under
 tracks/lang/ but the figures.
 
-  01.01-five-ways         gcd on 1071 462 run the five ways in the project at 01.11 (the machine on
-                          gcd.s, mote0, motec's program, mote's tree walk, mote -S -O on the
-                          machine): each prints 21. The lesson under each piece is archmap.OWNER's,
-                          so this figure and the map cannot disagree.
+  01.01-five-ways         gcd on 1071 462 in the project at 01.11: by hand (the machine on gcd.s), set
+                          apart, then the five ways, agree's five columns (mote0, motec's program,
+                          mote's tree walk, mote -S and mote -S -O on the machine): each prints 21.
+                          The lesson under each piece is archmap.OWNER's, so this figure and the map
+                          cannot disagree.
   01.01-machine           gcd.s at 01.01 as the machine holds it (comments dropped, an address every
                           instruction); the registers it names, from machine.c's table; the
                           routines, from machine.c's routines[]; the moment drawn is the real one
@@ -32,7 +33,9 @@ tracks/lang/ but the figures.
                           mote0.c's run() and skip() and gives the order in which lines are read;
                           its total must equal ./mote0 --count (25; and 88, 409, 844 on the three
                           programs' own input), and its order must equal what a copy of mote0.c that
-                          prints each line it reads prints
+                          prints each line it reads prints. A name is in the table from the step
+                          that first gives it a value, at the top, as set() puts it at the list's
+                          front
   01.04-stages            the stages of ./motec at 01.04, each run by hand: cc -E pastes rt.h in, nm
                           shows getint and putint undefined in gcd.o and defined in rt.o, the linked
                           program prints 21
@@ -355,6 +358,8 @@ def five_ways():
     }
     ok(d, ["./motec", "programs/gcd.mote"])
     runs["motec"] = sh(d, ["build/gcd"], GCD_IN)
+    put(d, "build/five.s", ok(d, ["./mote", "-S", "programs/gcd.mote"]))
+    runs["the machine"] = sh(d, ["./machine", "build/five.s"], GCD_IN)
     improved = ok(d, ["./mote", "-S", "-O", "programs/gcd.mote"])
     # module 01's cover (art/outlines/lang_art.py) shows this line as the code the compiler writes
     assert "    sub  s1, s1, s2" in improved.split("\n"), improved
@@ -363,32 +368,44 @@ def five_ways():
     runs["by hand, at 01.01"] = sh(project("01.01"), ["./machine", "programs/gcd.s"], GCD_IN)
     for way, (out, err, st) in runs.items():
         assert (out, st) == ("21\n", 0), (way, out, err, st)
+    # the five ways are agree's five columns
+    agreed = re.findall(r"(\S+(?: -O)?) ok", next(ln for ln in ok(d, ["./agree"]).splitlines()
+                                                  if ln.startswith("gcd ")))
+    assert agreed == ["mote0", "motec", "mote", "machine", "machine -O"], agreed
     answer = "21"
 
-    rows = [  # (source, [(piece, map key or None for a tool that is not ours)])
+    front = [("scanner", "scanner"), ("parser", "parser"), ("analysis", "semantic")]
+    rows = [  # (source, [(piece, map key or None for a tool that is not ours)]): by hand, then the five
         ("gcd.s", [("the machine", "machine")]),
         ("gcd.mote", [("first interpreter", "interp")]),
         ("gcd.mote", [("translator", "translator"), ("C compiler", None), ("your computer", None)]),
-        ("gcd.mote", [("scanner", "scanner"), ("parser", "parser"), ("analysis", "semantic"),
-                      ("tree walk", "treewalk")]),
-        ("gcd.mote", [("scanner", "scanner"), ("parser", "parser"), ("analysis", "semantic"),
-                      ("improver", "improver"), ("code generator", "codegen"), ("the machine", "machine")]),
+        ("gcd.mote", front + [("tree walk", "treewalk")]),
+        ("gcd.mote", front + [("code generator", "codegen"), ("the machine", "machine")]),
+        ("gcd.mote", front + [("improver", "improver"), ("code generator", "codegen"), ("the machine", "machine")]),
     ]
+    assert len(rows) - 1 == len(agreed)
     assert lesson("gcds") == lesson("machine") == "01.01" and lesson("text") == "01.02"
     R0, P, BH, SIZE = 50, 48, 24, 11
     SX, SWD = 16, 64                    # the program's column
-    C0, GAP = SX + SWD + 16, 16         # where the chains start; the room an arrow takes
+    C0, GAP = SX + SWD + 24, 16         # where the chains start; the room an arrow takes
     CHIP_W, CHIP_X = 34, 604            # the answer's column, centred on CHIP_X
-    H = R0 + 4 * P + 30
-    f = Fig("f0101a", "Five ways to run gcd", H)
+    SEP = R0 + 38                       # the line that sets the row by hand apart
+    R1 = SEP + 50                       # the first of the five ways
+    ys = [R0] + [R1 + k * P for k in range(len(rows) - 1)]
+    H = ys[-1] + 30
+    f = Fig("f0101a", "gcd by hand, and five ways from its text", H)
     f.text(SX, 20, "the program", "tm", 11)
     f.text(C0, 20, "how it is run, and under each piece the lesson that builds it", "tm", 11)
     f.text(CHIP_X, 20, "prints", "tm", 11, "middle")
-    ys = [R0 + k * P for k in range(len(rows))]
-    # the program: gcd.s by hand for the first row, one gcd.mote for the other four
+    # by hand: gcd.s, written for the machine directly
     f.page(SX, ys[0] - BH / 2, SWD, BH, "a af", fold=7)
     f.text(SX + SWD / 2 - 3, ys[0] + 4, "gcd.s", "ta", 11.5, "middle", 700, mono=True)
     f.text(SX + SWD / 2, ys[0] + 24, "by hand", "ta", 10.5, "middle", 600)
+    f.text((C0 + 100 + CHIP_X - CHIP_W / 2) / 2, ys[0] - 7, "written for the machine directly",
+           "ta", 11, "middle", 600)
+    f.line(SX, SEP, 640 - SX, SEP, "m", dash=True)
+    f.text(SX, SEP + 24, "five ways, from one text in your language", "t", 11.5, weight=700)
+    # the five: one gcd.mote for all of them
     top, bot = ys[1] - BH / 2, ys[-1] + BH / 2
     f.page(SX, top, SWD, bot - top, "s f", fold=9)
     mid = (top + bot) / 2
@@ -398,6 +415,8 @@ def five_ways():
         hot = k == 0
         x = C0
         f.line(SX + SWD + 1, y, x - 2, y, "a" if hot else "s", arrow=True)
+        if k:
+            f.text(SX + SWD + 10, y - 5, str(k), "tm", 10.5, "middle", 600, mono=True)
         for i, (label, key) in enumerate(chain):
             w = sw(label, SIZE) + 8
             if key is None:          # the computer's own: hollow, dashed, not ours
@@ -690,7 +709,7 @@ def c_and_assembly():
     f.code(lx, ys[0] + 4, "while (i != j)", 11, "t")
     f.text(lx, ys[0] + 20, "its test, and the", "tm", 11)
     f.text(lx, ys[0] + 34, "two jumps back", "tm", 11)
-    f.rich(CX, H - 14, [("grey", "tm", False), (": the registers and labels you chose by hand in 01.01. "
+    f.rich(CX, H - 14, [("grey", "tm", False), (": the registers and labels chosen by hand in 01.01. "
                                                "The C compiler chooses them now.", "t", False)], 11.5)
     return f
 
@@ -862,13 +881,17 @@ def stays():
     return f
 
 
-def _mote_caption(lines, at, how, detail, names, k, total):
+def _mote_caption(lines, at, how, detail, names, k, total, before):
     ln = at + 1
     text = " ".join(lines[at].split())
     if how == "comment":
         return f"Line {ln} is a comment: read, and nothing to do."
+    if how == "read" and detail not in before:
+        where = ("goes into the table of names" if not before else
+                 "goes in at the top: the table is a list, and a new name goes at its front")
+        return f"Line {ln}, read {detail}: {detail} is {names[detail]}. {detail} is new, so it {where}."
     if how == "read":
-        return f"Line {ln}, read {detail}: {detail} is {names[detail]}, entered in the table of names."
+        return f"Line {ln}, read {detail}: {detail} is now {names[detail]}."
     if how in ("while", "if"):
         cond, yes, a, b = detail
         shown = re.sub(r"\b([a-z_]\w*)\b", lambda m: str(names[m[1]]), cond)
@@ -878,6 +901,7 @@ def _mote_caption(lines, at, how, detail, names, k, total):
         return (f"Line {ln}: {cond} is {shown}, true: the lines after then run." if yes else
                 f"Line {ln}: {cond} is {shown}, false: mote0 reads ahead for the else.")
     if how == "assign":
+        assert detail in before, (ln, detail)     # every name drawn is first given a value by read
         return f"Line {ln}, {text}: each name found in the table by its letters; {detail} is now {names[detail]}."
     if how == "else":
         return f"Line {ln}, else: the then lines are done, so mote0 reads ahead past the else lines."
@@ -922,14 +946,16 @@ def reread():
         y = Y0 + i * LP
         f.text(LX + 22, y, str(i + 1), "tm", 10.5, "end", mono=True)
         f.code(LX + 32, y, ln, SIZE, "tm" if ln.lstrip().startswith("#") else "t")
+    # The table of names is mote0's list: set() adds a name the first time it is given a value, at
+    # the front. So a name is drawn from the step that first gives it a value, newest at the top.
+    setter = re.search(r"static void set\(.*?\n\}", read(at, "mote0.c"), re.S)[0]
+    assert "(Name){s, len, 0, names};" in setter and "names = n;" in setter, setter
     TX = LX + LW + 12
     f.text(TX + 22, 22, "times read", "tm", 11, "middle")
     RX = 512
     f.text(RX, 22, "table of names", "tm", 11)
-    name_y = {"i": 56, "j": 84}
-    for nm, y in name_y.items():
-        f.text(RX + 8, y + 4.5, nm, "t", 13, "middle", 600, mono=True)
-        f.rect(RX + 22, y - 12, 80, 24, "s fs", 5)
+    slot_y = [56, 84]
+    assert len(reads[-1][3]) <= len(slot_y)
     f.text(RX, 130, "lines read", "tm", 11)
     f.text(RX, 196, "output", "tm", 11)
     f.rect(RX, 204, 60, 24, "s fs", 12)
@@ -945,7 +971,8 @@ def reread():
         tally[at_] += 1
         if how == "write":
             printed.append(str(detail))
-        cap = _mote_caption(lines, at_, how, detail, names, k, len(reads))
+        before = reads[k - 1][3] if k else {}
+        cap = _mote_caption(lines, at_, how, detail, names, k, len(reads), before)
         with steps.step(f, cap):
             y = Y0 + at_ * LP
             past = how == "past"
@@ -962,13 +989,14 @@ def reread():
                     f.line(x, yy - 10, x, yy + 1, "a" if hot and t == c - 1 else "s", sw=2)
                 f.text(TX + 4 + c * 6 + 6, yy, str(c), "ta" if hot else "tm", 10.5, weight=700 if hot else None,
                        mono=True)
-            for nm, yy in name_y.items():
+            if not names:
+                f.text(RX + 8, slot_y[0] + 4.5, "empty", "tm", 11)
+            for nm, yy in zip(reversed(list(names)), slot_y):       # the list's order, newest first
                 hot = how in ("read", "assign") and detail == nm
-                if hot:
-                    f.rect(RX + 22, yy - 12, 80, 24, "a af", 5)
-                v = names.get(nm)
-                f.text(RX + 62, yy + 4.5, "-" if v is None else str(v), "ta" if hot else ("t" if v is not None else "tm"),
-                       13, "middle", 700 if hot else 500, mono=True)
+                f.text(RX + 8, yy + 4.5, nm, "ta" if hot else "t", 13, "middle", 600, mono=True)
+                f.rect(RX + 22, yy - 12, 80, 24, "a af" if hot else "s fs", 5)
+                f.text(RX + 62, yy + 4.5, str(names[nm]), "ta" if hot else "t", 13, "middle", 700 if hot else 500,
+                       mono=True)
             f.text(RX, 160, str(k + 1), "ta", 20, weight=700, mono=True)
             if printed:
                 f.text(RX + 30, 220.5, printed[0], "ta" if how == "write" else "t", 13, "middle", 700, mono=True)
@@ -981,8 +1009,9 @@ def stages():
     at = "01.04"
     d = project(at)
     motec = read(at, "motec")
-    for step in ('"$here/mote2c" "$1" > "build/$name.c"', 'cc -O1 -fwrapv -I"$here" -c -o "build/$name.o" "build/$name.c"',
-                 'cc -o "build/$name" "build/$name.o" "$here/rt.o"'):
+    for step in ('"$here/mote2c" "$1" > "build/$name.c"',
+                 '${CC:-cc} -O1 -fwrapv -I"$here" -c -o "build/$name.o" "build/$name.c"',
+                 '${CC:-cc} -o "build/$name" "build/$name.o" "$here/rt.o"'):
         assert step in motec, step
     c = ok(d, ["./mote2c", "programs/gcd.mote"])
     ok(d, ["./motec", "programs/gcd.mote"])
