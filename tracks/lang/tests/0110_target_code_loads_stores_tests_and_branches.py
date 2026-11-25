@@ -123,6 +123,16 @@ def test(t):
     t.check(tr.compiled(t, "write 1 - (2 - (3 - (4 - (5 - (6 - 7)))))\n")[:2] == (0, "4\n"), "seven values fit")
     st, out, err = tr.mote(t, "x := 1 - (2 - (3 - (4 - (5 - (6 - (7 - 8))))))\n", "-S")
     t.check((st, err) == (1, f"t{t._lang_files}.mote:1:40: expression too deep\n"), f"the eighth: {st} {err!r}")
+    # proggen.too_deep, which keeps such programs out of the random ones, says what mote -S says.
+    g = tr.gen()
+    for src in ("x := 1 - (2 - (3 - (4 - (5 - (6 - (7 - 8))))))\n", "write 1 - (2 - (3 - (4 - (5 - (6 - 7)))))\n",
+                "read a\nif a < 1 - (2 - (3 - (4 - (5 - (6 - 7))))) then\nend\n",
+                "read a\nif 1 - (2 - (3 - (4 - (5 - (6 - 7))))) < a then\nend\n",
+                "read b\nwrite b / ((b / ((b / (b * b + 1)) * (b / (b * b + 1)) + 1)) * b + 1)\n",
+                "read b\nwrite b / ((b / ((b / ((b * b + 1) * b)) * b + 1)) * b + 1)\n"):
+        st, out, err = tr.mote(t, src, "-S")
+        t.check(g.too_deep(g.parse(src)) == (st == 1 and "expression too deep" in err),
+                f"proggen.too_deep and mote -S differ on {src!r}: {st} {err!r}")
 
     # Random programs, compiled and run on the machine, held to the reference; the assembler
     # takes what is written.

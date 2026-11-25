@@ -12,14 +12,15 @@
                             one statement a line, with comments, blank lines and indentation
     c_int_overflow(prog)    whether a part of an expression made only of numbers overflows C's int
                             (motec's C works it out in 32 bits)
-    sample(seed, n)         n (text, input, output) whose run ends "ok" and that have no such part:
+    too_deep(prog)          whether an expression needs more than t0 to t6 in mote -S's code
+    sample(seed, n)         n (text, input, output) whose run ends "ok", with neither of those:
                             every way must agree on them
 
 The reference is written apart from the C code, to be a second opinion: a scanner by regular
 expression, a parser by recursion, Python's integers wrapped to 64 bits. The generator keeps to
 what every way can take: loops counted by a variable of their own, names that are not C's
-keywords, no "--" (C's decrement) and no leading zeros (C's octal), expressions shallow enough
-for t0 to t6. A program whose run divides by zero or reads past its input is not kept.
+keywords, no "--" (C's decrement) and no leading zeros (C's octal). A program whose run divides
+by zero or reads past its input, or that c_int_overflow or too_deep find, is not kept.
 """
 
 import random
@@ -291,6 +292,31 @@ def c_int_overflow(prog):
         return True
 
 
+def too_deep(prog):
+    """Does some expression need more registers than t0 to t6 in the code mote -S writes? gen.c
+    puts a value in the register of its depth and an operator's right operand one deeper; the
+    eighth value waiting is "expression too deep" (chapter 1 does not spill). With -O a variable
+    in a register needs none, so a program that fits without -O fits with it."""
+    def need(e, d):
+        """The deepest register index the expression takes, worked out at depth d."""
+        if e[0] in ("num", "var"):
+            return d
+        if e[0] == "neg":
+            return need(e[1], d)
+        return max(need(e[1], d), need(e[2], d + 1))
+
+    def deepest(stmts):
+        out = 0
+        for s in stmts:
+            if s[0] in ("if", "while"):
+                c = s[1]
+                out = max(out, need(c[1], 0), need(c[2], 1), *(deepest(b) for b in s[2:]))
+            elif s[0] != "read":
+                out = max(out, need(s[-1], 0))
+        return out
+    return deepest(prog) > 6
+
+
 # ---------------------------------------------------------------- the generator
 
 NAMES = ["a", "b", "x", "y", "n", "total", "k2", "_t", "left", "Right"]
@@ -426,7 +452,7 @@ def sample(seed, n, size=14):
         text, text_in = generate(rng, size)
         prog = parse(text)
         how, printed = run(prog, text_in)
-        if how == "ok" and not c_int_overflow(prog):
+        if how == "ok" and not c_int_overflow(prog) and not too_deep(prog):
             out.append((text, text_in, printed))
     return out
 
