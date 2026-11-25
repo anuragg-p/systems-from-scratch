@@ -70,13 +70,15 @@ LESSONS = [
     ("07.02", "Where the time goes", set(), {"btree", "pager", "journal"}),
     ("07.03", "One more optimisation, measured", {"btree"}, None),
     # 08, More SQL: an extension on the finished core
-    ("08.01", "Two tables in one query: the nested loop join", {"parse", "exec"}, None),
+    # (each lesson's pieces are where its @build regions are: parse.c the parser, plan.c the
+    # planner, exec.c and expr.c the executor, schema.c the catalog)
+    ("08.01", "Two tables in one query: the nested loop join", {"parse", "exec", "plan"}, None),
     ("08.02", "LEFT JOIN: the row with no match", {"exec"}, None),
-    ("08.03", "An index for the inner loop", {"plan"}, None),
+    ("08.03", "An index for the inner loop", {"plan", "exec"}, None),
     ("08.04", "Aggregates: one row from many", {"exec"}, None),
     ("08.05", "GROUP BY, HAVING and DISTINCT", {"exec"}, None),
-    ("08.06", "Subqueries: a query inside a query", {"exec"}, {"exec", "plan"}),
-    ("08.07", "UNIQUE: a constraint is an index lookup", {"cat"}, {"cat", "btree"}),
+    ("08.06", "Subqueries: a query inside a query", {"parse", "exec"}, None),
+    ("08.07", "UNIQUE: a constraint is an index lookup", {"cat", "exec"}, {"cat", "exec", "btree"}),
 ]
 
 

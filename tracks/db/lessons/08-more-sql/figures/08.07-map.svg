@@ -26,9 +26,9 @@
 <rect class="s f" x="392" y="16" width="106" height="50" rx="8" stroke-width="1.5"/>
 <text class="t" x="445" y="39" font-size="16" font-weight="600" text-anchor="middle">planner</text>
 <text class="tm" x="445" y="56" font-size="11.5" text-anchor="middle">how to read</text>
-<rect class="s f" x="518" y="16" width="106" height="50" rx="8" stroke-width="1.5"/>
-<text class="t" x="571" y="39" font-size="16" font-weight="600" text-anchor="middle">executor</text>
-<text class="tm" x="571" y="56" font-size="11.5" text-anchor="middle">plan -&gt; rows</text>
+<rect class="a af" x="518" y="16" width="106" height="50" rx="8" stroke-width="1.5"/>
+<text class="ta" x="571" y="39" font-size="16" font-weight="700" text-anchor="middle">executor</text>
+<text class="ta" x="571" y="56" font-size="11.5" text-anchor="middle">plan -&gt; rows</text>
 <rect class="a af" x="329" y="94" width="106" height="50" rx="8" stroke-width="1.5"/>
 <text class="ta" x="382" y="117" font-size="16" font-weight="700" text-anchor="middle">catalog</text>
 <text class="ta" x="382" y="134" font-size="11.5" text-anchor="middle">the tables</text>
