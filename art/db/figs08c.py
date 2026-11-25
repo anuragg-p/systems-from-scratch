@@ -21,13 +21,15 @@ Filter tests while db->nouter > 0, with its value_truth.
     Ada, Brook, Chen; EXISTS as a result column (EXISTS_SQL) prints 1, 1, 1, 0; NOT EXISTS prints Dee.
   08.06-outer: OUTER_SQL prints Ada|2 Brook|1 Chen|2 Dee|0. Traced: 4 runs, on outer rowids 1, 2, 3, 4,
     each correlated; on rowid 1 the Filter (o.customer_id = c.id) tested orders 10-15 and gave 1 0 1 0 0
-    -1, and the run's answer was 2 (then 1, 2, 0). ONCE_SQL prints 2 for every customer; traced: one run,
-    on outer rowid 1, not correlated, its Filter (id = 13) tested order 13 only (EXPLAIN of the subquery
-    alone: Filter (id = 13) over Rowid lookup orders rowid = ?), answer 2; for rowids 2, 3, 4 the kept
-    answer, no run. --check: the answers; Ada's run as SELECT o.id, o.customer_id, o.customer_id = 1 FROM
-    orders o and its count; the count's subquery alone is "no such column: c.id" (it names a column
-    outside), order 13's alone runs (it names none).
-  08.06-notin: NOTIN_VALUES_SQL prints 1|1|0 2|1|0 3|1|0 4|| (IN, NOT IN; NULL prints as nothing) and
+    -1, and the run's answer was 2 (then 1, 2, 0). Beside it the lesson's run-once example, ONCE_SQL (its
+    Run it's first query), prints 10|30 12|50 15|40; traced: one run, on outer rowid 10, not correlated,
+    answer the real 26.6666666666667 (AVG, as SELECT avg(total) FROM orders prints it; EXPLAIN of the
+    subquery alone: Aggregate avg(total) over Scan orders); for rowids 11-15 the kept answer, no run.
+    --check: the answers; Ada's run as SELECT o.id, o.customer_id, o.customer_id = 1 FROM orders o and
+    its count; the count's subquery alone is "no such column: c.id" (it names a column outside), the
+    average's alone runs (it names none).
+  08.06-notin: NOTIN_VALUES_SQL (the lesson's) prints 1|Ada|1|0 2|Brook|1|0 3|Chen|1|0 4|Dee|| (IN, NOT
+    IN; NULL prints as nothing) and
     NOTIN_SQL nothing at all; with WHERE customer_id IS NOT NULL in the subquery it prints Dee. The scan
     gives customer_id 1 3 1 2 3 NULL (orders 10-15). Traced: the set built once, on outer rowid 1: kept
     sorted (qsort with value_compare), duplicates kept, the NULL not stored but noted in has_null; then
@@ -146,15 +148,17 @@ OUTER_SQL = f"SELECT name, ({COUNT_SUB}) FROM customers c;"
 OUTER_OUT = [("Ada", 2), ("Brook", 1), ("Chen", 2), ("Dee", 0)]
 # Ada's run (c.id = 1): each order the Filter tests, (o.id, o.customer_id, the test: 1, 0, None NULL)
 ADA_TESTS = [(10, 1, 1), (11, 3, 0), (12, 1, 1), (13, 2, 0), (14, 3, 0), (15, None, None)]
-ONCE_SQL = f"SELECT name, ({SCALAR_SUB}) FROM customers c;"
-ONCE_OUT = [("Ada", 2), ("Brook", 2), ("Chen", 2), ("Dee", 2)]
-ONCE_PLAN = ["Filter (id = 13)", "  Rowid lookup orders rowid = ?"]
+AVG_SUB = "SELECT avg(total) FROM orders"
+ONCE_SQL = f"SELECT id, total FROM orders WHERE total > ({AVG_SUB});"
+ONCE_OUT = [(10, 30), (12, 50), (15, 40)]
+AVG = "26.6666666666667"                 # avg(total), as the engine prints it
+ONCE_PLAN = ["Aggregate avg(total)", "  Scan orders"]
 
 # 08.06-notin
 IN_SUB = "SELECT customer_id FROM orders"
 NOTIN_SQL = f"SELECT name FROM customers WHERE id NOT IN ({IN_SUB});"
-NOTIN_VALUES_SQL = f"SELECT id, id IN ({IN_SUB}), id NOT IN ({IN_SUB}) FROM customers;"
-NOTIN_VALUES = [(1, 1, 0), (2, 1, 0), (3, 1, 0), (4, None, None)]
+NOTIN_VALUES_SQL = f"SELECT id, name, id IN ({IN_SUB}), id NOT IN ({IN_SUB}) FROM customers;"
+NOTIN_VALUES = [(1, "Ada", 1, 0), (2, "Brook", 1, 0), (3, "Chen", 1, 0), (4, "Dee", None, None)]
 SCAN_CIDS = [1, 3, 1, 2, 3, None]     # customer_id as the subquery's scan reads it, orders 10-15
 NOTIN_FIX_SQL = f"SELECT name FROM customers WHERE id NOT IN ({IN_SUB} WHERE customer_id IS NOT NULL);"
 NOTIN_FIX_OUT = ["Dee"]
@@ -289,40 +293,41 @@ def outer0806():
         f.text(CX + sum(CW) + 12, y + 14, f"run {i + 2}, c.id = {cid2}", "tm", 10, None, None, True)
         B.row_cells(f, PX, y, PW, (name2, n2), "c", h=20, size=10.5, muted=True)
 
-    # ---- right: order 13's customer_id, not correlated, in the muted tone
+    # ---- right: the lesson's average, not correlated, in the muted tone
     f.text(RX, 20, "it names nothing outside: it runs once", "tm", 11.5, None, 600)
-    code(f, RX, 38, [("SELECT name, (SELECT customer_id", "tm")], 10)
-    sx = RX + tw("SELECT name, (", 10, True)
-    code(f, sx, 52, [("FROM orders", "tm")], 10)
-    code(f, sx, 66, [("WHERE id = 13)", "tm")], 10)
-    code(f, RX, 80, [("FROM customers c;", "tm")], 10)
-    QW = [50, 30]
-    B.row_cells(f, RX, YR, QW, ONCE_OUT[0], "c", h=24, size=10.5, muted=True)
-    f.text(RX + sum(QW) + 10, YR + 16, "row 1: the run", "tm", 10.5)
+    code(f, RX, 38, [("SELECT id, total FROM orders", "tm")], 10)
+    code(f, RX, 52, [("WHERE total > (SELECT avg(total)", "tm")], 10)
+    code(f, RX + tw("WHERE total > (", 10, True), 66, [("FROM orders);", "tm")], 10)
+    QW = [34, 36]
+    first, rest = ORDERS[0], ORDERS[1:]
+    f.text(RX, YR - 8, "orders: row 1 of 6", "tm", 10.5)
+    B.row_cells(f, RX, YR, QW, (first[0], first[2]), "o", h=24, size=10.5, muted=True)
+    f.text(RX + sum(QW) + 10, YR + 16, f"order {first[0]}: the run", "tm", 10.5)
     f.rect(RX, IY, 616 - RX, 104, "m f", 8)
     f.text(RX + 12, IY + 18, "the query inside, its one run", "tm", 11, None, 600)
-    f.text(RX + 12, IY + 36, "a rowid lookup of order 13", "tm", 10.5)
-    B.row_cells(f, RX + 12, IY + 46, OW, (13, ONCE_OUT[0][1]), "o", h=20, size=10.5, muted=True)
-    f.text(RX + 12, IY + 90, f"its answer, {ONCE_OUT[0][1]}, kept on the node", "tm", 10.5, None, 600)
-    kx = RX + QW[0] + QW[1] / 2
+    f.text(RX + 12, IY + 36, f"avg(total) of all {len(ORDERS)} orders", "tm", 10.5)
+    B.row_cells(f, RX + 12, IY + 46, [112], (AVG,), "o", h=20, size=10.5, muted=True)
+    f.text(RX + 12, IY + 90, "its answer, kept on the node", "tm", 10.5, None, 600)
+    kx = RX + QW[0] + QW[1] / 2                 # total, which it is compared with
     f.line(kx, IY - 2, kx, YR + 27, "m", arrow=True)
-    f.text(RX, yl, "rows 2, 3 and 4 get the kept 2", "tm", 10.5)
-    for i, row in enumerate(ONCE_OUT[1:]):
-        y = yl + 10 + i * 24
-        B.row_cells(f, RX, y, QW, row, "c", h=20, size=10.5, muted=True)
+    yk = IY + 128
+    f.text(RX, yk, f"orders {rest[0][0]} to {rest[-1][0]} get the kept answer", "tm", 10.5)
+    for i, (oid, _, total) in enumerate(rest):
+        y = yk + 10 + i * 24
+        B.row_cells(f, RX, y, QW, (oid, total), "o", h=20, size=10.5, muted=True)
         f.text(RX + sum(QW) + 10, y + 14, "no run", "tm", 10.5)
 
     f.line(24, 470, 616, 470, "m")
     answers = ", ".join(str(n) for _, n in OUTER_OUT[:-1]) + f" and {OUTER_OUT[-1][1]}"
     f.text(24, 490, f"The count names c.id: {len(CUSTOMERS)} customers, {len(CUSTOMERS)} runs, answers {answers}.",
            "t", 11)
-    f.text(24, 507, "Order 13's query names nothing outside: it runs the first time it is needed, and its answer "
+    f.text(24, 507, "The average names nothing outside: it runs the first time it is needed, and its answer "
                     "is kept.", "tm", 10.5)
     return f
 
 
 def notin0806():
-    f = Fig("f0806c", "NOT IN against a set that holds a NULL: no customer's answer is true, so no row comes out", 370)
+    f = Fig("f0806c", "NOT IN against a set that holds a NULL: no customer's answer is true, so no row comes out", 414)
     code(f, 24, 22, [("SELECT name FROM customers WHERE id NOT IN ", "tm"), (f"({IN_SUB})", "ta"), (";", "tm")])
     f.text(616, 22, "prints nothing", "t", 11.5, "end", 600)
     # the set, built once
@@ -352,7 +357,7 @@ def notin0806():
     f.text(IX + 20, HY, "IN", "t", 10.5, "middle", 600, True)
     f.text(NX + 26, HY, "NOT IN", "t", 10.5, "middle", 600, True)
     f.text(VX, HY, "does WHERE keep it?", "t", 11, None, 600)
-    for i, ((cid, name, _), (vid, v_in, v_not)) in enumerate(zip(CUSTOMERS, NOTIN_VALUES)):
+    for i, ((cid, name, _), (_, _, v_in, v_not)) in enumerate(zip(CUSTOMERS, NOTIN_VALUES)):
         y = Y0 + i * RH
         ym = y + 12
         A.cells(f, CX, y, [(CW[0], cid, "c"), (CW[1], name, "c")], h=24)
@@ -370,11 +375,14 @@ def notin0806():
     yb = Y0 + len(CUSTOMERS) * RH + 4
     f.line(24, yb, 616, yb, "m")
     f.text(24, yb + 20, "No row survives: x NOT IN a set that holds a NULL is never true.", "t", 11)
-    code(f, 24, yb + 38, [("SELECT id, id IN (...), id NOT IN (...) FROM customers;", "tm"),
-                          ("   " + "  ".join("|".join(A.val(v) if v is not None else "" for v in r)
-                                             for r in NOTIN_VALUES), "t")], 10)
-    f.text(24, yb + 56, "With WHERE customer_id IS NOT NULL inside the subquery the set has no NULL, and the query "
-                        f"gives {', '.join(NOTIN_FIX_OUT)}.", "tm", 10.5)
+    q = NOTIN_VALUES_SQL
+    cut = q.index(" id NOT IN")
+    code(f, 24, yb + 40, [(q[:cut], "tm")], 10)
+    code(f, 24 + tw("SELECT ", 10, True), yb + 54, [(q[cut + 1:], "tm")], 10)
+    for j, r in enumerate(NOTIN_VALUES):
+        code(f, 470, yb + 40 + 14 * j, [("|".join("" if v is None else str(v) for v in r), "t")], 10)
+    f.text(24, yb + 104, "With WHERE customer_id IS NOT NULL inside the subquery the set has no NULL, and the query "
+                         f"gives {', '.join(NOTIN_FIX_OUT)}.", "tm", 10.5)
     return f
 
 
@@ -704,9 +712,11 @@ def check():
          col(shop, COUNT_SUB.replace("c.id", str(ada)) + ";", "08.06"), [OUTER_OUT[0][1]])
     rc, _, errs, _ = run(shop, COUNT_SUB + ";", "08.06")
     same("08.06-outer: the count's subquery alone names a column outside", errs, ["Error: no such column: c.id"])
-    same("08.06-outer: order 13's names none: it runs alone", col(shop, SCALAR_SUB + ";", "08.06"), [ONCE_OUT[0][1]])
-    same("08.06-outer: ... as a rowid lookup", run(shop, f"EXPLAIN {SCALAR_SUB};", "08.06")[1], ONCE_PLAN)
-    same("08.06-outer: order 13's customer_id for each customer", rows(shop, ONCE_SQL, "08.06"), ONCE_OUT)
+    same("08.06-outer: the average names none: it runs alone", run(shop, AVG_SUB + ";", "08.06")[1], [AVG])
+    same("08.06-outer: ... an Aggregate over a scan", run(shop, f"EXPLAIN {AVG_SUB};", "08.06")[1], ONCE_PLAN)
+    same("08.06-outer: the orders above it", rows(shop, ONCE_SQL, "08.06"), ONCE_OUT)
+    same("08.06-outer: the outer rows, orders 10 to 15", rows(shop, "SELECT id, customer_id, total FROM orders;", "08.06"),
+         ORDERS)
     same("08.06-notin: customer_id as the scan reads it", col(shop, IN_SUB + ";", "08.06"), SCAN_CIDS)
     same("08.06-notin: IN and NOT IN for each customer", rows(shop, NOTIN_VALUES_SQL, "08.06"), NOTIN_VALUES)
     same("08.06-notin: the query's rows", rows(shop, NOTIN_SQL, "08.06"), [])
