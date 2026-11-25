@@ -1,8 +1,9 @@
 # Plan: track `lang` - your own language, chapter by chapter
 
 Status: plan (direction set by Fable; implementation by Opus agents).
-Outline: `outlines/lang.md` (it moves to `plans/lang-outline.md` when
-`tracks/lang` lands, as cc's did). Chapter 1 is being built; nothing else is.
+Outline: `plans/lang-outline.md` (moved from `outlines/lang.md` when
+`tracks/lang` landed, as cc's was). Chapter 1's code is built (see "Chapter
+1 as built" at the end); its lessons are not written yet.
 
 ## What the owner asked for (2026-11-25)
 
@@ -189,7 +190,7 @@ output stdout.
   the end, a bad address): `machine: FILE:LINE: message`, status 1.
 
 `programs/gcd.s`, written by hand at 01.01, keeps `i` in `s1` and `j` in
-`s2` and never touches memory: 15 instructions. Lesson 01.11's improved
+`s2` and never touches memory: 14 instructions. Lesson 01.11's improved
 code is set beside it.
 
 ## Chapter 1, lesson by lesson
@@ -469,3 +470,69 @@ design (`plans/lang-01-lessons.md`).
 - The translated C leaves division by zero and the overflow of the most
   negative number divided by -1 to the C compiler and the processor. No
   program in `programs/` does either; the lesson names the gap.
+
+## Chapter 1 as built (2026-11-25)
+
+Step 1 of the build order is done: `tracks/lang/` holds chapter 1's code,
+a test per lesson, `track.py`, `NOTES.md`, `.gitignore` and the art; no
+lesson `.md` is written yet. `tracks/lang/NOTES.md` has the detail: every
+sample command's output, the numbers, the formats, what was read in the
+RISC-V manuals.
+
+What exists, in lines as the track holds them (as the site shows them at
+01.11, without markers and region instructions, in parentheses): Makefile
+62, machine.c 470 (404), programs/ (gcd.s, gcd.in, gcd.c, and gcd, sum,
+primes as .mote .in .out), rt.h 6, rt.c 52, mote0.c 481 (405), mote2c.c
+209 (186), motec 25, agree 80, mote.h 89, main.c 228 (179), scan.c 132,
+parse.c 172, analyze.c 150, interp.c 103, gen.c 189 (151), improve.c 46;
+tests/ with eleven tests, proggen.py (a reference in Python and a
+generator of random programs) and fuzz.py. Module 01's cover and icon are
+copied into `tracks/lang/lessons/01-introduction/` by
+`art/outlines/lang_art.py`, the track's art.svg and icon.svg into
+`tracks/lang/`. The outline is `plans/lang-outline.md`, with module 01's
+lessons the eleven above.
+
+The numbers: gcd on 1071 462 runs 53 instructions by hand (gcd.s), 142
+naive (`mote -S`) and 61 improved (`mote -S -O`); `mote0 --count` reads
+88 lines for gcd, 409 for sum on 100, 844 for primes on 30; gcd.mote's
+parse tree has 64 nodes for its 11 lines. One timing, on an Apple M4 Pro,
+sum on n = 3000000: mote0 0.26 s, mote 0.03 s, motec's program 0.002 s,
+the machine 0.14 s naive and 0.06 s improved.
+
+Checks, all passing: `./learn test lang` (11 of 11), the same with
+`LANG_SANITIZE=1` (ASan and UBSan), `./learn check-skeleton lang` (each
+lesson cut out fails its test at the stub), `./learn check-timeline lang`
+(the project at each of the 11 lessons builds and boots, its samples
+checked exactly), `./learn run lang --at NN.LL` for each lesson, the
+project at each lesson built with `-Wall -Wextra -pedantic -Werror`, every
+.s through riscv64-elf-as, and `tests/fuzz.py` on 2000 random programs,
+five ways each, with no disagreement (seed 7, on the final code; an
+earlier run of seed 1 also had none, and the first run of seed 7 found a
+fault of the generator's, not of the code: see NOTES.md). `./learn check`
+reports only that the eleven lessons have no doc yet.
+
+Departures (reasons in NOTES.md):
+
+- Four files are over their ceilings: machine.c, mote0.c, mote2c.c and
+  main.c (figures above). No function is long; the size is the errors,
+  --trace and --count, the routines, the prompt, and the usage lines that
+  change by lesson.
+- gcd.s, the text given for 01.01, has 14 instructions, not 15.
+- getint (and `read`) has a second error, `not a number`, everywhere.
+- The expected outputs of 01.02 are checked against a reference written in
+  Python: only gcd has a C version.
+- `make` makes `build/`, so that `> build/gcd.s` works in a fresh project.
+- mote.h also declares `equal`, `error_at` and `error_tok`; `generate`
+  reads `sym->reg` and takes no flag.
+- mote2c checks a little more of a statement's form (`expected ':='`,
+  `expected the end of the line`); expressions are still copied unchecked.
+- Found: C makes a number that fits in 32 bits an int, so the translated
+  `18 * 1000000007` is worked out in 32 bits and motec's program prints
+  820130942 where every other way prints 18000000126. The translator is
+  kept as designed (expressions copied as they are); the 01.04 test
+  asserts the difference, and the random programs leave it out. It belongs
+  in 01.04's lesson beside the gaps the plan already names.
+- Module 01's cover (drawn for the outline: "One program, two ways to run
+  it") gives the compiler's road as stack code (push 6, push 7, mul,
+  write); chapter 1's compiler writes RISC-V for a register machine. The
+  cover is copied as it is; redrawing it belongs to the art pass.

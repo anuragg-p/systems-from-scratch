@@ -1,0 +1,11 @@
+# gcd.mote: the greatest common divisor of two numbers
+read i
+read j
+while i != j do
+    if i > j then
+        i := i - j
+    else
+        j := j - i
+    end
+end
+write i

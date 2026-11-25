@@ -803,3 +803,26 @@ Figures:
   and a note for the case of more than eleven.
 - `01.11-three-counts.svg` - "Instructions run for the same answer, 21: by
   hand, compiled, and improved." Three bars with the real numbers.
+
+## Added after the code landed (2026-11-25)
+
+- `programs/gcd.s` is 14 instructions. On `1071 462` it runs 53; the compiled
+  program runs 142 and the improved one 61. The improved listing is also 14
+  instructions: the 8 it runs beyond the hand-written one are jumps to a jump
+  (the `if`'s end label is the loop's `j` back). Lesson 01.11 says so and
+  names it as what a further pass would remove (chapter 17).
+- 01.04 gains one finding, in Run it and How it works: the translator cannot
+  copy every expression faithfully. C gives a number that fits in 32 bits the
+  type `int`, so `write 18 * 1000000007` translated prints a different number
+  from every other way (NOTES.md has both). It is the plainest case of a
+  translator that does not understand what it copies.
+- File sizes are over the plan's ceilings (machine.c and mote0.c about 400
+  lines as a reader sees them). Accepted: no function is long, and the size is
+  the error messages, `--trace`, `--count` and the prompt.
+- Module 01's cover is redrawn (it showed stack code for `6 * 7`): "One
+  program, every way to run it". Left, a card with four lines of gcd.mote's
+  loop and a chip `1071 462`. Three roads to the right, each ending in `21`:
+  "interpreter: runs the text"; "translator to C, then the C compiler";
+  "scanner, parser, tree" forking to "walk the tree" and to "code" with one
+  instruction, `sub s1, s1, s2`, on "the machine". A bracket on the right:
+  "the same answer".
