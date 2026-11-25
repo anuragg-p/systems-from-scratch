@@ -13,7 +13,7 @@ runs once (cache hits counted); a correlated one runs per row, and uses an index
 inner column. Tables of thousands of rows with text on overflow pages, under a two-page
 cache, check that nothing a subquery hands back points into an evicted page. Errors are
 sqlite3's; what 08.06 leaves out is refused by name. Then the sqllogictest slice with
-subqueries no longer skipped.
+subqueries no longer skipped, and 300 cases of the fuzzer with subqueries and joins.
 """
 
 import os
@@ -533,3 +533,5 @@ def test(t):
 
     # the sqllogictest slice, with subqueries (and joins) no longer skipped
     tr.sqllogictest(t, have=("join", "subquery"))
+    # and a quick slice of the fuzzer, with subqueries anywhere it can put them
+    tr.fuzz(t, ("join", "subquery"), n=300)

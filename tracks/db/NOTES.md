@@ -1364,6 +1364,13 @@ in2.test         54 records: 52 run, 52 passed; skipped 1 aggregate, 1 onlyif or
 all 15 kept scripts: 80821 records, 80075 run, all passed, 746 skipped
 ```
 
+The fuzzer (tests/fuzz, merged from master while building):
+`fuzz.py --features core,join,subquery --n 3000 --seed 1 --engine db`:
+75312 statements, 18085 SELECTs, 777708 rows compared, 0 failing; the same
+under an ASan build with `--db-env DB_CACHE_PAGES=2`, 0 failing; seeds 2,
+3 and 4, and seed 5 with unique too, 0 failing. The lesson test runs 300
+cases (fuzz fixture, join and subquery).
+
 in1.test had never run: runner.py stopped at its `onlyif mssql` / `halt`
 as if the halt were for every engine. Fixed (a halt under onlyif/skipif
 for another engine is passed over); without --have, in1's 61 records that
