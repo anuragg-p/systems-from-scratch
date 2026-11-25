@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Two tables joined row by row into one, then many rows made one</title>
+<defs><marker id="m08db-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m08db-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m08db-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="52" y="46" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="76" y="46" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="100" y="46" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="52" y="64" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="76" y="64" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="100" y="64" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="52" y="82" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="76" y="82" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="100" y="82" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="52" y="100" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="76" y="100" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="100" y="100" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="52" y="152" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="76" y="152" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="100" y="152" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="52" y="170" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="76" y="170" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="100" y="170" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="52" y="188" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="76" y="188" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="100" y="188" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="52" y="206" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="76" y="206" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="100" y="206" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="52" y="224" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="76" y="224" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="100" y="224" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="52" y="242" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="76" y="242" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="100" y="242" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="278" y="92" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="350" y="92" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="302" y="92" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="374" y="92" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="326" y="92" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="398" y="92" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="278" y="120" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="350" y="120" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="302" y="120" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="374" y="120" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="326" y="120" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="398" y="120" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="278" y="148" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="350" y="148" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="302" y="148" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="374" y="148" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="326" y="148" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="398" y="148" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="278" y="176" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="350" y="176" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="302" y="176" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="374" y="176" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="326" y="176" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="398" y="176" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="278" y="204" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="350" y="204" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="302" y="204" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="374" y="204" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="326" y="204" width="24" height="18" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="398" y="204" width="24" height="18" rx="0" stroke-width="1.5"/>
+<path class="s" d="M128 55.0 C 218 55.0, 192 101.0, 272 101.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M128 161.0 C 218 161.0, 192 101.0, 272 101.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M128 55.0 C 218 55.0, 192 129.0, 272 129.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M128 197.0 C 218 197.0, 192 129.0, 272 129.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M128 73.0 C 218 73.0, 192 157.0, 272 157.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M128 215.0 C 218 215.0, 192 157.0, 272 157.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M128 91.0 C 218 91.0, 192 185.0, 272 185.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M128 179.0 C 218 179.0, 192 185.0, 272 185.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M128 91.0 C 218 91.0, 192 213.0, 272 213.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M128 233.0 C 218 233.0, 192 213.0, 272 213.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M428 101.0 C 478 101.0, 442 157.0, 486 157.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M428 129.0 C 478 129.0, 442 157.0, 486 157.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M428 185.0 C 478 185.0, 442 157.0, 486 157.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M428 213.0 C 478 213.0, 442 157.0, 486 157.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="492" y="144" width="62" height="26" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="523" y="161.5" font-size="12.5" font-weight="600" text-anchor="middle">London</text>
+<rect class="a af" x="554" y="144" width="26" height="26" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="567" y="161.5" font-size="12.5" font-weight="600" text-anchor="middle">4</text>
+<rect class="a af" x="580" y="144" width="38" height="26" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="599" y="161.5" font-size="12.5" font-weight="600" text-anchor="middle">100</text>
+</svg>
