@@ -20,20 +20,20 @@
 <rect class="m" x="38.9" y="30" width="265.1" height="196" rx="0" stroke-width="1.5"/>
 <text class="tm" x="171.45" y="258" font-size="11.5" text-anchor="middle">length (places)</text>
 <text class="tm" x="32.9" y="22" font-size="11.5">ms</text>
-<polyline class="s" points="38.9,169.6 105.2,159.0 171.5,135.5 237.7,93.4 304.0,55.1" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-<polyline class="a" points="38.9,197.8 105.2,170.8 171.5,149.9 237.7,119.1 304.0,94.1" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-<circle class="s f" cx="38.9" cy="169.6" r="3" stroke-width="1.5"/>
-<circle class="a fa" cx="38.9" cy="197.82" r="3" stroke-width="1.5"/>
-<circle class="s f" cx="105.18" cy="159.01" r="3" stroke-width="1.5"/>
-<circle class="a fa" cx="105.18" cy="170.79" r="3" stroke-width="1.5"/>
-<circle class="s f" cx="171.45" cy="135.47" r="3" stroke-width="1.5"/>
-<circle class="a fa" cx="171.45" cy="149.93" r="3" stroke-width="1.5"/>
-<circle class="s f" cx="237.73" cy="93.39" r="3" stroke-width="1.5"/>
-<circle class="a fa" cx="237.73" cy="119.15" r="3" stroke-width="1.5"/>
-<circle class="s f" cx="304" cy="55.09" r="3" stroke-width="1.5"/>
-<circle class="a fa" cx="304" cy="94.11" r="3" stroke-width="1.5"/>
-<text class="ta" x="298" y="86.11" font-size="10.5" font-weight="700" text-anchor="end">x3.95</text>
-<text class="ta" x="42.9" y="211.82" font-size="10.5" font-weight="700">x2.72</text>
+<polyline class="s" points="38.9,172.9 105.2,160.1 171.5,137.2 237.7,95.0 304.0,58.1" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline class="a" points="38.9,209.3 105.2,172.9 171.5,153.4 237.7,121.1 304.0,99.5" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<circle class="s f" cx="38.9" cy="172.89" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="38.9" cy="209.32" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="105.18" cy="160.1" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="105.18" cy="172.89" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="171.45" cy="137.16" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="171.45" cy="153.44" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="237.73" cy="94.99" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="237.73" cy="121.12" r="3" stroke-width="1.5"/>
+<circle class="s f" cx="304" cy="58.1" r="3" stroke-width="1.5"/>
+<circle class="a fa" cx="304" cy="99.48" r="3" stroke-width="1.5"/>
+<text class="ta" x="298" y="91.48" font-size="10.5" font-weight="700" text-anchor="end">x4.30</text>
+<text class="ta" x="42.9" y="223.32" font-size="10.5" font-weight="700">x3.70</text>
 <text class="tm mono" x="348.9" y="229.5" font-size="10.5" text-anchor="end">0.1</text>
 <line class="m" x1="354.9" y1="169.6" x2="622" y2="169.6" stroke-width="0.75" stroke-opacity="0.6"/>
 <text class="tm mono" x="348.9" y="173.13" font-size="10.5" text-anchor="end">1</text>
@@ -75,5 +75,5 @@
 <text class="ta" x="388" y="55" font-size="11">fused</text>
 <polyline class="m" points="360.0,66.0 382.0,66.0" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"/>
 <text class="tm" x="388" y="70" font-size="11">(T, T) weights</text>
-<text class="tm" x="16" y="292" font-size="10.5">This run&#x27;s times (load 15.5); the memory kept is exact and the same on any machine.</text>
+<text class="tm" x="16" y="292" font-size="10.5">This run&#x27;s times (load 14.2); the memory kept is exact and the same on any machine.</text>
 </svg>

@@ -180,9 +180,9 @@ def repeats1101():
                            "smallest, the median and the largest of the 15 marked, and the first step of each process "
                            "apart", 330)
     allms = [1000 * t for _, r in runs for rd in r["rounds"] for t in rd] + [1000 * r["cold"] for _, r in runs]
-    top = max(allms) * 1.06
+    bottom, top = min(allms) * 0.85, max(allms) * 1.1          # a log axis: one slow timing does not hide the rest
     x0, x1 = 104, 612
-    X = lambda v: x0 + v / top * (x1 - x0)  # noqa: E731
+    X = lambda v: x0 + math.log(v / bottom) / math.log(top / bottom) * (x1 - x0)  # noqa: E731
     stats = []
     for k, (name, r) in enumerate(runs):
         y = 22 + k * 142
@@ -198,7 +198,7 @@ def repeats1101():
                 f.circle(X(1000 * t), yy, 3.2, "s f")
         base = y + 76
         f.line(x0, base, x1, base, "m")
-        for v in range(0, int(top) + 1, 10):
+        for v in [t for t in (10, 15, 20, 30, 40, 50, 70, 100, 150, 200, 300, 500, 1000) if bottom <= t <= top]:
             f.line(X(v), base, X(v), base + 4, "m")
             f.text(X(v), base + 16, str(v), "tm", 10, "middle", mono=True)
         for v, cls in ((lo, "a"), (mid, "s"), (hi, "m")):
@@ -211,7 +211,7 @@ def repeats1101():
         f.text(x0 + 250, base + 34, f"largest {sig(hi)}", "tm", 10.5, mono=True)
         f.text(x1, base + 34, f"the largest {hi / lo:.2f} times the smallest", "tm", 10.5, "end")
     (lo0, mid0, _), (lo1, mid1, _) = stats
-    f.text(20, 322, f"ms a step. With the machine busier the smallest moved x{lo1 / lo0:.2f} and the median "
+    f.text(20, 322, f"ms a step, on a log scale. With the machine busier the smallest moved x{lo1 / lo0:.2f} and the median "
                     f"x{mid1 / mid0:.2f}.", "tm", 10.5)
     return f
 
@@ -1131,12 +1131,9 @@ def waste1106():
             T = P + s
             for i in range(T):
                 x = x0 + 54 + i * cw
-                if i == T:
-                    f.rect(x, y, cw - 3, 18, "m f", 2, dash=True)
-                    continue
                 last = i == T - 1
                 if cached and not last:
-                    f.rect(x, y, cw - 3, 18, "m fs", 2)
+                    f.rect(x, y, cw - 3, 18, "s fs", 2, dash=True)
                 elif last:
                     f.rect(x, y, cw - 3, 18, "a af", 2)
                 else:
@@ -1145,7 +1142,7 @@ def waste1106():
         yy = 40 + S * 24 + 14
         if cached:
             f.text(x0, yy, "computed: the new symbol only (accent);", "t", 10.5)
-            f.text(x0, yy + 15, "its query reads every kept key and value", "t", 10.5)
+            f.text(x0, yy + 15, "its query reads every kept key and value (dashed)", "t", 10.5)
         else:
             f.text(x0, yy, "computed: every position again; kept: the", "t", 10.5)
             f.text(x0, yy + 15, "last one's scores (accent), the rest thrown", "t", 10.5)

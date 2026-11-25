@@ -1,19 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
 <title>Fused attention in a whole step: a training step of the page&#x27;s GPT at windows of 64 and 256 (the smallest of 5 timings), the bits trained alike from the same seeds, and the recorded benchmark&#x27;s seconds to 2.4 bits, seed by seed</title>
 <defs><marker id="step1103-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="step1103-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="step1103-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
-<text class="t" x="20" y="24" font-size="11.5" font-weight="700">a training step, ms (load 15)</text>
+<text class="t" x="20" y="24" font-size="11.5" font-weight="700">a training step, ms (load 14)</text>
 <text class="t" x="110" y="66" font-size="11" font-weight="600" text-anchor="end">windows of 64</text>
-<rect class="s f" x="120" y="48" width="62.94" height="16" rx="1" stroke-width="1.5"/>
-<text class="t mono" x="187.94" y="60" font-size="10">36.0 written out</text>
-<rect class="a af" x="120" y="68" width="47.2" height="16" rx="1" stroke-width="1.5"/>
-<text class="ta mono" x="172.2" y="80" font-size="10">27.0 fused</text>
-<text class="ta mono" x="120" y="100" font-size="10.5" font-weight="700">x1.33</text>
+<rect class="s f" x="120" y="48" width="61.61" height="16" rx="1" stroke-width="1.5"/>
+<text class="t mono" x="186.61" y="60" font-size="10">28.2 written out</text>
+<rect class="a af" x="120" y="68" width="49.59" height="16" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="174.59" y="80" font-size="10">22.7 fused</text>
+<text class="ta mono" x="120" y="100" font-size="10.5" font-weight="700">x1.24</text>
 <text class="t" x="110" y="130" font-size="11" font-weight="600" text-anchor="end">windows of 256</text>
 <rect class="s f" x="120" y="112" width="163.64" height="16" rx="1" stroke-width="1.5"/>
-<text class="t mono" x="288.64" y="124" font-size="10">93.6 written out</text>
-<rect class="a af" x="120" y="132" width="105.24" height="16" rx="1" stroke-width="1.5"/>
-<text class="ta mono" x="230.24" y="144" font-size="10">60.2 fused</text>
-<text class="ta mono" x="120" y="164" font-size="10.5" font-weight="700">x1.55</text>
+<text class="t mono" x="288.64" y="124" font-size="10">74.9 written out</text>
+<rect class="a af" x="120" y="132" width="110.55" height="16" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="235.55" y="144" font-size="10">50.6 fused</text>
+<text class="ta mono" x="120" y="164" font-size="10.5" font-weight="700">x1.48</text>
 <text class="t" x="20" y="200" font-size="11" font-weight="700">trained alike, 150 steps, 2 seeds:</text>
 <text class="t mono" x="20" y="218" font-size="10.5">written out 3.196, fused 3.196 bits</text>
 <text class="ta mono" x="20" y="234" font-size="10.5">seed by seed -1.7e-06, +1.1e-07:</text>

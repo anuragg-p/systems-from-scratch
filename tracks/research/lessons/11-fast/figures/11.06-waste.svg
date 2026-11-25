@@ -85,52 +85,52 @@
 <text class="t" x="24" y="228" font-size="10.5">away (crossed)</text>
 <text class="ta" x="324" y="24" font-size="12" font-weight="700">with a cache</text>
 <text class="tm" x="370" y="55" font-size="10" text-anchor="end">step 1</text>
-<rect class="m fs" x="378" y="40" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="398" y="40" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="418" y="40" width="17" height="18" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="378" y="40" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="398" y="40" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="418" y="40" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
 <rect class="a af" x="438" y="40" width="17" height="18" rx="2" stroke-width="1.5"/>
 <text class="tm" x="370" y="79" font-size="10" text-anchor="end">step 2</text>
-<rect class="m fs" x="378" y="64" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="398" y="64" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="418" y="64" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="438" y="64" width="17" height="18" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="378" y="64" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="398" y="64" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="418" y="64" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="438" y="64" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
 <rect class="a af" x="458" y="64" width="17" height="18" rx="2" stroke-width="1.5"/>
 <text class="tm" x="370" y="103" font-size="10" text-anchor="end">step 3</text>
-<rect class="m fs" x="378" y="88" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="398" y="88" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="418" y="88" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="438" y="88" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="458" y="88" width="17" height="18" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="378" y="88" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="398" y="88" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="418" y="88" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="438" y="88" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="458" y="88" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
 <rect class="a af" x="478" y="88" width="17" height="18" rx="2" stroke-width="1.5"/>
 <text class="tm" x="370" y="127" font-size="10" text-anchor="end">step 4</text>
-<rect class="m fs" x="378" y="112" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="398" y="112" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="418" y="112" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="438" y="112" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="458" y="112" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="478" y="112" width="17" height="18" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="378" y="112" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="398" y="112" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="418" y="112" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="438" y="112" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="458" y="112" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="478" y="112" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
 <rect class="a af" x="498" y="112" width="17" height="18" rx="2" stroke-width="1.5"/>
 <text class="tm" x="370" y="151" font-size="10" text-anchor="end">step 5</text>
-<rect class="m fs" x="378" y="136" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="398" y="136" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="418" y="136" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="438" y="136" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="458" y="136" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="478" y="136" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="498" y="136" width="17" height="18" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="378" y="136" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="398" y="136" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="418" y="136" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="438" y="136" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="458" y="136" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="478" y="136" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="498" y="136" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
 <rect class="a af" x="518" y="136" width="17" height="18" rx="2" stroke-width="1.5"/>
 <text class="tm" x="370" y="175" font-size="10" text-anchor="end">step 6</text>
-<rect class="m fs" x="378" y="160" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="398" y="160" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="418" y="160" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="438" y="160" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="458" y="160" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="478" y="160" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="498" y="160" width="17" height="18" rx="2" stroke-width="1.5"/>
-<rect class="m fs" x="518" y="160" width="17" height="18" rx="2" stroke-width="1.5"/>
+<rect class="s fs" x="378" y="160" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="398" y="160" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="418" y="160" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="438" y="160" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="458" y="160" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="478" y="160" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="498" y="160" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="s fs" x="518" y="160" width="17" height="18" rx="2" stroke-width="1.5" stroke-dasharray="4 4"/>
 <rect class="a af" x="538" y="160" width="17" height="18" rx="2" stroke-width="1.5"/>
 <text class="t" x="324" y="198" font-size="10.5">computed: the new symbol only (accent);</text>
-<text class="t" x="324" y="213" font-size="10.5">its query reads every kept key and value</text>
+<text class="t" x="324" y="213" font-size="10.5">its query reads every kept key and value (dashed)</text>
 <text class="t" x="24" y="250" font-size="10.5">Thrown away without a cache, by the window&#x27;s length: 16: 93.8%, 64: 98.4%, 256: 99.6%, 1024: 99.9%</text>
 <text class="ta" x="24" y="270" font-size="10.5" font-weight="600">SmolLM2 keeps 11,520 numbers a token: keys and values, 3 heads of 64, 30 blocks, 45 KiB in float32;</text>
 <text class="ta" x="24" y="286" font-size="10.5" font-weight="600">its full window of 8,192 tokens 360 MiB, where a key and value head for each of its 9 query heads would keep 1,080.</text>

@@ -4810,7 +4810,68 @@ slower "because the angles are made again on every call". 11.02 measured
 it: the angles are 0.5% of a step and the turning itself, forward and
 backward, 15.8%; keeping the angles saves nothing measurable. The module
 11 lessons agent corrects 10.02's sentences (and any other page that
-repeats them).
+repeats them). Done with the lessons: 10.02's opening, its "A slower
+step" paragraph and its "Made again, every call" section now give the
+turning as the reason, say the lesson first suspected the angles, and
+send the reader to 11.02; 10.05's "Time" paragraph and module 10's page
+say the turning too. No number 10.02's run prints changed.
+
+**The lessons (written 2026-11-25, after the code).** lessons/11-fast/:
+the module page, 11.01 to 11.06, the cover and icon (research_art.py,
+the cover now drawn from the recorded benchmark: its rows' ratios and
+steps checked against output.txt, seed 0's curves of four rows placed in
+seconds as benchmark.py places them, the cache's x2.8 to x6.3 read from
+11.06's page), 20 figures (art/research/figs11.py) and the six maps
+(archmap.py: module 11 lit, every piece of the core now has its code;
+00.01's tour says so).
+- The pages' Run it transcripts, `./learn run` one after another
+  (12:59 to 13:03): benchmark 33.9 s at load 6.5 to 8.4, profile 17.7 s
+  at 8.4 to 9.4, fused 23.0 s at 9.4, precision 39.1 s at 8.8 to 9.7,
+  batches 57.7 s at 9.7 to 9.3, cache 39.3 s at 9.3 to 10.1. batches is
+  over 55 s at a load above 6: not cut (the plan's rule). Every printed
+  time is matched by a `line N ~` regex or a `vary`; steps, bits, counts
+  and float64 differences stay exact.
+- Prose times are these notes', each with its load; a page never states
+  its own transcript's times. Computed for the pages from the notes'
+  numbers: the 15 timings at load 10 to 11 have a mean of 52.4 ms and an
+  sd of 11.2 (median 50, smallest 41), at load 6 29.4 and 1.7 (11.01's
+  answer to CS336's "average and standard deviation"); 256 tokens after
+  16 run 36,736 positions through the model without a cache, 271 with
+  (11.06).
+- Break it, as measured (the exact parts are verified):
+  11.01, `time_to` without the straight line: the baseline's seeds 191
+  and 201 steps (seed 0's row at step 190 is 2.9997 bits, under 3.0, so
+  the line had put it at 190.9), half the batch 301 and 301.
+  11.02, `piece_of` without its rotary branch: rotary 0.00 everywhere,
+  its time in "the rest of attention", rotary's `mul` (32 calls) among
+  attention's operations, `copy_` 72 calls where it was 24.
+  11.03, `fused_attend` with `is_causal=False`: part 1 3.78, the GPT's
+  scores 0.462 and gradients 0.0518 apart; trained, fused 0.3789 bits on
+  the test text against 3.196 (it reads the answer), the step faster.
+  11.04, Rotary's angles in the queries' type again: Kinds moves rpow,
+  rdiv, repeat, cos and sin to the 16-bit row; bfloat16 trained 3.844
+  against 3.83 with the fix (inside the noise: the windows' 64 places
+  are exact in bfloat16); part 3 0.006% and 0.00076.
+  11.05, the parts' bits not divided: the logged losses 18 bits apart,
+  the weights 2.2e-11 (where they were 1.2e-16): the clip and Adam's
+  division absorb the factor of 4.
+  11.06, new tokens turned from place 0: the small GPT's greedy True,
+  the three samplers False; the float64 scores 1.4 apart; SmolLM2 False
+  every way, greedy "the world, the world, ..."; still as fast.
+- Figures are drawn from fresh runs of the pages' scripts (each with the
+  load it printed) and from the recorded benchmark; 11.01-repeats times
+  the step twice in the project at 11.01, the second time with 10
+  processes spinning beside it, and runs last so that no other figure's
+  run sees that load.
+- The site: 11.06's The code shows the recorded benchmark as 54 data
+  blocks (the DATA glob quirk the plan lists; 10.05's page has it too).
+  Two headings of The idea were pulled into The code by a plain word
+  that is a definition's name ("Timers" in 11.02, timers; "numbers" in
+  11.04, precision.py's numbers) and were reworded.
+- Sources: every quote and number of a paper or page on the lessons is
+  from "Module 11's sources" above or module 10's; nothing more was
+  read. Micikevicius et al.'s author list is not given (not recorded
+  here).
 
 ## Module 14: reproduce a paper, grokking
 

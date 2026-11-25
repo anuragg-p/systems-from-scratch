@@ -17,7 +17,7 @@
 <text class="tm" x="250" y="262" font-size="11.5" text-anchor="middle">step (the row&#x27;s step + 1 have been taken)</text>
 <text class="tm" x="64" y="22" font-size="11.5">bits, validation</text>
 <line class="m" x1="70" y1="202.51" x2="430" y2="202.51" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
-<text class="tm" x="426" y="197.51" font-size="10.5" text-anchor="end">target 3.0</text>
+<text class="tm" x="74" y="197.51" font-size="10.5">target 3.0</text>
 <polyline class="m" points="79.7,57.1 128.4,142.0 177.0,116.1 225.7,141.2 274.3,202.9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
 <polyline class="a" points="225.7,141.2 274.3,202.9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <circle class="s f" cx="79.73" cy="57.05" r="3" stroke-width="1.5"/>
@@ -36,6 +36,6 @@
 <text class="ta mono" x="460" y="139" font-size="10.5" font-weight="700">     = 190.9</text>
 <text class="t" x="460" y="163" font-size="10.5">seconds: the same f between</text>
 <text class="t" x="460" y="178" font-size="10.5">the clock at the two rows</text>
-<text class="ta mono" x="460" y="193" font-size="10.5" font-weight="700">     = 7.16 s</text>
+<text class="ta mono" x="460" y="193" font-size="10.5" font-weight="700">     = 8.99 s</text>
 <text class="tm" x="20" y="292" font-size="10.5">A run under the target at its first row counts that row&#x27;s steps; one that never reaches it, None.</text>
 </svg>
