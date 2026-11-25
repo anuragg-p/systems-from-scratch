@@ -12,6 +12,7 @@
  *          [LIMIT n [OFFSET m]]
  *          where FROM may join tables: t, u ... or t [INNER|CROSS] JOIN u [ON e] ... @from 08.01
  *          or t LEFT [OUTER] JOIN u [ON e] ... @from 08.02
+ *          and it may be SELECT DISTINCT, with GROUP BY e, ... [HAVING e] after WHERE @from 08.05
  *   INSERT INTO t [(col, ...)] VALUES (e, ...), ...
  *   UPDATE t SET col = e, ... [WHERE e]
  *   DELETE FROM t [WHERE e]
@@ -235,10 +236,36 @@ static Expr *parse_primary(Parser *ps)
     if (accept(ps, TK_LP)) {
         e = new_expr(ps, E_FUNC);
         e->name = name;
-        if (at(ps, TK_STAR) || at(ps, TK_DISTINCT)) {
-            err("aggregate functions are not supported: %s", name);
-            return NULL;
+        // @from 08.04
+        /* f(*) is f with no arguments, as in sqlite3: count(*) is count().
+         * f(ALL x) is f(x); ALL alone is a column of that name. */
+        if (accept(ps, TK_STAR)) {
+            e->star = 1;
+            e->list = arena_alloc(ps->arena, 1);
+            return expect(ps, TK_RP) ? e : NULL;
         }
+        // @from 08.05
+        if (accept(ps, TK_DISTINCT))
+            e->distinct = 1;
+        // @else
+        // if (at(ps, TK_DISTINCT))
+        //     return err("DISTINCT aggregates are not supported"), (Expr *)NULL;
+        // @end
+        if (at(ps, TK_ID) && ps->tok.n == 3 && strncasecmp(ps->tok.s, "ALL", 3) == 0) {
+            const char *save = ps->z;
+            Token tok = ps->tok;
+            advance(ps);
+            if (at(ps, TK_RP) || at(ps, TK_COMMA) || at(ps, TK_DOT)) {
+                ps->z = save;
+                ps->tok = tok;
+            }
+        }
+        // @else
+        // if (at(ps, TK_STAR) || at(ps, TK_DISTINCT)) {
+        //     err("aggregate functions are not supported: %s", name);
+        //     return NULL;
+        // }
+        // @end
         Expr *args[16];
         int n = 0;
         if (!at(ps, TK_RP)) {
@@ -605,17 +632,33 @@ static int parse_from(Parser *ps, Stmt *s)
 // @end
 
 // @from 08.01
-/* Parses a SELECT into s. Each result column is * (e NULL), x.* (e NULL,
- * star_of x) or an expression with an optional [AS] alias. The optional
- * clauses come in this order:
+// @from 08.05
+/* Parses a SELECT into s: SELECT [DISTINCT|ALL] (s->distinct), then the
+ * result columns, each * (e NULL), x.* (e NULL, star_of x) or an
+ * expression with an optional [AS] alias. The optional clauses come in
+ * this order:
  *
  *   FROM table [[AS] alias], ...     s->from, s->nfrom (parse_from)
  *   WHERE expr                       s->where
+ *   GROUP BY expr, ...               s->group, s->ngroup
+ *   HAVING expr                      s->having
  *   ORDER BY expr [ASC|DESC], ...    s->order, s->norder
  *   LIMIT expr [OFFSET expr]         s->limit, s->offset
  *
- * LIMIT a, b means LIMIT b OFFSET a. DISTINCT and GROUP BY are rejected
- * with a "not supported" error. Returns 0, or -1 with the error set. */
+ * LIMIT a, b means LIMIT b OFFSET a. Returns 0, or -1 with the error set. */
+// @else
+// /* Parses a SELECT into s. Each result column is * (e NULL), x.* (e NULL,
+//  * star_of x) or an expression with an optional [AS] alias. The optional
+//  * clauses come in this order:
+//  *
+//  *   FROM table [[AS] alias], ...     s->from, s->nfrom (parse_from)
+//  *   WHERE expr                       s->where
+//  *   ORDER BY expr [ASC|DESC], ...    s->order, s->norder
+//  *   LIMIT expr [OFFSET expr]         s->limit, s->offset
+//  *
+//  * LIMIT a, b means LIMIT b OFFSET a. DISTINCT and GROUP BY are rejected
+//  * with a "not supported" error. Returns 0, or -1 with the error set. */
+// @end
 // @else
 // /* Parses a SELECT into s. Each result column is * (e NULL; t.* reads as
 //  * * too) or an expression with an optional [AS] alias. The optional
@@ -635,9 +678,15 @@ static int parse_select(Parser *ps, Stmt *s)
     // @build 03.02 the SELECT statement
     if (!expect(ps, TK_SELECT))
         return -1;
-    if (at(ps, TK_DISTINCT))
-        return err("SELECT DISTINCT is not supported");
-    if (at(ps, TK_ID) && ps->tok.n == 3 && strncasecmp(ps->tok.s, "ALL", 3) == 0)
+    // @from 08.05
+    if (accept(ps, TK_DISTINCT))
+        s->distinct = 1;
+    else if (at(ps, TK_ID) && ps->tok.n == 3 && strncasecmp(ps->tok.s, "ALL", 3) == 0)
+    // @else
+    // if (at(ps, TK_DISTINCT))
+    //     return err("SELECT DISTINCT is not supported");
+    // if (at(ps, TK_ID) && ps->tok.n == 3 && strncasecmp(ps->tok.s, "ALL", 3) == 0)
+    // @end
         advance(ps);
     ResultCol cols[256];
     int n = 0;
@@ -699,8 +748,35 @@ static int parse_select(Parser *ps, Stmt *s)
     // @end
     if (accept(ps, TK_WHERE) && !(s->where = parse_expr(ps)))
         return -1;
-    if (at(ps, TK_GROUP))
-        return err("GROUP BY is not supported");
+    // @from 08.05
+    if (accept(ps, TK_GROUP)) {
+        if (!expect(ps, TK_BY))
+            return -1;
+        Expr *terms[64];
+        int k = 0;
+        do {
+            if (k == 64)
+                return err("too many GROUP BY terms");
+            if (!(terms[k++] = parse_expr(ps)))
+                return -1;
+        } while (accept(ps, TK_COMMA));
+        s->group = arena_alloc(ps->arena, (size_t)k * sizeof(Expr *));
+        memcpy(s->group, terms, (size_t)k * sizeof(Expr *));
+        s->ngroup = k;
+    }
+    if (accept(ps, TK_HAVING) && !(s->having = parse_expr(ps)))
+        return -1;
+    // @else
+    // if (at(ps, TK_GROUP))
+    //     return err("GROUP BY is not supported");
+    // @end
+    // @from 08.04
+    // @from 08.05
+    // @else
+    // if (at(ps, TK_HAVING))
+    //     return err("HAVING is not supported");
+    // @end
+    // @end
     if (accept(ps, TK_ORDER)) {
         if (!expect(ps, TK_BY))
             return -1;

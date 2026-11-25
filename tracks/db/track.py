@@ -265,6 +265,20 @@ def timeline_boot(lesson_id):
                   ("INSERT INTO u VALUES (1, 'z');", _refused("UNIQUE constraint failed: u.a")),
                   ("UPDATE u SET b = 'x' WHERE a = 2;", _refused("UNIQUE constraint failed: u.b")),
                   ("SELECT a FROM u WHERE b = 'y';", _rows("2"))]
+    # 08.04 aggregates, 08.05 GROUP BY, HAVING and DISTINCT: each refused by name until its lesson.
+    if lesson_id.startswith("08."):
+        if k < (8, 4):
+            steps += [("SELECT count(*) FROM t;", _refused("aggregate functions are not supported: count"))]
+        else:
+            steps += [(AGG_QUERY, _rows("4|41|10.25|five|30"))]
+        if k < (8, 5):
+            steps += [("SELECT b > 4 FROM t GROUP BY 1;", _refused("GROUP BY is not supported")),
+                      ("SELECT DISTINCT b > 4 FROM t;", _refused("SELECT DISTINCT is not supported"))]
+        if (8, 4) <= k < (8, 5):
+            steps += [("SELECT count(*) FROM t HAVING count(*) > 1;", _refused("HAVING is not supported")),
+                      ("SELECT count(DISTINCT b) FROM t;", _refused("DISTINCT aggregates are not supported"))]
+        if k >= (8, 5):
+            steps += [(GROUP_QUERY, _rows("0|2|6", "1|2|35")), (DISTINCT_QUERY, _rows("0", "1"))]
     return steps
 
 
@@ -272,6 +286,10 @@ def timeline_boot(lesson_id):
 JOIN_QUERY = "SELECT x.a, y.a FROM t AS x JOIN t AS y ON y.id = x.id + 1 ORDER BY x.id;"
 # 08.02 on: each row with the row whose id is its b, if there is one (three has b 30).
 LEFT_QUERY = "SELECT t.a, u.a FROM t LEFT JOIN t AS u ON u.id = t.b ORDER BY t.id;"
+# 08.04 on: one row from all of t; 08.05 on: a row per group, and a row per distinct value.
+AGG_QUERY = "SELECT count(*), sum(b), avg(b), min(a), max(b) FROM t;"
+GROUP_QUERY = "SELECT b > 4, count(*), sum(b) FROM t GROUP BY 1 HAVING count(*) > 1;"
+DISTINCT_QUERY = "SELECT DISTINCT b > 4 FROM t;"
 
 
 def timeline_after(root, lesson_id):
@@ -319,6 +337,13 @@ def timeline_after(root, lesson_id):
         if ours.rc != 0 or ours.out != real or not real:
             raise Fail(f"./db and sqlite3 join t with itself differently:\n./db: {ours.out!r}\nsqlite3: {real!r}")
         notes.append(f"joins t with itself like sqlite3, {len(real.splitlines())} rows")
+        later = ([AGG_QUERY] if k >= (8, 4) else []) + ([GROUP_QUERY, DISTINCT_QUERY] if k >= (8, 5) else [])
+        for q in later:
+            ours, real = mine(learn, q), theirs(learn, q)
+            if ours.rc != 0 or ours.out != real or not real:
+                raise Fail(f"./db and sqlite3 answer {q} differently:\n./db: {ours.out!r}\nsqlite3: {real!r}")
+        if k >= (8, 4):
+            notes.append("aggregates like sqlite3" + (", and GROUP BY and DISTINCT" if k >= (8, 5) else ""))
     if k >= (8, 2):
         ours, real = mine(learn, LEFT_QUERY), theirs(learn, LEFT_QUERY)
         if ours.rc != 0 or ours.out != real or "three|\n" not in real:
