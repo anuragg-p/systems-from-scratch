@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 368" fill="none">
+<title>A rule of the grammar and its function</title>
+<defs><marker id="f0107a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0107a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0107a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11.5">the rule, from the comment at the top of parse.c</text>
+<text class="t mono" x="24" y="46" font-size="13.5"><tspan x="24">stmt</tspan><tspan x="64.5" class="tm">= ... |</tspan><tspan x="129.3">&quot;while&quot;</tspan><tspan x="194.1" class="ta">cond</tspan><tspan x="234.6">&quot;do&quot;</tspan><tspan x="275.1" class="ta">{ stmt }</tspan><tspan x="348">&quot;end&quot;</tspan></text>
+<text class="tm" x="24" y="84" font-size="11.5">each piece</text>
+<text class="tm" x="176" y="84" font-size="11.5">the lines of stmt() in parse.c that take it</text>
+<line class="m" x1="24" y1="92" x2="616" y2="92" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s fs" x="24" y="101" width="74.7" height="24" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="33" y="118" font-size="13.5" font-weight="700">&quot;while&quot;</text>
+<line class="s" x1="102.7" y1="113" x2="166" y2="113" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0107a-ah)"/>
+<text class="tm mono" x="176" y="118" font-size="12.5"><tspan x="176">} else if (equal(tok,</tspan><tspan x="341" class="t mono">&quot;while&quot;</tspan><tspan x="393.5">)) {</tspan></text>
+<text class="t" x="470" y="118" font-size="11.5">the next token chooses</text>
+<text class="tm mono" x="176" y="139" font-size="12.5"><tspan x="191" class="t mono">take(n)</tspan><tspan x="243.5">;</tspan></text>
+<text class="t" x="470" y="139" font-size="11.5">taken: a leaf</text>
+<rect class="a af" x="24" y="155" width="50.4" height="24" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="33" y="172" font-size="13.5" font-weight="700">cond</text>
+<line class="a" x1="78.4" y1="167" x2="166" y2="167" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0107a-aa)"/>
+<text class="tm mono" x="176" y="172" font-size="12.5"><tspan x="191">add(n,</tspan><tspan x="243.5" class="ta">cond()</tspan><tspan x="288.5">);</tspan></text>
+<text class="ta" x="470" y="172" font-size="11.5">a call: a node of its own</text>
+<rect class="s fs" x="24" y="188" width="50.4" height="24" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="33" y="205" font-size="13.5" font-weight="700">&quot;do&quot;</text>
+<line class="s" x1="78.4" y1="200" x2="166" y2="200" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0107a-ah)"/>
+<text class="tm mono" x="176" y="205" font-size="12.5"><tspan x="191" class="t mono">expect(n, &quot;do&quot;)</tspan><tspan x="303.5">;</tspan></text>
+<text class="t" x="470" y="205" font-size="11.5">taken, or an error</text>
+<rect class="a af" x="24" y="221" width="82.8" height="24" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="33" y="238" font-size="13.5" font-weight="700">{ stmt }</text>
+<line class="a" x1="110.8" y1="233" x2="166" y2="233" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0107a-aa)"/>
+<text class="tm mono" x="176" y="238" font-size="12.5"><tspan x="191" class="ta">stmts(n)</tspan><tspan x="251">;</tspan></text>
+<text class="ta" x="470" y="238" font-size="11.5">a loop of calls:</text>
+<text class="tm mono" x="478" y="259" font-size="11">while (starts_stmt())</text>
+<text class="tm mono" x="478" y="277" font-size="11"><tspan x="491.2">add(n, stmt());</tspan></text>
+<rect class="s fs" x="24" y="290" width="58.5" height="24" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="33" y="307" font-size="13.5" font-weight="700">&quot;end&quot;</text>
+<line class="s" x1="86.5" y1="302" x2="166" y2="302" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0107a-ah)"/>
+<text class="tm mono" x="176" y="307" font-size="12.5"><tspan x="191" class="t mono">expect(n, &quot;end&quot;)</tspan><tspan x="311">;</tspan></text>
+<text class="t" x="470" y="307" font-size="11.5">taken, or an error</text>
+<line class="m" x1="24" y1="328" x2="616" y2="328" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a af" x="24" y="342" width="46" height="18" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="47" y="355" font-size="11" font-weight="700" text-anchor="middle">cond</text>
+<text class="t" x="78" y="355" font-size="11.5">a name: a call of that rule&#x27;s function</text>
+<rect class="s fs" x="337.98" y="342" width="40" height="18" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="357.98" y="355" font-size="11" font-weight="700" text-anchor="middle">&quot;do&quot;</text>
+<text class="t" x="385.98" y="355" font-size="11.5">a quoted word: a token to take</text>
+</svg>

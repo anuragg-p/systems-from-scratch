@@ -1,0 +1,642 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 362" fill="none">
+<title>The parser on write i - j</title>
+<defs><marker id="f0107c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0107c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0107c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="18" font-size="11.5">the tokens; the marked one is next</text>
+<text class="tm" x="24" y="112" font-size="11.5">the functions running,</text>
+<text class="tm" x="24" y="127" font-size="11.5">the last called on top</text>
+<text class="tm" x="196" y="112" font-size="11.5">the parse tree so far</text>
+<g class="step"><title>parse makes the program node. The next token, write, is not the end of the file, so it calls stmt.</title>
+<rect class="a" x="21" y="29" width="66" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M48.0 77.0 L54.0 70.0 L60.0 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="a af" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="333" font-size="13" font-weight="700">parse</text>
+<rect class="a af" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="700" text-anchor="middle">program</text>
+</g>
+<g class="step"><title>stmt makes its node and looks at one token: write chooses the write statement. stmt takes it, and write is a leaf.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a" x="91" y="29" width="40" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M105.0 77.0 L111.0 70.0 L117.0 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="a af" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="299" font-size="13" font-weight="700">stmt</text>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="a af" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="252" y="341.04" font-size="14" font-weight="700" text-anchor="middle">write</text>
+</g>
+<g class="step"><title>stmt calls expr for the expression after write. expr's node is made, not yet hung under stmt's.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a" x="91" y="29" width="40" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M105.0 77.0 L111.0 70.0 L117.0 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="s f" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="299" font-size="13" font-weight="500">stmt</text>
+<rect class="a af" x="24" y="246" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="265" font-size="13" font-weight="700">expr</text>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="a" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a af" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="460" y="220.32" font-size="12" font-weight="700" text-anchor="middle">expr</text>
+</g>
+<g class="step"><title>expr calls term for its first operand.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a" x="91" y="29" width="40" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M105.0 77.0 L111.0 70.0 L117.0 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="s f" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="299" font-size="13" font-weight="500">stmt</text>
+<rect class="s f" x="24" y="246" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="265" font-size="13" font-weight="500">expr</text>
+<rect class="a af" x="24" y="212" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="231" font-size="13" font-weight="700">term</text>
+<line class="a" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="a" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="460" y="220.32" font-size="12" font-weight="600" text-anchor="middle">expr</text>
+<rect class="a af" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="258.32" font-size="12" font-weight="700" text-anchor="middle">term</text>
+</g>
+<g class="step"><title>term calls factor, which sees a name, i, and takes it.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="a" x="135" y="29" width="40" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M149.0 77.0 L155.0 70.0 L161.0 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="s f" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="299" font-size="13" font-weight="500">stmt</text>
+<rect class="s f" x="24" y="246" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="265" font-size="13" font-weight="500">expr</text>
+<rect class="s f" x="24" y="212" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="231" font-size="13" font-weight="500">term</text>
+<rect class="a af" x="24" y="178" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="197" font-size="13" font-weight="700">factor</text>
+<line class="a" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="a" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="356" y1="265" x2="356" y2="281" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="356" y1="303" x2="356" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="460" y="220.32" font-size="12" font-weight="600" text-anchor="middle">expr</text>
+<rect class="a f" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="258.32" font-size="12" font-weight="600" text-anchor="middle">term</text>
+<rect class="a f" x="326.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="296.32" font-size="12" font-weight="600" text-anchor="middle">factor</text>
+<rect class="a af" x="341" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="341.04" font-size="14" font-weight="700" text-anchor="middle">i</text>
+</g>
+<g class="step"><title>factor returns, and term hangs its node under its own. The next token, -, is not * or /: term is done.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="a" x="135" y="29" width="40" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M149.0 77.0 L155.0 70.0 L161.0 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="s f" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="299" font-size="13" font-weight="500">stmt</text>
+<rect class="s f" x="24" y="246" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="265" font-size="13" font-weight="500">expr</text>
+<rect class="a af" x="24" y="212" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="231" font-size="13" font-weight="700">term</text>
+<line class="a" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="a" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="265" x2="356" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="303" x2="356" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="460" y="220.32" font-size="12" font-weight="600" text-anchor="middle">expr</text>
+<rect class="a f" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="258.32" font-size="12" font-weight="600" text-anchor="middle">term</text>
+<rect class="s f" x="326.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="341" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="356" y="341.04" font-size="14" font-weight="600" text-anchor="middle">i</text>
+</g>
+<g class="step"><title>term returns, and expr hangs it. The next token is -, one of + and -, so expr goes on.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="a" x="135" y="29" width="40" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M149.0 77.0 L155.0 70.0 L161.0 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="s f" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="299" font-size="13" font-weight="500">stmt</text>
+<rect class="a af" x="24" y="246" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="265" font-size="13" font-weight="700">expr</text>
+<line class="a" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="265" x2="356" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="303" x2="356" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="460" y="220.32" font-size="12" font-weight="600" text-anchor="middle">expr</text>
+<rect class="s f" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="326.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="341" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="356" y="341.04" font-size="14" font-weight="600" text-anchor="middle">i</text>
+</g>
+<g class="step"><title>expr takes - as a leaf of its own.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="a" x="179" y="29" width="40" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M193.0 77.0 L199.0 70.0 L205.0 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="s f" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="299" font-size="13" font-weight="500">stmt</text>
+<rect class="a af" x="24" y="246" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="265" font-size="13" font-weight="700">expr</text>
+<line class="a" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="265" x2="356" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="303" x2="356" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="460" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="460" y="220.32" font-size="12" font-weight="600" text-anchor="middle">expr</text>
+<rect class="s f" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="326.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="341" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="356" y="341.04" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="a af" x="445" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="460" y="341.04" font-size="14" font-weight="700" text-anchor="middle">-</text>
+</g>
+<g class="step"><title>expr calls term for the operand after the -.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="a" x="179" y="29" width="40" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M193.0 77.0 L199.0 70.0 L205.0 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="s f" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="299" font-size="13" font-weight="500">stmt</text>
+<rect class="s f" x="24" y="246" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="265" font-size="13" font-weight="500">expr</text>
+<rect class="a af" x="24" y="212" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="231" font-size="13" font-weight="700">term</text>
+<line class="a" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="460" y1="227" x2="564" y2="243" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="356" y1="265" x2="356" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="303" x2="356" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="460" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="460" y="220.32" font-size="12" font-weight="600" text-anchor="middle">expr</text>
+<rect class="s f" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="326.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="341" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="356" y="341.04" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="445" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="460" y="341.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="a af" x="541.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="564" y="258.32" font-size="12" font-weight="700" text-anchor="middle">term</text>
+</g>
+<g class="step"><title>term calls factor, which takes the name j.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="a" x="223" y="29" width="49.2" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M241.6 77.0 L247.6 70.0 L253.6 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="s f" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="299" font-size="13" font-weight="500">stmt</text>
+<rect class="s f" x="24" y="246" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="265" font-size="13" font-weight="500">expr</text>
+<rect class="s f" x="24" y="212" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="231" font-size="13" font-weight="500">term</text>
+<rect class="a af" x="24" y="178" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="197" font-size="13" font-weight="700">factor</text>
+<line class="a" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="460" y1="227" x2="564" y2="243" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="356" y1="265" x2="356" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="564" y1="303" x2="564" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="564" y1="265" x2="564" y2="281" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="356" y1="303" x2="356" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="460" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="460" y="220.32" font-size="12" font-weight="600" text-anchor="middle">expr</text>
+<rect class="s f" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="326.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="341" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="356" y="341.04" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="445" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="460" y="341.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="a f" x="541.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="564" y="258.32" font-size="12" font-weight="600" text-anchor="middle">term</text>
+<rect class="a f" x="534.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="564" y="296.32" font-size="12" font-weight="600" text-anchor="middle">factor</text>
+<rect class="a af" x="549" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="564" y="341.04" font-size="14" font-weight="700" text-anchor="middle">j</text>
+</g>
+<g class="step"><title>factor returns, and term hangs it. Next is the end of the file, not * or /.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="a" x="223" y="29" width="49.2" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M241.6 77.0 L247.6 70.0 L253.6 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="s f" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="299" font-size="13" font-weight="500">stmt</text>
+<rect class="s f" x="24" y="246" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="265" font-size="13" font-weight="500">expr</text>
+<rect class="a af" x="24" y="212" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="231" font-size="13" font-weight="700">term</text>
+<line class="a" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="460" y1="227" x2="564" y2="243" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="356" y1="265" x2="356" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="564" y1="303" x2="564" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="564" y1="265" x2="564" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="303" x2="356" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="460" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="460" y="220.32" font-size="12" font-weight="600" text-anchor="middle">expr</text>
+<rect class="s f" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="326.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="341" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="356" y="341.04" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="445" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="460" y="341.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="a f" x="541.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="564" y="258.32" font-size="12" font-weight="600" text-anchor="middle">term</text>
+<rect class="s f" x="534.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="564" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="549" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="564" y="341.04" font-size="14" font-weight="600" text-anchor="middle">j</text>
+</g>
+<g class="step"><title>term returns, and expr hangs it. The end of the file is not + or -: expr is done.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="a" x="223" y="29" width="49.2" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M241.6 77.0 L247.6 70.0 L253.6 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="s f" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="299" font-size="13" font-weight="500">stmt</text>
+<rect class="a af" x="24" y="246" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="265" font-size="13" font-weight="700">expr</text>
+<line class="a" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460" y1="227" x2="564" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="265" x2="356" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="564" y1="303" x2="564" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="564" y1="265" x2="564" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="303" x2="356" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="460" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="a f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="460" y="220.32" font-size="12" font-weight="600" text-anchor="middle">expr</text>
+<rect class="s f" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="326.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="341" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="356" y="341.04" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="445" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="460" y="341.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="541.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="564" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="534.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="564" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="549" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="564" y="341.04" font-size="14" font-weight="600" text-anchor="middle">j</text>
+</g>
+<g class="step"><title>expr returns, and stmt hangs it: the write statement is whole.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="a" x="223" y="29" width="49.2" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M241.6 77.0 L247.6 70.0 L253.6 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="s f" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="36" y="333" font-size="13" font-weight="500">parse</text>
+<rect class="a af" x="24" y="280" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="299" font-size="13" font-weight="700">stmt</text>
+<line class="s" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460" y1="227" x2="564" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="265" x2="356" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="564" y1="303" x2="564" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="564" y1="265" x2="564" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="303" x2="356" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="s" x1="460" y1="227" x2="460" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="a f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="182.32" font-size="12" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="460" y="220.32" font-size="12" font-weight="500" text-anchor="middle">expr</text>
+<rect class="s f" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="326.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="341" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="356" y="341.04" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="445" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="460" y="341.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="541.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="564" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="534.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="564" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="549" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="564" y="341.04" font-size="14" font-weight="600" text-anchor="middle">j</text>
+</g>
+<g class="step"><title>stmt returns, and parse hangs it under program.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="a" x="223" y="29" width="49.2" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M241.6 77.0 L247.6 70.0 L253.6 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<rect class="a af" x="24" y="314" width="116" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="333" font-size="13" font-weight="700">parse</text>
+<line class="s" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460" y1="227" x2="564" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="265" x2="356" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="564" y1="303" x2="564" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="564" y1="265" x2="564" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="303" x2="356" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460" y1="227" x2="460" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="a f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="ta mono" x="356" y="144.32" font-size="12" font-weight="600" text-anchor="middle">program</text>
+<rect class="s f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="182.32" font-size="12" font-weight="500" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="460" y="220.32" font-size="12" font-weight="500" text-anchor="middle">expr</text>
+<rect class="s f" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="326.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="341" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="356" y="341.04" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="445" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="460" y="341.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="541.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="564" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="534.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="564" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="549" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="564" y="341.04" font-size="14" font-weight="600" text-anchor="middle">j</text>
+</g>
+<g class="step"><title>parse sees the end of the file and stops. The leaves, left to right, are the tokens.</title>
+<rect class="s fs" x="24" y="32" width="60" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="54" y="52" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s fs" x="94" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="111" y="52" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="138" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="155" y="52" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s fs" x="182" y="32" width="34" height="30" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="199" y="52" font-size="14" font-weight="600" text-anchor="middle">j</text>
+<rect class="a" x="223" y="29" width="49.2" height="36" rx="7" stroke-width="1.5"/>
+<path class="a" d="M241.6 77.0 L247.6 70.0 L253.6 77.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="m f" x="226" y="32" width="43.2" height="30" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="247.6" y="52" font-size="12" font-weight="600" text-anchor="middle">eof</text>
+<line class="s" x1="356" y1="189" x2="460" y2="205" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460" y1="227" x2="356" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="189" x2="252" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460" y1="227" x2="564" y2="243" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="265" x2="356" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="564" y1="303" x2="564" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="564" y1="265" x2="564" y2="281" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="303" x2="356" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="356" y1="151" x2="356" y2="167" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="460" y1="227" x2="460" y2="322" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="322.8" y="129" width="66.4" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="144.32" font-size="12" font-weight="500" text-anchor="middle">program</text>
+<rect class="s f" x="333.6" y="167" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="182.32" font-size="12" font-weight="500" text-anchor="middle">stmt</text>
+<rect class="s fs" x="223" y="322" width="58" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="252" y="341.04" font-size="14" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="437.6" y="205" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="460" y="220.32" font-size="12" font-weight="500" text-anchor="middle">expr</text>
+<rect class="s f" x="333.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="326.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="356" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="341" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="356" y="341.04" font-size="14" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="445" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="460" y="341.04" font-size="14" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="541.6" y="243" width="44.8" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="564" y="258.32" font-size="12" font-weight="500" text-anchor="middle">term</text>
+<rect class="s f" x="534.4" y="281" width="59.2" height="22" rx="11" stroke-width="1.5"/>
+<text class="t mono" x="564" y="296.32" font-size="12" font-weight="500" text-anchor="middle">factor</text>
+<rect class="s fs" x="549" y="322" width="30" height="28" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="564" y="341.04" font-size="14" font-weight="600" text-anchor="middle">j</text>
+</g>
+</svg>

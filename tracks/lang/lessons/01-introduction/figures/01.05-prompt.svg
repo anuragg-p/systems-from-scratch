@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 230" fill="none">
+<title>A session at the prompt</title>
+<defs><marker id="f0105a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0105a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0105a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="20" font-size="11.5">what is typed at the prompt, and what it prints</text>
+<text class="tm" x="448" y="20" font-size="11.5">the names after the line</text>
+<rect class="s fs" x="24" y="34" width="396" height="184" rx="8" stroke-width="1.5"/>
+<rect class="s f" x="448" y="34" width="168" height="64" rx="8" stroke-width="1.5"/>
+<text class="tm" x="464" y="54" font-size="11">name</text>
+<text class="tm" x="544" y="54" font-size="11">value</text>
+<line class="m" x1="448" y1="64" x2="616" y2="64" stroke-width="1.5" stroke-linecap="round"/>
+<g class="step"><title>x := 6 is a whole statement: it runs at once, x is 6, and &gt; asks for the next line.</title>
+<rect class="af" x="30" y="44" width="384" height="24" rx="4"/>
+<text class="t mono" x="40" y="61" font-size="14" font-weight="700">&gt;</text>
+<text class="ta mono" x="56.8" y="61" font-size="14" font-weight="700">x := 6</text>
+<text class="t mono" x="40" y="85" font-size="14" font-weight="700">&gt;</text>
+<rect class="fa" x="56.8" y="72" width="8" height="16" rx="1"/>
+<text class="t mono" x="464" y="85" font-size="14" font-weight="700">x</text>
+<text class="ta mono" x="544" y="85" font-size="14" font-weight="700">6</text>
+</g>
+<g class="step"><title>while opens a block: the line is held, not run, and the prompt is now . until the block ends.</title>
+<text class="t mono" x="40" y="61" font-size="14" font-weight="700">&gt;</text>
+<text class="t mono" x="56.8" y="61" font-size="14">x := 6</text>
+<rect class="af" x="30" y="68" width="384" height="24" rx="4"/>
+<text class="t mono" x="40" y="85" font-size="14" font-weight="700">&gt;</text>
+<text class="ta mono" x="56.8" y="85" font-size="14" font-weight="700">while x &gt; 4 do</text>
+<text class="t mono" x="40" y="109" font-size="14" font-weight="700">.</text>
+<rect class="fa" x="56.8" y="96" width="8" height="16" rx="1"/>
+<path class="m" d="M194.4 69 H200.4 V91 H194.4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="212.4" y="78" font-size="12" font-weight="600">held:</text>
+<text class="tm" x="212.4" y="93" font-size="12">not run yet</text>
+<text class="t mono" x="464" y="85" font-size="14" font-weight="700">x</text>
+<text class="t mono" x="544" y="85" font-size="14" font-weight="700">6</text>
+</g>
+<g class="step"><title>x := x - 1 is held too. Nothing has run: x is still 6.</title>
+<text class="t mono" x="40" y="61" font-size="14" font-weight="700">&gt;</text>
+<text class="t mono" x="56.8" y="61" font-size="14">x := 6</text>
+<text class="t mono" x="40" y="85" font-size="14" font-weight="700">&gt;</text>
+<text class="t mono" x="56.8" y="85" font-size="14">while x &gt; 4 do</text>
+<rect class="af" x="30" y="92" width="384" height="24" rx="4"/>
+<text class="t mono" x="40" y="109" font-size="14" font-weight="700">.</text>
+<text class="ta mono" x="56.8" y="109" font-size="14" font-weight="700">x := x - 1</text>
+<text class="t mono" x="40" y="133" font-size="14" font-weight="700">.</text>
+<rect class="fa" x="56.8" y="120" width="8" height="16" rx="1"/>
+<path class="m" d="M194.4 69 H200.4 V115 H194.4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="212.4" y="90" font-size="12" font-weight="600">held:</text>
+<text class="tm" x="212.4" y="105" font-size="12">not run yet</text>
+<text class="t mono" x="464" y="85" font-size="14" font-weight="700">x</text>
+<text class="t mono" x="544" y="85" font-size="14" font-weight="700">6</text>
+</g>
+<g class="step"><title>end closes the block. The three held lines run as a file's lines would: x goes to 5, then 4.</title>
+<text class="t mono" x="40" y="61" font-size="14" font-weight="700">&gt;</text>
+<text class="t mono" x="56.8" y="61" font-size="14">x := 6</text>
+<text class="t mono" x="40" y="85" font-size="14" font-weight="700">&gt;</text>
+<text class="t mono" x="56.8" y="85" font-size="14">while x &gt; 4 do</text>
+<text class="t mono" x="40" y="109" font-size="14" font-weight="700">.</text>
+<text class="t mono" x="56.8" y="109" font-size="14">x := x - 1</text>
+<rect class="af" x="30" y="116" width="384" height="24" rx="4"/>
+<text class="t mono" x="40" y="133" font-size="14" font-weight="700">.</text>
+<text class="ta mono" x="56.8" y="133" font-size="14" font-weight="700">end</text>
+<text class="t mono" x="40" y="157" font-size="14" font-weight="700">&gt;</text>
+<rect class="fa" x="56.8" y="144" width="8" height="16" rx="1"/>
+<path class="a" d="M194.4 69 H200.4 V139 H194.4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="212.4" y="102" font-size="12" font-weight="700">run now,</text>
+<text class="ta" x="212.4" y="117" font-size="12">as one block</text>
+<text class="t mono" x="464" y="85" font-size="14" font-weight="700">x</text>
+<text class="ta mono" x="544" y="85" font-size="14" font-weight="700">4</text>
+<text class="tm" x="448" y="126" font-size="11.5">while the block ran:</text>
+<text class="ta mono" x="464" y="148" font-size="13" font-weight="600">x = 5</text>
+<text class="ta mono" x="464" y="168" font-size="13" font-weight="600">x = 4</text>
+</g>
+<g class="step"><title>write x runs at once and prints 4. Between lines the names keep their values.</title>
+<text class="t mono" x="40" y="61" font-size="14" font-weight="700">&gt;</text>
+<text class="t mono" x="56.8" y="61" font-size="14">x := 6</text>
+<text class="t mono" x="40" y="85" font-size="14" font-weight="700">&gt;</text>
+<text class="t mono" x="56.8" y="85" font-size="14">while x &gt; 4 do</text>
+<text class="t mono" x="40" y="109" font-size="14" font-weight="700">.</text>
+<text class="t mono" x="56.8" y="109" font-size="14">x := x - 1</text>
+<text class="t mono" x="40" y="133" font-size="14" font-weight="700">.</text>
+<text class="t mono" x="56.8" y="133" font-size="14">end</text>
+<rect class="af" x="30" y="140" width="384" height="24" rx="4"/>
+<text class="t mono" x="40" y="157" font-size="14" font-weight="700">&gt;</text>
+<text class="ta mono" x="56.8" y="157" font-size="14" font-weight="700">write x</text>
+<text class="t mono" x="40" y="181" font-size="14" font-weight="700">4</text>
+<text class="t mono" x="40" y="205" font-size="14" font-weight="700">&gt;</text>
+<rect class="fa" x="56.8" y="192" width="8" height="16" rx="1"/>
+<text class="t mono" x="464" y="85" font-size="14" font-weight="700">x</text>
+<text class="t mono" x="544" y="85" font-size="14" font-weight="700">4</text>
+</g>
+</svg>
