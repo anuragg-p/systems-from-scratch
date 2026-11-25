@@ -2546,6 +2546,7 @@ static int resolve_aggregates(Db *db, Query *q)
 }
 // @end
 
+// @from 08.06
 /* Makes the SELECT s ready to plan, into q. Binds each FROM item to its
  * table (no such table; a table this engine cannot read is refused) and
  * gives it its place in the joined row: its columns and then its rowid,
@@ -2556,6 +2557,18 @@ static int resolve_aggregates(Db *db, Query *q)
  * them as sqlite3 does (join_order_target()). outer is the query this one
  * is inside, NULL for a statement's own. Returns 0, or -1 with the error
  * set. */
+// @else
+// /* Makes the SELECT s ready to plan, into q. Binds each FROM item to its
+//  * table (no such table; a table this engine cannot read is refused) and
+//  * gives it its place in the joined row: its columns and then its rowid,
+//  * from base on. Expands * into every item's columns, left to right, and
+//  * x.* into item x's; binds the names in the result columns, WHERE, each
+//  * ON, ORDER BY, LIMIT and OFFSET (resolve_names()). With one table ORDER
+//  * BY reads its terms as the core always has (order_target()); a join reads
+//  * them as sqlite3 does (join_order_target()). outer is always NULL and
+//  * not used: every query is a statement's own. Returns 0, or -1 with the
+//  * error set. */
+// @end
 static int select_resolve(Db *db, Stmt *s, Scope *outer, Query *q)
 {
     (void)outer;

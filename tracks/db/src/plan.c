@@ -460,9 +460,11 @@ static Expr *terms_at(Db *db, Expr **terms, int n, int level)
     return and;
 }
 
-/* Returns the scan of FROM item it with access acc, its detail naming the
- * alias too (EXPLAIN shows which side of a self-join is which); NULL if a
- * bound cannot be evaluated. */
+/* Returns the scan of FROM item it with access acc; NULL if a bound cannot
+ * be evaluated. A full scan's detail names the alias too ("Scan orders AS
+ * o"), so EXPLAIN tells the sides of a self-join apart when both are
+ * scanned; a lookup or a range keeps op_scan()'s detail, which names only
+ * the table ("Rowid lookup orders rowid = ?"). */
 static Op *item_scan(Db *db, FromItem *it, Access *acc)
 {
     Op *op = op_scan(db, it->t, acc);
