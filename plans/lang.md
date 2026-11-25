@@ -202,9 +202,8 @@ opening, pages 5 to 7). Makes real: Examples 1.1 and 1.2. Built:
 `machine.c` (registers, the instruction table, labels, the loop that runs,
 the library routines), `programs/gcd.s`, `programs/gcd.in` (`1071 462`),
 `Makefile`. Run: `./machine programs/gcd.s < programs/gcd.in` prints 21;
-`--count` and `--trace`. The lesson also shows the reader's real computer:
-what `cc -S` and a disassembler print is that machine's own language
-(shown from one computer, said to differ on theirs, not replayed).
+`--count` and `--trace`. (Example 1.1, the bytes, is lesson 01.02's on
+the reader's real computer, and chapter 5's for this machine.)
 
 **01.02 Your language, and the programs you want it to run** (1.1 to 1.3,
 pages 7 to 16). Makes real: Figure 1.2's top third, and the criteria of
@@ -212,8 +211,10 @@ pages 7 to 16). Makes real: Figure 1.2's top third, and the criteria of
 (`getint`, `putint`: the book's "trivial I/O routines"), `programs/gcd.c`
 (the program in C, ours), and the programs in the new language with their
 input and expected output: `gcd`, `sum`, `primes` (`.mote`, `.in`, `.out`).
-Run: `make gcd`, `./gcd < programs/gcd.in`; the expected outputs are what
-the C versions print. The lesson names the language, places it in the
+Run: `make gcd`, `./gcd < programs/gcd.in`; then what the C compiler made
+of it on the reader's own computer, as assembly and as bytes (shown from
+one computer, said to differ on theirs, not replayed). Only gcd has a C
+version. The lesson names the language, places it in the
 book's families (it starts as a von Neumann language; the functional and
 logic forms of GCD are shown as where chapters 11 and 12 take it, in the
 text only), and weighs it against 1.1's list.
