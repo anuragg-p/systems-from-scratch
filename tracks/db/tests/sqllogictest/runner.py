@@ -374,7 +374,7 @@ class Plan:
                     cols = re.sub(r"\s+(ASC|DESC)\b", "", ci.group(4), flags=re.I)
                     unique = ci.group(2) if "unique" in have else ""
                     out = [f"{ci.group(1)}{unique or ''}{ci.group(3)}({cols})"]
-                    how = "DESC index made ordinary" if unique else "UNIQUE/DESC index made ordinary"
+                    how = "DESC index made ordinary" if "unique" in have else "UNIQUE/DESC index made ordinary"
             if not skip and skip_unsupported and how is None:
                 skip = unsupported(sql, have)
                 if not skip and r.kind == "statement" and INSERT_SELECT.match(sql):

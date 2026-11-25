@@ -333,6 +333,17 @@ int resolve_expr(Expr *e, Table *t, const char *alias)
 }
 
 // @from 08.01
+/* True if FROM item it answers to the qualifier q (q.c, q.*): to its alias
+ * if it has one, else to its table's name, as the catalog has it or as the
+ * query wrote it (they differ for sqlite_master, which the catalog calls
+ * sqlite_schema). In any case, as in sqlite3. */
+int answers_to(FromItem *it, const char *q)
+{
+    if (it->alias)
+        return strcasecmp(q, it->alias) == 0;
+    return strcasecmp(q, it->t->name) == 0 || strcasecmp(q, it->table) == 0;
+}
+
 /* Binds every column name in e to a table of scope sc, the tables of a
  * SELECT's FROM clause: e->tab is the FROM item, e->tcol the column in its
  * table (TCOL_ROWID for the rowid), and e->col the slot of the joined row
@@ -349,16 +360,16 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
         return 0;
     if (e->op == E_COLUMN) {
         // @build 08.01 bind a name to its table
-        // q.c looks only in the tables that answer to q: an item answers to
-        // its alias if it has one, else to its table's name, in any case. A
-        // bare c looks in every table. One table with the column binds it;
+        // q.c looks only in the tables that answer to q (answers_to: the
+        // alias if there is one, else the table's name). A bare c looks in
+        // every table. One table with the column binds it;
         // two or more are ambiguous. None: a rowid name (rowid, oid,
         // _rowid_) means the rowid of the one table looked in, and is
         // ambiguous when there were several. Set tab, tcol, col and aff.
         int hits = 0, looked = 0, k_hit = -1, c_hit = -1;
         for (int k = 0; k < sc->nfrom; k++) {
             FromItem *it = &sc->from[k];
-            if (e->qual && strcasecmp(e->qual, it->alias ? it->alias : it->t->name) != 0)
+            if (e->qual && !answers_to(it, e->qual))
                 continue;
             looked++;
             if (hits == 0)

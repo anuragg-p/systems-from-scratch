@@ -503,6 +503,7 @@ typedef struct Scope {
     FromItem *from;
     int nfrom;
 } Scope;
+int answers_to(FromItem *it, const char *q);
 int resolve_names(struct Db *db, Expr *e, Scope *sc);
 // @end
 int is_constant(Expr *e);

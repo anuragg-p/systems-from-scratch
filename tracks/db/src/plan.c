@@ -352,8 +352,9 @@ static Op *item_scan(Db *db, FromItem *it, Access *acc)
 {
     Op *op = op_scan(db, it->t, acc);
     if (op && it->alias && acc->kind == ACCESS_SCAN) {
-        char *d = arena_alloc(&db->stmt, strlen(it->t->name) + strlen(it->alias) + 8);
-        sprintf(d, "%s AS %s", it->t->name, it->alias);
+        size_t n = strlen(it->t->name) + strlen(it->alias) + 8;
+        char *d = arena_alloc(&db->stmt, n);
+        snprintf(d, n, "%s AS %s", it->t->name, it->alias);
         op->detail = d;
     }
     return op;

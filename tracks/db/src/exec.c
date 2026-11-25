@@ -1081,20 +1081,20 @@ static Expr *order_target(Stmt *s, Table *t, Expr *e, Expr **cols, int ncols)
 // @end
 
 // @from 08.01
-/* The name a FROM item answers to in q.c and q.*: its alias if it has one,
- * else its table's name. */
+/* The name a FROM item goes by in a join's * and its errors: its alias if
+ * it has one, else its table's name. */
 static const char *item_name(FromItem *it)
 {
     return it->alias ? it->alias : it->t->name;
 }
 
 /* True if column col of FROM item k is ambiguous when * names it: another
- * item answers to the same name and has a column called that too. sqlite3
+ * item answers to item k's name and has a column called that too. sqlite3
  * writes such a column as main.<name>.<col>, which cannot tell them apart. */
 static int star_ambiguous(Stmt *s, int k, const char *col)
 {
     for (int j = 0; j < s->nfrom; j++) {
-        if (j == k || strcasecmp(item_name(&s->from[j]), item_name(&s->from[k])) != 0)
+        if (j == k || !answers_to(&s->from[j], item_name(&s->from[k])))
             continue;
         for (int c = 0; c < s->from[j].t->ncols; c++)
             if (strcasecmp(s->from[j].t->cols[c].name, col) == 0)
@@ -1175,7 +1175,7 @@ static int select_resolve(Db *db, Stmt *s, Scope *outer, Query *q)
         }
         int seen = 0;
         for (int k = 0; k < s->nfrom; k++) {
-            if (!rc->star_of || strcasecmp(rc->star_of, item_name(&s->from[k])) == 0) {
+            if (!rc->star_of || answers_to(&s->from[k], rc->star_of)) {
                 n += s->from[k].t->ncols;
                 seen = 1;
             }
@@ -1199,7 +1199,7 @@ static int select_resolve(Db *db, Stmt *s, Scope *outer, Query *q)
         }
         for (int k = 0; k < s->nfrom; k++) {
             FromItem *it = &s->from[k];
-            if (rc->star_of && strcasecmp(rc->star_of, item_name(it)) != 0)
+            if (rc->star_of && !answers_to(it, rc->star_of))
                 continue;
             for (int c = 0; c < it->t->ncols; c++) {
                 Expr *e = arena_alloc(&db->stmt, sizeof *e);

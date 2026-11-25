@@ -162,6 +162,14 @@ SHOP_QUERIES = [
     "SELECT * FROM customers c WHERE c.city = 'London' ORDER BY c.name",
     "SELECT c.* FROM customers c ORDER BY 2",
     "SELECT customers.name FROM customers WHERE customers.rowid > 2",
+    "SELECT CUSTOMERS.* FROM customers ORDER BY 1",
+    # sqlite_master answers to that name too (the catalog calls it sqlite_schema)
+    "SELECT sqlite_master.type, sqlite_master.name FROM sqlite_master ORDER BY 2",
+    "SELECT sqlite_master.* FROM sqlite_master WHERE name = 'jw'",
+    "SELECT sqlite_schema.name FROM sqlite_master WHERE type = 'index'",
+    "SELECT s.name, c.name FROM sqlite_master s, customers c WHERE s.type = 'index' AND c.id < 3 ORDER BY c.id",
+    "SELECT sqlite_master.tbl_name, c.name FROM sqlite_master JOIN customers c ON c.id = sqlite_master.rowid "
+    "ORDER BY c.id",
 ]
 
 MIXED_QUERIES = [
