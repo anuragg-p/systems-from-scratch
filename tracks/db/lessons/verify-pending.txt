@@ -3,4 +3,3 @@
 # then delete its line here. ./learn check runs the static checks on every lesson not listed.
 08.03
 08.04
-08.05

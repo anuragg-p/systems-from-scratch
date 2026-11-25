@@ -2053,6 +2053,54 @@ Decide the boundary (from source; the research file, D, quotes them):
   every distinct row in memory, with no order; the B-tree can spill to
   disk and keeps the rows sorted.
 
+Read and run for the lesson text (the 08.05 writer; SQLite 3.54.1, the
+scratchpad tree, VERSION 3.54.1; PostgreSQL REL_18_7, configure.ac 18.7):
+
+- Corrections to the research file, D: before PostgreSQL 13 a hash
+  aggregate did keep growing in memory, now confirmed: the 13.0 release
+  notes, "Allow hash aggregation to use disk storage for large
+  aggregation result sets", say the old behaviour kept the hash table
+  "in memory no matter how large it got". AggStrategy is at nodes.h
+  360-363 at REL_18_7 (the research file says 358).
+- select.c read: 8675-8679 (the loop "in GROUP BY order", "an OP_Sort in
+  between, or ... an index"), 8834-8843 (the code that runs "whenever
+  the GROUP BY changes"), 902-937 (codeDistinct's header: "Build an
+  ephemeral table that contains all entries seen before and skip entries
+  which have been seen before"), 8414-8423 (the DISTINCT ephemeral index,
+  BTREE_UNORDERED), 7670-7690 (sqlite3CopySortOrder), 7149-7163
+  (havingToWhere). sqlite3's EXPLAIN of `... GROUP BY customer_id HAVING
+  customer_id > 1` tests customer_id before SorterInsert: moved to WHERE.
+- Run on shop.db, ./db and sqlite3 alike: `coalesce(customer_id, 1.0) AS
+  k ... GROUP BY k` 1|3, 2|1, 3|2; with '1' 1|2, 2|1, 3|2, 1|1; SELECT
+  DISTINCT of the two 1, 3, 2 and 1, 3, 2, 1; count(DISTINCT) 3 and 4.
+  `SELECT total % 2 AS customer_id, count(*) FROM orders GROUP BY
+  customer_id` 0|1, 0|2, 0|1, 1|2 (the column, not the alias). `GROUP BY
+  customer_id ORDER BY count(*) DESC` 3|2, 1|2, 2|1, |1. `SELECT DISTINCT
+  count(*) FROM orders GROUP BY customer_id` 1, 2, and EXPLAIN QUERY PLAN
+  `SCAN orders`, `USE TEMP B-TREE FOR GROUP BY`, `... FOR DISTINCT` in
+  both. A copy with `CREATE INDEX customers_city ON customers(city DESC)`
+  (made by sqlite3): sqlite3 gives Paris, Oslo, London for both `GROUP BY
+  city` and `DISTINCT city` (`SCAN customers USING COVERING INDEX
+  customers_city`), ./db London, Oslo, Paris and London, Paris, Oslo.
+- Break it, on copies of the project at 08.05: plan_top without its
+  op_sort line builds with no warning and gives six groups of one on
+  shop.db (1|1|30, 3|1|15, 1|1|50, 2|1|20, 3|1|5, |1|40); set_hash's test
+  cut to `if (v->type == V_INT)` makes `SELECT DISTINCT coalesce(customer_id,
+  1.0) FROM orders` print 1, 3, 2, 1.0 and its count(DISTINCT) 4.
+- Fetched for Go deeper: sqlite.org/lang_select.html 2.4
+  (#generation_of_the_set_of_result_rows: GROUP BY terms evaluated
+  "according to the processing rules stated below for ORDER BY
+  expressions", "NULL values are considered equal", HAVING once per
+  group) and 2.6 (DISTINCT compares with IS DISTINCT FROM, "An integer
+  is equal to a floating point number if they represent the same
+  quantity"); select.c at version-3.54.1 and nodeAgg.c at REL_18_7 on
+  GitHub (raw files, lines 8675 and 197 checked); the PostgreSQL 13.0
+  release notes; postgresql.org/docs/18/runtime-config-resource.html
+  (hash_mem_multiplier, default 2.0); CMU 15-445 fall 2024 notes
+  11-sorting.pdf ("The output of the operator will be sorted on the
+  keys"; hashing "especially when the order of the output does not
+  matter", partition and rehash when it does not fit).
+
 ### 08.07 UNIQUE: a constraint is an index lookup
 
 Regions: src/schema.c `auto_indexes` "an automatic index for a
