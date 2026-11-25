@@ -29,7 +29,7 @@ Modules 00 to 05 build the engine and the craft of training. Modules 06
 to 12 build the models, up to a GPT you trained, tuned and made fast.
 Modules 13 to 15 are research itself: experiments that hold up, a
 reproduction, and a result of your own. After the core comes a shelf of
-optional modules, 16 to 21, each one a field's founding papers built on
+optional modules, 16 to 22, each one a field's founding papers built on
 the code you already have. Each is independent of the others.
 
 **Coming soon.** This is the outline: the direction, not the lessons yet.
@@ -313,6 +313,20 @@ Format: `templates/outline.md`.
   - 21.04 The loss landscape: two solutions, and the path between them
 - Learn from: [P-LTH], [P-DISTILL], [P-EOS], [P-LANDSCAPE], [P-MODE], [P-DD]
 
+## Module 22 - Reasoning: working before answering
+
+- Optional: yes
+- Goal: Understand why a model that writes its working reaches answers a model answering in one pass cannot, and test whether the working is the reason for the answer.
+- You build: A small GPT that fails a task with steps when it must answer at once and learns it with a scratchpad, a sampler that buys accuracy with compute by voting over several attempts, a test that breaks the written steps to see whether the answer follows them, and a chain-of-thought prompt measured on a published model.
+- Value: Reasoning models are this idea at scale; knowing what the working buys, what it costs, and when it is not the real reason is what lets you read their results.
+- Lessons:
+  - 22.01 One pass is not enough: a task with steps
+  - 22.02 A scratchpad: writing the working first
+  - 22.03 More samples, more votes: compute at answer time
+  - 22.04 Is the working the reason? Breaking the steps
+  - 22.05 Chain of thought on a published model
+- Learn from: [P-SCRATCH], [P-ARITH], [P-COT], [P-ZCOT], [P-SC], [P-FAITH], [P-DOTS]
+
 ## Library
 
 | Key | Kind | Title | By | Where |
@@ -418,6 +432,13 @@ Format: `templates/outline.md`.
 | P-EOS | paper | Gradient Descent on Neural Networks Typically Occurs at the Edge of Stability | Cohen et al., 2021 | https://arxiv.org/abs/2103.00065 |
 | P-LANDSCAPE | paper | Visualizing the Loss Landscape of Neural Nets | Li et al., 2017 | https://arxiv.org/abs/1712.09913 |
 | P-MODE | paper | Loss Surfaces, Mode Connectivity, and Fast Ensembling of DNNs | Garipov et al., 2018 | https://arxiv.org/abs/1802.10026 |
+| P-SCRATCH | paper | Show Your Work: Scratchpads for Intermediate Computation with Language Models | Nye et al., 2021 | https://arxiv.org/abs/2112.00114 |
+| P-ARITH | paper | Teaching Arithmetic to Small Transformers | Lee et al., 2023 | https://arxiv.org/abs/2307.03381 |
+| P-COT | paper | Chain-of-Thought Prompting Elicits Reasoning in Large Language Models | Wei et al., 2022 | https://arxiv.org/abs/2201.11903 |
+| P-ZCOT | paper | Large Language Models are Zero-Shot Reasoners | Kojima et al., 2022 | https://arxiv.org/abs/2205.11916 |
+| P-SC | paper | Self-Consistency Improves Chain of Thought Reasoning in Language Models | Wang et al., 2022 | https://arxiv.org/abs/2203.11171 |
+| P-FAITH | paper | Measuring Faithfulness in Chain-of-Thought Reasoning | Lanham et al., 2023 | https://arxiv.org/abs/2307.13702 |
+| P-DOTS | paper | Let's Think Dot by Dot: Hidden Computation in Transformer Language Models | Pfau et al., 2024 | https://arxiv.org/abs/2404.15758 |
 | C-PYTORCH | code | PyTorch | The PyTorch Foundation and contributors | https://github.com/pytorch/pytorch |
 | C-MICROGRAD | code | micrograd | Andrej Karpathy | https://github.com/karpathy/micrograd |
 | C-TINYGRAD | code | tinygrad | George Hotz, the tiny corp and contributors | https://github.com/tinygrad/tinygrad |
