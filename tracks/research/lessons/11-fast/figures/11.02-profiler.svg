@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 316" fill="none">
+<title>PyTorch&#x27;s profiler beside the plain timers, ms a step for each piece: the timers on steps without the profiler, the same timers on steps under it, and the profiler&#x27;s own times for those steps</title>
+<defs><marker id="profiler1102-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="profiler1102-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="profiler1102-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="140" y="45" font-size="11" font-weight="600" text-anchor="end">forward</text>
+<rect class="s f" x="150" y="30" width="160.98" height="8" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="150" y="39" width="193.16" height="8" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="150" y="48" width="193.16" height="8" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="349.16" y="44" font-size="9.5">13.01 without, 15.61 under it</text>
+<text class="ta" x="140" y="81" font-size="11" font-weight="600" text-anchor="end">attention</text>
+<rect class="s f" x="150" y="66" width="97.51" height="8" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="150" y="75" width="122.38" height="8" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="150" y="84" width="122.75" height="8" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="278.75" y="80" font-size="9.5">7.88 without, 9.92 under it</text>
+<text class="ta" x="140" y="117" font-size="11" font-weight="600" text-anchor="end">attention: rotary</text>
+<rect class="s f" x="150" y="102" width="28.46" height="8" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="150" y="111" width="32.05" height="8" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="150" y="120" width="33.04" height="8" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="189.04" y="116" font-size="9.5">2.30 without, 2.67 under it</text>
+<text class="t" x="140" y="153" font-size="11" font-weight="600" text-anchor="end">MLP</text>
+<rect class="s f" x="150" y="138" width="28.58" height="8" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="150" y="147" width="29.08" height="8" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="150" y="156" width="29.7" height="8" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="185.7" y="152" font-size="9.5">2.31 without, 2.40 under it</text>
+<text class="t" x="140" y="189" font-size="11" font-weight="600" text-anchor="end">norms</text>
+<rect class="s f" x="150" y="174" width="21.9" height="8" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="150" y="183" width="23.88" height="8" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="150" y="192" width="25.12" height="8" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="181.12" y="188" font-size="9.5">1.77 without, 2.03 under it</text>
+<text class="t" x="140" y="225" font-size="11" font-weight="600" text-anchor="end">backward</text>
+<rect class="s f" x="150" y="210" width="250.08" height="8" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="150" y="219" width="285.71" height="8" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="150" y="228" width="285.59" height="8" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="441.71" y="224" font-size="9.5">20.21 without, 23.08 under it</text>
+<text class="t" x="140" y="261" font-size="11" font-weight="600" text-anchor="end">optimiser</text>
+<rect class="s f" x="150" y="246" width="28.58" height="8" rx="1" stroke-width="1.5"/>
+<rect class="s fs" x="150" y="255" width="31.06" height="8" rx="1" stroke-width="1.5"/>
+<rect class="a af" x="150" y="264" width="30.93" height="8" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="187.06" y="260" font-size="9.5">2.31 without, 2.50 under it</text>
+<line class="m" x1="150" y1="282" x2="150" y2="286" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="150" y="298" font-size="10" text-anchor="middle">0</text>
+<line class="m" x1="211.87" y1="282" x2="211.87" y2="286" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="211.87" y="298" font-size="10" text-anchor="middle">5</text>
+<line class="m" x1="273.74" y1="282" x2="273.74" y2="286" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="273.74" y="298" font-size="10" text-anchor="middle">10</text>
+<line class="m" x1="335.61" y1="282" x2="335.61" y2="286" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="335.61" y="298" font-size="10" text-anchor="middle">15</text>
+<line class="m" x1="397.48" y1="282" x2="397.48" y2="286" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="397.48" y="298" font-size="10" text-anchor="middle">20</text>
+<line class="m" x1="459.35" y1="282" x2="459.35" y2="286" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="459.35" y="298" font-size="10" text-anchor="middle">25</text>
+<line class="m" x1="150" y1="282" x2="470" y2="282" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="420" y="100" width="12" height="9" rx="1" stroke-width="1.5"/>
+<text class="t" x="438" y="108" font-size="10.5">the plain timers, no profiler</text>
+<rect class="s fs" x="420" y="116" width="12" height="9" rx="1" stroke-width="1.5"/>
+<text class="t" x="438" y="124" font-size="10.5">the plain timers, under it</text>
+<rect class="a af" x="420" y="132" width="12" height="9" rx="1" stroke-width="1.5"/>
+<text class="ta" x="438" y="140" font-size="10.5">the profiler</text>
+<text class="tm" x="20" y="312" font-size="10.5">Under it a step took 41.7 ms, not 36.0 (+16%), for 31,486 operations a step; its pieces are the timers&#x27; under it.</text>
+</svg>
