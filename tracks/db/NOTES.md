@@ -2633,6 +2633,55 @@ scratchpad/postgres-src-agg):
   ExecHashSubPlan, "store subselect result in an in-memory hash table"
   (./db's sorted array is the same idea; sqlite3's is a B-tree).
 
+Read for the lesson text (PostgreSQL REL_18_7, src/backend/):
+
+- optimizer/prep/prepjointree.c pull_up_sublinks_qual_recurse: under a NOT
+  only an EXISTS is converted ("If the immediate argument of NOT is EXISTS,
+  try to convert"), so NOT IN, which is NOT (x = ANY ...), always stays a
+  SubPlan. optimizer/plan/subselect.c: convert_ANY_sublink_to_join makes
+  `result->jointype = JOIN_SEMI`, and takes a correlated sub-select too, as
+  LATERAL ("If the sub-select contains any Vars of the parent query, we
+  treat it as LATERAL"); convert_EXISTS_sublink_to_join makes `under_not ?
+  JOIN_ANTI : JOIN_SEMI`. path/joinpath.c add_paths_to_joinrel plans
+  JOIN_SEMI and JOIN_ANTI by merge, nested loop and hash like other joins.
+- Hashing an IN: make_subplan sets useHashTable only for "a
+  not-direct-correlated IN (= ANY) test" whose subplan_is_hashable(): "The
+  estimated size of the subquery result must fit in hash_mem".
+  executor/nodeSubplan.c ExecHashSubPlan keeps rows with a NULL in a second
+  table (hashnulls, havenullrows) and answers FALSE for an empty subplan.
+  Its header: "initplans" need "only one evaluation per query", "regular"
+  subplans "are re-evaluated every time their result is required".
+- A scalar subquery with two rows is an error there: nodeSubplan.c,
+  "more than one row returned by a subquery used as an expression"; the
+  docs (18, sql-expressions.html, 4.2.11) say the same and that outer names
+  "act as constants during any one evaluation of the subquery".
+
+Lesson runs (Homebrew sqlite3 3.54.1; macOS's /usr/bin/sqlite3 is 3.44.3,
+which does not turn EXISTS into a join, so check `sqlite3 --version`):
+
+```
+EXPLAIN QUERY PLAN SELECT name FROM customers c WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id)
+|--SCAN c
+|--BLOOM FILTER ON o (customer_id=?)
+`--SEARCH o EXISTS USING AUTOMATIC PARTIAL COVERING INDEX (customer_id=?)
+... WHERE NOT EXISTS (...the same...)           |--SCAN c / `--CORRELATED SCALAR SUBQUERY 1 / `--SCAN o
+```
+
+On shop.py's file at 08.06 (big.db, default cache; page requests = hits +
+misses):
+
+```
+SELECT c.name, (SELECT count(*) FROM orders) FROM customers c                          63,272     run once
+SELECT c.name, (SELECT count(*) FROM orders o WHERE o.customer_id = c.id) ...      60,239,036     0.69 s, = 08.03's nested loop
+  the same after CREATE INDEX orders_customer ON orders(customer_id)                  147,241     0.008 s, = 08.03's index join
+SELECT c.name, count(o.id) FROM customers c LEFT JOIN orders o ... GROUP BY c.id      147,241
+```
+
+Break it used by the lesson (run): `if (1) {` for `if (!e->correlated) {`
+in eval_subquery: the per-customer count is 2 (Ada's) for all four, and
+`NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id)` returns
+no row (Ada's false kept for Dee).
+
 ### 08.07 UNIQUE: a constraint is an index lookup
 
 Regions: src/schema.c `auto_indexes` "an automatic index for a

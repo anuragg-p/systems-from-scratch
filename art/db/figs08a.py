@@ -18,34 +18,31 @@ Every value, slot, operator name and row count here comes from the engine as it 
   INSERT INTO customers VALUES (1,'Ada','London'),(2,'Brook','Paris'),(3,'Chen','London'),(4,'Dee','Oslo');
   INSERT INTO orders VALUES (10,1,30),(11,3,15),(12,1,50),(13,2,20),(14,3,5),(15,NULL,40);
 
-08.01-loops (stepped): the order the 24 pairs are visited in and the ON test's value on each are
-  PAIRS below, the output of
-    SELECT c.id, c.name, o.id, o.customer_id, c.id = o.customer_id FROM customers c CROSS JOIN orders o;
+The 08.01 figures draw the lesson's own queries, written as the lesson writes them (its "Run it").
+08.01-loops (stepped): JOIN_SQL. The order the 24 pairs are visited in and the ON test's value on
+  each are PAIRS below, the output of
+    SELECT c.id, o.id, o.customer_id = c.id FROM customers c CROSS JOIN orders o;
   which runs the same Join over the same two scans with the ON test as a result column. Checked
   against the join itself: a copy of the 08.01 project (./learn files db --at 08.01 DIR) with one
   fprintf added after join_next fills the inner slots and one after filter_next's eval(), running
-  SELECT c.name, o.id, o.total FROM customers c JOIN orders o ON c.id = o.customer_id;
-  printed the same 24 rows in the same order, the Filter's value_truth() 1 for (1,10) (1,12)
-  (2,13) (3,11) (3,14), -1 (NULL) for every pair with order 15, 0 for the rest; the query's
-  output is OUTPUT below, in that order (no ORDER BY: the order the loops make).
+  JOIN_SQL, printed the same 24 rows in the same order, the Filter (o.customer_id = c.id)'s
+  value_truth() 1 for (1,10) (1,12) (2,13) (3,11) (3,14), -1 (NULL) for every pair with order 15,
+  0 for the rest; the query's output is OUTPUT below, in that order (no ORDER BY: the order the
+  loops make).
 08.01-row: the same traced copy printed the joined row of the first pair as
   1 'Ada' 'London' 1 10 1 30 10 (slots 0-7), and a second fprintf in resolve_names, after it sets
   e->col, printed o.total -> item 1 base 4 col 6, o.customer_id -> col 5, c.name -> col 1,
   c.rowid -> col 3, o.rowid -> col 7.
 08.01-tree: EXPLAIN SELECT name FROM customers WHERE city = 'London';  prints
-  Filter (city = 'London') / Scan customers, and
-  EXPLAIN SELECT c.name, o.total FROM customers c JOIN orders o ON c.id = o.customer_id;  prints
-  Filter (c.id = o.customer_id) / Join / Scan customers AS c / Scan orders AS o.
-08.01-levels: a third table, added for this figure only (shop.db with it is shop3.db):
-    CREATE TABLE lines(id INTEGER PRIMARY KEY, order_id INTEGER, item TEXT);
-    INSERT INTO lines VALUES (1,10,'tea'),(2,12,'jam'),(3,13,'pen'),(4,14,'tea');
-  EXPLAIN SELECT c.name, o.id, l.item FROM customers c JOIN orders o ON o.customer_id = c.id
-    JOIN lines l ON l.order_id = o.id WHERE c.city = 'London';   prints LEVELS below; the query
-  gives Ada|10|tea, Ada|12|jam, Chen|14|tea. The traced copy counted the rows each Filter tested
-  and passed: (c.city = 'London') 4 and 2, (o.customer_id = c.id) 12 and 4, (l.order_id = o.id)
-  16 and 3; SELECT * FROM customers c, orders o, lines l gives 96 rows.
+  Filter (city = 'London') / Scan customers, and EXPLAIN JOIN_SQL prints TREE2:
+  Filter (o.customer_id = c.id) / Join / Scan customers AS c / Scan orders AS o.
+08.01-levels: the lesson's three-table query, LEVELS_Q (a self-join: customers as a for Ada, as c
+  for anyone in her city, then orders); EXPLAIN LEVELS_Q prints LEVELS, the query LEVELS_OUT
+  (Ada|Ada|10, Ada|Ada|12, Ada|Chen|11). The traced copy counted the rows each Filter tested and
+  passed: (a.name = 'Ada') 4 and 1, (c.city = a.city) 4 and 2, ((o.total > 10) AND
+  (o.customer_id = c.id)) 12 and 3; SELECT * FROM customers a, customers c, orders o gives 96.
 cover: the five joined pairs are OUTPUT's; "London 4 100" is the London rows of the join,
-  SELECT c.city, o.total FROM customers c JOIN orders o ON c.id = o.customer_id WHERE c.city = 'London';
+  SELECT c.city, o.total FROM customers c JOIN orders o ON o.customer_id = c.id WHERE c.city = 'London';
   London|30, London|50, London|15, London|5: 4 rows, 100 in all (what 08.04's count(*) and
   sum(total) give for them). Brook's pair is Paris, so its row is the one with no line to it.
 
@@ -127,7 +124,8 @@ PAIRS = [
     (3, 10, 0), (3, 11, 1), (3, 12, 0), (3, 13, 0), (3, 14, 1), (3, 15, None),
     (4, 10, 0), (4, 11, 0), (4, 12, 0), (4, 13, 0), (4, 14, 0), (4, 15, None),
 ]
-JOIN_SQL = "SELECT c.name, o.id, o.total FROM customers c JOIN orders o ON c.id = o.customer_id;"
+JOIN_SQL = "SELECT c.name, o.id, o.total FROM customers c JOIN orders o ON o.customer_id = c.id;"
+ON_TEXT = "o.customer_id = c.id"
 OUTPUT = [("Ada", 10, 30), ("Ada", 12, 50), ("Brook", 13, 20), ("Chen", 11, 15), ("Chen", 14, 5)]
 
 # the first joined row, slots 0-7: customers c from base 0, orders o from base 4
@@ -136,19 +134,17 @@ ROW = [("id", 1, "c"), ("name", "Ada", "c"), ("city", "London", "c"), ("rowid", 
 
 TREE1_SQL = "EXPLAIN SELECT name FROM customers WHERE city = 'London';"
 TREE1 = ["Filter (city = 'London')", "  Scan customers"]
-TREE2_SQL = "EXPLAIN SELECT c.name, o.total FROM customers c JOIN orders o ON c.id = o.customer_id;"
-TREE2 = ["Filter (c.id = o.customer_id)", "  Join", "    Scan customers AS c", "    Scan orders AS o"]
+TREE2_SQL = "EXPLAIN " + JOIN_SQL
+TREE2 = ["Filter (o.customer_id = c.id)", "  Join", "    Scan customers AS c", "    Scan orders AS o"]
 
-LINES_SQL = ("CREATE TABLE lines(id INTEGER PRIMARY KEY, order_id INTEGER, item TEXT); "
-             "INSERT INTO lines VALUES (1,10,'tea'),(2,12,'jam'),(3,13,'pen'),(4,14,'tea');")
-LEVELS_Q = ("SELECT c.name, o.id, l.item FROM customers c JOIN orders o ON o.customer_id = c.id "
-            "JOIN lines l ON l.order_id = o.id WHERE c.city = 'London';")
-LEVELS = ["Filter (l.order_id = o.id)", "  Join", "    Filter (o.customer_id = c.id)", "      Join",
-          "        Filter (c.city = 'London')", "          Scan customers AS c", "        Scan orders AS o",
-          "    Scan lines AS l"]
-LEVELS_OUT = [("Ada", 10, "tea"), ("Ada", 12, "jam"), ("Chen", 14, "tea")]
+LEVELS_Q = ("SELECT a.name, c.name, o.id FROM customers a JOIN customers c ON c.city = a.city "
+            "JOIN orders o ON o.customer_id = c.id WHERE a.name = 'Ada' AND o.total > 10;")
+LEVELS = ["Filter ((o.total > 10) AND (o.customer_id = c.id))", "  Join", "    Filter (c.city = a.city)",
+          "      Join", "        Filter (a.name = 'Ada')", "          Scan customers AS a",
+          "        Scan customers AS c", "    Scan orders AS o"]
+LEVELS_OUT = [("Ada", "Ada", 10), ("Ada", "Ada", 12), ("Ada", "Chen", 11)]
 # rows each Filter tested and passed, level 0, 1, 2 (from the traced copy; --check rederives them)
-TESTED, PASSED = [4, 12, 16], [2, 4, 3]
+TESTED, PASSED = [4, 4, 12], [1, 2, 3]
 CROSS3 = 96
 
 LONDON = ("London", 4, 100)
@@ -212,7 +208,7 @@ ORDERS_SCAN = 60236                           # page requests of one scan of ord
 
 # ------------------------------------------------------------------ the shared look
 
-TONE = {"c": ("s f", "t"), "o": ("a af", "ta"), "l": ("s fs", "t")}
+TONE = {"c": ("s f", "t"), "o": ("a af", "ta")}
 
 
 def val(v):
@@ -220,9 +216,9 @@ def val(v):
 
 
 def cells(f, x, y, items, h=22, size=11):
-    """items: (width, value, tone), tone "c" (customers), "o" (orders) or "l" (lines). Cells left
-    to right with no gap; a None value is a NULL: an empty dashed cell, the word muted. Returns
-    the x after the last cell."""
+    """items: (width, value, tone), tone "c" (customers) or "o" (orders). Cells left to right with
+    no gap; a None value is a NULL: an empty dashed cell, the word muted. Returns the x after the
+    last cell."""
     for w, v, tone in items:
         if v is None:
             f.rect(x, y, w, h, "m f", 0, dash=True)
@@ -270,7 +266,7 @@ def loops0801():
     TY = 242
     f.rect(24, TY, 592, 38, "s fs", 6)
     f.text(36, TY + 24, "ON", "tm", 11, None, 600)
-    f.text(60, TY + 24, "c.id = o.customer_id", "t", 11.5, None, None, True)
+    f.text(60, TY + 24, ON_TEXT, "t", 11.5, None, None, True)
 
     cw, ow = sum(CW), sum(OW)
     oidx = {o[0]: j for j, o in enumerate(ORDERS)}
@@ -301,18 +297,18 @@ def loops0801():
             ring(f, PX, Y0 + new[0] * RH, sum(PW), len(new) * RH)
 
     def test_line(cid, custs, v_text, v_cls):
-        """The values the ON test compared, in the box: c.id's in the neutral tone, each
-        customer_id in the accent tone (NULL muted)."""
+        """The values the ON test compared, in its order (o.customer_id = c.id), in the box: each
+        customer_id in the accent tone (NULL muted), c.id in the neutral tone."""
         x = 230
-        f.text(x, TY + 24, str(cid), "t", 12, None, 700, True)
-        x += tw(str(cid), 12, True) + 8
-        f.text(x, TY + 24, "=", "tm", 12, None, None, True)
-        x += 16
         for k, c in enumerate(custs):
             s = val(c) + ("," if k < len(custs) - 1 else "")
             f.text(x, TY + 24, s, "tm" if c is None else "ta", 12, None, 700, True)
             x += tw(s, 12, True) + 6
-        f.text(x + 8, TY + 24, v_text, v_cls, 11.5, None, 600)
+        f.text(x + 2, TY + 24, "=", "tm", 12, None, None, True)
+        x += 18
+        f.text(x, TY + 24, str(cid), "t", 12, None, 700, True)
+        x += tw(str(cid), 12, True)
+        f.text(x + 16, TY + 24, v_text, v_cls, 11.5, None, 600)
 
     nout = 0
     for i, (cid, name, _) in enumerate(CUSTOMERS):
@@ -332,7 +328,7 @@ def loops0801():
                     tail = "false; the pair is dropped"
                 else:
                     tail = "NULL, which is not true either; dropped"
-                cap = f"{name} (c.id {cid}) against order {oid} (customer_id {val(cust)}): {cid} = {val(cust)} is {tail}."
+                cap = f"{name} (c.id {cid}) against order {oid} (customer_id {val(cust)}): {val(cust)} = {cid} is {tail}."
                 if n == len(mine) - 1:
                     cap += " The inner scan is done: Ada matched 2 of the 6 orders."
                 with steps.step(f, cap):
@@ -357,7 +353,7 @@ def loops0801():
             if hits:
                 which = " and ".join(str(o) for o in hits)
                 plural = "s" if len(hits) > 1 else ""
-                cap = (f"{name} (c.id {cid}): the inner scan starts again from order 10; {cid} = customer_id "
+                cap = (f"{name} (c.id {cid}): the inner scan starts again from order 10; customer_id = {cid} "
                        f"is true for order{plural} {which}, so {len(hits)} row{plural} of output.")
             else:
                 cap = (f"{name} (c.id {cid}): no order has customer_id {cid}, so all six tests fail and {name} "
@@ -466,71 +462,81 @@ def tree0801():
     strip(lc + 6, 188, cust, 1, anchor="end")
     orde = [(20, 10, "o"), (16, 1, "o"), (20, 30, "o")]
     strip(rc - 6, 188, orde, 10)
-    f.text(252, 290, "SELECT c.name, o.total FROM customers c JOIN orders o", "tm", 10, None, None, True)
-    f.text(252, 304, "ON c.id = o.customer_id;", "tm", 10, None, None, True)
+    cut = JOIN_SQL.index(" ON ")
+    f.text(252, 290, JOIN_SQL[:cut], "tm", 10, None, None, True)
+    f.text(252, 304, JOIN_SQL[cut + 1:], "tm", 10, None, None, True)
     return f
 
 
 def levels0801():
-    f = Fig("f0801d", "Three tables: each condition is checked as soon as the last table it names is in the row", 540)
-    f.text(24, 20, LEVELS_Q[:LEVELS_Q.index(" JOIN lines")], "tm", 10, None, None, True)
-    f.text(24, 35, "  " + LEVELS_Q[LEVELS_Q.index("JOIN lines"):], "tm", 10, None, None, True)
-    f.text(24, 56, "lines is a third table, made for this figure:", "tm", 10.5)
-    f.text(256, 56, "lines(id INTEGER PRIMARY KEY, order_id INTEGER, item TEXT)", "tm", 10, None, None, True)
-    f.text(256, 71, "(1, 10, 'tea') (2, 12, 'jam') (3, 13, 'pen') (4, 14, 'tea')", "tm", 10, None, None, True)
+    f = Fig("f0801d", "Three tables: each condition is checked as soon as the last table it names is in the row", 524)
+    cut = LEVELS_Q.index(" JOIN orders")
+    f.text(24, 20, LEVELS_Q[:cut], "tm", 10, None, None, True)
+    f.text(24, 35, "  " + LEVELS_Q[cut + 1:], "tm", 10, None, None, True)
+    f.text(24, 55, "customers twice: as a for Ada, as c for anyone who lives in her city; then orders", "tm", 10.5)
 
     BH = 28
-    SX = 270                                  # the spine: filters, joins, the first scan
-    yF2, yJ2, yF1, yJ1, yF0, yS = 112, 172, 248, 308, 384, 444
+    SX = 310                                  # the spine: filters, joins, the first scan
+    yF2, yJ2, yF1, yJ1, yF0, yS = 96, 156, 232, 292, 368, 428
     # where one level ends and the next begins: 12 px over the filter, under every label of the
     # level above (its row count, its scan's note), and broken where the spine's arrow crosses
     for y in (yF1 - 12, yF0 - 12):
         f.line(24, y, SX - 14, y, "m", dash=True)
         f.line(SX + 60, y, 616, y, "m", dash=True)
 
-    def op(cx, y, w, label, cls="s f", tcls="t", weight=None):
+    def op(cx, y, label, cls="s f", tcls="t", weight=None):
+        """An operator box as wide as its EXPLAIN text; returns its right edge."""
+        w = tw(label, 11, True) + 28
         f.rect(cx - w / 2, y, w, BH, cls, 6)
         f.text(cx, y + 18.5, label, tcls, 11, "middle", weight, True)
+        return cx + w / 2
 
     filt = [l.strip() for l in LEVELS if l.strip().startswith("Filter")]   # level 2, 1, 0
-    op(SX, yF2, 220, filt[0], weight=600)
-    op(SX, yJ2, 72, "Join")
-    op(SX, yF1, 220, filt[1], weight=600)
-    op(SX, yJ1, 72, "Join")
-    op(SX, yF0, 220, filt[2], weight=600)
-    op(SX, yS, 164, "Scan customers AS c")
-    RX = 520
-    op(RX, yJ2, 148, "Scan lines AS l", "s fs", "t")
-    op(RX, yJ1, 148, "Scan orders AS o", "a af", "ta")
+    scans = [l.strip() for l in LEVELS if l.strip().startswith("Scan")]    # a, c, o
+    right = [op(SX, yF2, filt[0], weight=600)]
+    op(SX, yJ2, "Join")
+    right.append(op(SX, yF1, filt[1], weight=600))
+    op(SX, yJ1, "Join")
+    right.append(op(SX, yF0, filt[2], weight=600))
+    op(SX, yS, scans[0])
+    RX = 532
+    op(RX, yJ1, scans[1])
+    op(RX, yJ2, scans[2], "a af", "ta")
 
     # rows flowing up the spine, with how many went along each edge
-    edges = [(yS, yF0 + BH, f"{len(CUSTOMERS)} rows"), (yF0, yJ1 + BH, f"{PASSED[0]} rows"),
-             (yJ1, yF1 + BH, f"{TESTED[1]} rows"), (yF1, yJ2 + BH, f"{PASSED[1]} rows"),
-             (yJ2, yF2 + BH, f"{TESTED[2]} rows"), (yF2, yF2 - 26, f"{PASSED[2]} rows out")]
+    def rows(n):
+        return f"{n} row" + ("" if n == 1 else "s")
+    edges = [(yS, yF0 + BH, rows(len(CUSTOMERS))), (yF0, yJ1 + BH, rows(PASSED[0])),
+             (yJ1, yF1 + BH, rows(TESTED[1])), (yF1, yJ2 + BH, rows(PASSED[1])),
+             (yJ2, yF2 + BH, rows(TESTED[2])), (yF2, yF2 - 26, rows(PASSED[2]) + " out")]
     for y1, y2, label in edges:
         f.line(SX, y1 - 2, SX, y2 + 3, "s", arrow=True)
         ly = min((y1 + y2) / 2 + 4, y2 + 20)                    # above a level's line
         f.text(SX + 8, ly, label, "t" if "out" in label else "tm", 10.5, None, 600 if "out" in label else None)
-    for y, n, per, outer in ((yJ1, TESTED[1], len(ORDERS), PASSED[0]), (yJ2, TESTED[2], 4, PASSED[1])):
-        f.line(RX - 76, y + BH / 2, SX + 40, y + BH / 2, "a" if y == yJ1 else "s", arrow=True)
-        f.text((RX - 76 + SX + 40) / 2, y + BH / 2 - 6, f"{n} rows", "tm", 10.5, "middle")
-        f.text(RX, y + BH + 15, f"{per} rows for each of {outer} outer rows", "tm", 10, "middle")
+    # the inner scans: customers c once for each row level 0 passed, orders once for each pair
+    for y, n, per, outer, cls in ((yJ1, TESTED[1], len(CUSTOMERS), PASSED[0], "s"),
+                                  (yJ2, TESTED[2], len(ORDERS), PASSED[1], "a")):
+        f.line(RX - 78, y + BH / 2, SX + 40, y + BH / 2, cls, arrow=True)
+        f.text((RX - 78 + SX + 40) / 2, y + BH / 2 - 6, rows(n), "tm", 10.5, "middle")
+        note = f"{per} rows for its {outer} outer row" if outer == 1 else f"{per} rows for each of {outer} outer rows"
+        f.text(RX, y + BH + 15, note, "tm", 10, "middle")
 
-    # the levels, at the left; what each filter's term names, at its right
-    # (the table letters in mono, where l and I differ)
-    labels = [(yF2, "level 2", "row: c, o, l", "names l, o: waits for l"),
-              (yF1, "level 1", "row: c, o", "names o, c: waits for o"),
-              (yF0, "level 0", "row: c", "names only c")]
-    for y, lv, what, names in labels:
+    # the levels, at the left; what each filter's conditions name, and where they were written,
+    # at its right (the table letters in mono)
+    labels = [(yF2, "level 2", "row: a, c, o", "names o, c", "from WHERE and ON"),
+              (yF1, "level 1", "row: a, c", "names c, a", "from ON"),
+              (yF0, "level 0", "row: a", "names only a", "from WHERE")]
+    for (y, lv, what, names, where), x in zip(labels, right):
         f.text(24, y + 13, lv, "t", 12, None, 700)
         f.text(24, y + 28, what, "tm", 10, None, None, True)
-        f.text(SX + 118, y + 18.5, names, "tm", 10.5, None, None, True)
+        f.text(x + 10, y + 12, names, "tm", 10.5, None, None, True)
+        f.text(x + 10, y + 26, where, "tm", 10)
 
-    f.line(24, 494, 616, 494, "m")
-    f.text(24, 513, f"Each condition meets the fewest rows it can: the filters test {TESTED[0]}, {TESTED[1]} and "
+    f.line(24, 478, 616, 478, "m")
+    f.text(24, 497, f"Each condition meets the fewest rows it can: the filters test {TESTED[0]}, {TESTED[1]} and "
            f"{TESTED[2]} rows.", "t", 11)
-    f.text(24, 530, f"Checked only at the top, all three would test every one of {len(CUSTOMERS)} x {len(ORDERS)} x 4 = "
-           f"{CROSS3} rows.", "tm", 10.5)
+    f.text(24, 514, f"Checked only at the top, all four would meet every one of {len(CUSTOMERS)} x {len(CUSTOMERS)} x "
+           f"{len(ORDERS)} = {CROSS3} rows.", "tm", 10.5)
     return f
 
 
@@ -930,17 +936,15 @@ def tree(path, table):
 
 
 def check():
-    """Builds shop.db (and shop3.db, with lines) with the engine at 08.01 and checks every
-    number the figures draw against what it prints."""
+    """Builds shop.db with the engine at 08.01 (and at 08.02, 08.03) and checks every number the
+    figures draw against what it prints."""
     d = tempfile.mkdtemp(prefix="figs08a-")
-    shop, shop3 = os.path.join(d, "shop.db"), os.path.join(d, "shop3.db")
+    shop = os.path.join(d, "shop.db")
     data = ("CREATE TABLE customers(id INTEGER PRIMARY KEY, name TEXT, city TEXT); "
             "CREATE TABLE orders(id INTEGER PRIMARY KEY, customer_id INTEGER, total INTEGER); "
             "INSERT INTO customers VALUES (1,'Ada','London'),(2,'Brook','Paris'),(3,'Chen','London'),(4,'Dee','Oslo'); "
             "INSERT INTO orders VALUES (10,1,30),(11,3,15),(12,1,50),(13,2,20),(14,3,5),(15,NULL,40);")
-    for p in (shop, shop3):
-        run_at(p, data)
-    run_at(shop3, LINES_SQL)
+    run_at(shop, data)
 
     def same(what, got, want):
         if got != want:
@@ -953,27 +957,26 @@ def check():
     same("customers", [tuple(map(parse, l.split("|"))) for l in run_at(shop, "SELECT * FROM customers;")], CUSTOMERS)
     same("orders", [tuple(map(parse, l.split("|"))) for l in run_at(shop, "SELECT * FROM orders;")], ORDERS)
     got = [tuple(map(parse, l.split("|"))) for l in run_at(
-        shop, "SELECT c.id, o.id, c.id = o.customer_id FROM customers c CROSS JOIN orders o;")]
+        shop, f"SELECT c.id, o.id, {ON_TEXT} FROM customers c CROSS JOIN orders o;")]
     same("pairs and the ON test", got, PAIRS)
     same("the join's output", [tuple(map(parse, l.split("|"))) for l in run_at(shop, JOIN_SQL)], OUTPUT)
     got = run_at(shop, "SELECT c.id, c.name, c.city, c.rowid, o.id, o.customer_id, o.total, o.rowid "
-                       "FROM customers c JOIN orders o ON c.id = o.customer_id LIMIT 1;")
+                       f"FROM customers c JOIN orders o ON {ON_TEXT} LIMIT 1;")
     same("the first joined row", [parse(v) for v in got[0].split("|")], [v for _, v, _ in ROW])
     same("EXPLAIN, one table", run_at(shop, TREE1_SQL), TREE1)
     same("EXPLAIN, the join", run_at(shop, TREE2_SQL), TREE2)
-    same("EXPLAIN, three tables", run_at(shop3, "EXPLAIN " + LEVELS_Q), LEVELS)
-    same("three tables' output", [tuple(map(parse, l.split("|"))) for l in run_at(shop3, LEVELS_Q)], LEVELS_OUT)
+    same("EXPLAIN, three tables", run_at(shop, "EXPLAIN " + LEVELS_Q), LEVELS)
+    same("three tables' output", [tuple(map(parse, l.split("|"))) for l in run_at(shop, LEVELS_Q)], LEVELS_OUT)
     # what each filter tests: the rows the level below passed, times the new table's rows
-    n_c = len(run_at(shop3, "SELECT * FROM customers c;"))
-    n_o = len(run_at(shop3, "SELECT * FROM orders o;"))
-    n_l = len(run_at(shop3, "SELECT * FROM lines l;"))
-    p0 = len(run_at(shop3, "SELECT * FROM customers c WHERE c.city = 'London';"))
-    p1 = len(run_at(shop3, "SELECT * FROM customers c JOIN orders o ON o.customer_id = c.id WHERE c.city = 'London';"))
-    p2 = len(run_at(shop3, LEVELS_Q))
-    same("rows each filter tests and passes", ([n_c, p0 * n_o, p1 * n_l], [p0, p1, p2]), (TESTED, PASSED))
-    same("three tables, no condition", len(run_at(shop3, "SELECT * FROM customers c, orders o, lines l;")), CROSS3)
+    n_c = len(run_at(shop, "SELECT * FROM customers c;"))
+    n_o = len(run_at(shop, "SELECT * FROM orders o;"))
+    p0 = len(run_at(shop, "SELECT * FROM customers a WHERE a.name = 'Ada';"))
+    p1 = len(run_at(shop, "SELECT * FROM customers a JOIN customers c ON c.city = a.city WHERE a.name = 'Ada';"))
+    p2 = len(run_at(shop, LEVELS_Q))
+    same("rows each filter tests and passes", ([n_c, p0 * n_c, p1 * n_o], [p0, p1, p2]), (TESTED, PASSED))
+    same("three tables, no condition", len(run_at(shop, "SELECT * FROM customers a, customers c, orders o;")), CROSS3)
     got = [int(l.split("|")[1]) for l in run_at(
-        shop, "SELECT c.city, o.total FROM customers c JOIN orders o ON c.id = o.customer_id WHERE c.city = 'London';")]
+        shop, f"SELECT c.city, o.total FROM customers c JOIN orders o ON {ON_TEXT} WHERE c.city = 'London';")]
     same("London's rows: how many, and their totals", (len(got), sum(got)), LONDON[1:])
 
     # 08.02, the engine at 08.02 on a shop.db of its own

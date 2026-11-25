@@ -1,59 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 540" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 524" fill="none">
 <title>Three tables: each condition is checked as soon as the last table it names is in the row</title>
 <defs><marker id="f0801d-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0801d-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0801d-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
-<text class="tm mono" x="24" y="20" font-size="10">SELECT c.name, o.id, l.item FROM customers c JOIN orders o ON o.customer_id = c.id</text>
-<text class="tm mono" x="24" y="35" font-size="10">  JOIN lines l ON l.order_id = o.id WHERE c.city = &#x27;London&#x27;;</text>
-<text class="tm" x="24" y="56" font-size="10.5">lines is a third table, made for this figure:</text>
-<text class="tm mono" x="256" y="56" font-size="10">lines(id INTEGER PRIMARY KEY, order_id INTEGER, item TEXT)</text>
-<text class="tm mono" x="256" y="71" font-size="10">(1, 10, &#x27;tea&#x27;) (2, 12, &#x27;jam&#x27;) (3, 13, &#x27;pen&#x27;) (4, 14, &#x27;tea&#x27;)</text>
-<line class="m" x1="24" y1="236" x2="256" y2="236" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
-<line class="m" x1="330" y1="236" x2="616" y2="236" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
-<line class="m" x1="24" y1="372" x2="256" y2="372" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
-<line class="m" x1="330" y1="372" x2="616" y2="372" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
-<rect class="s f" x="160" y="112" width="220" height="28" rx="6" stroke-width="1.5"/>
-<text class="t mono" x="270" y="130.5" font-size="11" font-weight="600" text-anchor="middle">Filter (l.order_id = o.id)</text>
-<rect class="s f" x="234" y="172" width="72" height="28" rx="6" stroke-width="1.5"/>
-<text class="t mono" x="270" y="190.5" font-size="11" text-anchor="middle">Join</text>
-<rect class="s f" x="160" y="248" width="220" height="28" rx="6" stroke-width="1.5"/>
-<text class="t mono" x="270" y="266.5" font-size="11" font-weight="600" text-anchor="middle">Filter (o.customer_id = c.id)</text>
-<rect class="s f" x="234" y="308" width="72" height="28" rx="6" stroke-width="1.5"/>
-<text class="t mono" x="270" y="326.5" font-size="11" text-anchor="middle">Join</text>
-<rect class="s f" x="160" y="384" width="220" height="28" rx="6" stroke-width="1.5"/>
-<text class="t mono" x="270" y="402.5" font-size="11" font-weight="600" text-anchor="middle">Filter (c.city = &#x27;London&#x27;)</text>
-<rect class="s f" x="188" y="444" width="164" height="28" rx="6" stroke-width="1.5"/>
-<text class="t mono" x="270" y="462.5" font-size="11" text-anchor="middle">Scan customers AS c</text>
-<rect class="s fs" x="446" y="172" width="148" height="28" rx="6" stroke-width="1.5"/>
-<text class="t mono" x="520" y="190.5" font-size="11" text-anchor="middle">Scan lines AS l</text>
-<rect class="a af" x="446" y="308" width="148" height="28" rx="6" stroke-width="1.5"/>
-<text class="ta mono" x="520" y="326.5" font-size="11" text-anchor="middle">Scan orders AS o</text>
-<line class="s" x1="270" y1="442" x2="270" y2="415" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
-<text class="tm" x="278" y="432" font-size="10.5">4 rows</text>
-<line class="s" x1="270" y1="382" x2="270" y2="339" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
-<text class="tm" x="278" y="356" font-size="10.5">2 rows</text>
-<line class="s" x1="270" y1="306" x2="270" y2="279" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
-<text class="tm" x="278" y="296" font-size="10.5">12 rows</text>
-<line class="s" x1="270" y1="246" x2="270" y2="203" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
-<text class="tm" x="278" y="220" font-size="10.5">4 rows</text>
-<line class="s" x1="270" y1="170" x2="270" y2="143" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
-<text class="tm" x="278" y="160" font-size="10.5">16 rows</text>
-<line class="s" x1="270" y1="110" x2="270" y2="89" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
-<text class="t" x="278" y="103" font-size="10.5" font-weight="600">3 rows out</text>
-<line class="a" x1="444" y1="322" x2="310" y2="322" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-aa)"/>
-<text class="tm" x="377" y="316" font-size="10.5" text-anchor="middle">12 rows</text>
-<text class="tm" x="520" y="351" font-size="10" text-anchor="middle">6 rows for each of 2 outer rows</text>
-<line class="s" x1="444" y1="186" x2="310" y2="186" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
-<text class="tm" x="377" y="180" font-size="10.5" text-anchor="middle">16 rows</text>
-<text class="tm" x="520" y="215" font-size="10" text-anchor="middle">4 rows for each of 4 outer rows</text>
-<text class="t" x="24" y="125" font-size="12" font-weight="700">level 2</text>
-<text class="tm mono" x="24" y="140" font-size="10">row: c, o, l</text>
-<text class="tm mono" x="388" y="130.5" font-size="10.5">names l, o: waits for l</text>
-<text class="t" x="24" y="261" font-size="12" font-weight="700">level 1</text>
-<text class="tm mono" x="24" y="276" font-size="10">row: c, o</text>
-<text class="tm mono" x="388" y="266.5" font-size="10.5">names o, c: waits for o</text>
-<text class="t" x="24" y="397" font-size="12" font-weight="700">level 0</text>
-<text class="tm mono" x="24" y="412" font-size="10">row: c</text>
-<text class="tm mono" x="388" y="402.5" font-size="10.5">names only c</text>
-<line class="m" x1="24" y1="494" x2="616" y2="494" stroke-width="1.5" stroke-linecap="round"/>
-<text class="t" x="24" y="513" font-size="11">Each condition meets the fewest rows it can: the filters test 4, 12 and 16 rows.</text>
-<text class="tm" x="24" y="530" font-size="10.5">Checked only at the top, all three would test every one of 4 x 6 x 4 = 96 rows.</text>
+<text class="tm mono" x="24" y="20" font-size="10">SELECT a.name, c.name, o.id FROM customers a JOIN customers c ON c.city = a.city</text>
+<text class="tm mono" x="24" y="35" font-size="10">  JOIN orders o ON o.customer_id = c.id WHERE a.name = &#x27;Ada&#x27; AND o.total &gt; 10;</text>
+<text class="tm" x="24" y="55" font-size="10.5">customers twice: as a for Ada, as c for anyone who lives in her city; then orders</text>
+<line class="m" x1="24" y1="220" x2="296" y2="220" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="370" y1="220" x2="616" y2="220" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="24" y1="356" x2="296" y2="356" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="m" x1="370" y1="356" x2="616" y2="356" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect class="s f" x="131" y="96" width="358" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="310" y="114.5" font-size="11" font-weight="600" text-anchor="middle">Filter ((o.total &gt; 10) AND (o.customer_id = c.id))</text>
+<rect class="s f" x="282.8" y="156" width="54.4" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="310" y="174.5" font-size="11" text-anchor="middle">Join</text>
+<rect class="s f" x="216.8" y="232" width="186.4" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="310" y="250.5" font-size="11" font-weight="600" text-anchor="middle">Filter (c.city = a.city)</text>
+<rect class="s f" x="282.8" y="292" width="54.4" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="310" y="310.5" font-size="11" text-anchor="middle">Join</text>
+<rect class="s f" x="220.1" y="368" width="179.8" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="310" y="386.5" font-size="11" font-weight="600" text-anchor="middle">Filter (a.name = &#x27;Ada&#x27;)</text>
+<rect class="s f" x="233.3" y="428" width="153.4" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="310" y="446.5" font-size="11" text-anchor="middle">Scan customers AS a</text>
+<rect class="s f" x="455.3" y="292" width="153.4" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="532" y="310.5" font-size="11" text-anchor="middle">Scan customers AS c</text>
+<rect class="a af" x="465.2" y="156" width="133.6" height="28" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="532" y="174.5" font-size="11" text-anchor="middle">Scan orders AS o</text>
+<line class="s" x1="310" y1="426" x2="310" y2="399" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
+<text class="tm" x="318" y="416" font-size="10.5">4 rows</text>
+<line class="s" x1="310" y1="366" x2="310" y2="323" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
+<text class="tm" x="318" y="340" font-size="10.5">1 row</text>
+<line class="s" x1="310" y1="290" x2="310" y2="263" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
+<text class="tm" x="318" y="280" font-size="10.5">4 rows</text>
+<line class="s" x1="310" y1="230" x2="310" y2="187" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
+<text class="tm" x="318" y="204" font-size="10.5">2 rows</text>
+<line class="s" x1="310" y1="154" x2="310" y2="127" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
+<text class="tm" x="318" y="144" font-size="10.5">12 rows</text>
+<line class="s" x1="310" y1="94" x2="310" y2="73" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
+<text class="t" x="318" y="87" font-size="10.5" font-weight="600">3 rows out</text>
+<line class="s" x1="454" y1="306" x2="350" y2="306" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-ah)"/>
+<text class="tm" x="402" y="300" font-size="10.5" text-anchor="middle">4 rows</text>
+<text class="tm" x="532" y="335" font-size="10" text-anchor="middle">4 rows for its 1 outer row</text>
+<line class="a" x1="454" y1="170" x2="350" y2="170" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0801d-aa)"/>
+<text class="tm" x="402" y="164" font-size="10.5" text-anchor="middle">12 rows</text>
+<text class="tm" x="532" y="199" font-size="10" text-anchor="middle">6 rows for each of 2 outer rows</text>
+<text class="t" x="24" y="109" font-size="12" font-weight="700">level 2</text>
+<text class="tm mono" x="24" y="124" font-size="10">row: a, c, o</text>
+<text class="tm mono" x="499" y="108" font-size="10.5">names o, c</text>
+<text class="tm" x="499" y="122" font-size="10">from WHERE and ON</text>
+<text class="t" x="24" y="245" font-size="12" font-weight="700">level 1</text>
+<text class="tm mono" x="24" y="260" font-size="10">row: a, c</text>
+<text class="tm mono" x="413.2" y="244" font-size="10.5">names c, a</text>
+<text class="tm" x="413.2" y="258" font-size="10">from ON</text>
+<text class="t" x="24" y="381" font-size="12" font-weight="700">level 0</text>
+<text class="tm mono" x="24" y="396" font-size="10">row: a</text>
+<text class="tm mono" x="409.9" y="380" font-size="10.5">names only a</text>
+<text class="tm" x="409.9" y="394" font-size="10">from WHERE</text>
+<line class="m" x1="24" y1="478" x2="616" y2="478" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="24" y="497" font-size="11">Each condition meets the fewest rows it can: the filters test 4, 4 and 12 rows.</text>
+<text class="tm" x="24" y="514" font-size="10.5">Checked only at the top, all four would meet every one of 4 x 4 x 6 = 96 rows.</text>
 </svg>
