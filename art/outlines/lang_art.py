@@ -24,7 +24,8 @@ placed at its own column (x = left + column * 0.6em, Geist Mono's advance), so i
 double spaces survive SVG's whitespace collapsing and an arrow can start at a given column.
 
 Computed here, and asserted, so a typo stops the script instead of reaching a cover:
-    01  6 * 7 evaluated, and the four stack instructions run on a stack machine: both 42
+    01  the four lines of gcd.mote's loop, its input and its output, read from tracks/lang/programs/:
+        the greatest common divisor of 1071 and 462 is 21; sub s1, s1, s2 is a line of gcd.s
     05  the four instruction addresses from 0x1000 in steps of 4; the registers after the first
         two instructions (pc 0x1008, t0 6, t1 7); 42 after mul, and its eight bits 00101010
     07  the one constraint unified: 'a := int, so inc : int -> int
@@ -285,35 +286,81 @@ TRACK_ICON = ('<path d="M10 5.5C8.3 4.3 5.6 3.8 2.5 4.25v11C5.6 14.8 8.3 15.3 10
 # =================================================================== 01 introduction
 
 def lang_intro():
-    a = Art("l01", "One program, two ways to run it")
-    src = "write 6 * 7"
-    prog = ["push 6", "push 7", "mul", "write"]
-    assert eval(src.split(" ", 1)[1]) == 42                       # the interpreter: it does the sum
-    assert stack_machine(prog)[1] == [42]                         # the compiled code, run on a machine
-    ty, by = 82, 212
-    # the source
-    a.box(24, 128, 112, 44, "s fs", rx=8)
-    code(a, 36, 155, src, 13, weight=600)
-    a.path(f"M138 150 H152 V{ty} H170", "s", arrow=True)
-    a.path(f"M152 150 V{by} H170", "s", arrow=True)
-    # top lane: the interpreter runs it
-    pill(a, 226, ty, "interpreter", "s f", "t", 12.5, False, h=36, weight=600, w=108, rx=8)
-    a.line(282, ty, 553, ty, arrow=True)
-    # bottom lane: the compiler writes instructions, a machine runs them
-    pill(a, 217, by, "compiler", "s f", "t", 12.5, False, h=36, weight=600, w=90, rx=8)
-    a.line(264, by, 285, by, arrow=True)
-    a.box(288, by - 42, 78, 84, "s fs", rx=6)
-    for k, ins in enumerate(prog):
-        code(a, 300, by - 20 + k * 16, ins, 11.5)
-    a.line(368, by, 391, by, arrow=True)
-    pill(a, 436, by, "machine", "s f", "t", 12.5, False, h=36, weight=600, w=84, rx=8)
-    a.line(480, by, 553, by, arrow=True)
-    # the two results, and what joins them
-    rx = 580
-    for y in (ty, by):
-        pill(a, rx, y, "42", "a af", "ta", 14, True, h=26, weight=700, w=48)
-    a.line(rx, ty + 15, rx, by - 15, "a")
-    a.text(rx - 12, (ty + by) / 2 + 4, "the same answer", "ta", 12.5, "end", 700)
+    """One program, every way to run it: four lines of gcd.mote's loop and its input on the left;
+    three roads to the right (the interpreter; the translator to C and the C compiler; scanner,
+    parser and tree, forking to the tree walk and to code on the machine), each ending in 21."""
+    a = Art("l01", "One program, every way to run it")
+    progs = os.path.join(ROOT, "tracks", "lang", "programs")
+
+    def lines(name):
+        with open(os.path.join(progs, name)) as f:
+            return f.read().split("\n")
+    loop = lines("gcd.mote")[3:7]
+    assert loop == ["while i != j do", "    if i > j then", "        i := i - j", "    else"], loop
+    nums = lines("gcd.in")[0]
+    answer = lines("gcd.out")[0]
+    assert math.gcd(*map(int, nums.split())) == int(answer) == 21, (nums, answer)
+    ins = "sub s1, s1, s2"                                          # i := i - j, with i in s1 and j in s2
+    assert ins in [" ".join(ln.split("#")[0].split()) for ln in lines("gcd.s")]
+    size, bs = 11.5, 11.5                                           # code, and the boxes' labels
+
+    def box(x, y, label, cls="s f", dash=False):
+        """A box of one sans label centred on y from x; returns its right edge."""
+        w = round(len(label) * SANS * bs + 14)
+        a.box(x, y - 15, w, 30, cls, rx=8, dash=dash)
+        a.text(x + w / 2, y + 4.2, label, "t", bs, "middle", 600)
+        return x + w
+
+    # the program: four lines of its loop, and its input
+    cx, cy, cw_ = 20, 108, round(max(len(s) for s in loop) * cw(size) + 24)
+    a.text(cx, cy - 8, "gcd.mote", "tm", 11, mono=True)
+    a.box(cx, cy, cw_, 4 * 17 + 14, "s fs", rx=8)
+    for k, s in enumerate(loop):
+        code(a, cx + 12, cy + 22 + k * 17, s, size)
+    card_mid, card_r = cy + (4 * 17 + 14) / 2, cx + cw_
+    pill(a, cx + cw_ / 2, cy + 4 * 17 + 14 + 22, nums, "s f", "t", 11.5, True, h=24)
+    # three roads from one spine
+    y1, y2, y3 = 48, 104, 196                                       # interpreter, translator, front end
+    ya, yb = 160, 230                                               # the fork: walk the tree; code
+    sx, rx0 = 194, 210
+    a.line(card_r + 1, card_mid, sx, card_mid)
+    a.line(sx, y1, sx, y3)
+    for y in (y1, y2, y3):
+        a.line(sx, y, rx0 - 2, y, arrow=True)
+    ends = []
+    ends.append((box(rx0, y1, "interpreter: runs the text"), y1))
+    e = box(rx0, y2, "translator to C")
+    a.line(e + 1, y2, e + 13, y2, arrow=True)
+    ends.append((box(e + 15, y2, "the C compiler", "s", dash=True), y2))
+    e = box(rx0, y3, "scanner, parser, tree")
+    fx, bx = e + 12, e + 22
+    a.path(f"M{r1(e + 1)} {y3} H{r1(fx)}", "s")
+    a.path(f"M{r1(fx)} {ya} V{yb}", "s")
+    a.line(fx, ya, bx - 2, ya, arrow=True)
+    a.line(fx, yb, bx - 2, yb, arrow=True)
+    ends.append((box(bx, ya, "walk the tree"), ya))
+    # code on the machine: the machine a box, and in it a card with one instruction
+    kw = round(len(ins) * cw(11) + 14)
+    a.box(bx, yb - 26, kw + 12, 66, "s f", rx=8)
+    a.box(bx + 6, yb - 20, kw, 36, "s fs", rx=5)
+    a.text(bx + 6 + kw / 2, yb - 6, "code", "tm", 10.5, "middle")
+    code(a, bx + 13, yb + 9, ins, 11, weight=600)
+    a.text(bx + 6 + kw / 2, yb + 33, "the machine", "t", 11, "middle", 600)
+    ends.append((bx + kw + 12, yb))
+    # each road ends in 21; a bracket joins them
+    ax = 536
+    for e, y in ends:
+        assert e + 12 < ax - 19, (e, y)
+        a.line(e + 1, y, ax - 21, y, arrow=True)
+        pill(a, ax, y, answer, "a af", "ta", 13, True, h=24, weight=700, w=38)
+    gx = ax + 28
+    ys = [y for _, y in ends]
+    for y in ys:
+        a.line(ax + 22, y, gx, y, "a")
+    a.line(gx, ys[0], gx, ys[-1], "a")
+    mid = (ys[0] + ys[-1]) / 2
+    a.text(gx + 9, mid - 3, "the same", "ta", 12.5, weight=700)
+    a.text(gx + 9, mid + 13, "answer", "ta", 12.5, weight=700)
     return a
 
 

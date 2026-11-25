@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 284" fill="none">
+<title>From gcd.mote to a program</title>
+<defs><marker id="f0104a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0104a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0104a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="16" y="22" font-size="11.5"><tspan class="t mono">./motec</tspan><tspan class="tm"> runs every stage below, one after another</tspan></text>
+<path class="s f" d="M24 57 H97.2 L105.2 65 V91 H24 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M97.2 57 V65 H105.2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="61.6" y="78" font-size="11.5" font-weight="600" text-anchor="middle">gcd.mote</text>
+<line class="a" x1="106.2" y1="74" x2="135.2" y2="74" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0104a-aa)"/>
+<rect class="a af" x="137.2" y="54" width="81" height="40" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="177.7" y="72" font-size="12.5" font-weight="700" text-anchor="middle">mote2c</text>
+<text class="ta" x="177.7" y="87" font-size="10.5" font-weight="600" text-anchor="middle">translator</text>
+<line class="a" x1="219.2" y1="74" x2="248.2" y2="74" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0104a-aa)"/>
+<path class="s f" d="M250.2 57 H344.1 L352.1 65 V91 H250.2 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M344.1 57 V65 H352.1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="298.15" y="78" font-size="11.5" font-weight="600" text-anchor="middle">build/gcd.c</text>
+<line class="s" x1="353.1" y1="74" x2="382.1" y2="74" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0104a-ah)"/>
+<rect class="s" x="384.1" y="54" width="102.64" height="40" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t" x="435.42" y="72" font-size="12" font-weight="600" text-anchor="middle">preprocessor</text>
+<text class="tm mono" x="435.42" y="87" font-size="10.5" text-anchor="middle">cc -E</text>
+<line class="s" x1="487.74" y1="74" x2="516.74" y2="74" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0104a-ah)"/>
+<rect class="s" x="518.74" y="54" width="78" height="40" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t" x="557.74" y="72" font-size="12" font-weight="600" text-anchor="middle">compiler</text>
+<text class="tm mono" x="557.74" y="87" font-size="10.5" text-anchor="middle">cc -S</text>
+<line class="s" x1="557.74" y1="95" x2="557.74" y2="157" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0104a-ah)"/>
+<path class="s f" d="M518.98 159 H588.5 L596.5 167 V193 H518.98 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M588.5 159 V167 H596.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="554.74" y="180" font-size="11.5" font-weight="600" text-anchor="middle">assembly</text>
+<line class="s" x1="517.98" y1="176" x2="488.98" y2="176" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0104a-ah)"/>
+<rect class="s" x="404.5" y="156" width="82.48" height="40" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t" x="445.74" y="174" font-size="12" font-weight="600" text-anchor="middle">assembler</text>
+<text class="tm mono" x="445.74" y="189" font-size="10.5" text-anchor="middle">cc -c</text>
+<line class="s" x1="403.5" y1="176" x2="374.5" y2="176" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0104a-ah)"/>
+<path class="s f" d="M312 159 H364.5 L372.5 167 V193 H312 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M364.5 159 V167 H372.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="339.25" y="180" font-size="11.5" font-weight="600" text-anchor="middle">gcd.o</text>
+<text class="tm mono" x="342.25" y="209" font-size="10.5" text-anchor="middle">getint, putint</text>
+<text class="tm" x="342.25" y="223" font-size="10.5" text-anchor="middle">still missing</text>
+<line class="s" x1="311" y1="176" x2="282" y2="176" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0104a-ah)"/>
+<rect class="s" x="202" y="156" width="78" height="40" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t" x="241" y="174" font-size="12" font-weight="600" text-anchor="middle">linker</text>
+<text class="tm mono" x="241" y="189" font-size="10.5" text-anchor="middle">cc</text>
+<line class="s" x1="201" y1="176" x2="172" y2="176" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0104a-ah)"/>
+<path class="s f" d="M81.9 159 H162 L170 167 V193 H81.9 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M162 159 V167 H170" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="122.95" y="180" font-size="11.5" font-weight="600" text-anchor="middle">build/gcd</text>
+<path class="s f" d="M214.2 227 H259.8 L267.8 235 V261 H214.2 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M259.8 227 V235 H267.8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="238" y="248" font-size="11.5" font-weight="600" text-anchor="middle">rt.o</text>
+<line class="s" x1="241" y1="226" x2="241" y2="198" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0104a-ah)"/>
+<text class="t" x="204.2" y="248" font-size="10.5" text-anchor="end"><tspan class="tm">has </tspan><tspan class="t mono">getint, putint</tspan></text>
+</svg>

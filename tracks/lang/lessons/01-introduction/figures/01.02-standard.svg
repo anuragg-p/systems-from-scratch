@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 326" fill="none">
+<title>The standard: a program, its input, its output</title>
+<defs><marker id="f0102c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0102c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0102c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<path class="s fs" d="M16 32 H392.4 L402.4 42 V215.5 H16 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M392.4 32 V42 H402.4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="26" y="22" font-size="12" font-weight="700">gcd.mote</text>
+<text class="tm mono" x="26" y="52" font-size="11"># gcd.mote: the greatest common divisor of two numbers</text>
+<text class="t mono" x="26" y="66.5" font-size="11">read i</text>
+<text class="t mono" x="26" y="81" font-size="11">read j</text>
+<text class="t mono" x="26" y="95.5" font-size="11">while i != j do</text>
+<text class="t mono" x="26" y="110" font-size="11"><tspan x="52.4">if i &gt; j then</tspan></text>
+<text class="t mono" x="26" y="124.5" font-size="11"><tspan x="78.8">i := i - j</tspan></text>
+<text class="t mono" x="26" y="139" font-size="11"><tspan x="52.4">else</tspan></text>
+<text class="t mono" x="26" y="153.5" font-size="11"><tspan x="78.8">j := j - i</tspan></text>
+<text class="t mono" x="26" y="168" font-size="11"><tspan x="52.4">end</tspan></text>
+<text class="t mono" x="26" y="182.5" font-size="11">end</text>
+<text class="t mono" x="26" y="197" font-size="11">write i</text>
+<text class="t mono" x="434.4" y="22" font-size="12" font-weight="700">gcd.in</text>
+<path class="s fs" d="M434.4 32 H615 L624 41 V66 H434.4 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M615 32 V41 H624" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="444.4" y="53.5" font-size="13">1071 462</text>
+<text class="ta mono" x="434.4" y="94" font-size="12" font-weight="700">gcd.out</text>
+<path class="a af" d="M434.4 104 H615 L624 113 V138 H434.4 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M615 104 V113 H624" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="444.4" y="125.5" font-size="13" font-weight="700">21</text>
+<rect class="m f" x="16" y="252" width="113.6" height="40" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t mono" x="72.8" y="268" font-size="12" font-weight="600" text-anchor="middle">01.03</text>
+<text class="tm" x="72.8" y="283" font-size="11" text-anchor="middle">first interpreter</text>
+<line class="a" x1="72.8" y1="250" x2="72.8" y2="236" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m f" x="139.6" y="252" width="113.6" height="40" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t mono" x="196.4" y="268" font-size="12" font-weight="600" text-anchor="middle">01.04</text>
+<text class="tm" x="196.4" y="283" font-size="11" text-anchor="middle">translator to C</text>
+<line class="a" x1="196.4" y1="250" x2="196.4" y2="236" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m f" x="263.2" y="252" width="113.6" height="40" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t mono" x="320" y="268" font-size="12" font-weight="600" text-anchor="middle">01.09</text>
+<text class="tm" x="320" y="283" font-size="11" text-anchor="middle">tree walk</text>
+<line class="a" x1="320" y1="250" x2="320" y2="236" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m f" x="386.8" y="252" width="113.6" height="40" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t mono" x="443.6" y="268" font-size="12" font-weight="600" text-anchor="middle">01.10</text>
+<text class="tm" x="443.6" y="283" font-size="11" text-anchor="middle">code generator</text>
+<line class="a" x1="443.6" y1="250" x2="443.6" y2="236" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m f" x="510.4" y="252" width="113.6" height="40" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t mono" x="567.2" y="268" font-size="12" font-weight="600" text-anchor="middle">01.11</text>
+<text class="tm" x="567.2" y="283" font-size="11" text-anchor="middle">improver</text>
+<line class="a" x1="567.2" y1="250" x2="567.2" y2="236" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="72.8" y1="236" x2="590" y2="236" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="590" y1="236" x2="590" y2="141" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0102c-aa)"/>
+<text class="ta" x="580" y="191" font-size="11" font-weight="600" text-anchor="end">what each prints</text>
+<text class="ta" x="580" y="206" font-size="11" font-weight="600" text-anchor="end">must be this, byte for byte</text>
+<text class="tm" x="16" y="314" font-size="11">the ways to come, each running gcd.mote on gcd.in, and the lesson that builds it</text>
+</svg>

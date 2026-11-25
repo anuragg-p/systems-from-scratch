@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 282" fill="none">
+<title>An interpreter stays</title>
+<defs><marker id="f0103a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0103a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0103a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="ta" x="16" y="22" font-size="11.5" font-weight="700">lesson 01.03: an interpreter</text>
+<path class="s f" d="M24 53 H96 L104 61 V79 H24 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M96 53 V61 H104" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="60" y="70" font-size="11.5" font-weight="600" text-anchor="middle">gcd.mote</text>
+<line class="a" x1="106" y1="66" x2="146" y2="66" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-aa)"/>
+<rect class="a af" x="148" y="47" width="104" height="38" rx="8" stroke-width="1.5"/>
+<text class="ta mono" x="200" y="66" font-size="13" font-weight="700" text-anchor="middle">mote0</text>
+<text class="ta" x="200" y="80" font-size="10.5" font-weight="600" text-anchor="middle">runs the text</text>
+<rect class="s fs" x="160" y="106" width="80" height="24" rx="12" stroke-width="1.5"/>
+<text class="t mono" x="200" y="122.03" font-size="11.5" text-anchor="middle">1071 462</text>
+<line class="a" x1="200" y1="104" x2="200" y2="88" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-aa)"/>
+<line class="a" x1="253" y1="66" x2="574" y2="66" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-aa)"/>
+<rect class="a af" x="576" y="53" width="40" height="26" rx="13" stroke-width="1.5"/>
+<text class="ta mono" x="596" y="71" font-size="13" font-weight="700" text-anchor="middle">21</text>
+<text class="ta" x="414" y="58" font-size="11" font-weight="600" text-anchor="middle">mote0 stays: it is what runs</text>
+<text class="ta" x="250" y="122" font-size="11" font-weight="600">the input goes in with the program</text>
+<line class="m" x1="16" y1="148" x2="624" y2="148" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="16" y="166" font-size="11.5" font-weight="700">lesson 01.04: a translator</text>
+<path class="m f" d="M24 197 H96 L104 205 V223 H24 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="m" d="M96 197 V205 H104" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="60" y="214" font-size="11.5" font-weight="600" text-anchor="middle">gcd.mote</text>
+<line class="m" x1="106" y1="210" x2="146" y2="210" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-am)" stroke-dasharray="4 4"/>
+<rect class="m f" x="148" y="191" width="104" height="38" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="200" y="210" font-size="13" font-weight="700" text-anchor="middle">motec</text>
+<text class="tm" x="200" y="224" font-size="10.5" text-anchor="middle">translates</text>
+<line class="m" x1="296" y1="180" x2="296" y2="274" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="288" y="180" font-size="11" text-anchor="end">first</text>
+<text class="tm" x="304" y="180" font-size="11">later</text>
+<line class="m" x1="253" y1="210" x2="378" y2="210" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-am)" stroke-dasharray="4 4"/>
+<path class="m f" d="M380 195 H468 L476 203 V225 H380 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<path class="m" d="M468 195 V203 H476" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="428" y="214" font-size="11.5" font-weight="600" text-anchor="middle">build/gcd</text>
+<rect class="m f" x="388" y="248" width="80" height="24" rx="12" stroke-width="1.5"/>
+<text class="tm mono" x="428" y="264.02" font-size="11.5" text-anchor="middle">1071 462</text>
+<line class="m" x1="428" y1="246" x2="428" y2="227" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-am)" stroke-dasharray="4 4"/>
+<line class="m" x1="477" y1="210" x2="574" y2="210" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0103a-am)" stroke-dasharray="4 4"/>
+<rect class="m f" x="576" y="197" width="40" height="26" rx="13" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="596" y="215" font-size="13" font-weight="700" text-anchor="middle">21</text>
+<text class="tm" x="200" y="262" font-size="11" text-anchor="middle">gone before the run</text>
+</svg>

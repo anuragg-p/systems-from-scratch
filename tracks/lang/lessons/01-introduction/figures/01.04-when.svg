@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 318" fill="none">
+<title>What is decided when</title>
+<defs><marker id="f0104c-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0104c-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0104c-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="264" y="24" font-size="12" font-weight="700" text-anchor="middle">before the run</text>
+<text class="t" x="512" y="24" font-size="12" font-weight="700" text-anchor="middle">during the run, each time round</text>
+<rect class="m fs" x="152" y="36" width="224" height="272" rx="10" stroke-width="1.5"/>
+<rect class="m fs" x="394" y="36" width="224" height="272" rx="10" stroke-width="1.5"/>
+<line class="m" x1="16" y1="172" x2="624" y2="172" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="16" y="66" font-size="13.5" font-weight="700">mote0</text>
+<text class="tm" x="16" y="83" font-size="11">lesson 01.03</text>
+<text class="tm" x="264" y="106" font-size="12" text-anchor="middle">nothing</text>
+<rect class="s f" x="424.16" y="48" width="163.68" height="24" rx="12" stroke-width="1.5"/>
+<text class="t" x="506" y="64" font-size="11.5" font-weight="500" text-anchor="middle"><tspan class="t">where the loop ends</tspan></text>
+<rect class="s f" x="424.16" y="77" width="163.68" height="24" rx="12" stroke-width="1.5"/>
+<text class="t" x="506" y="93" font-size="11.5" font-weight="500" text-anchor="middle"><tspan class="t">where </tspan><tspan class="t mono">i</tspan><tspan class="t"> is</tspan></text>
+<rect class="s f" x="424.16" y="106" width="163.68" height="24" rx="12" stroke-width="1.5"/>
+<text class="t" x="506" y="122" font-size="11.5" font-weight="500" text-anchor="middle"><tspan class="t">what </tspan><tspan class="t mono">-</tspan><tspan class="t"> means here</tspan></text>
+<rect class="s f" x="424.16" y="135" width="163.68" height="24" rx="12" stroke-width="1.5"/>
+<text class="t" x="506" y="151" font-size="11.5" font-weight="500" text-anchor="middle"><tspan class="t">the subtraction itself</tspan></text>
+<text class="t mono" x="16" y="202" font-size="13.5" font-weight="700">build/gcd</text>
+<text class="tm" x="16" y="219" font-size="11">mote2c, then the</text>
+<text class="tm" x="16" y="233" font-size="11">C compiler: 01.04</text>
+<rect class="a af" x="182.16" y="188" width="163.68" height="24" rx="12" stroke-width="1.5"/>
+<text class="t" x="264" y="204" font-size="11.5" font-weight="600" text-anchor="middle"><tspan class="ta">where the loop ends</tspan></text>
+<rect class="a af" x="182.16" y="217" width="163.68" height="24" rx="12" stroke-width="1.5"/>
+<text class="t" x="264" y="233" font-size="11.5" font-weight="600" text-anchor="middle"><tspan class="ta">where </tspan><tspan class="ta mono">i</tspan><tspan class="ta"> is</tspan></text>
+<rect class="a af" x="182.16" y="246" width="163.68" height="24" rx="12" stroke-width="1.5"/>
+<text class="t" x="264" y="262" font-size="11.5" font-weight="600" text-anchor="middle"><tspan class="ta">what </tspan><tspan class="ta mono">-</tspan><tspan class="ta"> means here</tspan></text>
+<rect class="s f" x="424.16" y="275" width="163.68" height="24" rx="12" stroke-width="1.5"/>
+<text class="t" x="506" y="291" font-size="11.5" font-weight="500" text-anchor="middle"><tspan class="t">the subtraction itself</tspan></text>
+</svg>
