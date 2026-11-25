@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 376" fill="none">
+<title>One pass of gcd&#x27;s loop under each interpreter: the first reads lines and searches for names; the walker follows pointers</title>
+<defs><marker id="p0109-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="p0109-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="p0109-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="16" y="22" font-size="13" font-weight="700">mote0: one pass, i &gt; j</text>
+<text class="tm" x="16" y="40" font-size="11.5">the lines it reads, the names it searches for</text>
+<rect class="fs" x="16" y="54" width="284" height="22" rx="4"/>
+<text class="tm mono" x="38" y="70" font-size="11" text-anchor="end">4</text>
+<rect class="a af" x="93" y="57" width="11.5" height="18" rx="3" stroke-width="1.5"/>
+<rect class="a af" x="130.5" y="57" width="11.5" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="50" y="70" font-size="12.5">while i != j do</text>
+<text class="ta" x="294" y="70" font-size="11" font-weight="700" text-anchor="end">2 searches</text>
+<rect class="fs" x="16" y="80" width="284" height="22" rx="4"/>
+<text class="tm mono" x="38" y="96" font-size="11" text-anchor="end">5</text>
+<rect class="a af" x="100.5" y="83" width="11.5" height="18" rx="3" stroke-width="1.5"/>
+<rect class="a af" x="130.5" y="83" width="11.5" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="50" y="96" font-size="12.5"><tspan x="80">if i &gt; j then</tspan></text>
+<text class="ta" x="294" y="96" font-size="11" font-weight="700" text-anchor="end">2 searches</text>
+<rect class="fs" x="16" y="106" width="284" height="22" rx="4"/>
+<text class="tm mono" x="38" y="122" font-size="11" text-anchor="end">6</text>
+<rect class="a af" x="108" y="109" width="11.5" height="18" rx="3" stroke-width="1.5"/>
+<rect class="a af" x="145.5" y="109" width="11.5" height="18" rx="3" stroke-width="1.5"/>
+<rect class="a af" x="175.5" y="109" width="11.5" height="18" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="50" y="122" font-size="12.5"><tspan x="110">i := i - j</tspan></text>
+<text class="ta" x="294" y="122" font-size="11" font-weight="700" text-anchor="end">3 searches</text>
+<rect class="fs" x="16" y="132" width="284" height="22" rx="4"/>
+<text class="tm mono" x="38" y="148" font-size="11" text-anchor="end">7</text>
+<text class="t mono" x="50" y="148" font-size="12.5"><tspan x="80">else</tspan></text>
+<text class="tm" x="294" y="148" font-size="11" text-anchor="end">read</text>
+<rect class="fs" x="16" y="158" width="284" height="22" rx="4"/>
+<text class="tm mono" x="38" y="174" font-size="11" text-anchor="end">8</text>
+<text class="tm mono" x="50" y="174" font-size="12.5"><tspan x="110">j := j - i</tspan></text>
+<text class="tm" x="294" y="174" font-size="11" text-anchor="end">read past</text>
+<rect class="fs" x="16" y="184" width="284" height="22" rx="4"/>
+<text class="tm mono" x="38" y="200" font-size="11" text-anchor="end">9</text>
+<text class="tm mono" x="50" y="200" font-size="12.5"><tspan x="80">end</tspan></text>
+<text class="tm" x="294" y="200" font-size="11" text-anchor="end">read past</text>
+<rect class="fs" x="16" y="210" width="284" height="22" rx="4"/>
+<text class="tm mono" x="38" y="226" font-size="11" text-anchor="end">10</text>
+<text class="t mono" x="50" y="226" font-size="12.5">end</text>
+<text class="tm" x="294" y="226" font-size="11" text-anchor="end">read</text>
+<text class="ta mono" x="20" y="340" font-size="24" font-weight="700">7</text>
+<text class="t" x="20" y="358" font-size="11.5">lines read</text>
+<text class="ta mono" x="130" y="340" font-size="24" font-weight="700">7</text>
+<text class="t" x="130" y="358" font-size="11.5">searches of the table</text>
+<text class="t" x="322" y="22" font-size="13" font-weight="700">mote: the same pass</text>
+<text class="tm" x="322" y="40" font-size="11.5">the nodes the walker visits</text>
+<line class="a" x1="436.2" y1="96" x2="362.6" y2="118" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="436.2" y1="96" x2="509.8" y2="118" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="362.6" y1="142" x2="344.2" y2="164" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="362.6" y1="142" x2="381" y2="164" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="509.8" y1="142" x2="436.2" y2="164" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="509.8" y1="142" x2="509.8" y2="164" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="509.8" y1="142" x2="583.4" y2="164" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="436.2" y1="188" x2="417.8" y2="210" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="436.2" y1="188" x2="454.6" y2="210" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="509.8" y1="188" x2="509.8" y2="210" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="509.8" y1="234" x2="491.4" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<line class="a" x1="509.8" y1="234" x2="528.2" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="583.4" y1="188" x2="583.4" y2="210" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="583.4" y1="234" x2="565" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="583.4" y1="234" x2="601.8" y2="256" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="m f" x="413.7" y="72" width="45" height="24" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="436.2" y="87.96" font-size="11" font-weight="500" text-anchor="middle">while</text>
+<rect class="a af" x="347.6" y="118" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="362.6" y="133.96" font-size="11" font-weight="700" text-anchor="middle">!=</text>
+<rect class="a af" x="328.3" y="164" width="31.8" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="344.2" y="179.96" font-size="11" font-weight="700" text-anchor="middle">i#1</text>
+<rect class="a af" x="365.1" y="164" width="31.8" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="381" y="179.96" font-size="11" font-weight="700" text-anchor="middle">j#2</text>
+<rect class="a af" x="494.8" y="118" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="509.8" y="133.96" font-size="11" font-weight="700" text-anchor="middle">if</text>
+<rect class="a af" x="421.2" y="164" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="436.2" y="179.96" font-size="11" font-weight="700" text-anchor="middle">&gt;</text>
+<rect class="a af" x="401.9" y="210" width="31.8" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="417.8" y="225.96" font-size="11" font-weight="700" text-anchor="middle">i#1</text>
+<rect class="a af" x="438.7" y="210" width="31.8" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="454.6" y="225.96" font-size="11" font-weight="700" text-anchor="middle">j#2</text>
+<rect class="a af" x="484" y="164" width="51.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="509.8" y="179.96" font-size="11" font-weight="700" text-anchor="middle">:= i#1</text>
+<rect class="a af" x="494.8" y="210" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="509.8" y="225.96" font-size="11" font-weight="700" text-anchor="middle">-</text>
+<rect class="a af" x="475.5" y="256" width="31.8" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="491.4" y="271.96" font-size="11" font-weight="700" text-anchor="middle">i#1</text>
+<rect class="a af" x="512.3" y="256" width="31.8" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="528.2" y="271.96" font-size="11" font-weight="700" text-anchor="middle">j#2</text>
+<rect class="m f" x="557.6" y="164" width="51.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="583.4" y="179.96" font-size="11" font-weight="500" text-anchor="middle">:= j#2</text>
+<rect class="m f" x="568.4" y="210" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="583.4" y="225.96" font-size="11" font-weight="500" text-anchor="middle">-</text>
+<rect class="m f" x="549.1" y="256" width="31.8" height="24" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="565" y="271.96" font-size="11" font-weight="500" text-anchor="middle">j#2</text>
+<rect class="m f" x="585.9" y="256" width="31.8" height="24" rx="6" stroke-width="1.5"/>
+<text class="tm mono" x="601.8" y="271.96" font-size="11" font-weight="500" text-anchor="middle">i#1</text>
+<text class="tm" x="322" y="304" font-size="11.5">i#1 and j#2 point at entries 1 and 2</text>
+<text class="ta mono" x="326" y="340" font-size="24" font-weight="700">11</text>
+<text class="t" x="326" y="358" font-size="11.5">nodes visited</text>
+<text class="ta mono" x="436" y="340" font-size="24" font-weight="700">0</text>
+<text class="t" x="436" y="358" font-size="11.5">searches</text>
+<line class="m" x1="311" y1="12" x2="311" y2="362" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,640 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 366" fill="none">
+<title>The walker on gcd.mote with 6 and 4: the node it is at, and the values in the symbol table</title>
+<defs><marker id="w0109-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="w0109-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="w0109-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="88.6" y1="40" x2="107.6" y2="40" stroke-width="1.5" stroke-linecap="round" marker-end="url(#w0109-am)"/>
+<line class="m" x1="186.2" y1="40" x2="307" y2="40" stroke-width="1.5" stroke-linecap="round" marker-end="url(#w0109-am)"/>
+<line class="m" x1="364" y1="40" x2="572" y2="40" stroke-width="1.5" stroke-linecap="round" marker-end="url(#w0109-am)"/>
+<line class="s" x1="336" y1="52" x2="248.8" y2="78" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="336" y1="52" x2="423.2" y2="78" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="248.8" y1="102" x2="227" y2="128" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="248.8" y1="102" x2="270.6" y2="128" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="423.2" y1="102" x2="336" y2="128" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="423.2" y1="102" x2="423.2" y2="128" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="423.2" y1="102" x2="510.4" y2="128" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="336" y1="152" x2="314.2" y2="178" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="336" y1="152" x2="357.8" y2="178" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="423.2" y1="152" x2="423.2" y2="178" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="423.2" y1="202" x2="401.4" y2="228" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="423.2" y1="202" x2="445" y2="228" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="510.4" y1="152" x2="510.4" y2="178" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="510.4" y1="202" x2="488.6" y2="228" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="510.4" y1="202" x2="532.2" y2="228" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="601" y1="52" x2="601" y2="78" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="470.8" y="109" font-size="11">else</text>
+<text class="tm" x="24" y="286" font-size="11.5">the symbol table</text>
+<text class="tm" x="300" y="286" font-size="11.5">now</text>
+<text class="tm" x="520" y="286" font-size="11.5">output</text>
+<g class="step"><title>Before the walk: analysis has made an entry for i and for j, and neither has a value yet. The walker starts at the first statement.</title>
+<rect class="s f" x="14" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="49.8" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read i#1</text>
+<rect class="s f" x="111.6" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="147.4" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read j#2</text>
+<rect class="s f" x="311" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="44.32" font-size="12" font-weight="600" text-anchor="middle">while</text>
+<rect class="s f" x="233.8" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="248.8" y="94.32" font-size="12" font-weight="600" text-anchor="middle">!=</text>
+<rect class="s f" x="209.2" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="227" y="144.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="252.8" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="270.6" y="144.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="408.2" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="94.32" font-size="12" font-weight="600" text-anchor="middle">if</text>
+<rect class="s f" x="321" y="128" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="144.32" font-size="12" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s f" x="296.4" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="314.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="340" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="357.8" y="194.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="394.6" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= i#1</text>
+<rect class="s f" x="408.2" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="383.6" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="401.4" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="427.2" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="445" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="481.8" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= j#2</text>
+<rect class="s f" x="495.4" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="470.8" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="488.6" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="514.4" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="532.2" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="576" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="44.32" font-size="12" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="583.2" y="78" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="94.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="16" y="296" width="240" height="54" rx="6" stroke-width="1.5"/>
+<line class="m" x1="16" y1="323" x2="256" y2="323" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="30" y="314.5" font-size="12">1</text>
+<text class="t mono" x="56" y="314.5" font-size="13" font-weight="700">i</text>
+<text class="tm" x="166" y="314.5" font-size="12">no value</text>
+<text class="tm mono" x="30" y="340.5" font-size="12">2</text>
+<text class="t mono" x="56" y="340.5" font-size="13" font-weight="700">j</text>
+<text class="tm" x="166" y="340.5" font-size="12">no value</text>
+<line class="m" x1="140" y1="300" x2="140" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="300" y="314" font-size="13" font-weight="700">start</text>
+<rect class="s fs" x="520" y="296" width="104" height="54" rx="6" stroke-width="1.5"/>
+</g>
+<g class="step"><title>read i#1: the walker reads 6 from the input and keeps it in entry 1 of the table, the one the node points at.</title>
+<rect class="a af" x="14" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="49.8" y="44.32" font-size="12" font-weight="700" text-anchor="middle">read i#1</text>
+<rect class="s f" x="111.6" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="147.4" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read j#2</text>
+<rect class="s f" x="311" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="44.32" font-size="12" font-weight="600" text-anchor="middle">while</text>
+<rect class="s f" x="233.8" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="248.8" y="94.32" font-size="12" font-weight="600" text-anchor="middle">!=</text>
+<rect class="s f" x="209.2" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="227" y="144.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="252.8" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="270.6" y="144.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="408.2" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="94.32" font-size="12" font-weight="600" text-anchor="middle">if</text>
+<rect class="s f" x="321" y="128" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="144.32" font-size="12" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s f" x="296.4" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="314.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="340" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="357.8" y="194.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="394.6" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= i#1</text>
+<rect class="s f" x="408.2" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="383.6" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="401.4" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="427.2" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="445" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="481.8" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= j#2</text>
+<rect class="s f" x="495.4" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="470.8" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="488.6" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="514.4" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="532.2" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="576" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="44.32" font-size="12" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="583.2" y="78" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="94.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="16" y="296" width="240" height="54" rx="6" stroke-width="1.5"/>
+<line class="m" x1="16" y1="323" x2="256" y2="323" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="af" x="150" y="300" width="100" height="20" rx="4"/>
+<text class="tm mono" x="30" y="314.5" font-size="12">1</text>
+<text class="t mono" x="56" y="314.5" font-size="13" font-weight="700">i</text>
+<text class="ta mono" x="166" y="314.5" font-size="12" font-weight="700">value 6</text>
+<text class="tm mono" x="30" y="340.5" font-size="12">2</text>
+<text class="t mono" x="56" y="340.5" font-size="13" font-weight="700">j</text>
+<text class="tm" x="166" y="340.5" font-size="12">no value</text>
+<line class="m" x1="140" y1="300" x2="140" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="300" y="314" font-size="13" font-weight="700">read i</text>
+<text class="t mono" x="300" y="334" font-size="13">i = 6</text>
+<rect class="s fs" x="520" y="296" width="104" height="54" rx="6" stroke-width="1.5"/>
+</g>
+<g class="step"><title>read j#2: the walker reads 4 from the input and keeps it in entry 2 of the table, the one the node points at.</title>
+<rect class="s f" x="14" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="49.8" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read i#1</text>
+<rect class="a af" x="111.6" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="147.4" y="44.32" font-size="12" font-weight="700" text-anchor="middle">read j#2</text>
+<rect class="s f" x="311" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="44.32" font-size="12" font-weight="600" text-anchor="middle">while</text>
+<rect class="s f" x="233.8" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="248.8" y="94.32" font-size="12" font-weight="600" text-anchor="middle">!=</text>
+<rect class="s f" x="209.2" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="227" y="144.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="252.8" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="270.6" y="144.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="408.2" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="94.32" font-size="12" font-weight="600" text-anchor="middle">if</text>
+<rect class="s f" x="321" y="128" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="144.32" font-size="12" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s f" x="296.4" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="314.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="340" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="357.8" y="194.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="394.6" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= i#1</text>
+<rect class="s f" x="408.2" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="383.6" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="401.4" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="427.2" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="445" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="481.8" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= j#2</text>
+<rect class="s f" x="495.4" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="470.8" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="488.6" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="514.4" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="532.2" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="576" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="44.32" font-size="12" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="583.2" y="78" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="94.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="16" y="296" width="240" height="54" rx="6" stroke-width="1.5"/>
+<line class="m" x1="16" y1="323" x2="256" y2="323" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="30" y="314.5" font-size="12">1</text>
+<text class="t mono" x="56" y="314.5" font-size="13" font-weight="700">i</text>
+<text class="t mono" x="166" y="314.5" font-size="12">value 6</text>
+<rect class="af" x="150" y="326" width="100" height="20" rx="4"/>
+<text class="tm mono" x="30" y="340.5" font-size="12">2</text>
+<text class="t mono" x="56" y="340.5" font-size="13" font-weight="700">j</text>
+<text class="ta mono" x="166" y="340.5" font-size="12" font-weight="700">value 4</text>
+<line class="m" x1="140" y1="300" x2="140" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="300" y="314" font-size="13" font-weight="700">read j</text>
+<text class="t mono" x="300" y="334" font-size="13">j = 4</text>
+<rect class="s fs" x="520" y="296" width="104" height="54" rx="6" stroke-width="1.5"/>
+</g>
+<g class="step"><title>while: its condition, i != j, is 6 != 4: true, so the walker runs the body.</title>
+<rect class="s f" x="14" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="49.8" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read i#1</text>
+<rect class="s f" x="111.6" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="147.4" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read j#2</text>
+<rect class="s f" x="311" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="44.32" font-size="12" font-weight="600" text-anchor="middle">while</text>
+<rect class="a af" x="233.8" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="248.8" y="94.32" font-size="12" font-weight="700" text-anchor="middle">!=</text>
+<rect class="a f" x="209.2" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="227" y="144.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="a f" x="252.8" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="270.6" y="144.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="408.2" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="94.32" font-size="12" font-weight="600" text-anchor="middle">if</text>
+<rect class="s f" x="321" y="128" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="144.32" font-size="12" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s f" x="296.4" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="314.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="340" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="357.8" y="194.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="394.6" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= i#1</text>
+<rect class="s f" x="408.2" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="383.6" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="401.4" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="427.2" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="445" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="481.8" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= j#2</text>
+<rect class="s f" x="495.4" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="470.8" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="488.6" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="514.4" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="532.2" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="576" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="44.32" font-size="12" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="583.2" y="78" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="94.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<text class="ta mono" x="227" y="169" font-size="12" font-weight="700" text-anchor="middle">6</text>
+<text class="ta mono" x="270.6" y="169" font-size="12" font-weight="700" text-anchor="middle">4</text>
+<rect class="s f" x="16" y="296" width="240" height="54" rx="6" stroke-width="1.5"/>
+<line class="m" x1="16" y1="323" x2="256" y2="323" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="30" y="314.5" font-size="12">1</text>
+<text class="t mono" x="56" y="314.5" font-size="13" font-weight="700">i</text>
+<text class="t mono" x="166" y="314.5" font-size="12">value 6</text>
+<text class="tm mono" x="30" y="340.5" font-size="12">2</text>
+<text class="t mono" x="56" y="340.5" font-size="13" font-weight="700">j</text>
+<text class="t mono" x="166" y="340.5" font-size="12">value 4</text>
+<line class="m" x1="140" y1="300" x2="140" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="300" y="314" font-size="13" font-weight="700">while i != j</text>
+<text class="t mono" x="300" y="334" font-size="13">6 != 4: true</text>
+<rect class="s fs" x="520" y="296" width="104" height="54" rx="6" stroke-width="1.5"/>
+</g>
+<g class="step"><title>if: i &gt; j is 6 &gt; 4: true, so the walker takes the first branch.</title>
+<rect class="s f" x="14" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="49.8" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read i#1</text>
+<rect class="s f" x="111.6" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="147.4" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read j#2</text>
+<rect class="s f" x="311" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="44.32" font-size="12" font-weight="600" text-anchor="middle">while</text>
+<rect class="s f" x="233.8" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="248.8" y="94.32" font-size="12" font-weight="600" text-anchor="middle">!=</text>
+<rect class="s f" x="209.2" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="227" y="144.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="252.8" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="270.6" y="144.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="408.2" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="94.32" font-size="12" font-weight="600" text-anchor="middle">if</text>
+<rect class="a af" x="321" y="128" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="336" y="144.32" font-size="12" font-weight="700" text-anchor="middle">&gt;</text>
+<rect class="a f" x="296.4" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="314.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="a f" x="340" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="357.8" y="194.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="394.6" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= i#1</text>
+<rect class="s f" x="408.2" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="383.6" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="401.4" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="427.2" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="445" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="481.8" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= j#2</text>
+<rect class="s f" x="495.4" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="470.8" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="488.6" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="514.4" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="532.2" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="576" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="44.32" font-size="12" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="583.2" y="78" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="94.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<text class="ta mono" x="314.2" y="219" font-size="12" font-weight="700" text-anchor="middle">6</text>
+<text class="ta mono" x="357.8" y="219" font-size="12" font-weight="700" text-anchor="middle">4</text>
+<rect class="s f" x="16" y="296" width="240" height="54" rx="6" stroke-width="1.5"/>
+<line class="m" x1="16" y1="323" x2="256" y2="323" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="30" y="314.5" font-size="12">1</text>
+<text class="t mono" x="56" y="314.5" font-size="13" font-weight="700">i</text>
+<text class="t mono" x="166" y="314.5" font-size="12">value 6</text>
+<text class="tm mono" x="30" y="340.5" font-size="12">2</text>
+<text class="t mono" x="56" y="340.5" font-size="13" font-weight="700">j</text>
+<text class="t mono" x="166" y="340.5" font-size="12">value 4</text>
+<line class="m" x1="140" y1="300" x2="140" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="300" y="314" font-size="13" font-weight="700">if i &gt; j</text>
+<text class="t mono" x="300" y="334" font-size="13">6 &gt; 4: true</text>
+<rect class="s fs" x="520" y="296" width="104" height="54" rx="6" stroke-width="1.5"/>
+</g>
+<g class="step"><title>:= i#1: the walk goes down to the - node and its two names, takes 6 and 4 from their entries, and puts 2 in entry 1.</title>
+<rect class="s f" x="14" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="49.8" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read i#1</text>
+<rect class="s f" x="111.6" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="147.4" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read j#2</text>
+<rect class="s f" x="311" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="44.32" font-size="12" font-weight="600" text-anchor="middle">while</text>
+<rect class="s f" x="233.8" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="248.8" y="94.32" font-size="12" font-weight="600" text-anchor="middle">!=</text>
+<rect class="s f" x="209.2" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="227" y="144.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="252.8" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="270.6" y="144.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="408.2" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="94.32" font-size="12" font-weight="600" text-anchor="middle">if</text>
+<rect class="s f" x="321" y="128" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="144.32" font-size="12" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s f" x="296.4" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="314.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="340" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="357.8" y="194.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="a af" x="394.6" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="423.2" y="144.32" font-size="12" font-weight="700" text-anchor="middle">:= i#1</text>
+<rect class="a f" x="408.2" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="423.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="a f" x="383.6" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="401.4" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="a f" x="427.2" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="445" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="481.8" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= j#2</text>
+<rect class="s f" x="495.4" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="470.8" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="488.6" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="514.4" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="532.2" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="576" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="44.32" font-size="12" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="583.2" y="78" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="94.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<text class="ta mono" x="401.4" y="269" font-size="12" font-weight="700" text-anchor="middle">6</text>
+<text class="ta mono" x="445" y="269" font-size="12" font-weight="700" text-anchor="middle">4</text>
+<rect class="s f" x="16" y="296" width="240" height="54" rx="6" stroke-width="1.5"/>
+<line class="m" x1="16" y1="323" x2="256" y2="323" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="af" x="150" y="300" width="100" height="20" rx="4"/>
+<text class="tm mono" x="30" y="314.5" font-size="12">1</text>
+<text class="t mono" x="56" y="314.5" font-size="13" font-weight="700">i</text>
+<text class="ta mono" x="166" y="314.5" font-size="12" font-weight="700">value 2</text>
+<text class="tm mono" x="30" y="340.5" font-size="12">2</text>
+<text class="t mono" x="56" y="340.5" font-size="13" font-weight="700">j</text>
+<text class="t mono" x="166" y="340.5" font-size="12">value 4</text>
+<line class="m" x1="140" y1="300" x2="140" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="300" y="314" font-size="13" font-weight="700">i := i - j</text>
+<text class="t mono" x="300" y="334" font-size="13">i = 6 - 4 = 2</text>
+<rect class="s fs" x="520" y="296" width="104" height="54" rx="6" stroke-width="1.5"/>
+</g>
+<g class="step"><title>Back at the while: its condition, i != j, is 2 != 4: true, so the walker runs the body.</title>
+<rect class="s f" x="14" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="49.8" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read i#1</text>
+<rect class="s f" x="111.6" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="147.4" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read j#2</text>
+<rect class="s f" x="311" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="44.32" font-size="12" font-weight="600" text-anchor="middle">while</text>
+<rect class="a af" x="233.8" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="248.8" y="94.32" font-size="12" font-weight="700" text-anchor="middle">!=</text>
+<rect class="a f" x="209.2" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="227" y="144.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="a f" x="252.8" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="270.6" y="144.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="408.2" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="94.32" font-size="12" font-weight="600" text-anchor="middle">if</text>
+<rect class="s f" x="321" y="128" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="144.32" font-size="12" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s f" x="296.4" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="314.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="340" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="357.8" y="194.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="394.6" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= i#1</text>
+<rect class="s f" x="408.2" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="383.6" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="401.4" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="427.2" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="445" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="481.8" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= j#2</text>
+<rect class="s f" x="495.4" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="470.8" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="488.6" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="514.4" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="532.2" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="576" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="44.32" font-size="12" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="583.2" y="78" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="94.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<text class="ta mono" x="227" y="169" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<text class="ta mono" x="270.6" y="169" font-size="12" font-weight="700" text-anchor="middle">4</text>
+<rect class="s f" x="16" y="296" width="240" height="54" rx="6" stroke-width="1.5"/>
+<line class="m" x1="16" y1="323" x2="256" y2="323" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="30" y="314.5" font-size="12">1</text>
+<text class="t mono" x="56" y="314.5" font-size="13" font-weight="700">i</text>
+<text class="t mono" x="166" y="314.5" font-size="12">value 2</text>
+<text class="tm mono" x="30" y="340.5" font-size="12">2</text>
+<text class="t mono" x="56" y="340.5" font-size="13" font-weight="700">j</text>
+<text class="t mono" x="166" y="340.5" font-size="12">value 4</text>
+<line class="m" x1="140" y1="300" x2="140" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="300" y="314" font-size="13" font-weight="700">while i != j</text>
+<text class="t mono" x="300" y="334" font-size="13">2 != 4: true</text>
+<rect class="s fs" x="520" y="296" width="104" height="54" rx="6" stroke-width="1.5"/>
+</g>
+<g class="step"><title>if: i &gt; j is 2 &gt; 4: false, so it takes the else branch.</title>
+<rect class="s f" x="14" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="49.8" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read i#1</text>
+<rect class="s f" x="111.6" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="147.4" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read j#2</text>
+<rect class="s f" x="311" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="44.32" font-size="12" font-weight="600" text-anchor="middle">while</text>
+<rect class="s f" x="233.8" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="248.8" y="94.32" font-size="12" font-weight="600" text-anchor="middle">!=</text>
+<rect class="s f" x="209.2" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="227" y="144.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="252.8" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="270.6" y="144.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="408.2" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="94.32" font-size="12" font-weight="600" text-anchor="middle">if</text>
+<rect class="a af" x="321" y="128" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="336" y="144.32" font-size="12" font-weight="700" text-anchor="middle">&gt;</text>
+<rect class="a f" x="296.4" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="314.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="a f" x="340" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="357.8" y="194.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="394.6" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= i#1</text>
+<rect class="s f" x="408.2" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="383.6" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="401.4" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="427.2" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="445" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="481.8" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= j#2</text>
+<rect class="s f" x="495.4" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="470.8" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="488.6" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="514.4" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="532.2" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="576" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="44.32" font-size="12" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="583.2" y="78" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="94.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<text class="ta mono" x="314.2" y="219" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<text class="ta mono" x="357.8" y="219" font-size="12" font-weight="700" text-anchor="middle">4</text>
+<rect class="s f" x="16" y="296" width="240" height="54" rx="6" stroke-width="1.5"/>
+<line class="m" x1="16" y1="323" x2="256" y2="323" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="30" y="314.5" font-size="12">1</text>
+<text class="t mono" x="56" y="314.5" font-size="13" font-weight="700">i</text>
+<text class="t mono" x="166" y="314.5" font-size="12">value 2</text>
+<text class="tm mono" x="30" y="340.5" font-size="12">2</text>
+<text class="t mono" x="56" y="340.5" font-size="13" font-weight="700">j</text>
+<text class="t mono" x="166" y="340.5" font-size="12">value 4</text>
+<line class="m" x1="140" y1="300" x2="140" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="300" y="314" font-size="13" font-weight="700">if i &gt; j</text>
+<text class="t mono" x="300" y="334" font-size="13">2 &gt; 4: false</text>
+<rect class="s fs" x="520" y="296" width="104" height="54" rx="6" stroke-width="1.5"/>
+</g>
+<g class="step"><title>:= j#2: the walk goes down to the - node and its two names, takes 4 and 2 from their entries, and puts 2 in entry 2.</title>
+<rect class="s f" x="14" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="49.8" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read i#1</text>
+<rect class="s f" x="111.6" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="147.4" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read j#2</text>
+<rect class="s f" x="311" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="44.32" font-size="12" font-weight="600" text-anchor="middle">while</text>
+<rect class="s f" x="233.8" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="248.8" y="94.32" font-size="12" font-weight="600" text-anchor="middle">!=</text>
+<rect class="s f" x="209.2" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="227" y="144.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="252.8" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="270.6" y="144.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="408.2" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="94.32" font-size="12" font-weight="600" text-anchor="middle">if</text>
+<rect class="s f" x="321" y="128" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="144.32" font-size="12" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s f" x="296.4" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="314.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="340" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="357.8" y="194.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="394.6" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= i#1</text>
+<rect class="s f" x="408.2" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="383.6" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="401.4" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="427.2" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="445" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="a af" x="481.8" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="510.4" y="144.32" font-size="12" font-weight="700" text-anchor="middle">:= j#2</text>
+<rect class="a f" x="495.4" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="510.4" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="a f" x="470.8" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="488.6" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="a f" x="514.4" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="532.2" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="576" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="44.32" font-size="12" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="583.2" y="78" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="94.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<text class="ta mono" x="488.6" y="269" font-size="12" font-weight="700" text-anchor="middle">4</text>
+<text class="ta mono" x="532.2" y="269" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="s f" x="16" y="296" width="240" height="54" rx="6" stroke-width="1.5"/>
+<line class="m" x1="16" y1="323" x2="256" y2="323" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="30" y="314.5" font-size="12">1</text>
+<text class="t mono" x="56" y="314.5" font-size="13" font-weight="700">i</text>
+<text class="t mono" x="166" y="314.5" font-size="12">value 2</text>
+<rect class="af" x="150" y="326" width="100" height="20" rx="4"/>
+<text class="tm mono" x="30" y="340.5" font-size="12">2</text>
+<text class="t mono" x="56" y="340.5" font-size="13" font-weight="700">j</text>
+<text class="ta mono" x="166" y="340.5" font-size="12" font-weight="700">value 2</text>
+<line class="m" x1="140" y1="300" x2="140" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="300" y="314" font-size="13" font-weight="700">j := j - i</text>
+<text class="t mono" x="300" y="334" font-size="13">j = 4 - 2 = 2</text>
+<rect class="s fs" x="520" y="296" width="104" height="54" rx="6" stroke-width="1.5"/>
+</g>
+<g class="step"><title>Back at the while: 2 != 2 is false. The loop is done, and the walker goes on to the next statement.</title>
+<rect class="s f" x="14" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="49.8" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read i#1</text>
+<rect class="s f" x="111.6" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="147.4" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read j#2</text>
+<rect class="s f" x="311" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="44.32" font-size="12" font-weight="600" text-anchor="middle">while</text>
+<rect class="a af" x="233.8" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="248.8" y="94.32" font-size="12" font-weight="700" text-anchor="middle">!=</text>
+<rect class="a f" x="209.2" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="227" y="144.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="a f" x="252.8" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="270.6" y="144.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="408.2" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="94.32" font-size="12" font-weight="600" text-anchor="middle">if</text>
+<rect class="s f" x="321" y="128" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="144.32" font-size="12" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s f" x="296.4" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="314.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="340" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="357.8" y="194.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="394.6" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= i#1</text>
+<rect class="s f" x="408.2" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="383.6" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="401.4" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="427.2" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="445" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="481.8" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= j#2</text>
+<rect class="s f" x="495.4" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="470.8" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="488.6" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="514.4" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="532.2" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="576" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="44.32" font-size="12" font-weight="600" text-anchor="middle">write</text>
+<rect class="s f" x="583.2" y="78" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="601" y="94.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<text class="ta mono" x="227" y="169" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<text class="ta mono" x="270.6" y="169" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="s f" x="16" y="296" width="240" height="54" rx="6" stroke-width="1.5"/>
+<line class="m" x1="16" y1="323" x2="256" y2="323" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="30" y="314.5" font-size="12">1</text>
+<text class="t mono" x="56" y="314.5" font-size="13" font-weight="700">i</text>
+<text class="t mono" x="166" y="314.5" font-size="12">value 2</text>
+<text class="tm mono" x="30" y="340.5" font-size="12">2</text>
+<text class="t mono" x="56" y="340.5" font-size="13" font-weight="700">j</text>
+<text class="t mono" x="166" y="340.5" font-size="12">value 2</text>
+<line class="m" x1="140" y1="300" x2="140" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="300" y="314" font-size="13" font-weight="700">while i != j</text>
+<text class="t mono" x="300" y="334" font-size="13">2 != 2: false</text>
+<rect class="s fs" x="520" y="296" width="104" height="54" rx="6" stroke-width="1.5"/>
+</g>
+<g class="step"><title>write: i#1 points at entry 1, which holds 2; the walker prints it. ./mote on 6 4 prints 2 too.</title>
+<rect class="s f" x="14" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="49.8" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read i#1</text>
+<rect class="s f" x="111.6" y="28" width="71.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="147.4" y="44.32" font-size="12" font-weight="600" text-anchor="middle">read j#2</text>
+<rect class="s f" x="311" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="44.32" font-size="12" font-weight="600" text-anchor="middle">while</text>
+<rect class="s f" x="233.8" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="248.8" y="94.32" font-size="12" font-weight="600" text-anchor="middle">!=</text>
+<rect class="s f" x="209.2" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="227" y="144.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="252.8" y="128" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="270.6" y="144.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="408.2" y="78" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="94.32" font-size="12" font-weight="600" text-anchor="middle">if</text>
+<rect class="s f" x="321" y="128" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="336" y="144.32" font-size="12" font-weight="600" text-anchor="middle">&gt;</text>
+<rect class="s f" x="296.4" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="314.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="340" y="178" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="357.8" y="194.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="394.6" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= i#1</text>
+<rect class="s f" x="408.2" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="423.2" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="383.6" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="401.4" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="s f" x="427.2" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="445" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="481.8" y="128" width="57.2" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="144.32" font-size="12" font-weight="600" text-anchor="middle">:= j#2</text>
+<rect class="s f" x="495.4" y="178" width="30" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="510.4" y="194.32" font-size="12" font-weight="600" text-anchor="middle">-</text>
+<rect class="s f" x="470.8" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="488.6" y="244.32" font-size="12" font-weight="600" text-anchor="middle">j#2</text>
+<rect class="s f" x="514.4" y="228" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="532.2" y="244.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<rect class="a af" x="576" y="28" width="50" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="601" y="44.32" font-size="12" font-weight="700" text-anchor="middle">write</text>
+<rect class="a f" x="583.2" y="78" width="35.6" height="24" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="601" y="94.32" font-size="12" font-weight="600" text-anchor="middle">i#1</text>
+<text class="ta mono" x="601" y="119" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<rect class="s f" x="16" y="296" width="240" height="54" rx="6" stroke-width="1.5"/>
+<line class="m" x1="16" y1="323" x2="256" y2="323" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="30" y="314.5" font-size="12">1</text>
+<text class="t mono" x="56" y="314.5" font-size="13" font-weight="700">i</text>
+<text class="t mono" x="166" y="314.5" font-size="12">value 2</text>
+<text class="tm mono" x="30" y="340.5" font-size="12">2</text>
+<text class="t mono" x="56" y="340.5" font-size="13" font-weight="700">j</text>
+<text class="t mono" x="166" y="340.5" font-size="12">value 2</text>
+<line class="m" x1="140" y1="300" x2="140" y2="346" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta mono" x="300" y="314" font-size="13" font-weight="700">write i</text>
+<text class="t mono" x="300" y="334" font-size="13">prints 2</text>
+<rect class="s fs" x="520" y="296" width="104" height="54" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="538" y="318" font-size="15" font-weight="700">2</text>
+</g>
+</svg>
