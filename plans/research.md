@@ -51,8 +51,9 @@ In work, two agents: a read of modules 06 to 10 and of 11 to 15 for
 terms, cross-references and promises between lessons that were written
 out of order, as was done for 00 to 05. Left after that: 11.05's time
 on a quiet machine; the README's map (`./learn map --write`) when the
-other session's README changes are in. The shelf (16 to 21) is not
-started.
+other session's README changes are in. Of the shelf, module 22
+(reasoning) was added at the owner's wish on 2026-11-25 and is in work,
+its code first; 16 to 21 are not started.
 
 The owner asked for more speed (2026-11-24): the limit of three agents
 is lifted. Timings taken while four or five agents run are not to be
@@ -647,9 +648,52 @@ A module goes on the shelf when it has a paper with a claim, a failure
 to start from, a laptop-size experiment that tests the claim, and a real
 thing to check against. In the outline now: looking inside, images from
 noise, learning from reward, seeing with transformers, preferences,
-phenomena. Considered and left off until wanted: embeddings and
+phenomena, and reasoning (22, added 2026-11-25: the owner asked whether
+the track had anything on reasoning, and it had not). Considered and
+left off until wanted: embeddings and
 retrieval (word2vec to RAG), agents and tool use, speech, graph
 networks, RL fine-tuning of language models, distributed training.
+
+## Module 22, reasoning: the direction (Fable, 2026-11-25)
+
+An extension (`optional: true`), built on the finished core, before 16
+to 21 because it was asked for. The same rules as every module: the
+obvious thing fails, measured; the paper's idea as a change to code the
+learner has; the paper's experiment at laptop size; what held and what
+did not. One hour of recorded runs at most for the module.
+
+- 22.01: a task made by code whose answer needs a number of steps that
+  grows with the problem (candidates for the spike: addition with long
+  carry chains, the parity of a string of bits, an operation applied k
+  times), every answer checkable exactly. A GPT asked for the answer at
+  once: accuracy against the number of steps, and against depth and
+  width at the same budget. The claim to test is the one the scratchpad
+  papers start from: one pass through a fixed number of blocks cannot
+  do an unbounded number of steps.
+- 22.02: Nye et al. (2021): the same model trained to write each step
+  before the answer. Accuracy against the number of steps beside
+  22.01's; problems longer than any trained on, with learned and with
+  rotary positions (10.02), as found; what the working costs in tokens.
+  Lee et al. (2023) for what is known about small transformers and
+  arithmetic.
+- 22.03: Wang et al. (2022): several attempts sampled, the commonest
+  answer kept. Accuracy against the number of attempts, at problem
+  sizes where one greedy attempt is neither always right nor always
+  wrong; against the same compute spent another way (a longer training,
+  or greedy), as found. 11.06's cache makes the attempts cheap.
+- 22.04: Lanham et al. (2023): the written steps broken on purpose (cut
+  short, a mistake put in, replaced by filler) and the share of answers
+  that change. On a task that needs the working and on one the model
+  can do in one pass, where the working may be decoration. Pfau et al.
+  (2024) on filler tokens: named, and run only if it is cheap.
+- 22.05: Wei et al. (2022) and Kojima et al. (2022) on a published
+  model with no training: the answer asked for at once, with worked
+  examples, and with "let's think step by step", on tasks made by code
+  (the paper's own last-letter and coin-flip tasks, and two-step
+  arithmetic). Spike 10 decides the model: the SmolLM2 family at 135M,
+  360M and 1.7B, instruct versions, loaded by 10.04's loader. If no
+  size a laptop can run shows the paper's gain, the lesson says so,
+  with the smallest size the paper reports it for.
 
 ## Spikes, before the lesson list of a module is fixed
 
@@ -668,6 +712,9 @@ Where a spike fails, the lesson changes; the claim is never stretched.
 7. 12.02: LoRA on GPT-2 small inside the time budget.
 8. 14: grokking in under 30 minutes on CPU with the paper's set-up.
 9. Everything on macOS arm64 and on Linux x86 (Docker).
+10. 22: which task shows one pass failing and a scratchpad fixing it
+    inside a default run; which published model, if any, shows chain of
+    thought helping on a laptop CPU.
 
 ## Harness work (each its own piece, not while another session edits it)
 
