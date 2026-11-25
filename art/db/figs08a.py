@@ -1,10 +1,10 @@
-"""Figures for db module 08, More SQL: lessons 08.01-08.03 (08.02's and 08.03's are still to come),
-and the module's cover and icon.
+"""Figures for db module 08, More SQL: lessons 08.01-08.03, and the module's cover and icon.
 
     python3 art/db/figs08a.py           writes tracks/db/lessons/08-more-sql/figures/08.0[1-3]-*.svg,
                                         cover.svg and icon.svg
-    python3 art/db/figs08a.py --check   runs the queries below through the engine at 08.01
-                                        (./learn run db --at 08.01) and checks every number
+    python3 art/db/figs08a.py --check   runs the queries below through the engine at each figure's
+                                        lesson (./learn run db --at 08.01, 08.02, 08.03), walks the
+                                        B-trees of the file shop.py makes, and checks every number
 
 The look every 08 figure shares: customers' values in the neutral tone (class "s f", text "t"),
 orders' values in the accent tone ("a af", "ta"), so a joined row reads at a glance; NULL is an
@@ -48,11 +48,49 @@ cover: the five joined pairs are OUTPUT's; "London 4 100" is the London rows of 
   SELECT c.city, o.total FROM customers c JOIN orders o ON c.id = o.customer_id WHERE c.city = 'London';
   London|30, London|50, London|15, London|5: 4 rows, 100 in all (what 08.04's count(*) and
   sum(total) give for them). Brook's pair is Paris, so its row is the one with no line to it.
+
+08.02 (the engine at 08.02, `./learn run db --at 08.02 -- shop.db "<sql>"`, the same shop.db):
+08.02-nomatch: NOMATCH_SQL prints NOMATCH (the same six rows with ORDER BY c.id, o.id); on Dee's
+  row typeof(o.id) is 'null' and o.rowid is NULL (DEE_SQL).
+08.02-on-where: ON_SQL prints ON_OUT, WHERE_SQL prints WHERE_OUT. What the Left join hands up to
+  WHERE, with the term's value on each row, is WHERE_IN (o.total > 25 as a result column of the
+  LEFT JOIN with no WHERE). EXPLAIN puts the term in "Left join on ((o.customer_id = c.id) AND
+  (o.total > 25))" for ON_SQL, and in "Filter (o.total > 25)" over "Left join on (o.customer_id =
+  c.id)" for WHERE_SQL (ON_TREE, WHERE_TREE). The orders each NULL row stands for (Brook's 13 of
+  20, Chen's 11 and 14 of 15 and 5, none for Dee) are ORDERS'. NOTES' runs use o.total > 20: the
+  same rows, since no order's total is between 21 and 25.
+
+08.03 (the engine at 08.03):
+08.03-ladder: EXPLAIN QUERY PLAN SELECT * <clause>; on shop.db after INDEX_SQL; the line drawn is
+  the last one the engine prints (the inner table's), for each clause in LADDER, BOTH and LEFTW.
+08.03-lookup: shop.py's file, made by piping shop_sql() (shop.py as NOTES gives it) into
+  `./learn run db --at 08.03 -- shop.big.db`: 69 pages. Its pages were dumped by reading the file:
+  page 1's sqlite_schema rows give each table's root page, and each B-tree page is walked from its
+  header (type 0x05 interior: cells of child page and divider rowid, then the right child; 0x0d
+  leaf: cells of rowid and record), which is tree() below; --check walks it again. customers:
+  root page 2 with dividers 168 327 486 645 804 963 over leaves 5 6 7 8 9 10 4 (in key order;
+  leaf 5 holds rows 1-168). orders: root page 3 over 59 leaves; order 358 (customer_id 3, total
+  58, the first order of customer 3) is in leaf 13 (orders 356-700). Customer 3 is 'customer 3',
+  'Rome'. A copy of the 08.03 project with an fprintf of every page number in pager.c page_get
+  showed what is asked for: with WHERE o.id = 358, the rowid lookup asks for page 2 once and leaf
+  5 six times (7 requests); the same order with ON c.id + 0 = o.customer_id (SCAN c) asks for
+  page 2 and leaves 5, 6, 7, 8, 9, 10, 4 in that order, page 2 again between leaves, 3,028 in all.
+  --check gets 7 and 3,028 from DB_STATS: that query's page requests less those of
+  SELECT o.id FROM orders o WHERE o.id = 358 alone.
+08.03-cost: COST_SQL on shop.big.db (no index) and on a copy with INDEX_SQL (134 pages), DB_STATS=1:
+  page requests are cache hits + misses (as NOTES explains: with the default 500-page cache each
+  page is read from the file once whatever the plan, 69 or 134). The bars are the page requests;
+  the times are the median of 7 runs to /dev/null on an Apple M4 Pro (856, 12.0 and 10.7 ms; NOTES
+  has 873, 14 and 13), printed as "about N ms": they vary from run to run, so --check prints them
+  and does not compare them.
 """
 import os
+import re
+import statistics
 import subprocess
 import sys
 import tempfile
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -109,6 +147,61 @@ TESTED, PASSED = [4, 12, 16], [2, 4, 3]
 CROSS3 = 96
 
 LONDON = ("London", 4, 100)
+
+# 08.02, the engine at 08.02 on shop.db
+NOMATCH_SQL = "SELECT * FROM customers c LEFT JOIN orders o ON o.customer_id = c.id;"
+NOMATCH = [(1, "Ada", "London", 10, 1, 30), (1, "Ada", "London", 12, 1, 50), (2, "Brook", "Paris", 13, 2, 20),
+           (3, "Chen", "London", 11, 3, 15), (3, "Chen", "London", 14, 3, 5), (4, "Dee", "Oslo", None, None, None)]
+DEE_SQL = "SELECT typeof(o.id), o.rowid FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE c.id = 4;"
+DEE = ("null", None)
+ON_SQL = "SELECT c.name, o.id, o.total FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.total > 25;"
+ON_OUT = [("Ada", 10, 30), ("Ada", 12, 50), ("Brook", None, None), ("Chen", None, None), ("Dee", None, None)]
+WHERE_SQL = "SELECT c.name, o.id, o.total FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE o.total > 25;"
+WHERE_OUT = [("Ada", 10, 30), ("Ada", 12, 50)]
+# the rows the Left join hands up to WHERE, and o.total > 25 on each (1 true, 0 false, None NULL)
+WHERE_IN_SQL = "SELECT c.name, o.id, o.total, o.total > 25 FROM customers c LEFT JOIN orders o ON o.customer_id = c.id;"
+WHERE_IN = [("Ada", 10, 30, 1), ("Ada", 12, 50, 1), ("Brook", 13, 20, 0), ("Chen", 11, 15, 0), ("Chen", 14, 5, 0),
+            ("Dee", None, None, None)]
+ON_TREE = ["Left join on ((o.customer_id = c.id) AND (o.total > 25))", "  Scan customers AS c", "  Scan orders AS o"]
+WHERE_TREE = ["Filter (o.total > 25)", "  Left join on (o.customer_id = c.id)", "    Scan customers AS c",
+              "    Scan orders AS o"]
+
+# 08.03, the engine at 08.03: on shop.db with the index, the inner table's EXPLAIN QUERY PLAN line
+INDEX_SQL = "CREATE INDEX orders_customer ON orders(customer_id);"
+LADDER = [
+    ("1", "its rowid equals a value from the outer row", "FROM orders o JOIN customers c ON c.id = o.customer_id",
+     "SEARCH c USING INTEGER PRIMARY KEY (rowid=?)"),
+    ("2", "an index's first column equals such a value", "FROM customers c JOIN orders o ON o.customer_id = c.id",
+     "SEARCH o USING INDEX orders_customer (customer_id=?)"),
+    ("3", "anything else", "FROM customers c JOIN orders o ON o.customer_id + 0 = c.id", "SCAN o"),
+]
+BOTH = ("FROM customers c JOIN orders o ON o.id = c.id AND o.customer_id = c.id",
+        "SEARCH o USING INTEGER PRIMARY KEY (rowid=?)")
+LEFTW = ("FROM customers c LEFT JOIN orders o ON 1 WHERE o.customer_id = c.id", "SCAN o LEFT-JOIN")
+
+# shop.py's file (shop.big.db): its pages, dumped (tree()), and what one order's lookup asks for
+SHOP_ROWS = (1000, 20000)
+SHOP_PAGES, SHOP_PAGES_IX = 69, 134
+LOOK_SQL = "SELECT o.id, c.name FROM orders o JOIN customers c ON c.id = o.customer_id WHERE o.id = 358;"
+SWEEP_SQL = "SELECT o.id, c.name FROM orders o JOIN customers c ON c.id + 0 = o.customer_id WHERE o.id = 358;"
+ALONE_SQL = "SELECT o.id FROM orders o WHERE o.id = 358;"
+LOOK_ORDER = (358, 3, 58)                     # o.id, o.customer_id, o.total: customer 3's first order
+LOOK_ORDER_LEAF = 13
+CUST_ROOT = 2
+CUST_DIVIDERS = [168, 327, 486, 645, 804, 963]
+CUST_LEAVES = [5, 6, 7, 8, 9, 10, 4]          # in key order
+CUST_LEAF_RANGE = (1, 168)                    # leaf 5's rowids, where customer 3 is
+LOOK_ROW = (3, "customer 3", "Rome")
+LOOK_REQ, SWEEP_REQ = 7, 3028                 # page requests for order 358's customer, each way
+
+# the same join three ways on shop.py's file: (FROM, how the inner side is read, with the index?,
+# page requests, ms)
+COST_SQL = "SELECT c.name, o.id, o.total FROM {} ON o.customer_id = c.id;"
+COST = [
+    ("customers c JOIN orders o", "scan orders, per customer", False, 60239036, 860),
+    ("customers c JOIN orders o", "index lookup, per customer", True, 147241, 12),
+    ("orders o JOIN customers c", "rowid lookup, per order", False, 200724, 11),
+]
 
 # ------------------------------------------------------------------ the shared look
 
@@ -435,11 +528,239 @@ def levels0801():
 
 
 # ------------------------------------------------------------------ 08.02
-# (08.02's figures go here: one function each, and a line each in FIGS below.)
+
+def brace_v(f, x, y1, y2, cls="s"):
+    """A flat bracket beside a span of rows, open to the left: x is its spine."""
+    f.path(f"M{x - 6} {y1} L{x} {y1} L{x} {y2} L{x - 6} {y2}", cls)
+
+
+def spans(f, x, y, parts, size=10):
+    """One line of monospaced text in pieces: parts are (text, class, weight). Returns the x after it."""
+    for s, cls, weight in parts:
+        f.text(x, y, s, cls, size, None, weight, True)
+        x += tw(s, size, True)
+    return x
+
+
+def nomatch0802():
+    f = Fig("f0802a", "customers LEFT JOIN orders: the five matched pairs, and one row for Dee with NULLs", 304)
+    f.text(24, 22, NOMATCH_SQL, "tm", 10.5, None, None, True)
+    W = [30, 56, 64, 36, 92, 50]
+    X0, Y0, RH = 40, 76, 26
+    xs = [X0 + sum(W[:k]) for k in range(len(W))]
+    f.text(X0 + sum(W[:3]) / 2, 46, "customers c", "t", 11.5, "middle", 600)
+    f.text(xs[3] + sum(W[3:]) / 2, 46, "orders o", "ta", 11.5, "middle", 600)
+    for k, h in enumerate(["id", "name", "city", "id", "customer_id", "total"]):
+        f.text(xs[k] + W[k] / 2, 66, h, "tm", 10, "middle", None, True)
+    for i, row in enumerate(NOMATCH):
+        cells(f, X0, Y0 + i * RH, [(W[k], row[k], "c" if k < 3 else "o") for k in range(6)], h=RH)
+    # beside the rows: which are pairs, which is the row with no match
+    BX = X0 + sum(W) + 18
+    nm = sum(1 for r in NOMATCH if r[3] is not None)
+    brace_v(f, BX, Y0 + 3, Y0 + nm * RH - 3)
+    ym = Y0 + nm * RH / 2
+    f.text(BX + 12, ym - 3, f"{nm} pairs that passed ON", "t", 11.5, None, 600)
+    f.text(BX + 12, ym + 13, "the rows of 08.01's inner join", "tm", 10.5)
+    dee = NOMATCH[-1]
+    brace_v(f, BX, Y0 + nm * RH + 3, Y0 + (nm + 1) * RH - 3)
+    yd = Y0 + nm * RH + RH / 2
+    f.text(BX + 12, yd + 4, f"{dee[1]}: no order passed ON", "t", 11.5, None, 600)
+    # under Dee's NULL cells: who made them
+    yb = Y0 + len(NOMATCH) * RH + 8
+    f.brace_h(xs[3] + 2, xs[5] + W[5] - 2, yb, "s")
+    f.text(xs[3] - 6, yb + 18, "made by the join, not read from orders", "t", 11.5, None, 600)
+    f.line(24, 272, 616, 272, "m")
+    f.text(24, 292, f"On that row every slot of orders is NULL, its rowid too: typeof(o.id) is '{DEE[0]}', "
+           "and the row goes up once.", "tm", 10.5)
+    return f
+
+
+def onwhere0802():
+    f = Fig("f0802b", "The same LEFT JOIN with o.total > 25 in ON, then in WHERE: what comes out", 372)
+    TERM = "o.total > 25"
+    RH = 22
+    PW = [56, 40, 52]
+    L, R = 24, 336
+    f.line(320, 10, 320, 362, "m")
+    # the two statements, the term in the accent
+    for x, where in ((L, "ON"), (R, "WHERE")):
+        e = spans(f, x, 22, [(TERM, "ta", 700)], 12)
+        f.text(e + 6, 22, f"in {where}", "t", 12, None, 700)
+        spans(f, x, 44, [("SELECT c.name, o.id, o.total", "tm", None)])
+        spans(f, x, 58, [("FROM customers c LEFT JOIN orders o", "tm", None)])
+    spans(f, L, 72, [("ON o.customer_id = c.id AND ", "tm", None), (TERM, "ta", 700), (";", "tm", None)])
+    spans(f, R, 72, [("ON o.customer_id = c.id", "tm", None)])
+    spans(f, R, 86, [("WHERE ", "tm", None), (TERM, "ta", 700), (";", "tm", None)])
+    f.text(L, 112, "checked inside the Left join, on each pair:", "t", 11)
+    f.text(L, 127, "it decides what counts as a match", "tm", 10.5)
+    f.text(R, 112, "checked in a Filter above the Left join:", "t", 11)
+    f.text(R, 127, "it decides which rows survive", "tm", 10.5)
+
+    def heads(x, y, note):
+        for w, h in zip(PW, ["c.name", "o.id", "o.total"]):
+            f.text(x + w / 2, y, h, "tm", 10, "middle", None, True)
+            x += w
+        f.text(x + 10, y, note, "ta", 10, None, None, True)
+
+    YT = 156
+    NX = sum(PW) + 10                         # the notes beside the rows
+    heads(L, YT - 6, TERM + "?")
+    heads(R, YT - 6, TERM)
+    # ON: every customer comes out; a NULL row where none of their orders passed
+    cid = {c[1]: c[0] for c in CUSTOMERS}
+    for i, (name, oid, total) in enumerate(ON_OUT):
+        y = YT + i * RH
+        cells(f, L, y, [(PW[0], name, "c"), (PW[1], oid, "o"), (PW[2], total, "o")], h=RH)
+        if oid is not None:
+            note, cls = f"{total}: match", "t"
+        else:
+            mine = [o[2] for o in ORDERS if o[1] == cid[name]]
+            note, cls = (", ".join(map(str, mine)) + ": no match", "tm") if mine else ("no orders", "tm")
+        f.text(L + NX, y + RH / 2 + 3.5, note, cls, 10, None, None, True)
+    # WHERE: the rows that pass, then (muted) the rest of what the Left join handed up
+    word = {1: "true", 0: "false", None: "NULL"}
+    for i, (name, oid, total) in enumerate(WHERE_OUT):
+        y = YT + i * RH
+        cells(f, R, y, [(PW[0], name, "c"), (PW[1], oid, "o"), (PW[2], total, "o")], h=RH)
+        f.text(R + NX, y + RH / 2 + 3.5, word[1], "t", 10, None, None, True)
+    dropped = [r for r in WHERE_IN if r[3] != 1]
+    yd = YT + len(WHERE_OUT) * RH + 30
+    f.text(R, yd - 8, f"the Left join's other {len(dropped)} rows, dropped:", "tm", 10.5)
+    for i, (name, oid, total, v) in enumerate(dropped):
+        y = yd + i * RH
+        x = R
+        for w, val_ in zip(PW, (name, oid, total)):
+            if val_ is None:
+                f.rect(x, y, w, RH, "m f", 0, dash=True)
+                f.text(x + w / 2, y + RH / 2 + 3.5, "NULL", "tm", 9.5, "middle", None, True)
+            else:
+                f.rect(x, y, w, RH, "m fs", 0)
+                f.text(x + w / 2, y + RH / 2 + 4, str(val_), "tm", 11, "middle", None, True)
+            x += w
+        f.text(R + NX, y + RH / 2 + 3.5, word[v], "tm", 10, None, None, True)
+    yb = 342
+    f.text(L, yb, f"{len(ON_OUT)} rows: every customer", "t", 11.5, None, 600)
+    f.text(L, yb + 16, "NULLs where no order passed ON", "tm", 10.5)
+    f.text(R, yb, f"{len(WHERE_OUT)} rows: only orders over 25", "t", 11.5, None, 600)
+    f.text(R, yb + 16, "Dee's NULL row met WHERE like any other", "tm", 10.5)
+    return f
 
 
 # ------------------------------------------------------------------ 08.03
-# (08.03's figures go here: one function each, and a line each in FIGS below.)
+
+def ladder0803():
+    f = Fig("f0803a", "How the inner table is read: three rules, tried in order; the first that matches wins", 296)
+    f.text(24, 20, "on shop.db after " + INDEX_SQL, "tm", 10.5, None, None, True)
+    f.text(24, 36, "the rules choose how the table written second is read for each row of the first", "tm", 10.5)
+    BH, GAP, Y0 = 58, 8, 48
+    for i, (n, cond, ex, out) in enumerate(LADDER):
+        y = Y0 + i * (BH + GAP)
+        last = i == len(LADDER) - 1
+        f.rect(24, y, 592, BH, "s fs" if last else "a af", 6)
+        f.circle(44, y + 19, 10, "s f" if last else "a fa")
+        f.text(44, y + 23, n, "t", 11.5, "middle", 700)
+        f.text(62, y + 23, cond, "t", 11.5, None, 600)
+        f.text(62, y + 38, ex, "tm", 10.5, None, None, True)
+        f.text(62, y + 52, out, "t" if last else "ta", 10.5, None, 600, True)
+    yf = Y0 + len(LADDER) * (BH + GAP) + 16
+    f.text(24, yf, "ON o.id = c.id AND o.customer_id = c.id fits rules 1 and 2: rule 1 is tried first, "
+           "so the rowid wins", "t", 11)
+    f.text(24, yf + 17, "a LEFT JOIN's key must be in its own ON: ON 1 WHERE o.customer_id = c.id gives "
+           + LEFTW[1], "tm", 10.5)
+    return f
+
+
+def lookup0803():
+    f = Fig("f0803b", "One order's customer: down customers' B-tree to one leaf, against a sweep across every leaf",
+            400)
+    f.text(24, 22, f"orders o JOIN customers c ON c.id = o.customer_id, on shop.py's file ({SHOP_ROWS[0]} customers, "
+           f"{SHOP_ROWS[1]} orders)", "tm", 11)
+    # the outer row
+    OW = [40, 92, 56]
+    f.text(24 + OW[0] / 2, 46, "o.id", "tm", 10, "middle", None, True)
+    f.text(24 + OW[0] + OW[1] / 2, 46, "o.customer_id", "tm", 10, "middle", None, True)
+    f.text(24 + OW[0] + OW[1] + OW[2] / 2, 46, "o.total", "tm", 10, "middle", None, True)
+    cells(f, 24, 52, [(OW[0], LOOK_ORDER[0], "o"), (OW[1], LOOK_ORDER[1], "o"), (OW[2], LOOK_ORDER[2], "o")], h=24)
+    ring(f, 24 + OW[0], 52, OW[1], 24, "a")
+    f.text(24 + sum(OW) + 14, 62, f"the outer row: order {LOOK_ORDER[0]}", "t", 11.5, None, 600)
+    f.text(24 + sum(OW) + 14, 77, f"read by the outer scan from orders leaf {LOOK_ORDER_LEAF}", "tm", 10.5)
+
+    RY, RHt = 140, 40                         # the root
+    LY, LH, LW, LG = 212, 28, 34, 7           # the leaves
+
+    def tree(x0, hot):
+        """customers' B-tree drawn from x0, 280 wide: the root with its dividers, the leaves under
+        it. hot: the lookup's path in the foreground; else the whole tree muted."""
+        rs, rt = ("s f", "t") if hot else ("m f", "tm")
+        f.rect(x0, RY, 280, RHt, rs, 6)
+        f.text(x0 + 140, RY + 15, f"page {CUST_ROOT}", rt, 10.5, "middle", 600, True)
+        for i, d in enumerate(CUST_DIVIDERS):
+            f.text(x0 + 40 + 40 * i, RY + 32, str(d), "tm", 10, "middle", None, True)
+        for i, pg in enumerate(CUST_LEAVES):
+            lx = x0 + i * (LW + LG)
+            on = hot and i == 0
+            f.line(x0 + 20 + 40 * i, RY + RHt, lx + LW / 2, LY - (3 if on else 1), "s" if on else "m", arrow=on)
+            f.rect(lx, LY, LW, LH, "s f" if on else "m f", 4, dash=hot and not on)
+            f.text(lx + LW / 2, LY + 18, str(pg), "t" if on else "tm", 11, "middle", 700 if on else None, True)
+
+    # the lookup
+    LX = 24
+    kx = LX + OW[0] + OW[1] / 2
+    f.line(kx, 80, kx, RY - 3, "a", arrow=True)
+    f.text(kx + 10, 104, f"the key: c.id = {LOOK_ORDER[1]}", "ta", 11, None, 600)
+    f.text(kx + 10, 119, f"{LOOK_ORDER[1]} <= {CUST_DIVIDERS[0]}: the first child", "tm", 10.5)
+    tree(LX, True)
+    ax = LX + LW / 2
+    f.line(ax, LY + LH + 2, ax, 268, "s", arrow=True)
+    f.text(ax + 12, 256, f"leaf {CUST_LEAVES[0]} holds rows {CUST_LEAF_RANGE[0]} to {CUST_LEAF_RANGE[1]}", "tm", 10.5)
+    cells(f, LX, 272, [(24, LOOK_ROW[0], "c"), (84, LOOK_ROW[1], "c"), (50, LOOK_ROW[2], "c")], h=22)
+    f.text(LX + 168, 287, f"row {LOOK_ROW[0]}, its customer", "t", 11, None, 600)
+
+    # the sweep, muted, beside it
+    SX = 336
+    f.text(SX, 104, "without a lookup: SCAN c", "tm", 11.5, None, 600)
+    f.text(SX, 119, "the same order against every row", "tm", 10.5)
+    tree(SX, False)
+    f.line(SX, LY + LH + 14, SX + 278, LY + LH + 14, "m", arrow=True, dash=True)
+    f.text(SX, 272, "leaves " + ", ".join(str(p) for p in CUST_LEAVES) + ", in key order", "tm", 10.5)
+    f.text(SX, 287, f"{SHOP_ROWS[0]} rows, each tested against c.id = {LOOK_ORDER[1]}", "tm", 10.5)
+
+    yb = 322
+    f.text(LX, yb, f"2 pages, {LOOK_REQ} page requests", "t", 11.5, None, 600)
+    f.text(LX, yb + 16, LADDER[0][3], "ta", 10, None, None, True)
+    f.text(SX, yb, f"{1 + len(CUST_LEAVES)} pages, {SWEEP_REQ:,} page requests", "tm", 11.5, None, 600)
+    f.text(SX, yb + 16, "SCAN c", "tm", 10, None, None, True)
+    f.line(24, 352, 616, 352, "m")
+    f.text(24, 372, "A page request is each time the B-tree code asks the cache for a page: a leaf is asked for",
+           "tm", 10.5)
+    f.text(24, 388, f"again for each row read from it. The join does this once for every order, {SHOP_ROWS[1]} times.",
+           "tm", 10.5)
+    return f
+
+
+def cost0803():
+    f = Fig("f0803c", "The same join three ways on shop.py's file: page requests, and time beside them", 292)
+    f.text(24, 22, COST_SQL.format("..."), "tm", 10.5, None, None, True)
+    f.text(24, 38, f"on shop.py's file, {SHOP_ROWS[1]} rows out each way", "tm", 10.5)
+    X0, WMAX = 214, 240
+    top = max(c[3] for c in COST)
+    for i, (frm, how, ix, req, ms) in enumerate(COST):
+        y = 54 + i * 58
+        f.text(X0 - 12, y + 16, frm, "t", 10.5, "end", None, True)
+        f.text(X0 - 12, y + 31, how, "tm", 10.5, "end")
+        w = max(3, WMAX * req / top)
+        f.rect(X0, y + 4, w, 24, "s fs" if i == 0 else "a fa", 3)
+        f.text(X0 + w + 8, y + 20, f"{req:,} page requests", "t" if i == 0 else "ta", 11, None, 600)
+        f.text(X0 + w + 8, y + 36, f"about {ms} ms", "tm", 10.5)
+    f.line(24, 228, 616, 228, "m")
+    f.text(24, 246, f"The nested loop asks for every page of orders once per customer: {SHOP_ROWS[0]} scans of "
+           f"{SHOP_ROWS[1]} rows.", "t", 11)
+    ratios = [round(top / c[3]) for c in COST[1:]]
+    f.text(24, 263, f"To scale, the two lower bars would be under a pixel long: 1/{ratios[0]} and 1/{ratios[1]} "
+           "of the first.", "tm", 10.5)
+    f.text(24, 280, f"Page requests are cache hits plus misses; from the file each way reads {SHOP_PAGES} pages "
+           f"({SHOP_PAGES_IX} with the index).", "tm", 10.5)
+    return f
 
 
 # ------------------------------------------------------------------ cover and icon
@@ -499,21 +820,103 @@ ICON = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none"
 
 FIGS = [
     ("08.01-loops", loops0801), ("08.01-row", row0801), ("08.01-tree", tree0801), ("08.01-levels", levels0801),
+    ("08.02-nomatch", nomatch0802), ("08.02-on-where", onwhere0802),
+    ("08.03-ladder", ladder0803), ("08.03-lookup", lookup0803), ("08.03-cost", cost0803),
 ]
 
 
 # ------------------------------------------------------------------ --check: the numbers against a run
 
-def run_at(dbfile, sql):
-    """The output lines of sql run by the engine at 08.01 on dbfile (./learn run's own line dropped)."""
-    r = subprocess.run([os.path.join(REPO, "learn"), "run", "db", "--at", "08.01", "--", dbfile, sql],
-                       cwd=REPO, capture_output=True, text=True)
+def run_at(dbfile, sql, at="08.01", stats=False, stdin=None):
+    """The output lines of sql run by the engine at lesson `at` on dbfile (./learn run's own line
+    dropped). With stats, DB_STATS=1, and it returns (lines, page requests: cache hits + misses,
+    pages read). With stdin and no sql, the engine reads its statements from stdin."""
+    argv = [os.path.join(REPO, "learn"), "run", "db", "--at", at, "--", dbfile] + ([sql] if sql else [])
+    env = dict(os.environ, DB_STATS="1") if stats else None
+    r = subprocess.run(argv, cwd=REPO, capture_output=True, text=True, input=stdin, env=env)
     lines = r.stdout.splitlines()
     if lines and lines[0].startswith("Running db"):
         lines = lines[1:]
-    if r.returncode or r.stderr.strip():
-        raise SystemExit(f"{sql}: exit {r.returncode}: {r.stderr.strip()}")
+    err = r.stderr.strip()
+    if stats:
+        m = re.search(r"pages read (\d+), cache hits (\d+), cache misses (\d+)", err)
+        if r.returncode or not m:
+            raise SystemExit(f"{sql}: exit {r.returncode}: {err}")
+        return lines, int(m[2]) + int(m[3]), int(m[1])
+    if r.returncode or err:
+        raise SystemExit(f"{sql}: exit {r.returncode}: {err}")
     return lines
+
+
+def shop_sql():
+    """What shop.py prints, as NOTES gives the script the reader writes in 08.03."""
+    out = ["CREATE TABLE customers(id INTEGER PRIMARY KEY, name TEXT, city TEXT);",
+           "CREATE TABLE orders(id INTEGER PRIMARY KEY, customer_id INTEGER, total INTEGER);", "BEGIN;"]
+    cities = ["London", "Paris", "Oslo", "Rome", "Lima"]
+    out += [f"INSERT INTO customers VALUES({i}, 'customer {i}', '{cities[i % 5]}');" for i in range(1, 1001)]
+    out += [f"INSERT INTO orders VALUES({i}, {i * 7919 % 1000 + 1}, {i % 100});" for i in range(1, 20001)]
+    return "\n".join(out + ["COMMIT;"]) + "\n"
+
+
+def tree(path, table):
+    """Reads table's B-tree out of the database file at path: (root page, the root's divider
+    rowids, the leaves in key order as (page, first rowid, last rowid)). Page 1's sqlite_schema
+    rows (type, name, tbl_name, rootpage, sql) give the root; an interior table page (0x05) holds
+    cells of a 4-byte child page and a varint rowid, then its right child in the header; a leaf
+    (0x0d) cells of a varint size, a varint rowid and the record."""
+    with open(path, "rb") as fh:
+        data = fh.read()
+    ps = int.from_bytes(data[16:18], "big") or 65536
+
+    def varint(b, i):
+        v = 0
+        for k in range(8):
+            v = (v << 7) | (b[i + k] & 0x7f)
+            if b[i + k] < 0x80:
+                return v, i + k + 1
+        return (v << 8) | b[i + 8], i + 9
+
+    def page(pg):
+        """(kind, right child or None, cells as (child, rowid, record bytes from its header on))."""
+        p = data[(pg - 1) * ps: pg * ps]
+        h = 100 if pg == 1 else 0
+        kind, n = p[h], int.from_bytes(p[h + 3:h + 5], "big")
+        hl = 8 if kind == 0x0d else 12
+        right = int.from_bytes(p[h + 8:h + 12], "big") if kind == 0x05 else None
+        out = []
+        for c in range(n):
+            i = int.from_bytes(p[h + hl + 2 * c:h + hl + 2 * c + 2], "big")
+            if kind == 0x05:
+                rowid, _ = varint(p, i + 4)
+                out.append((int.from_bytes(p[i:i + 4], "big"), rowid, None))
+            else:
+                _, i = varint(p, i)
+                rowid, i = varint(p, i)
+                out.append((None, rowid, p[i:]))
+        return kind, right, out
+
+    def fields(rec):
+        """A record's values, as far as sqlite_schema's need: NULL, integers and text."""
+        hsize, j = varint(rec, 0)
+        k, vals = hsize, []
+        while j < hsize:
+            t, j = varint(rec, j)
+            n = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 6, 6: 8, 8: 0, 9: 0}.get(t, (t - 12) // 2)
+            b = rec[k:k + n]
+            vals.append(None if t == 0 else t - 8 if t in (8, 9) else int.from_bytes(b, "big", signed=True)
+                        if t < 12 else b.decode())
+            k += n
+        return vals
+
+    def leaves(pg):
+        kind, right, cs = page(pg)
+        if kind == 0x0d:
+            return [(pg, cs[0][1], cs[-1][1])]
+        return [lf for child, _, _ in cs for lf in leaves(child)] + leaves(right)
+
+    root = next(f[3] for _, _, rec in page(1)[2] for f in [fields(rec)] if f[0] == "table" and f[1] == table)
+    kind, _, cs = page(root)
+    return root, [rowid for _, rowid, _ in cs] if kind == 0x05 else [], leaves(root)
 
 
 def check():
@@ -562,6 +965,73 @@ def check():
     got = [int(l.split("|")[1]) for l in run_at(
         shop, "SELECT c.city, o.total FROM customers c JOIN orders o ON c.id = o.customer_id WHERE c.city = 'London';")]
     same("London's rows: how many, and their totals", (len(got), sum(got)), LONDON[1:])
+
+    # 08.02, the engine at 08.02 on a shop.db of its own
+    shop2 = os.path.join(d, "shop2.db")
+    run_at(shop2, data, "08.02")
+
+    def rows(sql, at, path):
+        return [tuple(map(parse, l.split("|"))) for l in run_at(path, sql, at)]
+    same("08.02: the LEFT JOIN's rows", rows(NOMATCH_SQL, "08.02", shop2), NOMATCH)
+    same("08.02: ... in the same order with ORDER BY c.id, o.id",
+         rows(NOMATCH_SQL[:-1] + " ORDER BY c.id, o.id;", "08.02", shop2), NOMATCH)
+    same("08.02: Dee's row: typeof(o.id), o.rowid", rows(DEE_SQL, "08.02", shop2), [DEE])
+    same("08.02: o.total > 25 in ON", rows(ON_SQL, "08.02", shop2), ON_OUT)
+    same("08.02: o.total > 25 in WHERE", rows(WHERE_SQL, "08.02", shop2), WHERE_OUT)
+    same("08.02: what WHERE is handed, and the term on each", rows(WHERE_IN_SQL, "08.02", shop2), WHERE_IN)
+    same("08.02: EXPLAIN, the term in ON", run_at(shop2, "EXPLAIN " + ON_SQL, "08.02"), ON_TREE)
+    same("08.02: EXPLAIN, the term in WHERE", run_at(shop2, "EXPLAIN " + WHERE_SQL, "08.02"), WHERE_TREE)
+
+    # 08.03: the ladder, on a shop.db with the index
+    shop3x = os.path.join(d, "shop3x.db")
+    run_at(shop3x, data + " " + INDEX_SQL, "08.03")
+    for frm, line in [(c[2], c[3]) for c in LADDER] + [BOTH, LEFTW]:
+        got = run_at(shop3x, f"EXPLAIN QUERY PLAN SELECT * {frm};", "08.03")
+        same(f"08.03: EXPLAIN QUERY PLAN ... {frm[5:]}", got[-1], "`--" + line)
+
+    # 08.03: shop.py's file, its pages, and what the lookup and the scan ask for
+    big, bigx = os.path.join(d, "shop.big.db"), os.path.join(d, "shop.bigx.db")
+    run_at(big, None, "08.03", stdin=shop_sql())
+    same("shop.py's file: customers and orders", [len(run_at(big, f"SELECT id FROM {t};", "08.03"))
+                                                   for t in ("customers", "orders")], list(SHOP_ROWS))
+    same("shop.py's file: pages", os.path.getsize(big) // 4096, SHOP_PAGES)
+    root, divs, lvs = tree(big, "customers")
+    same("customers: root page, its dividers, its leaves in key order",
+         (root, divs, [p for p, _, _ in lvs]), (CUST_ROOT, CUST_DIVIDERS, CUST_LEAVES))
+    home = next(lf for lf in lvs if lf[1] <= LOOK_ROW[0] <= lf[2])
+    same("the leaf customer 3 is in, and its rows", home, (CUST_LEAVES[0],) + CUST_LEAF_RANGE)
+    _, _, olvs = tree(big, "orders")
+    same("the orders leaf of order 358", next(p for p, a, b in olvs if a <= LOOK_ORDER[0] <= b), LOOK_ORDER_LEAF)
+    same("order 358", rows(f"SELECT * FROM orders WHERE id = {LOOK_ORDER[0]};", "08.03", big), [LOOK_ORDER])
+    same("customer 3's first order", rows(f"SELECT id FROM orders WHERE customer_id = {LOOK_ORDER[1]} LIMIT 1;",
+                                          "08.03", big), [(LOOK_ORDER[0],)])
+    same("customer 3", rows(f"SELECT * FROM customers WHERE id = {LOOK_ORDER[1]};", "08.03", big), [LOOK_ROW])
+    _, alone, _ = run_at(big, ALONE_SQL, "08.03", stats=True)
+    out1, look, _ = run_at(big, LOOK_SQL, "08.03", stats=True)
+    out2, sweep, _ = run_at(big, SWEEP_SQL, "08.03", stats=True)
+    same("the lookup and the scan find the same row", out1, out2)
+    same("how customers is read, each way", [run_at(big, "EXPLAIN QUERY PLAN " + q, "08.03")[-1]
+                                          for q in (LOOK_SQL, SWEEP_SQL)], ["`--" + LADDER[0][3], "`--SCAN c"])
+    same("page requests for order 358's customer: lookup, scan", (look - alone, sweep - alone), (LOOK_REQ, SWEEP_REQ))
+
+    # 08.03: the same join three ways
+    with open(big, "rb") as a, open(bigx, "wb") as b:
+        b.write(a.read())
+    run_at(bigx, INDEX_SQL, "08.03")
+    same("with the index: pages", os.path.getsize(bigx) // 4096, SHOP_PAGES_IX)
+    binary = os.path.join(REPO, "build", "at", "db", "08.03", "db")    # what ./learn run just built
+    for frm, how, ix, req, ms in COST:
+        path, sql = (bigx if ix else big), COST_SQL.format(frm)
+        lines, got, read = run_at(path, sql, "08.03", stats=True)
+        same(f"page requests, {frm}, {how}: rows, requests, pages read", (len(lines), got, read),
+             (SHOP_ROWS[1], req, SHOP_PAGES_IX if ix else SHOP_PAGES))
+        ts = []
+        for _ in range(7):
+            with open(os.devnull, "w") as dn:
+                t = time.perf_counter()
+                subprocess.run([binary, path, sql], stdout=dn, check=True)
+                ts.append((time.perf_counter() - t) * 1000)
+        print(f"   time, median of 7: {statistics.median(ts):.1f} ms (the figure says about {ms} ms)")
 
 
 def main():
