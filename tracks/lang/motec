@@ -1,0 +1,25 @@
+#!/bin/sh
+# motec: a program of the language made into a program of this computer,
+# in three steps: mote2c translates it to C, the C compiler compiles that,
+# and the linker joins it to rt.o, which reads and writes the numbers.
+#
+#   ./motec FILE.mote      makes build/NAME.c, build/NAME.o and build/NAME,
+#                          NAME being FILE without its directory and .mote
+#
+# build/ is in the directory motec is run from; mote2c, rt.h and rt.o are
+# found beside this script. A step that fails ends it, with its status.
+
+here=$(dirname "$0")
+if [ $# -ne 1 ]; then
+    echo "usage: motec FILE.mote" >&2
+    exit 2
+fi
+# @build 01.04 translate, compile, link
+# -fwrapv: C leaves a sum that overflows undefined; the language wraps it
+# around, and this flag makes the C compiler do the same.
+name=$(basename "$1" .mote)
+mkdir -p build
+"$here/mote2c" "$1" > "build/$name.c" || exit
+cc -O1 -fwrapv -I"$here" -c -o "build/$name.o" "build/$name.c" || exit
+cc -o "build/$name" "build/$name.o" "$here/rt.o" || exit
+# @end
