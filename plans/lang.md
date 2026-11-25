@@ -454,7 +454,8 @@ design (`plans/lang-01-lessons.md`).
 
 - Chapter 1 is eleven lessons, where the outline had four. It is the
   price of following section 1.6: the book takes a program through every
-  phase, so the reader does. The owner has not seen this count yet.
+  phase, so the reader does. The owner, shown the eleven on 2026-11-25:
+  "eleven lessons is fine, go ahead".
 - The first interpreter and the translator are kept at chapter 1's
   language for good. If they come to feel like dead weight in later
   chapters they move to a folder of their own; they are not deleted,
