@@ -1417,8 +1417,11 @@ customers c JOIN orders o, orders_customer index    0.014 s      147,241     134
 orders o JOIN customers c (rowid lookup)            0.013 s      200,724      69 /  674
 ```
 
-The nested loop asks for every page of orders once per customer (1000 x
-about 60 pages); the index asks for a path down the index and one down
+The nested loop asks for every row of orders once per customer, and a
+row costs about three page requests, not a page one (corrected by the
+08.03 writer: "every page of orders once per customer, 1000 x about 60
+pages" would be 60,000, not 60 million; the breakdown is below, under
+"For the lesson"); the index asks for a path down the index and one down
 the table per order; the other order asks for a path down customers (2
 levels) per order and needs no index at all. With DB_CACHE_PAGES=2 the
 file reads mostly measure the cache, which only shrinks every 256 output
@@ -1545,6 +1548,90 @@ Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
   (mergejoin, nestloop, hash: its steps 1-4). The choice: an index costs a
   write on every INSERT and lives in the file; a hash table costs a pass
   over the inner table on every query.
+
+For the lesson (the 08.03 writer, from the project at 08.03, Apple M4 Pro,
+sqlite3 3.54.1). Measured in the lesson's order (no index, then CREATE
+INDEX orders_customer, then the other order with the index in the file):
+
+```
+                                           time      requests     pages read
+customers c JOIN orders o, no index        0.86 s    60,239,036   69
+customers c JOIN orders o, with the index  0.012 s      147,241   134
+orders o JOIN customers c (index unused)   0.010 s      200,727   69
+```
+
+200,727, not the 200,724 above: with the index in the schema every
+statement starts with 11 requests, not 8 (`SELECT 1`: hits 10, misses 1;
+7 and 1 without it). The parts, each less those 11, measured alone:
+
+```
+SELECT id FROM orders                           60,236  (3 per row, plus leaf changes)
+SELECT id FROM customers                         3,028
+SELECT * FROM orders WHERE customer_id = 3        144  (20 entries, each then a rowid seek)
+SELECT * FROM customers WHERE id = 3                7  (4 to seek, 3 for the step that ends it)
+```
+
+1000 x 60,236 + 3,028 + 8 = 60,239,036 exactly (no index: base 8). The
+index join is 11 + 3,028 + 1000 x 144.2; the other order 11 + 60,236 +
+20000 x 7.02. Why three per row: btree.c's cursor_next, settle and
+cursor_load each call node_get on the current leaf. sqlite3's EXPLAIN
+QUERY PLAN on big.db is `SCAN o` / `SEARCH c USING INTEGER PRIMARY KEY
+(rowid=?)` for both written orders, with or without the index.
+
+LEFT JOIN and WHERE, worked through: a lookup for a LEFT JOIN item keyed
+by a WHERE term `col = key` would never change the final answer. The
+narrowing can only turn "matched some rows the term rejects" into "no
+match", i.e. a row of NULLs, and that row fails the same term (its col is
+NULL). What it changes is what the join hands up (shop.db: `LEFT JOIN
+orders o ON 1 WHERE o.customer_id = c.id`, Dee: six pairs, or one NULL
+row). sqlite3 handles this by proving it first: select.c ~7880, "If terms
+of the i-th table are used in the WHERE clause in such a way that the
+i-th table cannot be the NULL row of a join, then perform the appropriate
+simplification. This is called 'OUTER JOIN strength reduction'"
+(sqlite3ExprImpliesNonNullRow); its EXPLAIN QUERY PLAN for that query on
+shop.db with orders_customer has no LEFT-JOIN and starts `SCAN o USING
+COVERING INDEX orders_customer`. The lesson says this.
+
+Affinity example used in the lesson (shop.db + `notes(customer TEXT,
+note TEXT)`, index notes_customer, rows '1', '3', '03'): `customers c
+JOIN notes n ON n.customer = c.id` gives 3 rows and SCAN n in both
+engines (sqlite3 with CROSS JOIN and automatic_index=OFF also SCAN n);
+with index_affinity_ok's last line made `return 1;` it gives 2 rows
+(Chen|paid late lost) and SEARCH n USING INDEX notes_customer. Written
+`notes n JOIN customers c ON c.id = n.customer`, '03' gets INTEGER
+affinity and finds Chen by rowid. Rowid key not whole:
+`orders o JOIN customers c ON c.id = o.customer_id / 2.0` gives `13|Ada`
+in both engines (key 1.5 reads rowids 1 and 2, the Filter drops both).
+
+Read for Decide the boundary, PostgreSQL REL_18_7 (scratchpad clone,
+configure says 18.7; the GitHub pages at the tag checked to match):
+- executor/nodeHashjoin.c header: "This is based on the "hybrid hash
+  join" algorithm ..." (Zeller and Gray, VLDB 1990); "If the inner side
+  tuples of a hash join do not fit in memory, the hash join can be
+  executed in multiple batches."; the number of batches is a power of
+  two and grows by doubling. ExecHashJoinImpl's comment: "Note: the
+  relation we build hash table on is the "inner" the other one is
+  "outer"."; state HJ_BUILD_HASHTABLE: "First time through: build hash
+  table for inner relation."; HJ_NEED_NEW_OUTER then finds "the
+  corresponding bucket for this tuple".
+- executor/nodeMergejoin.c header NOTES: joins "inner and outer tuples
+  satisfying join clauses of the form ((= outerKey innerKey) ...)"; the
+  planner passes "the sort ordering of the inputs"; the first inner 5 is
+  "marked" so the cursor can be restored to it before joining the second
+  outer 5; the SKIP_TEST / JOINTUPLES / NEXTOUTER / TESTOUTER pseudo-code.
+- optimizer/path/joinpath.c add_paths_to_joinrel (quoted above): steps 1
+  (sort both, mergejoin), 2 (match_unsorted_outer: "nestloops and
+  mergejoins where the outer path is already ordered"), 3 (#ifdef
+  NOT_USED), 4 (hash both).
+Pages fetched for Go deeper: sqlite.org/optoverview.html#hash_joins ("An
+automatic index is almost the same thing as a hash join. The only
+difference is that a B-Tree is used instead of a hash table.") and its
+#the_outer_join_strength_reduction_optimization section;
+postgresql.org/docs/18/planner-optimizer.html (51.5.1: the three join
+strategies; the nested loop may use "values from the current row of the
+left relation as keys for the index scan of the right"); the CMU 15-445
+fall 2024 lecture 12 notes (Index Nested Loop Join, "Cost: M + (m x C)",
+naive "M + (m x N)").
 
 ### 08.04 Aggregates: one row from many
 
