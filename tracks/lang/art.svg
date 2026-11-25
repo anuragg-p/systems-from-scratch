@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 160" fill="none">
+<path class="s f" d="M66 44C52 36 30 34 10 38V122C30 118 52 120 66 128Z" stroke-width="1.5" stroke-linejoin="round"/>
+<path class="s f" d="M66 44C80 36 102 34 122 38V122C102 118 80 120 66 128Z" stroke-width="1.5" stroke-linejoin="round"/>
+<path class="m" d="M20 58H56M20 70H50M20 82H56M20 94H44M20 106H54M76 58H112M76 70H104M76 82H96M76 94H110M76 106H100" stroke-width="2" stroke-linecap="round"/>
+<path class="a draw" d="M96 82C118 82 128 76 156 76" pathLength="1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect class="s f" x="150" y="38" width="122" height="84" rx="8" stroke-width="1.5"/>
+<path class="s" d="M150 55H272" stroke-width="1.5"/>
+<circle class="m" cx="161" cy="46.5" r="2.25" stroke-width="1.5"/>
+<circle class="m" cx="170" cy="46.5" r="2.25" stroke-width="1.5"/>
+<circle class="m" cx="179" cy="46.5" r="2.25" stroke-width="1.5"/>
+<text class="t mono" x="160" y="80" font-size="11.5">&gt; write 6 * 7</text>
+<text class="ta mono" x="160" y="104" font-size="14" font-weight="700">42</text>
+</svg>

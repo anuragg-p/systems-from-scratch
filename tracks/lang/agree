@@ -1,0 +1,80 @@
+#!/bin/sh
+# agree: every program run every way there is, and what each way prints
+# held to the program's expected output. All the ways of running a
+# program must agree; this is the check that they do.
+#
+#   ./agree [DIR]      the programs of DIR (default: programs/ beside this
+#                      script) that have a .in and a .out beside them
+#
+# A row for each program, a column for each way: "ok" where the way
+# printed the expected output, DIFFERS where it did not. Then a line that
+# sums up, and the exit status is 1 if any differs. What the ways make,
+# and what each printed, goes into build/ in the directory it is run from.
+
+here=$(dirname "$0")
+dir=${1:-$here/programs}
+mkdir -p build
+
+# The ways there are, and how each runs a program ($2: its path without
+# .mote) with the program's input on standard input.
+ways="mote0 motec"
+ways="$ways mote"           # @from 01.09
+ways="$ways machine"        # @from 01.10
+ways="$ways machine-O"      # @from 01.11
+run() {
+    name=$(basename "$2")
+    case $1 in
+    mote0) "$here/mote0" "$2.mote" ;;
+    motec) "$here/motec" "$2.mote" && "build/$name" ;;
+    mote) "$here/mote" "$2.mote" ;;    # @from 01.09
+    machine) "$here/mote" -S "$2.mote" > "build/$name.s" && "$here/machine" "build/$name.s" ;;    # @from 01.10
+    machine-O) "$here/mote" -S -O "$2.mote" > "build/$name-O.s" && "$here/machine" "build/$name-O.s" ;;    # @from 01.11
+    esac
+}
+
+# @build 01.05 every program, every way
+# The first column is as wide as the longest name, and two spaces. Each
+# way's output is compared with the .out byte for byte (cmp); what it
+# wrote to standard error is kept, not shown.
+width=0
+for f in "$dir"/*.mote; do
+    n=$(basename "$f" .mote)
+    if [ -f "${f%.mote}.in" ] && [ -f "${f%.mote}.out" ] && [ ${#n} -gt $width ]; then
+        width=${#n}
+    fi
+done
+programs=0
+differ=0
+for f in "$dir"/*.mote; do
+    p=${f%.mote}
+    n=$(basename "$p")
+    [ -f "$p.in" ] && [ -f "$p.out" ] || continue
+    programs=$((programs + 1))
+    printf "%-$((width + 2))s" "$n"
+    sep=
+    for w in $ways; do
+        run "$w" "$p" < "$p.in" > "build/$n.$w.out" 2> "build/$n.$w.err"
+        if cmp -s "build/$n.$w.out" "$p.out"; then
+            result=ok
+        else
+            result=DIFFERS
+            differ=$((differ + 1))
+        fi
+        case $w in
+        *-O) printf "%s%s -O %s" "$sep" "${w%-O}" "$result" ;;
+        *) printf "%s%s %s" "$sep" "$w" "$result" ;;
+        esac
+        sep="  "
+    done
+    printf "\n"
+done
+set -- $ways
+[ $programs -eq 1 ] && s= || s=s
+printf "%d program%s, %d ways each: " $programs "$s" $#
+if [ $differ -eq 0 ]; then
+    echo "all agree"
+    exit 0
+fi
+[ $differ -eq 1 ] && echo "1 differs" || echo "$differ differ"
+exit 1
+# @end

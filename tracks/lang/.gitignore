@@ -1,0 +1,12 @@
+# What make builds, beside its sources.
+/machine
+/gcd
+/mote0
+/mote2c
+/mote
+/rt.o
+*.dSYM/
+# What motec, agree and the lessons make.
+build/
+.test-logs/
+__pycache__/
