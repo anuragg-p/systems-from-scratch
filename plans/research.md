@@ -38,13 +38,21 @@ page runs that part at 3 as well (13.02 settles it at 10). 10.02's
 reason for its slower step was wrong and is corrected from 11.02's
 measurement.
 
-Left, in this order: one `./learn verify --fresh research` of the whole
-track on master; the quiet pass (every default run timed again with
-nothing else running; the ones seen nearest a minute under load are
-08.02, 09.03, 11.05, 12.01, 12.03 and 13.02); a read of the new modules
-on the site for terms and cross-references, as was done for 00 to 05;
-the README's map (`./learn map --write`) when the other session's
-README changes are in. The shelf (16 to 21) is not started.
+`./learn verify --fresh research` on master, the whole track at once:
+ok, 70 of 70 lessons, 4348 s (2026-11-25, at a load of 9 to 15).
+
+The default runs seen nearest a minute, timed again on master at a load
+of 9 to 11: 08.02 34 s, 09.03 35 s, 12.01 46 s, 12.03 35 s, 13.02 34 s,
+all well inside. 11.05 took 66 s and then 49 s at the same load (58 s
+at a load of 6 when it was built): the one default still to be timed
+with nothing else running, and cut if it passes 55 s then.
+
+In work, two agents: a read of modules 06 to 10 and of 11 to 15 for
+terms, cross-references and promises between lessons that were written
+out of order, as was done for 00 to 05. Left after that: 11.05's time
+on a quiet machine; the README's map (`./learn map --write`) when the
+other session's README changes are in. The shelf (16 to 21) is not
+started.
 
 The owner asked for more speed (2026-11-24): the limit of three agents
 is lifted. Timings taken while four or five agents run are not to be
