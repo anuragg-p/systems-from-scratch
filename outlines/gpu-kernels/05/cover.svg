@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Two sequences, their block tables and the pool of blocks: token 6 of A goes to block table[1] = 2, slot 2 * 4 + 2 = 10</title>
+<defs><marker id="g05-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="g05-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="g05-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="28" font-size="11" font-weight="600">sequence A</text>
+<rect class="s f" x="24" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="36" y="50.85" font-size="11" text-anchor="middle">0</text>
+<rect class="s f" x="48" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="60" y="50.85" font-size="11" text-anchor="middle">1</text>
+<rect class="s f" x="72" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="84" y="50.85" font-size="11" text-anchor="middle">2</text>
+<rect class="s f" x="96" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="108" y="50.85" font-size="11" text-anchor="middle">3</text>
+<rect class="s f" x="126" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="138" y="50.85" font-size="11" text-anchor="middle">4</text>
+<rect class="s f" x="150" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="162" y="50.85" font-size="11" text-anchor="middle">5</text>
+<rect class="a af" x="174" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="186" y="50.85" font-size="11" font-weight="700" text-anchor="middle">6</text>
+<text class="ta" x="186" y="28" font-size="11" font-weight="700" text-anchor="middle">new</text>
+<path class="m" d="M27 62 V67 H117 V62" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M72 67 V99.0 H242" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#g05-ah)"/>
+<path class="m" d="M129 62 V67 H195 V62" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M162 67 V73 H289 V86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#g05-ah)"/>
+<rect class="s fs" x="244" y="88" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="259" y="103.2" font-size="12" font-weight="700" text-anchor="middle">5</text>
+<text class="tm mono" x="259" y="123" font-size="10.5" text-anchor="middle">[0]</text>
+<rect class="s fs" x="274" y="88" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="289" y="103.2" font-size="12" font-weight="700" text-anchor="middle">2</text>
+<text class="tm mono" x="289" y="123" font-size="10.5" text-anchor="middle">[1]</text>
+<text class="tm" x="24" y="142" font-size="11" font-weight="600">sequence B</text>
+<rect class="s f" x="24" y="150" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="36" y="164.85" font-size="11" text-anchor="middle">0</text>
+<rect class="s f" x="48" y="150" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="60" y="164.85" font-size="11" text-anchor="middle">1</text>
+<rect class="s f" x="72" y="150" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="84" y="164.85" font-size="11" text-anchor="middle">2</text>
+<path class="m" d="M27 176 V181 H93 V176" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M60 181 V199.0 H242" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#g05-ah)"/>
+<rect class="s fs" x="244" y="188" width="30" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="259" y="203.2" font-size="12" font-weight="700" text-anchor="middle">6</text>
+<text class="tm mono" x="259" y="223" font-size="10.5" text-anchor="middle">[0]</text>
+<text class="tm" x="244" y="28" font-size="11" font-weight="600">block tables</text>
+<text class="t" x="358" y="28" font-size="11" font-weight="600"><tspan class="tm">the pool: 8 blocks, </tspan><tspan class="tm mono">block_size = 4</tspan></text>
+<text class="tm mono" x="364" y="51" font-size="11.5" text-anchor="end">0</text>
+<rect class="m f" x="372" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="396" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="420" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="444" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="364" y="91" font-size="11.5" text-anchor="end">1</text>
+<rect class="m f" x="372" y="76" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="396" y="76" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="420" y="76" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="444" y="76" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="364" y="131" font-size="11.5" font-weight="700" text-anchor="end">2</text>
+<rect class="s fs" x="372" y="116" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="384" y="130.68" font-size="10.5" text-anchor="middle">A4</text>
+<rect class="s fs" x="396" y="116" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="408" y="130.68" font-size="10.5" text-anchor="middle">A5</text>
+<rect class="s f" x="444" y="116" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="420" y="116" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="432" y="130.68" font-size="10.5" font-weight="700" text-anchor="middle">A6</text>
+<text class="tm mono" x="364" y="171" font-size="11.5" text-anchor="end">3</text>
+<rect class="m f" x="372" y="156" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="396" y="156" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="420" y="156" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="444" y="156" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="500" y="51" font-size="11.5" text-anchor="end">4</text>
+<rect class="m f" x="508" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="532" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="556" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="580" y="36" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="500" y="91" font-size="11.5" font-weight="700" text-anchor="end">5</text>
+<rect class="s fs" x="508" y="76" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="520" y="90.67" font-size="10.5" text-anchor="middle">A0</text>
+<rect class="s fs" x="532" y="76" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="544" y="90.67" font-size="10.5" text-anchor="middle">A1</text>
+<rect class="s fs" x="556" y="76" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="568" y="90.67" font-size="10.5" text-anchor="middle">A2</text>
+<rect class="s fs" x="580" y="76" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="592" y="90.67" font-size="10.5" text-anchor="middle">A3</text>
+<text class="t mono" x="500" y="131" font-size="11.5" font-weight="700" text-anchor="end">6</text>
+<rect class="s fs" x="508" y="116" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="520" y="130.68" font-size="10.5" text-anchor="middle">B0</text>
+<rect class="s fs" x="532" y="116" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="544" y="130.68" font-size="10.5" text-anchor="middle">B1</text>
+<rect class="s fs" x="556" y="116" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="568" y="130.68" font-size="10.5" text-anchor="middle">B2</text>
+<rect class="s f" x="580" y="116" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="500" y="171" font-size="11.5" text-anchor="end">7</text>
+<rect class="m f" x="508" y="156" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="532" y="156" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="556" y="156" width="24" height="22" rx="0" stroke-width="1.5"/>
+<rect class="m f" x="580" y="156" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="24" y="246" font-size="12"><tspan x="24">token 6 of A:</tspan><tspan x="132">logical block 6 / 4 = 1,</tspan><tspan x="319.2">offset 6 % 4 = 2</tspan></text>
+<text class="t mono" x="24" y="263" font-size="12">block table[1] = 2</text>
+<text class="ta mono" x="24" y="280" font-size="12" font-weight="700">slot = 2 * 4 + 2 = 10</text>
+</svg>

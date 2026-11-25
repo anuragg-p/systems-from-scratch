@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Tiled attention: the score table is never stored; one tile at a time updates a running max, sum and output</title>
+<defs><marker id="g07-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="g07-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="g07-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="191" y="30" font-size="11.5" font-weight="600" text-anchor="middle">keys</text>
+<text class="t" x="64" y="149" font-size="11.5" font-weight="600" text-anchor="middle" transform="rotate(-90 64 149)">queries</text>
+<text class="tm mono" x="113" y="50" font-size="10" text-anchor="middle">0</text>
+<text class="tm mono" x="92" y="74.5" font-size="10" text-anchor="end">0</text>
+<text class="tm mono" x="131" y="50" font-size="10" text-anchor="middle">1</text>
+<text class="tm mono" x="92" y="92.5" font-size="10" text-anchor="end">1</text>
+<text class="tm mono" x="159" y="50" font-size="10" text-anchor="middle">2</text>
+<text class="tm mono" x="92" y="120.5" font-size="10" text-anchor="end">2</text>
+<text class="tm mono" x="177" y="50" font-size="10" text-anchor="middle">3</text>
+<text class="tm mono" x="92" y="138.5" font-size="10" text-anchor="end">3</text>
+<text class="tm mono" x="205" y="50" font-size="10" text-anchor="middle">4</text>
+<text class="tm mono" x="92" y="166.5" font-size="10" text-anchor="end">4</text>
+<text class="tm mono" x="223" y="50" font-size="10" text-anchor="middle">5</text>
+<text class="tm mono" x="92" y="184.5" font-size="10" text-anchor="end">5</text>
+<text class="tm mono" x="251" y="50" font-size="10" text-anchor="middle">6</text>
+<text class="tm mono" x="92" y="212.5" font-size="10" text-anchor="end">6</text>
+<text class="tm mono" x="269" y="50" font-size="10" text-anchor="middle">7</text>
+<text class="tm mono" x="92" y="230.5" font-size="10" text-anchor="end">7</text>
+<rect class="m" x="99" y="57" width="184" height="184" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="191" y="257" font-size="11" font-weight="600" text-anchor="middle">never stored</text>
+<rect class="m" x="150" y="62" width="36" height="36" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="196" y="62" width="36" height="36" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="242" y="62" width="36" height="36" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="196" y="108" width="36" height="36" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="242" y="108" width="36" height="36" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="m" x="242" y="154" width="36" height="36" rx="3" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="295" y="84" font-size="11">skipped: the future</text>
+<rect class="s f" x="104" y="62" width="36" height="36" rx="3" stroke-width="1.5"/>
+<rect class="s f" x="104" y="108" width="36" height="36" rx="3" stroke-width="1.5"/>
+<rect class="s f" x="150" y="108" width="36" height="36" rx="3" stroke-width="1.5"/>
+<rect class="s fs" x="104" y="154" width="36" height="36" rx="3" stroke-width="1.5"/>
+<rect class="s f" x="196" y="154" width="36" height="36" rx="3" stroke-width="1.5"/>
+<rect class="s f" x="104" y="200" width="36" height="36" rx="3" stroke-width="1.5"/>
+<rect class="s f" x="150" y="200" width="36" height="36" rx="3" stroke-width="1.5"/>
+<rect class="s f" x="196" y="200" width="36" height="36" rx="3" stroke-width="1.5"/>
+<rect class="s f" x="242" y="200" width="36" height="36" rx="3" stroke-width="1.5"/>
+<text class="tm" x="122" y="175.5" font-size="10" text-anchor="middle">done</text>
+<text class="tm" x="214" y="175.5" font-size="10" text-anchor="middle">next</text>
+<rect class="a af" x="150" y="154" width="36" height="36" rx="3" stroke-width="1.5"/>
+<text class="ta" x="168" y="176" font-size="11" font-weight="700" text-anchor="middle">now</text>
+<path class="a" d="M168 190 V195 H380" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#g07-aa)"/>
+<text class="tm" x="382" y="135" font-size="11" font-weight="600">kept for query-tile row 2</text>
+<rect class="s f" x="382" y="145" width="196" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="398" y="164" font-size="14" font-weight="700">m</text>
+<text class="t" x="422" y="163.5" font-size="12">running max</text>
+<rect class="s f" x="382" y="181" width="196" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="398" y="200" font-size="14" font-weight="700">l</text>
+<text class="t" x="422" y="199.5" font-size="12">running sum</text>
+<rect class="s f" x="382" y="217" width="196" height="28" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="398" y="236" font-size="14" font-weight="700">o</text>
+<text class="t" x="422" y="235.5" font-size="12">running output</text>
+<text class="tm" x="382" y="265" font-size="11">updated after each tile; rescaled</text>
+<text class="tm" x="382" y="280" font-size="11">when a larger score arrives</text>
+</svg>

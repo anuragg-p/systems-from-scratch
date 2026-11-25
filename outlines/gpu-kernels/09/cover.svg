@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>The capstone: Python over your extension over the GPU, one transformer block as your kernels, and a report you fill in</title>
+<defs><marker id="g09-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="g09-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="g09-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="24" y="72" width="116" height="44" rx="8" stroke-width="1.5"/>
+<text class="t" x="82" y="91" font-size="11" font-weight="600" text-anchor="middle">Python:</text>
+<text class="t" x="82" y="105" font-size="11" text-anchor="middle">PyTorch tensors</text>
+<line class="s" x1="82" y1="118" x2="82" y2="134" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g09-ah)"/>
+<rect class="s fs" x="24" y="136" width="116" height="58" rx="8" stroke-width="1.5"/>
+<text class="t" x="82" y="155" font-size="11" font-weight="600" text-anchor="middle">the extension:</text>
+<text class="t" x="82" y="169" font-size="11" text-anchor="middle">your kernels</text>
+<text class="t" x="82" y="183" font-size="11" text-anchor="middle">as functions</text>
+<line class="s" x1="82" y1="196" x2="82" y2="212" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g09-ah)"/>
+<rect class="s f" x="24" y="214" width="116" height="30" rx="8" stroke-width="1.5"/>
+<text class="t" x="82" y="233" font-size="11" font-weight="600" text-anchor="middle">the GPU</text>
+<text class="tm" x="292" y="42" font-size="11" font-weight="600" text-anchor="middle">one transformer block</text>
+<rect class="a af" x="162" y="58" width="116" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta mono" x="220" y="71.5" font-size="10" font-weight="600" text-anchor="middle">rms_norm</text>
+<line class="s" x1="220" y1="80" x2="220" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g09-ah)"/>
+<rect class="m" x="156" y="94" width="128" height="122" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="164" y="108" font-size="10.5" font-weight="600">attention</text>
+<rect class="a af" x="162" y="116" width="116" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta mono" x="220" y="129.5" font-size="10" font-weight="600" text-anchor="middle">rotary</text>
+<line class="s" x1="220" y1="138" x2="220" y2="148" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g09-ah)"/>
+<rect class="a af" x="162" y="150" width="116" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta mono" x="220" y="163.5" font-size="10" font-weight="600" text-anchor="middle">reshape_and_cache</text>
+<line class="s" x1="220" y1="172" x2="220" y2="182" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g09-ah)"/>
+<rect class="a af" x="162" y="184" width="116" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta mono" x="220" y="197.5" font-size="10" font-weight="600" text-anchor="middle">paged attention</text>
+<line class="s" x1="220" y1="218" x2="220" y2="230" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g09-ah)"/>
+<rect class="a af" x="162" y="232" width="116" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta mono" x="220" y="245.5" font-size="10" font-weight="600" text-anchor="middle">add</text>
+<rect class="a af" x="306" y="58" width="116" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta mono" x="364" y="71.5" font-size="10" font-weight="600" text-anchor="middle">rms_norm</text>
+<line class="s" x1="364" y1="80" x2="364" y2="92" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g09-ah)"/>
+<rect class="m" x="300" y="94" width="128" height="122" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="308" y="108" font-size="10.5" font-weight="600">MLP</text>
+<rect class="a af" x="306" y="116" width="116" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta mono" x="364" y="129.5" font-size="10" font-weight="600" text-anchor="middle">matmul</text>
+<line class="s" x1="364" y1="138" x2="364" y2="148" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g09-ah)"/>
+<rect class="a af" x="306" y="150" width="116" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta mono" x="364" y="163.5" font-size="10" font-weight="600" text-anchor="middle">silu_and_mul</text>
+<line class="s" x1="364" y1="172" x2="364" y2="182" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g09-ah)"/>
+<rect class="a af" x="306" y="184" width="116" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta mono" x="364" y="197.5" font-size="10" font-weight="600" text-anchor="middle">matmul</text>
+<line class="s" x1="364" y1="218" x2="364" y2="230" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g09-ah)"/>
+<rect class="a af" x="306" y="232" width="116" height="20" rx="10" stroke-width="1.5"/>
+<text class="ta mono" x="364" y="245.5" font-size="10" font-weight="600" text-anchor="middle">add</text>
+<path class="s" d="M280 242 H292 V68 H304" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#g09-ah)"/>
+<text class="t" x="440" y="66" font-size="12" font-weight="700">the report</text>
+<rect class="s f" x="440" y="76" width="176" height="132" rx="6" stroke-width="1.5"/>
+<line class="s" x1="440" y1="98" x2="616" y2="98" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="514" y1="76" x2="514" y2="208" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="565" y1="76" x2="565" y2="208" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="539.5" y="91" font-size="10.5" font-weight="600" text-anchor="middle">yours</text>
+<text class="t" x="590.5" y="91" font-size="10.5" font-weight="600" text-anchor="middle">PyTorch</text>
+<text class="t mono" x="447" y="113" font-size="10.5">matmul</text>
+<text class="tm mono" x="539.5" y="113" font-size="11" text-anchor="middle">-</text>
+<text class="tm mono" x="590.5" y="113" font-size="11" text-anchor="middle">-</text>
+<line class="m" x1="440" y1="120" x2="616" y2="120" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="447" y="135" font-size="10.5">rms_norm</text>
+<text class="tm mono" x="539.5" y="135" font-size="11" text-anchor="middle">-</text>
+<text class="tm mono" x="590.5" y="135" font-size="11" text-anchor="middle">-</text>
+<line class="m" x1="440" y1="142" x2="616" y2="142" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="447" y="157" font-size="10.5">rotary</text>
+<text class="tm mono" x="539.5" y="157" font-size="11" text-anchor="middle">-</text>
+<text class="tm mono" x="590.5" y="157" font-size="11" text-anchor="middle">-</text>
+<line class="m" x1="440" y1="164" x2="616" y2="164" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="447" y="179" font-size="10.5">attention</text>
+<text class="tm mono" x="539.5" y="179" font-size="11" text-anchor="middle">-</text>
+<text class="tm mono" x="590.5" y="179" font-size="11" text-anchor="middle">-</text>
+<line class="m" x1="440" y1="186" x2="616" y2="186" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="447" y="201" font-size="10.5">whole model</text>
+<text class="tm mono" x="539.5" y="201" font-size="11" text-anchor="middle">-</text>
+<text class="tm mono" x="590.5" y="201" font-size="11" text-anchor="middle">-</text>
+<text class="t" x="528" y="230" font-size="12" font-weight="600" text-anchor="middle">you measure</text>
+</svg>

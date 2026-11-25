@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Wait for the GPU before you stop the clock</title>
+<defs><marker id="g00-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="g00-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="g00-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="246.0" y="31" font-size="12" font-weight="600" text-anchor="end">input</text>
+<rect class="s f" x="256.0" y="18" width="16" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="272.0" y="18" width="16" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="288.0" y="18" width="16" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="304.0" y="18" width="16" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="320.0" y="18" width="16" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="336.0" y="18" width="16" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="352.0" y="18" width="16" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="368.0" y="18" width="16" height="18" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="84.0" y="58" width="224" height="32" rx="8" stroke-width="1.5"/>
+<text class="t" x="196.0" y="78.2" font-size="12" text-anchor="middle">reference: plain C on the CPU</text>
+<rect class="s f" x="332.0" y="58" width="224" height="32" rx="8" stroke-width="1.5"/>
+<text class="t" x="444.0" y="78.2" font-size="12" text-anchor="middle">kernel: on the GPU</text>
+<path class="s" d="M320 36V46H196V56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#g00-ah)"/>
+<path class="s" d="M320 46H444V56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#g00-ah)"/>
+<line class="s" x1="196" y1="90" x2="196" y2="108" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g00-ah)"/>
+<line class="s" x1="444" y1="90" x2="444" y2="108" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g00-ah)"/>
+<rect class="s f" x="152.0" y="110" width="336" height="32" rx="8" stroke-width="1.5"/>
+<text class="t" x="320.0" y="130.2" font-size="12" text-anchor="middle">compare: largest difference within tolerance?</text>
+<rect class="s fs" x="62" y="188" width="418" height="20" rx="4" stroke-width="1.5"/>
+<text class="t" x="292.0" y="202" font-size="12" font-weight="600" text-anchor="middle">GPU still working</text>
+<line class="s" x1="48" y1="224" x2="566" y2="224" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g00-ah)"/>
+<text class="tm" x="574" y="228" font-size="11">time</text>
+<line class="s" x1="104" y1="182" x2="104" y2="224" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="104" y="176" font-size="11.5" text-anchor="middle">launch returns</text>
+<line class="s" x1="480" y1="182" x2="480" y2="224" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="480" y="176" font-size="11.5" text-anchor="middle">synchronize</text>
+<path class="m" d="M48 234V240H104V234" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+<text class="tm" x="114" y="244" font-size="11.5">timed without waiting: too short</text>
+<path class="a" d="M48 256V262H480V256" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="264.0" y="280" font-size="12" font-weight="600" text-anchor="middle">timed after waiting: the real time</text>
+</svg>

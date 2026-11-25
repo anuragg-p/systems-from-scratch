@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>float32, float16 and bfloat16 bit by bit; read 16 bits, add in 32, write 16</title>
+<defs><marker id="g08-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="g08-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="g08-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t mono" x="24" y="56.5" font-size="12" font-weight="600">float32</text>
+<rect class="s f" x="112" y="42" width="15" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="119.5" y="76" font-size="10.5" text-anchor="middle">1</text>
+<text class="tm" x="119.5" y="34" font-size="10.5" text-anchor="middle">sign</text>
+<rect class="s fs" x="127" y="42" width="120" height="20" rx="0" stroke-width="1.5"/>
+<line class="m" x1="142" y1="46" x2="142" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="157" y1="46" x2="157" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="172" y1="46" x2="172" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="187" y1="46" x2="187" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="202" y1="46" x2="202" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="217" y1="46" x2="217" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="232" y1="46" x2="232" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="187" y="76" font-size="10.5" text-anchor="middle">8</text>
+<text class="tm" x="187" y="34" font-size="10.5" text-anchor="middle">exponent</text>
+<rect class="s f" x="247" y="42" width="345" height="20" rx="0" stroke-width="1.5"/>
+<line class="m" x1="262" y1="46" x2="262" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="277" y1="46" x2="277" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="292" y1="46" x2="292" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="307" y1="46" x2="307" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="322" y1="46" x2="322" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="337" y1="46" x2="337" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="352" y1="46" x2="352" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="367" y1="46" x2="367" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="382" y1="46" x2="382" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="397" y1="46" x2="397" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="412" y1="46" x2="412" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="427" y1="46" x2="427" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="442" y1="46" x2="442" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="457" y1="46" x2="457" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="472" y1="46" x2="472" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="487" y1="46" x2="487" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="502" y1="46" x2="502" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="517" y1="46" x2="517" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="532" y1="46" x2="532" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="547" y1="46" x2="547" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="562" y1="46" x2="562" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="577" y1="46" x2="577" y2="58" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="419.5" y="76" font-size="10.5" text-anchor="middle">23</text>
+<text class="tm" x="419.5" y="34" font-size="10.5" text-anchor="middle">fraction</text>
+<text class="t mono" x="24" y="104.5" font-size="12" font-weight="600">float16</text>
+<rect class="s f" x="112" y="90" width="15" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="119.5" y="124" font-size="10.5" text-anchor="middle">1</text>
+<rect class="s fs" x="127" y="90" width="75" height="20" rx="0" stroke-width="1.5"/>
+<line class="m" x1="142" y1="94" x2="142" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="157" y1="94" x2="157" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="172" y1="94" x2="172" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="187" y1="94" x2="187" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="164.5" y="124" font-size="10.5" text-anchor="middle">5</text>
+<rect class="s f" x="202" y="90" width="150" height="20" rx="0" stroke-width="1.5"/>
+<line class="m" x1="217" y1="94" x2="217" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="232" y1="94" x2="232" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="247" y1="94" x2="247" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="262" y1="94" x2="262" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="277" y1="94" x2="277" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="292" y1="94" x2="292" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="307" y1="94" x2="307" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="322" y1="94" x2="322" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="337" y1="94" x2="337" y2="106" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="277" y="124" font-size="10.5" text-anchor="middle">10</text>
+<text class="t mono" x="24" y="152.5" font-size="12" font-weight="600">bfloat16</text>
+<rect class="s f" x="112" y="138" width="15" height="20" rx="0" stroke-width="1.5"/>
+<text class="tm mono" x="119.5" y="172" font-size="10.5" text-anchor="middle">1</text>
+<rect class="s fs" x="127" y="138" width="120" height="20" rx="0" stroke-width="1.5"/>
+<line class="m" x1="142" y1="142" x2="142" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="157" y1="142" x2="157" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="172" y1="142" x2="172" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="187" y1="142" x2="187" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="202" y1="142" x2="202" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="217" y1="142" x2="217" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="232" y1="142" x2="232" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="187" y="172" font-size="10.5" text-anchor="middle">8</text>
+<rect class="s f" x="247" y="138" width="105" height="20" rx="0" stroke-width="1.5"/>
+<line class="m" x1="262" y1="142" x2="262" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="277" y1="142" x2="277" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="292" y1="142" x2="292" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="307" y1="142" x2="307" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="322" y1="142" x2="322" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="337" y1="142" x2="337" y2="154" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="299.5" y="172" font-size="10.5" text-anchor="middle">7</text>
+<text class="tm" x="368" y="152" font-size="11">the same exponent as float32</text>
+<rect class="s f" x="58.5" y="206" width="125" height="32" rx="8" stroke-width="1.5"/>
+<text class="t" x="121" y="226.5" font-size="12" font-weight="600" text-anchor="middle"><tspan class="t">input: </tspan><tspan class="t mono">float16</tspan></text>
+<rect class="a af" x="223.5" y="206" width="186" height="32" rx="8" stroke-width="1.5"/>
+<text class="t" x="316.5" y="226.5" font-size="12" font-weight="700" text-anchor="middle"><tspan class="ta">sum of squares: </tspan><tspan class="ta mono">float32</tspan></text>
+<line class="s" x1="187.5" y1="222" x2="219.5" y2="222" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g08-ah)"/>
+<rect class="s f" x="449.5" y="206" width="132" height="32" rx="8" stroke-width="1.5"/>
+<text class="t" x="515.5" y="226.5" font-size="12" font-weight="600" text-anchor="middle"><tspan class="t">output: </tspan><tspan class="t mono">float16</tspan></text>
+<line class="s" x1="413.5" y1="222" x2="445.5" y2="222" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g08-ah)"/>
+<text class="t" x="320" y="264" font-size="11" text-anchor="middle"><tspan class="tm">as vLLM&#x27;s </tspan><tspan class="tm mono">rms_norm_kernel</tspan><tspan class="tm"> does</tspan></text>
+</svg>
