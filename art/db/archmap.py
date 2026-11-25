@@ -78,7 +78,7 @@ LESSONS = [
     ("08.04", "Aggregates: one row from many", {"exec"}, None),
     ("08.05", "GROUP BY, HAVING and DISTINCT", {"exec"}, None),
     ("08.06", "Subqueries: a query inside a query", {"parse", "exec"}, None),
-    ("08.07", "UNIQUE: a constraint is an index lookup", {"cat", "exec"}, {"cat", "exec", "btree"}),
+    ("08.07", "UNIQUE: a constraint is an index lookup", {"cat", "exec"}, None),
 ]
 
 
