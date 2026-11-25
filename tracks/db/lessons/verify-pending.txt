@@ -1,7 +1,5 @@
 # Lessons ./learn verify does not hold to their annotations yet: one id per line.
 # Annotate a lesson (README.md, "Verifying a lesson"), make ./learn verify db <id> pass,
 # then delete its line here. ./learn check runs the static checks on every lesson not listed.
-08.01
 08.02
 08.03
-08.07

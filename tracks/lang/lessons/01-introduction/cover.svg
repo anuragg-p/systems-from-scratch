@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>One program, two ways to run it</title>
+<defs><marker id="l01-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l01-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="l01-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s fs" x="24" y="128" width="112" height="44" rx="8" stroke-width="1.5"/>
+<text class="t mono" x="36" y="155" font-size="13" font-weight="600">write 6 * 7</text>
+<path class="s" d="M138 150 H152 V82 H170" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#l01-ah)"/>
+<path class="s" d="M152 150 V212 H170" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#l01-ah)"/>
+<rect class="s f" x="172" y="64" width="108" height="36" rx="8" stroke-width="1.5"/>
+<text class="t" x="226" y="86.38" font-size="12.5" font-weight="600" text-anchor="middle">interpreter</text>
+<line class="s" x1="282" y1="82" x2="553" y2="82" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l01-ah)"/>
+<rect class="s f" x="172" y="194" width="90" height="36" rx="8" stroke-width="1.5"/>
+<text class="t" x="217" y="216.38" font-size="12.5" font-weight="600" text-anchor="middle">compiler</text>
+<line class="s" x1="264" y1="212" x2="285" y2="212" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l01-ah)"/>
+<rect class="s fs" x="288" y="170" width="78" height="84" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="300" y="192" font-size="11.5">push 6</text>
+<text class="t mono" x="300" y="208" font-size="11.5">push 7</text>
+<text class="t mono" x="300" y="224" font-size="11.5">mul</text>
+<text class="t mono" x="300" y="240" font-size="11.5">write</text>
+<line class="s" x1="368" y1="212" x2="391" y2="212" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l01-ah)"/>
+<rect class="s f" x="394" y="194" width="84" height="36" rx="8" stroke-width="1.5"/>
+<text class="t" x="436" y="216.38" font-size="12.5" font-weight="600" text-anchor="middle">machine</text>
+<line class="s" x1="480" y1="212" x2="553" y2="212" stroke-width="1.5" stroke-linecap="round" marker-end="url(#l01-ah)"/>
+<rect class="a af" x="556" y="69" width="48" height="26" rx="13" stroke-width="1.5"/>
+<text class="ta mono" x="580" y="86.9" font-size="14" font-weight="700" text-anchor="middle">42</text>
+<rect class="a af" x="556" y="199" width="48" height="26" rx="13" stroke-width="1.5"/>
+<text class="ta mono" x="580" y="216.9" font-size="14" font-weight="700" text-anchor="middle">42</text>
+<line class="a" x1="580" y1="97" x2="580" y2="197" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="568" y="151" font-size="12.5" font-weight="700" text-anchor="end">the same answer</text>
+</svg>

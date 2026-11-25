@@ -1,0 +1,18 @@
+# primes.mote: the primes up to n, by trial division. There is no
+# remainder operator: p - p / d * d is what is left of p after dividing by d.
+read n
+p := 2
+while p <= n do
+    d := 2
+    prime := 1
+    while d * d <= p do
+        if p - p / d * d == 0 then
+            prime := 0
+        end
+        d := d + 1
+    end
+    if prime == 1 then
+        write p
+    end
+    p := p + 1
+end
