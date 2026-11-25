@@ -54,5 +54,5 @@
 <text class="t mono" x="508" y="148" font-size="11">while (i != j)</text>
 <text class="tm" x="508" y="164" font-size="11">its test, and the</text>
 <text class="tm" x="508" y="178" font-size="11">two jumps back</text>
-<text class="t" x="24" y="370" font-size="11.5"><tspan class="tm">grey</tspan><tspan class="t">: the registers and labels you chose by hand in 01.01. The C compiler chooses them now.</tspan></text>
+<text class="t" x="24" y="370" font-size="11.5"><tspan class="tm">grey</tspan><tspan class="t">: the registers and labels chosen by hand in 01.01. The C compiler chooses them now.</tspan></text>
 </svg>

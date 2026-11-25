@@ -58,8 +58,9 @@ except ImportError:          # run as a program (tests/fuzz.py loads this file t
 
 TITLE = "Your own language, chapter by chapter"
 KIND = "language"
-SUMMARY = ("A language of your own, built in C a chapter of Programming Language Pragmatics at a "
-           "time: a machine, two interpreters, a translator to C and a compiler, all held to one answer.")
+SUMMARY = ("A language of your own, built in C and read alongside Programming Language Pragmatics, "
+           "4th edition, by Michael L. Scott, a chapter of the book and then a module: a machine, two "
+           "interpreters, a translator to C and a compiler, all held to one answer.")
 
 # What this track is built on (harness/web/views.py, upstreams()). No code is taken from either.
 UPSTREAM = [
