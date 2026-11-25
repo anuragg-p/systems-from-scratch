@@ -1295,7 +1295,10 @@ Known differences from sqlite3:
   (minMaxQuery). EXPLAIN QUERY PLAN says `SEARCH t` for a lone max(x) even
   with no index, `SCAN t` here; with an index on x a bare column of `SELECT
   y, max(x)` can come from another row of equal x there (the index holds
-  equal values in rowid order and is read from its end).
+  equal values in rowid order and is read from its end). The OP_Count line
+  names the table, not its alias (select.c, explainSimpleCount): `EXPLAIN
+  QUERY PLAN SELECT count(*) FROM customers AS x` is `SCAN customers` in
+  sqlite3, `SCAN x` here, as for any other aggregate in both.
 - group_concat and string_agg are refused; FILTER, an ORDER BY inside the
   call and window functions are syntax errors; min() and max() of two or
   more values are "no such function" (the core has no scalar min or max).
@@ -1577,7 +1580,8 @@ Known differences from sqlite3:
   then come out sorted) and skips the set when a UNIQUE NOT NULL column
   or the rowid is in the list; `SELECT DISTINCT x ORDER BY x` it runs as a
   GROUP BY. The rows are the same here (in first-seen order without ORDER
-  BY), and EXPLAIN QUERY PLAN differs in those cases.
+  BY), and EXPLAIN QUERY PLAN differs in those cases; for `SELECT DISTINCT
+  1` (no FROM) sqlite3 prints no plan lines at all.
 - No COLLATE (the core): GROUP BY v COLLATE NOCASE is not available.
 - Aliases only as a whole GROUP BY or HAVING name or inside them, not in
   WHERE (the core) or inside a larger ORDER BY term.

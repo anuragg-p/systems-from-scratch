@@ -1096,7 +1096,7 @@ static int aggregate_next(Op *op, Row **out)
         int starts = 0;
         if (rc == 1 && q->s->ngroup && op->ingroup && (starts = new_group(op, r)) < 0)
             return -1;
-        if (starts && group_done(op) < 0)    /* r ends the group: finish it, then step r */
+        if (starts && group_done(op) < 0)    /* finish the group r ends; r starts the next */
             return -1;
         // @end
         if (rc == 0) {

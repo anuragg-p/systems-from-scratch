@@ -12,8 +12,10 @@ value came first. The set behind DISTINCT holds thousands of values, long text a
 and gives the same answers when every hash collides (DB_SET_COLLIDE, a test aid). Every
 query also runs with a two-page cache, over tables of thousands of rows with more than 256
 groups or distinct rows, so pages are evicted between output rows while the operators hold
-their state. Errors are sqlite3's. Then 08.04's test, and the sqllogictest slice with
-GROUP BY and DISTINCT no longer skipped.
+their state. HAVING terms on GROUP BY terms are checked on the rows, and the grouping sort
+takes ORDER BY's directions, as in sqlite3 (both found by the fuzzer). Errors are sqlite3's.
+Then a quick fuzzer slice, 08.04's test, and the sqllogictest slice with GROUP BY and
+DISTINCT no longer skipped.
 """
 
 import os

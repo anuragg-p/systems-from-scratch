@@ -9,8 +9,8 @@ across types, and the bare columns from the row sqlite3 takes them from. An empt
 still gives its one row. An aggregate where none may be (WHERE, ON, LIMIT, inside another
 aggregate) and a wrong number of arguments are errors in both engines. Every query also
 runs with a two-page cache, over tables of thousands of rows whose text spills to
-overflow pages. Then the core and the join are untouched: 08.01's test, and the
-sqllogictest slice with aggregates no longer skipped.
+overflow pages. Then a quick fuzzer slice; the core and the join are untouched: 08.01's
+test; and the sqllogictest slice with aggregates no longer skipped.
 """
 
 import os
