@@ -593,7 +593,8 @@ class X:
         if op is None and (re.match(r"[a-z_]+\(", t) or "LIKE {}" in t):
             op = "func"             # a function call; SQLite makes LIKE one too
         self.t, self.k, self.f, self.op = t, tuple(k), f, op
-        self.agg = agg or any(getattr(c, "agg", False) for c in self.k)
+        # a subquery's own aggregates are its own: they make no aggregate of this expression
+        self.agg = agg or any(getattr(c, "agg", False) for c in self.k if not isinstance(c, Query))
         self.sub = sub or any(isinstance(c, Query) or getattr(c, "sub", False) for c in self.k)
         self.err = err or any(getattr(c, "err", False) for c in self.k)
 
@@ -1344,7 +1345,9 @@ def gen_group_query(g, q, purpose, own, outer_refs, level, cost, exclude, want_l
     q.distinct = g.has("distinct") and r.random() < 0.15 and not any(c.f.mixnum for c, _ in q.cols)
     if r.random() < 0.5 or want_limit:
         for _ in range(r.randint(1, 2)):
-            if r.random() < 0.5:
+            # under DISTINCT only result columns: which of two equal rows is kept, and so the
+            # value of any other expression, would depend on the order groups come in
+            if r.random() < 0.5 or q.distinct:
                 q.order.append((result_column(q, r.randrange(len(q.cols)), r), r.random() < 0.3))
             else:
                 q.order.append((gen_term(g, env, 1), r.random() < 0.3))
@@ -1554,7 +1557,8 @@ def store_ok(f, col):
     if col.aff == "TEXT":
         return not f.messy
     if col.aff in ("INTEGER", "NUMERIC"):
-        return "real" not in f.kinds if f.vals is None else REAL_MIN not in f.vals
+        # text of unknown value may read as the real -2^63 too ('-9223372036854775808.5')
+        return not (f.kinds & {"real", "text"}) if f.vals is None else REAL_MIN not in f.vals
     return True
 
 
