@@ -167,10 +167,13 @@ static int parse_select(Parser *ps, Stmt *s);
 static Expr *parse_subquery(Parser *ps, Expr *e)
 {
     // @build 08.06 a SELECT in parentheses
-    // The SELECT is a statement of its own (parse_select) in e->sub, with
-    // its text, as written, in e->sub->sql for EXPLAIN. Its names are bound
-    // later, with the query around it. At most MAX_OUTER levels of
-    // subqueries, one inside another.
+    // The SELECT is a statement of its own (new_stmt, parse_select) in
+    // e->sub, with its text, as written and without trailing blanks, in
+    // e->sub->sql for EXPLAIN; then the ")". Its names are bound later,
+    // with the query around it. At most MAX_OUTER levels of subqueries,
+    // one inside another (ps->depth counts them): one more is "too many
+    // levels of subqueries (at most 64)". Return e, or NULL with the error
+    // set.
     if (ps->depth == MAX_OUTER)
         return err("too many levels of subqueries (at most %d)", MAX_OUTER), (Expr *)NULL;
     const char *start = ps->tok.s;
@@ -280,6 +283,20 @@ static Expr *parse_primary(Parser *ps)
     }
     if (!is_name_token(t.type))
         return syntax_error(ps);
+    // @from 08.06
+    /* ALL is a keyword in sqlite3, never a function: x > ALL (SELECT ...),
+     * a comparison with every row that sqlite3 does not have, is a syntax
+     * error at ALL there, and so it is here. */
+    if (t.type == TK_ID && t.n == 3 && strncasecmp(t.s, "ALL", 3) == 0) {
+        const char *save = ps->z;
+        advance(ps);
+        int call = at(ps, TK_LP);
+        ps->z = save;
+        ps->tok = t;
+        if (call)
+            return syntax_error(ps);
+    }
+    // @end
     const char *name = name_text(ps, t);
     advance(ps);
     if (accept(ps, TK_LP)) {
@@ -631,13 +648,17 @@ static int parse_from(Parser *ps, Stmt *s)
     int n = 0;
     int left = 0;  // @from 08.02
     // @build 08.01 the FROM clause
-    // Read the first table, then one more for every comma or join operator
-    // after it. A table is a name with an optional alias: AS and a name, or
-    // a bare name that is not a join word. Every table but the first may
-    // carry an ON (a comma join too, as in sqlite3). A join operator is
-    // JOIN, or a join word: join_type() reads those. Refuse USING, a
-    // parenthesis where a table should be (a subquery or a nested join),
-    // and a 65th table.
+    // Read the first table into items[], then one more for every comma or
+    // join operator after it. A table is a name with an optional alias:
+    // AS and a name, or a bare name that is not a join word. Every table
+    // but the first may carry an ON (a comma join too, as in sqlite3). A
+    // join operator is JOIN, or a join word: join_type() reads those.
+    // Refuse, returning -1, a 65th table ("at most 64 tables in a join"),
+    // a parenthesis where a table should be ("subqueries in FROM are not
+    // supported" before SELECT, else "parenthesised joins are not
+    // supported"), ON or USING on the first table ("a JOIN clause is
+    // required before ON", or USING) and USING on a later one ("USING is
+    // not supported"). Leave n, the tables read.
     for (;;) {
         if (n == MAX_FROM)
             return err("at most %d tables in a join", MAX_FROM);

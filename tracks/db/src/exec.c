@@ -371,7 +371,8 @@ int scan_rebind(Op *scan, Row *outer)
     // indexed column's affinity; NULL is done; else build the key the
     // seek starts at, and decode hi, the last value to take, back from
     // that record, so neither points into the row arena, which a Filter
-    // above may reset while this inner loop runs.
+    // above may reset while this inner loop runs. Return 0, or -1 if the
+    // key cannot be evaluated.
     Db *db = scan->db;
     Value v;
     if (eval(db, acc->lo, outer, &v) < 0)
@@ -593,12 +594,14 @@ static int left_join(Op *op, int have_inner)
 {
     // @build 08.02 the row with no match
     // With an inner row: evaluate ON on the joined row (no ON: every
-    // inner row matches). Not true (false or NULL): this pair is not a
-    // row of the answer; reset the row arena, as a Filter does for a
-    // dropped row, and say no. True: note the match and say yes.
+    // inner row matches; an error: return -1). Not true (false or NULL):
+    // this pair is not a row of the answer; reset the row arena, as a
+    // Filter does for a dropped row, and return 0. True: note the match
+    // (op->matched) and return 1.
     // Without one: if the outer row matched nothing, set the inner
-    // table's slots, its columns and its rowid, to NULL and say yes:
-    // WHERE and the joins above see that row like any other.
+    // table's slots, its columns and its rowid (from op->lwidth to the
+    // row's end), to NULL and return 1: WHERE and the joins above see that
+    // row like any other. If it matched, return 0.
     if (have_inner) {
         if (op->on) {
             Value v;
@@ -634,13 +637,16 @@ static int left_join(Op *op, int have_inner)
 static int join_next(Op *op, Row **out)
 {
     // @build 08.01 the nested loop
-    // With no outer row in hand, pull one from the left side (none left:
-    // the join is done), copy its values into the first slots, and start
-    // the inner side again from its first row. When the left side is table
-    // 0's own scan (op->table), its rowid is in the row, not in a slot:
-    // put it in the slot after its columns. Then pull an inner row; when
-    // the inner side runs out, drop the outer row and go round. Otherwise
-    // copy the inner row's values and rowid in and hand the row up.
+    // With no outer row in hand (op->have_outer), pull one from the left
+    // side (none left: the join is done, return 0; an error, -1), copy its
+    // values into the first slots, kept (keep() into op->hold, emptied
+    // first), and start the inner side again from its first row (clear
+    // its started). When the left side is table 0's own scan (op->table),
+    // its rowid is in the row, not in a slot: put it in the slot after its
+    // columns. Then pull an inner row; when the inner side runs out, drop
+    // the outer row and go round. Otherwise copy the inner row's values
+    // and its rowid into the slots from op->lwidth on, set *out to the
+    // joined row (op->row) and return 1.
     for (;;) {
         if (!op->have_outer) {
             Row *l;
@@ -870,11 +876,12 @@ static int set_add(Set *s, const Value *vals)
     // @build 08.05 a row not seen before
     // Hash the list (set_hash) and look from the slot its low bits pick,
     // one slot at a time, for a list with that hash whose values all
-    // compare equal (same_list): found means seen before. A free slot ends
-    // the search: the list is new, and a copy of it (keep() for text and
-    // blobs, into the set's arena) goes in that slot. Once more than half
-    // the slots are taken, double them and move each list to the slot its
-    // hash picks in the new table, so runs of taken slots stay short.
+    // compare equal (same_list): found means seen before, return 0. A free
+    // slot ends the search: the list is new, and a copy of it (keep() for
+    // text and blobs, into the set's arena) goes in that slot with its
+    // hash. Once more than half the slots are taken (s->n counts them),
+    // double them and move each list to the slot its hash picks in the new
+    // table, so runs of taken slots stay short. Return 1.
     u64 h = set_hash(vals, n);
     size_t mask = s->cap - 1, i;
     for (i = h & mask; s->slots[i].vals; i = (i + 1) & mask)
@@ -908,7 +915,11 @@ static int set_add(Set *s, const Value *vals)
 // @from 08.04
 /* ------------------------------------------------------------ Aggregate (08.04) */
 
+// @from 08.05
 /* Empties aggregate a's running state, for a new group. */
+// @else
+// /* Empties aggregate a's running state: what it holds before any row. */
+// @end
 static void agg_clear(Agg *a)
 {
     a->n = a->isum = 0;
@@ -978,8 +989,10 @@ static int agg_step(Agg *a, Value v)
     // in the compensated double sum (kbn_start, then kbn_add or
     // kbn_add_int). An overflow is remembered, and forgotten when a real
     // comes after it, as in func.c. min and max keep the first value no
-    // later one beats (value_compare), copied into a->hold; NULL never
-    // wins, and a row that does not set the value returns 1.
+    // later one beats (value_compare), copied into a->hold (emptied
+    // first); NULL never wins. Return 1 from min or max for a row that
+    // does not set the value (NULL, or not better) while a value is kept,
+    // else 0.
     switch (a->fn) {
     case AGG_COUNT_STAR:
         a->n++;
@@ -1029,13 +1042,14 @@ static int agg_step(Agg *a, Value v)
 static int agg_finish(Agg *a, Value *out)
 {
     // @build 08.04 finish: the answer
-    // count: the count. sum: NULL when no value was added, the integer
-    // sum when every value was an integer, else the double sum plus its
-    // error term (the sum alone if the error term is no longer finite),
-    // and "integer overflow" if the integers overflowed with no real after
-    // them. total: the same, always a real, 0.0 for nothing. avg: that
-    // real over the count, NULL for nothing. min, max: the value kept,
-    // NULL if none. A real that is NaN is NULL.
+    // Set *out and return 0. count: the count. sum: NULL when no value was
+    // added, the integer sum when every value was an integer, else the
+    // double sum plus its error term (the sum alone if the error term is
+    // no longer finite), and the error "integer overflow" (return -1) if
+    // the integers overflowed with no real after them. total: the same,
+    // always a real, 0.0 for nothing. avg: that real over the count, NULL
+    // for nothing. min, max: the value kept, NULL if none. A real that is
+    // NaN is NULL.
     double r = a->approx ? a->rsum + (isfinite(a->rerr) ? a->rerr : 0.0) : (double)a->isum;
     memset(out, 0, sizeof *out);
     switch (a->fn) {
@@ -1073,11 +1087,19 @@ static int agg_finish(Agg *a, Value *out)
     // @end
 }
 
+// @from 08.05
 /* Makes r the group's own row, what a bare column reads: a copy of its
  * values in op->grp, which always holds the query's width of values. A
  * row of one table holds only its columns and carries its rowid beside
  * them; the copy puts that rowid in the slot after the columns, where the
  * Aggregate's rows keep it. */
+// @else
+// /* Makes r the kept row, what a bare column reads: a copy of its values
+//  * in op->grp, which always holds the query's width of values. A row of
+//  * one table holds only its columns and carries its rowid beside them;
+//  * the copy puts that rowid in the slot after the columns, where the
+//  * Aggregate's row keeps it. */
+// @end
 static void take_row(Op *op, Row *r)
 {
     int w = op->q->width;
@@ -1107,11 +1129,18 @@ static void take_row(Op *op, Row *r)
     // @end
 }
 
+// @from 08.05
 /* Finishes the current group into op->row: the group's own row (all NULL
  * for a group of no rows, the one row of an empty input), then each
  * aggregate's answer, all copied into op->outa so that they outlast the
  * state, which is cleared for the next group. Returns 0, or -1 with the
  * error set. */
+// @else
+// /* Finishes the aggregates into op->row: the kept row (all NULL when no
+//  * row came: the one row of an empty input), then each aggregate's
+//  * answer, all copied into op->outa so that they outlast the state, which
+//  * is cleared. Returns 0, or -1 with the error set. */
+// @end
 static int group_done(Op *op)
 {
     Query *q = op->q;
@@ -1153,7 +1182,8 @@ static int new_group(Op *op, Row *r)
     // and on the group's own row (op->grp: any row of the group has the
     // group's values) and compare them with value_compare(), as the sort
     // did: two NULLs are equal, and so are 1 and 1.0. One that differs
-    // means r starts a new group.
+    // means r starts a new group: return 1. All the same: return 0. A term
+    // that cannot be evaluated: return -1.
     for (int j = 0; j < s->ngroup; j++) {
         Value a, b;
         if (eval(op->db, s->group[j], r, &a) < 0 || eval(op->db, s->group[j], &op->grp, &b) < 0)
@@ -1171,10 +1201,11 @@ static int distinct_new(Agg *a, Value v)
 {
     // @build 08.05 DISTINCT inside an aggregate
     // Each value steps the aggregate once per group. Keep the values it
-    // has stepped in a set of its own, made the first time one comes
-    // (agg_clear() empties it when a group starts), and say whether v was
-    // new to it (set_add). NULL is a value like any other here: the first
-    // one is stepped, and the aggregates skip it themselves.
+    // has stepped in a set of its own (a->seen, a set of one-value lists,
+    // set_new(1)), made the first time one comes (agg_clear() empties it
+    // when a group starts), and return whether v was new to it: set_add()'s
+    // 1 or 0. NULL is a value like any other here: the first one is
+    // stepped, and the aggregates skip it themselves.
     if (!a->seen)
         a->seen = set_new(1);
     return set_add(a->seen, &v);
@@ -1190,9 +1221,10 @@ static int distinct_new(Agg *a, Value v)
  * the input comes sorted by the group's key and each run of rows with the
  * same key is a group. */
 // @else
-// /* Hands up one row: the group's own row (q->width values), then one
-//  * value per aggregate, which the E_AGG nodes above read by slot. All the
-//  * input is one group, and an empty input gives its row too. */
+// /* Hands up one row: the kept row (q->width values), then one value per
+//  * aggregate, which the E_AGG nodes above read by slot. The aggregates
+//  * run over all the rows of the input, and an empty input gives the row
+//  * too. */
 // @end
 static int aggregate_next(Op *op, Row **out)
 {
@@ -1200,14 +1232,17 @@ static int aggregate_next(Op *op, Row **out)
     Query *q = op->q;
     // @build 08.04 one row from many
     // Pull rows from the child until it runs out. On each row step every
-    // aggregate, in order: evaluate its argument on the row, agg_step().
-    // Then the row becomes the group's own row (take_row) if it is the
-    // group's first, or, when the query has a min() or max(), whenever
-    // the last of those took it (op->hit clear): the rules sqlite3's
-    // bytecode follows. Reset db->rowa after each row. When the child is
-    // done, finish the group (group_done) and hand up its row; later calls
-    // hand up nothing. The row handed up lives in op->outa until the next
-    // call.
+    // aggregate, in order: evaluate its argument on the row (count(*) has
+    // none: NULL), agg_step(). Then the row becomes the kept row
+    // (take_row) if it is the first (op->ingroup, the rows stepped so far,
+    // is 0), or, when the query has a min() or max() (q->minmax), whenever
+    // the last of those took it (op->hit, what that agg_step() returned,
+    // is 0): the rules sqlite3's bytecode follows. Count the row in
+    // op->ingroup and reset db->rowa. When the child is done, set op->done,
+    // finish (group_done(), which makes op->row) and hand up op->row:
+    // return 1. Later calls return 0; an error from the child, an argument
+    // or a finish returns -1. The row handed up lives in op->outa, emptied
+    // at the start of each call.
     if (op->done)
         return 0;
     arena_reset(&op->outa);
@@ -1262,10 +1297,17 @@ static int aggregate_next(Op *op, Row **out)
     // @end
 }
 
+// @from 08.05
 /* Returns the Aggregate of q over child: its rows are the group's own row
  * (q->width values), then one value per aggregate of q. The aggregates'
  * state is cleared here, so a plan made again for the same query starts
  * afresh. */
+// @else
+// /* Returns the Aggregate of q over child: its row is the kept row
+//  * (q->width values), then one value per aggregate of q. The aggregates'
+//  * state is cleared here, so a plan made again for the same query starts
+//  * afresh. */
+// @end
 Op *op_aggregate(Db *db, Op *child, Query *q)
 {
     Op *op = new_op(db, "Aggregate", aggregate_next);
@@ -1437,9 +1479,17 @@ static int unique_failed(Index *ix)
 static int unique_taken(Db *db, Index *ix, Row *row, i64 self)
 {
     // @build 08.07 look before you write
-    /* A NULL in any of the columns never conflicts: NULL equals nothing,
-     * not even NULL (vdbe.c, OP_NoConflict). The walk goes past the first
-     * equal entry because it may be self's own. */
+    // Take row's values in the index's columns, in the index's order. A
+    // NULL among them never conflicts (NULL equals nothing, not even NULL:
+    // vdbe.c, OP_NoConflict): return 0. Else build a key of those values
+    // alone, without a rowid, and seek the index to the first entry whose
+    // first ncols fields are >= it (cursor_seek_key with ncols). Walk on
+    // while an entry's first ncols fields equal the key (record_compare
+    // with ncols): decode the entry's last field, its rowid, and an equal
+    // entry with a rowid other than self is the conflict: return 1. The
+    // walk goes past an equal entry that is self's own (an UPDATE's row).
+    // No such entry: return 0. Close the cursor and free the key either
+    // way. An entry that does not decode is a corrupt index (fatal).
     Value vals[8];
     for (int i = 0; i < ix->ncols; i++) {
         vals[i] = row->cols[ix->cols[i]];
@@ -2234,11 +2284,14 @@ static int find_aggs(Db *db, Query *q, Expr *e, const char *misuse)
     // A node that is E_AGG already was found through a node a result
     // column shares (ORDER BY 2), or is a copy of one: fine where
     // aggregates may be, an error where they may not. A call agg_fn()
-    // knows is an aggregate: an error under misuse; else its arguments
-    // are searched with misuse set (an aggregate inside an aggregate is
-    // an error), it is listed, and its node rewritten in place: op E_AGG,
-    // col q->width + its number (name and arguments stay, for EXPLAIN).
-    // Anything else: search its operands and arguments.
+    // knows is an aggregate (agg_fn() of -2: an error it has set): an
+    // error under misuse (err(misuse, its name)); else its arguments are
+    // searched with misuse "misuse of aggregate function %s()" (an
+    // aggregate inside an aggregate is an error), it is listed (agg_add()
+    // gives its number), and its node rewritten in place: op E_AGG, col
+    // q->width + its number (name and arguments stay, for EXPLAIN).
+    // Anything else: search its operands and arguments. Return 0, or -1
+    // with the error set.
     if (!e)
         return 0;
     // @from 08.06
@@ -2546,6 +2599,7 @@ static int resolve_aggregates(Db *db, Query *q)
 }
 // @end
 
+// @from 08.06
 /* Makes the SELECT s ready to plan, into q. Binds each FROM item to its
  * table (no such table; a table this engine cannot read is refused) and
  * gives it its place in the joined row: its columns and then its rowid,
@@ -2556,6 +2610,18 @@ static int resolve_aggregates(Db *db, Query *q)
  * them as sqlite3 does (join_order_target()). outer is the query this one
  * is inside, NULL for a statement's own. Returns 0, or -1 with the error
  * set. */
+// @else
+// /* Makes the SELECT s ready to plan, into q. Binds each FROM item to its
+//  * table (no such table; a table this engine cannot read is refused) and
+//  * gives it its place in the joined row: its columns and then its rowid,
+//  * from base on. Expands * into every item's columns, left to right, and
+//  * x.* into item x's; binds the names in the result columns, WHERE, each
+//  * ON, ORDER BY, LIMIT and OFFSET (resolve_names()). With one table ORDER
+//  * BY reads its terms as the core always has (order_target()); a join reads
+//  * them as sqlite3 does (join_order_target()). outer is always NULL and
+//  * not used: every query is a statement's own. Returns 0, or -1 with the
+//  * error set. */
+// @end
 static int select_resolve(Db *db, Stmt *s, Scope *outer, Query *q)
 {
     (void)outer;
@@ -2756,12 +2822,14 @@ static int value_cmp(const void *a, const void *b)
 static int set_lookup(Expr *e, Value x)
 {
     // @build 08.06 IN a set that may hold NULL
-    // x NULL: unknown when there is anything at all to compare it with,
-    // a NULL included; no for an empty set. Else look for x by bisection
-    // in the sorted values (value_compare): found is yes. Not found: no,
-    // unless the set holds a NULL, which might have been x: unknown. So
-    // x NOT IN a set with a NULL is never true. These are sqlite3's
-    // answers (expr.c, sqlite3ExprCodeIN: steps 2 to 6).
+    // The set: e->set, e->nset values sorted by value_compare, and
+    // e->has_null if the rows held a NULL (kept apart). x NULL: unknown
+    // when there is anything at all to compare it with, a NULL included;
+    // no for an empty set. Else look for x by bisection in the sorted
+    // values (value_compare): found is yes. Not found: no, unless the set
+    // holds a NULL, which might have been x: unknown. So x NOT IN a set
+    // with a NULL is never true. Yes is 1, no 0, unknown -1. These are
+    // sqlite3's answers (expr.c, sqlite3ExprCodeIN: steps 2 to 6).
     if (x.type == V_NULL)
         return e->nset > 0 || e->has_null ? -1 : 0;
     int lo = 0, hi = e->nset;
@@ -2809,7 +2877,13 @@ static int run_subquery(Db *db, Expr *e, Row *row, Value x, int aff, Value *out)
     // correlated, it stops at x (or at any row, for a NULL x). What must
     // outlive the run is copied out (keep()) first: into db->once if it is
     // kept for the statement, else into the caller's row arena. Then close
-    // the plan, give the arenas back and pop the row.
+    // the plan, give the arenas back and pop the row, also after an error.
+    // Last, the answer: EXISTS 1 if there was a row, else 0; a scalar the
+    // value kept (NULL if no row); a correlated IN 1 if x was found, else
+    // NULL if a NULL came (or x is NULL and a row came), else 0; an IN run
+    // once leaves *out NULL and its values sorted (value_cmp) in e->set,
+    // with e->nset and e->has_null, for set_lookup(). Return 0, or -1 if
+    // planning, a row or the column failed.
     memset(&db->rowa, 0, sizeof db->rowa);
     memset(&db->stmt, 0, sizeof db->stmt);
     db->outer[db->nouter++] = row;

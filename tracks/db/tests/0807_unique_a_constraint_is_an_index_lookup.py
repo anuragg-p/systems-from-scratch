@@ -6,6 +6,8 @@ writes, named and numbered as sqlite3 numbers them, each engine opens and
 writes what the other made, and INSERT, UPDATE and CREATE UNIQUE INDEX look
 in the indexes before they write, failing as sqlite3 fails and leaving the
 rows sqlite3 leaves, also when the process is killed in the commit after.
+Then 300 cases of the fuzzer with constraints, and the kept sqllogictest
+scripts with CREATE UNIQUE INDEX.
 """
 
 import itertools
@@ -119,6 +121,13 @@ def test(t):
     plans(t, tr)
     refused(t, tr)
     damaged(t, tr)
+    # a quick slice of the fuzzer: random constraints, and rows and changes that break them
+    tr.fuzz(t, "unique", n=300, seed=1)
+    # and the kept sqllogictest scripts with CREATE UNIQUE INDEX (index/delete/1 makes 870
+    # of them), each now sent as written instead of made an ordinary index
+    tr.sqllogictest(t, have=("unique",), scripts=["test/index/delete/1/slt_good_0.test",
+                                                  "test/index/delete/1000/slt_good_1.test",
+                                                  "test/index/commute/1000/slt_good_0.test", "test/evidence/in1.test"])
 
 
 def declarations(t, tr):

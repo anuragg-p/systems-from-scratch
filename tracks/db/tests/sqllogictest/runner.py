@@ -41,9 +41,11 @@ string prints the same and would show up as a failure; none of the kept scripts 
 
 What is skipped, counted by reason and never as a failure: records for another
 engine; SQL this engine does not have (subqueries, joins, aggregates, GROUP BY, CASE,
-DISTINCT, CAST, compound SELECTs, views, functions it lacks, ...), found by looking at
-the SQL, or reported by ./db as "... is not supported"; and every later record that
-names a table or index such a skipped statement would have created or changed.
+DISTINCT, CAST, compound SELECTs, views, functions it lacks, the bitwise operators,
+INDEXED BY, ...), found by looking at the SQL, or reported by ./db as "... is not
+supported"; and every later record that names a table or index such a skipped statement
+would have created or changed (also when the statement has a skipif or onlyif line that
+lets sqlite run it).
 
 Emulation (off with --strict), for statements the engine lacks but whose effect is
 plain: "INSERT INTO a SELECT * FROM b", when b has only been filled by literal INSERTs,
@@ -241,7 +243,12 @@ UNSUPPORTED = [
     ("INSERT OR / REPLACE", re.compile(r"^\s*(INSERT\s+OR\b|REPLACE\b|UPDATE\s+OR\b)", re.I)),
     ("REINDEX", re.compile(r"^\s*REINDEX\b", re.I)),
     ("ALTER TABLE", re.compile(r"^\s*ALTER\b", re.I)),
+    ("INDEXED BY", re.compile(r"\bINDEXED\b", re.I)),
+    # x IN t1: the core's parser has no such form (a syntax error), 08.06 refuses it by name
+    ("IN with a table name", re.compile(r"\bIN\s+(?!\()[A-Za-z_]", re.I)),
 ]
+# the bitwise operators << >> & | ~ (not the || of concatenation), which the core lacks
+BITWISE = re.compile(r"<<|>>|&|~|(?<!\|)\|(?!\|)")
 # --have: a category the engine has, and the skip reasons it stops (see unsupported())
 HAVE = {"join": {"join"}, "aggregate": {"aggregate"}, "groupby": {"GROUP BY"}, "distinct": {"DISTINCT"},
         "subquery": {"subquery"}, "unique": set()}
@@ -249,7 +256,8 @@ HAVE = {"join": {"join"}, "aggregate": {"aggregate"}, "groupby": {"GROUP BY"}, "
 TRIGGERS = {"subquery": {"EXISTS"}, "view": {"VIEW"}, "trigger": {"TRIGGER"}, "join": {"JOIN"},
             "GROUP BY": {"GROUP", "HAVING"}, "compound SELECT": {"UNION", "EXCEPT", "INTERSECT"},
             "CASE": {"CASE"}, "DISTINCT": {"DISTINCT"}, "CAST": {"CAST"}, "CREATE TABLE AS": {"AS"},
-            "INSERT OR / REPLACE": {"OR", "REPLACE"}, "REINDEX": {"REINDEX"}, "ALTER TABLE": {"ALTER"}}
+            "INSERT OR / REPLACE": {"OR", "REPLACE"}, "REINDEX": {"REINDEX"}, "ALTER TABLE": {"ALTER"},
+            "INDEXED BY": {"INDEXED"}, "IN with a table name": {"IN"}}
 # a name and "(": a function call, unless the word before says it is a table's or an index's name
 CALL = re.compile(r"(?:\b(\w+)\s+)?\b([A-Za-z_]\w*)\s*\(")
 AFTER_NAME = {"into", "table", "on", "index", "exists", "view", "from", "update"}
@@ -305,6 +313,8 @@ def unsupported(sql, have=()):
             return reason
     if "join" not in known and "," in b and _from_has_comma(b):
         return "join"
+    if any(c in b for c in "<>&|~") and BITWISE.search(b):
+        return "bitwise operator"
     if re.match(r"\s*CREATE\b", b, re.I):
         return None                 # column types such as VARCHAR(10) are not calls
     for m in CALL.finditer(b):
@@ -384,9 +394,11 @@ class Plan:
             if skip:
                 self.items.append((r, None, skip, None))
                 # what a skipped statement would have made or changed is missing, so later
-                # records that name it are skipped too; not for skipif/onlyif, which pick
-                # among versions of the same statement for different engines
-                t = TARGET.match(sql) if r.kind == "statement" and not r.conds else None
+                # records that name it are skipped too; not when skipif/onlyif skipped it,
+                # which pick among versions of the same statement for different engines (a
+                # statement sqlite runs, skipped for SQL this engine lacks, still counts)
+                t = TARGET.match(sql) if r.kind == "statement" and not skip.startswith(("skipif ", "onlyif ")) \
+                    else None
                 if t and not re.match(r"^\s*DROP\s+VIEW\b", sql, re.I):
                     tainted.setdefault(t.group(1).lower(), "view" if skip == "view" else
                                        skip if skip.endswith("(earlier statement)") else skip + " (earlier statement)")

@@ -12,8 +12,8 @@ table being written leave what sqlite3 leaves. A subquery that names nothing out
 runs once (cache hits counted); a correlated one runs per row, and uses an index on its
 inner column. Tables of thousands of rows with text on overflow pages, under a two-page
 cache, check that nothing a subquery hands back points into an evicted page. Errors are
-sqlite3's; what 08.06 leaves out is refused by name. Then the sqllogictest slice with
-subqueries no longer skipped, and 300 cases of the fuzzer with subqueries and all of
+sqlite3's; what 08.06 leaves out is refused by name. Then a slice of the kept sqllogictest
+scripts with subqueries, no longer skipped, and 300 cases of the fuzzer with subqueries and all of
 08.01-08.05. Aggregates and subqueries together: a subquery's own aggregates anywhere, subqueries
 in GROUP BY, HAVING and aggregate arguments; an aggregate of the outer query is refused by name. Joins and subqueries together: a lookup keyed by a subquery waits for the tables it
 reads, and a LEFT JOIN's ON may hold subqueries that read the tables on its left.
@@ -380,6 +380,10 @@ ERRORS = [
      "JOIN cities ci", "ON clause references tables to its right"),
     ("SELECT * FROM customers c LEFT JOIN orders o ON (SELECT (SELECT ci.name)) JOIN cities ci",
      "ON clause references tables to its right"),
+    # x > ALL (SELECT ...), which sqlite3 does not have: ALL is its keyword, never a function
+    # (found by the second reader of 08.06; it was 'near "SELECT"' here)
+    ("SELECT id FROM orders WHERE total > ALL (SELECT total FROM orders)", 'near "ALL": syntax error'),
+    ("SELECT ALL(1) + all (2)", 'near "all": syntax error'),
 ]
 ERRORS_ALIKE = [
     "SELECT name FROM customers WHERE id IN (SELECT nope FROM orders)",
@@ -705,8 +709,12 @@ def test(t):
     sq = tr.sqlite(t, b5, "SELECT id FROM p WHERE id <= 300 AND EXISTS (SELECT 1 FROM q WHERE q.pk = p.id);\n").out
     t.check(sq == o1, "sqlite3 finds other rows for the EXISTS")
 
-    # the sqllogictest slice, with subqueries (and joins) no longer skipped
-    tr.sqllogictest(t, have=("join", "aggregate", "groupby", "distinct", "subquery"))
+    # the kept sqllogictest scripts with subqueries (select1-3's correlated scalar and
+    # EXISTS subqueries, evidence/in1 and in2, and index/in's IN (SELECT ...)), with
+    # subqueries (and everything of 08.01-08.05) no longer skipped
+    tr.sqllogictest(t, have=("join", "aggregate", "groupby", "distinct", "subquery"),
+                    scripts=["test/select1.test", "test/select2.test", "test/select3.test", "test/evidence/in1.test",
+                             "test/evidence/in2.test", "test/index/in/10/slt_good_5.test"])
     # and a quick slice of the fuzzer, with subqueries anywhere it can put them, and everything
     # of module 08 before this lesson
     tr.fuzz(t, ("join", "leftjoin", "aggregate", "groupby", "distinct", "subquery"), n=300)

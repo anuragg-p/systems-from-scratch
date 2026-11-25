@@ -127,6 +127,17 @@ static void add_index(Table *t, Index *ix);
 static void auto_indexes(Schema *sc, Stmt *s, Table *t)
 {
     // @build 08.07 an automatic index for a constraint
+    // Go through s->uniques, the constraints in the order written. Skip
+    // the one that is the INTEGER PRIMARY KEY (rowid_constraint() >= 0).
+    // For each other, make an Index in sc's arena: on table t, unique,
+    // its columns the constraint's names looked up in t (ix->cols[k] is
+    // the column's number, ix->ncols how many). Skip it, using up no
+    // number, if an earlier constraint's index (t->indexes so far) has the
+    // same columns in the same order. Else name it
+    // sqlite_autoindex_<table>_<n>, n counting
+    // 1, 2, ... over the indexes made here, and add it to t (add_index()).
+    // Its root page stays 0: the caller writes the B-tree. Nothing to
+    // return.
     int n = 0;
     for (int i = 0; i < s->nuniques; i++) {
         Unique *u = &s->uniques[i];

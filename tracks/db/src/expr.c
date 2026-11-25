@@ -399,10 +399,11 @@ int answers_to(FromItem *it, const char *q)
 static int resolve_outer(Db *db, Expr *e, Scope *sc)
 {
     // @build 08.06 a name from the query outside
-    // Bind e in the scope outside, which looks further out itself if it
-    // must. Wherever it was found, that is one query further out from here
-    // than from there; and the query of this scope reads a row it does not
-    // own.
+    // Bind e in the scope outside (resolve_names() on sc->outer), which
+    // looks further out itself if it must; its error is the error. Wherever
+    // it was found, that is one query further out from here than from
+    // there (e->depth one more); and the query of this scope reads a row
+    // it does not own (sc->correlated). Return 0, or -1.
     if (resolve_names(db, e, sc->outer) < 0)
         return -1;
     e->depth++;
@@ -433,7 +434,13 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
         // every table. One table with the column binds it;
         // two or more are ambiguous. None: a rowid name (rowid, oid,
         // _rowid_) means the rowid of the one table looked in, and is
-        // ambiguous when there were several. Set tab, tcol, col and aff.
+        // ambiguous when there were several. Not one: return -1 with
+        // "ambiguous column name: c" or "no such column: c" (q.c if it was
+        // written so). Bound: set tab, tcol (TCOL_ROWID for the rowid), col
+        // (the item's base plus the column; the rowid's slot is the one
+        // after its columns) and aff (INTEGER for the rowid); with one
+        // table a rowid name becomes E_ROWID instead, as resolve_expr()
+        // makes it. Return 0.
         int hits = 0, looked = 0, k_hit = -1, c_hit = -1;
         for (int k = 0; k < sc->nfrom; k++) {
             FromItem *it = &sc->from[k];
@@ -457,7 +464,7 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
             c_hit = TCOL_ROWID;
         }
         // @from 08.06
-        if (hits == 0 && sc->outer)     /* a name of a query around this one (two here are ambiguous here) */
+        if (hits == 0 && sc->outer)     /* in no table here: a name of a query around this one */
             return resolve_outer(db, e, sc);
         // @end
         if (hits != 1) {
@@ -470,11 +477,16 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
         e->depth = 0;    /* found here (resolve_outer counts the steps out) */ // @from 08.06
         if (c_hit == TCOL_ROWID) {
             e->aff = AFF_INTEGER;
-            e->col = it->base + it->t->ncols;  /* its slot, where a join's (or an Aggregate's) row has it */ // @from 08.06
+            // @from 08.06
+            e->col = it->base + it->t->ncols;  /* its slot, where a join's (or an Aggregate's) row has it */
             if (sc->nfrom == 1)
                 e->op = E_ROWID;    /* one table: its rows carry the rowid */
-            else
-                e->col = it->base + it->t->ncols;
+            // @else
+            // if (sc->nfrom == 1)
+            //     e->op = E_ROWID;    /* one table: its rows carry the rowid */
+            // else
+            //     e->col = it->base + it->t->ncols;
+            // @end
         } else {
             e->col = it->base + c_hit;
             e->aff = it->t->cols[c_hit].affinity;

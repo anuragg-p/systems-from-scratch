@@ -2,13 +2,14 @@
 """Fetch more of the sqllogictest corpus for a long run, into build/ (never into the repo).
 
 Internal, for authors. The repo keeps a small subset (test/ next to this file); MANIFEST
-lists every script of the index/ family at the pinned commit with its size and SHA-256,
-and this fetches any of them from that commit and checks each one.
+lists every script of test/ at the pinned commit (index/, evidence/, random/ and
+select1-5) with its size and SHA-256, and this fetches any of them from that commit and
+checks each one.
 
     python3 tracks/db/tests/sqllogictest/fetch.py [pattern ...] [--dest DIR] [--verify]
 
     pattern     fnmatch patterns on the paths in MANIFEST, such as 'test/index/in/*'
-                (default: all of them, about 430 MB)
+                or 'test/random/*' (default: all of them, about 1.1 GB)
     --dest DIR  where to put them (default: build/sqllogictest at the top of the repo)
     --verify    fetch nothing: check the vendored files against MANIFEST
 

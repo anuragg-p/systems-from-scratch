@@ -23,8 +23,10 @@ becomes a case in a lesson test.
 
 From a lesson test, track.py's fixture: `fuzz(t, features, n=300, seed=1)` runs it
 against the reference ./db with --shrink and fails with the smallest failing script.
-`FUZZ_N=20000` in the environment makes it a long run. No lesson calls it yet (./db
-has none of module 08 yet); the integration step adds a quick slice to each 08 test.
+`FUZZ_N=20000` in the environment makes it a long run. Each 08 lesson's test ends with
+300 cases, seeded, with the features that exist at that lesson: 08.01 join; 08.02
+join,leftjoin; 08.03 the same at another seed (its tables' indexes are now looked up);
+08.04 adds aggregate; 08.05 groupby,distinct; 08.06 subquery; 08.07 unique alone.
 
 A case is a function of the seed, its number and the features: the same command always
 writes the same SQL. 300 cases take a few seconds; cases run in parallel, one process
@@ -159,3 +161,65 @@ written, is where an order-dependent sum would show.
 - About half the SELECTs return rows (the rest filter everything or read empty tables,
   on purpose); 6 to 10 statements in a hundred fail in both engines, mostly UNIQUE,
   NOT NULL and datatype mismatch, on purpose.
+
+## Results with module 08 finished (2026-11-25, the same machine)
+
+./db against sqlite3, not kept in the tests (the lesson slices are above):
+
+- Every feature at once, the plain build: seeds 101 to 105, 20000 cases each, 100000
+  in all: 3212504 statements, 600560 SELECTs, 7206732 rows compared, 304330 errors
+  alike; 1750 s. 2 differences, both the core's (below, coalesce): seed 104 case 6270,
+  seed 105 case 17330.
+- The same, ./db built with `-fsanitize=address,undefined -fno-sanitize-recover=undefined`
+  and run with `--db-env DB_CACHE_PAGES=2`: seeds 201 and 202, 10000 cases each:
+  643144 statements, 120346 SELECTs, 1431885 rows compared, 0 differences and no
+  sanitizer reports; 494 s.
+- Each feature alone (with core, and what it brings), seed 301, 10000 cases each, 0
+  differences but one: join (252256 statements, 108 s), join+leftjoin (251538, 123 s),
+  aggregate (201817, 89 s), aggregate+groupby (202015, 77 s), distinct (203466, 84 s),
+  subquery (252433, 119 s; its one difference is the core's coalesce again, case 4849,
+  cut down to `SELECT ifnull(upper(1000), abs(b)) FROM t0` over b = -2^63), unique
+  (259839, 117 s). About 60000 SELECTs each.
+- The generator against sqlite3 itself, after the fixes below: 3000 cases with every
+  feature (seed 1000), 0 differences, 102 s.
+
+The first run (seeds 101 and 102, 40000 cases) gave 9 differences, none of them ./db's:
+the generator had three faults, now fixed. A subquery's aggregate made the expression
+around it an aggregate, so HAVING went on a query with none (an error in both, but
+sqlite3 never saw it where its parser dropped the subquery: below). GROUP BY with
+DISTINCT could ORDER BY an expression outside the result, whose value depends on which
+of two equal rows DISTINCT keeps (sqlite3 groups by rowid without a sort when the rowid
+is a GROUP BY term; ./db sorts). And text of unknown value, an 08.06 INSERT's subquery
+('-9223372036854775808' || '.5'), stored in an INTEGER or NUMERIC column reads as the
+real -2^63: KNOWN real-min-to-int by another road.
+
+What the steering might hide, checked at the same time (1500 cases each, seed 77, a
+scratch copy of the generator with one rule lifted, checked against sqlite3 itself
+first): subqueries in an aggregate's argument; an inner join's ON naming a table to its
+right while a LEFT JOIN is in the query; IN and scalar subqueries with no FROM; and
+subqueries in INSERT, UPDATE and DELETE that read the table being changed: 0
+differences each. Names from the query outside written bare: sqlite3 disagrees with
+itself (the generator's facts are then wrong), and ./db's 7 differences were all of the
+parser kind below. Error messages compared (3000 cases, seed 88, 9238 errors alike):
+the only difference is the core's order of checks (NOTES.md, 08.07: a row that repeats
+the rowid and leaves a NOT NULL column NULL is UNIQUE here, NOT NULL in sqlite3).
+
+Differences these runs found in the core, not in KNOWN and not steered around (the
+core is being fixed in its own pass):
+
+- coalesce and ifnull evaluate every argument here (expr.c, eval_func); sqlite3 stops
+  at the first that is not NULL, so `coalesce(0.0, abs(-9223372036854775808))` is 0.0
+  there and "integer overflow" here. 3 cases in the runs above (2 of the 100000 with
+  every feature, 1 of the 10000 with subquery; the last is plain core SQL).
+- sqlite3's parser drops the left side of `x IN ()` and both sides of an AND with a
+  constant false side (parse.y; expr.c, sqlite3ExprAnd) before names are bound, so an
+  error inside them never shows: `SELECT x FROM t WHERE nosuch IN ()` is no rows there,
+  "no such column: nosuch" here; the same with an ambiguous name, or HAVING on a query
+  with no aggregate, in a subquery so dropped. The same folding as is-empty-in.
+
+KNOWN reaches module 08 in one place: order-by-range. A one-table aggregate, GROUP BY,
+DISTINCT or subquery reads ORDER BY with the core's order_target, so `SELECT count(*)
+FROM t ORDER BY 2` (or `... GROUP BY a ORDER BY 3`, `ORDER BY -1`) is a constant here,
+"1st ORDER BY term out of range" in sqlite3; a join, read by join_order_target, gives
+sqlite3's error. And `GROUP BY 1 IS NULL`, which sqlite3's parser folds to 0, is "1st
+GROUP BY term out of range" there and an expression here.
