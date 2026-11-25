@@ -58,6 +58,10 @@ static int conjuncts(Expr *e, Expr **out, int n, int max)
  * INTEGER PRIMARY KEY column is the rowid under another name. */
 static int is_column(Table *t, Expr *e, int col)
 {
+    // @from 08.06
+    if (e->depth)
+        return 0;        /* a column of a query outside: a constant here */
+    // @end
     if (col == ROWID)
         return e->op == E_ROWID || (e->op == E_COLUMN && t->rowid_col >= 0 && e->col == t->rowid_col);
     return e->op == E_COLUMN && e->col == col;
@@ -71,6 +75,29 @@ typedef struct Bounds {
     int lo_incl, hi_incl;
 } Bounds;
 
+// @from 08.06
+/* True if a lookup of v in column col (or ROWID) finds every row for which
+ * comparing col with v holds. The lookup gives v col's affinity
+ * (bound_value()); the comparison gives each side the affinity the pair
+ * calls for (eval_compare()). For v with no affinity, as any constant, that
+ * is col's, and the two agree. From 08.06 v can be a name from the query
+ * outside or a scalar subquery, which have their column's affinity, and
+ * then they differ: when v's is numeric and col's is not ('5' = 5 holds
+ * for a TEXT column, but a lookup of 5 finds no '5'), and when col's is
+ * TEXT and v's BLOB (the comparison keeps v's 5 a number, the lookup makes
+ * it '5'). Such a term is still checked on every row; it does not choose
+ * the rows. v NULL: nothing to compare with. */
+static int same_values(Table *t, int col, Expr *v)
+{
+    int aff = col == ROWID ? AFF_INTEGER : t->cols[col].affinity;
+    if (!v || v->aff < 0 || aff == AFF_INTEGER || aff == AFF_REAL || aff == AFF_NUMERIC)
+        return 1;
+    if (v->aff == AFF_INTEGER || v->aff == AFF_REAL || v->aff == AFF_NUMERIC)
+        return 0;
+    return !(aff == AFF_TEXT && v->aff == AFF_BLOB);
+}
+// @end
+
 /* Collects into b what terms[0..n) say about column col (or ROWID).
  * Comparisons written constant-first are flipped so the column is always
  * on the left. */
@@ -79,6 +106,10 @@ static void find_bounds(Table *t, Expr **terms, int n, int col, Bounds *b)
     memset(b, 0, sizeof *b);
     for (int i = 0; i < n; i++) {
         Expr *e = terms[i];
+        // @from 08.06
+        if (!same_values(t, col, e->a) || !same_values(t, col, e->b) || !same_values(t, col, e->c))
+            continue;    /* still checked on every row, but it does not choose the rows */
+        // @end
         if (e->op == E_BETWEEN && is_column(t, e->a, col) && is_constant(e->b) && is_constant(e->c)) {
             if (!b->lo) {
                 b->lo = e->b;
@@ -310,6 +341,12 @@ static int last_table(Expr *e)
 {
     if (!e)
         return -1;
+    // @from 08.06
+    if (e->depth)
+        return -1;       /* a name from the query outside: a constant here */
+    if (e->sub)          /* a subquery: as if it named every table of this query */
+        return e->q->scope.outer->nfrom - 1;
+    // @end
     if (e->op == E_COLUMN)
         return e->tab == 0 && e->tcol == TCOL_ROWID ? 1 : e->tab;
     int k = last_table(e->a);

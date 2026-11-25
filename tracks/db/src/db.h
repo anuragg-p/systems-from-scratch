@@ -318,6 +318,7 @@ enum {
     E_ADD, E_SUB, E_MUL, E_DIV, E_REM, E_CONCAT,
     E_ISNULL, E_NOTNULL, E_BETWEEN, E_NOTBETWEEN, E_IN, E_NOTIN, E_LIKE, E_NOTLIKE,
     E_FUNC,
+    E_SUBQUERY, E_EXISTS,        /* (SELECT ...) and EXISTS (SELECT ...) */ // @from 08.06
 };
 
 typedef struct Expr {
@@ -334,6 +335,17 @@ typedef struct Expr {
     struct Expr *a, *b, *c;      /* operands; c is BETWEEN's upper bound */
     struct Expr **list;          /* IN list and function arguments */
     int nlist;
+    // @from 08.06
+    struct Stmt *sub;            /* a subquery's SELECT: E_SUBQUERY, E_EXISTS, or E_IN/E_NOTIN without a list */
+    struct Query *q;             /* that SELECT, bound and ready to plan (resolve_subquery) */
+    int depth;                   /* a name: how many queries out its table is, 0 for this one */
+    int correlated;              /* a subquery that names a table of a query around it */
+    int cached;                  /* a subquery that is not: it has run, and its answer is kept here */
+    Value answer;                /* scalar and EXISTS: that answer */
+    Value *set;                  /* IN: the subquery's values, sorted, NULLs left out */
+    int nset;
+    int has_null;                /* IN: the subquery gave a NULL too */
+    // @end
 } Expr;
 
 typedef struct ColumnDef {
@@ -368,6 +380,7 @@ typedef struct ResultCol {
 // @from 08.01
 #define MAX_FROM 64              /* tables in one FROM clause: SQLite's limit */
 #define TCOL_ROWID (-1)          /* Expr.tcol of a name bound to a table's rowid */
+#define MAX_OUTER 64             /* subqueries one inside another */ // @from 08.06
 
 typedef struct FromItem {        /* one table of a FROM clause */
     const char *table, *alias;
@@ -428,6 +441,7 @@ typedef struct Parser {
     const char *z;               /* where the next token starts */
     Token tok;                   /* the current token (not yet consumed) */
     Arena *arena;
+    int depth;                   /* subqueries open around the current token */ // @from 08.06
 } Parser;
 
 void parser_init(Parser *ps, const char *sql, Arena *arena);
@@ -513,17 +527,26 @@ int eval(struct Db *db, Expr *e, Row *row, Value *out);
 void print_value(FILE *f, const Value *v);
 void format_real(double r, char *buf, size_t n);
 const char *expr_text(Arena *a, Expr *e);  // @from 04.02
-int resolve_expr(Expr *e, Table *t, const char *alias);
+// @from 08.06
+int resolve_expr(struct Db *db, Expr *e, Table *t, const char *alias);
+// @else
+// int resolve_expr(Expr *e, Table *t, const char *alias);
+// @end
 // @from 08.01
 /* The tables a query's names can refer to: its FROM clause. */
 typedef struct Scope {
     FromItem *from;
     int nfrom;
+    // @from 08.06
+    struct Scope *outer;         /* the query this one is inside, or NULL */
+    int correlated;              /* a name here was found in a query outside */
+    // @end
 } Scope;
 int answers_to(FromItem *it, const char *q);
 int resolve_names(struct Db *db, Expr *e, Scope *sc);
 // @end
 int is_constant(Expr *e);
+int has_subquery(Expr *e);  // @from 08.06
 
 /* ------------------------------------------------------------ plan.c, exec.c */
 
@@ -612,6 +635,10 @@ int plan_select(struct Db *db, Query *q, Plan *plan);
 void explain_join_plan(struct Db *db, Plan *plan);
 // @end
 int choose_join_access(Query *q, int k, Expr **terms, int nterms, Access *acc);  // @from 08.03
+// @from 08.06
+int resolve_subquery(struct Db *db, Expr *e, Scope *sc);
+int eval_subquery(struct Db *db, Expr *e, Row *row, Value *out);
+// @end
 // @from 05.02
 Op *op_scan(struct Db *db, Table *t, Access *acc);
 // @else
@@ -634,6 +661,11 @@ typedef struct Db {
     // @end
     Arena rowa;                  /* values computed for the current row */ // @from 04.01
     FILE *out;  // @from 03.02
+    // @from 08.06
+    Row *outer[MAX_OUTER];       /* while subqueries run: the row of each query around, innermost last */
+    int nouter;
+    Arena once;                  /* what a subquery run once keeps, until the statement ends */
+    // @end
 } Db;
 
 int db_open(Db *db, const char *path);

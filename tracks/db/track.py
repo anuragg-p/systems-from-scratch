@@ -41,6 +41,8 @@ Fixtures the lesson tests use:
     keeps_unique(root)  does the project at root keep UNIQUE and PRIMARY KEY
                         constraints (08.07)? A core test that checks the refusal
                         before it checks what 08.07 makes of the same SQL instead
+    has_subqueries(root)
+                        does the project at root run subqueries (08.06)?
     fuzz(t, features, n=300, seed=1)
                         the seeded differential fuzzer (tests/fuzz, its README.md):
                         n random cases written with the SQL of features, through ./db
@@ -257,6 +259,11 @@ def timeline_boot(lesson_id):
         steps += [("EXPLAIN QUERY PLAN " + JOIN_QUERY.replace(" ORDER BY x.id", ""),
                    _rows("QUERY PLAN", "|--SCAN x",
                          "`--SCAN y" if k < (8, 3) else "`--SEARCH y USING INTEGER PRIMARY KEY (rowid=?)"))]
+        # 08.06: a subquery run once (IN) and one per row (EXISTS, naming the outer t)
+        if k < (8, 6):
+            steps += [(SUBQUERY_QUERY, _refused("subqueries are not supported"))]
+        else:
+            steps += [(SUBQUERY_QUERY, _rows("two", "four"))]
     # The 08.07 extension: UNIQUE is an index, and a duplicate is refused as sqlite3 refuses it.
     if (3, 3) <= k < (8, 7):
         steps += [("CREATE TABLE u(a UNIQUE, b);", _refused("UNIQUE is not supported"))]
@@ -272,6 +279,9 @@ def timeline_boot(lesson_id):
 JOIN_QUERY = "SELECT x.a, y.a FROM t AS x JOIN t AS y ON y.id = x.id + 1 ORDER BY x.id;"
 # 08.02 on: each row with the row whose id is its b, if there is one (three has b 30).
 LEFT_QUERY = "SELECT t.a, u.a FROM t LEFT JOIN t AS u ON u.id = t.b ORDER BY t.id;"
+# 08.06 on: the rows of t whose next row is there, and whose b some other row's b exceeds.
+SUBQUERY_QUERY = ("SELECT a FROM t WHERE id + 1 IN (SELECT id FROM t) AND EXISTS (SELECT 1 FROM t AS u WHERE u.b > t.b) "
+                  "ORDER BY id;")
 
 
 def timeline_after(root, lesson_id):
@@ -698,6 +708,16 @@ def keeps_unique(root):
     try:
         with open(os.path.join(root, "src", "schema.c"), errors="replace") as f:
             return "sqlite_autoindex_" in f.read()
+    except OSError:
+        return False
+
+
+def has_subqueries(root):
+    """Does the project at root run subqueries (08.06, an extension)? Before it they are
+    refused ("subqueries are not supported")."""
+    try:
+        with open(os.path.join(root, "src", "parse.c"), errors="replace") as f:
+            return "parse_subquery" in f.read()
     except OSError:
         return False
 
