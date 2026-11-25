@@ -58,12 +58,19 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 import figlib  # noqa: E402
-from figlib import Fig, tw  # noqa: E402
+from figlib import tw  # noqa: E402
 import steps  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(HERE))
 figlib.LESSONS = os.path.join(REPO, "tracks", "db", "lessons")
 MOD = "08-more-sql"
+
+
+class Fig(figlib.Fig):
+    """figlib.Fig whose text() takes anchor None as "start" (figlib would write text-anchor="None")."""
+
+    def text(self, x, y, s, cls="t", size=12, anchor="start", weight=None, mono=False):
+        super().text(x, y, s, cls, size, anchor or "start", weight, mono)
 
 # ------------------------------------------------------------------ the data, from the runs above
 
@@ -375,8 +382,11 @@ def levels0801():
     BH = 28
     SX = 270                                  # the spine: filters, joins, the first scan
     yF2, yJ2, yF1, yJ1, yF0, yS = 112, 172, 248, 308, 384, 444
-    for y in (yF1 - 12, yF0 - 12):            # where one level ends and the next begins
-        f.line(24, y, 616, y, "m", dash=True)
+    # where one level ends and the next begins: 12 px over the filter, under every label of the
+    # level above (its row count, its scan's note), and broken where the spine's arrow crosses
+    for y in (yF1 - 12, yF0 - 12):
+        f.line(24, y, SX - 14, y, "m", dash=True)
+        f.line(SX + 60, y, 616, y, "m", dash=True)
 
     def op(cx, y, w, label, cls="s f", tcls="t", weight=None):
         f.rect(cx - w / 2, y, w, BH, cls, 6)
