@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>The operations with the most time of their own in a step, under the profiler: how many calls a step and ms; in the accent, the ones attention&#x27;s batched product and its backward pass make</title>
+<defs><marker id="ops1102-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="ops1102-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="ops1102-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="ta mono" x="102" y="35" font-size="10.5" font-weight="600" text-anchor="end">bmm</text>
+<rect class="a af" x="110" y="26" width="163.64" height="12" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="279.64" y="36" font-size="10">4.20 ms, 24 calls</text>
+<text class="t mono" x="102" y="55" font-size="10.5" text-anchor="end">mul</text>
+<rect class="s fs" x="110" y="46" width="160.52" height="12" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="276.52" y="56" font-size="10">4.12 ms, 151 calls</text>
+<text class="t mono" x="102" y="75" font-size="10.5" text-anchor="end">copy_</text>
+<rect class="s fs" x="110" y="66" width="119.61" height="12" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="235.61" y="76" font-size="10">3.07 ms, 528 calls</text>
+<text class="t mono" x="102" y="95" font-size="10.5" text-anchor="end">sum</text>
+<rect class="s fs" x="110" y="86" width="88.83" height="12" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="204.83" y="96" font-size="10">2.28 ms, 63 calls</text>
+<text class="ta mono" x="102" y="115" font-size="10.5" font-weight="600" text-anchor="end">select</text>
+<rect class="a af" x="110" y="106" width="72.47" height="12" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="188.47" y="116" font-size="10">1.86 ms, 9,218 calls</text>
+<text class="t mono" x="102" y="135" font-size="10.5" text-anchor="end">mm</text>
+<rect class="s fs" x="110" y="126" width="61.95" height="12" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="177.95" y="136" font-size="10">1.59 ms, 59 calls</text>
+<text class="t mono" x="102" y="155" font-size="10.5" text-anchor="end">add_</text>
+<rect class="s fs" x="110" y="146" width="58.05" height="12" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="174.05" y="156" font-size="10">1.49 ms, 169 calls</text>
+<text class="t mono" x="102" y="175" font-size="10.5" text-anchor="end">addmm</text>
+<rect class="s fs" x="110" y="166" width="48.7" height="12" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="164.7" y="176" font-size="10">1.25 ms, 28 calls</text>
+<text class="t mono" x="102" y="195" font-size="10.5" text-anchor="end">fill_</text>
+<rect class="s fs" x="110" y="186" width="34.29" height="12" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="150.29" y="196" font-size="10">0.88 ms, 85 calls</text>
+<text class="t mono" x="102" y="215" font-size="10.5" text-anchor="end">add</text>
+<rect class="s fs" x="110" y="206" width="33.9" height="12" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="149.9" y="216" font-size="10">0.87 ms, 45 calls</text>
+<text class="t mono" x="102" y="235" font-size="10.5" text-anchor="end">div</text>
+<rect class="s fs" x="110" y="226" width="30" height="12" rx="1" stroke-width="1.5"/>
+<text class="tm mono" x="146" y="236" font-size="10">0.77 ms, 93 calls</text>
+<text class="ta mono" x="102" y="255" font-size="10.5" font-weight="600" text-anchor="end">as_strided</text>
+<rect class="a af" x="110" y="246" width="29.61" height="12" rx="1" stroke-width="1.5"/>
+<text class="ta mono" x="145.61" y="256" font-size="10">0.76 ms, 9,784 calls</text>
+<text class="t" x="462" y="40" font-size="10.5" font-weight="700">attention&#x27;s scores and sums:</text>
+<text class="t" x="462" y="55" font-size="10.5">32 windows x 4 heads: 128</text>
+<text class="t" x="462" y="70" font-size="10.5">matrices of 64 x 16 a block,</text>
+<text class="t" x="462" y="85" font-size="10.5">one at a time on this CPU:</text>
+<text class="ta" x="462" y="106" font-size="10.5" font-weight="700">3,072 aten::select</text>
+<text class="ta" x="462" y="121" font-size="10.5">in attention&#x27;s forward pass,</text>
+<text class="ta" x="462" y="142" font-size="10.5" font-weight="700">16,976 operations under</text>
+<text class="ta" x="462" y="157" font-size="10.5">BmmBackward0, 4.54 ms,</text>
+<text class="ta" x="462" y="172" font-size="10.5">in the backward pass.</text>
+<text class="t" x="462" y="193" font-size="10.5" font-weight="700">Next: mul, sum, copy_, add_,</text>
+<text class="t" x="462" y="208" font-size="10.5">each a pass over memory:</text>
+<text class="t" x="462" y="223" font-size="10.5">the turning, the norms, the</text>
+<text class="t" x="462" y="238" font-size="10.5">gate, and their gradients.</text>
+<text class="tm" x="20" y="322" font-size="10.5">All operations&#x27; own time: 29.1 ms a step under the profiler.</text>
+</svg>

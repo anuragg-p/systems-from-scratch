@@ -41,6 +41,11 @@ Fixtures the lesson tests use:
     keeps_unique(root)  does the project at root keep UNIQUE and PRIMARY KEY
                         constraints (08.07)? A core test that checks the refusal
                         before it checks what 08.07 makes of the same SQL instead
+    fuzz(t, features, n=300, seed=1)
+                        the seeded differential fuzzer (tests/fuzz, its README.md):
+                        n random cases written with the SQL of features, through ./db
+                        and sqlite3; fails with the smallest failing script. FUZZ_N in
+                        the environment overrides n
 
 Tests are internal. A lesson's test runs the whole engine, so with that
 lesson's code cut out it fails at the stub: "db: NN.LL: ... not written yet".
@@ -724,3 +729,28 @@ def sqllogictest(t, have=(), scripts=None):
         if r.returncode != 0:
             raise Fail("sqllogictest failed (tests/sqllogictest/README.md):\n" + "\n".join(out))
     return "\n".join(out)
+
+
+# ---------------------------------------------------------------- the fuzzer
+
+def fuzz(t, features, n=300, seed=1):
+    """The seeded differential fuzzer (tests/fuzz/fuzz.py, its README.md): n random cases
+    (schemas, rows, queries, changes) written with the SQL of features (a list, or a string
+    like "join,leftjoin"; from join, leftjoin, aggregate, groupby, distinct, subquery,
+    unique; core is always in), run through ./db and sqlite3, which must agree statement by
+    statement and leave the same rows. FUZZ_N in the environment overrides n for long runs.
+    Fails on a difference with the first failing case cut down to its smallest script;
+    returns the summary line."""
+    script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tests", "fuzz", "fuzz.py")
+    feats = features if isinstance(features, str) else ",".join(features)
+    n = int(os.environ.get("FUZZ_N") or n)
+    argv = [sys.executable, script, "--seed", str(seed), "--n", str(n), "--features", feats or "core",
+            "--db", os.path.join(t.root, "db"), "--sqlite", sqlite_bin(), "--shrink"]
+    try:
+        r = subprocess.run(argv, capture_output=True, text=True, errors="replace", timeout=3600)
+    except subprocess.TimeoutExpired:
+        raise Fail(f"the fuzzer did not finish in an hour: {' '.join(argv[2:])}")
+    if r.returncode != 0:
+        raise Fail("the fuzzer found a difference between ./db and sqlite3 (tests/fuzz/README.md):\n" +
+                   r.stdout[-8000:] + r.stderr[-2000:])
+    return r.stdout.strip()

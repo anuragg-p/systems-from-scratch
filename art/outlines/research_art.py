@@ -47,6 +47,10 @@ Computed, for the built modules, from the formulas and settings of the track's o
         weights, checked against what the run printed; SmolLM2-135M's heads from models/smollm.py and its and
         GPT-2's bits per character as 10.04's page prints them; the rotary pair turned through four places is a
         schematic of 10.02's turning
+    11  11.06's recorded benchmark read from tracks/research/experiments/recorded/benchmark/: each row's seconds to
+        the target (times.json) and steps (every seed's summary), checked against its output.txt, their ratios to
+        the baseline, and seed 0's held-out curve of four rows placed in seconds as benchmark.py places them; the
+        cache's gain as 11.06's page states it
     12  LoRA's count by the paper's formula (2 x 24 x 768 x r) and GPT-2 small's by models/gpt.py's, and 12.02's
         recorded run read from tracks/research/experiments/recorded/lora/: each method's weights trained and mean
         test accuracy, checked against its output.txt and 12.02's page; the stack of blocks is a schematic
@@ -65,8 +69,8 @@ Where a cover prints a number the lessons print, the script asserts it is the sa
 change to the track that moves it stops this script instead of leaving the cover wrong.
 Also computed: the double-descent curve in 05 (random ReLU features, least squares), the
 convolution in 06, the DDPM noising in 17 and the
-PPO objective in 18. Schematic (the true shape, no measured numbers): 11's loss curves,
-20's over-optimisation and 21's four phenomena.
+PPO objective in 18. Schematic (the true shape, no measured numbers): 20's over-optimisation
+and 21's four phenomena.
 
 The Art class is the one from art/xv6/covers.py and dsa_art.py, repeated so this file stands alone.
 Module 00's cover needs numpy, as the track does.
@@ -1190,56 +1194,100 @@ def res_modern():
 
 # =================================================================== 11 fast
 
-def res_fast():
-    a = Art("r11", "Fast: the yardstick is the time to reach a target loss; four changes each make the same loss "
-                   "arrive sooner")
-    px0, px1, py0, py1 = 48, 352, 48, 214
-    loss = lambda s: 1.0 + 3.0 / (1 + s / 200) ** 0.8         # an illustrative loss-per-step curve
-    steps, slow, fast = 2000, 1.0, 0.4
-    tmax = steps * slow
-    X = lambda t: px0 + t / tmax * (px1 - px0)
-    Y = lambda L: py1 - (L - 0.8) / 3.4 * (py1 - py0)
-    axes(a, px0, py0 - 8, px1, py1)
-    a.text(px0, 36, "validation loss", "tm", 10.5)
-    a.text(px1, py1 + 18, "wall-clock time", "tm", 10.5, "end")
-    poly(a, [(X(s * slow), Y(loss(s))) for s in range(0, steps + 1, 20)], "s")
-    poly(a, [(X(s * fast), Y(loss(s))) for s in range(0, int(steps * slow / fast) + 1, 20) if s * fast <= tmax], "a")
-    target = 1.6
-    s_hit = 200 * ((3.0 / (target - 1.0)) ** (1 / 0.8) - 1)
-    assert abs(loss(s_hit) - target) < 1e-9
-    a.line(px0, Y(target), px1, Y(target), "m", dash=True)
-    a.text(px1, Y(target) - 6, "target loss", "tm", 10, "end")
-    for sp, cls, lab in ((fast, "a", "after"), (slow, "s", "before")):
-        t = X(s_hit * sp)
-        a.line(t, Y(target), t, py1, cls, dash=True)
-        dot(a, t, Y(target), 3.5, "a fa" if cls == "a" else "s f")
-        a.text(t, py1 + 18, lab, "ta" if cls == "a" else "t", 10.5, "middle", 600)
-    a.text(X(s_hit * fast) - 30, Y(2.9), "after: the same loss per step,", "ta", 10.5)
-    a.text(X(s_hit * fast) - 30, Y(2.9) + 14, "in less time per step", "ta", 10.5)
-    a.text(24, 256, "speedup = time before / time after, each the median of several runs", "tm", 10.5)
+def fast_numbers():
+    """11's numbers as its pages print them. The recorded benchmark of 11.06, read from
+    tracks/research/experiments/recorded/benchmark/: each row's seconds to the target (times.json) and steps
+    (every seed's summary.json), checked against its output.txt; seed 0's held-out bits along its log, placed in
+    seconds as benchmark.py's own curves place them (each logged step times that seed's ms a step); and the cache's
+    gain as 11.06's page states it (that run needs SmolLM2's files, so the page is the record)."""
+    import re
+    track = os.path.join(ROOT, "tracks", "research")
+    rec = os.path.join(track, "experiments", "recorded", "benchmark")
+    with open(os.path.join(rec, "times.json")) as f:
+        times = json.load(f)
+    with open(os.path.join(rec, "output.txt")) as f:
+        printed = f.read()
+    rows, curves = {}, {}
+    for name, t in times.items():
+        folder = os.path.join(rec, name.replace(" ", "-"))
+        summaries = [json.load(open(p)) for p in sorted(glob.glob(os.path.join(folder, "seed*", "summary.json")))]
+        sec = sum(t["seconds"]) / len(t["seconds"])
+        steps = sum(s["steps_to_target"] for s in summaries) / len(summaries)
+        line = re.search(rf"^   {re.escape(name)} +(\S+) \+- \S+ \(min .*?\) +(\d+) ", printed, re.M)
+        assert line and float(line.group(1)) == float(f"{sec:.3g}") and line.group(2) == f"{steps:.0f}", (name, line)
+        rows[name] = (sec, steps)
+        with open(os.path.join(folder, "seed0", "log.jsonl")) as f:
+            log = [json.loads(x) for x in f if x.strip()]
+        curves[name] = [((r["step"] + 1) * t["ms"][0] / 1000, r["held_bits"]) for r in log]
+    cfg = json.load(open(os.path.join(rec, "baseline", "seed0", "config.json")))
+    page = os.path.join(LESSONS, "11-fast", "11.06-one-more-optimisation-measured.md")
+    with open(page) as f:
+        lesson = " ".join(f.read().split())
+    cache = re.search(r"writes (\d\.\d) times as fast at 32 tokens and (\d\.\d) times at 256", lesson).groups()
+    base = rows["baseline"][0]
+    got = {"ratio": {k: f"x{v[0] / base:.2f}" for k, v in rows.items() if k != "baseline"},
+           "steps": {k: f"{v[1]:.0f}" for k, v in rows.items()}, "target": cfg["target"], "width": cfg["width"],
+           "context": cfg["context"], "cache": cache, "seconds": {k: f"{v[0]:.3g}" for k, v in rows.items()}}
+    assert got["ratio"] == {"angles kept": "x1.01", "fused attention": "x0.87", "bfloat16": "x28.99",
+                            "twice the batch and rate": "x1.12", "all together": "x0.86"} and \
+        got["steps"] == {"baseline": "433", "angles kept": "433", "fused attention": "434", "bfloat16": "451",
+                         "twice the batch and rate": "297", "all together": "300"} and \
+        got["cache"] == ("2.8", "6.3") and got["target"] == 2.4, got  # 11.06's table and page
+    got["curves"] = curves
+    return got
 
-    rx0 = 384
-    a.text(rx0, 30, "four changes, each measured", size=11.5, weight=700)
-    items = [("fused attention", "softmax in tiles: no T x T matrix"),
-             ("16-bit numbers", "bf16 keeps fp32's range; fp16 needs loss scaling"),
-             ("bigger batches", "sum the gradients of k batches, one step"),
-             ("one of your own", "kept only if the time to target falls")]
-    for k, (head, sub) in enumerate(items):
-        y = 52 + k * 34
-        a.text(rx0, y, head, size=11, weight=600)
-        a.text(rx0, y + 15, sub, "tm", 10)
-    fmts = [("fp32", 1, 8, 23), ("bf16", 1, 8, 7), ("fp16", 1, 5, 10)]
-    bw = 6
-    for k, (name, sgn, ex, man) in enumerate(fmts):
-        y = 196 + k * 18
-        a.text(rx0, y + 10, name, size=10, mono=True, weight=600)
-        x = rx0 + 34
-        for n, cls in ((sgn, "s f"), (ex, "a af"), (man, "s fs")):
-            a.box(x, y, n * bw * 0.85, 13, cls, rx=1)
-            x += n * bw * 0.85
-        a.text(x + 5, y + 10, f"{sgn}+{ex}+{man}", "tm", 9.5, mono=True)
-    a.text(rx0, 188, "bits: sign, exponent (range), mantissa", "tm", 9.5)
-    a.text(24, 288, "Profile one step first, then change one thing at a time and measure it the same way.", "tm", 11)
+
+def res_fast():
+    a = Art("r11", "Fast: the same numbers, sooner. The module's recorded benchmark, every change timed to the same "
+                   "held-out loss on this laptop's CPU; and a cache of keys and values for writing")
+    got = fast_numbers()
+    px0, px1, py0, py1 = 52, 352, 44, 214
+    t0, t1, b0, b1 = 4.0, 30.0, 2.3, 3.3
+    X = lambda t: px0 + (t - t0) / (t1 - t0) * (px1 - px0)  # noqa: E731
+    Y = lambda b: py1 - (b - b0) / (b1 - b0) * (py1 - py0)  # noqa: E731
+    axes(a, px0, py0 - 8, px1, py1)
+    a.text(px0, 30, "held-out bits per character, seed 0", "tm", 10.5)
+    a.text(round((px0 + px1) / 2, 1), py1 + 32, "seconds of training", "tm", 10.5, "middle")
+    for v in (10, 20, 30):
+        a.line(round(X(v), 1), py1, round(X(v), 1), py1 + 4, "m")
+        a.text(round(X(v), 1), py1 + 16, str(v), "tm", 9.5, "middle", mono=True)
+    for v in (2.4, 2.8, 3.2):
+        a.text(px0 - 6, round(Y(v) + 3.5, 1), f"{v:g}", "tm", 9.5, "end", mono=True)
+    a.line(px0, round(Y(got["target"]), 1), px1, round(Y(got["target"]), 1), "m", dash=True)
+    a.text(px1, round(Y(got["target"]) - 6, 1), f"target {got['target']}", "tm", 10, "end")
+    show = [("twice the batch and rate", "m", False), ("baseline", "s", False), ("fused attention", "a", True),
+            ("all together", "a", False)]
+    for name, cls, dash in show:
+        clipped(a, [(X(t), Y(b)) for t, b in got["curves"][name]], (px0, py0 - 8, px1, py1), cls, dash)
+    for name, cls, _ in show:
+        sec = float(got["seconds"][name])
+        dot(a, X(sec), Y(got["target"]), 3.5, "a fa" if cls == "a" else ("s f" if cls == "s" else "m f"))
+    a.text(X(9.5), Y(3.15), "baseline", size=10.5, weight=600)
+    a.text(X(9.5), Y(3.15) + 14, "fused attention, all together", "ta", 10.5, weight=600)
+    a.text(X(9.5), Y(3.15) + 28, "twice the batch and rate", "tm", 10.5)
+
+    rx0, rx1 = 388, 616
+    a.text(rx0, 30, "time to the target, against the baseline", size=11.5, weight=700)
+    rows = [("fused attention", "a"), ("all together", "a"), ("angles kept", "s"), ("twice the batch and rate", "s")]
+    for k, (name, cls) in enumerate(rows):
+        y = 50 + k * 30
+        r = float(got["ratio"][name][1:])
+        w = r / 1.2 * (rx1 - rx0 - 60)
+        a.box(rx0, y, round(w, 1), 14, "a af" if cls == "a" else "s fs", rx=2)
+        a.text(rx0 + 4, y + 26, name, "ta" if cls == "a" else "t", 10, weight=600 if cls == "a" else None)
+        a.text(round(rx0 + w + 6, 1), y + 11, got["ratio"][name], "ta" if cls == "a" else "t", 10.5, weight=700,
+               mono=True)
+    base_x = rx0 + 1 / 1.2 * (rx1 - rx0 - 60)
+    a.line(round(base_x, 1), 46, round(base_x, 1), 168, "m", dash=True)
+    a.text(round(base_x, 1), 180, "the baseline", "tm", 9.5, "middle")
+    a.text(rx0, 202, f"bfloat16: {got['ratio']['bfloat16']}, {got['seconds']['bfloat16']} s", "t", 10.5, weight=700,
+           mono=True)
+    a.text(rx0, 216, "no fast 16-bit products on this CPU", "tm", 10)
+    a.text(rx0, 240, f"writing with a cache of keys and values:", "ta", 10.5, weight=700)
+    a.text(rx0, 254, f"the same tokens, x{got['cache'][0]} to x{got['cache'][1]} as fast", "ta", 10.5)
+    a.text(24, 270, f"The recorded benchmark: width {got['width']}, windows of {got['context']}, 3 seeds a row; "
+                    f"the curves are steps times each run's ms a step.", "tm", 10.5)
+    a.text(24, 288, "Each change first gives the same numbers, checked; then it is timed to the same target.", "tm", 11)
     return a
 
 

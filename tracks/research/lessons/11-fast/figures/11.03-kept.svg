@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 252" fill="none">
+<title>What autograd keeps for the backward pass of one attention, 8 windows x 4 heads of 16 at 256 places, every tensor saved (each piece of memory once), to scale: written out, the (T, T) weights; fused, a total for each row</title>
+<defs><marker id="kept1103-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="kept1103-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="kept1103-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="ta" x="20" y="32" font-size="12" font-weight="700">written out: 9.56 MiB</text>
+<rect class="s f" x="20" y="44" width="29.33" height="30" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="34.66" y="62.78" font-size="10.5" text-anchor="middle">q</text>
+<rect class="s f" x="50.33" y="44" width="29.33" height="30" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="64.99" y="62.78" font-size="10.5" text-anchor="middle">k</text>
+<rect class="m fs" x="80.65" y="44" width="2.79" height="30" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="84.44" y="44" width="484.23" height="30" rx="2" stroke-width="1.5"/>
+<text class="ta" x="326.56" y="62.78" font-size="10.5" font-weight="600" text-anchor="middle">the weights: 8 x 4 x 256 x 256, 8 MiB</text>
+<rect class="s f" x="569.67" y="44" width="29.33" height="30" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="584.34" y="62.78" font-size="10.5" text-anchor="middle">v</text>
+<line class="m" x1="82.55" y1="75" x2="82.55" y2="82" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm" x="85.55" y="92" font-size="9.5">mask</text>
+<text class="t" x="20" y="128" font-size="12" font-weight="700">fused: 2.03 MiB</text>
+<rect class="s f" x="20" y="140" width="29.33" height="30" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="34.66" y="158.78" font-size="10.5" text-anchor="middle">q</text>
+<rect class="s f" x="50.33" y="140" width="29.33" height="30" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="64.99" y="158.78" font-size="10.5" text-anchor="middle">k</text>
+<rect class="s f" x="80.65" y="140" width="29.33" height="30" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="95.32" y="158.78" font-size="10.5" text-anchor="middle">v</text>
+<rect class="a af" x="110.98" y="140" width="2" height="30" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="113.98" y="140" width="29.33" height="30" rx="2" stroke-width="1.5"/>
+<text class="t mono" x="128.64" y="158.78" font-size="10.5" text-anchor="middle">out</text>
+<line class="m" x1="112.48" y1="171" x2="112.48" y2="178" stroke-width="1.5" stroke-linecap="round"/>
+<text class="ta" x="115.48" y="188" font-size="9.5">row totals</text>
+<text class="tm" x="20" y="216" font-size="10">q, k, v and out: 8 x 4 x 256 x 16 each, 0.5 MiB; the row totals 8 x 4 x 256; the mask 256 x 256 booleans.</text>
+<text class="tm" x="20" y="242" font-size="10.5">Written out, the weights grow with the square of the length; fused, nothing kept is larger than the queries.</text>
+</svg>
