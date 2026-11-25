@@ -47,13 +47,27 @@ all well inside. 11.05 took 66 s and then 49 s at the same load (58 s
 at a load of 6 when it was built): the one default still to be timed
 with nothing else running, and cut if it passes 55 s then.
 
-In work, two agents: a read of modules 06 to 10 and of 11 to 15 for
-terms, cross-references and promises between lessons that were written
-out of order, as was done for 00 to 05. Left after that: 11.05's time
-on a quiet machine; the README's map (`./learn map --write`) when the
-other session's README changes are in. Of the shelf, module 22
-(reasoning) was added at the owner's wish on 2026-11-25 and is in work,
-its code first; 16 to 21 are not started.
+The read of modules 06 to 15 is done and merged (2026-11-25), as was
+done for 00 to 05: 27 small fixes, each verified. Wrong cross-references
+(11.04's AdamW is 03.04's, 06.04's schedule), terms before their lesson
+(token before 09.01, kernel before 10.01, standard error before 13.02),
+promises later lessons do not keep (12.03 and 10.04 on module 11's
+cache, 08.04's checkpoint), a number from the wrong models (15.02's
+"0.2 bits harder" was module 07's), "beyond the noise" used for a t
+under 10.05's line of 3 (12.04), and claims about sources nobody read
+(Krizhevsky's report in 06.03, Raschka's chapters in module 12). Two
+things in program output, fixed by the planner: 14.04's report says
+which of its numbers is a mean, and module 15's paper says "the rate
+matters more than the depth" in both places. Left on purpose: 08.02
+calls t = -2.4 "a little beyond the noise" (13.02 quotes it as 08.02's
+reading and settles it); two video descriptions in 09.01 and 09.03
+whose titles only were checked.
+
+In work: module 22's code (reasoning). Left after that: its lessons;
+11.05's time on a quiet machine; the README's map
+(`./learn map --write`) when the other session's README changes are in.
+Of the shelf, module 22 was added at the owner's wish on 2026-11-25; 16
+to 21 are not started.
 
 The owner asked for more speed (2026-11-24): the limit of three agents
 is lifted. Timings taken while four or five agents run are not to be
