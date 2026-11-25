@@ -1,0 +1,33 @@
+1. One training step of 10.05's "all four" GPT (4 blocks of 4 heads, width 128, 2 key/value heads),
+   32 windows of 128 characters (4,096 tokens), on cpu with 10 threads.
+   The first step of the process: 82.8 ms (load 2.5)
+   round 1, 5 timings of 5 steps, ms a step: 51.4 51.4 51.6 50.9 53.0
+            50.9 ms (median 51.4, largest 53, 5 repeats, load 2.5)
+   round 2, 5 timings of 5 steps, ms a step: 52.0 51.1 53.5 51.1 51.7
+            51.1 ms (median 51.7, largest 53.5, 5 repeats, load 2.5)
+   round 3, 5 timings of 5 steps, ms a step: 52.9 51.5 50.6 50.9 51.1
+            50.6 ms (median 51.1, largest 52.9, 5 repeats, load 2.4)
+   all 15: 50.6 ms (median 51.4, largest 53.5, 15 repeats); the largest is 1.06 times the smallest
+   tokens a second at the smallest: 80,893
+
+2. Time to 2.4 bits per character on 64 validation windows (scored every 20 steps, untimed), at most
+   1000 steps, AdamW 0.002, warmup 100 then a cosine over 1000 steps; 3 seeds a row (load 2.4):
+
+                              seconds to the target                             steps  against the first  ms a step  tokens a second
+   baseline                   22.7 +- 0.693 (min 21.9, max 23.3, 3 seeds)         433                          52.5           78,052
+   angles kept                23 +- 0.805 (min 22.1, max 23.5, 3 seeds)           433    x1.01 (t  +0.5)       53.1           77,101
+   fused attention            19.7 +- 1.15 (min 18.5, max 20.8, 3 seeds)          434    x0.87 (t  -3.9)       45.4           90,252
+   bfloat16                   659 +- 33.2 (min 621, max 684, 3 seeds)             451   x28.99 (t +33.2)     1465.2            2,796
+   twice the batch and rate   25.4 +- 1.86 (min 23.7, max 27.4, 3 seeds)          297    x1.12 (t  +2.3)       85.3           95,990
+   all together               19.5 +- 0.526 (min 18.9, max 19.8, 3 seeds)         300    x0.86 (t  -6.5)       64.8          126,452
+
+   seed by seed, steps and seconds to the target:
+   baseline                   419, 21.9 s   438, 23.0 s   442, 23.3 s
+   angles kept                419, 22.1 s   438, 23.5 s   442, 23.5 s
+   fused attention            419, 18.5 s   438, 20.8 s   445, 19.8 s
+   bfloat16                   434, 621.4 s   437, 672.8 s   482, 683.6 s
+   twice the batch and rate   299, 27.4 s   302, 25.1 s   290, 23.7 s
+   all together               298, 18.9 s   306, 19.7 s   297, 19.8 s
+   curves in experiments/recorded/benchmark/curves.svg
+
+2378 s of timing and training on cpu

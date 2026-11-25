@@ -3901,6 +3901,895 @@ pass:
   the track's own reference solution). In a trimmed session, "line N"
   counts the block's own lines, not the program's.
 
+## Module 11: fast
+
+Built on 2026-11-25 on the machine above (Apple M4 Pro, 10 performance
+and 4 efficiency cores, 48 GB, Python 3.12.7, torch 2.10.0, numpy
+2.4.3), with three or four other agents' training and tests running
+nearly the whole time: the load average was 2 to 20, and every time below has its
+load beside it. The module's rule: every optimisation is the same
+numbers, sooner, with a test that the numbers are the same and a
+measurement before and after. Every time is provisional but those taken
+in the one quiet window (03:06 to about 03:12, load 2 to 4: the start of
+the recorded benchmark); the default runs were last timed at load 6 to 7
+right after it. Steps to a target and every number a run writes are the
+same at any load.
+
+**What is new, and where.**
+
+```
+lab/bench.py            11.01   load_average, timings, spread_ms, time_to (regions): timing that means something
+experiments/language.py 11.01   train's times and until (an @from block); race (region): seeds trained to a target, timed
+                        11.04   train's cfg.precision: autocast in bfloat16 or float16 (an @from block)
+                        11.05   train's cfg.accumulate: each batch in equal parts, gradients added (an @from block)
+                        11.06   cached_scores (region); generate's cache=False (an @from block)
+models/gpt.py           11.02   Rotary.keep and Rotary.angles (@from blocks in the 10.02 region): the angles kept
+                        11.03   fused_attend (region); fused=False (SelfAttention, Block, GPT: @from lines)
+                        11.04   Rotary.angles makes its angles in float32 when asked for 16 bits (an @from block)
+                        11.06   causal_mask's keys, self_attend's mask, fused_attend's mask, Positions' start, qkv's,
+                                SelfAttention's, Block's and GPT's caches, embed's start (@from blocks); Cache (region)
+experiments/            11.01   benchmark.py (rows, board; recorded() reads the recorded benchmark from 11.06)
+                        11.02   profile.py (piece_of, timers, where)
+                        11.03   fused.py (kept_bytes)
+                        11.04   precision.py (lost, Kinds)
+                        11.05   batches.py (accumulated)
+                        11.06   cache.py (written); recorded/benchmark/, the module's long run
+```
+
+Nothing new is imported: numpy, torch (torch.profiler, torch.overrides.
+TorchFunctionMode, torch.autograd.graph.saved_tensors_hooks, all part of
+torch) and the standard library. lab/__init__.py is unchanged: the
+scripts say `from lab import bench`, as they say `from lab import
+safetensors` (module 13 adds to lab/ at the same time; a new file merges
+without a conflict).
+
+**What every earlier lesson keeps.** Each change is behind an argument
+or a setting whose default is what was there: GPT(fused=False),
+generate(cache=False), model(ids) without caches, train without times or
+until, cfg without precision or accumulate (both read with cfg.get, so
+the earlier CONFIGs need nothing new). The one change that is always on,
+Rotary keeping its angles, gives the same numbers bit for bit (the same
+operations made them, and the test holds it). Measured: 13 earlier
+experiments (self_attention, heads, positions, gpt, sampling, rotary,
+swiglu, rmsnorm, ablation, smollm, gpt2, tinystories, grokking) on short
+settings in master's project and in this one: 96 files compared
+(every log.jsonl, summary.json and the checkpoints), all byte for byte
+the same; what they printed differs only in times. Checkpoints written
+by 08, 09 and 10 load (language.load builds GPT(**config); fused is not
+in their config and defaults to False).
+
+**Names module 12 relies on, kept:** blocks[i].attention.query, .key,
+.value, .out, mlp.up, mlp.down, embed, norm, tokens. SelfAttention.qkv
+and GPT.embed take one more argument each (cache, start) with defaults,
+so attention_maps and anything calling them as before is unchanged.
+
+**The model every lesson times** is 10.05's "all four" row at 08.04's
+default size: GPT(vocab 65, context 64, 4 blocks of 4 heads, width 64,
+norm="rms", positions="rotary", mlp="swiglu", kv_heads=2), 186,832
+weights, trained as 08.04 trains (AdamW 0.003, weight decay 0.1 on the
+matrices, warmup then a cosine, clipped to 1, batches of 32 windows of
+64). The time to a target is on 32 fixed validation windows (rng 0),
+scored every 10 steps, the scoring untimed.
+
+**The default runs** (each, the last time, right after the recorded
+benchmark, at load 6 to 7, other agents back; the same digits as every
+earlier run but for the times): benchmark 26.8 s, profile 17.5 s, fused
+25.4 s, precision 40.0 s, batches 58.3 s, cache 39.4 s. Earlier, at load
+9 to 11: 44.9, 18.7, 21.9, 28.1 (40 steps), 94.3 (target 3.0) and 44.8
+s. batches is the one near a minute: 58 s at load 6 (with 11.01's target
+of 3.0 it was 94 s at load 9, so its default target is 3.2); on a quiet
+machine it was not timed. Every number below is from the load-6 runs
+unless a line says otherwise.
+
+**11.01 Reading the benchmark: time to a target loss.**
+experiments/benchmark.py; lab/bench.py; language.py's race and train's
+times and until.
+1. The step, timed. At load 6.0: the first step of the process 44.0 ms;
+   3 rounds of 5 timings of 5 steps, ms a step: 28.9 33.3 33.7 29.7 28.9
+   / 28.5 28.8 29.1 28.6 28.8 / 28.6 28.5 28.6 28.5 29.1; the smallest of
+   each round 28.9, 28.5, 28.5, the medians 29.7, 28.8, 28.6; all 15:
+   smallest 28.5, median 28.8, largest 33.7 (1.18 times the smallest);
+   71,924 tokens a second at the smallest. At load 10 to 11 (an earlier
+   run): the first step 238 ms, rounds 51.5 51.1 53.2 50.0 49.2 / 49.6
+   52.1 49.5 51.2 48.7 / 47.0 48.5 52.0 91.7 41.0, the smallest of each
+   49.2, 48.7, 41.0, all 15: smallest 41, median 50, largest 91.7 (2.24
+   times). At load 18 to 20 (the first version, 2 rounds): first step 96
+   ms, 73.4 / 80.2 / 84.1 and 53.1 / 60.5 / 76.2 (smallest / median /
+   largest). On the recorded benchmark's quiet start (load 2.4 to 2.5,
+   the width-128 model): first step 82.8 ms, 15 timings 50.6 to 53.5 ms,
+   the largest 1.06 times the smallest. So: one timing in 15 can take
+   twice as long on a busy machine; the smallest of several moves least
+   with the load (28.5 at load 6, 41 at 10, 53 at 18 for the same step,
+   while the medians went 28.8, 50, 60 to 80); and the first step is not
+   the step.
+2. Time to 3.0 bits (2 seeds): baseline `5.41 +- 0.209` s (5.6 and 5.3),
+   193 steps (191 and 196), 28.0 ms a step, 73,247 tokens a second.
+3. Half the batch (16): `5.46 +- 0.0138` s, 294 steps (295 and 293), 18.6
+   ms a step, 55,182 tokens a second: each step a third shorter, half as
+   many steps again, the same time (x1.01, t = +0.3). At load 10: 8.41
+   against 9.76 s (x1.16, t = +1.6). A faster step that learns less a
+   step is not sooner. The steps are the same on any machine and at any
+   load (they are the run's numbers, not the clock's); the seconds are
+   not.
+The measure: seconds of training until the held-out bits first reach the
+target, between the logged rows on a straight line (bench.time_to); the
+steps likewise. Times are kept out of log.jsonl and summary.json (the
+same seed gives the same files: the test holds it) and written to
+times.json beside the runs.
+
+**11.02 Where a step goes: profiling.** experiments/profile.py:
+1. Plain timers (forward hooks on the layers, the clock around the
+   rest), the mean of 10 steps (load 6.5), ms a step and share: data
+   0.09 (0.3%), forward 9.40 (36.7%): embedding 0.05, norms 1.11 (4.3%),
+   attention's q, k, v and out 0.86 (3.4%), rotary 1.55 (6.1%), the rest
+   of attention (scores, mask, softmax, sums, the repeat of grouped keys)
+   3.42 (13.4%), the MLP 1.76 (6.9%), adds and dropout 0.35, the last
+   norm 0.14, the scores and the loss 0.16 (0.6%); backward 14.15
+   (55.3%); clipping 0.31; the optimiser 1.65 (6.4%). The step 25.60 ms
+   with the timers, 25 ms without them (smallest of 5): the hooks cost
+   nothing seen. The backward pass is 1.51 times the forward's. (At load
+   10: the same shares within a point, the step 39 ms.)
+2. The profiler: under it the step is 30.88 ms by the plain timers
+   (+5.3 ms, +21%), 31,502 operations a step. The profiler's pieces equal
+   the plain timers' taken under it (attention 7.63 against 7.60,
+   backward 16.84 against 16.84): the two agree with each other; what
+   differs is the profiler's own cost, largest for the pieces made of
+   many small operations (attention +31%, the forward +24%, backward
+   +19%, rotary +14%, the norms +10%). The plain timers cannot split the
+   backward pass by piece; the profiler can, by autograd's functions.
+   The operations with the most time of their own, a step: bmm 24 calls
+   4.26 ms (15.7% of all operations' 27.2 ms), mul 151 3.63 (13.3%),
+   copy_ 528 2.82 (10.3%), sum 63 1.98, select 9,218 1.93 (7.1%), mm 59
+   1.58, addmm 28 1.23, add_ 169 1.15, as_strided 9,784 0.77, add 45
+   0.75, fill_ 85 0.75, masked_fill_ 8 0.68. Where they ran: attention
+   4.48 (bmm 1.49 in 8, copy_ 0.68 in 24, select 0.65 in 3,072, _softmax
+   0.51, masked_fill_ 0.34); rotary 1.45 (mul 0.51 in 32, cat 0.30, add
+   0.26, neg 0.14, repeat 0.03); the MLP 1.89 (addmm 0.90, copy_ 0.42,
+   silu 0.33); the norms 1.08 (mul 0.50, pow 0.26, sum 0.24); backward
+   15.34 (BmmBackward0 4.66 in 16,976 operations, MulBackward0 1.81,
+   AddmmBackward0 1.52, sum 1.42, add_ 1.06); the optimiser 1.33 (sqrt
+   0.66 in 66). What it says: PyTorch's batched product on the CPU takes
+   the 128 small (64 x 16) matrices of a step's attention one at a time
+   (3 aten::select each: 3,072 a forward pass), and its backward does so
+   again (about 17,000 operations, 30% of the backward pass): attention
+   written out is the largest piece, forward and backward (11.03). Next,
+   element-wise operations: rotary's turning, the written-out RMSNorm,
+   SwiGLU's product, and their gradients, each a pass over memory.
+3. Rotary's angles: 8 calls a step, 20.4 to 21.7 microseconds a call
+   alone, 0.16 ms a step, 0.5% of it (load 5.8; 0.4% at load 10). The
+   turning, forward and backward, a block's queries (4 heads) and keys (2
+   heads) at their own sizes: 1.37 ms a block, 5.5 ms a step, 15.8% of it
+   (load 5.8; the step 34.7 ms with the timers that run). Kept
+   (Rotary.keep = True): every weight after 3 steps bit for bit as
+   without (True); a step 32.6 ms against 32.5 (the smallest of 15,
+   interleaved rounds, load 6.1), x1.003; at load 6.8, 35.1 against 34.6,
+   x1.015; at load 10, 27.7 against 28.5, x0.972; at load 18, 70.3
+   against 73.2, x0.960; in the recorded
+   benchmark (load 2.5, width 128, windows of 128), 23.0 against 22.7 s
+   to the target, x1.01, t = +0.5. As found: the fix is right and costs
+   nothing, and the profile shows the angles were never the cost.
+
+**11.03 Attention without the big matrix (Dao et al. 2022).**
+experiments/fused.py; models/gpt.py's fused_attend and fused=True:
+1. The same numbers, float64: fused_attend against self_attend (4 x 3
+   heads x 40 positions of 16, mask and division on and off) 2.66e-15;
+   the baseline GPT written out against fused, scores 4.44e-16, every
+   gradient 3.33e-16.
+2. Attention alone, forward and backward, 8 windows x 4 heads of 16
+   (smallest of 5, load 7.0), ms, then MiB autograd keeps for the
+   backward pass (each piece of memory once):
+       length   written out   kept     fused   kept   faster   (T, T) weights
+           64      1.02       0.88     0.32    0.51    x3.15      0.5
+          128      1.51       2.77     0.96    1.02    x1.56      2.0
+          256      3.29       9.56     1.66    2.03    x1.98      8.0
+          512     11.12      35.25     4.23    4.06    x2.63     32.0
+         1024     37.59     135.00     8.38    8.12    x4.48    128.0
+   Written out it keeps the (T, T) weights (and the mask): T squared;
+   fused keeps q, k, v, the output and each row's softmax total: T. At
+   1024 places, 135 MiB against 8.1 (17 times less). (An earlier count
+   added a tensor once for each operation that saved it, so the weights
+   twice: 263 MiB at 1024; corrected.) With 32 windows instead of 8 (load
+   16): x4.06 at 1024 and x8.22 at 2048. On this CPU PyTorch's kernel is
+   aten::_scaled_dot_product_flash_attention_for_cpu (the profiler names
+   it, in float32, float64 and bfloat16; the 2.10 page says non-CUDA
+   devices get the C++ "math" implementation, which is not what runs
+   here).
+3. A whole training step (smallest of 5, load 7.0): windows of 64,
+   written out 35.6 ms, fused 27.6, x1.29; windows of 256, 87.2 against
+   61.3, x1.42 (133,705 tokens a second fused).
+4. Trained alike, 150 steps, 2 seeds: written out `3.196 +- 0.001306`,
+   fused `3.196 +- 0.001308`, seed by seed -1.7e-06 and +1.1e-07 (float32
+   rounding over 150 steps); ms a step 36.3 against 28.4, x0.783. Over
+   longer runs float32 rounding grows (the recorded benchmark, 420 to 460
+   steps: the held-out curves 0.0003, 0.003 and 0.016 bits apart at
+   most, the same steps to the target on two seeds of three, 445 against
+   442 on the third).
+On the Apple GPU (mps, device=mps; load 16 to 18, smallest of 5): fused
+is not faster and keeps as much (PyTorch runs the math path there for
+training): attention alone at 64, 256, 1024, 2048 places written 0.52,
+1.08, 18.9, 77.6 ms, fused 0.70, 0.99, 18.0, 72.6, kept 1,040 against
+1,036 MiB at 2048 (counted the old way). A whole step of the baseline:
+17.8 ms written, 18.1 fused.
+As found: the paper's claims are about NVIDIA GPUs and long sequences;
+on this CPU PyTorch's fused kernel holds both halves at small size:
+memory linear in the length (exactly, the bytes kept) and faster, 1.6
+to 4.5 times for attention alone, 1.3 to 1.4 times for a whole step at
+64 and 256 places, 13% less time to the target in the recorded
+benchmark (t = -3.9). The paper's own figures (3x on GPT-2 at 1K, 7.6x
+on attention) are not ours to call held.
+
+**11.04 Lower precision: sixteen bits, and what breaks (Micikevicius et
+al. 2018).** experiments/precision.py; train's cfg.precision:
+1. float16: largest 65,504, smallest normal 2^-14 = 6.1e-05, smallest
+   2^-24 = 5.96e-08, steps of 2^-10 near 1 (1 + 2^-11 is 1.0); bfloat16:
+   largest 3.39e+38, smallest normal 1.18e-38, steps of 2^-7 (1 + 2^-9 is
+   1.0). The baseline after 60 steps, one AdamW step on its own numbers:
+   at the rate 0.003 the median step 0.003 and the median weight 0.017
+   (float16's steps there 1.5e-05): 0.0% of the updates would change
+   nothing in float16, 0.1% in bfloat16; at 1.8e-05 (the cosine at 95%
+   of a run of 0.003) the median step 1.3e-05: 24.6% lost in float16,
+   86.2% in bfloat16. The paper's master copy, in numbers: at the end of
+   a run a quarter of float16's updates and most of bfloat16's vanish
+   (a step under half the spacing at its weight: a ratio of about 2^11,
+   the paper's 2048). Adam's eps 1e-8 is 0.0 in float16, and 91.5% of
+   the squared-gradient averages are 0 in float16 (0.0% in float32):
+   where one is, the update is 1e-3 / (0 + 0) = inf. The gradients: of
+   the weights 0.01% under 2^-24 (0 in float16), 10.7% under 2^-14; of
+   the stream at each block's output 0.12% and 84.6% (largest 0.0038):
+   the stream's gradients are where float16 runs short (the paper's
+   activation gradients). A softmax: e^12 is inf in float16, so [12, 0,
+   -3] written as e^s / sum gives [nan, 0, 0], with the largest taken
+   away first [1, 0, 0]; this model's largest attention score is 2.27,
+   nowhere near. Rotary's angles in bfloat16: places 255, 256, 257, 1000,
+   1001 become 255, 256, 256, 1000, 1000; angles 60 to 60.875 radians in
+   eighths become 60, 60, 60.25, 60.5, 60.5, 60.5, 60.75, 61.0. That was
+   a bug of 10.02's Rotary under autocast, fixed from 11.04 (Departures).
+2. Autocast on this CPU, bfloat16, the functions by types in and out:
+   float32 in, 16 bits out: linear, matmul (and rotary's own .to); 16
+   bits in, float32 out: cross_entropy (autocast's float32 list), add
+   (16-bit attention output plus the float32 stream promotes to float32);
+   16 bits throughout: attention's scores, the mask, softmax (the CPU's
+   float32 list does not have it, CUDA's does), rotary's turning, silu,
+   the gate's product; float32 throughout: the embedding, the norms
+   (pow, mean, rsqrt, mul: they read the float32 stream), rotary's
+   angles. One product, 2048 x 256 times 256 x 256: float32 0.10 ms,
+   bfloat16 42.10 ms (420 times slower; load 6.9; at load 15, 0.25
+   against 46.4); float16 48 ms (spike). A training step: float32 28.8
+   ms, bfloat16 225 ms (x7.8; load 7.4). Trained 60 steps, 2 seeds, bits
+   on the validation windows: float32 `3.87 +- 0.1064`, bfloat16 `3.83
+   +- 0.03984`, -0.041, t = -0.5 (the same, early); ms a step 30.1
+   against 245 (x8.12). (40 steps at load 9: 4.165 against 4.135, x7.68.)
+   This build of PyTorch says "MKLDNN not found" (torch.__config__.
+   parallel_info()): float32 products are fast here and 16-bit ones go
+   to a slow loop. On this CPU, sixteen bits is slower: that is the
+   result.
+3. Loss scaling: one backward pass under float16 autocast against
+   float32's: the loss as it is, 0.007% of the weights' gradients made 0
+   where float32's are not, the largest error 0.15 of a tensor's largest
+   gradient; times 1024, 0.000% and 0.00073; times 65536 the same, every
+   gradient finite (no overflow). So at this size float16 needs it: some
+   gradients come out 15% wrong without it, and 1024 is enough.
+   bfloat16 needs none (its range is float32's), as the AMP page says.
+On the Apple GPU (spike 6, mps, load 16 to 18): autocast is no faster
+for these small models (all four at width 64: float32 17.8 ms a step,
+bfloat16 22.8, float16 21.9; width 128 windows of 128: 20.6, 21.3,
+21.4; width 128 windows of 256: 45.4, 42.6, 42.8, x1.07; GPT-2 small, 4
+windows of 256: 241, 259, 256): an Apple GPU step of a small model is
+mostly PyTorch's work around each operation (Horace He's overhead), not
+arithmetic.
+In the recorded benchmark (width 128, windows of 128): 659 s to the
+target against 22.7 (x29), 451 steps against 433, 1,465 ms a step
+(loaded, see there).
+As found: the paper's precision facts hold exactly (2^-24, the 2048
+ratio as lost updates, loss scaling bringing back what float16 loses);
+its speed is "on recent GPUs" and none of it shows here: on this CPU 16
+bits is 8 to 29 times slower, on the Apple GPU the same or slower for
+these models.
+
+**11.05 Bigger batches: accumulation, clipping and the learning rate.**
+experiments/batches.py; train's cfg.accumulate. The default's target is
+3.2 bits (with 11.01's 3.0 the run took 94 s at load 9):
+1. A step against its batch (smallest of 3, load 5.7), ms and tokens a
+   second: 8, 13.3 ms, 38,409; 16, 20.6, 49,716; 32, 29.3, 69,979; 64,
+   50.3, 81,417; 128, 62.9, 130,147; 128 in 4 parts of 32 (accumulated),
+   120.7, 67,890. Tokens a second grow 3.4 times from 8 to 128 (a step of
+   twice the batch is not twice as long: Horace He's overhead regime);
+   accumulating 4 parts runs at the part's rate, not the whole batch's.
+2. The gradient of a batch of 32 in float64 against the same batch in
+   2, 4, 8 and 32 parts: the largest difference in a weight's 2.8e-16 to
+   3.3e-16 (the largest gradient 1.07). train with accumulate=4 against
+   1, 5 steps in float64: a logged loss 8.9e-16 apart, a weight 1.2e-16.
+   With dropout 0.1, 4 parts against 1 (the same seed before each): 0.061
+   of the gradient's length, the same as one part with another seed
+   (0.063): the parts draw other masks, as another seed would.
+3. Time to 3.2 bits, 2 seeds (load 5.7): batch 16 at 0.003, `4.08 +-
+   0.256` s, 173 steps, 177k tokens, 23.7 ms a step; batch 32 `4.1 +-
+   0.566`, 126 steps, 258k tokens, 32.5 ms; batch 64 at 0.003 `4.71 +-
+   0.291`, 101 steps, 414k tokens, 46.6 ms; batch 64 at 0.006 (scaled
+   with the batch) `4.17 +- 0.462`, 94 steps, 385k. A larger batch takes
+   fewer steps and more tokens; in seconds 16 and 32 are level, 64 a
+   little behind at the same rate, level again with the rate doubled
+   (7 steps fewer of 101). With 3.0 (load 9.2): 16 at 0.003 7.88 s, 303
+   steps, 310k tokens; 32 7.25, 194, 397k; 64 7.00, 157, 641k; 64 at
+   0.006 7.75, 159, 653k; and (load 15.8, an earlier run) 16 at 0.0015
+   29.2 s, 371 steps: halving the rate with the batch is slower.
+4. Clipping at 1: the gradient's length over the first 40 steps, median
+   1.504 at batch 16, 1.544 at 32, 1.372 at 64 (the last 10: 1.361,
+   1.181, 0.998); the clip cut 35, 32 and 31 of the 40. Batch 16 without
+   the clip: `5.52 +- 0.11` s, 201 steps, against 4.08 s and 173 steps
+   with it (at 3.0: 361 against 303 steps). Early in training the clip
+   cuts nearly every step at every batch here: it works as a cap on the
+   step's size, and taking it off costs 16 to 19% more steps.
+In the recorded benchmark (width 128, windows of 128): twice the batch
+and the rate, 297 steps against 433, 85.3 ms a step against 52.5, 25.4 s
+against 22.7 (x1.12, t = +2.3, loaded at the end).
+As found: accumulation gives exactly the larger batch's gradient (to
+rounding) and no speed; tokens a second grow with the batch on this
+CPU, but the time to a target barely moves between 16 and 64 windows:
+what the larger batch gains in throughput it gives back in tokens.
+
+**11.06 One more optimisation, measured: a cache of keys and values.**
+experiments/cache.py; models/gpt.py's Cache and the caches argument,
+language.py's cached_scores and generate(cache=True). Needs SmolLM2:
+1. How it was chosen: writing without a cache (SmolLM2-135M, one row,
+   greedy, a step = model(window)[:, -1], smallest of 3, load 7.3): a
+   window of 16, 23.9 ms a step; 64, 61.1; 256, 103.0; 1024, 353.0. Each
+   step reads the whole window again and keeps one position's scores:
+   of the positions computed, 93.8% (16) to 99.9% (1024) are thrown
+   away. The profile of writing is the whole forward pass, again and
+   again; what is new each step is one token.
+2. The same symbols, with the cache and without, the same seed (greedy,
+   plain sampling, top-k 40, nucleus 0.95): a small GPT trained here (60
+   steps; rotary, 2 key/value heads for 4), 100 characters after 8, past
+   its window of 64: all True; its scores in float64 at every length up
+   to 64, 2.2e-15 apart. SmolLM2-135M, 32 tokens after "To be, or not to
+   be,": all True; greedy: "To be, or not to be, the most important
+   thing in life, is the fact that we are all human beings. We are all
+   born with the same basic needs, and we all have the". The test adds
+   GPT-2 small (learned positions: Positions from a start place) and
+   every kind of small GPT, 24 to 30 tokens, greedy and three samplers.
+3. Greedy writing with SmolLM2-135M after 16 tokens of the test text
+   (load 6.8; the same tokens: True), seconds, tokens a second and the
+   last step's time, without and with:
+       written   without                 with                   faster
+            32    1.02 s  31.4/s  36.6 ms   0.36 s  88.7/s  11.7 ms   x2.82
+            64    2.94    21.8    73.0      0.76    84.1    13.7      x3.86
+           128    8.12    15.8    96.3      1.59    80.4    12.7      x5.10
+           256   20.53    12.5    94.2      3.28    78.0    14.2      x6.26
+   Without, the step grows with the window; with, it stays at 12 to 14
+   ms (one token through 30 blocks, and reading the kept keys).
+4. What it holds: SmolLM2 keeps 11,520 numbers a token (2 x 3 heads x
+   64 x 30 blocks), 45 KiB in float32; a full window of 8,192 tokens 360
+   MiB, where 9 key/value heads would keep 1,080 MiB (10.04's grouped
+   heads: a third). GPT-2 small keeps 18,432 a token.
+On the Apple GPU (spike 6, mps, load 11 to 12): GPT-2 small, 256 tokens
+after 16, 44.5 tokens a second without, 91.4 with (x2.05); SmolLM2 26.3
+and 49.3 (x1.87); at 64 tokens GPT-2 42.3 against 38.9 (no gain: the
+GPU's step is mostly overhead at short windows).
+As found: the same tokens every time; the gain grows with the length
+written, 2.8 times at 32 tokens to 6.3 at 256 on this CPU. Grouped heads
+make the cache a third the size; their speed (Ainslie et al.'s
+"comparable speed to MQA") is about reading less from memory at large
+batches and long windows, not measured here.
+
+### Spike 6: what each candidate gives, on this CPU and on the Apple GPU
+
+Scratch code (not in the project): one training step (the batch's
+bits, backward, clipping at 1, AdamW) of 10.05's "all four" at three
+sizes, GPT-2 small, and writing with GPT-2 small and SmolLM2-135M; each
+candidate timed in 3 rounds of 3 timings, the rounds taking turns, the
+smallest of the 9 and its ratio to "made" (the model as module 10 left
+it: angles made every call, attention written out, float32, 10 threads,
+AdamW as PyTorch chooses). Taken twice: at load 11 to 12 (01:20 to 01:44)
+and right after the recorded benchmark at load 3.5 to 7 (03:50 to 03:57);
+the second below, the first where it differs. ms a step, smallest
+(ratio):
+
+    all four, width 64, windows of 64, batch 32 (CPU, load 6.7)
+      made 27.6; angles kept 27.6 (x1.00); fused 24.2 (x1.14); kept + fused 23.3 (x1.18);
+      bfloat16 autocast 207 (x0.13); float16 202 (x0.14); AdamW fused=True 23.8 (x1.16);
+      foreach 27.5 (x1.00); torch.compile 19.6 (x1.40); kept + fused + compile 16.1 (x1.71);
+      threads 1: 22.6 (x1.22), 2: 20.7, 4: 19.3 (x1.43), 8: 24.5, 14: 33.4 (x0.82)
+    all four, width 128, windows of 128 (CPU, load 5.1)
+      made 60.6; kept 52.8 (x1.15, noise); fused 45.5 (x1.33); kept + fused 45.5 (x1.33);
+      bfloat16 1,385 (x0.04); float16 1,409; AdamW fused 44.4 (x1.36); foreach 54.3;
+      compile 47.3 (x1.28); all + compile 46.5 (x1.30);
+      threads 1: 72.8, 2: 55.4, 4: 47.5 (x1.27), 8: 49.4, 14: 59.8
+    all four, width 128, windows of 256 (CPU, load 3.5)
+      made 103.7; kept 104.7; fused 72.3 (x1.43); kept + fused 73.7 (x1.41);
+      bfloat16 2,973; float16 2,974 (x0.03); AdamW fused 66.8 (x1.55); foreach 104.3;
+      compile 92.5 (x1.12); all + compile 71.9 (x1.44);
+      threads 1: 191 (x0.54), 2: 138, 4: 110, 8: 96.3 (x1.08), 14: 111
+    GPT-2 small, 4 windows of 256 (CPU, load 4.4): made 680; fused 635 (x1.07);
+      AdamW fused 616 (x1.10); one forward of 1 x 64: float32 33 ms, bfloat16
+      autocast 133 ms (a training step in 16 bits was stopped after 10 minutes)
+    all four, width 64 (mps, load 18): made 17.8; kept 15.3; fused 18.1; kept + fused 16.4;
+      bfloat16 22.8; float16 21.9; AdamW fused 14.6 (x1.22); foreach 16.3
+    all four, width 128, windows of 128 (mps, load 18): every row 20.2 to 21.4
+    all four, width 128, windows of 256 (mps, load 17): made 45.4; fused 46.1;
+      bfloat16 42.6 (x1.07); float16 42.8; AdamW fused 44.6
+    GPT-2 small, 4 x 256 (mps, load 12.5): made 241; fused 243; bfloat16 259;
+      float16 256; AdamW fused 230 (x1.05)
+    (at load 11 to 12 on the CPU: fused x1.62, x1.21, x1.23 at the three sizes;
+      compile x1.31, x1.57, x1.14; threads 1 fastest for the small model, x1.40)
+
+Writing, greedy, after 16 tokens, tokens a second without and with the
+cache (generate's loop; load 5 to 9 on the CPU, 11 to 12 on mps):
+
+    GPT-2 small, CPU: 64 tokens 31.3 / 127.9; 256 tokens 19.2 / 120.0 (x6.3)
+    SmolLM2-135M, CPU: 64 tokens 21.4 / 72.4; 256 tokens 12.1 / 60.9 (x5.0)
+    cached, 64 tokens, threads 10 / 4 / 1: GPT-2 127.9 / 136.6 / 140.5;
+      SmolLM2 72.4 / 78.3 / 87.1 (one token at a time is too small to share)
+    GPT-2 small, mps: 64 tokens 42.3 / 38.9; 256 tokens 44.5 / 91.4 (x2.05)
+    SmolLM2-135M, mps: 64 tokens 22.4 / 34.9; 256 tokens 26.3 / 49.3 (x1.87)
+
+What each gave, and where it went:
+- Fused attention (11.03): the one reliable gain in training on the CPU,
+  x1.07 (GPT-2, 4 x 256) to x1.43 a step, more at longer windows, with
+  memory linear in the window; nothing on the Apple GPU (PyTorch's math
+  path there).
+- The angles kept (11.02): inside the noise everywhere (under 1% of a
+  step); the profile's lesson, not a speed-up.
+- 16 bits (11.04): 7 to 35 times slower on this CPU, worse the larger the
+  model (no fast 16-bit matrix products in this build: "MKLDNN not
+  found"); 0.93 to 1.07 on the Apple GPU at these sizes.
+- Batch and accumulation (11.05): tokens a second up 3.4 times from 8 to
+  128 windows; accumulation none; time to a target about level.
+- The cache of keys and values (11.06): the largest gain of all, 3 to 6
+  times for writing on the CPU, the same tokens; about 2 times on the
+  Apple GPU at 256 tokens, nothing at 64.
+- torch.compile (default mode, inductor's C++ for the CPU; Xcode's clang
+  is on this machine): x1.12 to x1.40 alone, x1.30 to x1.71 with the
+  rest; its first step takes 10 to 20 s to compile; its numbers differ
+  from eager in the last bits (fused element-wise kernels; not tested
+  here); with Rotary's kept angles Dynamo recompiles for each new key
+  and gave up at its limit of 8 (set Rotary.keep = False first). Not
+  taken: not in the outline's list; it is the fusion 11.02's profile
+  points at next; a decision for the planner.
+- AdamW's fused=True (PyTorch's CPU kernel for the optimiser): x1.10 to
+  x1.55 on the CPU, x1.05 to x1.22 on mps; foreach no gain. Larger than
+  the optimiser's 6% of 11.02's step suggests (the timings move with the
+  load; not checked further). Not taken: the outline's 11.06 is the
+  cache; a candidate for "one of your own".
+- Threads: 10 (PyTorch's own) was never the fastest here: 4 threads
+  x1.43 and x1.27 for the two smaller sizes at load 5 to 7, 8 threads
+  x1.08 at the largest (load 3.5), 1 thread fastest for cached writing.
+  With other work on the machine, fewer threads wait less for each
+  other; on a quiet machine this was not measured. Nothing sets a thread
+  count (the track's rule); a page may show OMP_NUM_THREADS as a thing
+  to try, with the load beside it.
+- channels_last: for convolutions (the tuning guide's own words), nothing
+  to do for a GPT.
+
+### The recorded benchmark
+
+experiments/recorded/benchmark/: every row and seed's config.json,
+log.jsonl and summary.json; times.json (seconds to the target and ms a
+step, by row and seed: times stay out of the summaries); curves.svg
+(seed 0 of each row, bits against steps times ms a step); output.txt,
+what it printed. No weights (the script saves none). 232 KB. The
+command, one to take it again (LEARN_RERUN_LONG=1 ./learn test research
+11.06 takes it again from the recorded config and checks it):
+
+    python3 -m experiments.benchmark layers=4 heads=4 width=128 context=128 kv_heads=2 batch=32 steps=1000 lr=0.002 warmup=100 every=20 held=64 target=2.4 seeds=3 "rows=['baseline','angles kept','fused attention','bfloat16','twice the batch and rate','all together']" recorded=none out=experiments/recorded
+
+(its output copied to output.txt). 10.05's "all four" at its long run's
+size: 4 blocks of 4 heads of 32, width 128, windows of 128, 2 key/value
+heads, AdamW 0.002 (10.05's), warmup 100 then a cosine over 1000 steps,
+clipped to 1, batches of 32; each run stops at the first row of its log
+whose bits on 64 validation windows (rng 0, scored every 20 steps,
+untimed) are 2.4 or less (10.05's all four reached 2.40 near step 500 on
+its 2000-step cosine); 3 seeds a row. 2378 s by its own clock, 39 min 39
+s of wall clock (03:06:41 to 03:46:20).
+
+The load: it started once the 1-minute load had stayed under 3 for two
+minutes (the first such window in 3 hours of watching: 2.1 at 03:06), and the step
+timings (part 1) and the rows baseline, angles kept and fused attention
+(about 03:07 to 03:12) ran at load 2.4 to 3.7. Then other agents' work
+came back: the bfloat16 row (about 03:12 to 03:43) ran at load 4 to 11,
+and the last two rows (03:43 to 03:46) at load 2 to 6. So the first three
+rows are quiet timings; the bfloat16 row's and the last two rows' are
+not (provisional), though bfloat16's slowness is far beyond what the
+load moves (1,385 ms a step in the spike at load 5). The steps, the bits
+and every file but times.json are the same at any load.
+
+    (time to 2.4 bits; ms a step; against the baseline, Welch's t on the seconds)
+    baseline                   22.7 +- 0.693 s   433 steps     52.5 ms   78,052 tokens a second
+    angles kept                23.0 +- 0.805     433   x1.01 (t  +0.5)   53.1   77,101
+    fused attention            19.7 +- 1.15      434   x0.87 (t  -3.9)   45.4   90,252
+    bfloat16                    659 +- 33.2      451  x28.99 (t +33.2) 1465.2    2,796
+    twice the batch and rate   25.4 +- 1.86      297   x1.12 (t  +2.3)   85.3   95,990
+    all together               19.5 +- 0.526     300   x0.86 (t  -6.5)   64.8  126,452
+
+Seed by seed, steps and seconds: baseline 419, 21.9 / 438, 23.0 / 442,
+23.3; angles kept 419, 22.1 / 438, 23.5 / 442, 23.5; fused 419, 18.5 /
+438, 20.8 / 445, 19.8; bfloat16 434, 621 / 437, 673 / 482, 684; twice
+the batch and rate 299, 27.4 / 302, 25.1 / 290, 23.7; all together
+(fused, the angles kept, twice the batch and rate; not bfloat16, which
+is slower here) 298, 18.9 / 306, 19.7 / 297, 19.8. Part 1 (quiet, load
+2.4 to 2.5): the first step 82.8 ms, 15 timings 50.6 to 53.5 ms (the
+largest 1.06 times the smallest), 80,893 tokens a second.
+The same numbers where they must be (the 11.06 test holds them):
+angles kept, every log.jsonl and summary.json byte for byte the
+baseline's; fused attention, its held-out curve 0.0003, 0.003 and 0.016
+bits from the baseline's at most (float32 rounding, grown over 420 to
+460 steps), the same steps on seeds 0 and 1. bfloat16 and the batch rows
+compute other numbers (bfloat16's curves 0.02 to 0.04 bits from the
+baseline's, 451 steps on average against 433).
+What it says: on this CPU, at this size, only fused attention is a
+gain beyond the noise alone (13% less time); doubling the batch and the
+rate takes 31% fewer steps of 63% more time each, and is behind alone
+(t = +2.3, loaded) but ahead with fused attention (all together 14%
+less time than the baseline, t = -6.5, the lowest row); keeping the
+angles changes nothing; bfloat16 is 29 times slower. The cache of keys
+and values is for writing, not training: 11.06's table, not this one.
+
+**Module 11's sources: what was read at the source** (2026-11-25; read for
+this module by an agent working from the documents themselves, downloaded
+with curl and read as text, pdftotext for the PDFs; quotes are their words,
+maths in ASCII):
+- Dao, Fu, Ermon, Rudra and Re, "FlashAttention: Fast and Memory-Efficient
+  Exact Attention with IO-Awareness", arXiv 2205.14135v2, read whole. The
+  claim (abstract): "FlashAttention trains Transformers faster than
+  existing baselines: 15% end-to-end wall-clock speedup on BERT-large
+  (seq. length 512) compared to the MLPerf 1.1 training speed record, 3x
+  speedup on GPT-2 (seq. length 1K), and 2.4x speedup on long-range arena
+  (seq. length 1K-4K)"; "an IO-aware exact attention algorithm that uses
+  tiling to reduce the number of memory reads/writes between GPU high
+  bandwidth memory (HBM) and GPU on-chip SRAM". The idea: "Our main goal
+  is to avoid reading and writing the attention matrix to and from HBM";
+  "(i) We restructure the attention computation to split the input into
+  blocks and make several passes over input blocks, thus incrementally
+  performing the softmax reduction (also known as tiling). (ii) We store
+  the softmax normalization factor from the forward pass to quickly
+  recompute attention on-chip in the backward pass"; memory "linear in
+  sequence length". Theorem 2: "Standard attention (Algorithm 0) requires
+  Theta(N d + N^2) HBM accesses, while FlashAttention (Algorithm 1)
+  requires Theta(N^2 d^2 M^-1) HBM accesses" (N the length, d the head's
+  size, M the SRAM's); Proposition 3, no exact algorithm does better for
+  every M. The hardware: every number is NVIDIA's: "the A100 GPU has
+  40-80GB of high bandwidth memory (HBM) with bandwidth 1.5-2.0TB/s and
+  192KB of on-chip SRAM per each of 108 streaming multiprocessors with
+  bandwidth estimated around 19TB/s"; "We focus here on GPUs." Figure 2
+  (GPT-2 medium, 1024 positions, heads of 64, 16 heads, batch 64, an
+  A100, forward and backward): standard 66.6 GFLOPs, 40.3 GB read and
+  written, 41.7 ms; FlashAttention 75.2 GFLOPs, 4.4 GB, 7.3 ms (more
+  arithmetic, less memory, faster). Table 2 (8 A100s, OpenWebText):
+  GPT-2 small 9.5 days in Hugging Face's code, 4.7 in Megatron-LM's, 2.7
+  with FlashAttention (3.5x), perplexity 18.2 in all three; medium 21.0,
+  11.5, 6.9 days (the caption says "up to 3x" and "1.7x", the table 3.5x
+  and 2.0x: the paper's own mismatch). Section 4.3 (one A100 40GB):
+  attention alone "up to 3x faster than the PyTorch implementation", "up
+  to 20x more memory efficient than exact attention baselines" (at what
+  length the 20x is is not in the text). Where it gives less: appendix
+  E.5, against Apex FMHA, "about 4% slower for sequence length 128, 8%
+  faster for sequence length 256"; on a T4, "we observe less speedup".
+  Limitations: "requires writing a new CUDA kernel for each new attention
+  implementation". No CPU, no Apple GPU anywhere in it; a CPU appears only
+  as figure 1's "main memory (CPU DRAM) 12.8 GB/s".
+- Micikevicius et al., "Mixed Precision Training", arXiv 1710.03740v3
+  (ICLR 2018), read whole. Abstract (the PDF's, which names three
+  techniques; the arXiv listing's older abstract names two): "Firstly, we
+  recommend maintaining a single-precision copy of weights that
+  accumulates the gradients after each optimizer step (this copy is
+  rounded to half-precision for the forward- and back-propagation).
+  Secondly, we propose loss-scaling to preserve gradient values with
+  small magnitudes. Thirdly, we use half-precision arithmetic that
+  accumulates into single-precision outputs"; "This nearly halves memory
+  requirements and, on recent GPUs, speeds up arithmetic". Section 3.1,
+  why the master copy: "updates (weight gradients multiplied by the
+  learning rate) become too small to be represented in FP16 - any value
+  whose magnitude is smaller than 2^-24 becomes zero in FP16"; and "even
+  though the weight update is representable in FP16, it could still
+  become zero when addition operation right-shifts it to align the
+  binary point with the weight. This can happen when the magnitude of a
+  normalized weight value is at least 2048 times larger that of the
+  weight update"; a Mandarin speech model, "updating FP16 weights results
+  in 80% relative accuracy loss". Section 3.2, loss scaling: "FP16
+  exponent bias centers the range of normalized value exponents to [-14,
+  15] while gradient values in practice tend to be dominated by small
+  magnitudes"; Multibox SSD's activation gradients, "67% of values are
+  zero" (figure 3); "This particular network diverges when gradients are
+  not scaled, but scaling them by a factor of 8 ... is sufficient"; "scale
+  the loss value computed in the forward pass, prior to starting
+  back-propagation. By chain rule back-propagation ensures that all the
+  gradient values are scaled by the same amount"; unscale "before
+  gradient clipping"; "scaling factors ranging from 8 to 32K (many
+  networks did not require a scaling factor)"; "There is no downside to
+  choosing a large scaling factor as long as it does not cause overflow",
+  65,504 the largest. Section 3.3: "Large reductions (sums across
+  elements of a vector) should be carried out in FP32. Such reductions
+  mostly come up in batch-normalization layers when accumulating
+  statistics and softmax layers"; point-wise operations are "memory-
+  bandwidth limited". Table 1 (ImageNet): "Loss-scaling technique was not
+  required". The runs: Volta V100s. bfloat16 is not in the paper.
+- PyTorch 2.10's documentation (docs.pytorch.org/docs/2.10/):
+  scaled_dot_product_attention's page: the signature
+  (query, key, value, attn_mask=None, dropout_p=0.0, is_causal=False,
+  scale=None, enable_gqa=False); its reference code makes the causal mask
+  with torch.ones(L, S).tril(diagonal=0), the top-left triangle, and
+  says so: "The attention masking has the form of the upper left causal
+  bias due to the alignment ... when the mask is a non-square matrix";
+  "There are currently three supported implementations ...: FlashAttention-2;
+  Memory-Efficient Attention; A PyTorch implementation defined in C++
+  matching the above formulation. The function may call optimized kernels
+  for improved performance when using the CUDA backend. For all other
+  backends, the PyTorch implementation will be used." Found here, against
+  that sentence: on this CPU the profiler names the kernel
+  aten::_scaled_dot_product_flash_attention_for_cpu (and its _backward),
+  in float32, float64 and bfloat16, and it keeps what a flash kernel keeps
+  (11.03); on mps it keeps the whole weights (the math path). The AMP page
+  (torch.amp): device types "'cuda', 'cpu', 'mtia', 'maia', 'xpu', and
+  'hpu'" (not mps, though autocast on mps runs here); the default 16-bit
+  type "torch.float16 for CUDA and torch.bfloat16 for CPU"; "Backward
+  passes under autocast are not recommended. Backward ops run in the same
+  type that autocast used for corresponding forward ops"; "'automatic
+  mixed precision training/inference' on CPU with datatype of
+  torch.bfloat16 only uses torch.autocast" (no GradScaler); the CPU lists:
+  to bfloat16 conv*, bmm, mm, linalg_vecdot, baddbmm, addmm, addbmm,
+  linear, matmul, ..., prelu, scaled_dot_product_attention,
+  _native_multi_head_attention; to float32 a long list with nll_loss,
+  cross_entropy_loss, mse_loss and the like, not softmax or layer_norm
+  (the CUDA float32 list has those); "If an op is unlisted, we assume
+  it's numerically stable in bfloat16"; "float16 shares the lists of
+  bfloat16". GradScaler: "Gradient values with small magnitudes may not
+  be representable in float16. These values will flush to zero
+  ('underflow')"; init_scale 65536. The profiler: profile(activities=...,
+  schedule(wait, warmup, active)), key_averages().table(sort_by=...),
+  record_function; "Enabling shape and stack tracing results in
+  additional overhead". torch.compile: modes default, reduce-overhead
+  (CUDA graphs only), max-autotune; on a CPU inductor "will generate C++
+  kernels"; nothing about macOS or a C++ compiler.
+- Horace He, "Making Deep Learning Go Brrrr From First Principles"
+  (horace.io/brrr_intro.html), read whole: "Compute: Time spent on your
+  GPU computing actual floating point operations (FLOPS). Memory: Time
+  spent transferring tensors within a GPU. Overhead: Everything else."
+  "if you double your batch size but your runtime only increases by 10%,
+  you're likely overhead bound." "Python can perform 32 million additions
+  in one second"; "with PyTorch, we can only get 280 thousand operations
+  per second" (about 3.6 microseconds an operation, his machine);
+  "Another way is to use the PyTorch profiler"; fusion: "if we perform
+  x.cos().cos(), usually we need to perform 4 global reads and writes ...
+  with operator fusion, we only need 2". About GPUs; "principles almost
+  all generalize across hardware".
+- Szymon Migacz, "Performance Tuning Guide" (PyTorch tutorials), read
+  whole: torch.no_grad for inference "accelerates execution and reduces
+  the amount of required memory"; gradients set to None instead of zeros;
+  "pointwise operations are memory-bound; PyTorch eager-mode initiates a
+  separate kernel for each operation" (torch.compile fuses them);
+  channels_last is for convolutions ("computer vision models"); CPU:
+  "OMP_NUM_THREADS is the easiest switch", NUMA controls for
+  multi-socket machines; AMP is in its GPU section ("up to 3x overall
+  speedup on Volta and newer GPU architectures"). No section on batch
+  size or accumulation (accumulation appears only under DDP).
+- modded-nanogpt's README (KellerJordan/modded-nanogpt, master on
+  2026-11-25): "the fastest algorithm to use 8 NVIDIA H100 GPUs to train
+  a language model that attains 3.28 cross-entropy loss on the FineWeb
+  validation set": time to a target loss is its measure; record 1 "45
+  minutes" (llm.c's baseline, 05/28/24), record 92 "0.665 minutes"
+  (08/30/26); warm-up is "an explicit kernel-warmup section which is
+  untimed and uses dummy data"; a record must show "a statistical
+  significance level of p<0.01 that their mean val loss is <=3.28" over
+  runs, waived for changes that only make the same computation faster.
+- Stanford CS336 (cs336.stanford.edu, spring 2026), the course page and
+  assignment 2's handout (version 26.1.3): benchmarking with warm-up ("Run
+  w warm-up steps (before you start measuring time), then time the
+  execution of n steps"; "5 warmup steps and compute the average and
+  standard deviation of timings over 10 measurement steps"; synchronize
+  after each step), profiling, mixed precision, operator fusion, a
+  FlashAttention-2 kernel in Triton, data-parallel training; CUDA only.
+  Its lectures were not read.
+Not read: FlashAttention-2 and -3; the Volta whitepaper; anything about
+the M4's matrix units (Apple publishes nothing on them), so why float32
+products are fast here and 16-bit ones are not is measured, not
+explained.
+
+**Departures from the design, and why** (each said above where it
+belongs):
+- 11.02's finding is not the planned one. The plan (and 10.02's notes)
+  put rotary's angles at "18 to 52% of a step"; the profile puts them at
+  0.5% (the angles of 64 places, 20 to 22 microseconds a call, 8 calls).
+  What module 10 measured was the whole turning (x times the cos, the other
+  half turned and times the sin, and their backward), a dozen
+  element-wise operations over every query and key: the turning is the
+  cost, not the angles. The cache was built as planned (the same angles,
+  bit for bit) and its gain is within the noise. The profile points at
+  something larger: attention, its scores and weights for 128 small
+  matrices a step taken one by one by PyTorch's CPU batched product
+  (3,072 aten::select a forward pass, about 17,000 operations in its
+  backward), which is 11.03's; and the element-wise operations (mul, sum,
+  copy_) of the turning, the written-out RMSNorm and SwiGLU, and their
+  backward, which only fusing would remove (torch.compile: spike 6, not
+  taken; see Decisions). The lesson says so.
+- Rotary keeps its angles always (Rotary.keep = True, a class
+  attribute), not behind an argument: it changes no number, so no
+  earlier lesson can see it; Rotary.keep = False gives 10.02's way back
+  (11.02 and the benchmark's baseline use it).
+- 11.04 found a bug of rotary under autocast and fixed it as part of the
+  lesson: 10.02's Rotary made its angles in the queries' type, so under
+  bfloat16 autocast place 257 was 256 and an angle of 60 radians was out
+  by up to an eighth. From 11.04 the angles are made in float32 for a
+  16-bit type and only their cos and sin rounded (transformers' Llama does
+  the same); float32 and float64 are untouched (the 11.02 and 11.04 tests
+  hold both).
+- 11.03 has a script of its own, experiments/fused.py (the design named
+  only models/gpt.py), for the lesson's Run it.
+- "Peak memory" is measured as the bytes autograd keeps for the backward
+  pass (saved_tensors_hooks, fused.py's kept_bytes): exact, the same on
+  every run and machine, and the part attention changes. The process's
+  peak resident memory moves with everything else in it and with the
+  allocator; not used.
+- The cache of keys and values holds the model's window. Past it, the
+  window moves on and every kept key would change in the deeper blocks
+  (they depend on symbols that have left the window), so cached_scores
+  starts the caches again from the last model.context symbols at every
+  step: the same tokens as without a cache, and no gain past the window.
+  (A rotary model could be given a longer window than it was trained
+  on, as 10.02 part 3 did; not done.)
+- The recorded benchmark is benchmark.py with every row, and its rows
+  arrive lesson by lesson (rows(): baseline and half the batch at 11.01,
+  then one line a lesson); it is placed at 11.06, the module's end, where
+  benchmark.py's part 3 reads it back. Its "all together" row leaves
+  bfloat16 out: on this CPU it is slower, so "all together" means every
+  change that is not slower here.
+- 11.05's default aims at 3.2 bits, not 11.01's 3.0 (94 s at load 9 with
+  3.0; 57 to 62 s at load 6 to 10 with 3.2), and scales the rate for
+  batch 64 only (scaled=[64]); scaled=[16,64] target=3.0 runs the longer
+  version (16 at half the rate was the slowest row, 29 s at load 16).
+  At 58 s at load 6 it is the default nearest the minute: the plan's
+  rule (cut only past 55 s at a load under 6) was not tested, for want
+  of a quiet machine at the end.
+- 11.04's default trains 60 steps (bfloat16 is about 8 times slower a
+  step here); its bits are early ones (3.8 to 3.9).
+- 11.02's part 3 first timed rotary's turning as 8 calls at the
+  queries' size (27% of a step at load 6.5); the keys have 2 heads, not
+  4, so it now times each block's queries and keys at their own sizes
+  (15.8%).
+- benchmark.py's curves are drawn against seconds as steps times the run's
+  mean ms a step (times stay out of log.jsonl, so the exact clock at each
+  row is not kept); the time to the target itself is the clock's.
+
+### For modules 12, 13 and 15: training and writing faster, the same numbers
+
+- **Training**: GPT(..., fused=True) runs attention as one fused kernel:
+  the same scores and gradients (1e-15 in float64; float32 runs differ
+  in the last digits, 1e-6 bits after 150 steps here), x1.2 a step at 64
+  places and x1.4 at 256 on this CPU, and memory linear in the window
+  (what modules 12 and 13 need for long windows: 263 against 8 MiB kept
+  at 1024 places for 8 windows x 4 heads). For a model loaded from a
+  file (models/gpt2.load, models/smollm.load build GPT(**CONFIG), fused
+  off): `for b in model.blocks: b.attention.fused = True`. attention_maps
+  works either way.
+- Rotary keeps its angles already (nothing to set). Under torch.compile
+  the kept angles make Dynamo compile again for every new key (it hit
+  its limit of 8 in spike 6): set Rotary.keep = False before compiling.
+- **Writing**: generate(..., cache=True): the same tokens as without
+  (greedy and sampled; GPT-2 small, SmolLM2-135M, every small variant),
+  2.3 to 5.5 times as many tokens a second for 32 to 256 tokens on
+  SmolLM2 here; past model.context it is as slow as without (it starts
+  again every step).
+- **Not** sixteen bits on this CPU: cfg.precision "bfloat16" or
+  "float16" is 7 times slower a step (and 13 times at width 128); on the
+  Apple GPU no faster for models this size. If a module trains on a
+  CUDA machine, bfloat16 autocast needs no loss scaling; float16 does
+  (11.04: a scale of 1024 was enough).
+- **Batches**: tokens a second grow with the batch, the time to a target
+  does not, at this size (11.05); cfg.accumulate gives a larger batch's
+  exact gradient for memory, not for speed.
+- **Timing a comparison** (13.0N): lab/bench.py's timings and spread_ms,
+  the smallest of several with the load beside it, and the variants
+  taking turns (compare and race do both); race gives the time and the
+  steps to a target over seeds, the steps the same on any machine.
+- Threads: leave PyTorch's own (10 here); with other work on the
+  machine, fewer were faster (spike 6), which is the machine's state,
+  not the model's.
+
+**Module 11's tests** (tests/1101_ to 1106_, each its exact checks first,
+in a fresh python, then its experiment's default):
+- 1101: timings against a clock that moves by known amounts (warm-up
+  calls untimed, `number` calls a timing), spread_ms's line, time_to
+  against hand-worked crossings (between rows, at a row, at the first,
+  never); train with and without times gives the same rows and the same
+  weights bit for bit, a time a row rising, until stopping at the first
+  row that reaches it; race's summaries (steps to the target, held bits,
+  steps; no times), steps agreeing with time_to on its log, the same
+  seed the same; benchmark's rows and board. The default: the step
+  timed in 3 rounds with the load, the baseline reaching 3.0 on every
+  seed, half the batch taking more steps (steps, not seconds), no times
+  in summary.json, times.json and the curves; a tiny run twice, the same
+  bytes.
+- 1102: piece_of on 08's and module 10's GPTs; timers with a clock that
+  moves by one at each reading (each piece's count worked out), the
+  hooks off afterwards; where on a real profile (bmm and softmax in
+  attention, mul and cat in rotary, silu in the MLP); Rotary.angles
+  against 10.02's formula bit for bit (bases 10,000 and 100,000, d 4 to
+  64, 1 to 600 places from 0 and later starts, float32 and float64), and
+  the turning; kept returns the very same tensors, other places make
+  new ones, keep False keeps nothing; 3 training steps with and without,
+  every weight bit for bit. The default: the bit-for-bit line, the parts
+  adding up to the step (2%), the profiler's table, the angles' share.
+- 1103: fused_attend against self_attend and its gradients (three shapes,
+  mask and scale on and off, 1e-12 float64); the profiler names the CPU
+  flash kernel; GPT(fused=True) built draw for draw like GPT(), its
+  scores and gradients at 1e-12 for learned, rotary-grouped and no
+  positions, attention_maps rebuilding a fused model's first block;
+  kept_bytes: the (T, T) weights in the written-out count, fused under a
+  tenth at 256 and growing with T only. The default: the same numbers
+  under 1e-12, fused keeping under a tenth from 512 places, trained alike
+  within 1e-3 bits seed by seed.
+- 1104: the float16 and bfloat16 facts by direct computation; lost
+  against hand-worked updates; Rotary.angles under 16 bits equal to the
+  float32 angles rounded, float64 unchanged; Kinds sees linear in 16 bits
+  and cross_entropy and the embedding in float32; train with precision
+  "float32" bit for bit as no setting, "bfloat16" and "float16" finite,
+  near, and different. The default: no update lost at the full rate and
+  over 5% at the late one, eps 0, the types, bfloat16 trained within 0.1
+  bits of float32, loss scaling making no more zeros than none.
+- 1105: accumulated against the whole batch (2 to 32 parts, 1e-12 of
+  the largest, float64); dropout's parts differ; train with accumulate
+  1 bit for bit as no setting, 4 against 1 in float64 at 1e-12 (logged
+  bits and weights); 3 parts of 16 refused. The default: the gradients
+  under 1e-12, fewer steps at a larger batch and fewer tokens at a
+  smaller one, the clip cutting early steps.
+- 1106: causal_mask with keys; self_attend and fused_attend of new
+  queries after kept keys (1e-12); Cache's order and its refusal; five
+  kinds of GPT (learned, rotary-grouped with RMSNorm and SwiGLU, rotary
+  base 500, fused, fused with one key/value head) read through caches in
+  four ways of cutting, 1e-12 float64; cached_scores at every length up
+  to 40 with a window of 24 (past it too); generate with and without the
+  cache the same symbols, greedy and three samplers, each kind; learned
+  positions refusing places past the table. with_data (GPT-2 small and
+  SmolLM2-135M when fetched, each skipped with a line when not): the
+  same tokens, greedy and sampled, 24 after a prompt. The recorded
+  benchmark: every row and seed run with the baseline's settings but
+  what its row changes, its log ending at the first row under the
+  target, the summaries, times.json, curves.svg, output.txt, no weights;
+  the angles-kept row's logs and summaries byte for byte the baseline's,
+  fused attention's curve within 0.02 bits; no speeds. The default (it
+  needs SmolLM2: "missing:" without it): every "same" True, the float64
+  scores under 1e-10, the table. LEARN_RERUN_LONG=1 takes the recorded
+  benchmark again (about 40 minutes) and checks the new one alike.
+
+**For the harness and the lessons agent (module 11).**
+- No harness change. track.py's module-11 part: EXPERIMENTS (each
+  short run), DATASET_OF (cache needs smollm2), FILES_FROM and DATA for
+  experiments/recorded/benchmark/* (11.06, the narrower glob first).
+  needs=: 11.01 to 11.05 "torch"; 11.06 "torch smollm2".
+- Lead-in names that match more than one thing (they match without
+  case): `profile` (experiments/profile.py, and torch.profiler.profile
+  which profile.py imports by that name), `cache` (experiments/cache.py)
+  and `Cache` (the class) and generate's `cache` argument; `fused`
+  (experiments/fused.py) and the `fused` argument; `benchmark`
+  (experiments/benchmark.py) and the recorded benchmark's folder.
+  Ordinary-word region titles: rows, board, timers, where, written, lost.
+  No lesson has two regions of one name.
+- The project at 08.01 to 10.05: every .py file the same bytes as before
+  at every lesson (harness/timeline.py's Project.content, compared with
+  master's at every lesson up to 10.05). At 14.0N the new files and the
+  changed models/gpt.py and language.py are there, as they should be.
+- check-timeline runs cache.py only where SmolLM2's files are in the
+  cache, and expects its "smollm2 is missing" line elsewhere.
+- profile.py prints nothing on stderr (acc_events=True keeps the
+  profiler's warning about cycles away).
+
+**With module 11** (the last pass, 2026-11-25, after the recorded
+benchmark): `./learn test research` 59 tests, all pass, 22.1 minutes of
+tests at load 3 to 34 (the wall clock said 1 h 23 min: the machine slept
+in the middle); module 11's six 3 min 30 s (11.01 39.3 s, 11.02 17.7,
+11.03 21.6, 11.04 35.0, 11.05 49.8, 11.06 46.3). An earlier full pass at
+load 11 to 18: 27 min 42 s. `./learn check-skeleton research` ok, 66 s
+(59 lessons; 11.01 fails at its stubs in lab/bench.py, 11.02 at
+piece_of, 11.03 at fused_attend, 11.04 at lost, 11.05 at accumulated,
+11.06 at Cache). `./learn check-timeline research` ok, 7 min 29 s at
+load 7 to 10; the project has 260 files at 11.01, then one more a lesson
+to 264 at 11.05, and 322 at 11.06 (58 of them the recorded benchmark).
+At load 34 to 46 an earlier pass failed from 08.02 on, every failure a
+short run that took more than the harness's 20 s for one step (heads,
+positions, gpt and so on, not module 11's): the timeline's step timeout
+is a fixed 20 s, which a machine that busy passes. `./learn selftest`
+ok (269 tests). `./learn check` reports only "test has no lesson doc"
+for 10.01 to 10.05 and 11.01 to 11.06.
+
 ## Module 14: reproduce a paper, grokking
 
 Built by one agent on 2026-11-24, on the reference machine above (Apple M4
