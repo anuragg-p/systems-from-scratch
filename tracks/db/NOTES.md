@@ -1512,9 +1512,11 @@ the SELECT as written. exec.c: select_resolve keeps its outer scope;
 resolve_subquery, in_affinity, set_lookup, run_subquery, eval_subquery; a
 multi-row INSERT works out every value holding a subquery before it stores
 a row. plan.c: is_column() never matches a name from outside; last_table()
-counts such a name as a constant and a subquery as naming every table;
-find_bounds() skips a term whose key would be compared otherwise than a
-lookup compares it (same_values, below).
+counts such a name as a constant and a subquery as reading the items its
+names read (sub_reads, reads_at, query_reads: through subqueries inside it
+too); find_bounds() skips a term whose key would be compared otherwise than
+a lookup compares it (same_values, below); 08.03's key_item() and
+join_key() learn the same two things (below, "With 08.02 and 08.03").
 
 Before (08.06 cut out): `db: 08.06: a SELECT in parentheses not written
 yet` (exit 3) for any subquery; everything else runs (`SELECT c.name,
@@ -1755,7 +1757,53 @@ The fuzzer (tests/fuzz, merged from master while building):
 75312 statements, 18085 SELECTs, 777708 rows compared, 0 failing; the same
 under an ASan build with `--db-env DB_CACHE_PAGES=2`, 0 failing; seeds 2,
 3 and 4, and seed 5 with unique too, 0 failing. The lesson test runs 300
-cases (fuzz fixture, join and subquery).
+cases (fuzz fixture, join, leftjoin and subquery).
+
+With 08.02 and 08.03 (merged after 08.06 was built; the fuzzer with
+`--features core,join,leftjoin,subquery,unique --n 4000 --seed 11` failed
+195 cases) three things had to learn about subqueries, each behind
+`@from 08.06`:
+
+- 08.03's key_item() saw no name inside a subquery, so a subquery that read
+  later tables passed for a key of an earlier one: `... FROM t1 JOIN t1 p14,
+  t0 AS p15 JOIN t1 p16 WHERE (SELECT p14.oid FROM t1 AS q17 WHERE p15.b
+  LIKE '_b%' ...) = p14.oid` looked p14 up by rowid with a key reading p15
+  and p16, which are not in the row yet: "no such column: b" (sqlite3: 0
+  rows). key_item() now counts a subquery as reading what its names read
+  (sub_reads) and a name from outside as a constant.
+- 08.02's "ON clause references tables to its right" used last_table(),
+  which counted any subquery as naming every table, so a LEFT JOIN's ON
+  holding one, followed by another table, was refused (194 of the 195).
+  last_table() now walks into the subquery: its names at depth 1 are this
+  query's, at depth 2 inside a subquery of it, and so on (reads_at,
+  query_reads). sqlite3 checks the same way: select.c
+  selectCheckOnClausesExpr walks into the ON's subqueries
+  (selectCheckOnClausesSelect pushes a context for each) and finds each
+  column's FROM clause by its cursor, the nearest first. A subquery naming
+  a table to the right is still the error in both. The same walk places a
+  term with a subquery in the filter where the tables it reads are all in
+  the row (the design had the last filter; `c.id NOT IN (SELECT customer_id
+  FROM orders)` now sits right above c's scan, EXPLAIN in the test).
+- 08.03's join_key() took any E_COLUMN of item k as item k's column; a
+  column of the query outside has its own item numbers (and depth > 0). In
+  `... FROM orders o0, customers c ... (SELECT x.name FROM orders o JOIN
+  customers x ON c.id = 2 ...)`, c is item 1 outside and x item 1 inside:
+  x was looked up by rowid 2 and lost its other rows (Brook where sqlite3
+  says Dee). Found by reading, then by the test; the fuzzer had not hit it.
+
+Keys that must not be converted: choose_join_access() only looks up `=`,
+and for `=` index_affinity_ok() is already enough with an outer name or a
+subquery as the key (they carry their column's affinity, as any column
+key does): a numeric key on a TEXT or BLOB column is refused; a BLOB key
+on a TEXT column is made text by the lookup, but a TEXT column holds no
+number it could have equalled. The TEXT/BLOB case loses rows only for
+ranges, which find_bounds (one table, and item 0) has and same_values
+covers. The test's JOIN_QUERIES run such keys through rowid and index
+lookups, inner and LEFT.
+
+After: seeds 11, 12 and 13 at 4000 cases with all five features, 0
+failing; the same seeds at 1500 cases on an ASan/UBSan build with
+`--db-env DB_CACHE_PAGES=2`, 0 failing.
 
 in1.test had never run: runner.py stopped at its `onlyif mssql` / `halt`
 as if the halt were for every engine. Fixed (a halt under onlyif/skipif

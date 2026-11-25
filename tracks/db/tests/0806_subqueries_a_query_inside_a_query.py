@@ -13,7 +13,9 @@ runs once (cache hits counted); a correlated one runs per row, and uses an index
 inner column. Tables of thousands of rows with text on overflow pages, under a two-page
 cache, check that nothing a subquery hands back points into an evicted page. Errors are
 sqlite3's; what 08.06 leaves out is refused by name. Then the sqllogictest slice with
-subqueries no longer skipped, and 300 cases of the fuzzer with subqueries and joins.
+subqueries no longer skipped, and 300 cases of the fuzzer with subqueries, joins and LEFT
+JOINs. Joins and subqueries together: a lookup keyed by a subquery waits for the tables it
+reads, and a LEFT JOIN's ON may hold subqueries that read the tables on its left.
 """
 
 import os
@@ -145,6 +147,52 @@ SHOP_QUERIES = [
     "SELECT o.id, (SELECT name FROM customers WHERE rowid = o.customer_id) FROM orders o ORDER BY 1",
 ]
 
+# Joins (08.01-08.03) and subqueries together: a lookup for an inner table keyed by a subquery
+# (only once the tables the subquery reads are in the row), a subquery's own join whose ON
+# compares a column of the query outside (a constant there, never the inner table's column),
+# a LEFT JOIN's ON holding subqueries that read only the tables on its left.
+JOIN_QUERIES = [
+    'SELECT o0.id, c.id FROM orders o0, customers c WHERE EXISTS (SELECT 1 FROM orders o JOIN customers x ON c.id = 2 WHERE x.id = 3) ORDER BY 1, 2',
+    'SELECT o0.id, c.id, (SELECT x.name FROM orders o JOIN customers x ON c.id = x.id - 1 WHERE o.id = 10) FROM orders o0, customers c WHERE o0.id < 12 ORDER BY 1, 2',
+    'SELECT o0.id, c.id, (SELECT x.name FROM orders o JOIN customers x ON c.id = 2 ORDER BY x.id DESC LIMIT 1) FROM orders o0, customers c WHERE o0.id = 10 ORDER BY 1, 2',
+    'SELECT c.name, o.id FROM customers c JOIN orders o ON o.customer_id = (SELECT x.id FROM customers x WHERE x.id = c.id) ORDER BY o.id',
+    'SELECT c.name, o.id FROM customers c JOIN ix o ON o.customer_id = (SELECT x.id FROM customers x WHERE x.id = c.id) ORDER BY o.id',
+    'SELECT c.name, x.name FROM customers c JOIN customers x ON x.id = (SELECT customer_id FROM orders WHERE id = c.id + 9) ORDER BY c.id',
+    'SELECT c.name, x.name, o.id FROM customers c JOIN customers x JOIN ix o ON (SELECT x.id) = o.customer_id WHERE x.id = c.id ORDER BY c.id, o.id',
+    'SELECT c.name, o.id, x.name FROM customers c JOIN ix o ON o.customer_id = (SELECT x.id) JOIN customers x ON x.id = c.id ORDER BY c.id, o.id',
+    'SELECT c.name, x.name FROM customers c JOIN customers x ON x.id = (SELECT 2) ORDER BY c.id',
+    "SELECT c.name, o.id FROM customers c LEFT JOIN ix o ON o.customer_id = (SELECT x.id FROM customers x WHERE x.id = c.id AND x.city = 'London') ORDER BY c.id, o.id",
+    "SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND EXISTS (SELECT 1 FROM cities WHERE cities.name = c.city AND cities.country = 'UK') ORDER BY c.id, o.id",
+    'SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.total > (SELECT total FROM orders o2 WHERE o2.customer_id = c.id ORDER BY total LIMIT 1) ORDER BY c.id, o.id',
+    'SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON NOT EXISTS (SELECT 1 FROM orders o3 WHERE o3.total > o.total AND o3.customer_id = c.id) AND o.customer_id = c.id ORDER BY c.id, o.id',
+    'SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id IN (SELECT id FROM customers c2 WHERE c2.city = c.city) ORDER BY c.id, o.id',
+    'SELECT c.name, o.id, ci.country FROM customers c LEFT JOIN orders o ON o.customer_id = c.id JOIN cities ci ON ci.name = c.city AND (SELECT o.total) > 10 ORDER BY c.id, o.id',
+    'SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE (SELECT o.total) IS NULL OR EXISTS (SELECT 1 WHERE o.total > 40) ORDER BY c.id, o.id',
+    'SELECT c.name, (SELECT o.id FROM customers x LEFT JOIN orders o ON o.customer_id = x.id AND o.total > c.id * 10 WHERE x.id = c.id ORDER BY o.id LIMIT 1) FROM customers c ORDER BY c.id',
+    'SELECT c.name, (SELECT o.id FROM blank b LEFT JOIN orders o ON o.customer_id = c.id) FROM customers c ORDER BY c.id',
+    'SELECT c.name, o.id, ci.country FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND EXISTS (SELECT 1 FROM cities WHERE cities.name = c.city AND (SELECT o.total) > 10) JOIN cities ci ON ci.name = c.city ORDER BY c.id, o.id',
+]
+
+# Cut down from the fuzzer (tests/fuzz, seed 11, with 08.02-08.03 in): each failed before.
+FUZZED = [
+    # a rowid lookup of p14 keyed by a subquery that reads p15 and p16, not in the row yet:
+    # "no such column: b"
+    ("CREATE TABLE t0(b INTEGER); CREATE TABLE t1(z TEXT); INSERT INTO t1 VALUES (0);",
+     "SELECT X'0102' FROM t1 JOIN t1 p14, t0 AS p15 JOIN t1 p16 WHERE ((SELECT p14.oid FROM t1 AS q17 "
+     "WHERE (p15.b LIKE '_b%') ORDER BY p16.z DESC, q17.rowid LIMIT 1) = p14.oid)"),
+    # the same through t0's INTEGER PRIMARY KEY, the subquery reading the LEFT JOIN's p7
+    ("CREATE TABLE t0(c TEXT DEFAULT 1e+20, z INTEGER PRIMARY KEY); CREATE TABLE t1(x NUMERIC); "
+     "INSERT INTO t1 VALUES (500);",
+     "SELECT x AS r0 FROM t1, t0 LEFT JOIN t0 AS p7 WHERE ((SELECT p7.z FROM t1 AS q8 ORDER BY t0.c, q8.rowid LIMIT 1) "
+     "== t0.z)"),
+    # a LEFT JOIN's ON whose subquery reads only p3 and t1, with a table after it:
+    # "ON clause references tables to its right"
+    ("CREATE TABLE t0(a TEXT); CREATE TABLE t1(e NUMERIC, id INTEGER PRIMARY KEY); "
+     "CREATE TABLE t2(e REAL, a INTEGER, d REAL);",
+     "SELECT p3.a FROM t1 LEFT JOIN t2 p3 ON ((t1.e < p3.rowid) AND (NOT EXISTS (SELECT (10 || p3.e) FROM t1 AS q6 "
+     "ORDER BY coalesce(id, X'FF', p3.d) DESC, q6.rowid))) JOIN t0 AS p4"),
+]
+
 # One column of every affinity, each row holding the same "one" spelled another way (an
 # integer, a real, text, a blob, text with a space, '1.0'), NULL and text, so that IN's
 # comparison affinity is tried for every pair: through the set kept by a subquery run once
@@ -241,6 +289,10 @@ ERRORS = [
     ("SELECT (SELECT 1 FROM nosuch)", "no such table: nosuch"),
     ("SELECT (SELECT x.* FROM customers)", "no such table: x"),
     ("CREATE TABLE d(a DEFAULT ((SELECT 1)))", "default value of column [a] is not constant"),
+    ("SELECT * FROM customers c LEFT JOIN orders o ON EXISTS (SELECT 1 FROM cities WHERE cities.name = ci.name) "
+     "JOIN cities ci", "ON clause references tables to its right"),
+    ("SELECT * FROM customers c LEFT JOIN orders o ON (SELECT (SELECT ci.name)) JOIN cities ci",
+     "ON clause references tables to its right"),
 ]
 ERRORS_ALIKE = [
     "SELECT name FROM customers WHERE id IN (SELECT nope FROM orders)",
@@ -318,9 +370,12 @@ SELECT * FROM orders ORDER BY id;
 EXPLAIN = """Filter EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id)
   Scan customers
 """
-EXPLAIN_IN = """Filter c.id NOT IN (SELECT customer_id FROM orders)
+# In a join, a term with a subquery is checked as soon as the tables it reads are in the row,
+# those its subquery reads included: the NOT IN reads only c, the EXISTS reads o too.
+EXPLAIN_IN = """Filter EXISTS (SELECT 1 FROM orders o2 WHERE o2.total > o.total)
   Join
-    Scan customers AS c
+    Filter c.id NOT IN (SELECT customer_id FROM orders)
+      Scan customers AS c
     Scan orders AS o
 """
 
@@ -477,12 +532,18 @@ def test(t):
     r = tr.db(t, a, "SELECT " + "(SELECT " * 65 + "1" + ")" * 65 + ";\n", check=False)
     t.check(r.rc != 0 and "Error: too many levels of subqueries (at most 64)" in r.err, f"65 levels:\n{r}")
 
-    # EXPLAIN: the subquery, as written, in the filter that runs it, above every table
+    # joins and subqueries together; the fuzzer's cases, cut down
+    compare(t, a, b, listing(JOIN_QUERIES))
+    for setup, q in FUZZED:
+        fa, fb = files(t, setup.replace("; ", ";\n") + "\n")
+        compare(t, fa, fb, f"{q};\n")
+
+    # EXPLAIN: the subquery, as written, in the filter that runs it
     out = tr.db(t, a, "EXPLAIN SELECT name FROM customers c WHERE EXISTS (SELECT 1 FROM orders o "
                       "WHERE o.customer_id = c.id) ORDER BY id;\n").out
     t.check(out == EXPLAIN, f"EXPLAIN of a correlated EXISTS:\n{out}\nexpected:\n{EXPLAIN}")
     out = tr.db(t, a, "EXPLAIN SELECT c.name FROM customers c, orders o WHERE c.id NOT IN "
-                      "(SELECT customer_id FROM orders);\n").out
+                      "(SELECT customer_id FROM orders) AND EXISTS (SELECT 1 FROM orders o2 WHERE o2.total > o.total);\n").out
     t.check(out == EXPLAIN_IN, f"EXPLAIN of a join with NOT IN:\n{out}\nexpected:\n{EXPLAIN_IN}")
 
     # writes whose subqueries read the table being written, outside and inside BEGIN
@@ -533,5 +594,5 @@ def test(t):
 
     # the sqllogictest slice, with subqueries (and joins) no longer skipped
     tr.sqllogictest(t, have=("join", "subquery"))
-    # and a quick slice of the fuzzer, with subqueries anywhere it can put them
-    tr.fuzz(t, ("join", "subquery"), n=300)
+    # and a quick slice of the fuzzer, with subqueries anywhere it can put them, joins and LEFT JOINs
+    tr.fuzz(t, ("join", "leftjoin", "subquery"), n=300)

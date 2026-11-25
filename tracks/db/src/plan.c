@@ -332,6 +332,10 @@ static int count_terms(Expr *e)
     return e->op == E_AND ? count_terms(e->a) + count_terms(e->b) : 1;
 }
 
+// @from 08.06
+static int sub_reads(Expr *e);
+// @end
+
 /* The first FROM item at which every value term e reads is in the row,
  * -1 if it reads none (a constant). A column of item k is there from item
  * k's join on (item 0's from its scan). Item 0's rowid is the exception:
@@ -344,8 +348,10 @@ static int last_table(Expr *e)
     // @from 08.06
     if (e->depth)
         return -1;       /* a name from the query outside: a constant here */
-    if (e->sub)          /* a subquery: as if it named every table of this query */
-        return e->q->scope.outer->nfrom - 1;
+    if (e->sub) {        /* a subquery: the items of this query its names read */
+        int k = last_table(e->a), ks = sub_reads(e);
+        return ks > k ? ks : k;
+    }
     // @end
     if (e->op == E_COLUMN)
         return e->tab == 0 && e->tcol == TCOL_ROWID ? 1 : e->tab;
@@ -362,6 +368,69 @@ static int last_table(Expr *e)
     }
     return k;
 }
+
+// @from 08.06
+static int query_reads(Query *q, int d);
+
+/* last_table() of e for the query d levels out from e's own: the items of
+ * that query its names with depth d read (item 0's rowid counting as 1, as
+ * there), through subqueries inside it too; -1 for none. */
+static int reads_at(Expr *e, int d)
+{
+    if (!e)
+        return -1;
+    if (e->op == E_COLUMN || e->op == E_ROWID) {
+        if (e->depth != d)
+            return -1;   /* a name of a query nearer, or further out */
+        return e->op == E_COLUMN && e->tab == 0 && e->tcol == TCOL_ROWID ? 1 : e->tab;
+    }
+    int k = reads_at(e->a, d);
+    int kb = reads_at(e->b, d), kc = reads_at(e->c, d);
+    k = kb > k ? kb : k;
+    k = kc > k ? kc : k;
+    for (int i = 0; i < e->nlist; i++) {
+        int kl = reads_at(e->list[i], d);
+        k = kl > k ? kl : k;
+    }
+    if (e->sub) {
+        int ks = query_reads(e->q, d + 1);
+        k = ks > k ? ks : k;
+    }
+    return k;
+}
+
+/* reads_at() of every expression of the query q: its result columns, WHERE,
+ * ONs and ORDER BY (LIMIT and OFFSET can name nothing). */
+static int query_reads(Query *q, int d)
+{
+    Stmt *s = q->s;
+    int k = reads_at(s->where, d);
+    for (int i = 0; i < q->ncols; i++) {
+        int kc = reads_at(q->cols[i], d);
+        k = kc > k ? kc : k;
+    }
+    for (int i = 0; i < s->nfrom; i++) {
+        int ko = reads_at(s->from[i].on, d);
+        k = ko > k ? ko : k;
+    }
+    for (int i = 0; i < s->norder; i++) {
+        int ko = reads_at(s->order[i].e, d);
+        k = ko > k ? ko : k;
+    }
+    return k;
+}
+
+/* The items of the query subquery e stands in that its SELECT reads (its
+ * names one level out, and two levels out from a subquery inside it, ...),
+ * as last_table() counts them; -1 if none: it is a constant there. This is
+ * how sqlite3 checks an ON clause too (select.c, selectCheckOnClausesExpr
+ * walks into the subqueries of the ON and finds each column's FROM clause
+ * by its cursor). */
+static int sub_reads(Expr *e)
+{
+    return query_reads(e->q, 1);
+}
+// @end
 
 /* The AND of terms[0..n) whose last_table() is level (a constant counts
  * as 0), built in the statement arena; NULL if there are none. */
@@ -409,6 +478,14 @@ static int key_item(Expr *e)
 {
     if (!e)
         return -1;
+    // @from 08.06
+    if (e->depth)
+        return -1;       /* a name from the query outside: a constant here */
+    if (e->sub) {        /* a subquery reads the items its names read */
+        int ka = key_item(e->a), ks = sub_reads(e);
+        return ks > ka ? ks : ka;
+    }
+    // @end
     int k = e->op == E_COLUMN ? e->tab : -1;
     int ka = key_item(e->a), kb = key_item(e->b), kc = key_item(e->c);
     k = ka > k ? ka : k;
@@ -430,8 +507,13 @@ static Expr *join_key(Table *t, Expr *term, int k, int col)
         return NULL;
     for (int side = 0; side < 2; side++) {
         Expr *c = side ? term->b : term->a, *key = side ? term->a : term->b;
-        if (c->op != E_COLUMN || c->tab != k || key_item(key) >= k)
-            continue;
+        // @from 08.06
+        if (c->op != E_COLUMN || c->depth || c->tab != k || key_item(key) >= k)
+            continue;    /* (a column of a query outside is a constant, not item k's) */
+        // @else
+        // if (c->op != E_COLUMN || c->tab != k || key_item(key) >= k)
+        //     continue;
+        // @end
         if (c->tcol == col || (col == TCOL_ROWID && t->rowid_col >= 0 && c->tcol == t->rowid_col))
             return key;
     }
