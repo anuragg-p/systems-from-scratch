@@ -3160,7 +3160,10 @@ size. "Flexibility of sequence length": the model runs at any length,
 but it is no better past its training length than 08.03's model
 without positions; the paper does not measure this beyond its
 1024-token row. The time: our Rotary rebuilds its angles at every call,
-which costs 18 to 50% a step here (For module 11).
+which costs 18 to 50% a step here (For module 11). (Corrected by 11.02's
+profile: the angles are 0.5% of a step, the turning itself, forward and
+backward, 15.8%; the 10.02 and 10.05 pages and module 10's page give
+the turning as the reason since 2026-11-25.)
 
 **10.03 A gated MLP: SwiGLU (Shazeer 2020; Dauphin et al. 2017).**
 experiments/swiglu.py. Default run 23.0 s at load 7.4, 31.2 s at load
