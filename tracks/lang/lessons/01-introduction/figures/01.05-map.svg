@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 518" fill="none">
+<title>Where 01.05 fits: The tools around a language: a prompt and a test runner</title>
+<defs><marker id="map0105-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0105-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0105-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<path class="s" d="M249 29 L70 29 L70 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>
+<path class="s" d="M70 151 L70 410" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>
+<path class="s" d="M262 51 L262 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>
+<path class="s" d="M262 115 L262 130" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>
+<path class="s" d="M262 213 L262 228" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>
+<path class="s" d="M262 267 L262 410" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>
+<path class="s" d="M160 65 L160 163 L194 163" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>
+<path class="s" d="M175 195 L194 195" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>
+<path class="m" d="M391 29 L485 29 L485 86" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M485 115 L485 128" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M485 157 L485 170" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M485 223 L485 236 L404 236 L404 248" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M485 223 L485 236 L559 236 L559 248" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M559 277 L559 290" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M404 277 L404 410" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-am)" stroke-dasharray="4 4"/>
+<path class="m" d="M530 319 L530 358" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-am)" stroke-dasharray="4 4"/>
+<path class="s" d="M573 378 L548 378" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>
+<path class="s" d="M496 397 L496 410" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-ah)"/>
+<rect class="m" x="344" y="70" width="282" height="262" rx="12" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect class="f" x="554" y="60" width="56" height="20" rx="0"/>
+<text class="tm mono" x="582" y="74.5" font-size="13" font-weight="700" text-anchor="middle">mote</text>
+<rect class="s f" x="250" y="8" width="140" height="42" rx="10" stroke-width="1.5"/>
+<text class="t" x="320" y="25" font-size="12.5" font-weight="600" text-anchor="middle">the program&#x27;s text</text>
+<text class="tm mono" x="320" y="41" font-size="11" text-anchor="middle">programs/</text>
+<rect class="s f" x="136" y="44" width="48" height="20" rx="10" stroke-width="1.5"/>
+<text class="t mono" x="160" y="57.9" font-size="11" text-anchor="middle">gcd.c</text>
+<rect class="s f" x="16" y="88" width="108" height="62" rx="8" stroke-width="1.5"/>
+<text class="t" x="70" y="107" font-size="13" font-weight="600" text-anchor="middle">first interpreter</text>
+<rect class="a af" x="26" y="118" width="88" height="22" rx="4" stroke-width="1.5"/>
+<text class="ta" x="70" y="132.8" font-size="10.5" font-weight="600" text-anchor="middle">prompt</text>
+<rect class="s f" x="196" y="88" width="132" height="26" rx="8" stroke-width="1.5"/>
+<text class="t" x="262" y="105.68" font-size="13" font-weight="600" text-anchor="middle">translator to C</text>
+<rect class="s" x="196" y="132" width="132" height="80" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="t" x="262" y="151" font-size="12" font-weight="500" text-anchor="middle">the computer&#x27;s</text>
+<text class="t" x="262" y="167" font-size="12" font-weight="500" text-anchor="middle">C compiler,</text>
+<text class="t" x="262" y="183" font-size="12" font-weight="500" text-anchor="middle">assembler</text>
+<text class="t" x="262" y="199" font-size="12" font-weight="500" text-anchor="middle">and linker</text>
+<rect class="s f" x="146" y="185" width="28" height="20" rx="5" stroke-width="1.5"/>
+<text class="t mono" x="160" y="198.9" font-size="11" text-anchor="middle">rt</text>
+<path class="s f" d="M210 230 H305 L314 239 V266 H210 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M305 230 V239 H314" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="262" y="245" font-size="11.5" font-weight="600" text-anchor="middle">a program for</text>
+<text class="t" x="262" y="259" font-size="11.5" font-weight="600" text-anchor="middle">your computer</text>
+<rect class="m f" x="410" y="88" width="150" height="26" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="485" y="105.68" font-size="13" font-weight="500" text-anchor="middle">scanner</text>
+<rect class="m f" x="410" y="130" width="150" height="26" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="485" y="147.68" font-size="13" font-weight="500" text-anchor="middle">parser</text>
+<rect class="m f" x="410" y="172" width="150" height="50" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="485" y="190" font-size="13" font-weight="500" text-anchor="middle">semantic analysis</text>
+<rect class="m f" x="432" y="197" width="106" height="19" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="485" y="210.3" font-size="10.5" text-anchor="middle">symbol table</text>
+<rect class="m f" x="356" y="250" width="96" height="26" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="404" y="267.68" font-size="13" font-weight="500" text-anchor="middle">tree walk</text>
+<rect class="m f" x="504" y="250" width="110" height="26" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="559" y="267.68" font-size="13" font-weight="500" text-anchor="middle">improver</text>
+<rect class="m f" x="504" y="292" width="110" height="26" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="559" y="309.68" font-size="13" font-weight="500" text-anchor="middle">code generator</text>
+<text class="tm mono" x="538" y="350" font-size="11">assembly</text>
+<rect class="s f" x="446" y="360" width="100" height="36" rx="8" stroke-width="1.5"/>
+<text class="t" x="496" y="382.68" font-size="13" font-weight="600" text-anchor="middle">the machine</text>
+<path class="s f" d="M574 360 H620 L628 368 V396 H574 Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M620 360 V368 H628" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="601" y="375" font-size="11" text-anchor="middle">gcd.s</text>
+<text class="t" x="601" y="389" font-size="11" font-weight="600" text-anchor="middle">by hand</text>
+<rect class="s f" x="42" y="412" width="56" height="20" rx="10" stroke-width="1.5"/>
+<text class="t mono" x="70" y="425.9" font-size="11" text-anchor="middle">output</text>
+<path class="a" d="M70 433 L70 446" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-aa)"/>
+<rect class="s f" x="234" y="412" width="56" height="20" rx="10" stroke-width="1.5"/>
+<text class="t mono" x="262" y="425.9" font-size="11" text-anchor="middle">output</text>
+<path class="a" d="M262 433 L262 446" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-aa)"/>
+<rect class="m f" x="376" y="412" width="56" height="20" rx="10" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="404" y="425.9" font-size="11" text-anchor="middle">output</text>
+<path class="m" d="M404 433 L404 446" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-am)" stroke-dasharray="4 4"/>
+<rect class="s f" x="468" y="412" width="56" height="20" rx="10" stroke-width="1.5"/>
+<text class="t mono" x="496" y="425.9" font-size="11" text-anchor="middle">output</text>
+<path class="m" d="M496 433 L496 446" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#map0105-am)" stroke-dasharray="4 4"/>
+<rect class="a af" x="16" y="448" width="610" height="22" rx="6" stroke-width="1.5"/>
+<text class="ta" x="321" y="463" font-size="12" font-weight="700" text-anchor="middle">agree: every way, the same answer</text>
+<rect class="a af" x="20" y="493" width="22" height="16" rx="4" stroke-width="1.5"/>
+<text class="ta" x="50" y="506" font-size="14" font-weight="600">01.05: this lesson</text>
+<rect class="s f" x="219.12" y="493" width="22" height="16" rx="4" stroke-width="1.5"/>
+<text class="t" x="249.12" y="506" font-size="14">built earlier</text>
+<rect class="m f" x="379.04" y="493" width="22" height="16" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="409.04" y="506" font-size="14">still to come</text>
+</svg>
