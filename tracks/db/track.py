@@ -252,6 +252,11 @@ def timeline_boot(lesson_id):
         steps += [(JOIN_QUERY, _rows("two|three", "three|four", "four|five"))]
         if k < (8, 2):
             steps += [("SELECT * FROM t LEFT JOIN t AS u ON u.id = t.b;", _refused("LEFT JOIN is not supported"))]
+        else:
+            steps += [(LEFT_QUERY, _rows("two|two", "three|", "four|four", "five|five"))]
+        steps += [("EXPLAIN QUERY PLAN " + JOIN_QUERY.replace(" ORDER BY x.id", ""),
+                   _rows("QUERY PLAN", "|--SCAN x",
+                         "`--SCAN y" if k < (8, 3) else "`--SEARCH y USING INTEGER PRIMARY KEY (rowid=?)"))]
     # The 08.07 extension: UNIQUE is an index, and a duplicate is refused as sqlite3 refuses it.
     if (3, 3) <= k < (8, 7):
         steps += [("CREATE TABLE u(a UNIQUE, b);", _refused("UNIQUE is not supported"))]
@@ -279,6 +284,8 @@ def timeline_boot(lesson_id):
 
 # 08.01 on: a self-join of the REPL's table t, each row with the row whose id is one more.
 JOIN_QUERY = "SELECT x.a, y.a FROM t AS x JOIN t AS y ON y.id = x.id + 1 ORDER BY x.id;"
+# 08.02 on: each row with the row whose id is its b, if there is one (three has b 30).
+LEFT_QUERY = "SELECT t.a, u.a FROM t LEFT JOIN t AS u ON u.id = t.b ORDER BY t.id;"
 # 08.04 on: one row from all of t; 08.05 on: a row per group, and a row per distinct value.
 AGG_QUERY = "SELECT count(*), sum(b), avg(b), min(a), max(b) FROM t;"
 GROUP_QUERY = "SELECT b > 4, count(*), sum(b) FROM t GROUP BY 1 HAVING count(*) > 1;"
@@ -337,6 +344,11 @@ def timeline_after(root, lesson_id):
                 raise Fail(f"./db and sqlite3 answer {q} differently:\n./db: {ours.out!r}\nsqlite3: {real!r}")
         if k >= (8, 4):
             notes.append("aggregates like sqlite3" + (", and GROUP BY and DISTINCT" if k >= (8, 5) else ""))
+    if k >= (8, 2):
+        ours, real = mine(learn, LEFT_QUERY), theirs(learn, LEFT_QUERY)
+        if ours.rc != 0 or ours.out != real or "three|\n" not in real:
+            raise Fail(f"./db and sqlite3 LEFT JOIN t with itself differently:\n./db: {ours.out!r}\nsqlite3: {real!r}")
+        notes.append("LEFT JOIN like sqlite3")
     if k >= (3, 3):
         s3 = os.path.join(root, "s3.db")
         theirs(s3, "CREATE TABLE u(x, y); INSERT INTO u VALUES (1, 'a');")

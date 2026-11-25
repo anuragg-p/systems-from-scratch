@@ -199,11 +199,9 @@ MIXED_QUERIES = [
     "SELECT a.*, b.* FROM a JOIN b ON a.x IS NULL AND b.x IS NULL",
 ]
 
-# What 08.01 does not build: refused by name (sqlite3 runs each of them).
+# What 08.01 does not build: refused by name (sqlite3 runs each of them). LEFT JOIN was
+# refused too until 08.02 (its test, and the timeline at 08.01, check that).
 REFUSED = [
-    ("SELECT * FROM customers LEFT JOIN orders ON 1", "LEFT JOIN is not supported"),
-    ("SELECT * FROM customers left outer join orders ON 1", "LEFT JOIN is not supported"),
-    ("SELECT * FROM customers c JOIN orders o ON 1 LEFT JOIN cities ON 1", "LEFT JOIN is not supported"),
     ("SELECT * FROM customers NATURAL JOIN orders", "NATURAL JOIN is not supported"),
     ("SELECT * FROM customers NATURAL LEFT JOIN orders", "NATURAL JOIN is not supported"),
     ("SELECT * FROM customers RIGHT JOIN orders ON 1", "RIGHT JOIN is not supported"),

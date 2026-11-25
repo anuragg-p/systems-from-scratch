@@ -62,6 +62,12 @@ GROUP_QUERIES = [
     f"SELECT c.city AS place, sum(o.total) AS money FROM {JOIN} GROUP BY place ORDER BY money",
     f"SELECT o.total > 20, count(*) FROM {JOIN} GROUP BY o.total > 20",
     "SELECT c.city, count(*) FROM customers c, orders o GROUP BY c.city",
+    # over a LEFT JOIN (08.02): Dee's row of NULLs is a group of its own, with count(o.id) 0
+    "SELECT c.name, count(o.id), sum(o.total) FROM customers c LEFT JOIN orders o ON o.customer_id = c.id "
+    "GROUP BY c.id ORDER BY c.id",
+    "SELECT c.name, count(o.id) FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.total > 25 "
+    "GROUP BY c.name HAVING count(o.id) = 0 ORDER BY 1",
+    "SELECT DISTINCT c.city, o.id IS NULL FROM customers c LEFT JOIN orders o ON o.customer_id = c.id ORDER BY 1, 2",
     "SELECT c.rowid, count(*) FROM customers c, orders o WHERE o.customer_id = c.id GROUP BY c.rowid",
     "SELECT o.customer_id IS NULL, count(*) FROM orders o GROUP BY 1",
     # the research file's GROUP BY runs
@@ -270,6 +276,7 @@ PLANS = [
     "SELECT c.city, count(*) FROM customers c CROSS JOIN orders o ON o.customer_id = c.id GROUP BY c.city",
     "SELECT count(DISTINCT c.city) FROM customers c CROSS JOIN orders o ON o.customer_id = c.id",
     "SELECT DISTINCT c.city FROM customers c CROSS JOIN orders o ON o.customer_id = c.id",
+    "SELECT c.name, count(o.id) FROM customers c LEFT JOIN orders o ON o.customer_id = c.id GROUP BY c.name",
 ]
 
 EXPLAIN_GROUPS = """Sort by sum(total) DESC

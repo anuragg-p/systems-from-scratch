@@ -7,7 +7,7 @@ modules and lesson titles are the list to build. Its module art stays in
 outlines/ai-research/ until every module has copied its cover and icon.
 This file holds the decisions.
 
-## Where it stands (2026-11-24)
+## Where it stands (2026-11-25)
 
 On master: modules 00 to 05, code, tests and all 27 lessons. The clean-up
 is finished and merged: `./learn verify --fresh research` passes 27 of
@@ -25,19 +25,26 @@ deviation; 05.03 calls MNIST's background "white"; a few facts about
 the papers (the Adam paper's 200 passes, 05.04's credit to Belkin) are
 not checked against the sources.
 
-Modules 06 to 10 and 12 to 15 are on master whole: code, 64 tests,
-thirty-seven lessons, module pages, figures and covers; each module's
-`./learn verify --fresh` passed on its lessons' branch (08: 534 s; 09:
-315 s; 10: 524 s; 12: 342 s; 13: 274 s; 14: 201 s; 15: 150 s). That is
-64 of the core's 70 lessons, pushed on 2026-11-24 up to module 09 and
-14's code. 08.02's default run is 2 seeds (3 took 82 s on a loaded
+The core is on master whole: modules 00 to 15, 70 lessons, each with
+its code, its test (70 of 70 pass, 2026-11-25), its page, figures and
+map, and each module with its page, cover and icon; twelve recorded
+runs, no weights. Every module's `./learn verify --fresh` passed on its
+lessons' branch (08: 534 s; 09: 315 s; 10: 524 s; 11: about 750 s; 12:
+342 s; 13: 274 s; 14: 201 s; 15: 150 s); `./learn check` has nothing
+for research. Pushed on 2026-11-25 up to module 15; module 11 after it
+is local. 08.02's default run is 2 seeds (3 took 82 s on a loaded
 machine); its heads comparison is inside the noise at 2 seeds and the
-page runs that part at 3 as well (13.02 settles it at 10). Module 11's
-code is on master too (70 tests, every lesson of the core has its code).
-In work, by an agent in its own worktree: module 11's lessons, the last
-six. Agents that add to track.py, NOTES.md and the art generators at
-the same time are merged by hand, keeping each block; the maps are then
-drawn again (`python3 -B art/research/archmap.py`).
+page runs that part at 3 as well (13.02 settles it at 10). 10.02's
+reason for its slower step was wrong and is corrected from 11.02's
+measurement.
+
+Left, in this order: one `./learn verify --fresh research` of the whole
+track on master; the quiet pass (every default run timed again with
+nothing else running; the ones seen nearest a minute under load are
+08.02, 09.03, 11.05, 12.01, 12.03 and 13.02); a read of the new modules
+on the site for terms and cross-references, as was done for 00 to 05;
+the README's map (`./learn map --write`) when the other session's
+README changes are in. The shelf (16 to 21) is not started.
 
 The owner asked for more speed (2026-11-24): the limit of three agents
 is lifted. Timings taken while four or five agents run are not to be

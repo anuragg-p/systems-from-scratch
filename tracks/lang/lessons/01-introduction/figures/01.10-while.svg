@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 442" fill="none">
+<title>A while loop as a test and two jumps: the condition becomes one branch on its opposite, past the loop</title>
+<defs><marker id="wh0110-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="wh0110-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="wh0110-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11.5">gcd.mote, lines 4 to 10</text>
+<text class="tm" x="236" y="22" font-size="11.5">./mote -S, the loop&#x27;s lines</text>
+<rect class="af" x="230" y="37" width="200" height="70" rx="4"/>
+<text class="tm mono" x="30" y="50" font-size="11" text-anchor="end">4</text>
+<text class="ta mono" x="40" y="50" font-size="12" font-weight="700">while i != j do</text>
+<text class="ta mono" x="236" y="50" font-size="12" font-weight="700">.L1:</text>
+<text class="ta mono" x="236" y="67" font-size="12" font-weight="700"><tspan x="236">ld</tspan><tspan x="272">t0, 0(sp)</tspan><tspan x="394.4"># i</tspan></text>
+<text class="ta mono" x="236" y="84" font-size="12" font-weight="700"><tspan x="236">ld</tspan><tspan x="272">t1, 8(sp)</tspan><tspan x="394.4"># j</tspan></text>
+<text class="ta mono" x="236" y="101" font-size="12" font-weight="700"><tspan x="236">beq</tspan><tspan x="272">t0, t1, .L2</tspan></text>
+<line class="m" x1="156" y1="46" x2="204" y2="46" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="30" y="124" font-size="11" text-anchor="end">5</text>
+<text class="t mono" x="40" y="124" font-size="12"><tspan x="68.8">if i &gt; j then</tspan></text>
+<text class="t mono" x="236" y="124" font-size="12"><tspan x="236">ld</tspan><tspan x="272">t0, 0(sp)</tspan><tspan x="394.4"># i</tspan></text>
+<text class="t mono" x="236" y="141" font-size="12"><tspan x="236">ld</tspan><tspan x="272">t1, 8(sp)</tspan><tspan x="394.4"># j</tspan></text>
+<text class="t mono" x="236" y="158" font-size="12"><tspan x="236">ble</tspan><tspan x="272">t0, t1, .L3</tspan></text>
+<line class="m" x1="170.4" y1="120" x2="204" y2="120" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="30" y="181" font-size="11" text-anchor="end">6</text>
+<text class="t mono" x="40" y="181" font-size="12"><tspan x="97.6">i := i - j</tspan></text>
+<text class="t mono" x="236" y="181" font-size="12"><tspan x="236">ld</tspan><tspan x="272">t0, 0(sp)</tspan><tspan x="394.4"># i</tspan></text>
+<text class="t mono" x="236" y="198" font-size="12"><tspan x="236">ld</tspan><tspan x="272">t1, 8(sp)</tspan><tspan x="394.4"># j</tspan></text>
+<text class="t mono" x="236" y="215" font-size="12"><tspan x="236">sub</tspan><tspan x="272">t0, t0, t1</tspan></text>
+<text class="t mono" x="236" y="232" font-size="12"><tspan x="236">sd</tspan><tspan x="272">t0, 0(sp)</tspan><tspan x="394.4"># i</tspan></text>
+<line class="m" x1="177.6" y1="177" x2="204" y2="177" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="30" y="255" font-size="11" text-anchor="end">7</text>
+<text class="t mono" x="40" y="255" font-size="12"><tspan x="68.8">else</tspan></text>
+<text class="t mono" x="236" y="255" font-size="12"><tspan x="236">j</tspan><tspan x="272">.L4</tspan></text>
+<text class="tm mono" x="236" y="272" font-size="12">.L3:</text>
+<line class="m" x1="105.6" y1="251" x2="204" y2="251" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="30" y="295" font-size="11" text-anchor="end">8</text>
+<text class="t mono" x="40" y="295" font-size="12"><tspan x="97.6">j := j - i</tspan></text>
+<text class="t mono" x="236" y="295" font-size="12"><tspan x="236">ld</tspan><tspan x="272">t0, 8(sp)</tspan><tspan x="394.4"># j</tspan></text>
+<text class="t mono" x="236" y="312" font-size="12"><tspan x="236">ld</tspan><tspan x="272">t1, 0(sp)</tspan><tspan x="394.4"># i</tspan></text>
+<text class="t mono" x="236" y="329" font-size="12"><tspan x="236">sub</tspan><tspan x="272">t0, t0, t1</tspan></text>
+<text class="t mono" x="236" y="346" font-size="12"><tspan x="236">sd</tspan><tspan x="272">t0, 8(sp)</tspan><tspan x="394.4"># j</tspan></text>
+<line class="m" x1="177.6" y1="291" x2="204" y2="291" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm mono" x="30" y="369" font-size="11" text-anchor="end">9</text>
+<text class="t mono" x="40" y="369" font-size="12"><tspan x="68.8">end</tspan></text>
+<text class="tm mono" x="236" y="369" font-size="12">.L4:</text>
+<line class="m" x1="98.4" y1="365" x2="204" y2="365" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect class="af" x="230" y="379" width="200" height="36" rx="4"/>
+<text class="tm mono" x="30" y="392" font-size="11" text-anchor="end">10</text>
+<text class="ta mono" x="40" y="392" font-size="12" font-weight="700">end</text>
+<text class="ta mono" x="236" y="392" font-size="12" font-weight="700"><tspan x="236">j</tspan><tspan x="272">.L1</tspan></text>
+<text class="ta mono" x="236" y="409" font-size="12" font-weight="700">.L2:</text>
+<line class="m" x1="69.6" y1="388" x2="204" y2="388" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<path class="a" d="M359.2 97 L472 97 L472 405 L272.8 405" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#wh0110-aa)"/>
+<text class="ta" x="482" y="233" font-size="11.5" font-weight="700">the branch out:</text>
+<text class="ta" x="482" y="249" font-size="11.5">beq, the opposite</text>
+<text class="ta" x="482" y="265" font-size="11.5">of !=, to .L2,</text>
+<text class="ta" x="482" y="281" font-size="11.5">past the loop</text>
+<path class="a" d="M228 388 L214 388 L214 46 L232 46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#wh0110-aa)"/>
+<text class="ta" x="309.6" y="392" font-size="11.5" font-weight="700">back to the test</text>
+</svg>

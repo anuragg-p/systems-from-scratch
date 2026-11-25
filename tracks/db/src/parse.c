@@ -11,6 +11,7 @@
  *   SELECT result, ... [FROM t [AS alias]] [WHERE e] [ORDER BY e [ASC|DESC], ...]
  *          [LIMIT n [OFFSET m]]
  *          where FROM may join tables: t, u ... or t [INNER|CROSS] JOIN u [ON e] ... @from 08.01
+ *          or t LEFT [OUTER] JOIN u [ON e] ... @from 08.02
  *          and it may be SELECT DISTINCT, with GROUP BY e, ... [HAVING e] after WHERE @from 08.05
  *   INSERT INTO t [(col, ...)] VALUES (e, ...), ...
  *   UPDATE t SET col = e, ... [WHERE e]
@@ -505,12 +506,21 @@ static int at_join_word(Parser *ps)
     return 0;
 }
 
+// @from 08.02
 /* Reads a join operator that starts with a word: one to three words, then
  * JOIN. The words combine as in sqlite3 (sqlite3JoinType() in select.c):
- * INNER and CROSS give an inner join; LEFT, RIGHT, FULL (with or without
- * OUTER) and NATURAL are joins this engine does not have; any other mix is
- * an unknown join type. Returns 0 for an inner join, or -1 with the error
- * set. */
+ * INNER and CROSS give an inner join, LEFT (with or without OUTER) a LEFT
+ * JOIN; RIGHT, FULL and NATURAL are joins this engine does not have; any
+ * other mix is an unknown join type. Returns 0 for an inner join, 1 for a
+ * LEFT JOIN, or -1 with the error set. */
+// @else
+// /* Reads a join operator that starts with a word: one to three words, then
+//  * JOIN. The words combine as in sqlite3 (sqlite3JoinType() in select.c):
+//  * INNER and CROSS give an inner join; LEFT, RIGHT, FULL (with or without
+//  * OUTER) and NATURAL are joins this engine does not have; any other mix is
+//  * an unknown join type. Returns 0 for an inner join, or -1 with the error
+//  * set. */
+// @end
 static int join_type(Parser *ps)
 {
     enum { NATURAL = 1, LEFT = 2, OUTER = 4, RIGHT = 8, INNER = 16, CROSS = 32, BAD = 64 };
@@ -546,7 +556,11 @@ static int join_type(Parser *ps)
     if (bits & RIGHT)
         return err("RIGHT JOIN is not supported");
     if (bits & LEFT)
-        return err("LEFT JOIN is not supported");
+        // @from 08.02
+        return 1;
+        // @else
+        // return err("LEFT JOIN is not supported");
+        // @end
     return 0;
 }
 
@@ -557,6 +571,7 @@ static int parse_from(Parser *ps, Stmt *s)
 {
     FromItem items[MAX_FROM];
     int n = 0;
+    int left = 0;  // @from 08.02
     // @build 08.01 the FROM clause
     // Read the first table, then one more for every comma or join operator
     // after it. A table is a name with an optional alias: AS and a name, or
@@ -570,6 +585,10 @@ static int parse_from(Parser *ps, Stmt *s)
             return err("at most %d tables in a join", MAX_FROM);
         FromItem *it = &items[n];
         memset(it, 0, sizeof *it);
+        // @from 08.02
+        it->left = left;         /* the operator before it was LEFT JOIN */
+        left = 0;
+        // @end
         if (accept(ps, TK_LP))
             return err(at(ps, TK_SELECT) ? "subqueries in FROM are not supported"
                                          : "parenthesised joins are not supported");
@@ -594,8 +613,13 @@ static int parse_from(Parser *ps, Stmt *s)
             continue;
         if (!at_join_word(ps))
             break;
-        if (join_type(ps) < 0)
+        // @from 08.02
+        if ((left = join_type(ps)) < 0)
             return -1;
+        // @else
+        // if (join_type(ps) < 0)
+        //     return -1;
+        // @end
     }
     // @end
     s->from = arena_alloc(ps->arena, (size_t)n * sizeof(FromItem));

@@ -74,6 +74,8 @@ SHOP_QUERIES = [
     "SELECT count(*), sum(o.total), min(c.name) FROM customers c JOIN orders o ON o.customer_id = c.id + 100",
     "SELECT count(*), count(o.customer_id) FROM customers c, orders o",
     "SELECT count(*) FROM customers c, orders o, customers d",
+    "SELECT count(*), count(o.id), sum(o.total), max(c.name) FROM customers c LEFT JOIN orders o "
+    "ON o.customer_id = c.id",
     "SELECT count(*), sum(b.x) FROM customers c, blank b",
     # aggregates inside expressions, the same call twice, constants, no FROM at all
     "SELECT sum(total) + 1, count(*) * 2, max(total) || 'z', -min(total), NOT count(*) FROM orders",

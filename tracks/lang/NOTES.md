@@ -738,3 +738,64 @@ compiler's work, not the translator's.
   the real ones are two or more (the plan says so; chapter 5).
 - Every .s here assembled with GNU as 2.46.0 for rv64im: gcd.s, the tests' programs, and what
   mote -S and -S -O write.
+
+## Found while lessons 01.09 to 01.11 were written
+
+Run on the Apple M4 Pro Mac above (macOS 26.6.2), 2026-11-25, in the project as `./learn run lang
+--at NN.LL` leaves it; every page fetched the same day.
+
+Numbers the lessons state, each held by a `fact` or a replayed block:
+
+- Naive gcd on 1071 462: 82 of its 142 instructions are loads and stores (69 `ld`, 13 `sd`),
+  counted from `--trace`. The listing has 26 instructions; gcd.s has 14.
+- Improved gcd: `j .L4` (the jump to a jump) runs 8 times, once a pass where i > j: 53 + 8 = 61.
+- Appearances, which improve() counts: in gcd.mote i 7, j 6 (so i gets s1, j s2, as in gcd.s by
+  hand); in primes.mote p 8, d 7, prime 3, n 2 (s1 to s4 in that order).
+- many.mote (`read a`, then `b := a + a` and so on to `l := k + k`, then `write l + a`): 12
+  variables, a 4 appearances, b to k 3 each, l 2. With -O, a is s1, b to k are s2 to s11, and l
+  stays in memory (`addi sp, sp, -16`, `sd t0, 0(sp)` then at once `ld t0, 0(sp)`). On 1 it
+  prints 2049: 21 instructions improved, 54 naive.
+- The timing of 01.09: sum on 3000000 under zsh's `time`, three runs each: mote0 0.308 to 0.321 s,
+  mote 0.037 to 0.045 s (the lesson shows 0.321 and 0.037: about 8 times, as in "Timing" above).
+
+The Break its, as run:
+
+- 01.09: the design's change (a while's condition evaluated once) never ends on gcd: the body
+  repeats with nothing asking again. The lesson makes the nearest change that ends,
+  `while (test(s->cond))` to `if (test(s->cond))` in interpret(): gcd 609, sum 1, primes 2, `mote
+  DIFFERS` on all three rows.
+- 01.10: one entry, `[N_NE] = "beq"` to `"bne"`: gcd prints 1071 after 13 instructions; only the
+  gcd row differs, since sum and primes have no `!=`. The whole table swapped (every comparison
+  branching on itself) was also run: gcd 1071, sum 0, primes nothing, all three rows differ.
+- 01.11: `best->reg = s[r]` to `s[r / 2]` (each register to two variables): gcd 462 (i and j both
+  s1), sum 127, primes 2; all end. Two other ways of sharing hang on primes, and agree has no
+  timeout: every variable in s1 (primes loops, printing nothing), and only the second variable
+  given s1 (`s[r == 1 ? 0 : r]`: p and d share, `d := 2` resets p, primes prints 2 forever).
+
+Other systems, read or run:
+
+- gcc: Homebrew's riscv64-elf-gcc 15.2.0, `-O0 -march=rv64im -mabi=lp64 -I. -S` on
+  programs/gcd.c. main makes a frame of 32 (`addi sp,sp,-32`, ra and s0 saved, `addi s0,sp,32`);
+  i is at -24(s0) and j at -32(s0); every use is an `ld` from the slot and every assignment an
+  `sd` to it, through a4 and a5; the loop's test is at the bottom (`j .L2` into it, `bne
+  a4,a5,.L4` back to the body). At -O1 it keeps i in s0 (only its start was looked at). 01.10
+  shows the -O0 loop, marked skip.
+- The RISC-V psABI, github.com/riscv-non-isa/riscv-elf-psabi-doc, `riscv-cc.adoc` on master at
+  56561cb: the integer register table gives s0 to s11 (x8, x9, x18 to x27) as callee-saved,
+  preserved across calls, and t0 to t6 (x5 to x7, x28 to x31) and a0 to a7 (x10 to x17) as not
+  preserved; "the stack pointer shall be aligned to a 128-bit boundary upon procedure entry";
+  "If a frame pointer exists, it must reside in x8 (s0); the register remains callee-saved."
+  01.10 cites the alignment (the frame rounded up to 16); 01.11 the s registers and s0.
+- Crafting Interpreters (craftinginterpreters.com): "Evaluating Expressions" (chapter 7)
+  evaluates the syntax tree itself, with the Visitor pattern, and a runtime error carries its
+  token, to report the line. "Statements and State" (chapter 8): an Environment holds "a Java Map"
+  keyed by bare strings, the names' lexemes; visitVariableExpr calls `environment.get(expr.name)`
+  each time a variable is evaluated; an undefined variable is a RuntimeError, found at run time.
+  "Chunks of Bytecode" (chapter 14), section 14.1.1 "Why not walk the AST?": the tree-walker is
+  simple and portable but not memory-efficient (a pointer's overhead per node) and bad for
+  spatial locality; its introduction times fib(40) in jlox at about 72 s against half a second
+  for a C program. "Calls and Functions" (chapter 24) times fib(35) with clock(): "running this
+  in clox is about five times faster than in jlox". jlox is written in Java, clox in C. 01.09
+  cites the two approaches, the locality, and the factor of five, and says the languages differ.
+- www.cs.rochester.edu/~scott/pragmatics/: the 4th edition's page (Morgan Kaufmann), with the
+  contents, errata and where to buy it; the book's text is not there.

@@ -19,6 +19,10 @@
  * A join reads its tables in the order they are written, a nested loop @from 08.01
  * per table, and checks each condition as soon as the row holds every @from 08.01
  * table it names. @from 08.01
+ * A LEFT JOIN's ON stays in its join, where it decides what matches; @from 08.02
+ * WHERE is checked on the rows the join hands up. @from 08.02
+ * An inner table whose column a condition sets equal to a value from @from 08.03
+ * the tables before it is looked up, by rowid or an index, not scanned. @from 08.03
  */
 // @else
 // /*
@@ -360,6 +364,115 @@ static Op *item_scan(Db *db, FromItem *it, Access *acc)
     return op;
 }
 
+// @from 08.03
+/* The highest FROM item whose columns (or rowid) e reads, -1 if none. A
+ * lookup key for item k must read only items before k: they are all in the
+ * join's row, table 0's rowid too, when the inner side starts again. */
+static int key_item(Expr *e)
+{
+    if (!e)
+        return -1;
+    int k = e->op == E_COLUMN ? e->tab : -1;
+    int ka = key_item(e->a), kb = key_item(e->b), kc = key_item(e->c);
+    k = ka > k ? ka : k;
+    k = kb > k ? kb : k;
+    k = kc > k ? kc : k;
+    for (int i = 0; i < e->nlist; i++) {
+        int kl = key_item(e->list[i]);
+        k = kl > k ? kl : k;
+    }
+    return k;
+}
+
+/* If term is column = key, with the column col of FROM item k (TCOL_ROWID:
+ * the rowid, or the INTEGER PRIMARY KEY of t, item k's table) and a key that
+ * reads only items before k, either way round, returns the key; else NULL. */
+static Expr *join_key(Table *t, Expr *term, int k, int col)
+{
+    if (term->op != E_EQ)
+        return NULL;
+    for (int side = 0; side < 2; side++) {
+        Expr *c = side ? term->b : term->a, *key = side ? term->a : term->b;
+        if (c->op != E_COLUMN || c->tab != k || key_item(key) >= k)
+            continue;
+        if (c->tcol == col || (col == TCOL_ROWID && t->rowid_col >= 0 && c->tcol == t->rowid_col))
+            return key;
+    }
+    return NULL;
+}
+
+/* Whether an index on a column of affinity aff can answer column = key: it
+ * can only if comparing the two leaves the column's stored values as they
+ * are. A numeric column always can (the key is what gets converted). A TEXT
+ * or BLOB column cannot when the key is a column of numeric affinity: the
+ * comparison would then turn the column's values into numbers ('1.0' and
+ * ' 1' equal 1), which no lookup of one key finds. This is sqlite3's
+ * sqlite3IndexAffinityOk() (expr.c) on SQLite's comparison affinity, as
+ * eval_compare() applies it. */
+static int index_affinity_ok(int aff, Expr *key)
+{
+    if (aff == AFF_INTEGER || aff == AFF_REAL || aff == AFF_NUMERIC)
+        return 1;
+    return key->aff != AFF_INTEGER && key->aff != AFF_REAL && key->aff != AFF_NUMERIC;
+}
+
+/* Decides how FROM item k (k >= 1) of the join q is read for each row the
+ * join below it hands up, and fills *acc. It looks for a term column = key
+ * whose column is item k's and whose key reads only the items before k (or
+ * nothing), among item k's own ON if it is a LEFT JOIN (whose rows only its
+ * ON may narrow), else among terms[0..nterms), the WHERE and inner-join ON
+ * terms. The first rule that applies wins:
+ *   1. the column is the rowid or the INTEGER PRIMARY KEY   ACCESS_ROWID_EQ
+ *   2. the column is the first column of an index, and      ACCESS_INDEX_EQ
+ *      index_affinity_ok()
+ *   3. none of these                                         ACCESS_SCAN
+ * The key goes in acc->lo and acc->hi; scan_rebind() evaluates it for each
+ * outer row. The term itself is still checked (in its Filter, or in the
+ * LEFT JOIN's ON): the lookup only narrows what is read. Always returns 0. */
+int choose_join_access(Query *q, int k, Expr **terms, int nterms, Access *acc)
+{
+    FromItem *it = &q->scope.from[k];
+    Table *t = it->t;
+    Expr *own[64], *key = NULL;
+    memset(acc, 0, sizeof *acc);
+    acc->kind = ACCESS_SCAN;
+    // @build 08.03 choose how to read the inner table
+    // A LEFT JOIN item looks only at the terms of its own ON (conjuncts()
+    // into own). First the rowid: any term rowid = key (join_key() with
+    // TCOL_ROWID also takes the INTEGER PRIMARY KEY) makes it a rowid
+    // lookup. Then each index in turn, by its first column: a term on that
+    // column whose key index_affinity_ok() allows makes it an index
+    // lookup. Set kind, index, lo = hi = the key, both bounds inclusive.
+    if (it->left) {
+        nterms = conjuncts(it->on, own, 0, 64);
+        terms = own;
+    }
+    for (int i = 0; i < nterms && !key; i++)
+        key = join_key(t, terms[i], k, TCOL_ROWID);
+    if (key) {
+        acc->kind = ACCESS_ROWID_EQ;
+    } else {
+        for (Index *ix = t->indexes; ix && !key; ix = ix->next) {
+            for (int i = 0; i < nterms && !key; i++) {
+                key = join_key(t, terms[i], k, ix->cols[0]);
+                if (key && !index_affinity_ok(t->cols[ix->cols[0]].affinity, key))
+                    key = NULL;
+            }
+            if (key) {
+                acc->kind = ACCESS_INDEX_EQ;
+                acc->index = ix;
+            }
+        }
+    }
+    if (key) {
+        acc->lo = acc->hi = key;
+        acc->lo_incl = acc->hi_incl = 1;
+    }
+    return 0;
+    // @end
+}
+// @end
+
 // @from 08.04
 // @from 08.05
 /* Puts on top of op, which hands up the rows of q's FROM that pass WHERE,
@@ -481,7 +594,12 @@ int plan_select(Db *db, Query *q, Plan *plan)
     Expr **terms = arena_alloc(&db->stmt, (size_t)(nterms + 1) * sizeof(Expr *));
     int n = conjuncts(s->where, terms, 0, nterms);
     for (int k = 0; k < sc->nfrom; k++)
-        n = conjuncts(sc->from[k].on, terms, n, nterms);
+        // @from 08.02
+        if (!sc->from[k].left)          /* a LEFT JOIN checks its own ON (left_join()) */
+            n = conjuncts(sc->from[k].on, terms, n, nterms);
+        // @else
+        // n = conjuncts(sc->from[k].on, terms, n, nterms);
+        // @end
     Op *op = NULL;
     // @build 08.01 where each condition is checked
     // An inner join's ON means what WHERE means, so both are one list of
@@ -490,6 +608,11 @@ int plan_select(Db *db, Query *q, Plan *plan)
     // (terms_at). Item 0 is read the way its own terms allow
     // (choose_access, as for one table); every later item is scanned
     // whole, once for each row the join below it hands up, and joined on.
+    // @from 08.02
+    for (int k = 1; k < sc->nfrom; k++)
+        if (sc->from[k].left && last_table(sc->from[k].on) > k)
+            return err("ON clause references tables to its right");
+    // @end
     Expr *here = terms_at(db, terms, n, 0);
     if (choose_access(sc->from[0].t, here, &plan->jacc[0]) < 0)
         return -1;
@@ -499,12 +622,20 @@ int plan_select(Db *db, Query *q, Plan *plan)
         op = op_filter(db, op, here);
     for (int k = 1; k < sc->nfrom; k++) {
         FromItem *it = &sc->from[k];
-        plan->jacc[k].kind = ACCESS_SCAN;
-        Op *inner = item_scan(db, it, &plan->jacc[k]);
+        // @from 08.03
+        choose_join_access(q, k, terms, n, &plan->jacc[k]);
+        Access unbound = plan->jacc[k];     /* op_scan() must not evaluate the key */
+        unbound.lo = unbound.hi = NULL;
+        Op *inner = item_scan(db, it, &unbound);
+        // @else
+        // plan->jacc[k].kind = ACCESS_SCAN;
+        // Op *inner = item_scan(db, it, &plan->jacc[k]);
+        // @end
         if (!inner) {
             op_close(op);
             return -1;
         }
+        inner->acc = plan->jacc[k];  // @from 08.03
         op = op_join(db, op, inner, it, k == 1 ? sc->from[0].t : NULL, it->base + it->t->ncols + 1);
         if ((here = terms_at(db, terms, n, k)))
             op = op_filter(db, op, here);
@@ -625,7 +756,12 @@ void explain_join_plan(Db *db, Plan *plan)
     for (int k = 0; k < sc->nfrom; k++) {
         FromItem *it = &sc->from[k];
         access_line(line, sizeof line, it->alias ? it->alias : it->t->name, it->t, &plan->jacc[k]);
-        fprintf(db->out, "%s%s\n", k == sc->nfrom - 1 && !plan->sorted ? "`--" : "|--", line);
+        // @from 08.02
+        fprintf(db->out, "%s%s%s\n", k == sc->nfrom - 1 && !plan->sorted ? "`--" : "|--", line,
+                it->left ? " LEFT-JOIN" : "");
+        // @else
+        // fprintf(db->out, "%s%s\n", k == sc->nfrom - 1 && !plan->sorted ? "`--" : "|--", line);
+        // @end
     }
     if (plan->sorted)
         fprintf(db->out, "`--USE TEMP B-TREE FOR ORDER BY\n");
@@ -673,6 +809,8 @@ void explain_select_plan(Db *db, Plan *plan)
         FromItem *it = &sc->from[k];
         access_line(line, sizeof line, it->alias ? it->alias : it->t->name, it->t,
                     sc->nfrom == 1 ? &plan->acc : &plan->jacc[k]);
+        if (it->left)
+            strncat(line, " LEFT-JOIN", sizeof line - strlen(line) - 1);
         plan_line(db, held, sizeof held, line);
     }
     // @from 08.05

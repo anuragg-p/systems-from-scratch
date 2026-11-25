@@ -377,6 +377,7 @@ typedef struct FromItem {        /* one table of a FROM clause */
     struct Expr *on;             /* its ON, or NULL */
     struct Table *t;             /* bound by select_resolve() */
     int base;                    /* where its columns start in the joined row */
+    int left;                    /* LEFT JOIN: rows before it that match nothing are kept */ // @from 08.02
 } FromItem;
 // @end
 
@@ -583,6 +584,11 @@ struct Op {
     int have_outer;              /* Join: an outer row is in the first lwidth slots */
     int lwidth;                  /* Join: slots taken by the tables before the inner one */
     // @end
+    // @from 08.02
+    int leftjoin;                /* Join: a LEFT JOIN, which hands up an outer row nothing matched */
+    Expr *on;                    /* Join, LEFT: its ON, what makes an inner row a match */
+    int matched;                 /* Join, LEFT: an inner row matched the outer row in hand */
+    // @end
     // @from 08.04
     struct Query *q;             /* Aggregate: the query, whose aggregates hold the running state */
     Row grp;                     /* Aggregate: the group's own row, what a bare column reads */
@@ -660,6 +666,7 @@ void explain_tree(struct Db *db, Stmt *s, Plan *plan);
 int plan_select(struct Db *db, Query *q, Plan *plan);
 void explain_join_plan(struct Db *db, Plan *plan);
 // @end
+int choose_join_access(Query *q, int k, Expr **terms, int nterms, Access *acc);  // @from 08.03
 void explain_select_plan(struct Db *db, Plan *plan);  // @from 08.04
 // @from 05.02
 Op *op_scan(struct Db *db, Table *t, Access *acc);
@@ -670,6 +677,7 @@ Op *op_filter(struct Db *db, Op *child, Expr *pred);  // @from 04.02
 Op *op_sort(struct Db *db, Op *child, OrderTerm *order, int norder);  // @from 04.03
 Op *op_limit(struct Db *db, Op *child, i64 limit, i64 offset);  // @from 04.03
 Op *op_join(struct Db *db, Op *left, Op *inner, FromItem *item, Table *left_table, int width);  // @from 08.01
+int scan_rebind(Op *scan, Row *outer);  // @from 08.03
 Op *op_aggregate(struct Db *db, Op *child, Query *q);  // @from 08.04
 Op *op_distinct(struct Db *db, Op *child, Expr **cols, int ncols);  // @from 08.05
 void op_close(Op *op);
