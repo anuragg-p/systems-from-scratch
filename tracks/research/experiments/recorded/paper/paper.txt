@@ -36,7 +36,7 @@ many blocks does a GPT without them need to match one with them?
   depth tried does its 95% interval reach 0.
 - How many blocks without positions match one with them: none of 1 to 8. The best without, 8 blocks,
   scores 3.384 bits; the worst with, 8 blocks, 3.260 (section 4).
-- The rate matters as much as the depth: at 0.003, the earlier run's rate, the search put the gap at
+- The rate matters more than the depth: at 0.003, the earlier run's rate, the search put the gap at
   4 blocks at 0.076 on validation, at the rates it chose at 0.169 (sections 4 and 6).
 - Not the weights: the 2048 weights positions add at 4 blocks, put into the MLPs of the model
   without them instead, close none of it (+0.004 bits) (section 4).

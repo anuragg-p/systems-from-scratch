@@ -144,7 +144,7 @@ def main():
     lines += [f"   - weight_decay: ours {c['weight_decay']:g}, as the text; {SETUP['weight_decay'][1]}"]
     lines += ["   The model, models/gpt.py's GPT at the paper's depth, width and heads, against the paper's code:"]
     lines += [f"   - {line}" for line in MODEL]
-    lines += ["", f"2. The claims. Ours is the median over the seeds (each seed's after it); the ablations ran each "
+    lines += ["", f"2. The claims. Ours is the median over the seeds, decay's their mean (each seed's after it); the ablations ran each "
                   f"setting {a['seeds']} seeds, at most {a['steps']} steps."]
     got, tally = outcomes(fig, abl), {}
     for claim in CLAIMS:

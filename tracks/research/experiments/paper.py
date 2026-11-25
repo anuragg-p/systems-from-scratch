@@ -273,7 +273,7 @@ def paper(r, cfg):
         f"model's rate searched alike (section 4): {gap_text(r, d0)} at one block, {gap_text(r, d1)} at {d1}; "
         f"{closes}.",
         matching_text(r) + " (section 4).",
-        f"The rate matters as much as the depth: at {q.BEFORE['lr']:g}, the earlier run's rate, the search put the "
+        f"The rate matters more than the depth: at {q.BEFORE['lr']:g}, the earlier run's rate, the search put the "
         f"gap at 4 blocks at {r['found'][4, 'none'][q.BEFORE['lr']] - r['found'][4, 'learned'][q.BEFORE['lr']]:.3f} "
         f"on validation, at the rates it chose at {searched_gap(r, 4):.3f} (sections 4 and 6)."
         if q.BEFORE["lr"] in r["cfg"].rates else "",
