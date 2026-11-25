@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 424" fill="none">
+<title>The seven aggregates: the state each keeps, its step, its finish, and its answer over no rows</title>
+<defs><marker id="f0804b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0804b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0804b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11">what agg_step() and agg_finish() do for each function, and what each gives over no rows</text>
+<text class="t" x="32" y="52" font-size="11" font-weight="600">function</text>
+<text class="t" x="112" y="52" font-size="11" font-weight="600">state</text>
+<text class="t" x="236" y="52" font-size="11" font-weight="600">a step</text>
+<text class="t" x="400" y="52" font-size="11" font-weight="600">the finish</text>
+<text class="t" x="616" y="52" font-size="11" font-weight="600" text-anchor="end">empty input</text>
+<line class="s" x1="24" y1="60" x2="616" y2="60" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="32" y="83" font-size="11.5" font-weight="600">count(*)</text>
+<text class="t" x="112" y="83" font-size="10.5"><tspan class="mono">n</tspan></text>
+<text class="t" x="236" y="83" font-size="10.5">every row: <tspan class="mono">n</tspan> + 1</text>
+<text class="t" x="400" y="83" font-size="10.5"><tspan class="mono">n</tspan></text>
+<rect class="s f" x="562" y="69" width="52" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="588" y="83.96" font-size="11" text-anchor="middle">0</text>
+<line class="m" x1="24" y1="95" x2="616" y2="95" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="32" y="114" font-size="11.5" font-weight="600">count(x)</text>
+<text class="t" x="112" y="114" font-size="10.5"><tspan class="mono">n</tspan></text>
+<text class="t" x="236" y="114" font-size="10.5">x not NULL: <tspan class="mono">n</tspan> + 1</text>
+<text class="t" x="400" y="114" font-size="10.5"><tspan class="mono">n</tspan></text>
+<rect class="s f" x="562" y="100" width="52" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="588" y="114.96" font-size="11" text-anchor="middle">0</text>
+<line class="m" x1="24" y1="126" x2="616" y2="126" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="32" y="145" font-size="11.5" font-weight="600">sum(x)</text>
+<text class="t" x="112" y="145" font-size="10.5"><tspan class="mono">n</tspan>, <tspan class="mono">isum</tspan>: exact</text>
+<text class="t" x="112" y="160" font-size="10.5"><tspan class="mono">rsum</tspan>, <tspan class="mono">rerr</tspan>: a real</text>
+<text class="t" x="236" y="145" font-size="10.5">x not NULL: <tspan class="mono">n</tspan> + 1, add x:</text>
+<text class="t" x="236" y="160" font-size="10.5">in <tspan class="mono">isum</tspan> while all integers</text>
+<text class="t" x="400" y="145" font-size="10.5"><tspan class="mono">isum</tspan> while all integers,</text>
+<text class="t" x="400" y="160" font-size="10.5">else the real sum;</text>
+<text class="t" x="400" y="175" font-size="10.5">overflow: an error</text>
+<rect class="m f" x="562" y="131" width="52" height="22" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="588" y="145.96" font-size="9.5" text-anchor="middle">NULL</text>
+<line class="m" x1="24" y1="187" x2="616" y2="187" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="32" y="206" font-size="11.5" font-weight="600">total(x)</text>
+<text class="tm" x="112" y="206" font-size="10.5">as sum</text>
+<text class="tm" x="236" y="206" font-size="10.5">as sum</text>
+<text class="t" x="400" y="206" font-size="10.5">the sum, always a real</text>
+<rect class="s f" x="562" y="192" width="52" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="588" y="206.96" font-size="11" text-anchor="middle">0.0</text>
+<line class="m" x1="24" y1="218" x2="616" y2="218" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="32" y="237" font-size="11.5" font-weight="600">avg(x)</text>
+<text class="tm" x="112" y="237" font-size="10.5">as sum</text>
+<text class="tm" x="236" y="237" font-size="10.5">as sum</text>
+<text class="t" x="400" y="237" font-size="10.5">the sum / <tspan class="mono">n</tspan>, a real</text>
+<rect class="m f" x="562" y="223" width="52" height="22" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="588" y="237.96" font-size="9.5" text-anchor="middle">NULL</text>
+<line class="m" x1="24" y1="249" x2="616" y2="249" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="32" y="268" font-size="11.5" font-weight="600">min(x)</text>
+<text class="t" x="112" y="268" font-size="10.5"><tspan class="mono">best</tspan>, a copy</text>
+<text class="t" x="236" y="268" font-size="10.5">x not NULL and less than</text>
+<text class="t" x="236" y="283" font-size="10.5"><tspan class="mono">best</tspan>: x is the new <tspan class="mono">best</tspan></text>
+<text class="t" x="400" y="268" font-size="10.5"><tspan class="mono">best</tspan></text>
+<rect class="m f" x="562" y="254" width="52" height="22" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="588" y="268.96" font-size="9.5" text-anchor="middle">NULL</text>
+<line class="m" x1="24" y1="295" x2="616" y2="295" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="32" y="314" font-size="11.5" font-weight="600">max(x)</text>
+<text class="t" x="112" y="314" font-size="10.5"><tspan class="mono">best</tspan>, a copy</text>
+<text class="t" x="236" y="314" font-size="10.5">x not NULL and more than</text>
+<text class="t" x="236" y="329" font-size="10.5"><tspan class="mono">best</tspan>: x is the new <tspan class="mono">best</tspan></text>
+<text class="t" x="400" y="314" font-size="10.5"><tspan class="mono">best</tspan></text>
+<rect class="m f" x="562" y="300" width="52" height="22" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="588" y="314.96" font-size="9.5" text-anchor="middle">NULL</text>
+<line class="m" x1="24" y1="341" x2="616" y2="341" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t" x="24" y="367" font-size="11">Over a table with no rows the engine prints one row all the same:</text>
+<text class="tm mono" x="24" y="387" font-size="10">SELECT count(*), count(x), sum(x), total(x), avg(x), min(x), max(x) FROM empty;</text>
+<text class="t mono" x="24" y="405" font-size="11" font-weight="700">0|0||0.0|||</text>
+<text class="tm" x="108.6" y="405" font-size="10.5">a NULL prints as nothing: sum, avg, min and max have no value to give</text>
+</svg>
