@@ -38,6 +38,9 @@ Fixtures the lesson tests use:
                         its README.md): a quick slice, or every kept script with
                         SLT=full in the environment; have names what module 08 added
                         (join, aggregate, ...), which is then run instead of skipped
+    keeps_unique(root)  does the project at root keep UNIQUE and PRIMARY KEY
+                        constraints (08.07)? A core test that checks the refusal
+                        before it checks what 08.07 makes of the same SQL instead
 
 Tests are internal. A lesson's test runs the whole engine, so with that
 lesson's code cut out it fails at the stub: "db: NN.LL: ... not written yet".
@@ -244,6 +247,14 @@ def timeline_boot(lesson_id):
         steps += [(JOIN_QUERY, _rows("two|three", "three|four", "four|five"))]
         if k < (8, 2):
             steps += [("SELECT * FROM t LEFT JOIN t AS u ON u.id = t.b;", _refused("LEFT JOIN is not supported"))]
+    # The 08.07 extension: UNIQUE is an index, and a duplicate is refused as sqlite3 refuses it.
+    if (3, 3) <= k < (8, 7):
+        steps += [("CREATE TABLE u(a UNIQUE, b);", _refused("UNIQUE is not supported"))]
+    if k >= (8, 7):
+        steps += [("CREATE TABLE u(a UNIQUE, b TEXT PRIMARY KEY);", P), ("INSERT INTO u VALUES (1, 'x'), (2, 'y');", P),
+                  ("INSERT INTO u VALUES (1, 'z');", _refused("UNIQUE constraint failed: u.a")),
+                  ("UPDATE u SET b = 'x' WHERE a = 2;", _refused("UNIQUE constraint failed: u.b")),
+                  ("SELECT a FROM u WHERE b = 'y';", _rows("2"))]
     return steps
 
 
@@ -316,6 +327,22 @@ def timeline_after(root, lesson_id):
         raise Fail(f"./db cannot open a WAL file:\n{r}")
     if k < (4, 1):
         return ", ".join(notes)
+
+    # A table sqlite3 made with UNIQUE: read-only until 08.07 keeps its indexes, then written soundly.
+    uq = os.path.join(root, "uq.db")
+    theirs(uq, "CREATE TABLE q(a UNIQUE, b TEXT PRIMARY KEY); INSERT INTO q VALUES (1, 'x');")
+    r = mine(uq, "INSERT INTO q VALUES (2, 'y');")
+    if k < (8, 7):
+        if r.rc != 1 or "read-only" not in r.err:
+            raise Fail(f"./db should refuse to write sqlite3's UNIQUE table before 08.07:\n{r}")
+        notes.append("sqlite3's UNIQUE table read-only")
+    else:
+        dup = mine(uq, "INSERT INTO q VALUES (1, 'z');")
+        if r.rc != 0 or dup.rc != 1 or "UNIQUE constraint failed: q.a" not in dup.err:
+            raise Fail(f"./db should write sqlite3's UNIQUE table and refuse a duplicate:\n{r}\n{dup}")
+        if theirs(uq, "PRAGMA integrity_check;").strip() != "ok":
+            raise Fail("sqlite3 says uq.db is damaged after ./db wrote it")
+        notes.append("writes sqlite3's UNIQUE table")
 
     # 300 rows in rowid order, over several leaves: from 07.03 a full leaf splits for an append
     fill = os.path.join(root, "f.db")
@@ -646,6 +673,16 @@ def tree_depth(path_, root):
 def rows(text):
     """Output lines split into fields."""
     return [line.split("|") for line in text.splitlines()]
+
+
+def keeps_unique(root):
+    """Does the project at root keep UNIQUE and PRIMARY KEY constraints as automatic
+    indexes (08.07, an extension)? The finished track does; the core alone refuses them."""
+    try:
+        with open(os.path.join(root, "src", "schema.c"), errors="replace") as f:
+            return "sqlite_autoindex_" in f.read()
+    except OSError:
+        return False
 
 
 # ---------------------------------------------------------------- sqllogictest

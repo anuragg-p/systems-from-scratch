@@ -697,6 +697,43 @@ DATA["experiments/recorded/ablation/*"] = ("the long run of experiments/ablation
                                            "NOTES.md")
 
 
+# ---------------------------------------------------------------- module 11: fast
+#
+# Kept apart from the tables above, as modules 06 to 10's parts are. lab/bench.py (11.01) times. models/gpt.py gains
+# Rotary.angles, the angles kept (11.02: the same bits, so always on; Rotary.keep = False turns it off), fused_attend and
+# fused=True (11.03), the angles made in float32 under autocast (11.04), Cache and the caches argument (11.06);
+# experiments/language.py gains train's times and until and race (11.01), cfg.precision (11.04), cfg.accumulate (11.05),
+# cached_scores and generate's cache (11.06): each chosen by an argument or a setting whose default leaves every earlier
+# lesson's numbers and bytes as they were. 11.06's cache.py needs SmolLM2's files (python3 -m data.fetch smollm2). The
+# recorded benchmark is experiments/recorded/benchmark/ (benchmark.py with bigger settings and every row).
+
+EXPERIMENTS.update({
+    "benchmark": ("11.01", ["seeds=1", "steps=6", "layers=1", "width=16", "context=16", "every=2", "held=4", "target=5.5",
+                            "rounds=1", "repeats=2", "number=1"], r"s of timing and training on cpu"),
+    "profile": ("11.02", ["steps=2", "layers=1", "width=16", "context=16", "repeats=2", "number=1", "rounds=1"],
+                r"s of timing and profiling on cpu"),
+    "fused": ("11.03", ["seeds=1", "steps=4", "layers=1", "width=16", "context=16", "lengths=[16,32]", "windows=[16]",
+                        "repeats=2"], r"s of timing, training and scoring on cpu"),
+    "precision": ("11.04", ["seeds=1", "steps=3", "warm_steps=3", "layers=1", "width=16", "context=16", "every=3",
+                            "held=4", "repeats=2", "number=1"], r"s of training, timing and counting on cpu"),
+    "batches": ("11.05", ["seeds=1", "steps=6", "layers=1", "width=16", "context=16", "every=2", "held=4", "target=5.5",
+                          "sizes=[4,8]", "batches=[8,32]", "norm_steps=2", "clip_batches=[8]", "repeats=2", "number=1"],
+                r"s of timing and training on cpu"),
+    "cache": ("11.06", ["steps=3", "layers=1", "width=16", "context=16", "small_length=20", "length=4", "windows=[16]",
+                        "lengths=[2,4]", "repeats=1", "prompt_tokens=4"], r"s of loading, training, writing and timing on cpu"),
+})
+DATASET_OF.update({"benchmark": None, "profile": None, "fused": None, "precision": None, "batches": None,
+                   "cache": "smollm2"})
+
+# The recorded benchmark: experiments/benchmark.py with out=experiments/recorded and every row (each row's config.json,
+# log.jsonl and summary.json for every seed, times.json, the curves and what it printed); no weights (it saves none).
+# Its last row comes with 11.05 and its table is read back from 11.06, the module's end, so it comes with 11.06. The
+# first glob that matches a file places it, so this narrower one goes first too.
+FILES_FROM = {"experiments/recorded/benchmark/*": "11.06", **FILES_FROM}
+DATA["experiments/recorded/benchmark/*"] = ("the recorded benchmark of module 11, experiments/benchmark.py with every "
+                                            "row, recorded on the machine in NOTES.md")
+
+
 # ---------------------------------------------------------------- module 14: reproduce a paper, grokking
 #
 # Kept apart from the tables above, as modules 06 to 08's parts are, and last in the file, so another module's part can

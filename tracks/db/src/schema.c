@@ -97,6 +97,65 @@ static char *keep_str(Schema *sc, const char *s, int n)
     return s ? arena_strndup(&sc->arena, s, (size_t)n) : arena_strndup(&sc->arena, "", 0);
 }
 
+// @from 08.07
+/* Returns the column number of the INTEGER PRIMARY KEY if constraint u of
+ * CREATE TABLE s is one, else -1. A PRIMARY KEY of one column declared
+ * exactly INTEGER is the rowid under another name and gets no index; on the
+ * column as PRIMARY KEY DESC it is an ordinary column (build.c,
+ * sqlite3AddPrimaryKey). */
+int rowid_constraint(Stmt *s, const Unique *u)
+{
+    if (!u->primary_key || u->nnames != 1 || (u->column && u->desc))
+        return -1;
+    for (int i = 0; i < s->ndefs; i++)
+        if (strcasecmp(s->defs[i].name, u->names[0]) == 0)
+            return strcasecmp(s->defs[i].type, "INTEGER") == 0 ? i : -1;
+    return -1;
+}
+
+static void add_index(Table *t, Index *ix);
+
+/* Gives table t the automatic indexes sqlite3 makes for the UNIQUE and
+ * PRIMARY KEY constraints of its CREATE TABLE s, in the order they are
+ * written, each named sqlite_autoindex_<table>_<n> with n one more than
+ * the indexes already made. The INTEGER PRIMARY KEY gets none (the table's
+ * own B-tree is its index), nor does a constraint on the same columns in
+ * the same order as an earlier one, and neither uses up a number (build.c,
+ * sqlite3CreateIndex). sqlite3 works the names out again each time it opens
+ * the file and calls a row it cannot match an orphan index, so they must
+ * be exactly its names. Root pages are left 0 for the caller. */
+static void auto_indexes(Schema *sc, Stmt *s, Table *t)
+{
+    // @build 08.07 an automatic index for a constraint
+    int n = 0;
+    for (int i = 0; i < s->nuniques; i++) {
+        Unique *u = &s->uniques[i];
+        if (rowid_constraint(s, u) >= 0)
+            continue;
+        Index *ix = arena_alloc(&sc->arena, sizeof *ix);
+        ix->table = t;
+        ix->unique = 1;
+        ix->ncols = u->nnames;
+        for (int k = 0; k < u->nnames; k++)
+            for (int c = 0; c < t->ncols; c++)
+                if (strcasecmp(t->cols[c].name, u->names[k]) == 0)
+                    ix->cols[k] = c;
+        int repeat = 0;
+        for (Index *o = t->indexes; o; o = o->next)
+            if (o->ncols == ix->ncols && memcmp(o->cols, ix->cols, (size_t)ix->ncols * sizeof(int)) == 0)
+                repeat = 1;
+        if (repeat)
+            continue;
+        size_t len = strlen(t->name) + 32;
+        char *name = arena_alloc(&sc->arena, len);
+        snprintf(name, len, "sqlite_autoindex_%s_%d", t->name, ++n);
+        ix->name = name;
+        add_index(t, ix);
+    }
+    // @end
+}
+// @end
+
 /* Builds a Table from a parsed CREATE TABLE. Features the engine cannot
  * maintain mark the table read-only (or opaque) instead of failing. */
 static Table *table_from(Schema *sc, Stmt *s, u32 root, const char *sql)
@@ -117,20 +176,39 @@ static Table *table_from(Schema *sc, Stmt *s, u32 root, const char *sql)
         c->affinity = affinity_of(d->type);
         c->not_null = d->not_null;
         c->dflt = d->dflt;
-        if (d->primary_key) {
-            pks++;
-            /* Only a column declared exactly INTEGER becomes the rowid;
-             * INT PRIMARY KEY is an ordinary column with a UNIQUE index. */
-            if (strcasecmp(d->type, "INTEGER") == 0)
-                t->rowid_col = i;
-            else
-                t->readonly = "a PRIMARY KEY that is not INTEGER PRIMARY KEY";
-        }
+        // @from 08.07
+        // @else
+        // if (d->primary_key) {
+        //     pks++;
+        //     /* Only a column declared exactly INTEGER becomes the rowid;
+        //      * INT PRIMARY KEY is an ordinary column with a UNIQUE index. */
+        //     if (strcasecmp(d->type, "INTEGER") == 0)
+        //         t->rowid_col = i;
+        //     else
+        //         t->readonly = "a PRIMARY KEY that is not INTEGER PRIMARY KEY";
+        // }
+        // @end
     }
-    if (pks > 1) {
-        t->rowid_col = -1;
-        t->readonly = "a PRIMARY KEY of several columns";
+    // @from 08.07
+    /* The INTEGER PRIMARY KEY is the rowid; every other UNIQUE or PRIMARY
+     * KEY constraint is an index. A table that is read-only anyway gets
+     * none: it is read by scanning. */
+    int indexed = 0;
+    for (int i = 0; i < s->nuniques; i++) {
+        int col = rowid_constraint(s, &s->uniques[i]);
+        if (col >= 0)
+            t->rowid_col = col;
+        else
+            indexed = 1;
     }
+    if (indexed && !s->unsupported)
+        auto_indexes(sc, s, t);
+    // @else
+    // if (pks > 1) {
+    //     t->rowid_col = -1;
+    //     t->readonly = "a PRIMARY KEY of several columns";
+    // }
+    // @end
     if (s->unsupported)
         t->readonly = s->unsupported;
     if (s->unsupported && strcmp(s->unsupported, "WITHOUT ROWID") == 0)
@@ -161,6 +239,7 @@ static Index *index_from(Schema *sc, Stmt *s, Table *t, u32 root)
     ix->table = t;
     ix->root = root;
     ix->ncols = s->nnames;
+    ix->unique = s->unique;  // @from 08.07
     for (int i = 0; i < s->nnames; i++) {
         int c = -1;
         for (int k = 0; k < t->ncols; k++)
@@ -181,6 +260,38 @@ static void add_index(Table *t, Index *ix)
     while (*pp)
         pp = &(*pp)->next;
     *pp = ix;
+}
+// @end
+
+// @from 08.07
+/* An index row with no sql is an automatic index: it gives the root page of
+ * the one auto_indexes() made under that name, matched as sqlite3 matches it
+ * (prepare.c, sqlite3InitCallback). A name that matches none, which sqlite3
+ * calls an orphan index, makes the table read-only. */
+static void auto_index_root(Table *t, const char *name, u32 root)
+{
+    for (Index *ix = t->indexes; ix; ix = ix->next)
+        if (ix->unique && !ix->root && strcasecmp(ix->name, name) == 0) {
+            ix->root = root;
+            return;
+        }
+    if (!t->readonly && !t->opaque)
+        t->readonly = "an automatic index that matches none of its constraints";
+}
+
+/* Drops the automatic indexes of t that no row of sqlite_schema gave a root
+ * page (sqlite3 calls such a file malformed); the table becomes read-only. */
+static void auto_index_check(Table *t)
+{
+    for (Index **pp = &t->indexes; *pp;) {
+        if ((*pp)->root == 0) {
+            *pp = (*pp)->next;
+            if (!t->readonly)
+                t->readonly = "a UNIQUE or PRIMARY KEY constraint whose index is missing";
+        } else {
+            pp = &(*pp)->next;
+        }
+    }
 }
 // @end
 
@@ -297,7 +408,11 @@ int schema_load(Db *db)
             continue;
         if (strcmp(later[i].type, "index") == 0) {
             if (!later[i].sql) {
-                t->readonly = "a UNIQUE or PRIMARY KEY constraint";
+                // @from 08.07
+                auto_index_root(t, later[i].name, later[i].root);
+                // @else
+                // t->readonly = "a UNIQUE or PRIMARY KEY constraint";
+                // @end
                 continue;
             }
             Stmt *s = parse_schema_sql(sc, later[i].sql);
@@ -318,6 +433,10 @@ int schema_load(Db *db)
             t->readonly = "triggers";
         }
     }
+    // @from 08.07
+    for (Table *t = sc->tables; t; t = t->next)
+        auto_index_check(t);
+    // @end
     // @end
     cursor_close(&c);
     free(later);
@@ -342,9 +461,17 @@ void schema_insert_row(Db *db, const char *type, const char *name, const char *t
     }
     v[3].type = V_INT;
     v[3].i = root;
-    v[4].type = V_TEXT;
-    v[4].s = sql;
-    v[4].n = (int)strlen(sql);
+    // @from 08.07
+    if (sql) {                   /* an automatic index has none: NULL */
+        v[4].type = V_TEXT;
+        v[4].s = sql;
+        v[4].n = (int)strlen(sql);
+    }
+    // @else
+    // v[4].type = V_TEXT;
+    // v[4].s = sql;
+    // v[4].n = (int)strlen(sql);
+    // @end
     Buf rec = {0};
     record_build(&rec, v, 5);
     Cursor c;
@@ -392,6 +519,13 @@ int create_table(Db *db, Stmt *s)
     }
     u32 root = btree_create(&db->pager, 1);
     schema_insert_row(db, "table", s->table, s->table, root, s->sql);
+    // @from 08.07
+    /* sqlite3 makes the automatic indexes right after the table: their
+     * root pages come next, and their rows in sqlite_schema have no sql. */
+    Table *t = table_from(&db->schema, s, root, s->sql);
+    for (Index *ix = t->indexes; ix; ix = ix->next)
+        schema_insert_row(db, "index", ix->name, s->table, btree_create(&db->pager, 0), NULL);
+    // @end
     schema_bump_cookie(db);
     return 0;
     // @end
@@ -454,6 +588,11 @@ int drop_object(Db *db, Stmt *s)
         if (t->root == 1)
             return err("table %s may not be dropped", t->name);
     } else {
+        // @from 08.07
+        Index *ix = find_index(db, s->name, NULL);
+        if (ix && strncasecmp(ix->name, "sqlite_autoindex_", 17) == 0)
+            return err("index associated with UNIQUE or PRIMARY KEY constraint cannot be dropped");
+        // @end
         if (!find_index(db, s->name, NULL)) {
             if (s->if_exists)
                 return 0;
