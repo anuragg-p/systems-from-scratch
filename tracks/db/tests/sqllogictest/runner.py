@@ -244,6 +244,8 @@ UNSUPPORTED = [
     ("REINDEX", re.compile(r"^\s*REINDEX\b", re.I)),
     ("ALTER TABLE", re.compile(r"^\s*ALTER\b", re.I)),
     ("INDEXED BY", re.compile(r"\bINDEXED\b", re.I)),
+    # x IN t1: the core's parser has no such form (a syntax error), 08.06 refuses it by name
+    ("IN with a table name", re.compile(r"\bIN\s+(?!\()[A-Za-z_]", re.I)),
 ]
 # the bitwise operators << >> & | ~ (not the || of concatenation), which the core lacks
 BITWISE = re.compile(r"<<|>>|&|~|(?<!\|)\|(?!\|)")
@@ -255,7 +257,7 @@ TRIGGERS = {"subquery": {"EXISTS"}, "view": {"VIEW"}, "trigger": {"TRIGGER"}, "j
             "GROUP BY": {"GROUP", "HAVING"}, "compound SELECT": {"UNION", "EXCEPT", "INTERSECT"},
             "CASE": {"CASE"}, "DISTINCT": {"DISTINCT"}, "CAST": {"CAST"}, "CREATE TABLE AS": {"AS"},
             "INSERT OR / REPLACE": {"OR", "REPLACE"}, "REINDEX": {"REINDEX"}, "ALTER TABLE": {"ALTER"},
-            "INDEXED BY": {"INDEXED"}}
+            "INDEXED BY": {"INDEXED"}, "IN with a table name": {"IN"}}
 # a name and "(": a function call, unless the word before says it is a table's or an index's name
 CALL = re.compile(r"(?:\b(\w+)\s+)?\b([A-Za-z_]\w*)\s*\(")
 AFTER_NAME = {"into", "table", "on", "index", "exists", "view", "from", "update"}
