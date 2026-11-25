@@ -522,7 +522,7 @@ Departures (reasons in NOTES.md):
 - The expected outputs of 01.02 are checked against a reference written in
   Python: only gcd has a C version.
 - `make` makes `build/`, so that `> build/gcd.s` works in a fresh project.
-- mote.h also declares `equal`, `error_at` and `error_tok`; `generate`
+- mote.h also declares `equal` and `error_tok` (`error_at` was removed after the first read: nothing called it); `generate`
   reads `sym->reg` and takes no flag.
 - mote2c checks a little more of a statement's form (`expected ':='`,
   `expected the end of the line`); expressions are still copied unchecked.
@@ -536,3 +536,38 @@ Departures (reasons in NOTES.md):
   it") gives the compiler's road as stack code (push 6, push 7, mul,
   write); chapter 1's compiler writes RISC-V for a register machine. The
   cover is copied as it is; redrawing it belongs to the art pass.
+
+## Chapter 1's lessons and art as done (2026-11-25)
+
+- Eleven lessons and the module page in `tracks/lang/lessons/01-introduction/`,
+  each opening with what to read in the book. Thirty figures (seven stepped),
+  the map in eleven copies, and module 01's cover redrawn (one program, every
+  way to run it), from generators under `art/lang/` and
+  `art/outlines/lang_art.py` that run the real programs and assert what they
+  draw.
+- On master: `./learn test lang` all 11 pass; `check-skeleton` and
+  `check-timeline` ok; `./learn verify lang --fresh` ok for all 11;
+  `./learn check` has nothing against lang (its one problem is the owner's
+  copy of the book in the repo root).
+- Lesson 01.05 is titled "The tools around a language: a prompt and a
+  checker": the word check refuses "test runner" in a heading.
+- A reader (an Opus agent given the pages and no conclusions) read the
+  chapter on the site in both themes and at 390 px. What it found and what
+  was changed is at the end of `tracks/lang/NOTES.md`; the rules that came
+  out of it are at the end of `plans/lang-01-lessons.md`.
+- The numbers the chapter turns on: gcd of 1071 and 462 runs 53 instructions
+  written by hand, 142 compiled, 61 improved; the 8 between 61 and 53 are
+  jumps to a jump.
+- Not done, and not lang's alone: at 390 px every track's figures shrink to
+  text of 5 or 6 px with no way to enlarge them; the module page's paragraph
+  is not shown on the site; "Related" lines are not links. All three are in
+  `harness/web/`, which another session has uncommitted work in.
+- Not replayed by the verifier: the typed session at `mote0`'s prompt in
+  01.05 (the same lines from a file are), and output that depends on the
+  computer (the C compiler's assembly and messages, `nm`, timings).
+- Not run on Linux.
+- README.md does not name the track yet (another session has uncommitted
+  edits there).
+
+Next: chapter 2, on the owner's word. Its lesson list is settled only after
+chapter 2 of the book is read as chapter 1 was.

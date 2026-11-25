@@ -265,7 +265,9 @@ github.com/riscv-non-isa/riscv-asm-manual). `[the cc track's lesson
 
 Figures:
 - `01.01-five-ways.svg` - "One program, the greatest common divisor of 1071
-  and 462, and the five ways chapter 1 runs it: every road ends in 21." Five
+  and 462: written by hand for the machine, and the five ways chapter 1 runs
+  it from its text in your language. Every road ends in 21." (Caption as
+  changed after the first read; the row list below is the first design.) Five
   rows, each a chain of small boxes ending in `21`, with its lesson numbers:
   by hand (gcd.s, the machine); the first interpreter; translator, C
   compiler, your computer; scanner, parser, analysis, tree walk; scanner,
@@ -826,3 +828,21 @@ Figures:
   "scanner, parser, tree" forking to "walk the tree" and to "code" with one
   instruction, `sub s1, s1, s2`, on "the machine". A bracket on the right:
   "the same answer".
+
+## After the first read (2026-11-25)
+
+A reader went through the chapter on the site; what changed is listed at the
+end of `tracks/lang/NOTES.md`. The rules that came out of it, for later
+chapters:
+
+- A "way" is a way of running a program written in the reader's language: a
+  column of `agree`. Five by the end of chapter 1 (mote0, motec, mote,
+  machine, machine -O). The program written by hand in assembly is not a way;
+  it is the measure.
+- The course supplies every file. A lesson never says the reader wrote one.
+- "Read first" is a paragraph of its own, and says "up to and including" when
+  it means it. Two lessons never claim the same pages.
+- A bare example number means nothing without the book open: give it three or
+  four words.
+- Where a chapter of the book is on its companion site (5, 17), the first
+  mention in a module says so.
