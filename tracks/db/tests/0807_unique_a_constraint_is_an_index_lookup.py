@@ -95,7 +95,7 @@ def alike(t, tr, sql, setup="", ours=None, theirs=None):
         tr.sqlite(t, b, setup)
     x = tr.db(t, a, sql, check=False)
     y = tr.sqlite(t, b, sql, check=False)
-    t.check(x.rc >= 0, f"./db died:\n{x}")
+    t.check(x.rc >= 0 and "not written yet" not in x.err and "db: fatal" not in x.err, f"./db stopped:\n{x}")
     t.check(tr.same_output(x.out, y.out),
             f"./db and sqlite3 print different rows\n--- ./db\n{x.out[-1500:]}\n--- sqlite3\n{y.out[-1500:]}"
             f"\n--- sql\n{(setup + sql)[-2500:]}")
