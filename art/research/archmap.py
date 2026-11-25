@@ -31,7 +31,10 @@ and lights the models' real weights (models/gpt2.py, 09.03); its experiments are
 Module 10 lights today's architecture, the pieces models/gpt.py gains as arguments of GPT (RMSNorm,
 rotary positions, SwiGLU, grouped heads), the piece of all five of its lessons: SmolLM2's loading
 (10.04) is that piece in use, and its ablation (10.05) compares them; its experiments are language
-ones too. Module 12 lights fine-tuning, the piece of all four of its lessons: models/classifier.py's
+ones too. Module 11 lights fast, the piece of all six of its lessons: the same GPT giving the same numbers
+sooner, its timing in lab/bench.py, its fused attention, sixteen bits, accumulation and cache in models/gpt.py and
+experiments/language.py behind arguments whose defaults change nothing; with it every piece of the core has
+code. Module 12 lights fine-tuning, the piece of all four of its lessons: models/classifier.py's
 head and models/lora.py's adapter on 09.03's GPT-2, with what they train on, Banking77 (fetched) and
 the instruction tasks (made by code), and the loop they share, experiments/tuning.py.
 Module 13 lights experiments that hold up, the piece of its four lessons: its tools are
@@ -71,17 +74,17 @@ ROOT = figlib.ROOT
 # one can still bring a piece's code (00.03 brings the plots, 02.05 the checkpoint file, 03.01
 # the optimisers' first one): that piece is solid from then on, never in the accent for it.
 PIECES = {
-    # research (15 not built yet)
+    # research
     "13": ("research", "experiments that hold up", "13", "13.01"),
     "14": ("research", "the reproduction", "14", "14.01"),
     "15": ("research", "your own result", "15", "15.01"),
-    # models: models/, one file per network family (06 on); the modules after 09 not built yet
+    # models: models/, one file per network family (06 on), and what modules 10 to 12 do to the GPT
     "06": ("models", "image networks", "06", "06.02"),
     "07": ("models", "language models", "07", "07.02"),
     "08": ("models", "the GPT", "08", "08.01"),
     "09": ("models", "real weights", "09", "09.03"),
     "10": ("models", "today's architecture", "10", "10.01"),
-    "11": ("models", "fast", "11", None),
+    "11": ("models", "fast", "11", "11.01"),
     "12": ("models", "fine-tuning", "12", "12.01"),
     # experiments: experiments/<name>.py, one per lesson, here by module
     "curve": ("experiments", "a curve", "module 00", "00.01"),
@@ -167,6 +170,12 @@ LESSONS = [
     ("10.03", "A gated MLP: SwiGLU", "10", "SwiGLU"),
     ("10.04", "Grouped-query attention, and loading a current open model", "10", "grouped heads, SmolLM2"),
     ("10.05", "Which change paid: an ablation table", "10", "the ablation table"),
+    ("11.01", "Reading the benchmark: time to a target loss", "11", "time to a target"),
+    ("11.02", "Where a step goes: profiling", "11", "profiling"),
+    ("11.03", "Attention without the big matrix", "11", "fused attention"),
+    ("11.04", "Lower precision: sixteen bits, and what breaks", "11", "sixteen bits"),
+    ("11.05", "Bigger batches: accumulation, clipping and the learning rate", "11", "bigger batches"),
+    ("11.06", "One more optimisation, measured", "11", "a cache, measured"),
     ("12.01", "A new head on a pretrained body", "12", "a new head"),
     ("12.02", "LoRA: training under one percent of the weights", "12", "LoRA"),
     ("12.03", "Instructions: a chat template, and a model that answers", "12", "instructions"),
@@ -196,6 +205,7 @@ MODULE_TITLES = {
     "08": "The transformer: a GPT",
     "09": "GPT-2: the tokenizer and the real weights",
     "10": "Today's architecture",
+    "11": "Fast",
     "12": "Fine-tuning",
     "13": "Experiments that hold up",
     "14": "Reproduce a paper: grokking",

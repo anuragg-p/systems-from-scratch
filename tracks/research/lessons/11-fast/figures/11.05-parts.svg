@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" fill="none">
+<title>Accumulation as arithmetic: a batch of 32 windows cut into 4 parts of 8, each part&#x27;s mean bits divided by 4 and its backward pass adding into the same gradients; the page&#x27;s GPT at its start, in float64</title>
+<defs><marker id="parts1105-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="parts1105-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="parts1105-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="30" y="26" font-size="11.5" font-weight="700">one batch: 32 windows of 64 characters</text>
+<rect class="a af" x="30" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="48" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="66" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="84" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="102" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="120" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="138" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="a af" x="156" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="182" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="200" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="218" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="236" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="254" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="272" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="290" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="308" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="334" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="352" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="370" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="388" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="406" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="424" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="442" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="460" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="486" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="504" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="522" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="540" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="558" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="576" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="594" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<rect class="s f" x="612" y="40" width="15" height="22" rx="2" stroke-width="1.5"/>
+<path class="s" d="M30 64 L30 70 L171 70 L171 64" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="102" y="92" font-size="10.5" font-weight="600" text-anchor="middle">part 1: 6.0066 bits</text>
+<text class="tm" x="102" y="108" font-size="10" text-anchor="middle">/ 4, backward</text>
+<line class="s" x1="102" y1="116" x2="102" y2="144" stroke-width="1.5" stroke-linecap="round" marker-end="url(#parts1105-ah)"/>
+<path class="s" d="M182 64 L182 70 L323 70 L323 64" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="254" y="92" font-size="10.5" font-weight="600" text-anchor="middle">part 2: 6.0940 bits</text>
+<text class="tm" x="254" y="108" font-size="10" text-anchor="middle">/ 4, backward</text>
+<line class="s" x1="254" y1="116" x2="254" y2="144" stroke-width="1.5" stroke-linecap="round" marker-end="url(#parts1105-ah)"/>
+<path class="s" d="M334 64 L334 70 L475 70 L475 64" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="406" y="92" font-size="10.5" font-weight="600" text-anchor="middle">part 3: 6.0683 bits</text>
+<text class="tm" x="406" y="108" font-size="10" text-anchor="middle">/ 4, backward</text>
+<line class="s" x1="406" y1="116" x2="406" y2="144" stroke-width="1.5" stroke-linecap="round" marker-end="url(#parts1105-ah)"/>
+<path class="s" d="M486 64 L486 70 L627 70 L627 64" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="558" y="92" font-size="10.5" font-weight="600" text-anchor="middle">part 4: 6.0746 bits</text>
+<text class="tm" x="558" y="108" font-size="10" text-anchor="middle">/ 4, backward</text>
+<line class="s" x1="558" y1="116" x2="558" y2="144" stroke-width="1.5" stroke-linecap="round" marker-end="url(#parts1105-ah)"/>
+<rect class="s fs" x="30" y="148" width="597" height="34" rx="4" stroke-width="1.5"/>
+<text class="t" x="330" y="170" font-size="11" font-weight="600" text-anchor="middle">the same .grad of every weight, added into four times</text>
+<text class="t mono" x="30" y="214" font-size="11">the four parts&#x27; bits / 4, added: 6.060900</text>
+<text class="t mono" x="30" y="232" font-size="11">the whole batch&#x27;s mean bits:     6.060900</text>
+<text class="ta" x="30" y="256" font-size="11" font-weight="700">every gradient against the whole batch&#x27;s, the largest difference: 3.3e-16 (the largest gradient 1.07)</text>
+<text class="tm" x="30" y="286" font-size="10.5">Equal parts, so the mean of the means is the mean. A part takes a part&#x27;s time: no speed.</text>
+</svg>

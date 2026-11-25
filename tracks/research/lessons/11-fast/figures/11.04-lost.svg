@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 330" fill="none">
+<title>One AdamW step of the page&#x27;s GPT after 60 steps, at the full rate and at the rate near a run&#x27;s end: how many times smaller each update is than its weight (log2 of |weight| / |update|), and the share of updates sixteen bits would lose</title>
+<defs><marker id="lost1104-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="lost1104-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="lost1104-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="m" x1="85.14" y1="226" x2="85.14" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="85.14" y="242" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="122.29" y1="226" x2="122.29" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="122.29" y="242" font-size="10.5" text-anchor="middle">4</text>
+<line class="m" x1="159.43" y1="226" x2="159.43" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="159.43" y="242" font-size="10.5" text-anchor="middle">8</text>
+<line class="m" x1="187.29" y1="226" x2="187.29" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="187.29" y="242" font-size="10.5" text-anchor="middle">11</text>
+<line class="m" x1="233.71" y1="226" x2="233.71" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="233.71" y="242" font-size="10.5" text-anchor="middle">16</text>
+<line class="m" x1="270.86" y1="226" x2="270.86" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="270.86" y="242" font-size="10.5" text-anchor="middle">20</text>
+<rect class="m" x="48" y="58" width="260" height="168" rx="0" stroke-width="1.5"/>
+<text class="tm" x="178" y="258" font-size="11.5" text-anchor="middle">log2(|weight| / |update|)</text>
+<rect class="s fs" x="48" y="223.48" width="4.14" height="2.52" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="52.64" y="222.42" width="4.14" height="3.58" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="57.29" y="220.74" width="4.14" height="5.26" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="61.93" y="218.66" width="4.14" height="7.34" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="66.57" y="216.19" width="4.14" height="9.81" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="71.21" y="211.39" width="4.14" height="14.61" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="75.86" y="205.55" width="4.14" height="20.45" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="80.5" y="197.42" width="4.14" height="28.58" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="85.14" y="184.31" width="4.14" height="41.69" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="89.79" y="169.07" width="4.14" height="56.93" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="94.43" y="149.05" width="4.14" height="76.95" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="99.07" y="121.35" width="4.14" height="104.65" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="103.71" y="94.64" width="4.14" height="131.36" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="108.36" y="73.27" width="4.14" height="152.73" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="113" y="73.69" width="4.14" height="152.31" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="117.64" y="107.03" width="4.14" height="118.97" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="122.29" y="162.6" width="4.14" height="63.4" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="126.93" y="208.81" width="4.14" height="17.19" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="131.57" y="224.52" width="4.14" height="1.48" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="136.21" y="225.99" width="4.14" height="0.01" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="140.86" y="225.99" width="4.14" height="0.01" rx="0" stroke-width="1.5"/>
+<rect class="m fs" x="159.43" y="222.87" width="4.14" height="3.13" rx="0" stroke-width="1.5"/>
+<rect class="m fs" x="164.07" y="225.98" width="4.14" height="0.02" rx="0" stroke-width="1.5"/>
+<rect class="m fs" x="178" y="225.99" width="4.14" height="0.01" rx="0" stroke-width="1.5"/>
+<line class="m" x1="159.43" y1="58" x2="159.43" y2="226" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="156.43" y="53" font-size="9.5" text-anchor="end">bfloat16: about 2^8</text>
+<line class="a" x1="187.29" y1="58" x2="187.29" y2="226" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="ta" x="190.29" y="53" font-size="9.5">about 2^11: float16</text>
+<text class="t" x="48" y="30" font-size="11.5" font-weight="700">rate 0.003: 186,832 updates</text>
+<text class="ta" x="48" y="286" font-size="11" font-weight="700">lost in float16: 0.0%</text>
+<text class="t" x="48" y="302" font-size="11">lost in bfloat16: 0.1%</text>
+<line class="m" x1="401.14" y1="226" x2="401.14" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="401.14" y="242" font-size="10.5" text-anchor="middle">0</text>
+<line class="m" x1="438.29" y1="226" x2="438.29" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="438.29" y="242" font-size="10.5" text-anchor="middle">4</text>
+<line class="m" x1="475.43" y1="226" x2="475.43" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="475.43" y="242" font-size="10.5" text-anchor="middle">8</text>
+<line class="m" x1="503.29" y1="226" x2="503.29" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="503.29" y="242" font-size="10.5" text-anchor="middle">11</text>
+<line class="m" x1="549.71" y1="226" x2="549.71" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="549.71" y="242" font-size="10.5" text-anchor="middle">16</text>
+<line class="m" x1="586.86" y1="226" x2="586.86" y2="230" stroke-width="1.5" stroke-linecap="round"/>
+<text class="tm mono" x="586.86" y="242" font-size="10.5" text-anchor="middle">20</text>
+<rect class="m" x="364" y="58" width="260" height="168" rx="0" stroke-width="1.5"/>
+<text class="tm" x="494" y="258" font-size="11.5" text-anchor="middle">log2(|weight| / |update|)</text>
+<rect class="s fs" x="368.64" y="225.99" width="4.14" height="0.01" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="373.29" y="225.96" width="4.14" height="0.04" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="377.93" y="225.96" width="4.14" height="0.04" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="382.57" y="225.96" width="4.14" height="0.04" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="387.21" y="225.95" width="4.14" height="0.05" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="391.86" y="225.87" width="4.14" height="0.13" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="396.5" y="225.92" width="4.14" height="0.08" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="401.14" y="225.83" width="4.14" height="0.17" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="405.79" y="225.71" width="4.14" height="0.29" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="410.43" y="225.66" width="4.14" height="0.34" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="415.07" y="225.48" width="4.14" height="0.52" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="419.71" y="225.29" width="4.14" height="0.71" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="424.36" y="225.02" width="4.14" height="0.98" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="429" y="224.54" width="4.14" height="1.46" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="433.64" y="224.07" width="4.14" height="1.93" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="438.29" y="222.76" width="4.14" height="3.24" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="442.93" y="221.91" width="4.14" height="4.09" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="447.57" y="220.51" width="4.14" height="5.49" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="452.21" y="217.99" width="4.14" height="8.01" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="456.86" y="214.45" width="4.14" height="11.55" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="461.5" y="210.02" width="4.14" height="15.98" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="466.14" y="203.55" width="4.14" height="22.45" rx="0" stroke-width="1.5"/>
+<rect class="s fs" x="470.79" y="193.93" width="4.14" height="32.07" rx="0" stroke-width="1.5"/>
+<rect class="m fs" x="475.43" y="181.34" width="4.14" height="44.66" rx="0" stroke-width="1.5"/>
+<rect class="m fs" x="480.07" y="163.64" width="4.14" height="62.36" rx="0" stroke-width="1.5"/>
+<rect class="m fs" x="484.71" y="142.17" width="4.14" height="83.83" rx="0" stroke-width="1.5"/>
+<rect class="m fs" x="489.36" y="114.45" width="4.14" height="111.55" rx="0" stroke-width="1.5"/>
+<rect class="m fs" x="494" y="87.88" width="4.14" height="138.12" rx="0" stroke-width="1.5"/>
+<rect class="m fs" x="498.64" y="73.27" width="4.14" height="152.73" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="503.29" y="80.66" width="4.14" height="145.34" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="507.93" y="116.2" width="4.14" height="109.8" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="512.57" y="163.19" width="4.14" height="62.81" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="517.21" y="198.38" width="4.14" height="27.62" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="521.86" y="212.6" width="4.14" height="13.4" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="526.5" y="217.76" width="4.14" height="8.24" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="531.14" y="220.56" width="4.14" height="5.44" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="535.79" y="222.13" width="4.14" height="3.87" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="540.43" y="223.42" width="4.14" height="2.58" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="545.07" y="223.66" width="4.14" height="2.34" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="549.71" y="222.52" width="4.14" height="3.48" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="554.36" y="224.78" width="4.14" height="1.22" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="559" y="225.16" width="4.14" height="0.84" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="563.64" y="225.4" width="4.14" height="0.6" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="568.29" y="225.64" width="4.14" height="0.36" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="572.93" y="225.71" width="4.14" height="0.29" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="577.57" y="225.86" width="4.14" height="0.14" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="582.21" y="225.87" width="4.14" height="0.13" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="586.86" y="225.87" width="4.14" height="0.13" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="591.5" y="225.98" width="4.14" height="0.02" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="596.14" y="225.96" width="4.14" height="0.04" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="600.79" y="225.97" width="4.14" height="0.03" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="605.43" y="225.95" width="4.14" height="0.05" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="614.71" y="225.98" width="4.14" height="0.02" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="619.36" y="225.99" width="4.14" height="0.01" rx="0" stroke-width="1.5"/>
+<line class="m" x1="475.43" y1="58" x2="475.43" y2="226" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="472.43" y="53" font-size="9.5" text-anchor="end">bfloat16: about 2^8</text>
+<line class="a" x1="503.29" y1="58" x2="503.29" y2="226" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="ta" x="506.29" y="53" font-size="9.5">about 2^11: float16</text>
+<text class="t" x="364" y="30" font-size="11.5" font-weight="700">rate 1.8e-05: 186,831 updates</text>
+<text class="ta" x="364" y="286" font-size="11" font-weight="700">lost in float16: 24.6%</text>
+<text class="t" x="364" y="302" font-size="11">lost in bfloat16: 86.2%</text>
+<text class="tm" x="16" y="324" font-size="10.5">An update under half the spacing of the numbers at its weight leaves it as it was. The paper&#x27;s 2048 is 2^11.</text>
+</svg>

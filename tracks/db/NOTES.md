@@ -1025,11 +1025,13 @@ Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
   t2 do" (same comment); with no usable index the inner table is rewound and
   scanned again per outer row (wherecode.c ~2635, `aStart[] = { OP_Rewind,
   OP_Last }`).
-- PostgreSQL hands up a combined tuple, as this engine does.
-  src/backend/executor/nodeNestloop.c ExecNestLoop: for a new outer tuple
-  `econtext->ecxt_outertuple = outerTupleSlot;` then "now rescan the inner
-  plan" `ExecReScan(innerPlan);`, each inner tuple in `ecxt_innertuple`, the
-  quals tested over both, and the result `ExecProject(node->js.ps.ps_ProjInfo)`.
+- PostgreSQL hands up a combined tuple, but builds it only for a pair that
+  passes, and only of the values needed above (corrected by the 08.01 writer,
+  below). src/backend/executor/nodeNestloop.c ExecNestLoop: for a new outer
+  tuple `econtext->ecxt_outertuple = outerTupleSlot;` then "now rescan the
+  inner plan" `ExecReScan(innerPlan);`, each inner tuple in
+  `ecxt_innertuple`, the quals tested over the two slots, and the result
+  `ExecProject(node->js.ps.ps_ProjInfo)`.
 - Where conditions go: SQLite moves an inner join's ON into WHERE (select.c
   sqlite3ProcessJoin ~653, "Add the ON clause to the end of the WHERE clause,
   connected by an AND operator") and codes each term in the first loop where
@@ -1040,6 +1042,64 @@ Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
   pin it (whereLoopAddAll ~4974, "Add prerequisites to prevent reordering of
   FROM clause terms across CROSS joins and outer joins"). This engine's
   fixed order is the next lessons' question.
+
+Read and run for the lesson text (the 08.01 writer):
+
+- PostgreSQL REL_18_7 (scratchpad copy; configure.ac `AC_INIT([PostgreSQL],
+  [18.7], ...)`; the GitHub page of nodeNestloop.c at tag REL_18_7 shows the
+  same lines). nodeNestloop.c ExecNestLoop, lines 105-151: when
+  `nl_NeedNewOuter`, `outerTupleSlot = ExecProcNode(outerPlan);`,
+  `econtext->ecxt_outertuple = outerTupleSlot;`, then "now rescan the inner
+  plan" `ExecReScan(innerPlan);`. Lines 159-160: `innerTupleSlot =
+  ExecProcNode(innerPlan); econtext->ecxt_innertuple = innerTupleSlot;`.
+  Lines 213-240: `if (ExecQual(joinqual, econtext))` ... `if (otherqual ==
+  NULL || ExecQual(otherqual, econtext))` ... `return
+  ExecProject(node->js.ps.ps_ProjInfo);`. So the quals read two slots, and
+  only a passing pair is projected. How a qual names a slot: setrefs.c
+  set_join_references (2324), "Modify the target list and quals of a join
+  node to reference its subplans, by setting the varnos to OUTER_VAR or
+  INNER_VAR and setting attno values to the result domain number of either
+  the corresponding outer or inner join tuple item"; primnodes.h's Var
+  comment: "At the end of planning, Var nodes appearing in upper-level plan
+  nodes are reassigned to point to the outputs of their subplans". What the
+  projection holds: pathnodes.h RelOptInfo, "reltarget - Default Path output
+  tlist for this rel; normally contains Var and PlaceHolderVar nodes for the
+  values we need to output from this relation."
+- SQLite 3.54.1: whereInt.h above struct WhereLoop: each WhereLoop is
+  "describing a potential way of implementing that FROM-clause term";
+  where.c ~1075-1110 (constructAutomaticIndex): the automatic index is
+  covering, key = the equality columns, then `extraCols = pSrc->colUsed &
+  ...`, then the rowid. expr.c sqlite3ExprCodeGetColumnOfTable (4526):
+  `sqlite3VdbeAddOp3(v, OP_Column, iTabCur, x, regOut);`.
+- sqlite3 3.54.1 on the lesson's shop.db (customers and orders only):
+
+```
+EXPLAIN QUERY PLAN SELECT c.name, o.id, o.total FROM customers c JOIN orders o ON o.customer_id = c.id;
+QUERY PLAN
+|--SCAN o
+`--SEARCH c USING INTEGER PRIMARY KEY (rowid=?)
+(rows: Ada|10|30 Chen|11|15 Ada|12|50 Brook|13|20 Chen|14|5; ./db: Ada 10, Ada 12, Brook 13, Chen 11, Chen 14)
+EXPLAIN QUERY PLAN SELECT c.name, o.id, o.total FROM customers c CROSS JOIN orders o ON o.customer_id = c.id;
+QUERY PLAN
+|--SCAN c
+|--BLOOM FILTER ON o (customer_id=?)
+`--SEARCH o USING AUTOMATIC COVERING INDEX (customer_id=?)
+(rows: Ada|10|30 Ada|12|50 Brook|13|20 Chen|14|5 Chen|11|15: Chen's by total, the index's key order)
+EXPLAIN QUERY PLAN SELECT a.name, c.name, o.id FROM customers a JOIN customers c ON c.city = a.city JOIN orders o ON o.customer_id = c.id WHERE a.name = 'Ada' AND o.total > 10;
+QUERY PLAN
+|--SCAN o
+|--SEARCH c USING INTEGER PRIMARY KEY (rowid=?)
+|--BLOOM FILTER ON a (name=? AND city=?)
+`--SEARCH a USING AUTOMATIC PARTIAL COVERING INDEX (name=? AND city=?)
+```
+
+- Break it 1 again, on the project as `./learn files db --at 08.01` writes
+  it: ASan build (`EXTRA_CFLAGS="-fsanitize=address,undefined
+  -fno-omit-frame-pointer -g"`), DB_CACHE_PAGES=2, the same p and q: 256
+  rows, then "heap-use-after-free ... READ of size 1 ... located 4031 bytes
+  inside of 4152-byte region" (a Page struct and its 4096-byte page), exit
+  134; on this macOS build the inner frames were not symbolized. The plain
+  build: 900 rows, byte for byte the reference's.
 
 ### 08.06 Subqueries: a query inside a query
 
@@ -1564,6 +1624,41 @@ section C, has the quoted lines for most):
 - A one-row lookup through a unique index: sqlite3 marks it WHERE_ONEROW
   (where.c, whereLoopAddBtreeIndex) and uses it to drop a sort; EXPLAIN
   QUERY PLAN prints the same line as for any index.
+
+Read for the lesson's Decide the boundary (written after the code):
+
+- SQLite 3.54.1: sqlite3Insert calls sqlite3GenerateConstraintChecks
+  (insert.c 1565) and only then sqlite3CompleteInsertion (1581); update.c
+  does the same (1043, 1109). One writer: wal.c 3783 "There can only be a
+  single writer active at a time."; os.h 86, a RESERVED lock is held by a
+  single process at a time.
+- PostgreSQL REL_18_7, src/backend/access/nbtree/nbtinsert.c (fetched from
+  the tag on GitHub): _bt_doinsert (102) is called with the heap tuple
+  already stored ("By here, itup is filled in, including the TID.", 82;
+  executor/nodeModifyTable.c ExecInsert calls table_tuple_insert at 1233,
+  then ExecInsertIndexTuples at 1239). A key with any NULL skips the check
+  (115-137: "core code considers NULL unequal to every value, including
+  NULL"). _bt_search_insert returns the first leaf the key could be on,
+  write-locked (162-167); _bt_check_unique runs under that lock, which is
+  held until the insert: "only one would-be inserter can be making the
+  check at one time" (187-196). _bt_check_unique (408) walks the equal
+  entries; for each it checks the heap with a dirty snapshot
+  (table_index_fetch_tuple_check, 560), so entries of dead versions are not
+  conflicts; an in-progress inserter or deleter is returned as xwait
+  (586-597), and _bt_doinsert releases the page, calls XactLockTableWait
+  and starts the search over (213-232); a live duplicate is ereport ERROR
+  "duplicate key value violates unique constraint" (666-673). Several
+  entries with one key in a unique index are normal there (versions from
+  UPDATEs: nbtree/README, "Deduplication in unique indexes"). Immediate
+  unique indexes pass UNIQUE_CHECK_YES, deferrable ones UNIQUE_CHECK_PARTIAL
+  (executor/execIndexing.c 431-438).
+- SQLite's file format page (fileformat2.html, 2.6) says N in
+  sqlite_autoindex_TABLE_N increases "with each constraint seen"; the
+  source and the runs say a constraint that makes no index (the INTEGER
+  PRIMARY KEY, a repeat) takes no number. users(id INTEGER PRIMARY KEY,
+  email TEXT UNIQUE, name TEXT) gets sqlite_autoindex_users_1.
+- In a terminal, Homebrew sqlite3 3.54.1 prints query results in box mode;
+  a transcript needs `sqlite3 -list` (errors are unaffected).
 
 Known differences from sqlite3:
 
