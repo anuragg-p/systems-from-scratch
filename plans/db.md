@@ -65,7 +65,8 @@ crash. Judged with real benchmarks against sqlite3 on the same machine.
 Built one at a time once the core engine is in, because they share files.
 Each gets build regions, internal tests and its own benchmark.
 
-08 More SQL (being built, 2026-11-25; see "Module 08" below)
+08 More SQL (built 2026-11-25: code, tests, lessons and art on master;
+   see "Module 08" below)
   08.01 Two tables in one query: the nested loop join
   08.02 LEFT JOIN: the row with no match
   08.03 An index for the inner loop
@@ -92,7 +93,30 @@ Not started, in the order proposed to the owner on 2026-11-25:
 Order changed from the first plan (server first): a server on an engine
 that cannot join two tables shows sockets, not a database.
 
-## Module 08 (More SQL): how it is being built
+## Module 08 as built (tracks/db/NOTES.md has each lesson's block)
+
+- Where the code left the design, each time to do what sqlite3 does: the
+  lookup's affinity test is sqlite3IndexAffinityOk itself; a HAVING term
+  that reads only GROUP BY terms moves into WHERE; GROUP BY aliases
+  resolve to table columns first; the GROUP BY sort takes ORDER BY's
+  directions; a condition holding a subquery is checked where the tables
+  it reads are in the row; an aggregate that names only outer columns is
+  refused by name (a known difference).
+- Tests on master: 34 lesson tests; 26 sqllogictest scripts kept (150,166
+  records run, and 5,244,452 over the whole corpus, all passing; select5
+  left out, its many-table joins are slow in the order written); the
+  fuzzer at 100,000 cases with every feature and 20,000 on a sanitizer
+  build with a two-page cache; ./learn verify on all seven lessons.
+- What the parallel build cost: subqueries built beside joins and
+  aggregates passed alone and failed together (195 of 4000 fuzz cases,
+  then 134), found only by the fuzzer; and figures drawn beside the text
+  drifted from it (other data, another ON order), found only by the
+  outside readers. Next module: draw a lesson's figures after its text,
+  and run the fuzzer on every merge of two code branches.
+- Left for the planner module: join order, pushing work down, SQLite's
+  automatic index, a hash join.
+
+## Module 08 (More SQL): how it was built
 
 - Design by Fable, from SQLite 3.54.1's and PostgreSQL 18's source (read
   at the tags, with real sqlite3 runs); code, lessons and art by Opus
