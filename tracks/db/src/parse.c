@@ -720,6 +720,67 @@ static int skip_clause(Parser *ps)
     return 0;
 }
 
+// @from 08.07
+/* Records a UNIQUE or PRIMARY KEY constraint on the columns names[0..n) of
+ * CREATE TABLE s. They are kept in the order they are written, column
+ * constraints and table constraints mixed, because sqlite3 numbers their
+ * indexes in that order. A second PRIMARY KEY is an error, as in sqlite3.
+ * Returns 0, or -1 with the error set. */
+static int add_unique(Parser *ps, Stmt *s, const char **names, int n, int primary_key, int column, int desc)
+{
+    if (primary_key)
+        for (int i = 0; i < s->nuniques; i++)
+            if (s->uniques[i].primary_key)
+                return err("table \"%s\" has more than one primary key", s->table);
+    if (n > 8)
+        s->unsupported = "a UNIQUE or PRIMARY KEY constraint on more than 8 columns";
+    Unique *u = arena_alloc(ps->arena, (size_t)(s->nuniques + 1) * sizeof *u);
+    if (s->nuniques)
+        memcpy(u, s->uniques, (size_t)s->nuniques * sizeof *u);
+    u[s->nuniques].names = arena_alloc(ps->arena, (size_t)n * sizeof(char *));
+    memcpy(u[s->nuniques].names, names, (size_t)n * sizeof(char *));
+    u[s->nuniques].nnames = n;
+    u[s->nuniques].primary_key = primary_key;
+    u[s->nuniques].column = column;
+    u[s->nuniques].desc = desc;
+    s->uniques = u;
+    s->nuniques++;
+    return 0;
+}
+
+/* A table constraint's columns, ( name [COLLATE c] [ASC|DESC], ... ), as a
+ * UNIQUE or PRIMARY KEY constraint. A COLLATE makes the table one this
+ * engine cannot write: its index would order text another way. Returns 0 or
+ * -1 with the error set. */
+static int parse_unique(Parser *ps, Stmt *s, int primary_key)
+{
+    const char *names[256];
+    int n = 0, desc = 0;
+    if (!expect(ps, TK_LP))
+        return -1;
+    do {
+        if (n == 256)
+            return err("too many columns");
+        if (!(names[n++] = parse_name(ps)))
+            return -1;
+        if (accept(ps, TK_COLLATE)) {
+            s->unsupported = "COLLATE";
+            if (!parse_name(ps))
+                return -1;
+        }
+        if (accept(ps, TK_DESC))
+            desc = 1;
+        else
+            accept(ps, TK_ASC);
+    } while (accept(ps, TK_COMMA));
+    if (accept(ps, TK_AUTOINCREMENT))
+        s->unsupported = "AUTOINCREMENT";
+    if (!expect(ps, TK_RP))
+        return -1;
+    return add_unique(ps, s, names, n, primary_key, 0, desc);
+}
+// @end
+
 /* One column of CREATE TABLE: name, declared type, then constraints in
  * any order. Constraints that this engine cannot enforce are parsed and
  * noted in s->unsupported, which makes the table read-only. */
@@ -754,6 +815,10 @@ static int parse_column_def(Parser *ps, Stmt *s, ColumnDef *d)
             if (!expect(ps, TK_KEY))
                 return -1;
             d->primary_key = 1;
+            // @from 08.07
+            if (add_unique(ps, s, &d->name, 1, 1, 1, at(ps, TK_DESC)) < 0)
+                return -1;
+            // @end
             if (accept(ps, TK_DESC))
                 s->unsupported = "PRIMARY KEY DESC";
             accept(ps, TK_ASC);
@@ -766,7 +831,12 @@ static int parse_column_def(Parser *ps, Stmt *s, ColumnDef *d)
         } else if (accept(ps, TK_NULL)) {
             /* allowed, means nothing */
         } else if (accept(ps, TK_UNIQUE)) {
-            s->unsupported = "UNIQUE";
+            // @from 08.07
+            if (add_unique(ps, s, &d->name, 1, 0, 1, 0) < 0)
+                return -1;
+            // @else
+            // s->unsupported = "UNIQUE";
+            // @end
         } else if (accept(ps, TK_CHECK)) {
             s->unsupported = "CHECK";
             if (skip_group(ps) < 0)
@@ -847,21 +917,31 @@ static int parse_create(Parser *ps, Stmt **out)
             if (accept(ps, TK_CONSTRAINT) && !parse_name(ps))
                 return -1;
             if (accept(ps, TK_PRIMARY)) {
-                const char **names;
-                int nn;
-                if (!expect(ps, TK_KEY) || parse_name_list(ps, &names, &nn) < 0)
+                // @from 08.07
+                if (!expect(ps, TK_KEY) || parse_unique(ps, s, 1) < 0)
                     return -1;
-                if (nn != 1) {
-                    s->unsupported = "a PRIMARY KEY of several columns";
-                } else {
-                    for (int i = 0; i < n; i++)
-                        if (strcasecmp(defs[i].name, names[0]) == 0)
-                            defs[i].primary_key = 1;
-                }
+                // @else
+                // const char **names;
+                // int nn;
+                // if (!expect(ps, TK_KEY) || parse_name_list(ps, &names, &nn) < 0)
+                //     return -1;
+                // if (nn != 1) {
+                //     s->unsupported = "a PRIMARY KEY of several columns";
+                // } else {
+                //     for (int i = 0; i < n; i++)
+                //         if (strcasecmp(defs[i].name, names[0]) == 0)
+                //             defs[i].primary_key = 1;
+                // }
+                // @end
             } else if (accept(ps, TK_UNIQUE)) {
-                s->unsupported = "UNIQUE";
-                if (skip_group(ps) < 0)
+                // @from 08.07
+                if (parse_unique(ps, s, 0) < 0)
                     return -1;
+                // @else
+                // s->unsupported = "UNIQUE";
+                // if (skip_group(ps) < 0)
+                //     return -1;
+                // @end
             } else if (accept(ps, TK_CHECK)) {
                 s->unsupported = "CHECK";
                 if (skip_group(ps) < 0)
@@ -877,18 +957,21 @@ static int parse_create(Parser *ps, Stmt **out)
     close:
         if (!expect(ps, TK_RP))
             return -1;
-        /* Only a column declared exactly INTEGER can be the primary key:
-         * it becomes the rowid. sqlite3 backs any other primary key with
-         * an automatic index, which this engine does not keep. */
-        int npk = 0;
-        for (int i = 0; i < n; i++) {
-            if (!defs[i].primary_key)
-                continue;
-            if (++npk > 1)
-                s->unsupported = "a PRIMARY KEY of several columns";
-            else if (strcasecmp(defs[i].type, "INTEGER") != 0)
-                s->unsupported = "a PRIMARY KEY that is not INTEGER PRIMARY KEY";
-        }
+        // @from 08.07
+        // @else
+        // /* Only a column declared exactly INTEGER can be the primary key:
+        //  * it becomes the rowid. sqlite3 backs any other primary key with
+        //  * an automatic index, which this engine does not keep. */
+        // int npk = 0;
+        // for (int i = 0; i < n; i++) {
+        //     if (!defs[i].primary_key)
+        //         continue;
+        //     if (++npk > 1)
+        //         s->unsupported = "a PRIMARY KEY of several columns";
+        //     else if (strcasecmp(defs[i].type, "INTEGER") != 0)
+        //         s->unsupported = "a PRIMARY KEY that is not INTEGER PRIMARY KEY";
+        // }
+        // @end
         if (accept(ps, TK_WITHOUT)) {
             s->unsupported = "WITHOUT ROWID";
             if (!parse_name(ps))
@@ -899,6 +982,24 @@ static int parse_create(Parser *ps, Stmt **out)
         s->defs = arena_alloc(ps->arena, (size_t)n * sizeof(ColumnDef));
         memcpy(s->defs, defs, (size_t)n * sizeof(ColumnDef));
         s->ndefs = n;
+        // @from 08.07
+        /* A constraint names columns of this table. Only the INTEGER PRIMARY
+         * KEY may say DESC (it has no index): any other would need an index
+         * kept in descending order, which this engine does not keep. */
+        for (int i = 0; i < s->nuniques; i++) {
+            Unique *u = &s->uniques[i];
+            for (int k = 0; k < u->nnames; k++) {
+                int found = 0;
+                for (int c = 0; c < n; c++)
+                    if (strcasecmp(defs[c].name, u->names[k]) == 0)
+                        found = 1;
+                if (!found)
+                    return err("no such column: %s", u->names[k]);
+            }
+            if (u->desc && !u->column && rowid_constraint(s, u) < 0)
+                s->unsupported = "DESC index columns";
+        }
+        // @end
     } else {
         if (!(s->name = parse_name(ps)) || !expect(ps, TK_ON) || !(s->table = parse_name(ps)))
             return -1;
@@ -932,8 +1033,11 @@ static int parse_create(Parser *ps, Stmt **out)
             if (!parse_expr(ps))
                 return -1;
         }
-        if (unique)
-            s->unsupported = "UNIQUE indexes";
+        // @from 08.07
+        // @else
+        // if (unique)
+        //     s->unsupported = "UNIQUE indexes";
+        // @end
         s->names = arena_alloc(ps->arena, (size_t)(n + 1) * sizeof(char *));
         memcpy(s->names, names, (size_t)n * sizeof(char *));
         s->nnames = n;
