@@ -1041,7 +1041,383 @@ Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
   FROM clause terms across CROSS joins and outer joins"). This engine's
   fixed order is the next lessons' question.
 
-### 08.07 UNIQUE: a constraint is an index lookup
+### 08.02 LEFT JOIN: the row with no match
+
+Region: src/exec.c `left_join` "the row with no match" (a function of its
+own, which join_next calls: regions cannot nest, and join_next's loop is
+08.01's region). Also added (@from 08.02): FromItem.left; Op.leftjoin, on,
+matched (db.h); LEFT [OUTER] JOIN read by join_type (returns 1) and set on
+the next item in parse_from (parse.c); in join_next, matched reset for each
+outer row and the two calls of left_join; op_join makes a LEFT item's
+operator "Left join on (...)" with the item's ON (exec.c); in plan_select a
+LEFT JOIN's ON is not split into the filter terms, and "ON clause references
+tables to its right"; " LEFT-JOIN" in explain_join_plan (plan.c).
+
+Before (08.02 cut out): inner joins work; a LEFT JOIN parses and plans and
+stops when its inner side first runs out.
+
+```
+$ ./db shop.db "SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id;"
+db: 08.02: the row with no match not written yet          (exit 3)
+```
+
+(At 08.01 the same statement is `Error: LEFT JOIN is not supported`.)
+
+After (shop data set, no index):
+
+```
+SELECT c.name, o.id, o.total FROM customers c LEFT JOIN orders o ON o.customer_id = c.id ORDER BY c.id, o.id;
+Ada|10|30
+Ada|12|50
+Brook|13|20
+Chen|11|15
+Chen|14|5
+Dee||
+SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.total > 20 ORDER BY c.id, o.id;
+Ada|10
+Ada|12
+Brook|
+Chen|
+Dee|
+SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE o.total > 20 ORDER BY c.id, o.id;
+Ada|10
+Ada|12
+SELECT c.name FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE o.id IS NULL;
+Dee
+SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND c.city = 'London' ORDER BY c.id, o.id;
+Ada|10
+Ada|12
+Brook|
+Chen|11
+Chen|14
+Dee|
+SELECT o.id, c.name FROM orders o LEFT JOIN customers c ON c.id = o.customer_id;
+10|Ada
+11|Chen
+12|Ada
+13|Brook
+14|Chen
+15|
+EXPLAIN SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id AND o.total > 20 WHERE c.city = 'London' AND o.id IS NULL;
+Filter (o.id IS NULL)
+  Left join on ((o.customer_id = c.id) AND (o.total > 20))
+    Filter (c.city = 'London')
+      Scan customers AS c
+    Scan orders AS o
+EXPLAIN QUERY PLAN SELECT * FROM customers c LEFT JOIN orders o ON o.customer_id = c.id;
+QUERY PLAN
+|--SCAN c
+`--SCAN o LEFT-JOIN
+SELECT * FROM customers c LEFT JOIN orders o ON o.customer_id = x.id JOIN customers x;
+Error: ON clause references tables to its right
+SELECT * FROM customers c RIGHT JOIN orders o ON o.customer_id = c.id;
+Error: RIGHT JOIN is not supported
+```
+
+Facts worth knowing for the text:
+
+- Where each condition is checked, the whole lesson: a LEFT JOIN's own ON
+  is evaluated inside the join, on each pair, and only says whether the
+  pair is a match; it never moves to a Filter. WHERE terms and an inner
+  join's ON keep 08.01's rule (a Filter right above the operator that brings
+  the last table they name), so they see the rows a LEFT join hands up, the
+  NULL row too. Hence `AND o.total > 20` in ON keeps Brook, Chen and Dee
+  with NULLs, and the same term in WHERE drops them (`NULL > 20` is NULL).
+  A term on the outer table alone behaves the same way: in ON it only stops
+  matches (`c.city = 'London'` in ON: Brook has no orders matched), in WHERE
+  it drops outer rows before the join (EXPLAIN shows it under the Left join).
+- The NULL row: once the inner side runs out for an outer row that matched
+  nothing, every slot of the inner table, its rowid slot too, is set to NULL
+  (memset: V_NULL is 0) and the row goes up once. `o.rowid` and `typeof(o.id)`
+  are NULL and 'null' on it, as in sqlite3. `WHERE o.id IS NULL` is the way
+  to ask for "customers with no orders" (an anti-join).
+- An inner join's ON that names a LEFT JOIN's table is checked above that
+  join, on the NULL rows too, even when it is written before the LEFT JOIN
+  (`a JOIN b ON o.id IS NULL LEFT JOIN orders o ...`, allowed in sqlite3).
+  A LEFT JOIN's ON may not name a table to its right: "ON clause references
+  tables to its right" (checked after names are bound, as sqlite3 does: a
+  bad name in the same statement is reported first).
+- LEFT, LEFT OUTER, OUTER LEFT, LEFT LEFT, LEFT OUTER OUTER all mean LEFT
+  JOIN (sqlite3JoinType combines the words as bits); LEFT INNER and LEFT
+  CROSS are "unknown join type". A LEFT JOIN with no ON pairs every row,
+  and an empty right table gives each left row once, NULL.
+- Measured on the data set: no cost of its own beyond 08.01's loop; the
+  flag is one int per Join.
+
+Break it (verified):
+
+1. In plan_select add the LEFT JOIN's ON to the filter terms like an inner
+   one (`if (1)` in place of `if (!sc->from[k].left)`): the ON then also
+   runs in a Filter above the Left join, on the NULL row, where it is NULL.
+   The LEFT JOIN of the data set prints Ada 10, Ada 12, Brook 13, Chen 11,
+   Chen 14 and no Dee: an inner join. EXPLAIN shows `Filter (o.customer_id
+   = c.id)` over `Left join on (o.customer_id = c.id)`.
+2. In left_join delete `op->matched = 1;`: no outer row is ever "matched",
+   so every one also gets its NULL row: `Ada|`, `Ada|10`, `Ada|12`,
+   `Brook|`, `Brook|13`, ... `Dee|`.
+3. In join_next delete `op->matched = 0;` (the reset for a new outer row):
+   after Ada's first match nothing is ever NULL-filled again. The data set
+   prints no Dee, and `orders o LEFT JOIN customers c ON c.id =
+   o.customer_id` loses order 15.
+
+Known differences from sqlite3:
+
+- Row order with no ORDER BY: sqlite3 keeps a LEFT JOIN in the order
+  written, but it builds automatic indexes (A2) and turns a LEFT JOIN whose
+  WHERE rejects the NULL row into an inner join, which it may reorder
+  (select.c ~7889, "OUTER JOIN strength reduction"). With `PRAGMA
+  automatic_index=OFF` the order is the same (the test checks it).
+- sqlite3 drops a LEFT JOIN table that is never read and matches at most
+  one row (where.c whereOmitNoopJoin); EXPLAIN QUERY PLAN then lists one
+  table fewer. ./db always reads it.
+- RIGHT and FULL JOIN (sqlite3 3.54.1 has them: whereInt.h WhereRightJoin,
+  wherecode.c sqlite3WhereRightJoinLoop) and NATURAL/USING are refused by
+  name.
+
+Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
+
+- SQLite does the same thing with a flag in a register. wherecode.c
+  sqlite3WhereCodeOneLoopStart: `OP_Integer, 0, pLevel->iLeftJoin` "init
+  LEFT JOIN match flag" (1597) before the inner loop; after the ON terms
+  pass, `OP_Integer, 1` "record LEFT JOIN hit" (2833); then "WHERE clause
+  constraints must be deferred until after outer join row elimination has
+  completed, since WHERE clause constraints apply to the results of the
+  OUTER JOIN" (2854). where.c sqlite3WhereEnd: when the flag is still 0,
+  `OP_NullRow` on the table's cursor (7711) and a jump back to just after
+  the "hit", so WHERE and the output run once more on a row of NULLs.
+  EXPLAIN QUERY PLAN's " LEFT-JOIN": wherecode.c 212. The error: select.c
+  selectCheckOnClausesExpr (7532), "%s references tables to its right"
+  (7579), run from resolve.c (2128) after the names are resolved.
+- PostgreSQL, nodeNestloop.c ExecNestLoop: when the inner side runs out,
+  `if (!node->nl_MatchedOuter && (node->js.jointype == JOIN_LEFT || ...))`
+  "Generate a fake join tuple with nulls for the inner tuple, and return it
+  if it passes the non-join quals" (`ecxt_innertuple =
+  node->nl_NullInnerTupleSlot`); and "Only the joinquals determine
+  MatchedOuter status, but all quals must pass to actually return the
+  tuple." Its joinquals are the ON, its "otherqual" the WHERE terms pushed
+  into the join: the same split as here, kept on one node.
+
+### 08.03 An index for the inner loop
+
+Regions: src/plan.c `choose_join_access` "choose how to read the inner
+table"; src/exec.c `scan_rebind` "start the inner side for this outer row".
+Also added (@from 08.03): key_item, join_key, index_affinity_ok (plan.c,
+before choose_join_access); in plan_select's join loop, the call, the scan
+made from a copy of the Access with no key (op_scan must not evaluate it)
+and the real Access stored in the scan; join_next calls scan_rebind where
+08.01 had `op->inner->started = 0;`; the two prototypes (db.h).
+scan_rebind returns int, not void as the design had it: a key can fail to
+evaluate (`abs(-9223372036854775808)` is "integer overflow", in sqlite3
+too), and the error must stop the statement.
+
+Before (08.03 cut out): every join stops in the planner; one table is the
+core's plan.
+
+```
+$ ./db shop.db "SELECT c.name, o.id FROM customers c JOIN orders o ON o.customer_id = c.id;"
+db: 08.03: choose how to read the inner table not written yet          (exit 3)
+$ ./db shop.db "SELECT * FROM customers WHERE id = 2;"
+2|Brook|Paris
+```
+
+After (shop data set):
+
+```
+EXPLAIN QUERY PLAN SELECT c.name, o.id, o.total FROM customers c JOIN orders o ON o.customer_id = c.id;
+QUERY PLAN
+|--SCAN c
+`--SCAN o
+CREATE INDEX orders_customer ON orders(customer_id);
+EXPLAIN SELECT c.name, o.id, o.total FROM customers c JOIN orders o ON o.customer_id = c.id;
+Filter (o.customer_id = c.id)
+  Join
+    Scan customers AS c
+    Index lookup orders using orders_customer (customer_id = ?)
+EXPLAIN QUERY PLAN SELECT c.name, o.id, o.total FROM customers c JOIN orders o ON o.customer_id = c.id;
+QUERY PLAN
+|--SCAN c
+`--SEARCH o USING INDEX orders_customer (customer_id=?)
+SELECT c.name, o.id, o.total FROM customers c JOIN orders o ON o.customer_id = c.id;
+Ada|10|30
+Ada|12|50
+Brook|13|20
+Chen|11|15
+Chen|14|5
+EXPLAIN SELECT o.id, c.name FROM orders o JOIN customers c ON c.id = o.customer_id;
+Filter (c.id = o.customer_id)
+  Join
+    Scan orders AS o
+    Rowid lookup customers rowid = ?
+EXPLAIN QUERY PLAN SELECT o.id, c.name FROM orders o JOIN customers c ON c.id = o.customer_id;
+QUERY PLAN
+|--SCAN o
+`--SEARCH c USING INTEGER PRIMARY KEY (rowid=?)
+EXPLAIN QUERY PLAN SELECT * FROM customers c LEFT JOIN orders o ON o.customer_id = c.id;
+QUERY PLAN
+|--SCAN c
+`--SEARCH o USING INDEX orders_customer (customer_id=?) LEFT-JOIN
+EXPLAIN QUERY PLAN SELECT * FROM customers c LEFT JOIN orders o ON 1 WHERE o.customer_id = c.id;
+QUERY PLAN
+|--SCAN c
+`--SCAN o LEFT-JOIN
+EXPLAIN QUERY PLAN SELECT * FROM customers c JOIN orders o ON o.customer_id + 0 = c.id;
+QUERY PLAN
+|--SCAN c
+`--SCAN o
+EXPLAIN QUERY PLAN SELECT * FROM customers c JOIN orders o ON o.customer_id = c.id * 1;
+QUERY PLAN
+|--SCAN c
+`--SEARCH o USING INDEX orders_customer (customer_id=?)
+```
+
+The measurement (the lesson's and the cost figure's numbers). shop.py, as
+the reader writes it:
+
+```
+print('CREATE TABLE customers(id INTEGER PRIMARY KEY, name TEXT, city TEXT);')
+print('CREATE TABLE orders(id INTEGER PRIMARY KEY, customer_id INTEGER, total INTEGER);')
+print('BEGIN;')
+cities = ['London', 'Paris', 'Oslo', 'Rome', 'Lima']
+for i in range(1, 1001): print(f"INSERT INTO customers VALUES({i}, 'customer {i}', '{cities[i % 5]}');")
+for i in range(1, 20001): print(f"INSERT INTO orders VALUES({i}, {i * 7919 % 1000 + 1}, {i % 100});")
+print('COMMIT;')
+```
+
+69 pages (134 with the index). The join `SELECT c.name, o.id, o.total ...`
+(20000 rows, to /dev/null), DB_STATS=1, best of three, Apple M4 Pro.
+"Page requests" is cache hits + misses, every page the B-tree code asked
+for; "pages read" is what came from the file, which with the default cache
+(500 pages) is each page once whatever the plan:
+
+```
+                                                     time     page requests   pages read (cache 500 / 2)
+customers c JOIN orders o, no index (nested loop)   0.873 s   60,239,036      69 / 4678
+customers c JOIN orders o, orders_customer index    0.014 s      147,241     134 / 4872
+orders o JOIN customers c (rowid lookup)            0.013 s      200,724      69 /  674
+```
+
+The nested loop asks for every page of orders once per customer (1000 x
+about 60 pages); the index asks for a path down the index and one down
+the table per order; the other order asks for a path down customers (2
+levels) per order and needs no index at all. With DB_CACHE_PAGES=2 the
+file reads mostly measure the cache, which only shrinks every 256 output
+rows (pager_shrink in the statement loop), so the lesson should show page
+requests. sqlite3 on the same files: 0.012 s, 0.013 s and 0.011 s (it
+builds an automatic index or reorders); forced into the written nested loop
+(automatic_index=OFF, CROSS JOIN, `o.customer_id + 0`) 0.42 s.
+
+Facts worth knowing for the text:
+
+- Which terms may give a key: for item k, a term `column of k = key`
+  (either way round) whose key reads only items before k, or nothing (a
+  constant); among item k's own ON if it is a LEFT JOIN, else among the
+  WHERE and inner ON terms (any of them: `a JOIN b ON 1 JOIN c ON b.x =
+  a.y` looks b up by c's ON). A LEFT JOIN table cannot take a key from WHERE
+  (EXPLAIN QUERY PLAN above): narrowing its rows by WHERE would change what
+  matches. Rowid (or the INTEGER PRIMARY KEY) first, then each index by its
+  first column, else a scan. A key may be any expression (`c.id * 1`,
+  `coalesce(o.customer_id, 4)`, `c.rowid`: table 0's rowid is in the join's
+  row by the time the key is evaluated); one that reads the inner table
+  itself (`o.customer_id + 0 = c.id` puts o on the key side) is not a key.
+- The term stays where it was (its Filter, or the LEFT JOIN's ON): a
+  rowid key 1.5 reads rowids 1 and 2 (rowid_bound rounds down and up) and
+  the Filter drops both. The lookup only narrows what is read (invariant 3).
+- The key is evaluated once per outer row, in scan_rebind, against the
+  join's row. An index key is turned into a record and `hi` is decoded back
+  out of that record, so neither points into the row arena: a Filter above
+  the join resets that arena whenever it drops a row, in the middle of the
+  inner loop. A NULL key reads nothing (`= NULL` is never true).
+- The affinity rule is sqlite3IndexAffinityOk (expr.c 395):
+  ```
+  int sqlite3IndexAffinityOk(const Expr *pExpr, char idx_affinity){
+    char aff = comparisonAffinity(pExpr);
+    if( aff<SQLITE_AFF_TEXT ){
+      return 1;
+    }
+    if( aff==SQLITE_AFF_TEXT ){
+      return idx_affinity==SQLITE_AFF_TEXT;
+    }
+    return sqlite3IsNumericAffinity(idx_affinity);
+  }
+  ```
+  comparisonAffinity (372) is sqlite3CompareAffinity (350) of the two sides:
+  two columns give NUMERIC if either is numeric, else BLOB; a column and a
+  non-column give the column's affinity. Worked out per pairing (X the
+  indexed column, Y the key): X INTEGER, REAL or NUMERIC: always (the key is
+  what gets converted); X TEXT or BLOB: unless Y is a column of numeric
+  affinity, for then the comparison converts X's stored values ('1', '1.0',
+  ' 1', '01' all equal 1), which no lookup of one key finds. That is
+  index_affinity_ok(), and the test checks EXPLAIN QUERY PLAN against
+  sqlite3 for all 6 x 6 pairings, three ways each.
+- Where it departs from the design: the design allowed a BLOB (none) column
+  only a key of no affinity. sqlite3 also SEARCHes a BLOB index with a TEXT
+  column's key (both columns, neither numeric: BLOB comparison affinity,
+  neither side converted), and so does ./db: such a lookup cannot lose a
+  row, and EXPLAIN QUERY PLAN agrees with sqlite3's.
+- The key gets the indexed column's affinity (as bound_value does for a
+  constant). sqlite3 applies the index's affinity too, except where the
+  comparison affinity is BLOB, when it applies none (wherecode.c
+  codeAllEqualityTerms 996-1000). They differ only for a TEXT index with a
+  BLOB column's key: ./db makes a number key text, sqlite3 keeps it a
+  number. Neither finds a row the term accepts, since a TEXT column holds
+  no numbers.
+- Looked-up rows come out in index order (key, then rowid), the same order
+  as a scan's for one key: so with no ORDER BY the rows of `customers c
+  JOIN orders o` come out in the same order with or without the index.
+
+Break it (verified):
+
+1. Make index_affinity_ok always return 1. `codes(k TEXT)` holding '1',
+   '1.0', ' 1', '01', '2' with an index, and `nums(n INTEGER)` holding 1
+   and 2: `SELECT n, what FROM nums JOIN codes ON codes.k = nums.n` gives 5
+   rows scanned (and in sqlite3), 2 looked up (`1|text 1`, `2|text 2`):
+   the lookup finds only the key '1', the comparison would have turned
+   '1.0', ' 1' and '01' into 1. EXPLAIN QUERY PLAN says SEARCH where
+   sqlite3 says SCAN. Nothing fails; rows are silently lost.
+2. In join_next put back 08.02's `op->inner->started = 0;` in place of
+   scan_rebind: the lookup is never given a key (op_scan was made with
+   none) and its `done` is never cleared. On shop.py's data the index join
+   prints 20 rows (customer 1's, from a walk of the whole index), not
+   20000, and the rowid one 1 row. Each outer row must restart the inner
+   side and give it its own key.
+
+Known differences from sqlite3:
+
+- Lookups only on `=` and only on an index's first column; sqlite3 also
+  uses IS, IN, ranges, several columns of one index, covering indexes
+  ("USING COVERING INDEX", no table read), and when no index fits it builds
+  an automatic one (EXPLAIN QUERY PLAN: AUTOMATIC COVERING INDEX, with a
+  BLOOM FILTER line). Compare plans with `PRAGMA automatic_index=OFF`,
+  CROSS JOIN and `SELECT *` (so no index covers the query).
+- Which of two fitting indexes: the first in the table's list here;
+  sqlite3 by cost.
+- sqllogictest select5.test (joins of up to 64 tables, all `a = b` terms
+  over INTEGER PRIMARY KEYs, written in an order the conditions do not
+  follow) with `--have join`: SELECT5-RESULT.
+
+Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
+
+- When no index fits, SQLite builds one for the query: where.c
+  constructAutomaticIndex (986), run once (`OP_Once`) inside the outer loop,
+  a covering index of the join columns, the other columns used and the
+  rowid, plus a Bloom filter. With no ANALYZE every table is guessed at
+  1,048,576 rows (build.c ~1374), so it does so even for a three-row table.
+  It has no hash join: the automatic index is its stand-in (the six cases of
+  wherecode.c sqlite3WhereCodeOneLoopStart; no "hash join" anywhere in
+  src/).
+- PostgreSQL has all three. nodeNestloop.c (with an index scan inside it,
+  as here), nodeHashjoin.c ("This is based on the 'hybrid hash join'
+  algorithm"; "the inner plan is used to build ... the hash table"; "If the
+  inner side tuples of a hash join do not fit in memory, the hash join can
+  be executed in multiple batches"), and nodeMergejoin.c ("routines
+  supporting merge joins", inputs sorted on the join key). The planner tries
+  them all: optimizer/path/joinpath.c add_paths_to_joinrel "consider all
+  possible paths that use the two component rels as outer and inner rel
+  ... Add these paths ... if they survive comparison with other paths"
+  (mergejoin, nestloop, hash: its steps 1-4). The choice: an index costs a
+  write on every INSERT and lives in the file; a hash table costs a pass
+  over the inner table on every query.
+
 
 Regions: src/schema.c `auto_indexes` "an automatic index for a
 constraint"; src/exec.c `unique_taken` "look before you write".
