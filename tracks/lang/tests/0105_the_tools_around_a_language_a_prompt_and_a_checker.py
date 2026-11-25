@@ -1,4 +1,4 @@
-"""01.05 The tools around a language: a prompt and a test runner
+"""01.05 The tools around a language: a prompt and a checker
 
 ./mote0 with no file is a prompt: "> " asks for a line and runs it; a while or an if holds
 the lines, asked for with ". ", until its end; names keep their values; an error is "line N:

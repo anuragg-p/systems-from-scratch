@@ -242,7 +242,7 @@ preprocessor, not yet a compiler). Bootstrapping, just-in-time compiling
 and microcode (Examples 1.15 to 1.18) are read, not built; the lesson says
 where each returns.
 
-**01.05 The tools around a language: a prompt and a test runner** (1.5,
+**01.05 The tools around a language: a prompt and a checker** (1.5,
 pages 24 to 25). Built: the prompt in `mote0.c` (`./mote0` with no file: a
 line at a time, a block held until its `end`, an error reported and the
 prompt kept), and `agree`. Run: a session at the prompt; `./agree`.

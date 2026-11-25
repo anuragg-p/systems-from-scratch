@@ -458,7 +458,7 @@ int main(int argc, char **argv) {
       file = argv[i];
   }
   // @from 01.05
-  if (!bad && !file) {
+  if (!bad && !file && !count) {   // --count is for a file's run
     prompt();
     return 0;
   }

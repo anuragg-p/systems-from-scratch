@@ -20,6 +20,6 @@ fi
 name=$(basename "$1" .mote)
 mkdir -p build
 "$here/mote2c" "$1" > "build/$name.c" || exit
-cc -O1 -fwrapv -I"$here" -c -o "build/$name.o" "build/$name.c" || exit
-cc -o "build/$name" "build/$name.o" "$here/rt.o" || exit
+${CC:-cc} -O1 -fwrapv -I"$here" -c -o "build/$name.o" "build/$name.c" || exit
+${CC:-cc} -o "build/$name" "build/$name.o" "$here/rt.o" || exit
 # @end

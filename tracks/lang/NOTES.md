@@ -321,7 +321,7 @@ $ ./mote0 wide.mote
 18000000126
 ```
 
-### 01.05 The tools around a language: a prompt and a test runner
+### 01.05 The tools around a language: a prompt and a checker
 
 - The prompt holds a block's lines until its end (it counts whiles and ifs against ends by their
   first word), then runs them with run(), the function a file's lines go through. An error
@@ -961,3 +961,13 @@ Found in the code:
   rebuilt by `make -s` (`make -B` was needed): this Mac's make appears to compare times to the
   second. A reader edits seconds after the build, and every Break it's `make -s` in the
   verifier's replays did rebuild.
+
+## After the lessons landed (Fable, 2026-11-25)
+
+- 01.05 is retitled "The tools around a language: a prompt and a checker": the
+  course's word check refuses "test runner" in learner-facing text, and a
+  lesson's heading must be its title. The lesson file and its test are renamed.
+- `./mote0 --count` with no file is now a usage error (status 2): the prompt
+  never printed a count.
+- `motec` runs `${CC:-cc}`, as the Makefile runs `$(CC)`: a computer whose C
+  compiler is not called `cc` sets `CC`.
