@@ -530,7 +530,7 @@ patches and all.
 <!-- map:start -->
 ### A SQL database in C, from scratch
 
-Track `db` - kind: database - 27 lessons - on the site: `./learn serve`, then /t/db
+Track `db` - kind: database - 27 lessons, +1 optional module - on the site: `./learn serve`, then /t/db
 
 
 **Module 00 - The workbench**
@@ -583,6 +583,19 @@ Track `db` - kind: database - 27 lessons - on the site: `./learn serve`, then /t
 - 07.01 [Reading the benchmark](tracks/db/lessons/07-fast/07.01-reading-the-benchmark.md) - lab
 - 07.02 [Where the time goes](tracks/db/lessons/07-fast/07.02-where-the-time-goes.md) - lab
 - 07.03 [One more optimisation, measured](tracks/db/lessons/07-fast/07.03-one-more-optimisation-measured.md) - with code
+
+**Extensions** - optional modules, each independent of the others, each built on the finished core
+
+
+**Module 08 - More SQL** (optional)
+
+- 08.01 [Two tables in one query: the nested loop join](tracks/db/lessons/08-more-sql/08.01-two-tables-in-one-query-the-nested-loop-join.md) - with code, decision boundary
+- 08.02 [LEFT JOIN: the row with no match](tracks/db/lessons/08-more-sql/08.02-left-join-the-row-with-no-match.md) - with code, decision boundary
+- 08.03 [An index for the inner loop](tracks/db/lessons/08-more-sql/08.03-an-index-for-the-inner-loop.md) - with code, decision boundary
+- 08.04 [Aggregates: one row from many](tracks/db/lessons/08-more-sql/08.04-aggregates-one-row-from-many.md) - with code, decision boundary
+- 08.05 [GROUP BY, HAVING and DISTINCT](tracks/db/lessons/08-more-sql/08.05-group-by-having-and-distinct.md) - with code, decision boundary
+- 08.06 [Subqueries: a query inside a query](tracks/db/lessons/08-more-sql/08.06-subqueries-a-query-inside-a-query.md) - with code, decision boundary
+- 08.07 [UNIQUE: a constraint is an index lookup](tracks/db/lessons/08-more-sql/08.07-unique-a-constraint-is-an-index-lookup.md) - with code, decision boundary
 
 ### Data structures and algorithms, by building the tools that use them
 
