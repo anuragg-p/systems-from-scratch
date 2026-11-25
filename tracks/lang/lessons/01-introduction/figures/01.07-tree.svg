@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 308" fill="none">
+<title>The parse tree of i := i - j</title>
+<defs><marker id="f0107b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0107b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0107b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<line class="s" x1="211" y1="41.25" x2="358" y2="72.75" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="358" y1="95.25" x2="456" y2="126.75" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="358" y1="95.25" x2="358" y2="249.5" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="358" y1="95.25" x2="260" y2="126.75" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="260" y1="203.25" x2="260" y2="249.5" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="456" y1="203.25" x2="456" y2="249.5" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="211" y1="41.25" x2="162" y2="249.5" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="260" y1="149.25" x2="260" y2="180.75" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="211" y1="41.25" x2="64" y2="249.5" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="456" y1="149.25" x2="456" y2="180.75" stroke-width="1.5" stroke-linecap="round"/>
+<rect class="s f" x="188" y="18.75" width="46" height="22.5" rx="11.25" stroke-width="1.5"/>
+<text class="t mono" x="211" y="34.5" font-size="12.5" font-weight="600" text-anchor="middle">stmt</text>
+<rect class="a af" x="49" y="249.5" width="30" height="29" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="64" y="269.4" font-size="15" font-weight="700" text-anchor="middle">i</text>
+<text class="tm" x="64" y="292.5" font-size="10.5" text-anchor="middle">name</text>
+<rect class="a af" x="145" y="249.5" width="34" height="29" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="162" y="269.4" font-size="15" font-weight="700" text-anchor="middle">:=</text>
+<text class="tm" x="162" y="292.5" font-size="10.5" text-anchor="middle">op</text>
+<rect class="s f" x="335" y="72.75" width="46" height="22.5" rx="11.25" stroke-width="1.5"/>
+<text class="t mono" x="358" y="88.5" font-size="12.5" font-weight="600" text-anchor="middle">expr</text>
+<rect class="s f" x="237" y="126.75" width="46" height="22.5" rx="11.25" stroke-width="1.5"/>
+<text class="t mono" x="260" y="142.5" font-size="12.5" font-weight="600" text-anchor="middle">term</text>
+<rect class="s f" x="229.5" y="180.75" width="61" height="22.5" rx="11.25" stroke-width="1.5"/>
+<text class="t mono" x="260" y="196.5" font-size="12.5" font-weight="600" text-anchor="middle">factor</text>
+<rect class="a af" x="245" y="249.5" width="30" height="29" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="260" y="269.4" font-size="15" font-weight="700" text-anchor="middle">i</text>
+<text class="tm" x="260" y="292.5" font-size="10.5" text-anchor="middle">name</text>
+<rect class="a af" x="343" y="249.5" width="30" height="29" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="358" y="269.4" font-size="15" font-weight="700" text-anchor="middle">-</text>
+<text class="tm" x="358" y="292.5" font-size="10.5" text-anchor="middle">op</text>
+<rect class="s f" x="433" y="126.75" width="46" height="22.5" rx="11.25" stroke-width="1.5"/>
+<text class="t mono" x="456" y="142.5" font-size="12.5" font-weight="600" text-anchor="middle">term</text>
+<rect class="s f" x="425.5" y="180.75" width="61" height="22.5" rx="11.25" stroke-width="1.5"/>
+<text class="t mono" x="456" y="196.5" font-size="12.5" font-weight="600" text-anchor="middle">factor</text>
+<rect class="a af" x="441" y="249.5" width="30" height="29" rx="5" stroke-width="1.5"/>
+<text class="ta mono" x="456" y="269.4" font-size="15" font-weight="700" text-anchor="middle">j</text>
+<text class="tm" x="456" y="292.5" font-size="10.5" text-anchor="middle">name</text>
+<text class="t" x="516" y="112" font-size="13" font-weight="700">6 rule nodes</text>
+<text class="tm" x="516" y="129" font-size="11.5">each says which</text>
+<text class="tm" x="516" y="144" font-size="11.5">rule was used</text>
+<text class="ta" x="516" y="260" font-size="13" font-weight="700">5 tokens</text>
+<text class="tm" x="516" y="277" font-size="11.5">the leaves,</text>
+<text class="tm" x="516" y="292" font-size="11.5">left to right</text>
+</svg>

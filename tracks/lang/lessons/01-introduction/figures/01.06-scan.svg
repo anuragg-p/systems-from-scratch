@@ -1,0 +1,301 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 302" fill="none">
+<title>The scanner on one line of gcd.mote</title>
+<defs><marker id="f0106b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0106b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0106b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="18" font-size="11.5">line 4 of gcd.mote, a character to a cell, with its column</text>
+<text class="tm mono" x="83" y="40" font-size="10.5" text-anchor="middle">1</text>
+<text class="tm mono" x="113" y="40" font-size="10.5" text-anchor="middle">2</text>
+<text class="tm mono" x="143" y="40" font-size="10.5" text-anchor="middle">3</text>
+<text class="tm mono" x="173" y="40" font-size="10.5" text-anchor="middle">4</text>
+<text class="tm mono" x="203" y="40" font-size="10.5" text-anchor="middle">5</text>
+<text class="tm mono" x="233" y="40" font-size="10.5" text-anchor="middle">6</text>
+<text class="tm mono" x="263" y="40" font-size="10.5" text-anchor="middle">7</text>
+<text class="tm mono" x="293" y="40" font-size="10.5" text-anchor="middle">8</text>
+<text class="tm mono" x="323" y="40" font-size="10.5" text-anchor="middle">9</text>
+<text class="tm mono" x="353" y="40" font-size="10.5" text-anchor="middle">10</text>
+<text class="tm mono" x="383" y="40" font-size="10.5" text-anchor="middle">11</text>
+<text class="tm mono" x="413" y="40" font-size="10.5" text-anchor="middle">12</text>
+<text class="tm mono" x="443" y="40" font-size="10.5" text-anchor="middle">13</text>
+<text class="tm mono" x="473" y="40" font-size="10.5" text-anchor="middle">14</text>
+<text class="tm mono" x="503" y="40" font-size="10.5" text-anchor="middle">15</text>
+<text class="tm mono" x="533" y="40" font-size="10.5" text-anchor="middle">16</text>
+<text class="tm" x="24" y="144" font-size="11.5">the tokens so far, as --tokens prints them</text>
+<text class="tm" x="420" y="144" font-size="11.5">where the scanner is</text>
+<g class="step"><title>w is a letter, so name() takes the whole word, while, and then finds it among the keywords: a keyword, at 4:1.</title>
+<rect class="a af" x="69.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="83" y="70" font-size="17" font-weight="700" text-anchor="middle">w</text>
+<rect class="a af" x="99.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="113" y="70" font-size="17" font-weight="700" text-anchor="middle">h</text>
+<rect class="a af" x="129.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="143" y="70" font-size="17" font-weight="700" text-anchor="middle">i</text>
+<rect class="a af" x="159.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="173" y="70" font-size="17" font-weight="700" text-anchor="middle">l</text>
+<rect class="a af" x="189.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="203" y="70" font-size="17" font-weight="700" text-anchor="middle">e</text>
+<rect class="m f" x="219.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<circle class="m" cx="233" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="m f" x="249.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="263" y="70" font-size="17" text-anchor="middle">i</text>
+<rect class="m f" x="279.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<circle class="m" cx="293" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="m f" x="309.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="323" y="70" font-size="17" text-anchor="middle">!</text>
+<rect class="m f" x="339.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="353" y="70" font-size="17" text-anchor="middle">=</text>
+<rect class="m f" x="369.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<circle class="m" cx="383" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="m f" x="399.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="413" y="70" font-size="17" text-anchor="middle">j</text>
+<rect class="m f" x="429.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<circle class="m" cx="443" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="m f" x="459.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="473" y="70" font-size="17" text-anchor="middle">d</text>
+<rect class="m f" x="489.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="503" y="70" font-size="17" text-anchor="middle">o</text>
+<rect class="m f" x="519.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<path class="m" d="M538.0 57.0 V66.0 H527.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M530.5 62.5 L527.0 66.0 L530.5 69.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M227.0 95.0 L233.0 88.0 L239.0 95.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="233" y="109" font-size="13" font-weight="700" text-anchor="middle">p</text>
+<text class="ta mono" x="24" y="166" font-size="13.5" font-weight="700">4:1 keyword while</text>
+<rect class="s f" x="420" y="154" width="196" height="52" rx="6" stroke-width="1.5"/>
+<text class="tm" x="436" y="174" font-size="12">line</text>
+<text class="t mono" x="476" y="174" font-size="14" font-weight="700">4</text>
+<text class="tm" x="516" y="174" font-size="12">col</text>
+<text class="t mono" x="548" y="174" font-size="14" font-weight="700">6</text>
+<text class="tm" x="436" y="195" font-size="11">line and col follow p</text>
+</g>
+<g class="step"><title>The space only keeps tokens apart: it is passed over. i is a word but not a keyword: a name, at 4:7.</title>
+<rect class="s fs" x="69.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="83" y="70" font-size="17" font-weight="600" text-anchor="middle">w</text>
+<rect class="s fs" x="99.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="113" y="70" font-size="17" font-weight="600" text-anchor="middle">h</text>
+<rect class="s fs" x="129.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="143" y="70" font-size="17" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="159.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="173" y="70" font-size="17" font-weight="600" text-anchor="middle">l</text>
+<rect class="s fs" x="189.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="203" y="70" font-size="17" font-weight="600" text-anchor="middle">e</text>
+<rect class="m f" x="219.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="233" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="a af" x="249.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="263" y="70" font-size="17" font-weight="700" text-anchor="middle">i</text>
+<rect class="m f" x="279.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<circle class="m" cx="293" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="m f" x="309.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="323" y="70" font-size="17" text-anchor="middle">!</text>
+<rect class="m f" x="339.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="353" y="70" font-size="17" text-anchor="middle">=</text>
+<rect class="m f" x="369.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<circle class="m" cx="383" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="m f" x="399.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="413" y="70" font-size="17" text-anchor="middle">j</text>
+<rect class="m f" x="429.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<circle class="m" cx="443" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="m f" x="459.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="473" y="70" font-size="17" text-anchor="middle">d</text>
+<rect class="m f" x="489.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="503" y="70" font-size="17" text-anchor="middle">o</text>
+<rect class="m f" x="519.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<path class="m" d="M538.0 57.0 V66.0 H527.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M530.5 62.5 L527.0 66.0 L530.5 69.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M287.0 95.0 L293.0 88.0 L299.0 95.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="293" y="109" font-size="13" font-weight="700" text-anchor="middle">p</text>
+<text class="t mono" x="24" y="166" font-size="13.5">4:1 keyword while</text>
+<text class="ta mono" x="24" y="188" font-size="13.5" font-weight="700">4:7 name i</text>
+<rect class="s f" x="420" y="154" width="196" height="52" rx="6" stroke-width="1.5"/>
+<text class="tm" x="436" y="174" font-size="12">line</text>
+<text class="t mono" x="476" y="174" font-size="14" font-weight="700">4</text>
+<text class="tm" x="516" y="174" font-size="12">col</text>
+<text class="t mono" x="548" y="174" font-size="14" font-weight="700">8</text>
+<text class="tm" x="436" y="195" font-size="11">line and col follow p</text>
+</g>
+<g class="step"><title>! is not a digit, a letter or _, so op() tries the operators, the two-character ones first: != is one token, at 4:9.</title>
+<rect class="s fs" x="69.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="83" y="70" font-size="17" font-weight="600" text-anchor="middle">w</text>
+<rect class="s fs" x="99.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="113" y="70" font-size="17" font-weight="600" text-anchor="middle">h</text>
+<rect class="s fs" x="129.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="143" y="70" font-size="17" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="159.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="173" y="70" font-size="17" font-weight="600" text-anchor="middle">l</text>
+<rect class="s fs" x="189.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="203" y="70" font-size="17" font-weight="600" text-anchor="middle">e</text>
+<rect class="m f" x="219.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="233" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="s fs" x="249.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="263" y="70" font-size="17" font-weight="600" text-anchor="middle">i</text>
+<rect class="m f" x="279.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="293" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="a af" x="309.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="323" y="70" font-size="17" font-weight="700" text-anchor="middle">!</text>
+<rect class="a af" x="339.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="353" y="70" font-size="17" font-weight="700" text-anchor="middle">=</text>
+<rect class="m f" x="369.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<circle class="m" cx="383" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="m f" x="399.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="413" y="70" font-size="17" text-anchor="middle">j</text>
+<rect class="m f" x="429.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<circle class="m" cx="443" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="m f" x="459.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="473" y="70" font-size="17" text-anchor="middle">d</text>
+<rect class="m f" x="489.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="503" y="70" font-size="17" text-anchor="middle">o</text>
+<rect class="m f" x="519.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<path class="m" d="M538.0 57.0 V66.0 H527.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M530.5 62.5 L527.0 66.0 L530.5 69.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M377.0 95.0 L383.0 88.0 L389.0 95.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="383" y="109" font-size="13" font-weight="700" text-anchor="middle">p</text>
+<text class="t mono" x="24" y="166" font-size="13.5">4:1 keyword while</text>
+<text class="t mono" x="24" y="188" font-size="13.5">4:7 name i</text>
+<text class="ta mono" x="24" y="210" font-size="13.5" font-weight="700">4:9 op !=</text>
+<rect class="s f" x="420" y="154" width="196" height="52" rx="6" stroke-width="1.5"/>
+<text class="tm" x="436" y="174" font-size="12">line</text>
+<text class="t mono" x="476" y="174" font-size="14" font-weight="700">4</text>
+<text class="tm" x="516" y="174" font-size="12">col</text>
+<text class="t mono" x="548" y="174" font-size="14" font-weight="700">11</text>
+<text class="tm" x="436" y="195" font-size="11">line and col follow p</text>
+</g>
+<g class="step"><title>Another space, then j: a name, at 4:12.</title>
+<rect class="s fs" x="69.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="83" y="70" font-size="17" font-weight="600" text-anchor="middle">w</text>
+<rect class="s fs" x="99.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="113" y="70" font-size="17" font-weight="600" text-anchor="middle">h</text>
+<rect class="s fs" x="129.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="143" y="70" font-size="17" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="159.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="173" y="70" font-size="17" font-weight="600" text-anchor="middle">l</text>
+<rect class="s fs" x="189.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="203" y="70" font-size="17" font-weight="600" text-anchor="middle">e</text>
+<rect class="m f" x="219.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="233" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="s fs" x="249.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="263" y="70" font-size="17" font-weight="600" text-anchor="middle">i</text>
+<rect class="m f" x="279.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="293" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="s fs" x="309.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="323" y="70" font-size="17" font-weight="600" text-anchor="middle">!</text>
+<rect class="s fs" x="339.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="353" y="70" font-size="17" font-weight="600" text-anchor="middle">=</text>
+<rect class="m f" x="369.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="383" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="a af" x="399.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="413" y="70" font-size="17" font-weight="700" text-anchor="middle">j</text>
+<rect class="m f" x="429.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<circle class="m" cx="443" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="m f" x="459.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="473" y="70" font-size="17" text-anchor="middle">d</text>
+<rect class="m f" x="489.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="tm mono" x="503" y="70" font-size="17" text-anchor="middle">o</text>
+<rect class="m f" x="519.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<path class="m" d="M538.0 57.0 V66.0 H527.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M530.5 62.5 L527.0 66.0 L530.5 69.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M437.0 95.0 L443.0 88.0 L449.0 95.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="443" y="109" font-size="13" font-weight="700" text-anchor="middle">p</text>
+<text class="t mono" x="24" y="166" font-size="13.5">4:1 keyword while</text>
+<text class="t mono" x="24" y="188" font-size="13.5">4:7 name i</text>
+<text class="t mono" x="24" y="210" font-size="13.5">4:9 op !=</text>
+<text class="ta mono" x="24" y="232" font-size="13.5" font-weight="700">4:12 name j</text>
+<rect class="s f" x="420" y="154" width="196" height="52" rx="6" stroke-width="1.5"/>
+<text class="tm" x="436" y="174" font-size="12">line</text>
+<text class="t mono" x="476" y="174" font-size="14" font-weight="700">4</text>
+<text class="tm" x="516" y="174" font-size="12">col</text>
+<text class="t mono" x="548" y="174" font-size="14" font-weight="700">13</text>
+<text class="tm" x="436" y="195" font-size="11">line and col follow p</text>
+</g>
+<g class="step"><title>do: a keyword, at 4:14, the last token of the line.</title>
+<rect class="s fs" x="69.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="83" y="70" font-size="17" font-weight="600" text-anchor="middle">w</text>
+<rect class="s fs" x="99.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="113" y="70" font-size="17" font-weight="600" text-anchor="middle">h</text>
+<rect class="s fs" x="129.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="143" y="70" font-size="17" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="159.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="173" y="70" font-size="17" font-weight="600" text-anchor="middle">l</text>
+<rect class="s fs" x="189.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="203" y="70" font-size="17" font-weight="600" text-anchor="middle">e</text>
+<rect class="m f" x="219.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="233" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="s fs" x="249.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="263" y="70" font-size="17" font-weight="600" text-anchor="middle">i</text>
+<rect class="m f" x="279.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="293" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="s fs" x="309.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="323" y="70" font-size="17" font-weight="600" text-anchor="middle">!</text>
+<rect class="s fs" x="339.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="353" y="70" font-size="17" font-weight="600" text-anchor="middle">=</text>
+<rect class="m f" x="369.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="383" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="s fs" x="399.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="413" y="70" font-size="17" font-weight="600" text-anchor="middle">j</text>
+<rect class="m f" x="429.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="443" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="a af" x="459.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="473" y="70" font-size="17" font-weight="700" text-anchor="middle">d</text>
+<rect class="a af" x="489.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="ta mono" x="503" y="70" font-size="17" font-weight="700" text-anchor="middle">o</text>
+<rect class="m f" x="519.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<path class="m" d="M538.0 57.0 V66.0 H527.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M530.5 62.5 L527.0 66.0 L530.5 69.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M527.0 95.0 L533.0 88.0 L539.0 95.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta mono" x="533" y="109" font-size="13" font-weight="700" text-anchor="middle">p</text>
+<text class="t mono" x="24" y="166" font-size="13.5">4:1 keyword while</text>
+<text class="t mono" x="24" y="188" font-size="13.5">4:7 name i</text>
+<text class="t mono" x="24" y="210" font-size="13.5">4:9 op !=</text>
+<text class="t mono" x="24" y="232" font-size="13.5">4:12 name j</text>
+<text class="ta mono" x="24" y="254" font-size="13.5" font-weight="700">4:14 keyword do</text>
+<rect class="s f" x="420" y="154" width="196" height="52" rx="6" stroke-width="1.5"/>
+<text class="tm" x="436" y="174" font-size="12">line</text>
+<text class="t mono" x="476" y="174" font-size="14" font-weight="700">4</text>
+<text class="tm" x="516" y="174" font-size="12">col</text>
+<text class="t mono" x="548" y="174" font-size="14" font-weight="700">16</text>
+<text class="tm" x="436" y="195" font-size="11">line and col follow p</text>
+</g>
+<g class="step"><title>The line end is passed over too: the line goes to 5 and the column back to 1. Nothing of the spaces or the line end is kept; the next token is if, at 5:5.</title>
+<rect class="s fs" x="69.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="83" y="70" font-size="17" font-weight="600" text-anchor="middle">w</text>
+<rect class="s fs" x="99.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="113" y="70" font-size="17" font-weight="600" text-anchor="middle">h</text>
+<rect class="s fs" x="129.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="143" y="70" font-size="17" font-weight="600" text-anchor="middle">i</text>
+<rect class="s fs" x="159.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="173" y="70" font-size="17" font-weight="600" text-anchor="middle">l</text>
+<rect class="s fs" x="189.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="203" y="70" font-size="17" font-weight="600" text-anchor="middle">e</text>
+<rect class="m f" x="219.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="233" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="s fs" x="249.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="263" y="70" font-size="17" font-weight="600" text-anchor="middle">i</text>
+<rect class="m f" x="279.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="293" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="s fs" x="309.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="323" y="70" font-size="17" font-weight="600" text-anchor="middle">!</text>
+<rect class="s fs" x="339.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="353" y="70" font-size="17" font-weight="600" text-anchor="middle">=</text>
+<rect class="m f" x="369.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="383" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="s fs" x="399.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="413" y="70" font-size="17" font-weight="600" text-anchor="middle">j</text>
+<rect class="m f" x="429.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<circle class="m" cx="443" cy="66" r="1.2" stroke-width="1.5"/>
+<rect class="s fs" x="459.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="473" y="70" font-size="17" font-weight="600" text-anchor="middle">d</text>
+<rect class="s fs" x="489.5" y="46" width="27" height="36" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="503" y="70" font-size="17" font-weight="600" text-anchor="middle">o</text>
+<rect class="m f" x="519.5" y="46" width="27" height="36" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<path class="m" d="M538.0 57.0 V66.0 H527.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="m" d="M530.5 62.5 L527.0 66.0 L530.5 69.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="24" y="166" font-size="13.5">4:1 keyword while</text>
+<text class="t mono" x="24" y="188" font-size="13.5">4:7 name i</text>
+<text class="t mono" x="24" y="210" font-size="13.5">4:9 op !=</text>
+<text class="t mono" x="24" y="232" font-size="13.5">4:12 name j</text>
+<text class="t mono" x="24" y="254" font-size="13.5">4:14 keyword do</text>
+<text class="tm mono" x="24" y="276" font-size="13.5">5:5 keyword if</text>
+<text class="tm" x="153.6" y="276" font-size="11.5">next, on line 5</text>
+<rect class="s f" x="420" y="154" width="196" height="52" rx="6" stroke-width="1.5"/>
+<text class="tm" x="436" y="174" font-size="12">line</text>
+<text class="t mono" x="476" y="174" font-size="14" font-weight="700">5</text>
+<text class="tm" x="516" y="174" font-size="12">col</text>
+<text class="t mono" x="548" y="174" font-size="14" font-weight="700">1</text>
+<text class="tm" x="436" y="195" font-size="11">line and col follow p</text>
+</g>
+</svg>
