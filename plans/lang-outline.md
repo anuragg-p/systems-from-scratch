@@ -20,7 +20,7 @@ code that makes it real and the commands that run it, with what they
 print.
 
 What grows, lesson by lesson, is one small language of your own. The
-track calls it Mote; lesson 01.01 is where you give it your own name. It
+track calls it Mote; lesson 01.02 is where you give it your own name. It
 starts as a calculator that reads, computes and writes. Each chapter adds
 what that chapter is about: scopes and closures, types and inference,
 records and arrays, exceptions and coroutines, objects, lazy lists,
@@ -44,9 +44,9 @@ Format: `templates/outline.md`.
 
 ## Module 01 - Introduction
 
-- Goal: Know what a language implementation is made of, and see the same program interpreted and compiled before any part is built properly.
-- You build: A folder of programs you want your language to run by the end, a first interpreter and a first compiler for the smallest language there is, a prompt and a test runner, and the phases of a compiler wired together with nothing inside them yet.
-- Value: Every later lesson fills in one box of this skeleton, and the programs written here are the tests the whole track is held to.
+- Goal: Know what a language implementation is made of, by building a small one of every kind the chapter shows and running one program through each.
+- You build: A small machine and a program in its assembly, the first programs in your own language, an interpreter that runs them from their text, a translator to C, a prompt and a test runner, and then a compiler phase by phase: scanner, parser, semantic analysis, a tree-walking interpreter, a code generator for your machine and an improver.
+- Value: Your language runs one program five ways that must all agree; every later chapter makes one of these pieces deeper, and the programs written here are the tests the whole track is held to.
 - Lessons:
   - 01.01 A machine, and a program written in its language (the chapter's opening)
   - 01.02 Your language, and the programs you want it to run (sections 1.1 to 1.3)

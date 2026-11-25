@@ -190,7 +190,7 @@ output stdout.
   the end, a bad address): `machine: FILE:LINE: message`, status 1.
 
 `programs/gcd.s`, written by hand at 01.01, keeps `i` in `s1` and `j` in
-`s2` and never touches memory: 15 instructions. Lesson 01.11's improved
+`s2` and never touches memory: 14 instructions. Lesson 01.11's improved
 code is set beside it.
 
 ## Chapter 1, lesson by lesson
