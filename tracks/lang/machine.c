@@ -42,11 +42,19 @@ static const char *regs[32] = {
   "zero", "ra", "sp", "gp", "tp", "t0", "t1", "t2", "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
   "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6",
 };
+// @from 01.10
 enum { ZERO, RA, SP, A0 = 10 };
+// @else
+// enum { ZERO, RA, A0 = 10 };
+// @end
 
 // Routines that are part of the machine: a call to one of these names
 // does its work and comes straight back.
+// @from 01.10
 enum { GETINT = 1, PUTINT, EXIT, DIVZERO };
+// @else
+// enum { GETINT = 1, PUTINT, EXIT };
+// @end
 static const char *routines[] = {
   [GETINT] = "getint", [PUTINT] = "putint", [EXIT] = "exit",
   [DIVZERO] = "divzero",  // @from 01.10

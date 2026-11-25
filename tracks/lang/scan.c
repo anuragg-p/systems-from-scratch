@@ -24,12 +24,6 @@ static _Noreturn void verror(int line, int col, const char *fmt, va_list ap) {
   exit(1);
 }
 
-_Noreturn void error_at(int line, int col, const char *fmt, ...) {
-  va_list ap;
-  va_start(ap, fmt);
-  verror(line, col, fmt, ap);
-}
-
 _Noreturn void error_tok(Token *tok, const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
