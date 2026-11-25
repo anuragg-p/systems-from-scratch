@@ -38,6 +38,10 @@ INSERT INTO items VALUES (10,100,1),(10,101,2),(11,100,5),(12,102,1),(12,102,3),
 INSERT INTO products VALUES (100,'pen',1.5),(101,'ink',4.0),(102,'pad',2.25),(103,'nib',0.5);
 INSERT INTO cities VALUES ('London','UK'),('Paris','FR'),('Oslo','NO'),('London','CA'),(NULL,'XX');
 INSERT INTO countries VALUES ('UK','United Kingdom'),('FR','France'),('NO','Norway'),('UK','Britain');
+CREATE TABLE u(k TEXT UNIQUE, v);
+INSERT INTO u VALUES ('London', 'uk'), ('Paris', 'fr'), ('1', 'one');
+CREATE TABLE pairs(a, b, v);
+INSERT INTO pairs VALUES (1, 'x', 'p1'), ('1', 'y', 'p2'), (2, 'z', 'p3'), ('Ada', 'w', 'p4');
 """
 
 INDEXES = """CREATE INDEX orders_customer ON orders(customer_id);
@@ -45,6 +49,7 @@ CREATE INDEX items_order ON items(order_id);
 CREATE INDEX cities_name ON cities(name);
 CREATE INDEX countries_code ON countries(code);
 CREATE INDEX orders_total ON orders(total);
+CREATE INDEX pairs_ab ON pairs(a, b);
 """
 
 CO = "customers c JOIN orders o ON o.customer_id = c.id"
@@ -127,6 +132,13 @@ QUERIES = [
     "JOIN items it ON it.order_id = o.id ORDER BY c.id, o.id, it.rowid",
     "SELECT c.name, o.id, p.title FROM customers c LEFT JOIN orders o ON o.customer_id = c.id "
     "LEFT JOIN products p ON p.id = o.total + 90 ORDER BY c.id, o.id",
+    # a UNIQUE constraint's index (08.07); the first column of a two-column index, which
+    # has no affinity, so an INTEGER key cannot use it (its '1' would equal 1) and text can
+    "SELECT c.name, u.v FROM customers c JOIN u ON u.k = c.city ORDER BY c.id",
+    "SELECT o.id, u.v FROM orders o JOIN u ON u.k = o.customer_id ORDER BY o.id",
+    "SELECT c.name, p.v FROM customers c JOIN pairs p ON p.a = c.id ORDER BY c.id, p.v",
+    "SELECT c.name, p.v FROM customers c JOIN pairs p ON p.a = c.name ORDER BY c.id, p.v",
+    "SELECT c.name, p.v FROM customers c JOIN pairs p ON p.a = c.id || '' ORDER BY c.id, p.v",
     # an empty inner or outer table
     "SELECT c.name FROM customers c JOIN blank b ON b.x = c.id",
     "SELECT c.name, b.x FROM customers c LEFT JOIN blank b ON b.rowid = c.id ORDER BY c.id",
@@ -149,6 +161,10 @@ PLANS = [
     "SELECT * FROM customers c CROSS JOIN orders o ON o.customer_id + 0 = c.id",
     "SELECT * FROM customers c CROSS JOIN blank b ON b.x = c.id",
     "SELECT * FROM orders x CROSS JOIN orders y ON y.id = x.id + 1",
+    "SELECT * FROM customers c CROSS JOIN u ON u.k = c.city",
+    "SELECT * FROM orders o CROSS JOIN u ON u.k = o.customer_id",
+    "SELECT * FROM customers c CROSS JOIN pairs p ON p.a = c.id",
+    "SELECT * FROM customers c CROSS JOIN pairs p ON p.a = c.name",
 ]
 
 EXPLAIN_INDEX = """Sort by c.id, o.id
