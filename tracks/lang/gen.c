@@ -7,8 +7,13 @@
 // an expression are kept in t0 to t6, used as a stack: a node's value
 // goes in the register of its depth, its left operand in the same one
 // and its right operand one higher. A condition is one branch, taken
-// when it is false. From 01.11 the improver may give a variable a
-// register instead of a slot, and then its register is the operand.
+// when it is false.
+// @from 01.11
+//
+// With -O, improve() has given the variables used most a register each
+// (sym->reg): such a variable has no slot, and its register is used
+// wherever the variable is.
+// @end
 
 #include <stdarg.h>
 #include "mote.h"

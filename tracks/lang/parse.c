@@ -64,7 +64,7 @@ static void stmts(Parse *n) {
 }
 
 static Parse *factor(void) {
-  // @build 01.07 factor = number | name | "(" expr ")" | "-" factor
+  // @build 01.07 factor = number | name | ( expr ) | - factor
   Parse *n = node("factor");
   if (tok->kind == T_NUMBER || tok->kind == T_NAME) {
     take(n);
@@ -83,7 +83,7 @@ static Parse *factor(void) {
 }
 
 static Parse *term(void) {
-  // @build 01.07 term = factor { ( "*" | "/" ) factor }
+  // @build 01.07 term = factor { ( * | / ) factor }
   Parse *n = node("term");
   add(n, factor());
   while (equal(tok, "*") || equal(tok, "/")) {
@@ -95,7 +95,7 @@ static Parse *term(void) {
 }
 
 static Parse *expr(void) {
-  // @build 01.07 expr = term { ( "+" | "-" ) term }
+  // @build 01.07 expr = term { ( + | - ) term }
   Parse *n = node("expr");
   add(n, term());
   while (equal(tok, "+") || equal(tok, "-")) {

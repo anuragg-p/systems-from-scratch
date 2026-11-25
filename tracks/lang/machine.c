@@ -53,9 +53,8 @@ static const char *routines[] = {
 };
 #define NROUTINES (int)(sizeof routines / sizeof *routines)
 
-// One instruction: what it does, its registers in the order they are
-// written, its number, where it jumps (an address), and the line and text
-// it came from.
+// An instruction: what it does, its registers in the order written, its
+// number, the address it jumps to, and the line and text it came from.
 typedef struct {
   int op, r[3], routine, line;
   long n, target;
@@ -65,10 +64,10 @@ typedef struct {
 typedef struct { char *name; int len; long address; } Label;
 
 static const char *path;
-static Insn *prog;
+static Insn *prog, *running;   // the program, and the instruction running
 static int ninsns, nlabels;
 static Label *labels;
-static long x[32];             // the registers
+static long x[32], before[32]; // the registers, and what they held before this instruction
 static long count;             // how many instructions have run, for --count
 static bool counting, tracing;
 static int line;               // the line being read, or of the instruction running
@@ -85,6 +84,8 @@ _Noreturn void todo(const char *lesson, const char *what) {
 }
 
 // @end
+static void trace(void);
+
 static _Noreturn void error(const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
@@ -95,8 +96,11 @@ static _Noreturn void error(const char *fmt, ...) {
   exit(1);
 }
 
-// The program ends: what it printed goes out, then the count if asked for.
+// The program ends: its last instruction traced, what it printed sent out,
+// then the count if asked for.
 static _Noreturn void stop(long status) {
+  if (tracing)
+    trace();
   fflush(stdout);
   if (counting)
     fprintf(stderr, "%ld instructions\n", count);
@@ -128,6 +132,13 @@ static Label *find(const char *p, int len) {
   return NULL;
 }
 
+static char *expect(char *p, char c) {
+  p = skip(p);
+  if (*p != c)
+    error("expected '%c'", c);
+  return skip(p + 1);
+}
+
 // A register by its name; *p moves past it.
 static int reg(char **p) {
   // @build 01.01 a register by its name
@@ -143,25 +154,6 @@ static int reg(char **p) {
     error("expected a register");
   error("unknown register '%.*s'", len, *p);
   // @end
-}
-
-static long number(char **p) {
-  char *end;
-  errno = 0;
-  long n = strtol(*p, &end, 10);
-  if (end == *p)
-    error("expected a number");
-  if (errno == ERANGE)
-    error("number too large: %.*s", (int)(end - *p), *p);
-  *p = end;
-  return n;
-}
-
-static char *expect(char *p, char c) {
-  p = skip(p);
-  if (*p != c)
-    error("expected '%c'", c);
-  return skip(p + 1);
 }
 
 // The first pass: the file split into lines, the labels recorded, and the
@@ -217,7 +209,7 @@ static void read_instructions(char **texts) {
   // name one of the machine's routines instead. Nothing may follow.
   for (int i = 0; i < ninsns; i++) {
     Insn *in = &prog[i];
-    char *p = in->text = texts[i];
+    char *p = in->text = texts[i], *end;
     line = in->line;
     int len = word(p), nr = 0;
     while (in->op < NOPS && !(ops[in->op].name && is(p, len, ops[in->op].name)))
@@ -225,13 +217,20 @@ static void read_instructions(char **texts) {
     if (in->op == NOPS)
       error("unknown instruction '%.*s'", len, p);
     p = skip(p + len);
-    for (const char *t = ops[in->op].takes; *t; t++) {
+    for (const char *t = ops[in->op].takes; *t; t++, p = skip(p)) {
       if (t != ops[in->op].takes)
         p = expect(p, ',');
       if (*t == 'r')
         in->r[nr++] = reg(&p);
-      if (*t == 'n' || *t == 'm')
-        in->n = number(&p);
+      if (*t == 'n' || *t == 'm') {
+        errno = 0;
+        in->n = strtol(p, &end, 10);
+        if (end == p)
+          error("expected a number");
+        if (errno == ERANGE)
+          error("number too large: %.*s", (int)(end - p), p);
+        p = end;
+      }
       if (*t == 'm') {
         p = expect(p, '(');
         in->r[nr++] = reg(&p);
@@ -250,7 +249,6 @@ static void read_instructions(char **texts) {
         in->target = l ? l->address : 0;
         p += n;
       }
-      p = skip(p);
     }
     if (*p)
       error("unexpected text after the instruction: '%s'", p);
@@ -261,7 +259,6 @@ static void read_instructions(char **texts) {
 // An address must have all 8 of its bytes, a to a + 7, in the memory.
 static void check(long a) {
   // @build 01.10 memory: an address checked
-  // Anything else stops the program: "address N is outside the memory".
   if (a < 0 || a > MEMORY - 8)
     error("address %ld is outside the memory", a);
   // @end
@@ -338,8 +335,8 @@ static void routine(int r) {
   // @end
 }
 
-// --trace: the instruction just run, its line, and what it changed.
-static void trace(Insn *in, long *before) {
+// --trace: the instruction that ran, its line, and what it changed.
+static void trace(void) {
   // @build 01.01 --trace: each instruction and what it changed
   // The line number, the instruction's text, then each register whose
   // value is not what it was before, as "name = value"; when there are
@@ -350,12 +347,12 @@ static void trace(Insn *in, long *before) {
     if (x[i] != before[i])
       len += snprintf(buf + len, sizeof buf - len, "  %s = %ld", regs[i], x[i]);
   // @from 01.10
-  if (in->op == SD)
+  if (running->op == SD)
     snprintf(buf + len, sizeof buf - len, "  mem[%ld] = %ld",
-             (long)((unsigned long)before[in->r[1]] + (unsigned long)in->n), before[in->r[0]]);
+             (long)((unsigned long)before[running->r[1]] + (unsigned long)running->n), before[running->r[0]]);
   // @end
   fflush(stdout);
-  fprintf(stderr, buf[0] ? "%4d  %-24s%s\n" : "%4d  %s%s\n", in->line, in->text, buf);
+  fprintf(stderr, buf[0] ? "%4d  %-24s%s\n" : "%4d  %s%s\n", running->line, running->text, buf);
   // @end
 }
 
@@ -375,13 +372,12 @@ static _Noreturn void run(void) {
   // does. Sums are done on unsigned longs, which wrap around, so none is
   // undefined; div by zero gives -1, and the most negative number divided
   // by -1 gives itself, as RISC-V's div does.
-  long end = 4L * ninsns, pc = -1;
   Label *m = find("main", 4);
   if (!m) {
     fprintf(stderr, "machine: %s: no label main to start at\n", path);
     exit(1);
   }
-  pc = m->address;
+  long end = 4L * ninsns, pc = m->address;
   x[RA] = end;
   x[SP] = MEMORY;                      // @from 01.10
   for (;;) {
@@ -389,13 +385,12 @@ static _Noreturn void run(void) {
       error("ran off the end of the program");
     if (pc < 0 || pc > end || pc % 4)
       error("no instruction at address %ld", pc);
-    Insn *in = &prog[pc / 4];
+    Insn *in = running = &prog[pc / 4];
     line = in->line;
     count++;
-    long before[32], next = pc + 4;
     memcpy(before, x, sizeof x);
     unsigned long b = (unsigned long)x[in->r[1]], c = (unsigned long)x[in->r[2]];
-    long sa = x[in->r[0]], sb = (long)b, sc = (long)c;
+    long sa = x[in->r[0]], sb = (long)b, sc = (long)c, next = pc + 4;
     int d = in->r[0];
     switch (in->op) {
     case LI:   set(d, in->n); break;
@@ -433,7 +428,7 @@ static _Noreturn void run(void) {
     // @end
     }
     if (tracing)
-      trace(in, before);
+      trace();
     pc = next;
   }
   // @end

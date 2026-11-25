@@ -32,8 +32,8 @@ machine: machine.c
 	$(CC) $(CFLAGS) -o $@ machine.c
 
 # @from 01.02
-# rt.o reads and writes numbers for programs written in C: gcd here, and
-# from 01.04 every program motec makes.
+# rt.o reads and writes numbers for programs written in C, as the
+# machine's getint and putint do.
 rt.o: rt.c rt.h
 	$(CC) $(CFLAGS) -c -o $@ rt.c
 

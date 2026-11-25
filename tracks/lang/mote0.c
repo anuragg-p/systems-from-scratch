@@ -4,7 +4,11 @@
 // line runs, a name is looked up in a table by comparing strings each
 // time it is used, and the lines of a loop are read again on every pass.
 //
-//   ./mote0 [--count] [FILE]        with no FILE, a prompt (from 01.05)
+// @from 01.05
+//   ./mote0 [--count] [FILE]        with no FILE, a prompt
+// @else
+// //   ./mote0 [--count] FILE
+// @end
 //
 // So that it can tell where a statement ends without a scanner, it wants
 // one statement a line, with "while c do", "if c then", "else" and "end"
@@ -68,7 +72,7 @@ static _Noreturn void error(const char *fmt, ...) {
 }
 
 static void space(void) {
-  while (*p == ' ' || *p == '\t')
+  while (*p == ' ' || *p == '\t' || *p == '\r')
     p++;
 }
 
@@ -171,21 +175,17 @@ static long term(void) {
   // Division rounds toward zero, as C's does; by zero it is an error, and
   // the most negative number divided by -1 is itself, wrapped around.
   long v = factor();
-  for (;;) {
-    space();
-    if (*p == '*') {
-      p++;
-      v = (long)((unsigned long)v * (unsigned long)factor());
-    } else if (*p == '/') {
-      p++;
-      long d = factor();
-      if (d == 0)
-        error("division by zero");
+  for (space(); *p == '*' || *p == '/'; space()) {
+    char op = *p++;
+    long d = factor();
+    if (op == '*')
+      v = (long)((unsigned long)v * (unsigned long)d);
+    else if (d == 0)
+      error("division by zero");
+    else
       v = v == LONG_MIN && d == -1 ? LONG_MIN : v / d;
-    } else {
-      return v;
-    }
   }
+  return v;
   // @end
 }
 
@@ -193,18 +193,12 @@ static long term(void) {
 static long expr(void) {
   // @build 01.03 an expression: terms added and subtracted
   long v = term();
-  for (;;) {
-    space();
-    if (*p == '+') {
-      p++;
-      v = (long)((unsigned long)v + (unsigned long)term());
-    } else if (*p == '-') {
-      p++;
-      v = (long)((unsigned long)v - (unsigned long)term());
-    } else {
-      return v;
-    }
+  for (space(); *p == '+' || *p == '-'; space()) {
+    char op = *p++;
+    unsigned long t = (unsigned long)term();
+    v = (long)(op == '+' ? (unsigned long)v + t : (unsigned long)v - t);
   }
+  return v;
   // @end
 }
 

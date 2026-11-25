@@ -1,8 +1,9 @@
 # Plan: track `lang` - your own language, chapter by chapter
 
 Status: plan (direction set by Fable; implementation by Opus agents).
-Outline: `outlines/lang.md` (it moves to `plans/lang-outline.md` when
-`tracks/lang` lands, as cc's did). Chapter 1 is being built; nothing else is.
+Outline: `plans/lang-outline.md` (moved from `outlines/lang.md` when
+`tracks/lang` landed, as cc's was). Chapter 1's code is built (see "Chapter
+1 as built" at the end); its lessons are not written yet.
 
 ## What the owner asked for (2026-11-25)
 

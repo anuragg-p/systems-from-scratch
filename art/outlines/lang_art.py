@@ -6,6 +6,9 @@ Writes, under outlines/lang/:
     icon.svg        20x20 currentColor line icon for the top bar
     NN/cover.svg    640x300 teaching diagram for module NN (01 to 17, one per chapter of the book)
     NN/icon.svg     20x20 currentColor line icon for module NN
+and the same two module files into tracks/lang/lessons/NN-*/ for every module that has a lessons
+folder there (01 now), so a built module's art and the outline's never drift apart. The track's
+own art.svg and icon.svg (tracks/lang/) are copies the track keeps; not written here.
 
 The language on the covers is the track's own small language (working name Mote). The diagrams
 are the course's own: nothing on them is taken from the book the track is read beside.
@@ -39,6 +42,7 @@ The Art class is the one from cc_art.py, repeated so this file stands alone.
         write every file (or only modules NN), then check each one is ASCII and survives
         harness/web/art.py's sanitizer unchanged
 """
+import glob
 import html
 import math
 import os
@@ -48,6 +52,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
 OUT = os.path.join(ROOT, "outlines", "lang")
+LESSONS = os.path.join(ROOT, "tracks", "lang", "lessons")
 SW = 'stroke-width="1.5"'
 EM = 0.6            # the monospace advance, in em (Geist Mono, SF Mono, Menlo)
 SANS = 0.56         # a generous average advance for Figtree, in em, to size pills around sans text
@@ -1025,17 +1030,30 @@ def check(out):
     return bad
 
 
+def built(mid):
+    """The lessons folder of module mid in tracks/lang, or None while the module is not built."""
+    found = sorted(p for p in glob.glob(os.path.join(LESSONS, f"{mid}-*")) if os.path.isdir(p))
+    return found[0] if found else None
+
+
 def main(argv):
     out = files(set(argv) or None)
+    paths = {}
     for rel, text in out.items():
-        path = os.path.join(OUT, rel)
+        paths[os.path.join(OUT, rel)] = text
+        if "/" in rel:
+            mid, name = rel.split("/")
+            if built(mid):                       # a built module's copy, so the two never drift
+                paths[os.path.join(built(mid), name)] = text
+    for path, text in paths.items():
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w") as f:
             f.write(text)
     bad = check(out)
     for b in bad:
         print("problem:", b)
-    print("wrote", len(out), "files under", os.path.relpath(OUT, ROOT))
+    print("wrote", len(out), "files under", os.path.relpath(OUT, ROOT), "and", len(paths) - len(out), "under",
+          os.path.relpath(LESSONS, ROOT))
     return 1 if bad else 0
 
 

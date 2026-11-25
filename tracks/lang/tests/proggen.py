@@ -10,7 +10,10 @@
     evaluate(text, text_in) parse and run: (how, output)
     generate(rng)           (program text, input text): a random program that always stops, written
                             one statement a line, with comments, blank lines and indentation
-    sample(seed, n)         n (text, input, output) whose run ends "ok": every way must agree on them
+    c_int_overflow(prog)    whether a part of an expression made only of numbers overflows C's int
+                            (motec's C works it out in 32 bits)
+    sample(seed, n)         n (text, input, output) whose run ends "ok" and that have no such part:
+                            every way must agree on them
 
 The reference is written apart from the C code, to be a second opinion: a scanner by regular
 expression, a parser by recursion, Python's integers wrapped to 64 bits. The generator keeps to
@@ -242,6 +245,52 @@ def evaluate(text, text_in):
     return run(parse(text), text_in)
 
 
+INT_MIN, INT_MAX = -2 ** 31, 2 ** 31 - 1
+
+
+def c_int_overflow(prog):
+    """Does some part of an expression made only of numbers overflow C's int? mote2c copies an
+    expression as it is, and C gives a number that fits in 32 bits the type int, so 18 *
+    1000000007 is worked out in 32 bits by the C (and wraps, with -fwrapv), where the language
+    works in 64. A program with one is a known difference of motec, not a mistake of any way."""
+    def ints(e):
+        """e's value if C works it out in int (every number in it fits), else None."""
+        k = e[0]
+        if k == "num":
+            return e[1] if e[1] <= INT_MAX else None
+        if k == "var":
+            return None
+        if k == "neg":
+            v = ints(e[1])
+            return None if v is None else -v
+        a, b = ints(e[1]), ints(e[2])
+        if a is None or b is None:
+            return None
+        if k == "/":
+            if b == 0:
+                return None
+            v = abs(a) // abs(b) * (1 if (a < 0) == (b < 0) else -1)
+        else:
+            v = a + b if k == "+" else a - b if k == "-" else a * b
+        if not INT_MIN <= v <= INT_MAX:
+            raise Stop("int")
+        return v
+
+    def walk(stmts):
+        for s in stmts:
+            for part in s[1:]:
+                if isinstance(part, list):
+                    walk(part)
+                elif isinstance(part, tuple):
+                    ints(part) if part[0] not in ("==", "!=", "<", ">", "<=", ">=") else \
+                        (ints(part[1]), ints(part[2]))
+    try:
+        walk(prog)
+        return False
+    except Stop:
+        return True
+
+
 # ---------------------------------------------------------------- the generator
 
 NAMES = ["a", "b", "x", "y", "n", "total", "k2", "_t", "left", "Right"]
@@ -357,10 +406,11 @@ def generate(rng, size=14):
                 sure.append(c)
         return sure
 
-    block(0, [])
+    sure = []
     while budget[0] > 0:
-        budget[0] -= 1
-        lines.append(f"write {rng.randint(0, 9)}")
+        sure = block(0, sure)
+    for x in sorted(set(sure))[:4]:
+        lines.append(f"write {x}")
     numbers = [rng.choice([rng.randint(-50, 50), rng.randint(-10 ** 6, 10 ** 6), rng.randint(MIN, MAX)])
                for _ in range(40)]
     text_in = " ".join(str(n) for n in numbers) + "\n"
@@ -374,8 +424,9 @@ def sample(seed, n, size=14):
     out = []
     while len(out) < n:
         text, text_in = generate(rng, size)
-        how, printed = evaluate(text, text_in)
-        if how == "ok":
+        prog = parse(text)
+        how, printed = run(prog, text_in)
+        if how == "ok" and not c_int_overflow(prog):
             out.append((text, text_in, printed))
     return out
 

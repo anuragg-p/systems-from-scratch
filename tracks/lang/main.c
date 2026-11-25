@@ -1,10 +1,11 @@
 // main.c: the compiler's driver, and the picture of its phases. It reads
-// the file and hands it to each phase in turn: scan, parse, analyze, and
-// then interpret, or with -S generate (improve first, with -O). Each
-// printing option stops after the phase whose result it prints. The
-// printers are here, so that each phase's own file holds only the phase.
+// the file and hands it to each phase in turn, each taking what the one
+// before it made: scan, then parse, analyze, and interpret or generate,
+// as they come. Each printing option stops after the phase whose result
+// it prints. The printers are here, so that each phase's own file holds
+// only the phase.
 //
-//   ./mote [--tokens | --parse-tree | --tree | --symbols | -S [-O]] FILE
+//   ./mote [OPTION] FILE      usage() names the options there are
 
 #include "mote.h"
 

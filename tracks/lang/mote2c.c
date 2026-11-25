@@ -121,7 +121,9 @@ static void translate(const char *s, int n) {
   // "putint(e);", "x := e" is "x = e;", while and if open a C block and
   // end closes one; else closes one and opens the next.
   int w = word(s);
-  const char *rest = skip(s + w);
+  const char *rest = s + w;              // what follows the first word, up to the end
+  while (rest < s + n && isspace((unsigned char)*rest))
+    rest++;
   int r = n - (int)(rest - s);
   if (is(s, w, "read")) {
     int m = word(rest);
@@ -141,7 +143,9 @@ static void translate(const char *s, int n) {
       error("expected the end of the line");
     puts(is(s, w, "else") ? "} else {" : "}");
   } else if (w && !keyword(s, w) && !strncmp(rest, ":=", 2)) {
-    const char *e = skip(rest + 2);
+    const char *e = rest + 2;
+    while (e < s + n && isspace((unsigned char)*e))
+      e++;
     printf("%.*s = %.*s;\n", w, s, n - (int)(e - s), e);
   } else {
     error(w && !keyword(s, w) ? "expected ':='" : "expected a statement");
@@ -192,11 +196,12 @@ int main(int argc, char **argv) {
     int n = code(l, &s);
     if (!n && *s == '#')
       continue;
-    printf("    %.*s", (int)(s - l), l);
-    if (n)
-      translate(s, n);
-    else
+    if (!n) {
       printf("\n");
+      continue;
+    }
+    printf("    %.*s", (int)(s - l), l);
+    translate(s, n);
   }
   printf("    return 0;\n}\n");
   // @end
