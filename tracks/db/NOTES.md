@@ -1229,6 +1229,10 @@ Known differences from sqlite3:
 - sqlite3 drops a LEFT JOIN table that is never read and matches at most
   one row (where.c whereOmitNoopJoin); EXPLAIN QUERY PLAN then lists one
   table fewer. ./db always reads it.
+- The fuzzer (tests/fuzz), with 08.02 and 08.03 in: `--features
+  core,join,leftjoin --n 3000 --seed 1`, 75056 statements, 17966 SELECTs,
+  572052 rows compared, 0 failing (203 s); 800 more at seed 7 on an
+  `-fsanitize=address,undefined` build with DB_CACHE_PAGES=2, 0 failing.
 - RIGHT and FULL JOIN (sqlite3 3.54.1 has them: whereInt.h WhereRightJoin,
   wherecode.c sqlite3WhereRightJoinLoop) and NATURAL/USING are refused by
   name.
