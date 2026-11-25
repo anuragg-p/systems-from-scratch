@@ -4,7 +4,9 @@ CREATE TABLE writes the same sqlite_schema rows sqlite3 writes; the
 catalog is rebuilt from them, from our files and from sqlite3's; tables
 using features we lack are read-only rather than damaged, and CREATE
 TABLE refuses them (a PRIMARY KEY other than INTEGER PRIMARY KEY needs an
-index sqlite3 makes by itself, which this engine does not keep).
+index sqlite3 makes by itself, which the core does not keep; with the
+08.07 extension in the tree, UNIQUE and such keys are kept, as sqlite3
+keeps them).
 """
 
 # Primary keys sqlite3 backs with an automatic index (sqlite_autoindex_k_1).
@@ -50,7 +52,12 @@ CREATE TABLE "quoted name"("col one" TEXT, [col two] INT);
             "./db should list every table sqlite3 made (sqlite_sequence is internal)")
     t.check(tr.db(t, g, "SELECT a, b FROM u;\n").out == "k|1\n", "a table with UNIQUE is still readable")
     r = tr.db(t, g, "INSERT INTO u VALUES ('k2', 2);\n", check=False)
-    t.check(r.rc != 0 and "read-only" in r.err, f"a table with UNIQUE must refuse writes, got:\n{r}")
+    if tr.keeps_unique(t.root):
+        t.check(r.rc == 0, f"with 08.07 a table with UNIQUE takes writes, got:\n{r}")
+    else:
+        t.check(r.rc != 0 and "read-only" in r.err, f"a table with UNIQUE must refuse writes, got:\n{r}")
+    r = tr.db(t, g, "INSERT INTO ai(v) VALUES (1);\n", check=False)
+    t.check(r.rc != 0 and "read-only" in r.err, f"a table with AUTOINCREMENT must refuse writes, got:\n{r}")
     tr.db(t, g, "INSERT INTO plain VALUES (1, 2, 3);\n")
     tr.integrity(t, g)
 
@@ -60,7 +67,9 @@ CREATE TABLE "quoted name"("col one" TEXT, [col two] INT);
 
 def primary_keys(t, tr, ddl):
     """Only INTEGER PRIMARY KEY is the rowid; any other primary key is refused
-    by CREATE TABLE, and read-only in a file sqlite3 made."""
+    by CREATE TABLE, and read-only in a file sqlite3 made (with 08.07: made and
+    written, with the index sqlite3 makes)."""
+    kept = tr.keeps_unique(t.root)
     for sql in NOT_ROWID_PKS:
         g = tr.path(t)
         made = tr.sqlite(t, g, sql + "\nSELECT name FROM sqlite_schema WHERE type = 'index';\n").out
@@ -68,9 +77,13 @@ def primary_keys(t, tr, ddl):
         f = tr.path(t)
         tr.db(t, f, ddl)
         r = tr.db(t, f, sql + "\n", check=False)
-        t.check(r.rc != 0 and "Error:" in r.err and "PRIMARY KEY" in r.err and "not supported" in r.err,
-                f"./db should refuse {sql} (sqlite3 needs an index for it that ./db would not keep), got:\n{r}")
-        t.check("k" not in tr.db(t, f, ".tables\n").out.split(), f"a refused {sql} must not leave a table behind")
+        if kept:
+            got = tr.db(t, f, "SELECT name FROM sqlite_schema WHERE type = 'index';\n").out
+            t.check(r.rc == 0 and got == made, f"with 08.07 {sql} makes sqlite3's index {made!r}, got {got!r}:\n{r}")
+        else:
+            t.check(r.rc != 0 and "Error:" in r.err and "PRIMARY KEY" in r.err and "not supported" in r.err,
+                    f"./db should refuse {sql} (sqlite3 needs an index for it that ./db would not keep), got:\n{r}")
+            t.check("k" not in tr.db(t, f, ".tables\n").out.split(), f"a refused {sql} must not leave a table behind")
         tr.integrity(t, f)
     # Two primary keys: an error in both.
     tr.errors_alike(t, "", "CREATE TABLE k(a INTEGER PRIMARY KEY, b INTEGER PRIMARY KEY);\n")
@@ -84,7 +97,12 @@ def primary_keys(t, tr, ddl):
     q = "SELECT id, v FROM k ORDER BY id;\nSELECT v FROM k WHERE id = 2;\n"
     t.check(tr.same_output(tr.db(t, g, q).out, tr.sqlite(t, g, q).out), "./db reads sqlite3's INT PRIMARY KEY table")
     r = tr.db(t, g, "INSERT INTO k VALUES (3, 'three');\n", check=False)
-    t.check(r.rc != 0 and "read-only" in r.err, f"an INT PRIMARY KEY table from sqlite3 must refuse writes, got:\n{r}")
+    if kept:
+        t.check(r.rc == 0, f"with 08.07 an INT PRIMARY KEY table from sqlite3 takes writes, got:\n{r}")
+        r = tr.db(t, g, "INSERT INTO k VALUES (3, 'again');\n", check=False)
+        t.check("UNIQUE constraint failed: k.id" in r.err, f"and refuses a duplicate key, got:\n{r}")
+    else:
+        t.check(r.rc != 0 and "read-only" in r.err, f"an INT PRIMARY KEY table from sqlite3 must refuse writes, got:\n{r}")
     tr.integrity(t, g)
 
 

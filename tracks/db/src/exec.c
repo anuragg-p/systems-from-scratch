@@ -553,6 +553,87 @@ static void index_remove(Db *db, Index *ix, Row *row)
     buf_free(&k);
 }
 
+// @from 08.07
+/* ------------------------------------------------------------ UNIQUE (08.07) */
+
+/* Sets the error sqlite3 gives for a row that breaks index ix's constraint,
+ * its columns as table.column joined by ", " (a PRIMARY KEY says the same:
+ * build.c, sqlite3UniqueConstraint), and returns -1. */
+static int unique_failed(Index *ix)
+{
+    char cols[400];
+    size_t n = 0;
+    cols[0] = 0;
+    for (int i = 0; i < ix->ncols && n < sizeof cols; i++)
+        n += (size_t)snprintf(cols + n, sizeof cols - n, "%s%s.%s", i ? ", " : "", ix->table->name,
+                              ix->table->cols[ix->cols[i]].name);
+    return err("UNIQUE constraint failed: %s", cols);
+}
+// @end
+
+/* Returns 1 if index ix already has an entry with row's values in its
+ * columns for a row other than self, so writing row would break the
+ * constraint; 0 if not. An entry is (columns..., rowid): the lookup
+ * compares only the first ncols fields, and the rowid is read from the
+ * entry found. */
+static int unique_taken(Db *db, Index *ix, Row *row, i64 self)
+{
+    // @build 08.07 look before you write
+    /* A NULL in any of the columns never conflicts: NULL equals nothing,
+     * not even NULL (vdbe.c, OP_NoConflict). The walk goes past the first
+     * equal entry because it may be self's own. */
+    Value vals[8];
+    for (int i = 0; i < ix->ncols; i++) {
+        vals[i] = row->cols[ix->cols[i]];
+        if (vals[i].type == V_NULL)
+            return 0;
+    }
+    Buf k = {0};
+    record_build(&k, vals, ix->ncols);
+    Cursor c;
+    cursor_open(&c, &db->pager, ix->root, 0);
+    int taken = 0;
+    for (int more = cursor_seek_key(&c, k.p, (u32)k.n, ix->ncols, -1); more && !taken; more = cursor_next(&c)) {
+        if (record_compare(c.payload, c.npayload, k.p, (u32)k.n, ix->ncols) != 0)
+            break;
+        Value e[9];
+        if (record_decode(c.payload, c.npayload, e, ix->ncols + 1) != ix->ncols + 1 || e[ix->ncols].type != V_INT)
+            fatal("database is corrupt: bad entry in index %s", ix->name);
+        taken = e[ix->ncols].i != self;
+    }
+    cursor_close(&c);
+    buf_free(&k);
+    return taken;
+    // @end
+}
+
+// @from 08.07
+static int index_changes(Index *ix, Row *old, Value *newv, i64 newid);
+
+/* Returns 0 if row can be written to its table without breaking a UNIQUE
+ * or PRIMARY KEY constraint, else sets the error for the first it breaks
+ * and returns -1. ix is the table's list of indexes. sqlite3 keeps that
+ * list newest first and checks it in that order (build.c, sqlite3CreateIndex;
+ * insert.c, sqlite3GenerateConstraintChecks), so of two constraints a row
+ * breaks, the one declared last is reported, and an index CREATE UNIQUE
+ * INDEX made after the table before either. This list is oldest first, so
+ * the rest of it is checked before ix. For an UPDATE, old is the row being
+ * replaced: its own entries do not count, and an index whose entry the
+ * update leaves as it is is not checked. */
+static int check_unique(Db *db, Index *ix, Row *row, Row *old)
+{
+    if (!ix)
+        return 0;
+    if (check_unique(db, ix->next, row, old) < 0)
+        return -1;
+    if (!ix->unique || (old && !index_changes(ix, old, row->cols, row->rowid)))
+        return 0;
+    if (unique_taken(db, ix, row, old ? old->rowid : row->rowid))
+        return unique_failed(ix);
+    return 0;
+}
+// @end
+
 /* Fills a new, empty index with an entry for every row of its table. */
 int index_build(Db *db, Index *ix)
 {
@@ -566,6 +647,15 @@ int index_build(Db *db, Index *ix)
      * stays valid. */
     for (int more = cursor_first(&c); more; more = cursor_next(&c)) {
         decode_row(t, &c, &row);
+        // @from 08.07
+        /* CREATE UNIQUE INDEX over rows that already break it fails as an
+         * INSERT would; the statement is undone, so nothing of it is left. */
+        if (ix->unique && unique_taken(db, ix, &row, row.rowid)) {
+            cursor_close(&c);
+            free(row.cols);
+            return unique_failed(ix);
+        }
+        // @end
         index_add(db, ix, &row);
     }
     // @end
@@ -633,6 +723,13 @@ static int insert_row(Db *db, Table *t, Value *vals, Value rowid_val)
             goto done;
         }
     }
+    // @from 08.07
+    Row cand = {vals, t->ncols, rowid};
+    if (check_unique(db, t->indexes, &cand, NULL) < 0) {
+        rc = -1;
+        goto done;
+    }
+    // @end
     /* The record stores NULL for the INTEGER PRIMARY KEY column: the rowid
      * already holds its value. */
     Value saved = {0};
@@ -796,6 +893,37 @@ static int index_changes(Index *ix, Row *old, Value *newv, i64 newid)
 }
 // @end
 
+// @from 08.07
+/* Orders rowids, for qsort(). */
+static int rowid_cmp(const void *pa, const void *pb)
+{
+    i64 a = *(const i64 *)pa, b = *(const i64 *)pb;
+    return a < b ? -1 : a > b;
+}
+
+/* Does sqlite3 change these rows in rowid order? It changes them in the
+ * order its scan finds them, unless the scan reads an index the UPDATE
+ * changes (or the rowid changes): then it collects the rowids first and
+ * visits them in rowid order (update.c, ONEPASS_OFF). With a UNIQUE
+ * column the order decides whether SET a = a + 1 fails. cols[i] is the
+ * column SET i assigns, -2 for the rowid itself. */
+static int update_in_rowid_order(Table *t, Expr *where, int *cols, int ncols)
+{
+    Access acc;
+    choose_access(t, where, &acc);
+    if (acc.kind != ACCESS_INDEX_EQ && acc.kind != ACCESS_INDEX_RANGE)
+        return 0;                    /* the table itself: rowid order already */
+    for (int i = 0; i < ncols; i++) {
+        if (cols[i] == -2 || cols[i] == t->rowid_col)
+            return 1;
+        for (int k = 0; k < acc.index->ncols; k++)
+            if (acc.index->cols[k] == cols[i])
+                return 1;
+    }
+    return 0;
+}
+// @end
+
 /* Executes UPDATE. Each SET expression is evaluated against the OLD row.
  * The new rowid is the old one, or the new INTEGER PRIMARY KEY value; if it
  * changed, no other row may have it. A row leaves the indexes whose entry
@@ -824,6 +952,10 @@ static int exec_update(Db *db, Stmt *s)
     i64 *ids, n;
     if (collect_rowids(db, t, s->where, &ids, &n) < 0)
         return -1;
+    // @from 08.07
+    if (update_in_rowid_order(t, s->where, cols, s->nnames))
+        qsort(ids, (size_t)n, sizeof *ids, rowid_cmp);
+    // @end
     Value *oldv = xcalloc((size_t)t->ncols + 1, sizeof(Value));
     Value *newv = xcalloc((size_t)t->ncols + 1, sizeof(Value));
     Buf rec = {0};
@@ -883,6 +1015,13 @@ static int exec_update(Db *db, Stmt *s)
         }
         if (rc)
             break;
+        // @from 08.07
+        Row cand = {newv, t->ncols, newid};
+        if (check_unique(db, t->indexes, &cand, &old) < 0) {
+            rc = -1;
+            break;
+        }
+        // @end
         // @from 05.01
         for (Index *ix = t->indexes; ix; ix = ix->next)
             if (index_changes(ix, &old, newv, newid))

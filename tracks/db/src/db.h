@@ -340,6 +340,16 @@ typedef struct ColumnDef {
     Expr *dflt;
 } ColumnDef;
 
+// @from 08.07
+typedef struct Unique {          /* a UNIQUE or PRIMARY KEY constraint of CREATE TABLE */
+    const char **names;          /* its columns, in the order written */
+    int nnames;
+    int primary_key;
+    int column;                  /* written on a column, not after the columns */
+    int desc;                    /* a column of it is DESC */
+} Unique;
+// @end
+
 typedef struct OrderTerm {
     Expr *e;
     int desc;
@@ -379,6 +389,10 @@ typedef struct Stmt {
     /* CREATE TABLE */
     ColumnDef *defs;
     int ndefs;
+    // @from 08.07
+    Unique *uniques;             /* its UNIQUE and PRIMARY KEY constraints, in the order written */
+    int nuniques;
+    // @end
     const char *unsupported;     /* a feature we parsed but do not support */
     /* CREATE INDEX: names[] are the indexed columns; unique */
     int unique;
@@ -421,6 +435,7 @@ typedef struct Index {
     u32 root;
     int ncols;
     int cols[8];                 /* column numbers in the table */
+    int unique;                  /* no two rows hold the same values in its columns, NULLs aside */ // @from 08.07
     struct Index *next;
 } Index;
 
@@ -449,6 +464,7 @@ Index *find_index(struct Db *db, const char *name, Table **owner);
 int affinity_of(const char *type);
 int create_table(struct Db *db, Stmt *s);
 int create_index(struct Db *db, Stmt *s);  // @from 05.01
+int rowid_constraint(Stmt *s, const Unique *u);  /* the INTEGER PRIMARY KEY's column, or -1 */ // @from 08.07
 int drop_object(struct Db *db, Stmt *s);
 int table_refused(Table *t);    /* sets the error for a table we cannot write or read; returns -1 */
 void schema_insert_row(struct Db *db, const char *type, const char *name, const char *tbl, u32 root, const char *sql);
