@@ -326,6 +326,9 @@ def test(t):
     compare(t, a3, b3, "SELECT id, length(pad), sum(r) FROM p WHERE id % 500 = 0;\n")
     compare(t, a3, b3, "SELECT max(p.pad), count(*) FROM p, q WHERE q.id < 3;\n")
 
+    # a quick slice of the fuzzer: random tables, rows and aggregate queries, against sqlite3
+    tr.fuzz(t, "join,aggregate", n=300, seed=1)
+
     # the join and the one-table core are untouched: 08.01's test (it runs 05.03's too)
     load_test(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            "0801_two_tables_in_one_query_the_nested_loop_join.py")).test(t)

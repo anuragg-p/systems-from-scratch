@@ -430,6 +430,9 @@ def test(t):
     compare(t, a4, b4, "SELECT p.k % 10, count(DISTINCT q.name), count(*) FROM p JOIN q ON q.id = p.k GROUP BY 1 "
                        "HAVING count(*) > 10 ORDER BY 2 DESC, 1;\n")
 
+    # a quick slice of the fuzzer: random GROUP BY, HAVING and DISTINCT queries, against sqlite3
+    tr.fuzz(t, "join,aggregate,groupby,distinct", n=300, seed=1)
+
     # aggregates over the whole input, and the join and the core, are untouched: 08.04's test
     load_test(os.path.join(os.path.dirname(os.path.abspath(__file__)), "0804_aggregates_one_row_from_many.py")).test(t)
     # and the sqllogictest slice, with SQL that groups or takes DISTINCT no longer skipped
