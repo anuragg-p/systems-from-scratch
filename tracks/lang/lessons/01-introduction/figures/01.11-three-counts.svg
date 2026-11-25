@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 204" fill="none">
+<title>Instructions run for the same answer, 21: by hand, compiled, and improved</title>
+<defs><marker id="tc0111-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tc0111-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="tc0111-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11.5">./machine --count on 1071 462; each prints 21</text>
+<text class="t" x="136" y="57" font-size="13.5" font-weight="700" text-anchor="end">by hand</text>
+<text class="tm mono" x="136" y="72" font-size="11" text-anchor="end">gcd.s</text>
+<rect class="s fs" x="150" y="42" width="149.3" height="34" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="309.3" y="65" font-size="17" font-weight="700">53</text>
+<text class="t" x="136" y="113" font-size="13.5" font-weight="700" text-anchor="end">compiled</text>
+<text class="tm mono" x="136" y="128" font-size="11" text-anchor="end">mote -S</text>
+<rect class="a af" x="150" y="98" width="400" height="34" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="560" y="121" font-size="17" font-weight="700">142</text>
+<text class="t" x="136" y="169" font-size="13.5" font-weight="700" text-anchor="end">improved</text>
+<text class="tm mono" x="136" y="184" font-size="11" text-anchor="end">mote -S -O</text>
+<rect class="a af" x="150" y="154" width="171.83" height="34" rx="4" stroke-width="1.5"/>
+<text class="t mono" x="331.83" y="177" font-size="17" font-weight="700">61</text>
+<line class="s" x1="299.3" y1="147" x2="299.3" y2="195" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<text class="tm" x="367.83" y="169" font-size="11.5">8 more than by hand:</text>
+<text class="tm" x="367.83" y="184" font-size="11.5">j .L4, a jump to a jump</text>
+</svg>

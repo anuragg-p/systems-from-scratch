@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 282" fill="none">
+<title>Which variables get a register: counted by use, the most used first, eleven at most</title>
+<defs><marker id="wg0111-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="wg0111-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="wg0111-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="24" y="22" font-size="11.5">primes.mote: each variable&#x27;s appearances in the tree</text>
+<text class="tm" x="560" y="22" font-size="11.5" text-anchor="middle">register</text>
+<text class="t mono" x="84" y="58" font-size="14" font-weight="700" text-anchor="end">p</text>
+<rect class="a af" x="96" y="40" width="320" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="424" y="58" font-size="14" font-weight="700">8</text>
+<rect class="a af" x="536" y="41" width="48" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="560" y="57.55" font-size="13" font-weight="700" text-anchor="middle">s1</text>
+<text class="t mono" x="84" y="96" font-size="14" font-weight="700" text-anchor="end">d</text>
+<rect class="a af" x="96" y="78" width="280" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="384" y="96" font-size="14" font-weight="700">7</text>
+<rect class="a af" x="536" y="79" width="48" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="560" y="95.55" font-size="13" font-weight="700" text-anchor="middle">s2</text>
+<text class="t mono" x="84" y="134" font-size="14" font-weight="700" text-anchor="end">prime</text>
+<rect class="a af" x="96" y="116" width="120" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="224" y="134" font-size="14" font-weight="700">3</text>
+<rect class="a af" x="536" y="117" width="48" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="560" y="133.55" font-size="13" font-weight="700" text-anchor="middle">s3</text>
+<text class="t mono" x="84" y="172" font-size="14" font-weight="700" text-anchor="end">n</text>
+<rect class="a af" x="96" y="154" width="80" height="26" rx="3" stroke-width="1.5"/>
+<text class="t mono" x="184" y="172" font-size="14" font-weight="700">2</text>
+<rect class="a af" x="536" y="155" width="48" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="560" y="171.55" font-size="13" font-weight="700" text-anchor="middle">s4</text>
+<text class="tm" x="24" y="210" font-size="11.5">s1 to s11: the eleven registers the improver hands out</text>
+<rect class="a af" x="24" y="220" width="48" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="48" y="236.5" font-size="12" font-weight="700" text-anchor="middle">s1</text>
+<rect class="a af" x="78" y="220" width="48" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="102" y="236.5" font-size="12" font-weight="700" text-anchor="middle">s2</text>
+<rect class="a af" x="132" y="220" width="48" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="156" y="236.5" font-size="12" font-weight="700" text-anchor="middle">s3</text>
+<rect class="a af" x="186" y="220" width="48" height="24" rx="12" stroke-width="1.5"/>
+<text class="ta mono" x="210" y="236.5" font-size="12" font-weight="700" text-anchor="middle">s4</text>
+<rect class="m f" x="240" y="220" width="48" height="24" rx="12" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="264" y="236.5" font-size="12" text-anchor="middle">s5</text>
+<rect class="m f" x="294" y="220" width="48" height="24" rx="12" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="318" y="236.5" font-size="12" text-anchor="middle">s6</text>
+<rect class="m f" x="348" y="220" width="48" height="24" rx="12" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="372" y="236.5" font-size="12" text-anchor="middle">s7</text>
+<rect class="m f" x="402" y="220" width="48" height="24" rx="12" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="426" y="236.5" font-size="12" text-anchor="middle">s8</text>
+<rect class="m f" x="456" y="220" width="48" height="24" rx="12" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="480" y="236.5" font-size="12" text-anchor="middle">s9</text>
+<rect class="m f" x="510" y="220" width="48" height="24" rx="12" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="534" y="236.5" font-size="12" text-anchor="middle">s10</text>
+<rect class="m f" x="564" y="220" width="48" height="24" rx="12" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="588" y="236.5" font-size="12" text-anchor="middle">s11</text>
+<text class="t" x="24" y="268" font-size="12">A twelfth variable gets none: it keeps its slot in memory, with ld and sd.</text>
+</svg>
