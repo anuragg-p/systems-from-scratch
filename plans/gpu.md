@@ -251,6 +251,41 @@ of the tolerance, stop and report instead of loosening it.
 
 Every bug found while building becomes a case in that lesson's test.
 
+## Decisions from the sources (2026-11-25, research notes in tracks/gpu)
+
+- **The generator is llama2.c's, bit for bit** (run.c at commit 350e04fe):
+  shifts 12 right, 25 left, 27 right, multiplier 0x2545F4914F6CDD1D, the
+  top 32 bits; the float is `(u32 >> 8) / 16777216.0f`; the seed is the
+  state. A seed of 0 stays 0 forever, so `wb` and `mm` refuse it; rng_u32
+  itself is the raw generator and says so. (llama2.c avoids it by replacing
+  a seed <= 0 with the time.)
+- **No fused multiply-add behind the reader's back.** Clang fuses `a*b+c`
+  by default, GCC 14 under -std=c11 does not, older GCC does more. Every
+  file but matmul_simd.c is built with `-ffp-contract=off`, so the scalar
+  variants round the same everywhere; matmul_simd.c is built with
+  `-ffp-contract=fast` and 01.04 says that its last bits differ for that
+  reason.
+- **Vectorizer off** for the scalar files with `-fno-tree-vectorize
+  -fno-tree-slp-vectorize`: clang takes GCC's spelling of these two (and
+  rejects `-fno-tree-loop-vectorize`). GCC vectorizes at -O2 only from
+  version 12.
+- **Accelerate** needs `-DACCELERATE_NEW_LAPACK`, or cblas_sgemm is
+  deprecated and -Werror stops the build.
+- **The fastest run is the headline** on the authority of Julia's
+  BenchmarkTools (its `@btime` prints the minimum, and its manual argues
+  for it). hyperfine prints the mean and keeps the first run unless told
+  `--warmup`; Google Benchmark reports means. 00.03 names all three and
+  says what each choice costs.
+- **Cache sizes for 01.02 and 01.03** come from the machine, not from a
+  table: on Apple silicon `hw.l1dcachesize` is the efficiency core's
+  (64 KiB); the performance core's is `hw.perflevel0.l1dcachesize`
+  (128 KiB on the M4 Pro, lines of 128 bytes, 16 MiB of L2 shared by five
+  cores). The lesson shows the command for macOS and for Linux.
+- Not confirmed, so not to be stated: how Accelerate's sgemm is built;
+  any AMD cache figure; speed-ups that the Goto paper and Algorithmica
+  give only in charts. CS:APP chapter 6 has not been read by anyone yet:
+  cite it in Go deeper by chapter only.
+
 ## Build order
 
 1. Code and tests for modules 00 and 01 (one Opus agent, a worktree), with a
