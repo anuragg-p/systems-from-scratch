@@ -614,10 +614,18 @@ struct Op {
     // @end
     // @from 08.04
     struct Query *q;             /* Aggregate: the query, whose aggregates hold the running state */
+    // @from 08.05
     Row grp;                     /* Aggregate: the group's own row, what a bare column reads */
+    // @else
+    // Row grp;                     /* Aggregate: the kept row, what a bare column reads */
+    // @end
     Arena grpa;                  /* Aggregate: grp's text and blobs, kept */
     Arena outa;                  /* Aggregate: the row handed up, kept until the next call */
+    // @from 08.05
     i64 ingroup;                 /* Aggregate: rows of the current group stepped so far */
+    // @else
+    // i64 ingroup;                 /* Aggregate: rows stepped so far */
+    // @end
     int hit;                     /* Aggregate: the last min() or max() did not take the last row */
     // @end
     // @from 08.05
@@ -633,8 +641,13 @@ struct Op {
 // @from 08.04
 enum { AGG_COUNT_STAR, AGG_COUNT, AGG_SUM, AGG_TOTAL, AGG_AVG, AGG_MIN, AGG_MAX };
 
+// @from 08.05
 /* One aggregate call of a query, and its running state: cleared for each
  * group, stepped once per row, finished into the group's answer. */
+// @else
+// /* One aggregate call of a query, and its running state: cleared before
+//  * the first row, stepped once per row, finished into the answer. */
+// @end
 typedef struct Agg {
     int fn;                      /* AGG_COUNT_STAR ... AGG_MAX */
     Expr *call;                  /* the call as written, for EXPLAIN and its name */
@@ -663,8 +676,13 @@ typedef struct Query {
     // @from 08.04
     Agg *aggs;                   /* the aggregate calls the query makes, each once */
     int naggs;
+    // @from 08.05
     int aggregate;               /* an aggregate query: a row per group of rows, not per row */
     int minmax;                  /* it has a min() or max(): the group's row is the row that set it */
+    // @else
+    // int aggregate;               /* an aggregate query: one row from all its rows, not one per row */
+    // int minmax;                  /* it has a min() or max(): the kept row is the row that set it */
+    // @end
     // @end
 } Query;
 // @end

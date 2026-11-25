@@ -568,7 +568,8 @@ int choose_join_access(Query *q, int k, Expr **terms, int nterms, Access *acc)
     // TCOL_ROWID also takes the INTEGER PRIMARY KEY) makes it a rowid
     // lookup. Then each index in turn, by its first column: a term on that
     // column whose key index_affinity_ok() allows makes it an index
-    // lookup. Set kind, index, lo = hi = the key, both bounds inclusive.
+    // lookup. Set kind, index, lo = hi = the key, both bounds inclusive;
+    // no key leaves the ACCESS_SCAN set above. Return 0.
     if (it->left) {
         nterms = conjuncts(it->on, own, 0, 64);
         terms = own;
@@ -643,8 +644,13 @@ static int plan_top(Db *db, Query *q, Plan *plan, Op *op)
     if (s->distinct)
         op = op_distinct(db, op, q->cols, q->ncols);
     // @end
+    // @from 08.05
     /* An aggregate query without GROUP BY has one row, which needs no
      * sort: sqlite3 drops its ORDER BY too (select.c, sSort.pOrderBy = 0). */
+    // @else
+    // /* An aggregate query has one row, which needs no sort: sqlite3 drops
+    //  * its ORDER BY too (select.c, sSort.pOrderBy = 0). */
+    // @end
     // @from 08.05
     if (s->norder && !(q->aggregate && !s->ngroup)) {
     // @else
@@ -667,6 +673,7 @@ static int plan_top(Db *db, Query *q, Plan *plan, Op *op)
 // @end
 
 // @from 08.04
+// @from 08.05
 /* Builds the operator tree for the query q. A query of one table that is
  * no more than the core's (no aggregate, GROUP BY or DISTINCT) gets
  * plan_query()'s plan, exactly as before joins came; any other query of
@@ -675,6 +682,16 @@ static int plan_top(Db *db, Query *q, Plan *plan, Op *op)
  * written: a scan of item 0, then for each later item a Join with a scan
  * of it, each condition checked as soon as the row holds every table it
  * names; then the rest (plan_top). */
+// @else
+// /* Builds the operator tree for the query q. A query of one table that is
+//  * no more than the core's (no aggregate) gets plan_query()'s plan,
+//  * exactly as before joins came; an aggregate query of one table gets the
+//  * scan and filter of that plan, with the rest on top (plan_top). A join
+//  * is planned left-deep, in the order the tables are written: a scan of
+//  * item 0, then for each later item a Join with a scan of it, each
+//  * condition checked as soon as the row holds every table it names; then
+//  * the rest (plan_top). */
+// @end
 // @else
 // /* Builds the operator tree for the query q. With one table it is
 //  * plan_query()'s plan, exactly as before joins came. A join is planned
@@ -730,10 +747,16 @@ int plan_select(Db *db, Query *q, Plan *plan)
     // @build 08.01 where each condition is checked
     // An inner join's ON means what WHERE means, so both are one list of
     // terms, and each term is checked as soon as it can be: in a Filter
-    // right above the operator that brings the last table it names
-    // (terms_at). Item 0 is read the way its own terms allow
-    // (choose_access, as for one table); every later item is scanned
-    // whole, once for each row the join below it hands up, and joined on.
+    // (op_filter) right above the operator that brings the last table it
+    // names (terms_at(..., k) is the AND of item k's). Item 0 is read the
+    // way its own terms allow (choose_access into plan->jacc[0], then
+    // item_scan, as for one table); every later item is scanned whole
+    // (ACCESS_SCAN in its plan->jacc), once for each row the join below
+    // it hands up: op = op_join() of op and that scan, with table 0 as
+    // left_table for item 1 only (its left side is table 0's own scan),
+    // and its row as wide as the items up to it (its base, its columns
+    // and its rowid). choose_access() or a scan failing: return -1,
+    // closing the tree built so far.
     // @from 08.02
     for (int k = 1; k < sc->nfrom; k++)
         if (sc->from[k].left && last_table(sc->from[k].on) > k)
