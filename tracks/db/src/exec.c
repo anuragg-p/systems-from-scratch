@@ -49,8 +49,18 @@ void op_close(Op *op)
         cursor_close(&op->cur);
         cursor_close(&op->icur);  // @from 05.02
         buf_free(&op->key);  // @from 05.02
-        if (op->table)              /* only a scan allocates the row it hands out */
+        // @from 08.01
+        if (op->table || op->inner)     /* a scan and a join allocate the row they hand out */
             free(op->row.cols);
+        op_close(op->inner);
+        if (op->hold.head) {
+            arena_reset(&op->hold);
+            free(op->hold.head);
+        }
+        // @else
+        // if (op->table)              /* only a scan allocates the row it hands out */
+        //     free(op->row.cols);
+        // @end
         // @from 04.03
         free(op->rows);
         if (op->sort_arena.head) {
@@ -501,6 +511,85 @@ Op *op_limit(Db *db, Op *child, i64 limit, i64 offset)
     char *d = arena_alloc(&db->stmt, 64);
     snprintf(d, 64, "%lld offset %lld", (long long)limit, (long long)offset);
     op->detail = d;
+    return op;
+}
+// @end
+
+// @from 08.01
+/* ------------------------------------------------------------ Join (08.01) */
+
+/* The nested loop: for each row of the left side (the outer loop), every
+ * row of the inner table, each pair handed up as one joined row. The row
+ * holds the tables side by side: the left side's values in the first
+ * lwidth slots, then the inner table's columns, then its rowid.
+ *
+ * The outer row is kept for the whole inner loop, across many calls to the
+ * inner side's next() and many output rows, and the statement loop may
+ * evict pages between output rows (pager_shrink): so its text and blobs
+ * are copied into the operator's own arena (keep()), which is emptied when
+ * the next outer row comes. The inner row is not kept: it is good until
+ * the next call, as a scan's row is. */
+static int join_next(Op *op, Row **out)
+{
+    // @build 08.01 the nested loop
+    // With no outer row in hand, pull one from the left side (none left:
+    // the join is done), copy its values into the first slots, and start
+    // the inner side again from its first row. When the left side is table
+    // 0's own scan (op->table), its rowid is in the row, not in a slot:
+    // put it in the slot after its columns. Then pull an inner row; when
+    // the inner side runs out, drop the outer row and go round. Otherwise
+    // copy the inner row's values and rowid in and hand the row up.
+    for (;;) {
+        if (!op->have_outer) {
+            Row *l;
+            int rc = op->child->next(op->child, &l);
+            if (rc <= 0)
+                return rc;
+            arena_reset(&op->hold);
+            int n = op->table ? op->table->ncols : op->lwidth;
+            for (int i = 0; i < n; i++)
+                op->row.cols[i] = keep(&op->hold, l->cols[i]);
+            if (op->table) {
+                memset(&op->row.cols[n], 0, sizeof(Value));
+                op->row.cols[n].type = V_INT;
+                op->row.cols[n].i = l->rowid;
+            }
+            op->have_outer = 1;
+            op->inner->started = 0;
+        }
+        Row *r;
+        int rc = op->inner->next(op->inner, &r);
+        if (rc < 0)
+            return -1;
+        if (rc == 0) {
+            op->have_outer = 0;
+            continue;
+        }
+        Value *slot = op->row.cols + op->lwidth;
+        for (int i = 0; i < r->ncols; i++)
+            slot[i] = r->cols[i];
+        memset(&slot[r->ncols], 0, sizeof(Value));
+        slot[r->ncols].type = V_INT;
+        slot[r->ncols].i = r->rowid;
+        *out = &op->row;
+        return 1;
+    }
+    // @end
+}
+
+/* Returns the Join of left (the outer loop) with inner, a scan of item's
+ * table, which takes the slots from item->base on. Its rows are width
+ * values. left_table is table 0 when left hands up table 0's own rows (the
+ * first join), NULL when it hands up joined rows; it is kept in op->table. */
+Op *op_join(Db *db, Op *left, Op *inner, FromItem *item, Table *left_table, int width)
+{
+    Op *op = new_op(db, "Join", join_next);
+    op->child = left;
+    op->inner = inner;
+    op->table = left_table;
+    op->lwidth = item->base;
+    op->row.cols = xcalloc((size_t)width, sizeof(Value));
+    op->row.ncols = width;
     return op;
 }
 // @end
@@ -991,55 +1080,241 @@ static Expr *order_target(Stmt *s, Table *t, Expr *e, Expr **cols, int ncols)
 }
 // @end
 
-/* Executes SELECT: expands *, resolves names, plans, then streams the
- * plan's rows through the result expressions. */
-static int exec_select(Db *db, Stmt *s)
+// @from 08.01
+/* The name a FROM item answers to in q.c and q.*: its alias if it has one,
+ * else its table's name. */
+static const char *item_name(FromItem *it)
 {
-    Table *t = NULL;
-    if (s->table) {
-        t = find_table(db, s->table);
-        if (!t)
-            return err("no such table: %s", s->table);
-        if (t->opaque)
-            return table_refused(t);
+    return it->alias ? it->alias : it->t->name;
+}
+
+/* True if column col of FROM item k is ambiguous when * names it: another
+ * item answers to the same name and has a column called that too. sqlite3
+ * writes such a column as main.<name>.<col>, which cannot tell them apart. */
+static int star_ambiguous(Stmt *s, int k, const char *col)
+{
+    for (int j = 0; j < s->nfrom; j++) {
+        if (j == k || strcasecmp(item_name(&s->from[j]), item_name(&s->from[k])) != 0)
+            continue;
+        for (int c = 0; c < s->from[j].t->ncols; c++)
+            if (strcasecmp(s->from[j].t->cols[c].name, col) == 0)
+                return 1;
     }
-    /* Expand * and resolve every name. */
+    return 0;
+}
+
+/* sqlite3's ordinal ending for n: 1st, 2nd, 3rd, 4th, 11th, 21st, ... */
+static const char *ordinal(int n)
+{
+    int x = n % 10;
+    if (x >= 4 || (n / 10) % 10 == 1)
+        x = 0;
+    return (const char *[]){"th", "st", "nd", "rd"}[x];
+}
+
+/* What ORDER BY term i (from 0) of a join stands for, as sqlite3 reads it
+ * (resolveOrderGroupBy() in resolve.c): a bare name that is the name of a
+ * result column (its alias, or the column a * stands for) is the first
+ * such column; a number k is result column k, and there must be one;
+ * anything else is an expression of its own. names[k] is result column k's
+ * name, or NULL. Sets *out; returns 0, or -1 with the error set. */
+static int join_order_target(Expr *e, int i, Expr **cols, const char **names, int ncols, Expr **out)
+{
+    *out = e;
+    if (e->op == E_COLUMN && !e->qual) {
+        for (int k = 0; k < ncols; k++) {
+            if (names[k] && strcasecmp(names[k], e->name) == 0) {
+                *out = cols[k];
+                return 0;
+            }
+        }
+    }
+    if (e->op == E_INT) {
+        if (e->v.i < 1 || e->v.i > ncols)
+            return err("%d%s ORDER BY term out of range - should be between 1 and %d", i + 1, ordinal(i + 1), ncols);
+        *out = cols[e->v.i - 1];
+    }
+    return 0;
+}
+
+/* Makes the SELECT s ready to plan, into q. Binds each FROM item to its
+ * table (no such table; a table this engine cannot read is refused) and
+ * gives it its place in the joined row: its columns and then its rowid,
+ * from base on. Expands * into every item's columns, left to right, and
+ * x.* into item x's; binds the names in the result columns, WHERE, each
+ * ON, ORDER BY, LIMIT and OFFSET (resolve_names()). With one table ORDER
+ * BY reads its terms as the core always has (order_target()); a join reads
+ * them as sqlite3 does (join_order_target()). outer is the query this one
+ * is inside, NULL for a statement's own. Returns 0, or -1 with the error
+ * set. */
+static int select_resolve(Db *db, Stmt *s, Scope *outer, Query *q)
+{
+    (void)outer;
+    memset(q, 0, sizeof *q);
+    q->s = s;
+    q->scope.from = s->from;
+    q->scope.nfrom = s->nfrom;
+    for (int k = 0; k < s->nfrom; k++) {
+        FromItem *it = &s->from[k];
+        it->t = find_table(db, it->table);
+        if (!it->t)
+            return err("no such table: %s", it->table);
+        if (it->t->opaque)
+            return table_refused(it->t);
+        it->base = q->width;
+        q->width += it->t->ncols + 1;
+    }
+    Table *t = s->nfrom ? s->from[0].t : NULL;
+    /* How many result columns: a * counts the columns it stands for. */
     int n = 0;
-    for (int i = 0; i < s->ncols; i++)
-        n += s->cols[i].e ? 1 : (t ? t->ncols : 0);
+    for (int i = 0; i < s->ncols; i++) {
+        ResultCol *rc = &s->cols[i];
+        if (rc->e) {
+            n++;
+            continue;
+        }
+        int seen = 0;
+        for (int k = 0; k < s->nfrom; k++) {
+            if (!rc->star_of || strcasecmp(rc->star_of, item_name(&s->from[k])) == 0) {
+                n += s->from[k].t->ncols;
+                seen = 1;
+            }
+        }
+        if (!seen)
+            return rc->star_of ? err("no such table: %s", rc->star_of) : err("no tables specified");
+    }
     if (n == 0)
         return err(t ? "no columns" : "no tables specified");
     Expr **cols = arena_alloc(&db->stmt, (size_t)n * sizeof(Expr *));
+    const char **names = arena_alloc(&db->stmt, (size_t)n * sizeof(char *));
     n = 0;
     for (int i = 0; i < s->ncols; i++) {
-        if (s->cols[i].e) {
-            if (resolve_expr(s->cols[i].e, t, s->alias) < 0)
+        ResultCol *rc = &s->cols[i];
+        if (rc->e) {
+            if (resolve_names(db, rc->e, &q->scope) < 0)
                 return -1;
-            cols[n++] = s->cols[i].e;
+            names[n] = rc->alias;
+            cols[n++] = rc->e;
             continue;
         }
-        for (int c = 0; c < t->ncols; c++) {
-            Expr *e = arena_alloc(&db->stmt, sizeof *e);
-            e->op = E_COLUMN;
-            e->name = t->cols[c].name;
-            e->col = c;
-            e->aff = t->cols[c].affinity;
-            cols[n++] = e;
+        for (int k = 0; k < s->nfrom; k++) {
+            FromItem *it = &s->from[k];
+            if (rc->star_of && strcasecmp(rc->star_of, item_name(it)) != 0)
+                continue;
+            for (int c = 0; c < it->t->ncols; c++) {
+                Expr *e = arena_alloc(&db->stmt, sizeof *e);
+                e->op = E_COLUMN;
+                e->name = it->t->cols[c].name;
+                e->col = it->base + c;
+                e->aff = it->t->cols[c].affinity;
+                e->tab = k;
+                e->tcol = c;
+                if (s->nfrom > 1) {
+                    e->qual = item_name(it);
+                    if (star_ambiguous(s, k, e->name))
+                        return err("ambiguous column name: main.%s.%s", e->qual, e->name);
+                }
+                names[n] = e->name;
+                cols[n++] = e;
+            }
         }
     }
-    if (resolve_expr(s->where, t, s->alias) < 0)
+    if (resolve_names(db, s->where, &q->scope) < 0)
         return -1;
-    // @from 04.03
-    for (int i = 0; i < s->norder; i++) {
-        s->order[i].e = order_target(s, t, s->order[i].e, cols, n);
-        if (resolve_expr(s->order[i].e, t, s->alias) < 0)
+    for (int k = 0; k < s->nfrom; k++)
+        if (resolve_names(db, s->from[k].on, &q->scope) < 0)
             return -1;
+    for (int i = 0; i < s->norder; i++) {
+        Expr *e = s->order[i].e;
+        if (s->nfrom <= 1)
+            s->order[i].e = order_target(s, t, e, cols, n);
+        else if (join_order_target(e, i, cols, names, n, &s->order[i].e) < 0)
+            return -1;
+        if (s->order[i].e == e && resolve_names(db, e, &q->scope) < 0)
+            return -1;      /* a result column is bound already */
     }
-    // @end
-    if (resolve_expr(s->limit, NULL, NULL) < 0 || resolve_expr(s->offset, NULL, NULL) < 0)
+    Scope none = {0};
+    if (resolve_names(db, s->limit, &none) < 0 || resolve_names(db, s->offset, &none) < 0)
         return -1;
+    q->cols = cols;
+    q->ncols = n;
+    return 0;
+}
+// @end
+
+// @from 08.01
+/* Executes SELECT: makes it ready (select_resolve), plans it, then streams
+ * the plan's rows through the result expressions. */
+// @else
+// /* Executes SELECT: expands *, resolves names, plans, then streams the
+//  * plan's rows through the result expressions. */
+// @end
+static int exec_select(Db *db, Stmt *s)
+{
+    // @from 08.01
+    Query q;
+    if (select_resolve(db, s, NULL, &q) < 0)
+        return -1;
+    Table *t = q.scope.nfrom ? q.scope.from[0].t : NULL;
+    Expr **cols = q.cols;
+    int n = q.ncols;
+    // @else
+    // Table *t = NULL;
+    // if (s->table) {
+    //     t = find_table(db, s->table);
+    //     if (!t)
+    //         return err("no such table: %s", s->table);
+    //     if (t->opaque)
+    //         return table_refused(t);
+    // }
+    // /* Expand * and resolve every name. */
+    // int n = 0;
+    // for (int i = 0; i < s->ncols; i++)
+    //     n += s->cols[i].e ? 1 : (t ? t->ncols : 0);
+    // if (n == 0)
+    //     return err(t ? "no columns" : "no tables specified");
+    // Expr **cols = arena_alloc(&db->stmt, (size_t)n * sizeof(Expr *));
+    // n = 0;
+    // for (int i = 0; i < s->ncols; i++) {
+    //     if (s->cols[i].e) {
+    //         if (resolve_expr(s->cols[i].e, t, s->alias) < 0)
+    //             return -1;
+    //         cols[n++] = s->cols[i].e;
+    //         continue;
+    //     }
+    //     for (int c = 0; c < t->ncols; c++) {
+    //         Expr *e = arena_alloc(&db->stmt, sizeof *e);
+    //         e->op = E_COLUMN;
+    //         e->name = t->cols[c].name;
+    //         e->col = c;
+    //         e->aff = t->cols[c].affinity;
+    //         cols[n++] = e;
+    //     }
+    // }
+    // if (resolve_expr(s->where, t, s->alias) < 0)
+    //     return -1;
+    // @end
+    // @from 04.03
+    // @from 08.01
+    // @else
+    // for (int i = 0; i < s->norder; i++) {
+    //     s->order[i].e = order_target(s, t, s->order[i].e, cols, n);
+    //     if (resolve_expr(s->order[i].e, t, s->alias) < 0)
+    //         return -1;
+    // }
+    // @end
+    // @end
+    // @from 08.01
+    // @else
+    // if (resolve_expr(s->limit, NULL, NULL) < 0 || resolve_expr(s->offset, NULL, NULL) < 0)
+    //     return -1;
+    // @end
     Plan plan;
-    if (plan_query(db, t, s->where, s->order, s->norder, s->limit, s->offset, &plan) < 0)
+    // @from 08.01
+    if (plan_select(db, &q, &plan) < 0)
+    // @else
+    // if (plan_query(db, t, s->where, s->order, s->norder, s->limit, s->offset, &plan) < 0)
+    // @end
         return -1;
     // @from 05.03
     if (s->explain == 2) {

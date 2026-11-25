@@ -326,6 +326,10 @@ typedef struct Expr {
     const char *name;            /* column or function name */
     const char *qual;            /* table name before a dot, or NULL */
     int col;                     /* resolved column index (E_COLUMN) */
+    // @from 08.01
+    int tab;                     /* E_COLUMN: the FROM item it is bound to */
+    int tcol;                    /* and its column in that item's table, or TCOL_ROWID */
+    // @end
     int aff;                     /* a column's affinity, or -1: no affinity */
     struct Expr *a, *b, *c;      /* operands; c is BETWEEN's upper bound */
     struct Expr **list;          /* IN list and function arguments */
@@ -348,7 +352,20 @@ typedef struct OrderTerm {
 typedef struct ResultCol {
     Expr *e;                     /* NULL for * */
     const char *alias;
+    const char *star_of;         /* the x of x.*, or NULL */ // @from 08.01
 } ResultCol;
+
+// @from 08.01
+#define MAX_FROM 64              /* tables in one FROM clause: SQLite's limit */
+#define TCOL_ROWID (-1)          /* Expr.tcol of a name bound to a table's rowid */
+
+typedef struct FromItem {        /* one table of a FROM clause */
+    const char *table, *alias;
+    struct Expr *on;             /* its ON, or NULL */
+    struct Table *t;             /* bound by select_resolve() */
+    int base;                    /* where its columns start in the joined row */
+} FromItem;
+// @end
 
 enum {
     S_SELECT, S_INSERT, S_UPDATE, S_DELETE, S_CREATE_TABLE, S_CREATE_INDEX,
@@ -360,6 +377,10 @@ typedef struct Stmt {
     int explain;                 /* 1 = EXPLAIN, 2 = EXPLAIN QUERY PLAN */
     const char *table;           /* the table the statement is about */
     const char *alias;
+    // @from 08.01
+    FromItem *from;              /* SELECT: the FROM clause; from[0] is table and alias */
+    int nfrom;
+    // @end
     const char *name;            /* CREATE INDEX / DROP: the object */
     int if_exists, if_not_exists;
     /* SELECT */
@@ -476,6 +497,14 @@ void print_value(FILE *f, const Value *v);
 void format_real(double r, char *buf, size_t n);
 const char *expr_text(Arena *a, Expr *e);  // @from 04.02
 int resolve_expr(Expr *e, Table *t, const char *alias);
+// @from 08.01
+/* The tables a query's names can refer to: its FROM clause. */
+typedef struct Scope {
+    FromItem *from;
+    int nfrom;
+} Scope;
+int resolve_names(struct Db *db, Expr *e, Scope *sc);
+// @end
 int is_constant(Expr *e);
 
 /* ------------------------------------------------------------ plan.c, exec.c */
@@ -520,12 +549,33 @@ struct Op {
     Arena sort_arena;
     i64 limit, offset, seen;     /* Limit */
     // @end
+    // @from 08.01
+    Op *inner;                   /* Join: the table it reads once per outer row */
+    Arena hold;                  /* Join: the outer row's text and blobs, kept */
+    int have_outer;              /* Join: an outer row is in the first lwidth slots */
+    int lwidth;                  /* Join: slots taken by the tables before the inner one */
+    // @end
 };
+
+// @from 08.01
+/* A SELECT, bound and ready to plan. */
+typedef struct Query {
+    Stmt *s;
+    Scope scope;
+    Expr **cols;                 /* the result expressions, * expanded */
+    int ncols;
+    int width;                   /* values in a row of its FROM: every table's columns and rowid */
+} Query;
+// @end
 
 typedef struct Plan {
     Op *root;
     Access acc;  // @from 05.02
     int sorted;                  /* a Sort operator is in the plan */ // @from 04.03
+    // @from 08.01
+    Query *q;                    /* the query it answers */
+    Access *jacc;                /* a join: how each FROM item is read */
+    // @end
 } Plan;
 
 int choose_access(Table *t, Expr *where, Access *acc);  // @from 05.03
@@ -534,6 +584,10 @@ int plan_query(struct Db *db, Table *t, Expr *where, OrderTerm *order, int norde
                Expr *limit, Expr *offset, Plan *plan);
 void explain_query_plan(struct Db *db, Stmt *s, Table *t, Plan *plan);  // @from 05.03
 void explain_tree(struct Db *db, Stmt *s, Plan *plan);
+// @from 08.01
+int plan_select(struct Db *db, Query *q, Plan *plan);
+void explain_join_plan(struct Db *db, Plan *plan);
+// @end
 // @from 05.02
 Op *op_scan(struct Db *db, Table *t, Access *acc);
 // @else
@@ -542,6 +596,7 @@ Op *op_scan(struct Db *db, Table *t, Access *acc);
 Op *op_filter(struct Db *db, Op *child, Expr *pred);  // @from 04.02
 Op *op_sort(struct Db *db, Op *child, OrderTerm *order, int norder);  // @from 04.03
 Op *op_limit(struct Db *db, Op *child, i64 limit, i64 offset);  // @from 04.03
+Op *op_join(struct Db *db, Op *left, Op *inner, FromItem *item, Table *left_table, int width);  // @from 08.01
 void op_close(Op *op);
 // @end
 

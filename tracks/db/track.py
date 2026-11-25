@@ -33,9 +33,11 @@ Fixtures the lesson tests use:
                         read the file's bytes directly
     path(t, name)       a file in the test's scratch directory
     sqlite_bin()        the newest sqlite3 found ($SQLITE3 overrides)
-    sqllogictest(t)     SQLite's sqllogictest corpus through ./db (tests/sqllogictest,
+    sqllogictest(t, have=(), scripts=None)
+                        SQLite's sqllogictest corpus through ./db (tests/sqllogictest,
                         its README.md): a quick slice, or every kept script with
-                        SLT=full in the environment
+                        SLT=full in the environment; have names what module 08 added
+                        (join, aggregate, ...), which is then run instead of skipped
 
 Tests are internal. A lesson's test runs the whole engine, so with that
 lesson's code cut out it fails at the stub: "db: NN.LL: ... not written yet".
@@ -237,7 +239,16 @@ def timeline_boot(lesson_id):
     if k >= (6, 4):
         steps += [("PRAGMA journal_mode=wal;", _rows("wal")), ("INSERT INTO t VALUES (5, 'five', 5);", P),
                   ("PRAGMA journal_mode=delete;", _rows("delete"))]
+    # Module 08 (More SQL) is an extension: its lessons stand on the whole core above.
+    if lesson_id.startswith("08."):
+        steps += [(JOIN_QUERY, _rows("two|three", "three|four", "four|five"))]
+        if k < (8, 2):
+            steps += [("SELECT * FROM t LEFT JOIN t AS u ON u.id = t.b;", _refused("LEFT JOIN is not supported"))]
     return steps
+
+
+# 08.01 on: a self-join of the REPL's table t, each row with the row whose id is one more.
+JOIN_QUERY = "SELECT x.a, y.a FROM t AS x JOIN t AS y ON y.id = x.id + 1 ORDER BY x.id;"
 
 
 def timeline_after(root, lesson_id):
@@ -280,6 +291,11 @@ def timeline_after(root, lesson_id):
         if ours.rc != 0 or ours.out != real or not real:
             raise Fail(f"./db and sqlite3 read t differently:\n./db: {ours.out!r}\nsqlite3: {real!r}")
         notes.append(f"reads t like ./db, {len(real.splitlines())} rows")
+    if lesson_id.startswith("08."):
+        ours, real = mine(learn, JOIN_QUERY), theirs(learn, JOIN_QUERY)
+        if ours.rc != 0 or ours.out != real or not real:
+            raise Fail(f"./db and sqlite3 join t with itself differently:\n./db: {ours.out!r}\nsqlite3: {real!r}")
+        notes.append(f"joins t with itself like sqlite3, {len(real.splitlines())} rows")
     if k >= (3, 3):
         s3 = os.path.join(root, "s3.db")
         theirs(s3, "CREATE TABLE u(x, y); INSERT INTO u VALUES (1, 'a');")
@@ -634,19 +650,23 @@ def rows(text):
 
 # ---------------------------------------------------------------- sqllogictest
 
-def sqllogictest(t):
+def sqllogictest(t, have=(), scripts=None):
     """SQLite's own query corpus (tests/sqllogictest/runner.py) through ./db: the first
     records of each kept script, or every record with SLT=full in the environment. The
     real sqlite3 runs the same records first, a check of the runner itself (with SLT=full
-    also with ./db's skips and rewrites, a check that those lose nothing). Returns the
-    summaries; fails with them on any failed record."""
+    also with ./db's skips and rewrites, a check that those lose nothing). have: the
+    runner's --have categories, SQL the engine has from module 08 on (join, aggregate,
+    groupby, distinct, subquery, unique), which is then run, not skipped. scripts: files
+    or directories to run instead of the kept scripts. Returns the summaries; fails with
+    them on any failed record."""
     runner = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tests", "sqllogictest", "runner.py")
     full = os.environ.get("SLT") == "full"
     passes = [["--engine", "sqlite3"]] + ([["--engine", "sqlite3", "--like-db"]] if full else [])
     passes.append(["--db", os.path.join(t.root, "db")])
+    extra_args = (["--have", ",".join(have)] if have else []) + list(scripts or [])
     out = []
     for extra in passes:
-        argv = [sys.executable, runner] + ([] if full else ["--quick"]) + extra
+        argv = [sys.executable, runner] + ([] if full else ["--quick"]) + extra + extra_args
         try:
             r = subprocess.run(argv, capture_output=True, text=True, timeout=1800)
         except subprocess.TimeoutExpired:

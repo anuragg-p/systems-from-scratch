@@ -19,6 +19,10 @@ README.md (next to this file) says where the corpus comes from and under which l
     --limit N          run only the first N records of each file
     --autocommit       every statement its own transaction, as the corpus was written
                        (some 40 times slower); by default a script runs in one BEGIN ... COMMIT
+    --have a,b,...     categories the engine has now (db module 08): join, aggregate, groupby,
+                       distinct, subquery, unique. SQL of a category named here is no longer
+                       skipped for the look of it, and with unique, CREATE UNIQUE INDEX is sent
+                       as written; what ./db itself reports as "not supported" is still a skip
 
 What the corpus is: files of records. "statement ok|error" runs SQL that must succeed or
 fail; "query <types> <sort> [label]" runs a SELECT whose values, formatted by type (I
@@ -238,6 +242,9 @@ UNSUPPORTED = [
     ("REINDEX", re.compile(r"^\s*REINDEX\b", re.I)),
     ("ALTER TABLE", re.compile(r"^\s*ALTER\b", re.I)),
 ]
+# --have: a category the engine has, and the skip reasons it stops (see unsupported())
+HAVE = {"join": {"join"}, "aggregate": {"aggregate"}, "groupby": {"GROUP BY"}, "distinct": {"DISTINCT"},
+        "subquery": {"subquery"}, "unique": set()}
 # a pattern is tried only when the SQL has one of its words (most SQL has none of them)
 TRIGGERS = {"subquery": {"EXISTS"}, "view": {"VIEW"}, "trigger": {"TRIGGER"}, "join": {"JOIN"},
             "GROUP BY": {"GROUP", "HAVING"}, "compound SELECT": {"UNION", "EXCEPT", "INTERSECT"},
@@ -285,15 +292,18 @@ def _from_has_comma(b):
     return False
 
 
-def unsupported(sql):
-    """Why ./db cannot run this SQL, or None."""
+def unsupported(sql, have=()):
+    """Why ./db cannot run this SQL, or None. have: the --have categories, whose SQL it can."""
     b = bare(sql)
     words = [w.upper() for w in IDENT.findall(b)]
-    have = set(words)
+    seen = set(words)
+    known = set().union(*(HAVE[h] for h in have))
     for reason, pat in UNSUPPORTED:
-        if (have & TRIGGERS[reason] or (reason == "subquery" and words.count("SELECT") > 1)) and pat.search(b):
+        if reason in known:
+            continue
+        if (seen & TRIGGERS[reason] or (reason == "subquery" and words.count("SELECT") > 1)) and pat.search(b):
             return reason
-    if "," in b and _from_has_comma(b):
+    if "join" not in known and "," in b and _from_has_comma(b):
         return "join"
     if re.match(r"\s*CREATE\b", b, re.I):
         return None                 # column types such as VARCHAR(10) are not calls
@@ -302,6 +312,8 @@ def unsupported(sql):
         if f in NOT_CALLS or (m.group(1) or "").lower() in AFTER_NAME:
             continue
         if f in AGGREGATES:
+            if "aggregate" in known:
+                continue
             return "aggregate"
         if f not in FUNCS:
             return "function " + f
@@ -327,7 +339,7 @@ class Outcome:
 class Plan:
     """What the runner sends for one file: per record, the statements, or why it is skipped."""
 
-    def __init__(self, recs, emulate, skip_unsupported, limit=None):
+    def __init__(self, recs, emulate, skip_unsupported, limit=None, have=()):
         self.items = []             # (record, sql list or None, skip reason, emulation)
         tainted = {}                # lower name -> reason a later record is skipped
         filled = {}                 # table -> literal INSERT tails, while it has only those
@@ -358,12 +370,13 @@ class Plan:
                     if src in filled and dst in columns and columns.get(src) == columns[dst]:
                         out = [f"INSERT INTO {m.group(1)}{tail}" for tail in filled[src]]
                         how = "INSERT ... SELECT replayed as INSERTs"
-                elif ci and (ci.group(2) or re.search(r"\bDESC\b", ci.group(4), re.I)):
+                elif ci and ((ci.group(2) and "unique" not in have) or re.search(r"\bDESC\b", ci.group(4), re.I)):
                     cols = re.sub(r"\s+(ASC|DESC)\b", "", ci.group(4), flags=re.I)
-                    out = [f"{ci.group(1)}{ci.group(3)}({cols})"]
-                    how = "UNIQUE/DESC index made ordinary"
+                    unique = ci.group(2) if "unique" in have else ""
+                    out = [f"{ci.group(1)}{unique or ''}{ci.group(3)}({cols})"]
+                    how = "DESC index made ordinary" if unique else "UNIQUE/DESC index made ordinary"
             if not skip and skip_unsupported and how is None:
-                skip = unsupported(sql)
+                skip = unsupported(sql, have)
                 if not skip and r.kind == "statement" and INSERT_SELECT.match(sql):
                     skip = "INSERT ... SELECT"
             if skip:
@@ -472,7 +485,7 @@ TXN = re.compile(r"^\s*(BEGIN|COMMIT|END|ROLLBACK|SAVEPOINT|RELEASE|VACUUM|ATTAC
 
 
 def run_file(path, argv, emulate=True, skip_unsupported=True, limit=None, timeout=600, autocommit=False,
-             integrity=None):
+             integrity=None, have=()):
     """Run one script through an engine (argv, plus the database file) and classify each record.
 
     Unless autocommit is set (or the script runs transactions or pragmas of its own), the
@@ -481,7 +494,7 @@ def run_file(path, argv, emulate=True, skip_unsupported=True, limit=None, timeou
     the real sqlite3 then checks the file the engine wrote."""
     o = Outcome(path)
     start = time.monotonic()
-    plan = Plan(parse(path), emulate, skip_unsupported, limit)
+    plan = Plan(parse(path), emulate, skip_unsupported, limit, have)
     sent = []
     chunks = []
     for r, out, skip, how in plan.items:
@@ -618,14 +631,14 @@ def engine_argv(engine, db=None):
 
 
 def run(files, argv, emulate=True, skip_unsupported=True, jobs=None, limits=None, autocommit=False,
-        integrity=None, processes=False):
+        integrity=None, processes=False, have=()):
     """Run every file (limits: path -> record limit) and return the outcomes, in file order.
     The runner's own work is Python's, so files go to processes when run as a command."""
     limits = limits or {}
     pool = concurrent.futures.ProcessPoolExecutor if processes else concurrent.futures.ThreadPoolExecutor
     with pool(jobs or os.cpu_count() or 4) as ex:
         futs = [ex.submit(run_file, f, argv, emulate, skip_unsupported, limits.get(f), autocommit=autocommit,
-                          integrity=integrity) for f in files]
+                          integrity=integrity, have=have) for f in files]
         return [f.result() for f in futs]
 
 
@@ -674,7 +687,12 @@ def main(args):
     ap.add_argument("--show", type=int, default=10)
     ap.add_argument("--limit", type=int)
     ap.add_argument("--autocommit", action="store_true")
+    ap.add_argument("--have", default="")
     a = ap.parse_args(args)
+    have = tuple(h for h in a.have.split(",") if h)
+    for h in have:
+        if h not in HAVE:
+            ap.error(f"--have: unknown category {h!r} (one of {', '.join(HAVE)})")
     if a.quick:
         files = corpus_files(a.paths or [CORPUS])
         limits = {f: QUICK_RECORDS for f in files}
@@ -688,7 +706,7 @@ def main(args):
     t0 = time.monotonic()
     outcomes = run(files, argv, emulate=as_db and not a.strict, skip_unsupported=as_db, jobs=a.jobs,
                    limits=limits, autocommit=a.autocommit,
-                   integrity=engine_argv("sqlite3")[0] if a.engine == "db" else None, processes=True)
+                   integrity=engine_argv("sqlite3")[0] if a.engine == "db" else None, processes=True, have=have)
     print(summary(outcomes, time.monotonic() - t0, a.show))
     return 1 if any(o.failed for o in outcomes) else 0
 

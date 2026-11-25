@@ -10,6 +10,7 @@
  *
  *   SELECT result, ... [FROM t [AS alias]] [WHERE e] [ORDER BY e [ASC|DESC], ...]
  *          [LIMIT n [OFFSET m]]
+ *          where FROM may join tables: t, u ... or t [INNER|CROSS] JOIN u [ON e] ... @from 08.01
  *   INSERT INTO t [(col, ...)] VALUES (e, ...), ...
  *   UPDATE t SET col = e, ... [WHERE e]
  *   DELETE FROM t [WHERE e]
@@ -457,18 +458,154 @@ static Stmt *new_stmt(Parser *ps, int kind)
     return s;
 }
 
-/* Parses a SELECT into s. Each result column is * (e NULL; t.* reads as
- * * too) or an expression with an optional [AS] alias. The optional
+// @from 08.01
+/* True if the current token is the word w (in any case), which the
+ * tokenizer reads as a name, not a keyword. */
+static int at_word(Parser *ps, const char *w)
+{
+    return at(ps, TK_ID) && (size_t)ps->tok.n == strlen(w) && strncasecmp(ps->tok.s, w, (size_t)ps->tok.n) == 0;
+}
+
+/* True if the current token is a word that can start a join operator, or
+ * USING. These are names to the tokenizer (a column may be called left),
+ * so after a table name only this says they are not its alias. */
+static int at_join_word(Parser *ps)
+{
+    static const char *words[] = {"INNER", "CROSS", "LEFT", "RIGHT", "FULL", "OUTER", "NATURAL", "USING"};
+    for (size_t i = 0; i < sizeof words / sizeof words[0]; i++)
+        if (at_word(ps, words[i]))
+            return 1;
+    return 0;
+}
+
+/* Reads a join operator that starts with a word: one to three words, then
+ * JOIN. The words combine as in sqlite3 (sqlite3JoinType() in select.c):
+ * INNER and CROSS give an inner join; LEFT, RIGHT, FULL (with or without
+ * OUTER) and NATURAL are joins this engine does not have; any other mix is
+ * an unknown join type. Returns 0 for an inner join, or -1 with the error
+ * set. */
+static int join_type(Parser *ps)
+{
+    enum { NATURAL = 1, LEFT = 2, OUTER = 4, RIGHT = 8, INNER = 16, CROSS = 32, BAD = 64 };
+    static const struct { const char *word; int bits; } kw[] = {
+        {"NATURAL", NATURAL}, {"LEFT", LEFT | OUTER}, {"OUTER", OUTER}, {"RIGHT", RIGHT | OUTER},
+        {"FULL", LEFT | RIGHT | OUTER}, {"INNER", INNER}, {"CROSS", INNER | CROSS},
+    };
+    Token words[3];
+    int n = 0, bits = 0;
+    while (n < 3 && at(ps, TK_ID)) {
+        int b = BAD;
+        for (size_t i = 0; i < sizeof kw / sizeof kw[0]; i++)
+            if (at_word(ps, kw[i].word))
+                b = kw[i].bits;
+        bits |= b;
+        words[n++] = ps->tok;
+        advance(ps);
+    }
+    if (!expect(ps, TK_JOIN))
+        return -1;
+    if ((bits & (INNER | OUTER)) == (INNER | OUTER) || (bits & BAD) || (bits & (OUTER | LEFT | RIGHT)) == OUTER) {
+        char text[200];
+        int k = 0;
+        for (int i = 0; i < n; i++)
+            k += snprintf(text + k, sizeof text - (size_t)k, "%s%.*s", i ? " " : "", words[i].n > 60 ? 60 : words[i].n,
+                          words[i].s);
+        return err("unknown join type: %s", text);
+    }
+    if (bits & NATURAL)
+        return err("NATURAL JOIN is not supported");
+    if ((bits & (LEFT | RIGHT)) == (LEFT | RIGHT))
+        return err("FULL JOIN is not supported");
+    if (bits & RIGHT)
+        return err("RIGHT JOIN is not supported");
+    if (bits & LEFT)
+        return err("LEFT JOIN is not supported");
+    return 0;
+}
+
+/* Parses the FROM clause, after the word FROM, into s->from and s->nfrom.
+ * s->table and s->alias are set to the first table's, which is all that a
+ * query on one table needs. Returns 0, or -1 with the error set. */
+static int parse_from(Parser *ps, Stmt *s)
+{
+    FromItem items[MAX_FROM];
+    int n = 0;
+    // @build 08.01 the FROM clause
+    // Read the first table, then one more for every comma or join operator
+    // after it. A table is a name with an optional alias: AS and a name, or
+    // a bare name that is not a join word. Every table but the first may
+    // carry an ON (a comma join too, as in sqlite3). A join operator is
+    // JOIN, or a join word: join_type() reads those. Refuse USING, a
+    // parenthesis where a table should be (a subquery or a nested join),
+    // and a 65th table.
+    for (;;) {
+        if (n == MAX_FROM)
+            return err("at most %d tables in a join", MAX_FROM);
+        FromItem *it = &items[n];
+        memset(it, 0, sizeof *it);
+        if (accept(ps, TK_LP))
+            return err(at(ps, TK_SELECT) ? "subqueries in FROM are not supported"
+                                         : "parenthesised joins are not supported");
+        if (!(it->table = parse_name(ps)))
+            return -1;
+        if (accept(ps, TK_AS)) {
+            if (!(it->alias = parse_name(ps)))
+                return -1;
+        } else if (at(ps, TK_ID) && !at_join_word(ps)) {
+            it->alias = parse_name(ps);
+        }
+        if (accept(ps, TK_ON)) {
+            if (n == 0)
+                return err("a JOIN clause is required before ON");
+            if (!(it->on = parse_expr(ps)))
+                return -1;
+        }
+        if (at_word(ps, "USING"))
+            return err(n == 0 ? "a JOIN clause is required before USING" : "USING is not supported");
+        n++;
+        if (accept(ps, TK_COMMA) || accept(ps, TK_JOIN))
+            continue;
+        if (!at_join_word(ps))
+            break;
+        if (join_type(ps) < 0)
+            return -1;
+    }
+    // @end
+    s->from = arena_alloc(ps->arena, (size_t)n * sizeof(FromItem));
+    memcpy(s->from, items, (size_t)n * sizeof(FromItem));
+    s->nfrom = n;
+    s->table = items[0].table;
+    s->alias = items[0].alias;
+    return 0;
+}
+// @end
+
+// @from 08.01
+/* Parses a SELECT into s. Each result column is * (e NULL), x.* (e NULL,
+ * star_of x) or an expression with an optional [AS] alias. The optional
  * clauses come in this order:
  *
- *   FROM table [[AS] alias]          s->table, s->alias
+ *   FROM table [[AS] alias], ...     s->from, s->nfrom (parse_from)
  *   WHERE expr                       s->where
  *   ORDER BY expr [ASC|DESC], ...    s->order, s->norder
  *   LIMIT expr [OFFSET expr]         s->limit, s->offset
  *
- * LIMIT a, b means LIMIT b OFFSET a. DISTINCT, GROUP BY and joins are
- * rejected with a "not supported" error. Returns 0, or -1 with the error
- * set. */
+ * LIMIT a, b means LIMIT b OFFSET a. DISTINCT and GROUP BY are rejected
+ * with a "not supported" error. Returns 0, or -1 with the error set. */
+// @else
+// /* Parses a SELECT into s. Each result column is * (e NULL; t.* reads as
+//  * * too) or an expression with an optional [AS] alias. The optional
+//  * clauses come in this order:
+//  *
+//  *   FROM table [[AS] alias]          s->table, s->alias
+//  *   WHERE expr                       s->where
+//  *   ORDER BY expr [ASC|DESC], ...    s->order, s->norder
+//  *   LIMIT expr [OFFSET expr]         s->limit, s->offset
+//  *
+//  * LIMIT a, b means LIMIT b OFFSET a. DISTINCT, GROUP BY and joins are
+//  * rejected with a "not supported" error. Returns 0, or -1 with the error
+//  * set. */
+// @end
 static int parse_select(Parser *ps, Stmt *s)
 {
     // @build 03.02 the SELECT statement
@@ -486,6 +623,7 @@ static int parse_select(Parser *ps, Stmt *s)
         ResultCol *rc = &cols[n++];
         rc->e = NULL;
         rc->alias = NULL;
+        rc->star_of = NULL;  // @from 08.01
         if (accept(ps, TK_STAR))
             continue;
         if (is_name_token(ps->tok.type)) {
@@ -493,8 +631,15 @@ static int parse_select(Parser *ps, Stmt *s)
             const char *save = ps->z;
             Token tok = ps->tok;
             advance(ps);
-            if (accept(ps, TK_DOT) && accept(ps, TK_STAR))
+            // @from 08.01
+            if (accept(ps, TK_DOT) && accept(ps, TK_STAR)) {
+                rc->star_of = name_text(ps, tok);
                 continue;
+            }
+            // @else
+            // if (accept(ps, TK_DOT) && accept(ps, TK_STAR))
+            //     continue;
+            // @end
             ps->z = save;
             ps->tok = tok;
         }
@@ -511,18 +656,23 @@ static int parse_select(Parser *ps, Stmt *s)
     memcpy(s->cols, cols, (size_t)n * sizeof(ResultCol));
     s->ncols = n;
 
-    if (accept(ps, TK_FROM)) {
-        if (!(s->table = parse_name(ps)))
-            return -1;
-        if (accept(ps, TK_AS)) {
-            if (!(s->alias = parse_name(ps)))
-                return -1;
-        } else if (at(ps, TK_ID)) {
-            s->alias = parse_name(ps);
-        }
-        if (at(ps, TK_COMMA) || at(ps, TK_JOIN))
-            return err("joins are not supported");
-    }
+    // @from 08.01
+    if (accept(ps, TK_FROM) && parse_from(ps, s) < 0)
+        return -1;
+    // @else
+    // if (accept(ps, TK_FROM)) {
+    //     if (!(s->table = parse_name(ps)))
+    //         return -1;
+    //     if (accept(ps, TK_AS)) {
+    //         if (!(s->alias = parse_name(ps)))
+    //             return -1;
+    //     } else if (at(ps, TK_ID)) {
+    //         s->alias = parse_name(ps);
+    //     }
+    //     if (at(ps, TK_COMMA) || at(ps, TK_JOIN))
+    //         return err("joins are not supported");
+    // }
+    // @end
     if (accept(ps, TK_WHERE) && !(s->where = parse_expr(ps)))
         return -1;
     if (at(ps, TK_GROUP))
@@ -668,6 +818,10 @@ static int parse_update(Parser *ps, Stmt *s)
     memcpy(s->names, names, (size_t)n * sizeof(char *));
     memcpy(s->sets, sets, (size_t)n * sizeof(Expr *));
     s->nnames = n;
+    // @from 08.01
+    if (at(ps, TK_FROM))
+        return err("UPDATE ... FROM is not supported");
+    // @end
     if (accept(ps, TK_WHERE) && !(s->where = parse_expr(ps)))
         return -1;
     return 0;
