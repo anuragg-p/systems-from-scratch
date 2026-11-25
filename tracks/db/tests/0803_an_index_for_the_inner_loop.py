@@ -242,6 +242,15 @@ def test(t):
     t.check(out == EXPLAIN_ROWID, f"EXPLAIN of a rowid lookup:\n{out}\nexpected:\n{EXPLAIN_ROWID}")
     out = tr.db(t, plain, f"EXPLAIN SELECT c.name, o.id FROM {CO};\n").out
     t.check("Scan orders AS o" in out, f"with no index the inner table is scanned:\n{out}")
+    # a LEFT JOIN table takes its key from its own ON, never from WHERE (sqlite3 turns this
+    # one into an inner join first, so only the rows, above, are compared with it)
+    out = tr.db(t, a, "EXPLAIN QUERY PLAN SELECT * FROM customers c LEFT JOIN orders o ON o.total > 10 "
+                      "WHERE o.customer_id = c.id;\n").out
+    t.check(out == "QUERY PLAN\n|--SCAN c\n`--SCAN o LEFT-JOIN\n", f"a LEFT JOIN looked up by WHERE:\n{out}")
+    out = tr.db(t, a, "EXPLAIN QUERY PLAN SELECT * FROM customers c LEFT JOIN orders o ON o.customer_id = c.id "
+                      "WHERE o.total = 10;\n").out
+    t.check(out == "QUERY PLAN\n|--SCAN c\n`--SEARCH o USING INDEX orders_customer (customer_id=?) LEFT-JOIN\n",
+            f"a LEFT JOIN looked up by its ON:\n{out}")
 
     # a key that cannot be evaluated is an error, in both
     tr.errors_alike(t, "CREATE TABLE a(x);\nCREATE TABLE b(id INTEGER PRIMARY KEY);\n"
@@ -277,6 +286,9 @@ def test(t):
         ours = J.compare(t, a3, b3, f"{q};\n", sort=True)
         bare = tr.db(t, plain3, f"{q};\n", env={"DB_CACHE_PAGES": "2"}).out
         t.check(J.lines(bare) == ours, f"looked up and scanned differ: {q}")
+    # one key's rows come out of the index in rowid order, as a scan finds them
+    q = "SELECT c.name, o.id FROM customers c JOIN orders o ON o.customer_id = c.id;\n"
+    t.check(tr.db(t, a3, q).out == tr.db(t, plain3, q).out, "looked up, the rows come out in another order")
     # pages asked for (from the cache or the file): the cache only shrinks between
     # output rows, so with few rows "pages read" counts each page once either way
     def pages(r):

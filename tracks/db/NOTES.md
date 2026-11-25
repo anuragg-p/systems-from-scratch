@@ -1114,7 +1114,8 @@ LEFT JOIN's ON is not split into the filter terms, and "ON clause references
 tables to its right"; " LEFT-JOIN" in explain_join_plan (plan.c).
 
 Before (08.02 cut out): inner joins work; a LEFT JOIN parses and plans and
-stops when its inner side first runs out.
+stops at the first pair it looks at (or, with an empty inner table, when
+its inner side first runs out).
 
 ```
 $ ./db shop.db "SELECT c.name, o.id FROM customers c LEFT JOIN orders o ON o.customer_id = c.id;"
@@ -1201,8 +1202,6 @@ Facts worth knowing for the text:
   JOIN (sqlite3JoinType combines the words as bits); LEFT INNER and LEFT
   CROSS are "unknown join type". A LEFT JOIN with no ON pairs every row,
   and an empty right table gives each left row once, NULL.
-- Measured on the data set: no cost of its own beyond 08.01's loop; the
-  flag is one int per Join.
 
 Break it (verified):
 
@@ -1451,9 +1450,16 @@ Known differences from sqlite3:
   CROSS JOIN and `SELECT *` (so no index covers the query).
 - Which of two fitting indexes: the first in the table's list here;
   sqlite3 by cost.
-- sqllogictest select5.test (joins of up to 64 tables, all `a = b` terms
-  over INTEGER PRIMARY KEYs, written in an order the conditions do not
-  follow) with `--have join`: SELECT5-RESULT.
+- sqllogictest select5.test (tables t1..t64 of `aN INTEGER PRIMARY KEY, bN
+  INTEGER, xN VARCHAR(40)`, joins of many of them by `aN = bM` terms) with
+  `--have join`, from build/: the same 911 records pass as at 08.01, now in
+  67.2 s against 105.7 s for the project at 08.02 (`--limit 911`, the same
+  machine). The 912th (line 6422, 21 tables) still runs until the runner
+  stops it at 600 s: its first tables are written before the tables their
+  terms name (t64 is second; its terms `b57 = a64` and `b64 = a18` name
+  t57, 19th, and t18, 12th), so almost no table has a key from the tables
+  before it. Only a planner
+  that changes the order (sqlite3's wherePathSolver) answers it.
 
 Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
 
