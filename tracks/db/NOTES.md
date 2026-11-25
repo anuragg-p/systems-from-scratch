@@ -1041,6 +1041,295 @@ Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
   FROM clause terms across CROSS joins and outer joins"). This engine's
   fixed order is the next lessons' question.
 
+### 08.06 Subqueries: a query inside a query
+
+Regions: src/parse.c `parse_subquery` "a SELECT in parentheses"; src/expr.c
+`resolve_outer` "a name from the query outside"; src/exec.c `run_subquery`
+"run the query inside" and `set_lookup` "IN a set that may hold NULL".
+(The design put the evaluator in expr.c; it is in exec.c, next to
+select_resolve and plan_select, which it calls, and expr.c's eval() calls
+it through eval_subquery() in db.h.)
+
+Also added (@from 08.06): E_SUBQUERY and E_EXISTS; Expr's sub, q, depth,
+correlated, cached, answer, set, nset, has_null; Scope's outer and
+correlated; Parser's depth and MAX_OUTER (64); Db's outer[], nouter and the
+`once` arena (emptied with the statement in db_exec). parse.c: the EXISTS
+case and the parenthesis branch of parse_primary, IN (SELECT ...) in
+parse_special, "IN with a table name is not supported", a DEFAULT holding a
+subquery refused with sqlite3's words. expr.c: resolve_expr is now
+resolve_names on a one-table scope (it takes db), so UPDATE, DELETE and
+INSERT take subqueries; resolve_names goes out a scope when a name is in
+none of its tables, and hands a subquery to resolve_subquery; eval() reads a
+name with depth > 0 from db->outer; is_constant() counts such a name as a
+constant and a correlated subquery as not; has_subquery(); expr_text prints
+the SELECT as written. exec.c: select_resolve keeps its outer scope;
+resolve_subquery, in_affinity, set_lookup, run_subquery, eval_subquery; a
+multi-row INSERT works out every value holding a subquery before it stores
+a row. plan.c: is_column() never matches a name from outside; last_table()
+counts such a name as a constant and a subquery as naming every table;
+find_bounds() skips a term whose key would be compared otherwise than a
+lookup compares it (same_values, below).
+
+Before (08.06 cut out): `db: 08.06: a SELECT in parentheses not written
+yet` (exit 3) for any subquery; everything else runs (`SELECT c.name,
+o.total FROM customers c JOIN orders o ON o.customer_id = c.id WHERE
+o.total > 25 ORDER BY o.id;` gives Ada|30, Ada|50). Before, in the core and
+at 08.01: `Error: subqueries are not supported` for `(SELECT ...)` and `IN
+(SELECT ...)`; `SELECT EXISTS (SELECT 1);` is `Error: near "EXISTS": syntax
+error` (EXISTS was never parsed).
+
+After, on the shop.db of 08.01 (pasted from ./db; sqlite3 prints the same):
+
+```
+SELECT name FROM customers WHERE id = (SELECT customer_id FROM orders WHERE id = 13);
+Brook
+SELECT name, (SELECT total FROM orders o WHERE o.customer_id = c.id ORDER BY total DESC LIMIT 1) FROM customers c;
+Ada|50
+Brook|20
+Chen|15
+Dee|
+SELECT name FROM customers WHERE id IN (SELECT customer_id FROM orders);
+Ada
+Brook
+Chen
+SELECT name FROM customers c WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id);
+Ada
+Brook
+Chen
+SELECT name FROM customers c WHERE NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id);
+Dee
+SELECT name FROM customers WHERE id NOT IN (SELECT customer_id FROM orders);
+SELECT id, name, id IN (SELECT customer_id FROM orders), id NOT IN (SELECT customer_id FROM orders) FROM customers;
+1|Ada|1|0
+2|Brook|1|0
+3|Chen|1|0
+4|Dee||
+SELECT name FROM customers WHERE id NOT IN (SELECT customer_id FROM orders WHERE customer_id IS NOT NULL);
+Dee
+SELECT (SELECT name FROM customers WHERE id = 9);
+
+SELECT (SELECT name FROM customers ORDER BY name DESC);
+Dee
+SELECT (SELECT 1, 2);
+Error: sub-select returns 2 columns - expected 1
+EXPLAIN SELECT name FROM customers WHERE id NOT IN (SELECT customer_id FROM orders);
+Filter id NOT IN (SELECT customer_id FROM orders)
+  Scan customers
+```
+
+(The NOT IN query prints nothing at all: that is the lesson's figure.)
+
+For the figures (each from a run of the reference with a print in
+run_subquery, not kept):
+
+- 08.06-kinds: scalar `... WHERE id = (SELECT customer_id FROM orders WHERE
+  id = 13)` hands back 2, the answer Brook; IN `(SELECT customer_id FROM
+  orders)` hands back the set kept as 1, 1, 2, 3, 3 and "has a NULL" (order
+  15), the answer Ada, Brook, Chen; EXISTS hands back 1 for Ada, Brook,
+  Chen and 0 for Dee (NOT EXISTS: Dee).
+- 08.06-outer: the correlated `(SELECT total FROM orders o WHERE
+  o.customer_id = c.id ORDER BY total DESC LIMIT 1)` runs 4 times, once per
+  customer row (rowids 1, 2, 3, 4), with c.id read from db->outer[0]. On
+  Ada's row (c.id = 1) its scan passes orders 10 (30) and 12 (50), its Sort
+  hands up 12 first: 50. Brook: order 13, 20. Chen: 11 and 14, 15. Dee: no
+  row, NULL. Beside it, `(SELECT customer_id FROM orders WHERE id = 13)` in
+  the same SELECT ran once, on Ada's row, and its 2 was kept for the other
+  three.
+- 08.06-notin: the set built once from orders 10..15 (customer_id 1, 3, 1,
+  2, 3, NULL): kept 1, 1, 2, 3, 3 (sorted; duplicates are kept) and
+  has_null. Ada 1: found, IN 1, NOT IN 0. Brook 2 and Chen 3: the same.
+  Dee 4: not found, and the set has a NULL: unknown, NULL, and NOT NULL is
+  NULL. WHERE keeps no row.
+
+Facts worth knowing for the text (SQLite 3.54.1 source; research file B
+has more of the quoted lines):
+
+- Run once or per row. sqlite3 codes a subquery as a subroutine and puts
+  OP_Once in front of it unless it is correlated (expr.c
+  sqlite3CodeSubselect ~3961, `if( !ExprHasProperty(pExpr, EP_VarSelect) ){
+  addrOnce = sqlite3VdbeAddOp0(v, OP_Once);`). A subquery is correlated
+  when a name in it was found in an outer name context (resolve.c
+  lookupName walks the contexts inward-out; resolveExprStep sets
+  EP_VarSelect when the outer context's nRef changed). ./db: Scope.outer and
+  resolve_outer, e->correlated, e->cached.
+- One value: sqlite3 adds LIMIT 1 to a scalar subquery (or turns a LIMIT X
+  into X<>0), keeps OFFSET, and sets the result to NULL before it runs
+  (expr.c ~3998-4027). ./db pulls the first row of the plan and stops,
+  which comes to the same: `(SELECT total FROM orders ORDER BY total LIMIT 5
+  OFFSET 1)` is 15 in both. With no ORDER BY "first" is whatever the plan
+  meets first.
+- The column count: "sub-select returns %d columns - expected %d"
+  (sqlite3SubselectError, expr.c 3564), never made singular; EXISTS takes
+  any number and computes none of them (select.c ~1256).
+- IN's affinity. sqlite3 applies to x and to every value of the subquery
+  the affinity exprINAffinity() picks (expr.c 3530):
+  `zRet[i] = sqlite3CompareAffinity(pSelect->pEList->a[i].pExpr, a);`
+  where a is x's affinity, and sqlite3CompareAffinity (expr.c 350) gives,
+  when both sides are columns, NUMERIC if either is numeric else BLOB
+  (none); when only one is a column, its affinity. The set is built with
+  that affinity applied (sqlite3CodeRhsOfIN, `dest.zAffSdst =
+  exprINAffinity(pParse, pExpr);`) and x gets OP_Affinity before the probe
+  (sqlite3ExprCodeIN ~4251). ./db: in_affinity(), applied to x in
+  eval_subquery and to every value in run_subquery, for the kept set and
+  the correlated scan alike; it comes to what eval_compare() does for x =
+  y. A scalar subquery has its column's affinity in a comparison
+  (sqlite3ExprAffinity, TK_SELECT: `return
+  sqlite3ExprAffinity(pExpr->x.pSelect->pEList->a[0].pExpr);`), so
+  `(SELECT i FROM ti WHERE id = 2) = '1'` compares as numbers.
+- IN's NULL table (sqlite3ExprCodeIN steps 2-6): found: 1; x NULL: 0 for an
+  empty set, else NULL; not found: NULL if the set holds a NULL, else 0.
+  ./db's set_lookup and the correlated scan give the same; the test checks
+  every case, list and subquery, run once and correlated.
+- The set: sqlite3 fills an ephemeral index (OP_OpenEphemeral, SRT_Set,
+  OP_IdxInsert) and, run once, a Bloom filter (expr.c ~3800, EQP "CREATE
+  BLOOM FILTER"); it uses an existing index or the table itself instead
+  when the subquery is a bare column of one table with no WHERE
+  (sqlite3FindInIndex, "USING INDEX t3x FOR IN-OPERATOR"). ./db keeps a
+  sorted array and bisects it.
+- EXISTS as a join: in 3.54.1 `WHERE EXISTS (...)` (as WHERE or an AND term
+  of it) becomes a join whose loop stops at the first match (select.c
+  existsToJoin ~7448; EQP `SEARCH c EXISTS USING ...`), and it may get an
+  automatic index. NOT EXISTS, EXISTS under OR and EXISTS in a result
+  column stay subqueries. ./db always runs it as a subquery.
+- A correlated subquery keyed by the outer row uses an index:
+  is_constant() reads o.customer_id = c.id with c outside as column =
+  constant, so 05.03's planner looks it up, with the outer value as the
+  bound (bound_value evaluates it inside the run, where db->outer has the
+  row). sqlite3 does the same (research file B, EQP #9: `SEARCH t3 USING
+  COVERING INDEX t3x (x=?)`).
+- Such a key must be compared as the lookup compares it. The lookup gives
+  the key the column's affinity; the comparison gives both sides the pair's
+  affinity. They differ when the key (an outer column, a scalar subquery)
+  has a numeric affinity and the column has not (TEXT '5' = 5 holds,
+  a lookup of 5 never meets '5'), and when the column is TEXT and the key
+  BLOB (no conversion in the comparison, '5' made of 5 in the lookup).
+  find_bounds skips such terms (same_values). sqlite3 decides with
+  sqlite3IndexAffinityOk (where.c) and, when the pair's affinity is BLOB,
+  seeks with the key unconverted (wherecode.c ~996,
+  `if( sqlite3CompareAffinity(pRight, zAff[j])==SQLITE_AFF_BLOB ){
+  zAff[j] = SQLITE_AFF_BLOB; }`). Found while building: without the BLOB
+  case `SELECT id FROM tx WHERE t > (SELECT b FROM ti WHERE id = 1)` missed
+  row 9 (' 1'), which sqlite3 returns; the test's affinity matrix has it.
+- Lifetimes. A run pushes its outer row on db->outer and swaps db->rowa
+  and db->stmt for empty arenas, freed when it ends; nothing in it calls
+  pager_shrink (the outer row points into pages). What outlives it is
+  copied (keep()): a correlated answer into the caller's row arena, a kept
+  one into db->once, which db_exec empties with the statement.
+- Writes. DELETE and UPDATE collect their rowids (WHERE, subqueries and
+  all) before changing anything, then UPDATE evaluates SET row by row in
+  rowid order, so a SET subquery reading the table sees the rows already
+  changed: both are sqlite3's results (runs below). A multi-row INSERT works
+  out every value holding a subquery before it stores the first row, as
+  sqlite3 does when the VALUES read the table (insert.c, readsTable makes
+  it go through a temporary table): `INSERT INTO t VALUES ((SELECT a FROM t
+  ORDER BY a DESC LIMIT 1) + 1), (... the same ...)` on t = {1} gives 1, 2,
+  2 in both (one row at a time would give 1, 2, 3).
+
+```
+DELETE FROM t WHERE EXISTS (SELECT 1 FROM t AS u WHERE u.a = t.a - 1);     t was 1..5: leaves 1
+UPDATE t SET a = a * 10 WHERE EXISTS (SELECT 1 FROM t AS u WHERE u.a = t.a - 1);   1, 20, 30, 40, 50
+UPDATE t SET a = (SELECT u.a FROM t AS u WHERE u.rowid = t.rowid - 1);   NULL x5 (each sees its predecessor's new NULL)
+UPDATE t SET a = coalesce((SELECT u.a FROM t AS u WHERE u.rowid = t.rowid - 1), 0) + a;   1, 3, 6, 10, 15
+```
+
+Measured (p 3000 rows, 68 pages; q 2000 rows, 54 pages and its index
+q_pk, 9; DB_STATS, default cache):
+
+```
+SELECT id FROM p WHERE pad IS NULL                    a scan of p     9201 cache hits
+SELECT id FROM q WHERE note IS NULL                   a scan of q     6171
+... k NOT IN (SELECT pk + 5000 FROM q) AND id > 2900  run once        6482      100 rows, 0.003 s
+... k NOT IN (SELECT pk + 5000 FROM q WHERE p.id > 0) AND id > 2900   627682    100 rows, 0.014 s
+SELECT (SELECT note FROM q WHERE id = 7) FROM p       run once        9203      3000 rows
+SELECT p.id, (SELECT q.id FROM q WHERE q.pk = p.id ORDER BY q.id LIMIT 1) FROM p      29145 hits, 0.007 s
+SELECT p.id, (SELECT q.id FROM q WHERE q.pk + 0 = p.id ORDER BY q.id LIMIT 1) FROM p  12428943 hits, 0.203 s
+```
+
+(`q.pk + 0` hides the column from the planner: the same answers, a scan
+of q per row instead of a lookup in q_pk.)
+
+Break it (verified):
+
+1. Copy nothing out of the run (`*out = v;` for `*out = keep(keepa, v);`).
+   With an ASan build and DB_CACHE_PAGES=2, `SELECT p.id, (SELECT note FROM
+   q WHERE id = 450) FROM p` (the 3000-byte note, run once) prints 256 rows,
+   then "AddressSanitizer: heap-use-after-free ... READ ... in print_value
+   ... freed by thread T0 here: ... in pager_shrink ... previously allocated
+   ... in eval_subquery". A plain build prints all 3000 rows: the kept
+   answer pointed into a page that the statement loop evicted at row 256.
+2. Drop `e->depth++` in resolve_outer: c.id inside the subquery is read
+   from the inner row's slot 0 (an order's id, 10 to 15), so the scalar
+   query above gives NULL for every customer and the EXISTS query no rows.
+3. Keep every answer (`if (1)` for `if (!e->correlated)` in
+   eval_subquery): every customer gets Ada's 50.
+4. Forget the NULL (`return 0;` at the end of set_lookup): `id NOT IN
+   (SELECT customer_id FROM orders)` returns Dee; sqlite3 returns nothing.
+
+Found while building: parser_init did not set Parser.depth, so the
+64-level limit counted from whatever the stack held (65 levels went
+through); the test runs 64 and 65.
+
+Known differences from sqlite3:
+
+- EXPLAIN QUERY PLAN prints no line for a subquery (sqlite3: SCALAR
+  SUBQUERY n, LIST SUBQUERY n, CORRELATED ..., USING INDEX x FOR
+  IN-OPERATOR, BLOOM FILTER, and EXISTS as a join). This engine's EXPLAIN
+  shows the subquery's text inside the Filter that runs it; one in a result
+  column does not show (EXPLAIN never printed result columns).
+- A subquery used as an index bound (`WHERE id = (SELECT ...)`) runs when
+  the plan is built, so EXPLAIN runs it too.
+- A correlated IN stops at its first match; sqlite3 builds the whole set
+  every time. Only an error in a later row could tell them apart.
+- At most 64 subqueries one inside another ("too many levels of subqueries
+  (at most 64)"); sqlite3 counts expression depth instead (at most 1000)
+  and refuses 50 nested scalar subqueries ("Expression tree is too large
+  (maximum depth 1000)"; 40 pass).
+- Left out, refused by name: subqueries in FROM, `x IN table` ("IN with a
+  table name is not supported"); row values and compound SELECTs stay
+  syntax errors, as in the core. A DEFAULT holding a subquery is refused at
+  CREATE TABLE with sqlite3's words ("default value of column [a] is not
+  constant").
+- From the core, unchanged: a result alias in WHERE still does not resolve
+  (sqlite3 resolves it, in a subquery too).
+
+sqllogictest (runner.py --have subquery,join; select1-3.test fetched from
+the pinned commit c93ac416 into build/, not kept; in1 and in2 are kept):
+
+```
+select1.test   1031 records: 376 run, 376 passed; skipped 500 CASE, 155 aggregate
+select2.test   1031 records: 376 run, 376 passed; skipped 481 CASE, 174 aggregate
+select3.test   3351 records: 1221 run, 1221 passed; skipped 1632 CASE, 498 aggregate
+in1.test        216 records: 107 run, 107 passed; skipped 60 + 5 INSERT ... SELECT, 42 IN with a table name, 2 onlyif mysql
+in2.test         54 records: 52 run, 52 passed; skipped 1 aggregate, 1 onlyif oracle
+all 15 kept scripts: 80821 records, 80075 run, all passed, 746 skipped
+```
+
+in1.test had never run: runner.py stopped at its `onlyif mssql` / `halt`
+as if the halt were for every engine. Fixed (a halt under onlyif/skipif
+for another engine is passed over); without --have, in1's 61 records that
+need no subquery run and pass.
+
+Decide the boundary (SQLite 3.54.1; PostgreSQL REL_18_7, src/ at
+scratchpad/postgres-src-agg):
+
+- This engine runs every subquery as a subquery: its own plan, run from
+  inside the expression, once or once per row. SQLite does the same with
+  bytecode subroutines (OP_Once for the run-once kind), except that it
+  turns `WHERE EXISTS` into a join (existsToJoin) and flattens or runs as
+  co-routines the subqueries in FROM (select.c flattenSubquery,
+  fromClauseTermCanBeCoroutine).
+- PostgreSQL turns the subqueries it can into joins before planning:
+  prepjointree.c pull_up_sublinks, "Attempt to pull up ANY and EXISTS
+  SubLinks to be treated as semijoins or anti-semijoins" (subselect.c
+  convert_ANY_sublink_to_join makes a JOIN_SEMI; convert_EXISTS_sublink_
+  to_join takes NOT EXISTS too, as an anti-join). For IN it can do that
+  "*only* ... at the top level of WHERE or a JOIN/ON clause, because we
+  cannot distinguish whether the ANY ought to return FALSE or NULL in cases
+  involving NULL inputs" - the NULL table of this lesson. What it cannot
+  pull up stays a SubPlan, run per row or, uncorrelated, hashed: nodeSubplan.c
+  ExecHashSubPlan, "store subselect result in an in-memory hash table"
+  (./db's sorted array is the same idea; sqlite3's is a B-tree).
+
 ### 08.07 UNIQUE: a constraint is an index lookup
 
 Regions: src/schema.c `auto_indexes` "an automatic index for a
