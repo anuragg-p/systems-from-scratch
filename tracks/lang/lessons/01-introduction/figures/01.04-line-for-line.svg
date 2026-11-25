@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 346" fill="none">
+<title>gcd.mote and its C, line for line</title>
+<defs><marker id="f0104b-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0104b-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0104b-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="24" font-size="11.5" font-weight="600"><tspan class="t mono">gcd.mote</tspan></text>
+<text class="t" x="330" y="24" font-size="11.5" font-weight="600"><tspan class="t mono">./mote2c</tspan><tspan class="tm"> writes</tspan></text>
+<text class="tm mono" x="24" y="103" font-size="12"># gcd.mote: ...</text>
+<text class="tm" x="146" y="103" font-size="11">a comment: no C at all</text>
+<text class="t mono" x="24" y="120" font-size="12">read i</text>
+<text class="t mono" x="24" y="137" font-size="12">read j</text>
+<text class="t mono" x="24" y="154" font-size="12">while i != j do</text>
+<text class="t mono" x="24" y="171" font-size="12"><tspan x="52.8">if i &gt; j then</tspan></text>
+<text class="t mono" x="24" y="188" font-size="12"><tspan x="81.6">i := i - j</tspan></text>
+<text class="t mono" x="24" y="205" font-size="12"><tspan x="52.8">else</tspan></text>
+<text class="t mono" x="24" y="222" font-size="12"><tspan x="81.6">j := j - i</tspan></text>
+<text class="t mono" x="24" y="239" font-size="12"><tspan x="52.8">end</tspan></text>
+<text class="t mono" x="24" y="256" font-size="12">end</text>
+<text class="t mono" x="24" y="273" font-size="12">write i</text>
+<text class="tm mono" x="330" y="52" font-size="12">#include &quot;rt.h&quot;</text>
+<text class="tm mono" x="330" y="86" font-size="12">int main(void) {</text>
+<text class="ta mono" x="330" y="103" font-size="12" font-weight="600"><tspan x="358.8">long i = 0;</tspan></text>
+<text class="ta mono" x="330" y="120" font-size="12" font-weight="600"><tspan x="358.8">long j = 0;</tspan></text>
+<text class="t mono" x="330" y="137" font-size="12"><tspan x="358.8">i = getint();</tspan></text>
+<text class="t mono" x="330" y="154" font-size="12"><tspan x="358.8">j = getint();</tspan></text>
+<text class="t mono" x="330" y="171" font-size="12"><tspan x="358.8">while (i != j) {</tspan></text>
+<text class="t mono" x="330" y="188" font-size="12"><tspan x="387.6">if (i &gt; j) {</tspan></text>
+<text class="t mono" x="330" y="205" font-size="12"><tspan x="416.4">i = i - j;</tspan></text>
+<text class="t mono" x="330" y="222" font-size="12"><tspan x="387.6">} else {</tspan></text>
+<text class="t mono" x="330" y="239" font-size="12"><tspan x="416.4">j = j - i;</tspan></text>
+<text class="t mono" x="330" y="256" font-size="12"><tspan x="387.6">}</tspan></text>
+<text class="t mono" x="330" y="273" font-size="12"><tspan x="358.8">}</tspan></text>
+<text class="t mono" x="330" y="290" font-size="12"><tspan x="358.8">putint(i);</tspan></text>
+<text class="tm mono" x="330" y="307" font-size="12"><tspan x="358.8">return 0;</tspan></text>
+<text class="tm mono" x="330" y="324" font-size="12">}</text>
+<line class="m" x1="163.6" y1="116" x2="320" y2="133" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="163.6" y1="133" x2="320" y2="150" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="163.6" y1="150" x2="320" y2="167" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="163.6" y1="167" x2="320" y2="184" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="163.6" y1="184" x2="320" y2="201" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="163.6" y1="201" x2="320" y2="218" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="163.6" y1="218" x2="320" y2="235" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="163.6" y1="235" x2="320" y2="252" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="163.6" y1="252" x2="320" y2="269" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="163.6" y1="269" x2="320" y2="286" stroke-width="1.5" stroke-linecap="round"/>
+<path class="a" d="M450.0 90 H456.0 V124 H450.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="464" y="111" font-size="11.5" font-weight="700">from the first pass</text>
+</svg>

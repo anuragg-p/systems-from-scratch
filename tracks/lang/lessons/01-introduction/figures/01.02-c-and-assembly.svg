@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 384" fill="none">
+<title>gcd.c beside gcd.s</title>
+<defs><marker id="f0102a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0102a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0102a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="t" x="24" y="24" font-size="11.5" font-weight="600"><tspan class="t mono">gcd.c</tspan><tspan class="tm">, its main</tspan></text>
+<text class="t" x="304" y="24" font-size="11.5" font-weight="600"><tspan class="t mono">gcd.s</tspan><tspan class="tm">, lesson 01.01</tspan></text>
+<text class="tm mono" x="304" y="52" font-size="12.5">main:</text>
+<text class="t mono" x="304" y="68" font-size="12.5"><tspan x="334">call getint</tspan></text>
+<text class="t mono" x="304" y="84" font-size="12.5"><tspan x="334">mv</tspan><tspan x="371.5" class="tm">s1</tspan><tspan x="386.5">,</tspan><tspan x="401.5" class="tm">a0</tspan></text>
+<text class="t mono" x="304" y="100" font-size="12.5"><tspan x="334">call getint</tspan></text>
+<text class="t mono" x="304" y="116" font-size="12.5"><tspan x="334">mv</tspan><tspan x="371.5" class="tm">s2</tspan><tspan x="386.5">,</tspan><tspan x="401.5" class="tm">a0</tspan></text>
+<text class="tm mono" x="304" y="132" font-size="12.5">loop:</text>
+<text class="t mono" x="304" y="148" font-size="12.5"><tspan x="334">beq</tspan><tspan x="371.5" class="tm">s1</tspan><tspan x="386.5">,</tspan><tspan x="401.5" class="tm">s2</tspan><tspan x="416.5">,</tspan><tspan x="431.5" class="tm">done</tspan></text>
+<text class="t mono" x="304" y="164" font-size="12.5"><tspan x="334">ble</tspan><tspan x="371.5" class="tm">s1</tspan><tspan x="386.5">,</tspan><tspan x="401.5" class="tm">s2</tspan><tspan x="416.5">,</tspan><tspan x="431.5" class="tm">smaller</tspan></text>
+<text class="t mono" x="304" y="180" font-size="12.5"><tspan x="334">sub</tspan><tspan x="371.5" class="tm">s1</tspan><tspan x="386.5">,</tspan><tspan x="401.5" class="tm">s1</tspan><tspan x="416.5">,</tspan><tspan x="431.5" class="tm">s2</tspan></text>
+<text class="t mono" x="304" y="196" font-size="12.5"><tspan x="334">j</tspan><tspan x="371.5" class="tm">loop</tspan></text>
+<text class="tm mono" x="304" y="212" font-size="12.5">smaller:</text>
+<text class="t mono" x="304" y="228" font-size="12.5"><tspan x="334">sub</tspan><tspan x="371.5" class="tm">s2</tspan><tspan x="386.5">,</tspan><tspan x="401.5" class="tm">s2</tspan><tspan x="416.5">,</tspan><tspan x="431.5" class="tm">s1</tspan></text>
+<text class="t mono" x="304" y="244" font-size="12.5"><tspan x="334">j</tspan><tspan x="371.5" class="tm">loop</tspan></text>
+<text class="tm mono" x="304" y="260" font-size="12.5">done:</text>
+<text class="t mono" x="304" y="276" font-size="12.5"><tspan x="334">mv</tspan><tspan x="371.5" class="tm">a0</tspan><tspan x="386.5">,</tspan><tspan x="401.5" class="tm">s1</tspan></text>
+<text class="t mono" x="304" y="292" font-size="12.5"><tspan x="334">call putint</tspan></text>
+<text class="t mono" x="304" y="308" font-size="12.5"><tspan x="334">li</tspan><tspan x="371.5" class="tm">a0</tspan><tspan x="386.5">, 0</tspan></text>
+<text class="t mono" x="304" y="324" font-size="12.5"><tspan x="334">call exit</tspan></text>
+<text class="t mono" x="24" y="52" font-size="12.5">int main(void) {</text>
+<line class="m" x1="152" y1="48" x2="296" y2="48" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="24" y="68" font-size="12.5"><tspan x="39">long i = getint();</tspan></text>
+<line class="m" x1="182" y1="64" x2="292" y2="64" stroke-width="1.5" stroke-linecap="round"/>
+<path class="m" d="M298 59 H292 V85 H298" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="24" y="100" font-size="12.5"><tspan x="39">long j = getint();</tspan></text>
+<line class="m" x1="182" y1="96" x2="292" y2="96" stroke-width="1.5" stroke-linecap="round"/>
+<path class="m" d="M298 91 H292 V117 H298" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="24" y="148" font-size="12.5"><tspan x="39">while (i != j) {</tspan></text>
+<line class="m" x1="167" y1="144" x2="296" y2="144" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="24" y="164" font-size="12.5"><tspan x="54">if (i &gt; j)</tspan></text>
+<line class="m" x1="137" y1="160" x2="296" y2="160" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="24" y="180" font-size="12.5"><tspan x="69">i = i - j;</tspan></text>
+<line class="m" x1="152" y1="176" x2="296" y2="176" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="24" y="212" font-size="12.5"><tspan x="54">else</tspan></text>
+<line class="m" x1="92" y1="208" x2="296" y2="208" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="24" y="228" font-size="12.5"><tspan x="69">j = j - i;</tspan></text>
+<line class="m" x1="152" y1="224" x2="296" y2="224" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="24" y="244" font-size="12.5"><tspan x="39">}</tspan></text>
+<text class="t mono" x="24" y="276" font-size="12.5"><tspan x="39">putint(i);</tspan></text>
+<line class="m" x1="122" y1="272" x2="292" y2="272" stroke-width="1.5" stroke-linecap="round"/>
+<path class="m" d="M298 267 H292 V293 H298" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="24" y="308" font-size="12.5"><tspan x="39">return 0;</tspan></text>
+<line class="m" x1="114.5" y1="304" x2="292" y2="304" stroke-width="1.5" stroke-linecap="round"/>
+<path class="m" d="M298 299 H292 V325 H298" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="24" y="340" font-size="12.5">}</text>
+<line class="m" x1="469.5" y1="144" x2="498" y2="144" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="409.5" y1="192" x2="498" y2="192" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="409.5" y1="240" x2="498" y2="240" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="498" y1="144" x2="498" y2="240" stroke-width="1.5" stroke-linecap="round"/>
+<text class="t mono" x="508" y="148" font-size="11">while (i != j)</text>
+<text class="tm" x="508" y="164" font-size="11">its test, and the</text>
+<text class="tm" x="508" y="178" font-size="11">two jumps back</text>
+<text class="t" x="24" y="370" font-size="11.5"><tspan class="tm">grey</tspan><tspan class="t">: the registers and labels you chose by hand in 01.01. The C compiler chooses them now.</tspan></text>
+</svg>
