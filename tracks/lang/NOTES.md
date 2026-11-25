@@ -19,8 +19,8 @@ contract and its markers only. The language, the programs and every line of C ar
 ```
 tracks/lang/
   Makefile        62  every program; make makes build/ too (FILES_FROM 01.01; @from per lesson)
-  machine.c      470  the machine: tables, two passes, getint and the routines, --trace, the run
-                      loop; memory, addi, ld, sd and divzero at 01.10
+  machine.c      478  the machine: tables, two passes, getint and the routines, --trace, the run
+                      loop; memory, addi, ld, sd, sp and divzero at 01.10
   programs/gcd.s  20  by hand, the brief's text (FILES_FROM 01.01); gcd.in 1071 462
   rt.h, rt.c   6, 52  getint and putint for C programs (rt.h FILES_FROM 01.02)
   programs/           gcd.c, and gcd, sum, primes as .mote .in .out (FILES_FROM 01.02)
@@ -28,9 +28,9 @@ tracks/lang/
   mote2c.c       209  the translator to C
   motec           25  sh: mote2c, cc -O1 -fwrapv -c, link with rt.o, all into build/
   agree           80  sh: every program, every way; the ways of 01.09 to 01.11 by @from
-  mote.h          89  Token, Parse, Symbol, Node, the phases' prototypes (FILES_FROM 01.06)
+  mote.h          88  Token, Parse, Symbol, Node, the phases' prototypes (FILES_FROM 01.06)
   main.c         228  the driver and the printers (from 01.06)
-  scan.c         132  the scanner, and error_at, error_tok, equal (01.06)
+  scan.c         126  the scanner, and error_tok, equal (01.06)
   parse.c        172  the parser (01.07)
   analyze.c      150  the syntax tree, the symbol table, the static rule (01.08)
   interp.c       103  the tree-walking interpreter (01.09)
@@ -71,7 +71,8 @@ main, the `[FILE]` usage and header line; 01.06 the Makefile's mote and MOTE; 01
 parse() in mote.h, `--parse-tree`, the parse call in main, print_parse; 01.08 Symbol, Node,
 analyze, symbols in mote.h, `--tree` and `--symbols`, print_var, the analyze call; 01.09 `value`
 and `has_value`, interpret(), the usage in brackets (an option is no longer needed), the interpret
-call; 01.10 machine.c's ADDI, LD, SD, MEMORY, memory[], sp at the top, divzero, the `mem[...]`
+call; 01.10 machine.c's ADDI, LD, SD, MEMORY, memory[], SP and DIVZERO in their enums (each enum
+before 01.10 in an `@else`), sp at the top, divzero, the `mem[...]`
 part of --trace; gen.c in the Makefile, `-S`, agree's machine way; 01.11 `uses` and `reg`,
 improve(), `-O`, gen.c's register paths (operand, into's variable case, store, the assignment,
 the frame) and the last sentence of its header, agree's fifth way.
@@ -636,7 +637,7 @@ compiler's work, not the translator's.
 
 ## Departures from the plan and the brief, with reasons
 
-1. **The ceilings.** As the track holds them, machine.c is 470 lines (404 as the site shows it)
+1. **The ceilings.** As the track holds them, machine.c is 478 lines (404 as the site shows it)
    against 280, mote0.c 481 (405) against 280, mote2c.c 209 (186) against 130, main.c 228 (179)
    against 160; the rest are under theirs. No function is long (the longest, machine.c's run, is
    59 lines with its switch); the size is in what the brief asks of each program: every error
@@ -651,7 +652,7 @@ compiler's work, not the translator's.
    (the plan's 01.02 says "what the C versions print"; only gcd has one, as the brief says).
 5. **`make` makes build/** (an `@mkdir -p build` in `all`), so that the 01.10 sample `./mote -S
    programs/gcd.mote > build/gcd.s` works in a fresh project; motec and agree make it too.
-6. **mote.h has three more names**: equal(), error_at() and error_tok() (in scan.c); generate()
+6. **mote.h has two more names**: equal() and error_tok() (in scan.c); generate()
    takes no -O flag, as the plan has it: it reads sym->reg, which only improve() sets.
 7. **mote2c checks a little more than the first word**: `expected ':='` for a name not followed
    by it, `expected the end of the line` after read's name and after else and end. Expressions
@@ -971,3 +972,44 @@ Found in the code:
   never printed a count.
 - `motec` runs `${CC:-cc}`, as the Makefile runs `$(CC)`: a computer whose C
   compiler is not called `cc` sets `CC`.
+
+## After the first read: lessons 01.06 to 01.11 and the code
+
+- "Five ways" means one thing: the five columns of `agree` (mote0, motec,
+  mote, machine, machine -O). `programs/gcd.s` is not one of them: it is the
+  computation written by hand for the machine, the measure compiled code is
+  set against. 01.09 calls the walk the third of the five, 01.10 says what
+  gcd.s is where it runs, and 01.11's closing ("once by hand, and five ways
+  from its text") is now `### The chapter, whole`, last in How it works;
+  Go deeper keeps only the book.
+- "Read first" is a paragraph of its own in 01.06 to 01.11, and its wording
+  is exact in 01.06 (1.6, and 1.6.1 up to and including Example 1.21), 01.08
+  (1.6.2 up to and including Example 1.24, with Figure 1.6) and 01.09
+  (Example 1.25 and the rest of 1.6.2, with Figure 1.4).
+- 01.06: the end-of-file token is said to be the one exception to the
+  line-and-column invariant, with the two lines of scan() that place it
+  (after a final line end, on the line before, at that line end's column,
+  `last_col`): an error at the end points just past the last character, not
+  at an empty line below it (`12:1` for gcd.mote without them).
+- 01.07: "no backing up" said plainly, in two sentences.
+- 01.08: the static rule and the dynamic case are two paragraphs; the
+  sentence on "after" rewritten; Decide the boundary is now text order (as
+  here: cheap, refuses later.mote, accepts maybe.mote) against following
+  every path (catches maybe.mote; without the values that decide each
+  branch it still refuses later.mote; lesson 06.03 of the outline).
+- 01.09: the comparison with mote0's search by name is made once, in How
+  it works.
+- 01.10: frame, calling convention and `bnez` explained at first use; the
+  lead-ins `check`, `load` and `store` are three, so each sits above its own
+  code on the page (one heading naming all three put all the notes above
+  check() and showed load() and store() last, without notes).
+- 01.11: `getint` and `putint` touching only `a0` said once (The idea);
+  the opening's word order; chapter 17 named once as on the book's companion
+  site, not in the printed volume.
+- Code: machine.c's `SP` and `DIVZERO` come with 01.10 (`@from 01.10`, the
+  enums before it as one-liners in `@else`), so 01.01 to 01.09 do not show
+  them. `error_at()`, declared in mote.h and defined in scan.c, was never
+  called: removed (mote.h 88 lines, scan.c 126, machine.c 478 as the track
+  holds them; the site's view at 01.11 is unchanged but for scan.c and
+  mote.h). `plans/lang.md` still names error_at in "Chapter 1 as built";
+  it is not one of this step's files.
