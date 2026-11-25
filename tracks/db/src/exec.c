@@ -334,6 +334,54 @@ fail:
     // @end
 }
 
+// @from 08.03
+/* Starts a join's inner scan again for the outer row now in outer, the
+ * join's row. A scan starts from its first row. A lookup (its key, acc.lo,
+ * is an expression of the tables before this one) evaluates the key on
+ * outer, with the inner column's affinity applied as bound_value() does,
+ * and goes to the rows it finds: rowids between the key rounded down and
+ * up (rowid_bound()), or index entries equal to it. A NULL key finds
+ * nothing. Returns 0, or -1 if the key cannot be evaluated. */
+int scan_rebind(Op *scan, Row *outer)
+{
+    Access *acc = &scan->acc;
+    scan->started = scan->done = 0;
+    if (acc->kind == ACCESS_SCAN)
+        return 0;
+    // @build 08.03 start the inner side for this outer row
+    // Evaluate the key on the outer row. A rowid lookup: give it INTEGER
+    // affinity and set both rowid bounds from it, as op_scan() does for a
+    // constant (no possible rowid: done). An index lookup: give it the
+    // indexed column's affinity; NULL is done; else build the key the
+    // seek starts at, and decode hi, the last value to take, back from
+    // that record, so neither points into the row arena, which a Filter
+    // above may reset while this inner loop runs.
+    Db *db = scan->db;
+    Value v;
+    if (eval(db, acc->lo, outer, &v) < 0)
+        return -1;
+    if (acc->kind == ACCESS_ROWID_EQ) {
+        apply_affinity(&v, AFF_INTEGER, &db->rowa);
+        int lo = rowid_bound(v, 0, &scan->lo_i), hi = rowid_bound(v, 1, &scan->hi_i);
+        scan->done = lo < 0 || hi < 0;
+        scan->has_lo = lo > 0;
+        scan->has_hi = hi > 0;
+        return 0;
+    }
+    apply_affinity(&v, scan->table->cols[acc->index->cols[0]].affinity, &db->rowa);
+    if (v.type == V_NULL) {
+        scan->done = 1;
+        return 0;
+    }
+    scan->key.n = 0;
+    record_build(&scan->key, &v, 1);
+    record_decode(scan->key.p, (u32)scan->key.n, &scan->hi, 1);
+    scan->has_lo = scan->has_hi = 1;
+    return 0;
+    // @end
+}
+// @end
+
 // @from 04.02
 /* ------------------------------------------------------------ Filter (04.02) */
 
@@ -518,6 +566,44 @@ Op *op_limit(Db *db, Op *child, i64 limit, i64 offset)
 // @from 08.01
 /* ------------------------------------------------------------ Join (08.01) */
 
+/* What a LEFT JOIN adds to the nested loop, called with an inner row in
+ * the join's row (have_inner) or when the inner side has run out for the
+ * outer row in hand. An inner row is a match only if the join's own ON is
+ * true for it; the outer row remembers that it had one. When the inner
+ * side runs out and nothing matched, the outer row still goes up, once,
+ * with every slot of the inner table NULL. Returns 1 to hand the row up,
+ * 0 not to, -1 if ON cannot be evaluated. */
+static int left_join(Op *op, int have_inner)
+{
+    // @build 08.02 the row with no match
+    // With an inner row: evaluate ON on the joined row (no ON: every
+    // inner row matches). Not true (false or NULL): this pair is not a
+    // row of the answer; reset the row arena, as a Filter does for a
+    // dropped row, and say no. True: note the match and say yes.
+    // Without one: if the outer row matched nothing, set the inner
+    // table's slots, its columns and its rowid, to NULL and say yes:
+    // WHERE and the joins above see that row like any other.
+    if (have_inner) {
+        if (op->on) {
+            Value v;
+            if (eval(op->db, op->on, &op->row, &v) < 0)
+                return -1;
+            if (value_truth(&v) != 1) {
+                arena_reset(&op->db->rowa);
+                return 0;
+            }
+        }
+        op->matched = 1;
+        return 1;
+    }
+    if (op->matched)
+        return 0;
+    for (int i = op->lwidth; i < op->row.ncols; i++)
+        memset(&op->row.cols[i], 0, sizeof(Value));     /* V_NULL */
+    return 1;
+    // @end
+}
+
 /* The nested loop: for each row of the left side (the outer loop), every
  * row of the inner table, each pair handed up as one joined row. The row
  * holds the tables side by side: the left side's values in the first
@@ -555,7 +641,13 @@ static int join_next(Op *op, Row **out)
                 op->row.cols[n].i = l->rowid;
             }
             op->have_outer = 1;
-            op->inner->started = 0;
+            op->matched = 0;  // @from 08.02
+            // @from 08.03
+            if (scan_rebind(op->inner, &op->row) < 0)
+                return -1;
+            // @else
+            // op->inner->started = 0;
+            // @end
         }
         Row *r;
         int rc = op->inner->next(op->inner, &r);
@@ -563,6 +655,12 @@ static int join_next(Op *op, Row **out)
             return -1;
         if (rc == 0) {
             op->have_outer = 0;
+            // @from 08.02
+            if (op->leftjoin && left_join(op, 0)) {
+                *out = &op->row;
+                return 1;
+            }
+            // @end
             continue;
         }
         Value *slot = op->row.cols + op->lwidth;
@@ -571,16 +669,32 @@ static int join_next(Op *op, Row **out)
         memset(&slot[r->ncols], 0, sizeof(Value));
         slot[r->ncols].type = V_INT;
         slot[r->ncols].i = r->rowid;
+        // @from 08.02
+        if (op->leftjoin && (rc = left_join(op, 1)) <= 0) {
+            if (rc < 0)
+                return -1;
+            continue;
+        }
+        // @end
         *out = &op->row;
         return 1;
     }
     // @end
 }
 
+// @from 08.02
 /* Returns the Join of left (the outer loop) with inner, a scan of item's
  * table, which takes the slots from item->base on. Its rows are width
  * values. left_table is table 0 when left hands up table 0's own rows (the
- * first join), NULL when it hands up joined rows; it is kept in op->table. */
+ * first join), NULL when it hands up joined rows; it is kept in op->table.
+ * For a LEFT JOIN item it is a Left join, which checks the item's ON
+ * itself (left_join()). */
+// @else
+// /* Returns the Join of left (the outer loop) with inner, a scan of item's
+//  * table, which takes the slots from item->base on. Its rows are width
+//  * values. left_table is table 0 when left hands up table 0's own rows (the
+//  * first join), NULL when it hands up joined rows; it is kept in op->table. */
+// @end
 Op *op_join(Db *db, Op *left, Op *inner, FromItem *item, Table *left_table, int width)
 {
     Op *op = new_op(db, "Join", join_next);
@@ -590,6 +704,20 @@ Op *op_join(Db *db, Op *left, Op *inner, FromItem *item, Table *left_table, int 
     op->lwidth = item->base;
     op->row.cols = xcalloc((size_t)width, sizeof(Value));
     op->row.ncols = width;
+    // @from 08.02
+    if (item->left) {
+        op->name = "Left join";
+        op->leftjoin = 1;
+        op->on = item->on;
+        if (item->on) {
+            const char *on = expr_text(&db->stmt, item->on);
+            size_t n = strlen(on) + 4;
+            char *d = arena_alloc(&db->stmt, n);
+            snprintf(d, n, "on %s", on);
+            op->detail = d;
+        }
+    }
+    // @end
     return op;
 }
 // @end
