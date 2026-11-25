@@ -1,93 +1,77 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 478" fill="none">
 <title>Two INSERTs into users: a lookup in the unique index comes before any write</title>
 <defs><marker id="f0807a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0807a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0807a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
-<text class="t mono" x="24" y="22" font-size="11.5" font-weight="600" text-anchor="None">INSERT INTO users VALUES (4, &#x27;dee@x.io&#x27;, &#x27;Dee&#x27;);</text>
-<text class="tm" x="616" y="22" font-size="11" text-anchor="end">a new email</text>
+<text class="t mono" x="24" y="22" font-size="11.5" font-weight="600">INSERT INTO users VALUES (2, &#x27;brook@example.com&#x27;, &#x27;Brook&#x27;);</text>
+<text class="tm" x="616" y="22" font-size="10.5" text-anchor="end">Ada is in row 1: a new email</text>
 <circle class="a af" cx="33" cy="46" r="9" stroke-width="1.5"/>
 <text class="t" x="33" y="50" font-size="10.5" font-weight="700" text-anchor="middle">1</text>
-<text class="ta" x="48" y="50" font-size="11.5" font-weight="600" text-anchor="None">look up &#x27;dee@x.io&#x27;</text>
-<circle class="s fs" cx="309" cy="46" r="9" stroke-width="1.5"/>
-<text class="t" x="309" y="50" font-size="10.5" font-weight="700" text-anchor="middle">2</text>
-<text class="t" x="324" y="50" font-size="11.5" font-weight="600" text-anchor="None">nothing equal: write both B-trees</text>
-<rect class="a af" x="24" y="62" width="240" height="112" rx="6" stroke-width="1.5"/>
-<text class="ta mono" x="36" y="80" font-size="10.5" font-weight="600" text-anchor="None">page 3: sqlite_autoindex_users_1</text>
-<rect class="a f" x="36" y="90" width="104" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="88" y="103.96" font-size="11" text-anchor="middle">ada@x.io</text>
-<rect class="a f" x="140" y="90" width="28" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="154" y="103.96" font-size="11" text-anchor="middle">1</text>
-<rect class="a f" x="36" y="114" width="104" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="88" y="127.96" font-size="11" text-anchor="middle">brook@x.io</text>
-<rect class="a f" x="140" y="114" width="28" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="154" y="127.96" font-size="11" text-anchor="middle">2</text>
-<rect class="a f" x="36" y="138" width="104" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="88" y="151.96" font-size="11" text-anchor="middle">chen@x.io</text>
-<rect class="a f" x="140" y="138" width="28" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="154" y="151.96" font-size="11" text-anchor="middle">3</text>
-<line class="a" x1="36" y1="164" x2="168" y2="164" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
-<rect class="a f" x="196" y="154" width="60" height="20" rx="4" stroke-width="1.5"/>
-<text class="ta mono" x="226" y="168" font-size="10.5" text-anchor="middle">dee@x.io</text>
-<line class="a" x1="194" y1="164" x2="172" y2="164" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0807a-aa)"/>
-<text class="tm" x="24" y="192" font-size="10.5">the seek lands past chen@x.io: no entry equals it</text>
-<rect class="s f" x="300" y="62" width="316" height="52" rx="6" stroke-width="1.5"/>
-<text class="t mono" x="312" y="80" font-size="10.5" font-weight="600" text-anchor="None">page 2: table users</text>
-<text class="t" x="312" y="102" font-size="11">+ row</text>
-<rect class="s f" x="360" y="88" width="28" height="20" rx="0" stroke-width="1.5"/>
-<text class="t mono" x="374" y="101.96" font-size="11" text-anchor="middle">4</text>
-<rect class="s f" x="388" y="88" width="104" height="20" rx="0" stroke-width="1.5"/>
-<text class="t mono" x="440" y="101.96" font-size="11" text-anchor="middle">dee@x.io</text>
-<rect class="s f" x="492" y="88" width="40" height="20" rx="0" stroke-width="1.5"/>
-<text class="t mono" x="512" y="101.96" font-size="11" text-anchor="middle">Dee</text>
-<rect class="a af" x="300" y="124" width="316" height="52" rx="6" stroke-width="1.5"/>
-<text class="ta mono" x="312" y="142" font-size="10.5" font-weight="600" text-anchor="None">page 3: sqlite_autoindex_users_1</text>
-<text class="ta" x="312" y="164" font-size="11">+ entry</text>
-<rect class="a f" x="360" y="150" width="104" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="412" y="163.96" font-size="11" text-anchor="middle">dee@x.io</text>
-<rect class="a f" x="464" y="150" width="28" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="478" y="163.96" font-size="11" text-anchor="middle">4</text>
-<path class="s" d="M266 118 C 282 118, 280 88, 296 88" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0807a-ah)"/>
-<path class="a" d="M266 118 C 282 118, 280 150, 296 150" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0807a-aa)"/>
-<text class="tm" x="312" y="196" font-size="10.5">the row, then its entry; pages written: 3 (and page 1&#x27;s header)</text>
+<text class="ta" x="48" y="50" font-size="11.5" font-weight="600">look up &#x27;brook@example.com&#x27;</text>
+<circle class="s fs" cx="325" cy="46" r="9" stroke-width="1.5"/>
+<text class="t" x="325" y="50" font-size="10.5" font-weight="700" text-anchor="middle">2</text>
+<text class="t" x="340" y="50" font-size="11.5" font-weight="600">nothing equal: write both B-trees</text>
+<rect class="a af" x="24" y="62" width="266" height="80" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="80" font-size="10.5" font-weight="600">page 3: sqlite_autoindex_users_1</text>
+<rect class="a f" x="36" y="90" width="130" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="101" y="103.96" font-size="11" text-anchor="middle">ada@example.com</text>
+<rect class="a f" x="166" y="90" width="26" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="179" y="103.96" font-size="11" text-anchor="middle">1</text>
+<line class="a" x1="36" y1="120" x2="192" y2="120" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line class="a" x1="278" y1="120" x2="200" y2="120" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0807a-aa)"/>
+<text class="ta" x="240" y="114" font-size="10.5" text-anchor="middle">the seek</text>
+<text class="tm" x="24" y="160" font-size="10.5">past ada@example.com: no equal entry</text>
+<rect class="s f" x="316" y="62" width="300" height="52" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="328" y="80" font-size="10.5" font-weight="600">page 2: table users</text>
+<text class="t" x="328" y="102" font-size="11">+ row</text>
+<rect class="s f" x="372" y="88" width="26" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="385" y="101.96" font-size="11" text-anchor="middle">2</text>
+<rect class="s f" x="398" y="88" width="130" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="463" y="101.96" font-size="11" text-anchor="middle">brook@example.com</text>
+<rect class="s f" x="528" y="88" width="50" height="20" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="553" y="101.96" font-size="11" text-anchor="middle">Brook</text>
+<rect class="a af" x="316" y="124" width="300" height="52" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="328" y="142" font-size="10.5" font-weight="600">page 3: sqlite_autoindex_users_1</text>
+<text class="ta" x="328" y="164" font-size="11">+ entry</text>
+<rect class="a f" x="386" y="150" width="130" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="451" y="163.96" font-size="11" text-anchor="middle">brook@example.com</text>
+<rect class="a f" x="516" y="150" width="26" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="529" y="163.96" font-size="11" text-anchor="middle">2</text>
+<path class="s" d="M292 102 C 304 102, 300 88, 313 88" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0807a-ah)"/>
+<path class="a" d="M292 102 C 304 102, 300 150, 313 150" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#f0807a-aa)"/>
+<text class="tm" x="316" y="196" font-size="10.5">the row, then its entry; 3 pages written:</text>
+<text class="tm" x="316" y="211" font-size="10.5">page 1&#x27;s header, page 2 and page 3</text>
 <line class="m" x1="24" y1="222" x2="616" y2="222" stroke-width="1.5" stroke-linecap="round"/>
-<text class="t mono" x="24" y="248" font-size="11.5" font-weight="600" text-anchor="None">INSERT INTO users VALUES (5, &#x27;ada@x.io&#x27;, &#x27;Eve&#x27;);</text>
+<text class="t mono" x="24" y="248" font-size="11.5" font-weight="600">INSERT INTO users VALUES (3, &#x27;ada@example.com&#x27;, &#x27;Chen&#x27;);</text>
 <text class="tm" x="616" y="248" font-size="11" text-anchor="end">an email already there</text>
 <circle class="a af" cx="33" cy="272" r="9" stroke-width="1.5"/>
 <text class="t" x="33" y="276" font-size="10.5" font-weight="700" text-anchor="middle">1</text>
-<text class="ta" x="48" y="276" font-size="11.5" font-weight="600" text-anchor="None">look up &#x27;ada@x.io&#x27;</text>
-<circle class="s fs" cx="309" cy="272" r="9" stroke-width="1.5"/>
-<text class="t" x="309" y="276" font-size="10.5" font-weight="700" text-anchor="middle">2</text>
-<text class="t" x="324" y="276" font-size="11.5" font-weight="600" text-anchor="None">an equal entry: write nothing</text>
-<rect class="a af" x="24" y="288" width="240" height="136" rx="6" stroke-width="1.5"/>
-<text class="ta mono" x="36" y="306" font-size="10.5" font-weight="600" text-anchor="None">page 3: sqlite_autoindex_users_1</text>
-<rect class="a f" x="36" y="316" width="104" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="88" y="329.96" font-size="11" text-anchor="middle">ada@x.io</text>
-<rect class="a f" x="140" y="316" width="28" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="154" y="329.96" font-size="11" text-anchor="middle">1</text>
-<rect class="a" x="32" y="312" width="140" height="28" rx="4" stroke-width="1.5"/>
-<rect class="a f" x="36" y="340" width="104" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="88" y="353.96" font-size="11" text-anchor="middle">brook@x.io</text>
-<rect class="a f" x="140" y="340" width="28" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="154" y="353.96" font-size="11" text-anchor="middle">2</text>
-<rect class="a f" x="36" y="364" width="104" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="88" y="377.96" font-size="11" text-anchor="middle">chen@x.io</text>
-<rect class="a f" x="140" y="364" width="28" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="154" y="377.96" font-size="11" text-anchor="middle">3</text>
-<rect class="a f" x="36" y="388" width="104" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="88" y="401.96" font-size="11" text-anchor="middle">dee@x.io</text>
-<rect class="a f" x="140" y="388" width="28" height="20" rx="0" stroke-width="1.5"/>
-<text class="ta mono" x="154" y="401.96" font-size="11" text-anchor="middle">4</text>
-<rect class="a f" x="196" y="316" width="60" height="20" rx="4" stroke-width="1.5"/>
-<text class="ta mono" x="226" y="330" font-size="10.5" text-anchor="middle">ada@x.io</text>
-<line class="a" x1="194" y1="326" x2="174" y2="326" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0807a-aa)"/>
-<text class="tm" x="24" y="442" font-size="10.5">it lands on (&#x27;ada@x.io&#x27;, 1): rowid 1, not this row&#x27;s 5</text>
-<rect class="m f" x="300" y="288" width="316" height="36" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
-<text class="tm mono" x="312" y="310" font-size="10.5" font-weight="600" text-anchor="None">page 2: table users</text>
+<text class="ta" x="48" y="276" font-size="11.5" font-weight="600">look up &#x27;ada@example.com&#x27;</text>
+<circle class="s fs" cx="325" cy="272" r="9" stroke-width="1.5"/>
+<text class="t" x="325" y="276" font-size="10.5" font-weight="700" text-anchor="middle">2</text>
+<text class="t" x="340" y="276" font-size="11.5" font-weight="600">an equal entry: write nothing</text>
+<rect class="a af" x="24" y="288" width="266" height="88" rx="6" stroke-width="1.5"/>
+<text class="ta mono" x="36" y="306" font-size="10.5" font-weight="600">page 3: sqlite_autoindex_users_1</text>
+<rect class="a f" x="36" y="316" width="130" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="101" y="329.96" font-size="11" text-anchor="middle">ada@example.com</text>
+<rect class="a f" x="166" y="316" width="26" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="179" y="329.96" font-size="11" text-anchor="middle">1</text>
+<rect class="a" x="32" y="312" width="164" height="28" rx="4" stroke-width="1.5"/>
+<rect class="a f" x="36" y="340" width="130" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="101" y="353.96" font-size="11" text-anchor="middle">brook@example.com</text>
+<rect class="a f" x="166" y="340" width="26" height="20" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="179" y="353.96" font-size="11" text-anchor="middle">2</text>
+<line class="a" x1="278" y1="326" x2="200" y2="326" stroke-width="1.5" stroke-linecap="round" marker-end="url(#f0807a-aa)"/>
+<text class="ta" x="240" y="320" font-size="10.5" text-anchor="middle">the seek</text>
+<text class="tm" x="24" y="394" font-size="10.5">it lands on (&#x27;ada@example.com&#x27;, 1):</text>
+<text class="tm" x="24" y="409" font-size="10.5">rowid 1, not this row&#x27;s 3</text>
+<rect class="m f" x="316" y="288" width="300" height="36" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="328" y="310" font-size="10.5" font-weight="600">page 2: table users</text>
 <text class="tm" x="604" y="310" font-size="10.5" text-anchor="end">unchanged</text>
-<rect class="m f" x="300" y="334" width="316" height="36" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
-<text class="tm mono" x="312" y="356" font-size="10.5" font-weight="600" text-anchor="None">page 3: the index</text>
+<rect class="m f" x="316" y="334" width="300" height="36" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="328" y="356" font-size="10.5" font-weight="600">page 3: the index</text>
 <text class="tm" x="604" y="356" font-size="10.5" text-anchor="end">unchanged</text>
-<rect class="s fs" x="300" y="384" width="316" height="32" rx="6" stroke-width="1.5"/>
-<text class="t mono" x="458" y="404" font-size="10.5" text-anchor="middle">Error: UNIQUE constraint failed: users.email</text>
-<text class="tm" x="312" y="436" font-size="10.5">pages written: 0; the file is byte for byte as it was</text>
+<rect class="s fs" x="316" y="384" width="300" height="32" rx="6" stroke-width="1.5"/>
+<text class="t mono" x="466" y="404" font-size="10.5" text-anchor="middle">Error: UNIQUE constraint failed: users.email</text>
+<text class="tm" x="316" y="436" font-size="10.5">0 pages written; the file is unchanged (cmp)</text>
 <line class="m" x1="24" y1="452" x2="616" y2="452" stroke-width="1.5" stroke-linecap="round"/>
-<text class="tm" x="24" y="470" font-size="10.5">Before either lookup the table is asked whether the rowid is free (04.01&#x27;s check): 4 and 5 are.</text>
+<text class="tm" x="24" y="470" font-size="10.5">Before either lookup the table is asked whether the rowid is free (04.01&#x27;s check): 2 and 3 are.</text>
 </svg>

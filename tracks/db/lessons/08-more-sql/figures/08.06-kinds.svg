@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" fill="none">
+<title>Three kinds of subquery: one value, a set, a yes or no; what each hands back, and the answer</title>
+<defs><marker id="f0806a-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0806a-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="f0806a-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<text class="tm" x="36" y="22" font-size="10.5">the query, its subquery in the accent</text>
+<text class="tm" x="318" y="22" font-size="10.5">the subquery hands back</text>
+<text class="tm" x="508" y="22" font-size="10.5">the answer</text>
+<rect class="s f" x="24" y="34" width="592" height="100" rx="8" stroke-width="1.5"/>
+<text class="t" x="36" y="56" font-size="11.5" font-weight="600">(SELECT ...): one value</text>
+<text class="tm mono" x="36" y="78" font-size="10.5">SELECT name FROM customers</text>
+<text class="tm mono" x="36" y="93" font-size="10.5">WHERE id =</text>
+<text class="ta mono" x="105.3" y="93" font-size="10.5">(SELECT customer_id</text>
+<text class="ta mono" x="105.3" y="108" font-size="10.5">FROM orders WHERE id = 13)</text>
+<text class="tm mono" x="269.1" y="108" font-size="10.5">;</text>
+<rect class="s f" x="508" y="73" width="64" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="540" y="87.96" font-size="11" text-anchor="middle">Brook</text>
+<rect class="a af" x="318" y="48" width="30" height="24" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="333" y="63.96" font-size="11" text-anchor="middle">2</text>
+<text class="tm" x="358" y="64" font-size="10.5">order 13&#x27;s customer_id</text>
+<text class="tm" x="318" y="104" font-size="10.5">its first row&#x27;s value</text>
+<text class="tm" x="318" y="119" font-size="10.5">(NULL if it has no row)</text>
+<rect class="s f" x="24" y="144" width="592" height="100" rx="8" stroke-width="1.5"/>
+<text class="t" x="36" y="166" font-size="11.5" font-weight="600">x IN (SELECT ...): is x in a set?</text>
+<text class="tm mono" x="36" y="188" font-size="10.5">SELECT name FROM customers</text>
+<text class="tm mono" x="36" y="203" font-size="10.5">WHERE id IN</text>
+<text class="ta mono" x="111.6" y="203" font-size="10.5">(SELECT customer_id</text>
+<text class="ta mono" x="111.6" y="218" font-size="10.5">FROM orders)</text>
+<text class="tm mono" x="187.2" y="218" font-size="10.5">;</text>
+<rect class="s f" x="508" y="161" width="64" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="540" y="175.96" font-size="11" text-anchor="middle">Ada</text>
+<rect class="s f" x="508" y="183" width="64" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="540" y="197.96" font-size="11" text-anchor="middle">Brook</text>
+<rect class="s f" x="508" y="205" width="64" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="540" y="219.96" font-size="11" text-anchor="middle">Chen</text>
+<rect class="a af" x="318" y="158" width="22" height="24" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="329" y="173.96" font-size="11" text-anchor="middle">1</text>
+<rect class="a af" x="340" y="158" width="22" height="24" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="351" y="173.96" font-size="11" text-anchor="middle">1</text>
+<rect class="a af" x="362" y="158" width="22" height="24" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="373" y="173.96" font-size="11" text-anchor="middle">2</text>
+<rect class="a af" x="384" y="158" width="22" height="24" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="395" y="173.96" font-size="11" text-anchor="middle">3</text>
+<rect class="a af" x="406" y="158" width="22" height="24" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="417" y="173.96" font-size="11" text-anchor="middle">3</text>
+<rect class="m f" x="436" y="158" width="40" height="24" rx="0" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm mono" x="456" y="173.96" font-size="9.5" text-anchor="middle">NULL</text>
+<text class="tm" x="318" y="214" font-size="10.5">every customer_id, sorted,</text>
+<text class="tm" x="318" y="229" font-size="10.5">and the NULL noted apart</text>
+<rect class="s f" x="24" y="254" width="592" height="100" rx="8" stroke-width="1.5"/>
+<text class="t" x="36" y="276" font-size="11.5" font-weight="600">EXISTS (SELECT ...): is there a row?</text>
+<text class="tm mono" x="36" y="298" font-size="10.5">SELECT name FROM customers c</text>
+<text class="tm mono" x="36" y="313" font-size="10.5">WHERE EXISTS</text>
+<text class="ta mono" x="117.9" y="313" font-size="10.5">(SELECT 1 FROM orders o</text>
+<text class="ta mono" x="117.9" y="328" font-size="10.5">WHERE o.customer_id =</text>
+<text class="t mono" x="256.5" y="328" font-size="10.5" font-weight="700">c.id</text>
+<text class="ta mono" x="281.7" y="328" font-size="10.5">)</text>
+<text class="tm mono" x="288" y="328" font-size="10.5">;</text>
+<rect class="s f" x="508" y="271" width="64" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="540" y="285.96" font-size="11" text-anchor="middle">Ada</text>
+<rect class="s f" x="508" y="293" width="64" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="540" y="307.96" font-size="11" text-anchor="middle">Brook</text>
+<rect class="s f" x="508" y="315" width="64" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="540" y="329.96" font-size="11" text-anchor="middle">Chen</text>
+<rect class="s f" x="318" y="262" width="50" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="343" y="276.96" font-size="11" text-anchor="middle">Ada</text>
+<rect class="a af" x="368" y="262" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="380" y="276.96" font-size="11" text-anchor="middle">1</text>
+<rect class="s f" x="402" y="262" width="50" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="427" y="276.96" font-size="11" text-anchor="middle">Brook</text>
+<rect class="a af" x="452" y="262" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="464" y="276.96" font-size="11" text-anchor="middle">1</text>
+<rect class="s f" x="318" y="286" width="50" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="343" y="300.96" font-size="11" text-anchor="middle">Chen</text>
+<rect class="a af" x="368" y="286" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="380" y="300.96" font-size="11" text-anchor="middle">1</text>
+<rect class="s f" x="402" y="286" width="50" height="22" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="427" y="300.96" font-size="11" text-anchor="middle">Dee</text>
+<rect class="a af" x="452" y="286" width="24" height="22" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="464" y="300.96" font-size="11" text-anchor="middle">0</text>
+<text class="tm" x="318" y="324" font-size="10.5">1 if it finds a row, else 0;</text>
+<text class="tm" x="318" y="339" font-size="10.5">again for every customer</text>
+<text class="tm" x="24" y="382" font-size="10.5">NOT EXISTS with the same subquery turns each 1 and 0 over: it gives Dee.</text>
+</svg>
