@@ -799,3 +799,93 @@ Other systems, read or run:
   cites the two approaches, the locality, and the factor of five, and says the languages differ.
 - www.cs.rochester.edu/~scott/pragmatics/: the 4th edition's page (Morgan Kaufmann), with the
   contents, errata and where to buy it; the book's text is not there.
+
+## Found while lessons 01.01 to 01.04 were written
+
+On 2026-11-25, on the same Mac (Apple M4 Pro, macOS 26.6.2, Apple clang 21.0.0, arm64). The
+book's files were not opened; what the lessons say of the book is from `plans/lang-01-lessons.md`.
+
+What was read outside, where, and what the lessons state from it:
+
+- The RISC-V unprivileged manual, `src/unpriv/intro.adoc` at main of
+  github.com/riscv/riscv-isa-manual: under "Base Instruction-Length Encoding", the base ISA's
+  instructions are fixed-length, 32 bits, aligned on 32-bit boundaries, and are stored in memory
+  as 16-bit little-endian parcels; under "Memory", a hart has one byte-addressable address space
+  for all memory accesses, and fetching an instruction is a memory read. 01.01: a RISC-V
+  instruction is 4 bytes; a real RISC-V computer keeps the program as numbers in the same memory
+  as its data and fetches each instruction from there by its address.
+- The RISC-V Assembly Programmer's Manual, `src/asm-manual.adoc` at main of
+  github.com/riscv-non-isa/riscv-asm-manual, again: the table "Pseudo Instructions" (section "A
+  listing of standard RISC-V pseudoinstructions"): `mv` is `addi rd, rs, 0`, `j` is `jal x0`,
+  `call` is `auipc x1` then `jalr x1` (two), `ble` is `bge` reversed, `beqz` is `beq rs, x0`; the
+  registers table under "General registers": x0 `zero` (hardwired to 0, ignores writes), x1 `ra`,
+  x2 `sp`, x9 `s1`, x10 `a0`. 01.01 states these.
+- The two repositories' front pages, before linking them in 01.01's Go deeper: the first holds
+  the sources of the RISC-V Instruction Set Manual (unprivileged and privileged volumes), the
+  second is the RISC-V Assembly Programmer's Manual.
+- www.cs.rochester.edu/~scott/pragmatics/: the 4th edition's page (Morgan Kaufmann), with
+  supplementary material, front matter, contents and errata; no full text. Every lesson links it.
+- craftinginterpreters.com/a-map-of-the-territory.html, chapter 2 of Crafting Interpreters, by
+  Robert Nystrom (named in the footer): sections 2.2.1 "Single-pass compilers", 2.2.2 "Tree-walk
+  interpreters", 2.2.3 "Transpilers" (source-to-source, C a common target). 01.03 links it for
+  the first two. 2.2.3 would suit 01.04's Go deeper too; it is not linked there, as the design
+  names no such reference.
+- cppreference.com, C: `c/language/integer_constant` (an unsuffixed decimal constant has the first
+  of int, long, long long that holds it; a leading 0 makes it octal), 01.04;
+  `c/language/operator_arithmetic` (a signed integer overflow is undefined; so is division by
+  zero), 01.01 and 01.04; `c/language/arithmetic_types` ("Data models": LP64 on Linux and macOS,
+  long 64 bits; LLP64 for the Win64 API, long 32 bits; the standard's minimum for long, 32
+  bits), 01.02.
+- gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html: `-fwrapv` makes the compiler assume that
+  signed overflow of addition, subtraction and multiplication wraps around, two's complement.
+  01.04 says GCC documents it and clang accepts it (motec runs clang with it here).
+- gcc.gnu.org/onlinedocs/cpp/Preprocessor-Output.html: linemarkers, `# linenum filename flags`,
+  say which file and line the text after them came from; comments become spaces and directive
+  lines blank lines. 01.04, on `cc -E`.
+- sourceware.org/binutils/docs/binutils/nm.html (`T`: in the text, code, section; `U`:
+  undefined; lowercase usually local), 01.04; .../objdump.html (`-d`, and `--disassemble=symbol`
+  to start at a symbol and stop at the end of the function), 01.02's Linux command.
+- Arm's description of the A64 instruction CSEL, as rendered with Arm's copyright (release
+  2026-03) at www.scs.stanford.edu/~zyedidia/arm64/csel.html (Arm's own pages showed nothing
+  without scripts): the first source register is written to the destination if the condition
+  holds, else the second. 01.02 says only that the two `csel` pick one of two registers by the
+  last comparison. Not linked.
+
+Run here, shown in the lessons as one computer's output (`verify: skip`):
+
+- `cc -std=c11 -O2 -I. -S -o - programs/gcd.c` (01.02): `i` in x19, `bl _getint`, and a loop with
+  no branch for the if (cmp, two csel, two sub, cmp, b.ne). Apple's `objdump` is LLVM's;
+  `objdump -d --disassemble-symbols=_main gcd` shows 4 bytes an instruction, `bl _getint` as
+  94000013.
+- 01.04's stages on build/gcd.c: `cc -E` (rt.h pasted, its comment lines blank, line markers),
+  `cc -O1 -fwrapv -S` (three `bl`s, to `_getint` twice and `_putint`), `nm build/gcd.o` (`U
+  _getint`, `T _main`, `U _putint`, and two local labels, `t ltmp0`, `s ltmp1`).
+- motec's program for sum.mote has no loop: clang at -O1 works the sum out with a formula (a
+  `mul`, no backward branch). So 01.04 times gcd on `1 10000000` instead of sum: mote0 reads
+  70000004 lines (replayed by a fact), best of three 1.22 s; motec's program 0.010 s.
+- Translated, a division by zero is C's: `read a / b := 0 / write a / b` on 5 printed 5, status 0
+  (clang -O1). Not in the lesson after the trim; 01.04 says only that C leaves it undefined.
+- Translated, `write x / x := 1` prints 0 (the declaration's `= 0`), where mote0 stops with `x has
+  no value yet`; a name never given a value anywhere (`x := y + 1`) is not declared, and the C
+  compiler refuses it (`use of undeclared identifier 'y'`).
+- macOS's cmp says `cmp: EOF on stdin`; 01.02's Break it allows any `cmp: EOF on ...` line.
+
+Replayed in the lessons (exact):
+
+- gcd.s on 6 4 under `--trace`, whole (01.01); 14 instructions (a fact: the indented lines).
+- mote0's 88 lines for gcd on 1071 462: 3 before the loop, 7 on each of the 11 passes (the other
+  arm's lines are read to skip them), 7 to leave (the while line and the six read past), the
+  write. Each of lines 4 to 10 is read 12 times. A comment line in the loop: 100 (01.03).
+- `read i read j` on one line: mote0 says `expected the end of the line`; `x := 1 +` in an if
+  not taken: mote0 runs the program and never sees it (01.03).
+- The breaks. 01.01: labels as one pass would see them (`if (l && l->address > 4L * i) l =
+  NULL;` after the lookup): `machine: programs/gcd.s:9: no label 'done'`. 01.02: putint without
+  its line end: cmp reports EOF, status 1. 01.03: skip() without `depth++`: gcd prints nothing,
+  `programs/gcd.mote:10: expected a statement`, status 1, after 11 correct passes; on
+  primes.mote the same change never ends (the inner loop's search stops at the if's end, and
+  the run goes back to the outer while before `p := p + 1`), so the lesson names it and does not
+  run it. 01.04: find_names missing read's names: gcd.mote still compiles and prints 21 (its i
+  and j are also given values by `:=`), so the lesson shows sum.mote, whose `n` is given a value
+  only by `read`: `n = getint();` undeclared, motec status 1.
+- gcd.s ending in `ret` instead of `call exit` runs lines 19 and 20 for ever: after `call
+  putint`, ra is 48, line 19's address (01.01 says so; not shown as a run).
