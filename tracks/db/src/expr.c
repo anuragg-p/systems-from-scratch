@@ -332,6 +332,91 @@ int resolve_expr(Expr *e, Table *t, const char *alias)
     return 0;
 }
 
+// @from 08.01
+/* True if FROM item it answers to the qualifier q (q.c, q.*): to its alias
+ * if it has one, else to its table's name, as the catalog has it or as the
+ * query wrote it (they differ for sqlite_master, which the catalog calls
+ * sqlite_schema). In any case, as in sqlite3. */
+int answers_to(FromItem *it, const char *q)
+{
+    if (it->alias)
+        return strcasecmp(q, it->alias) == 0;
+    return strcasecmp(q, it->t->name) == 0 || strcasecmp(q, it->table) == 0;
+}
+
+/* Binds every column name in e to a table of scope sc, the tables of a
+ * SELECT's FROM clause: e->tab is the FROM item, e->tcol the column in its
+ * table (TCOL_ROWID for the rowid), and e->col the slot of the joined row
+ * that eval() reads, the item's base plus the column (the rowid's slot is
+ * the one after its columns). With one table in scope this binds exactly as
+ * resolve_expr() does: the slot is the column, and a rowid name becomes
+ * E_ROWID. Returns 0, or -1 with sqlite3's error for a name that no table
+ * has ("no such column") or that two tables have ("ambiguous column
+ * name"). */
+int resolve_names(Db *db, Expr *e, Scope *sc)
+{
+    (void)db;
+    if (!e)
+        return 0;
+    if (e->op == E_COLUMN) {
+        // @build 08.01 bind a name to its table
+        // q.c looks only in the tables that answer to q (answers_to: the
+        // alias if there is one, else the table's name). A bare c looks in
+        // every table. One table with the column binds it;
+        // two or more are ambiguous. None: a rowid name (rowid, oid,
+        // _rowid_) means the rowid of the one table looked in, and is
+        // ambiguous when there were several. Set tab, tcol, col and aff.
+        int hits = 0, looked = 0, k_hit = -1, c_hit = -1;
+        for (int k = 0; k < sc->nfrom; k++) {
+            FromItem *it = &sc->from[k];
+            if (e->qual && !answers_to(it, e->qual))
+                continue;
+            looked++;
+            if (hits == 0)
+                k_hit = k;          /* the rowid's table, if no column turns up */
+            for (int c = 0; c < it->t->ncols; c++) {
+                if (strcasecmp(it->t->cols[c].name, e->name) == 0) {
+                    if (hits++ == 0) {
+                        k_hit = k;
+                        c_hit = c;
+                    }
+                    break;
+                }
+            }
+        }
+        if (hits == 0 && looked > 0 && is_rowid_name(e->name)) {
+            hits = looked;
+            c_hit = TCOL_ROWID;
+        }
+        if (hits != 1) {
+            const char *what = hits ? "ambiguous column name" : "no such column";
+            return e->qual ? err("%s: %s.%s", what, e->qual, e->name) : err("%s: %s", what, e->name);
+        }
+        FromItem *it = &sc->from[k_hit];
+        e->tab = k_hit;
+        e->tcol = c_hit;
+        if (c_hit == TCOL_ROWID) {
+            e->aff = AFF_INTEGER;
+            if (sc->nfrom == 1)
+                e->op = E_ROWID;    /* one table: its rows carry the rowid */
+            else
+                e->col = it->base + it->t->ncols;
+        } else {
+            e->col = it->base + c_hit;
+            e->aff = it->t->cols[c_hit].affinity;
+        }
+        return 0;
+        // @end
+    }
+    if (resolve_names(db, e->a, sc) < 0 || resolve_names(db, e->b, sc) < 0 || resolve_names(db, e->c, sc) < 0)
+        return -1;
+    for (int i = 0; i < e->nlist; i++)
+        if (resolve_names(db, e->list[i], sc) < 0)
+            return -1;
+    return 0;
+}
+// @end
+
 /* Returns 1 if e depends on no row at all, so it can be evaluated once. */
 int is_constant(Expr *e)
 {
@@ -881,6 +966,12 @@ static void expr_write(Buf *b, Expr *e)
         buf_put(b, "'", 1);
         return;
     case E_COLUMN:
+        // @from 08.01
+        if (e->qual) {              /* as written: in a join, which table */
+            buf_put(b, e->qual, strlen(e->qual));
+            buf_put(b, ".", 1);
+        }
+        // @end
         buf_put(b, e->name, strlen(e->name));
         return;
     case E_ROWID:

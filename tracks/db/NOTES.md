@@ -832,6 +832,215 @@ last key.
 
 ## 08 More SQL (an optional extension)
 
+Everything module 08 adds to files of the core is behind `@from 08.xx` markers;
+the project at every core lesson is byte for byte what it was. Its data set
+(design): customers(id INTEGER PRIMARY KEY, name, city) with Ada London, Brook
+Paris, Chen London, Dee Oslo; orders(id INTEGER PRIMARY KEY, customer_id,
+total) with (10,1,30) (11,3,15) (12,1,50) (13,2,20) (14,3,5) (15,NULL,40).
+
+### 08.01 Two tables in one query: the nested loop join
+
+Regions: src/parse.c `parse_from` "the FROM clause"; src/expr.c
+`resolve_names` "bind a name to its table"; src/exec.c `join_next` "the
+nested loop"; src/plan.c `plan_select` "where each condition is checked".
+Also added (@from 08.01): FromItem, Scope, Query and the new Op and Plan fields
+(db.h); at_word, at_join_word, join_type (parse.c); answers_to (expr.c); select_resolve,
+join_order_target, item_name, star_ambiguous, op_join (exec.c); last_table,
+terms_at, item_scan, explain_join_plan, access_line, explain_op (plan.c);
+qualified names in expr_text; "UPDATE ... FROM is not supported".
+
+Before (08.01 cut out): every SELECT with a FROM clause stops, a one-table
+one too, because the FROM clause is parse_from's now. `SELECT 1 + 1;` still
+prints 2.
+
+```
+$ ./db shop.db "SELECT * FROM customers;"
+db: 08.01: the FROM clause not written yet          (exit 3)
+```
+
+After:
+
+```
+SELECT c.name, o.id, o.total FROM customers c JOIN orders o ON o.customer_id = c.id ORDER BY o.id;
+Ada|10|30
+Chen|11|15
+Ada|12|50
+Brook|13|20
+Chen|14|5
+EXPLAIN SELECT c.name, o.id FROM customers c, orders o WHERE o.customer_id = c.id AND c.city = 'London' AND o.total > 10;
+Filter ((o.customer_id = c.id) AND (o.total > 10))
+  Join
+    Filter (c.city = 'London')
+      Scan customers AS c
+    Scan orders AS o
+EXPLAIN SELECT * FROM customers c JOIN orders o ON o.customer_id = c.id WHERE c.id = 3;
+Filter (o.customer_id = c.id)
+  Join
+    Filter (c.id = 3)
+      Rowid lookup customers rowid = ?
+    Scan orders AS o
+EXPLAIN QUERY PLAN SELECT c.name, o.id, o.total FROM customers c JOIN orders o ON o.customer_id = c.id ORDER BY o.id;
+QUERY PLAN
+|--SCAN c
+|--SCAN o
+`--USE TEMP B-TREE FOR ORDER BY
+SELECT c.name, o.id FROM customers c CROSS JOIN orders o LIMIT 7;
+Ada|10
+Ada|11
+Ada|12
+Ada|13
+Ada|14
+Ada|15
+Brook|10
+SELECT * FROM customers c JOIN orders o ON o.customer_id = c.id ORDER BY id DESC LIMIT 3;
+3|Chen|London|11|3|15
+3|Chen|London|14|3|5
+2|Brook|Paris|13|2|20
+```
+
+Errors, ./db and sqlite3 3.54.1 (same text; sqlite3 prefixes "Parse error"):
+`ambiguous column name: id` (bare id in customers JOIN orders),
+`ambiguous column name: rowid` (bare rowid with two tables: not "no such
+column", which the design guessed), `ambiguous column name: main.customers.id`
+(`SELECT * FROM customers JOIN customers`), `no such table: x` (`x.*`),
+`no such column: zz.name`, `no such column: customers.name` (after `FROM
+customers AS c`: an alias hides the name), `1st ORDER BY term out of range -
+should be between 1 and 1`, `a JOIN clause is required before ON`, `unknown
+join type: OUTER`, `at most 64 tables in a join` (65 tables). Refused by
+./db, run by sqlite3: `LEFT JOIN is not supported` (until 08.02), `NATURAL
+JOIN`, `RIGHT JOIN`, `FULL JOIN`, `USING`, `subqueries in FROM`,
+`parenthesised joins`, `UPDATE ... FROM` (each "... is not supported").
+
+Facts worth knowing for the text:
+
+- The joined row: item k's columns, then its rowid, from base k on:
+  customers c takes slots 0-2 and its rowid 3; orders o takes 4-6 and 7.
+  `o.customer_id` is bound once to slot 5 and eval() reads `row->cols[5]`,
+  unchanged. With one table nothing changes (base 0, rowid stays E_ROWID).
+- An inner join's ON is WHERE: both are one list of ANDed terms, each checked
+  in a Filter right above the operator that brings the last table it names
+  (last_table). Constants go to the first filter. A term may name a table to
+  its right in ON (`a JOIN b ON a.x = c.z JOIN c`), as in sqlite3.
+- One exception, from the row layout: table 0's rowid named as rowid/oid
+  (`c.rowid = 1`) is in a slot only once the first join has copied the row,
+  so that term waits for item 1 (EXPLAIN shows it in the top filter). `c.id`
+  (the INTEGER PRIMARY KEY) is a column, checked at level 0 and used for a
+  rowid lookup.
+- Table 0 is read the way its own terms allow (05.03's choose_access): a
+  rowid or index lookup or range. Every later table is scanned whole, once
+  per row the join below it hands up (08.03 adds lookups).
+- The outer row is copied (keep()) into the Join's own arena, which is
+  emptied for the next outer row; the inner row is not (good until the next
+  call, like a scan's). The statement loop evicts pages every 256 output
+  rows (pager_shrink), so a two-page cache shows any slip at output row 256.
+- `*` in a join expands left to right; with two tables answering to one name
+  sqlite3 writes the column as main.<name>.<col> (select.c selectExpander),
+  hence that error text. ORDER BY a bare name that a `*` stands for is the
+  first result column of that name (resolve.c resolveAsName: expanded columns
+  are ENAME_NAME), so `ORDER BY id` over customers JOIN orders sorts by
+  customers.id with no ambiguity. 08.01 follows that for joins
+  (join_order_target); one-table queries keep the core's order_target.
+- A qualifier q (q.c, q.*) matches an item's alias if it has one, else its
+  table's name as the catalog has it or as the query wrote it (answers_to):
+  the catalog calls sqlite_master sqlite_schema. Found while building: the
+  core says `no such column: sqlite_master.name` for `SELECT
+  sqlite_master.name FROM sqlite_master`; from 08.01 it works, as in sqlite3,
+  and `sqlite_master.*` (the core read any `x.*` as `*`) still does.
+- INNER, CROSS, LEFT ... are names to the tokenizer (`CREATE TABLE jw(left,
+  inner, cross)` works in both engines); after a table name they are join
+  words, never an alias (`FROM t inner` is a syntax error in sqlite3 too);
+  `AS left` is fine. Join words combine as sqlite3JoinType does (select.c).
+- Measured (p 3000 rows, q 300, 130 pages): `p JOIN q ON q.id = p.k`, 3000
+  rows, 0.04 s, stats: pages read 130, cache hits 2913300 (q read 3000
+  times, all from the cache). sqlite3 doing the same nested loop
+  (automatic_index=OFF, CROSS JOIN, `q.id + 0`) 0.02 s; sqlite3 as it likes
+  (q.id is q's INTEGER PRIMARY KEY: one lookup per row) 0.01 s.
+- The order written is the order run. t1 1000 rows, t2 and t3 100 each,
+  `WHERE t1.b = t2.a AND t2.b = t3.a`: `FROM t1, t2, t3` 1000 rows in 0.01
+  s; `FROM t1, t3, t2` the same rows in 0.44 s (t1 x t3 have no term between
+  them: 100000 pairs, each meeting all of t2). EXPLAIN shows why:
+
+```
+EXPLAIN SELECT t1.a, t3.a FROM t1, t3, t2 WHERE t1.b = t2.a AND t2.b = t3.a;
+Filter ((t1.b = t2.a) AND (t2.b = t3.a))
+  Join
+    Join
+      Scan t1
+      Scan t3
+    Scan t2
+```
+
+Break it (verified):
+
+1. In join_next copy the outer row without keep()
+   (`op->row.cols[i] = l->cols[i];`). With an ASan build and
+   DB_CACHE_PAGES=2, `SELECT p.id, length(p.pad), q.id FROM p, q WHERE p.id %
+   1000 = 1` prints 256 rows, then "AddressSanitizer: heap-use-after-free ...
+   READ of size 1 ... in eval expr.c ... freed by thread T0 here: ... in
+   pager_shrink". A plain build printed all 900 rows correctly, with the
+   default cache and with a two-page one: the freed page was not reused yet.
+   The bug is silent until it is not; that is why the test runs every query
+   with a two-page cache and the module is checked under a sanitizer.
+2. Delete `op->inner->started = 0;`: the inner scan is never restarted, so
+   only the first outer row finds partners. The join on the data set prints
+   `Ada|10|30` and `Ada|12|50` and nothing for Chen or Brook.
+3. Make last_table() return 0 for every column: every term lands in the
+   first filter, on table 0's own row, before orders is in it. EXPLAIN shows
+   `Filter (o.customer_id = c.id)` under the Join, over `Scan customers AS
+   c`, and running it stops with `Error: no such column: customer_id` (the
+   slot is past the end of table 0's row): a term must wait for its tables.
+
+Known differences from sqlite3:
+
+- sqlite3 picks the join order (and builds automatic indexes); ./db runs the
+  order written. Without ORDER BY the rows come out in another order; with
+  CROSS JOIN and `PRAGMA automatic_index=OFF` sqlite3 runs the same nested
+  loop and the order is the same (the test checks it).
+- What the written order costs, on SQLite's own joins: sqllogictest's
+  select5.test (not kept in tests/; fetched from the pinned commit, run with
+  `--have join`): its first 911 records, 207 of them join queries of up to
+  20 tables, all pass; the 912th, 21 tables written in an order its
+  conditions do not follow (line 6422), is still running when the runner
+  stops it at 600 s. sqlite3 reorders and answers it at once.
+- EXPLAIN QUERY PLAN for a join: later tables are always SCAN (sqlite3
+  SEARCHes when an index or the rowid fits: 08.03); ORDER BY always sorts
+  (sqlite3 skips the sort for, e.g., ORDER BY the outer table's rowid);
+  `c.rowid = 1` on table 0 is not a lookup here (above).
+- One table with an alias: `EXPLAIN QUERY PLAN SELECT * FROM customers AS x`
+  prints `SCAN customers` here (05.03's code names the table) and `SCAN x` in
+  sqlite3. In a join ./db names each item by its alias, as sqlite3 does.
+- Kept from the core for one table: `SELECT *, b AS a FROM t ORDER BY a`
+  sorts by b here, by t.a in sqlite3; `ORDER BY 5` past the last column is
+  a constant here, an error in sqlite3. A result alias in WHERE (`SELECT a +
+  b AS x FROM t WHERE x < 10`) works in sqlite3, not here (joins included).
+
+Decide the boundary (from source; SQLite 3.54.1, PostgreSQL REL_18_7):
+
+- SQLite builds no joined row. where.c, sqlite3WhereBegin's header (~6759):
+  "There are Btree cursors associated with each table ... can use OP_Column
+  and OP_Rowid opcodes on these cursors to extract data from the various
+  tables of the loop"; expr.c sqlite3ExprCodeGetColumnOfTable emits
+  `OP_Column iTabCur` (or OP_Rowid): a column reference names a cursor, not
+  a slot. Its loops: one per table, "foreach row1 in t1 do / foreach row2 in
+  t2 do" (same comment); with no usable index the inner table is rewound and
+  scanned again per outer row (wherecode.c ~2635, `aStart[] = { OP_Rewind,
+  OP_Last }`).
+- PostgreSQL hands up a combined tuple, as this engine does.
+  src/backend/executor/nodeNestloop.c ExecNestLoop: for a new outer tuple
+  `econtext->ecxt_outertuple = outerTupleSlot;` then "now rescan the inner
+  plan" `ExecReScan(innerPlan);`, each inner tuple in `ecxt_innertuple`, the
+  quals tested over both, and the result `ExecProject(node->js.ps.ps_ProjInfo)`.
+- Where conditions go: SQLite moves an inner join's ON into WHERE (select.c
+  sqlite3ProcessJoin ~653, "Add the ON clause to the end of the WHERE clause,
+  connected by an AND operator") and codes each term in the first loop where
+  all its tables are ready (wherecode.c ~2680, `(pTerm->prereqAll &
+  pLevel->notReady)!=0` skips it; the comment calls this "MySQL push-down").
+- The order: where.c wherePathSolver (5846) "attempts to find the lowest
+  cost path that visits each WhereLoop once"; only CROSS JOIN and outer joins
+  pin it (whereLoopAddAll ~4974, "Add prerequisites to prevent reordering of
+  FROM clause terms across CROSS joins and outer joins"). This engine's
+  fixed order is the next lessons' question.
+
 ### 08.07 UNIQUE: a constraint is an index lookup
 
 Regions: src/schema.c `auto_indexes` "an automatic index for a
