@@ -2445,6 +2445,11 @@ Known differences from sqlite3:
   constant").
 - From the core, unchanged: a result alias in WHERE still does not resolve
   (sqlite3 resolves it, in a subquery too).
+- `x > ALL (SELECT ...)`, which sqlite3 does not have, is `near "ALL":
+  syntax error` in both (parse_primary, from 08.06: ALL followed by "(" is
+  sqlite3's keyword, never a function; before, ./db said `near "SELECT"`).
+  ALL alone is still a column name here, as in the core: `SELECT 1 + ALL` is
+  "no such column: ALL" here, `near "ALL": syntax error` in sqlite3.
 - An aggregate whose arguments name only columns of queries around its
   subquery is refused: "aggregates of a query outside the subquery are not
   supported: count()". sqlite3 makes it an aggregate of the nearest query

@@ -380,6 +380,10 @@ ERRORS = [
      "JOIN cities ci", "ON clause references tables to its right"),
     ("SELECT * FROM customers c LEFT JOIN orders o ON (SELECT (SELECT ci.name)) JOIN cities ci",
      "ON clause references tables to its right"),
+    # x > ALL (SELECT ...), which sqlite3 does not have: ALL is its keyword, never a function
+    # (found by the second reader of 08.06; it was 'near "SELECT"' here)
+    ("SELECT id FROM orders WHERE total > ALL (SELECT total FROM orders)", 'near "ALL": syntax error'),
+    ("SELECT ALL(1) + all (2)", 'near "all": syntax error'),
 ]
 ERRORS_ALIKE = [
     "SELECT name FROM customers WHERE id IN (SELECT nope FROM orders)",

@@ -464,7 +464,7 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
             c_hit = TCOL_ROWID;
         }
         // @from 08.06
-        if (hits == 0 && sc->outer)     /* a name of a query around this one (two here are ambiguous here) */
+        if (hits == 0 && sc->outer)     /* in no table here: a name of a query around this one */
             return resolve_outer(db, e, sc);
         // @end
         if (hits != 1) {
@@ -477,11 +477,16 @@ int resolve_names(Db *db, Expr *e, Scope *sc)
         e->depth = 0;    /* found here (resolve_outer counts the steps out) */ // @from 08.06
         if (c_hit == TCOL_ROWID) {
             e->aff = AFF_INTEGER;
-            e->col = it->base + it->t->ncols;  /* its slot, where a join's (or an Aggregate's) row has it */ // @from 08.06
+            // @from 08.06
+            e->col = it->base + it->t->ncols;  /* its slot, where a join's (or an Aggregate's) row has it */
             if (sc->nfrom == 1)
                 e->op = E_ROWID;    /* one table: its rows carry the rowid */
-            else
-                e->col = it->base + it->t->ncols;
+            // @else
+            // if (sc->nfrom == 1)
+            //     e->op = E_ROWID;    /* one table: its rows carry the rowid */
+            // else
+            //     e->col = it->base + it->t->ncols;
+            // @end
         } else {
             e->col = it->base + c_hit;
             e->aff = it->t->cols[c_hit].affinity;

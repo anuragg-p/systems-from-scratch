@@ -283,6 +283,20 @@ static Expr *parse_primary(Parser *ps)
     }
     if (!is_name_token(t.type))
         return syntax_error(ps);
+    // @from 08.06
+    /* ALL is a keyword in sqlite3, never a function: x > ALL (SELECT ...),
+     * a comparison with every row that sqlite3 does not have, is a syntax
+     * error at ALL there, and so it is here. */
+    if (t.type == TK_ID && t.n == 3 && strncasecmp(t.s, "ALL", 3) == 0) {
+        const char *save = ps->z;
+        advance(ps);
+        int call = at(ps, TK_LP);
+        ps->z = save;
+        ps->tok = t;
+        if (call)
+            return syntax_error(ps);
+    }
+    // @end
     const char *name = name_text(ps, t);
     advance(ps);
     if (accept(ps, TK_LP)) {
