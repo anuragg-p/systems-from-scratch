@@ -63,11 +63,28 @@ calls t = -2.4 "a little beyond the noise" (13.02 quotes it as 08.02's
 reading and settles it); two video descriptions in 09.01 and 09.03
 whose titles only were checked.
 
-In work: module 22's code (reasoning). Left after that: its lessons;
-11.05's time on a quiet machine; the README's map
-(`./learn map --write`) when the other session's README changes are in.
-Of the shelf, module 22 was added at the owner's wish on 2026-11-25; 16
-to 21 are not started.
+11.05's default, timed again on 2026-11-26: 52 s at a load of 4.7 (62 s
+at 9.7). Under the rule (cut past 55 s at a load under 6) it stays.
+
+Handover (2026-11-26), for a session that starts without this one's
+memory. In work: module 22's code (reasoning), by an Opus agent in the
+worktree `.claude/worktrees/agent-ac9bde033ef3e718c` (branch
+`worktree-agent-ac9bde033ef3e718c`). It has the code and tests of
+22.01 to 22.05 and the recorded runs of 22.01 to 22.04 committed, and
+was finishing 22.05's recorded runs, its NOTES section and its checks.
+When it reports: look at its diff, merge with `git merge --no-ff`
+(track.py and NOTES.md take its block at the end), run `./learn test
+research 22`, `./learn check-skeleton research` and `./learn
+check-timeline research` on master, write what it found into "Built, as
+found" here, then start one Opus agent for module 22's lessons, module
+page (front matter `optional: true`), figures, cover and map, briefed
+as the lessons agents of modules 10 to 13 were (the briefs' form is in
+this file's rules and in those modules' NOTES sections). Then: `./learn
+verify --fresh research 22`, a look at the pages on the site, and the
+README's map (`./learn map --write`) when the other session's README
+changes are in. Local master is ahead of origin from module 11 on;
+pushing is the owner's call each time. Of the shelf, 16 to 21 are not
+started.
 
 The owner asked for more speed (2026-11-24): the limit of three agents
 is lifted. Timings taken while four or five agents run are not to be
