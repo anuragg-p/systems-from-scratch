@@ -571,3 +571,205 @@ Departures (reasons in NOTES.md):
 
 Next: chapter 2, on the owner's word. Its lesson list is settled only after
 chapter 2 of the book is read as chapter 1 was.
+
+## Chapter 2: the plan (2026-11-26; the owner: "continue")
+
+Chapter 2 of the book (Programming Language Syntax, pages 43 to 105) was
+read whole before this was written. It explains how tokens and grammar are
+written down and how scanners and parsers are made from the descriptions,
+each one twice: by hand and by a tool. The reader builds every construction
+the chapter shows and runs it on their own language. Fifteen lessons.
+
+### What the reader builds
+
+Two tools, and each half of the front end again from what the tools make:
+
+- `re`: regular expressions. It reads token definitions, lists the strings
+  an expression generates, matches by trying every way, builds the NFA, the
+  DFA and the smallest DFA, joins all of a language's tokens into one
+  automaton, and writes that automaton as tables for a scanner.
+- `gram`: grammars. It reads a grammar, finds every parse tree of a short
+  string (so an ambiguous grammar shows two), reports left recursion and
+  common prefixes, works out the FIRST, FOLLOW and PREDICT sets, builds the
+  LL(1) table and the SLR(1) table with its states, and parses with either,
+  printing the stack at every step.
+- In `mote`: two more scanners (the automaton as nested cases, written by
+  hand from what `re` prints; and a driver over the tables `re` writes) and
+  three more parsers (recursive descent written by hand from an LL(1)
+  grammar, as the book's Figure 2.17 is; a driver over the LL(1) table; a
+  driver over the SLR(1) table).
+
+What holds it together: every scanner prints the same tokens and every
+parser gives the same tree, for every program and for thousands of random
+ones, right and wrong.
+
+### The language in chapter 2
+
+Three additions, each asked for by a section of the chapter:
+
+- A number may have single underscores between its digits (`1_000_000`). It
+  makes the number's definition worth writing as an expression, and it is
+  the book's "nontrivial prefix" case (Example 2.17) in the reader's own
+  language: after `1`, an underscore continues the number only if a digit
+  follows (`1_x` is the number 1 and the name `_x`).
+- `elsif` (2.3.2, Example 2.32): with `end` on every `if`, a chain of them
+  ends in a row of `end`s. `if c then ... elsif c then ... else ... end`.
+  In the syntax tree it is an `if` inside an `else`, so nothing after
+  analysis changes.
+- Pragmas (2.2.5): a comment that starts `#!`. `#! register NAME` is a hint
+  to the improver of 01.11 (give this variable a register before counting
+  the others); `#! checks off` and `#! checks on` are directives to the code
+  generator of 01.10 (leave out, or put back, the check before a division).
+  The scanner collects them. A valid program prints the same with or
+  without them.
+
+Programs that use any of these live in `programs/02/`. The first
+interpreter, the translator and chapter 1's parser stay at chapter 1's
+language; `agree` shows `-` where a way does not take a program.
+
+### Files
+
+```
+re.h re.c         02.01  definitions, expressions, gen, match
+re_nfa.c          02.03  expression to NFA; an NFA run on a string
+re_dfa.c          02.04  NFA to DFA; 02.05 the smallest; 02.06 all tokens in one
+scandrv.c         02.07  the driver over a scanner's tables (re and mote share it)
+gram.h gram.c     02.02  grammar files; every parse tree; derivations
+gram_ll.c         02.10  left recursion, common prefixes; 02.11 the sets; 02.12 the table
+lldrv.c           02.12  the driver over an LL(1) table (gram and mote share it)
+gram_lr.c         02.13  items and states; 02.14 the SLR(1) table
+lrdrv.c           02.14  the driver over an SLR(1) table (gram and mote share it)
+syntax/           mote.tokens (02.01); mote.bnf, the natural grammar (02.02);
+                  mote-ll.bnf, the LL(1) one (02.09); and small examples of
+                  our own: digits.tokens, sum-ambiguous.bnf, sum.bnf,
+                  dangling.bnf, sum-right.bnf, sum-left.bnf, dots.tokens
+scan_cases.c      02.06  the automaton as nested cases
+scan_table.c      02.07  the tables re wrote, and scandrv.c
+descent.c         02.09  recursive descent from mote-ll.bnf; recovery at 02.15
+flatten.c         02.09  a parser's own tree made into the tree of 01.07
+parse_ll.c        02.12  the LL(1) table gram wrote, and lldrv.c
+parse_lr.c        02.14  the SLR(1) table gram wrote, and lrdrv.c
+```
+
+The tables are written by the tools when `make` runs (`scan_table.h`,
+`ll_table.h`, `lr_table.h`) and are not kept in the project: change
+`syntax/mote.tokens` or a grammar and `make` builds the scanner and the
+parsers again. `parse.c` (chapter 1's parser) is not changed: it stays as
+the first parser, as `mote0` stays as the first interpreter.
+
+### Notation
+
+Token definitions (`*.tokens`): `name = expression` a line. In an
+expression: a quoted string is those characters (`''` is the empty string);
+a bare word is another definition; `[a-z0-9]` and `[^\n]` are sets of
+characters; juxtaposition, `|`, `*` and parentheses as in the book. A line
+`token NAME = expression` is a token the scanner returns, `skip NAME =
+expression` one it drops (white space, comments), and `keyword a b c` the
+names that are keywords instead.
+
+Grammars (`*.bnf`): `lhs -> symbol symbol ...`, with `|` for another
+right-hand side (on the same line or starting the next); `''` for an empty
+right-hand side; `$$` the end of the input. A symbol with no production is
+a terminal: a token by its text (`read`, `:=`) or its kind (`name`,
+`number`). `%splice a b c` names nonterminals that exist only to make the
+grammar fit a parser (`stmt_list`, `term_tail`, `add_op`): `flatten` hangs
+their children on their parent, and hangs a left-recursive child's children
+on its parent, which turns each parser's own tree into the tree `parse.c`
+makes.
+
+### Commands
+
+```
+./re gen    [-f FILE] EXPR [N]         the first N strings, shortest first
+./re match  [-f FILE] EXPR STRING      by trying every way; --steps counts
+./re nfa    [-f FILE] EXPR             02.03
+./re run    [-f FILE] EXPR STRING      the set of states after each character
+./re dfa    [-f FILE] EXPR             02.04: each state and the NFA states it stands for
+./re min    [-f FILE] EXPR             02.05: the classes as they split, then the result
+./re scanner FILE.tokens               02.06: one automaton, its final states named
+./re tables  FILE.tokens               02.07: that automaton as C
+./re tokens  FILE.tokens TEXT [--trace]   02.07: TEXT scanned by the driver
+
+./gram show    GRAMMAR                 the productions, numbered
+./gram trees   GRAMMAR 'a b c'         every parse tree, each with its derivation
+./gram check   GRAMMAR                 02.10: left recursion, common prefixes
+./gram sets    GRAMMAR                 02.11: EPS, FIRST, FOLLOW, PREDICT; conflicts
+./gram lltable GRAMMAR [--c]           02.12
+./gram ll      GRAMMAR 'a b c' [--trace]
+./gram items   GRAMMAR                 02.13: the states, basis and closure, and where each goes
+./gram slrtable GRAMMAR [--c]          02.14
+./gram lr      GRAMMAR 'a b c' [--trace]
+
+./mote [--scanner=adhoc|cases|table] [--parser=first|rd|ll|lr]
+       [--tokens | --pragmas | --raw-tree | --parse-tree | --trace | --tree | --symbols | -S [-O]] FILE
+```
+
+`gram` splits its text argument at spaces: a word of digits is `number`, a
+word the grammar does not name is `name`. `--scanner` defaults to `adhoc`
+(chapter 1's `scan.c`, the kind the book says production compilers use);
+`--parser` defaults to `first` until 02.09 and to `rd` from then on.
+`--raw-tree` prints the parser's own tree; `--parse-tree` the tree after
+`flatten`, the same from every parser; `--trace` the stack, the input and
+the step, for `ll` and `lr`.
+
+### Chapter 2, lesson by lesson
+
+Pages are the 4th edition's; "makes real" names the book's example or
+figure by number. Every program text and example is ours.
+
+| Lesson | Read first | Built | Makes real |
+|---|---|---|---|
+| 02.01 Tokens as regular expressions | the chapter's opening, 2.1 and 2.1.1 (43 to 48) | `re`: definitions, `gen`, `match`; `syntax/mote.tokens`; digit separators | Example 2.3: definitions that generate strings |
+| 02.02 A grammar, and the trees it derives | 2.1.2 and 2.1.3 (48 to 53) | `gram`: `show`, `trees`; `syntax/mote.bnf` and the two small sum grammars | Examples 2.4 to 2.8, Figures 2.1 to 2.4: a derivation, two trees for one string, precedence and associativity in the grammar |
+| 02.03 From an expression to an automaton that guesses | 2.2 up to and including "From a Regular Expression to an NFA" (54 to 59) | `re nfa`, `re run` | Examples 2.9 to 2.13, Figures 2.5 to 2.8; chapter 1's `scan.c` read as the ad hoc scanner of Example 2.10 |
+| 02.04 From guessing to knowing: the DFA | "From an NFA to a DFA" (60) | `re dfa` | Example 2.14, Figure 2.9 |
+| 02.05 The smallest automaton | "Minimizing the DFA" (60 to 62) | `re min` | Example 2.15, Figure 2.10 |
+| 02.06 The scanner as an automaton in code | 2.2.2 up to and including sidebar 2.4 (61 to 63) | `re scanner`; `scan_cases.c`; `--scanner=cases` | Example 2.16, Figure 2.6, sidebar 2.4 |
+| 02.07 The scanner as a table and a driver | the rest of 2.2.2 and 2.2.3 (63 to 67) | `re tables`, `re tokens`; `scandrv.c`, `scan_table.c`; `--scanner=table` | Examples 2.17 and 2.19, Figures 2.11 and 2.12 |
+| 02.08 Lexical errors, and notes to the compiler | 2.2.4 and 2.2.5 (65 to 68) | every lexical error reported, not the first only; pragmas | the four steps of 2.2.4; both kinds of pragma of 2.2.5 |
+| 02.09 Recursive descent, from an LL(1) grammar | 2.3 and 2.3.1 (69 to 79) | `syntax/mote-ll.bnf`; `descent.c`, `flatten.c`; `--parser=rd`, `--raw-tree` | Examples 2.22 to 2.24, Figures 2.16 to 2.18 |
+| 02.10 Writing a grammar a parser can use | 2.3.2 (79 to 82) | `gram check`; `syntax/dangling.bnf`; `elsif` | Examples 2.25 to 2.32: left recursion, common prefixes, the dangling else as two trees, end markers, `elsif` |
+| 02.11 Predict sets: which token chooses which production | 2.3.3 whole (82 to 89); this lesson builds its second half | `gram sets` | Example 2.35, Figures 2.22 to 2.24 |
+| 02.12 A top-down parser as a table and a stack | 2.3.3 again, to Example 2.34 (82 to 85) | `gram lltable`, `gram ll`; `lldrv.c`, `parse_ll.c`; `--parser=ll`, `--trace` | Examples 2.33 and 2.34, Figures 2.19 to 2.21, sidebar 2.7 |
+| 02.13 Bottom-up: shift, reduce, and the states of a parse | 2.3.4 up to "Bottom-Up Parsing Tables" (89 to 94) | `gram items`; the two sum grammars parsed both ways by hand in the text | Examples 2.20, 2.21, 2.36 to 2.38, Figures 2.14, 2.15, 2.25 |
+| 02.14 A bottom-up parser as a table and a stack | the rest of 2.3.4 (95 to 101) | `gram slrtable`, `gram lr`; `lrdrv.c`, `parse_lr.c`; `--parser=lr` | Examples 2.39 to 2.41, Figures 2.26 to 2.30 |
+| 02.15 Syntax errors: carrying on after a mistake | 2.3.5, then 2.4 and the summary, 2.5 (102 to 105) | recovery in `descent.c`: report, skip to a token that can start or follow a statement, go on | Example 2.42; panic mode and phrase-level recovery |
+
+Notes on the table:
+
+- 02.11 and 02.12 are one section of the book read once and built in two
+  lessons, the sets before the table that is made from them.
+- The SLR(1) tables here are the plain kind (shift, reduce, goto, accept).
+  The book folds a state with one finished item into the shift that reaches
+  it ("shift and then reduce") and speaks of pushing the left-hand side back
+  on the input; 02.14 says how the two descriptions meet.
+- 2.3.5's detail and 2.4 are on the book's companion site; 02.15 says so.
+- The table-driven parsers stop at the first syntax error; recovery is
+  built for the hand-written one only, as the book's account is.
+
+### How the work is split
+
+Two Opus agents at once, then a third:
+
+- Scanning (02.01, 02.03 to 02.08): `re`, the token files, the two
+  scanners, lexical errors, pragmas (with their effect in `improve.c` and
+  `gen.c`), the digit separator in `scan.c`, and `elsif` as a keyword in
+  the two new scanners and `mote.tokens`.
+- Parsing (02.02, 02.09 to 02.15): `gram`, the grammar files, `descent.c`,
+  `flatten.c`, the two table parsers, `elsif` (keyword in `scan.c`, the
+  grammars, `descent.c`, `analyze.c`), recovery.
+- Then one agent merges the two, adds the front ends to `agree` (every
+  scanner with every parser, one tree), puts the chapter's programs in
+  `programs/02/`, and runs every check for modules 01 and 02 together.
+
+Module 01's lessons must still replay unchanged: every change to a file of
+chapter 1 is behind `@from 02.NN`.
+
+### Tests
+
+A test per lesson. Beyond them: random expressions and strings (the three
+matchers of `re` agree; the smallest DFA accepts what the DFA accepts);
+random text (the three scanners print the same tokens and the same errors);
+random programs, valid and broken (the four parsers give the same tree, or
+refuse at the same token); the grammar files checked by the tool itself
+(`mote-ll.bnf` has disjoint predict sets, `mote.bnf` no SLR(1) conflict).

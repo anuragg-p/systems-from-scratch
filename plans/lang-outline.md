@@ -64,20 +64,24 @@ Format: `templates/outline.md`.
 ## Module 02 - Programming language syntax
 
 - Goal: Understand how the syntax of a language is written down, and the two ways each of its halves is turned into code: by hand, and by a tool from the description.
-- You build: A regular expression matcher, a scanner written by hand and the same scanner as a table made from the token definitions, a recursive descent parser, a tool that works out the sets a top-down parser needs and the table-driven parser that uses them, a bottom-up parser, and error handling that carries on after a mistake.
+- You build: A tool for regular expressions (strings generated, a matcher, the NFA, the DFA and the smallest DFA, a scanner's tables) and a tool for grammars (every parse tree of a string, predict sets, an LL(1) table, the states and table of an SLR(1) parser); then two more scanners and three more parsers for your language from what the tools make, lexical and syntax errors that do not stop at the first, and three additions to the language: digit separators, elsif, and pragmas.
 - Value: You can read any language's grammar, write a parser for a format of your own in an afternoon, and know what lex and yacc are doing when a project uses them.
 - Lessons:
-  - 02.01 Tokens as regular expressions: a matcher you can run (2.1.1)
-  - 02.02 A grammar for your language, and the trees it derives (2.1.2, 2.1.3)
-  - 02.03 From regular expressions to an automaton (2.2.1)
-  - 02.04 The scanner, written by hand (2.2.2)
-  - 02.05 The scanner as a table and a driver (2.2.3)
-  - 02.06 Lexical errors, and notes to the compiler (2.2.4, 2.2.5)
-  - 02.07 Recursive descent: a function for each rule (2.3.1)
-  - 02.08 Making a grammar fit: first, follow and predict sets (2.3.2)
-  - 02.09 A top-down parser as a table and a stack (2.3.3)
-  - 02.10 Bottom-up parsing: shift and reduce (2.3.4)
-  - 02.11 Syntax errors: carrying on after a mistake (2.3.5)
+  - 02.01 Tokens as regular expressions (the chapter's opening, 2.1, 2.1.1)
+  - 02.02 A grammar, and the trees it derives (2.1.2, 2.1.3)
+  - 02.03 From an expression to an automaton that guesses (2.2 to the NFA of 2.2.1)
+  - 02.04 From guessing to knowing: the DFA (2.2.1)
+  - 02.05 The smallest automaton (2.2.1)
+  - 02.06 The scanner as an automaton in code (2.2.2 to sidebar 2.4)
+  - 02.07 The scanner as a table and a driver (the rest of 2.2.2, 2.2.3)
+  - 02.08 Lexical errors, and notes to the compiler (2.2.4, 2.2.5)
+  - 02.09 Recursive descent, from an LL(1) grammar (2.3, 2.3.1)
+  - 02.10 Writing a grammar a parser can use (2.3.2)
+  - 02.11 Predict sets: which token chooses which production (2.3.3)
+  - 02.12 A top-down parser as a table and a stack (2.3.3)
+  - 02.13 Bottom-up: shift, reduce, and the states of a parse (2.3.4)
+  - 02.14 A bottom-up parser as a table and a stack (2.3.4)
+  - 02.15 Syntax errors: carrying on after a mistake (2.3.5)
 - Learn from: [B-PLP02], [T-CC], [B-DRAGON], [A-RECOX]
 
 ## Module 03 - Names, scopes and bindings
