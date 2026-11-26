@@ -20,6 +20,8 @@ double spaces survive SVG's whitespace collapsing.
 
 Computed here, and asserted, so a typo stops the script instead of reaching a cover:
     art the thread's cells in its row: range(0, 8, 3) == [0, 3, 6]
+    00  six timed runs (TIMED, shared with art/gpu/figs00.py), all different and all shorter than the
+        warm-up, the fastest among them; no number is drawn from their lengths
     01  a 4x4 matrix stored row by row: row 1 is cells [4, 5, 6, 7], column 1 is [1, 5, 9, 13],
         each step down the column N = 4 cells on
     02  d = 12 values, blockDim.x = 4: thread t takes range(t, 12, 4), [0, 4, 8] to [3, 7, 11]
@@ -214,9 +216,36 @@ TRACK_ICON = ('<rect x="1.5" y="4" width="17" height="10" rx="1.5"/><circle cx="
 
 # =================================================================== 00 The workbench
 
+# One measurement as module 00 draws it, in this cover and in lesson 00.03's figure 00.03-runs
+# (art/gpu/figs00.py imports these): the warm-up run, then six timed runs in the order they ran.
+# Lengths only, relative to the warm-up's: no number is ever drawn from them, and they are not a
+# measurement; what matters is which is longest (the warm-up), which is shortest (the fastest) and
+# where the middle falls.
+WARMUP = 1.0
+TIMED = [0.71, 0.66, 0.74, 0.62, 0.69, 0.72]
+
+
+def runs_median(times):
+    """bench.c's median: the middle run, or the mean of the two middle ones."""
+    s = sorted(times)
+    k = len(s) // 2
+    return s[k] if len(s) % 2 else (s[k - 1] + s[k]) / 2
+
+
+def runs_check():
+    """The picture's facts: six timed runs, all different, all shorter than the warm-up; one fastest."""
+    assert len(TIMED) == 6 and len(set(TIMED)) == 6, TIMED
+    assert max(TIMED) < WARMUP, TIMED
+    fastest = TIMED.index(min(TIMED))
+    assert fastest not in (0, len(TIMED) - 1)            # among the runs, not at either end
+    med = runs_median(TIMED)
+    assert min(TIMED) < med < max(TIMED) and med not in TIMED, med
+    return fastest, med
+
+
 def workbench():
-    a = Art("g00", "Wait for the GPU before you stop the clock")
-    # top: one input, the reference and the kernel side by side, a compare under both
+    a = Art("g00", "Trust the answer, then trust the time")
+    # top: one input into the plain version and the version under test, a compare under both
     n, w, sy, sh = 8, 16, 18, 18
     sx = 320 - n * w / 2
     a.text(sx - 10, sy + 13, "input", "t", 12, "end", 600)
@@ -225,37 +254,44 @@ def workbench():
     bw, by, bh = 224, 58, 32
     lc, rc = 196, 444                               # the two boxes' centres
     assert rc - lc > bw                             # side by side, not touching
-    boxes = [(lc, "reference: plain C on the CPU"), (rc, "kernel: on the GPU")]
+    boxes = [(lc, "the plain version"), (rc, "the version under test")]
     for cx, label in boxes:
         assert sans(label, 12) + 20 <= bw, label
         cell(a, cx - bw / 2, by, bw, bh, label, "s f", "t", 12, rx=8, mono=False)
     a.path(f"M320 {sy + sh}V{sy + sh + 10}H{lc}V{by - 2}", arrow=True)
     a.path(f"M320 {sy + sh + 10}H{rc}V{by - 2}", arrow=True)
-    cmp_ = "compare: largest difference within tolerance?"
+    cmp_ = "compare: every element within its allowance?"
     cwid_, cy, chh = 336, 110, 32
     assert sans(cmp_, 12) + 20 <= cwid_ and 320 - cwid_ / 2 < lc and 320 + cwid_ / 2 > rc
     for cx, _ in boxes:
         a.line(cx, by + bh, cx, cy - 2, arrow=True)
     cell(a, 320 - cwid_ / 2, cy, cwid_, chh, cmp_, "s f", "t", 12, rx=8, mono=False)
-    # bottom: one timed run on a time axis
-    x0, xl, xs, xe = 48, 104, 480, 566              # the clock starts, launch returns, synchronize, the axis ends
-    ly, bt, bb, ay = 176, 188, 208, 224             # tick labels, the bar's top and bottom, the axis
-    assert x0 < xl < xs < xe
-    a.box(x0 + 14, bt, xs - x0 - 14, bb - bt, "s fs", rx=4)
-    a.text(r1((xl + xs) / 2), bb - 6, "GPU still working", "t", 12, "middle", 600)
-    a.line(x0, ay, xe, ay, arrow=True)
+    # bottom: one measurement. The warm-up run, thrown away; six timed runs, each drawn from the same
+    # start; the fastest in accent. Labels at the left, "timed runs" bracketed at the right.
+    fastest, _ = runs_check()
+    x0, L = 184, 344                                # where every run starts; the warm-up's length
+    wy, ty, bh2, pitch, ay = 164, 184, 10, 14, 276  # the warm-up bar, the first timed bar, bar height, pitch, axis
+    ends = [x0 + t * L for t in TIMED]
+    assert wy + bh2 + 8 <= ty and ty + 5 * pitch + bh2 + 8 <= ay <= 284 and cy + chh + 16 <= wy
+    a.box(x0, wy, L * WARMUP, bh2, "m f", rx=3, dash=True)
+    for k, end in enumerate(ends):
+        if k != fastest:
+            a.box(x0, ty + k * pitch, r1(end - x0), bh2, "s fs", rx=3)
+    a.box(x0, ty + fastest * pitch, r1(ends[fastest] - x0), bh2, "a af", rx=3)
+    lab = [("warm-up: not counted", wy, "tm", 11.5, None), ("the fastest: reported", ty + fastest * pitch, "ta", 12, 600)]
+    for s, y, cls, size, wt in lab:
+        a.text(x0 - 12, y + bh2 / 2 + size * 0.35, s, cls, size, "end", wt)
+        assert x0 - 12 - sans(s, size) >= 16, s
+    bx = r1(max(ends) + 14)                         # the bracket round the six timed runs
+    yt, yb = ty - 2, ty + 5 * pitch + bh2 + 2
+    a.path(f"M{bx - 5} {yt}H{bx}V{yb}H{bx - 5}", "m")
+    a.text(bx + 10, r1((yt + yb) / 2 + 4), "timed runs", "t", 11.5)
+    assert bx + 10 + sans("timed runs", 11.5) <= 624 - 8
+    # the time axis: every run measured from its own start
+    xe = x0 + L * WARMUP + 40
+    a.path(f"M{x0} {wy - 6}V{ay}H{xe}", arrow=True)
     a.text(xe + 8, ay + 4, "time", "tm", 11)
-    for x, label in ((xl, "launch returns"), (xs, "synchronize")):
-        a.line(x, ly + 6, x, ay)
-        a.text(x, ly, label, "t", 11.5, "middle", mono=False)
-    assert xl - sans("launch returns", 11.5) / 2 >= 16
-    # the two clocks: stopped when launch returns, stopped after synchronize
-    y1, y2 = 240, 262
-    a.path(f"M{x0} {y1 - 6}V{y1}H{xl}V{y1 - 6}", "m", dash=True)
-    a.text(xl + 10, y1 + 4, "timed without waiting: too short", "tm", 11.5)
-    a.path(f"M{x0} {y2 - 6}V{y2}H{xs}V{y2 - 6}", "a")
-    a.text(r1((x0 + xs) / 2), y2 + 18, "timed after waiting: the real time", "ta", 12, "middle", 600)
-    assert y2 + 18 <= 284
+    assert xe + 8 + sans("time", 11) <= 632
     return a
 
 
@@ -318,7 +354,7 @@ def cpu_matmul():
     rich(a, r1((cx(col_cells[0]) + cx(col_cells[-1])) / 2), s2 + ch + 20,
          [("N", "t", True), (" apart: a new cache line each step", "t", False)], 11.5, "middle")
     # the five versions, then the library
-    chips = ["3 loops", "reordered", "blocked", "SIMD", "threads", "BLAS"]
+    chips = ["3 loops", "reordered", "SIMD", "blocked", "threads", "BLAS"]   # the lessons' order, then the library
     ws = [max(56, round(sans(c, 12) + 24)) for c in chips]
     arr = 30
     total = sum(ws) + arr * (len(chips) - 1)

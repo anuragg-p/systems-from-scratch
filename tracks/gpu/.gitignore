@@ -1,0 +1,7 @@
+# What make builds, beside its sources.
+/wb
+/mm
+*.o
+*.dSYM/
+.test-logs/
+__pycache__/

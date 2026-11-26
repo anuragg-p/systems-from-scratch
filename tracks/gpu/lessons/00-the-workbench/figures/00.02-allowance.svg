@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 252" fill="none">
+<title>What counts as close: the allowance around want</title>
+<defs><marker id="allow-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="allow-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="allow-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s fs" x="232.0" y="42" width="240.0" height="24" rx="3" stroke-width="1.5"/>
+<line class="m" x1="152" y1="54" x2="552" y2="54" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="152.0" y1="51" x2="152.0" y2="57" stroke-width="1" stroke-linecap="round"/>
+<line class="m" x1="192.0" y1="51" x2="192.0" y2="57" stroke-width="1" stroke-linecap="round"/>
+<line class="s" x1="232.0" y1="48" x2="232.0" y2="60" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="272.0" y1="51" x2="272.0" y2="57" stroke-width="1" stroke-linecap="round"/>
+<line class="m" x1="312.0" y1="51" x2="312.0" y2="57" stroke-width="1" stroke-linecap="round"/>
+<line class="s" x1="352.0" y1="48" x2="352.0" y2="60" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="392.0" y1="51" x2="392.0" y2="57" stroke-width="1" stroke-linecap="round"/>
+<line class="m" x1="432.0" y1="51" x2="432.0" y2="57" stroke-width="1" stroke-linecap="round"/>
+<line class="s" x1="472.0" y1="48" x2="472.0" y2="60" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="512.0" y1="51" x2="512.0" y2="57" stroke-width="1" stroke-linecap="round"/>
+<line class="m" x1="552.0" y1="51" x2="552.0" y2="57" stroke-width="1" stroke-linecap="round"/>
+<text class="t mono" x="232.0" y="80" font-size="11" text-anchor="middle">19.997</text>
+<text class="t mono" x="352.0" y="80" font-size="11.5" font-weight="700" text-anchor="middle">20</text>
+<text class="t mono" x="472.0" y="80" font-size="11" text-anchor="middle">20.003</text>
+<text class="t mono" x="16" y="58" font-size="12.5" font-weight="700">want = 20</text>
+<line class="s" x1="353.0" y1="34" x2="471.0" y2="34" stroke-width="1.5" stroke-linecap="round" marker-start="url(#allow-ah)" marker-end="url(#allow-ah)"/>
+<text class="t" x="412.0" y="26" font-size="12" font-weight="600" text-anchor="middle">atol + rtol x 20 = 0.003</text>
+<line class="s" x1="432.0" y1="61" x2="432.0" y2="88" stroke-width="1" stroke-linecap="round"/>
+<circle class="s f" cx="432.0" cy="54" r="5.5" stroke-width="1.5"/>
+<text class="t" x="432.0" y="104" font-size="12" font-weight="700" text-anchor="middle">got 20.002: good</text>
+<rect class="s fs" x="312.0" y="150" width="80.0" height="24" rx="3" stroke-width="1.5"/>
+<line class="m" x1="152" y1="162" x2="552" y2="162" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="152.0" y1="159" x2="152.0" y2="165" stroke-width="1" stroke-linecap="round"/>
+<line class="m" x1="192.0" y1="159" x2="192.0" y2="165" stroke-width="1" stroke-linecap="round"/>
+<line class="m" x1="232.0" y1="159" x2="232.0" y2="165" stroke-width="1" stroke-linecap="round"/>
+<line class="m" x1="272.0" y1="159" x2="272.0" y2="165" stroke-width="1" stroke-linecap="round"/>
+<line class="s" x1="312.0" y1="156" x2="312.0" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="352.0" y1="156" x2="352.0" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<line class="s" x1="392.0" y1="156" x2="392.0" y2="168" stroke-width="1.5" stroke-linecap="round"/>
+<line class="m" x1="432.0" y1="159" x2="432.0" y2="165" stroke-width="1" stroke-linecap="round"/>
+<line class="m" x1="472.0" y1="159" x2="472.0" y2="165" stroke-width="1" stroke-linecap="round"/>
+<line class="m" x1="512.0" y1="159" x2="512.0" y2="165" stroke-width="1" stroke-linecap="round"/>
+<line class="m" x1="552.0" y1="159" x2="552.0" y2="165" stroke-width="1" stroke-linecap="round"/>
+<text class="t mono" x="312.0" y="188" font-size="11" text-anchor="middle">-0.001</text>
+<text class="t mono" x="352.0" y="188" font-size="11.5" font-weight="700" text-anchor="middle">0</text>
+<text class="t mono" x="392.0" y="188" font-size="11" text-anchor="middle">0.001</text>
+<text class="t mono" x="16" y="166" font-size="12.5" font-weight="700">want = 0</text>
+<line class="s" x1="353.0" y1="142" x2="391.0" y2="142" stroke-width="1.5" stroke-linecap="round" marker-start="url(#allow-ah)" marker-end="url(#allow-ah)"/>
+<text class="t" x="372.0" y="134" font-size="12" font-weight="600" text-anchor="middle">atol alone = 0.001</text>
+<line class="a" x1="432.0" y1="169" x2="432.0" y2="196" stroke-width="1" stroke-linecap="round"/>
+<circle class="a fa" cx="432.0" cy="162" r="5.5" stroke-width="1.5"/>
+<text class="ta" x="432.0" y="212" font-size="12" font-weight="700" text-anchor="middle">got 0.002: bad</text>
+<text class="tm mono" x="320" y="240" font-size="12" text-anchor="middle">rtol = 1e-4, atol = 1e-3</text>
+</svg>

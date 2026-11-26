@@ -116,11 +116,11 @@
 <rect class="s f" x="141.5" y="238" width="84" height="28" rx="8" stroke-width="1.5"/>
 <text class="t" x="183.5" y="256.2" font-size="12" font-weight="600" text-anchor="middle">reordered</text>
 <line class="s" x1="228.5" y1="252.0" x2="252.5" y2="252.0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g01-ah)"/>
-<rect class="s f" x="255.5" y="238" width="71" height="28" rx="8" stroke-width="1.5"/>
-<text class="t" x="291.0" y="256.2" font-size="12" font-weight="600" text-anchor="middle">blocked</text>
-<line class="s" x1="329.5" y1="252.0" x2="353.5" y2="252.0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g01-ah)"/>
-<rect class="s f" x="356.5" y="238" width="56" height="28" rx="8" stroke-width="1.5"/>
-<text class="t" x="384.5" y="256.2" font-size="12" font-weight="600" text-anchor="middle">SIMD</text>
+<rect class="s f" x="255.5" y="238" width="56" height="28" rx="8" stroke-width="1.5"/>
+<text class="t" x="283.5" y="256.2" font-size="12" font-weight="600" text-anchor="middle">SIMD</text>
+<line class="s" x1="314.5" y1="252.0" x2="338.5" y2="252.0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g01-ah)"/>
+<rect class="s f" x="341.5" y="238" width="71" height="28" rx="8" stroke-width="1.5"/>
+<text class="t" x="377.0" y="256.2" font-size="12" font-weight="600" text-anchor="middle">blocked</text>
 <line class="s" x1="415.5" y1="252.0" x2="439.5" y2="252.0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#g01-ah)"/>
 <rect class="s f" x="442.5" y="238" width="71" height="28" rx="8" stroke-width="1.5"/>
 <text class="t" x="478.0" y="256.2" font-size="12" font-weight="600" text-anchor="middle">threads</text>

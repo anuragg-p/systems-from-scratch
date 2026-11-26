@@ -1,10 +1,15 @@
 # Plan: track `gpu` - GPU kernels for LLM inference, from scratch
 
-Status: plan (direction set by Fable; implementation by Opus agents).
-Outline: `outlines/gpu-kernels.md`; it moves to `plans/gpu-outline.md` when
-`tracks/gpu` lands, as cc's and lang's did. Modules 00 and 01 are being
-built; modules 02 to 09 wait for a machine with an NVIDIA GPU (see "The GPU
-machine").
+Status: modules 00 and 01 are built (code, tests, eight lessons, figures),
+on master since 2026-11-26: `./learn test gpu`, `check-skeleton`,
+`check-timeline` and `./learn verify gpu` all pass on the Mac; the suite
+also passes on Linux arm64 with gcc 14 and 12, and under x86-64 emulation
+for correctness. Modules 02 to 09 wait for a machine with an NVIDIA GPU
+(see "The GPU machine"); on it are also owed the native x86-64 run (thread
+and leak sanitizers, the AVX2 path and its timings) and timings on a quiet
+machine. Outline: `plans/gpu-outline.md`. Lesson design:
+`plans/gpu-00-01-lessons.md`. As built, with every measurement:
+`tracks/gpu/NOTES.md`. Direction by Fable; implementation by Opus agents.
 
 ## What the owner asked for (2026-11-25)
 
@@ -319,3 +324,34 @@ Every bug found while building becomes a case in that lesson's test.
    every transcript.
 3. Stop there until the GPU machine exists. Then module 02, designed from
    vLLM's activation_kernels.cu, and on.
+
+## Before module 02 is designed (added 2026-11-26)
+
+`plans/gpu-kernel-sources.md` holds notes from fifteen teaching sources on
+GPU kernels (NVIDIA's guides, Boehm's matmul worklog, Harris's posts, llm.c,
+vLLM's kernels and tests, the PagedAttention and FlashAttention papers, a
+university course), read that day, by source and by module. Read its "By
+module" part first. Questions it raises, to settle in the design and not
+before:
+
+- Module 03 stops at shared-memory tiles, which in Boehm's worklog reach
+  12.8% of cuBLAS on his GPU; most of the gap closes in his next two steps
+  (several outputs per thread, kept in registers). Add them, or say plainly
+  where the module stops.
+- Timing on the GPU: llm.c clears the cache before each run and reports the
+  mean, Boehm averages 50 runs, this track reports the fastest run. Decide
+  what 02.04 does about the cache and say why.
+- nvcc fuses multiply-adds by default, unlike this track's CPU builds:
+  decide the flag and say so in 02.01.
+- bfloat16 needs compute capability 8.0 by NVIDIA's guide; the common free
+  GPU (T4) is 7.5. This sets the minimum GPU for module 08, and so what the
+  prerequisites say.
+- vLLM v0.2.0's decode attention keeps every score in shared memory, which
+  caps the context length; its prompt attention at that tag is xformers',
+  not its own. Modules 06 and 07 must say both.
+- The classic warp-reduction code in older posts is unsafe on current GPUs;
+  module 04 follows the current guide. The one-pass softmax is taught
+  elsewhere as a plain softmax kernel: consider it in 04.05 rather than
+  first in 07.02.
+- PMPP has a 5th edition (2026) with a chapter on advanced matmul; the
+  outline cites the 4th. Nobody here has read the book's text.

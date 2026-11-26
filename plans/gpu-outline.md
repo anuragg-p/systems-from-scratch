@@ -47,13 +47,13 @@ Format: `templates/outline.md`.
 ## Module 01 - Matrix multiply on the CPU
 
 - Goal: Understand why the same arithmetic can run many times faster: the cost is in how memory is read, not in the multiplications.
-- You build: Matrix multiply in C five ways - three plain loops, the loops reordered, blocked for the cache, vectorised, threaded - each one timed against the BLAS library on your machine.
+- You build: Matrix multiply in C five ways - three plain loops, the loops reordered, vectorised, blocked for the cache, threaded - each one timed against the BLAS library on your machine.
 - Value: Every idea the GPU modules use - locality, tiles, many lanes at once - appears here first, on a machine you can step through with a debugger.
 - Lessons:
   - 01.01 Three loops and a reference
   - 01.02 Loop order and the cache
-  - 01.03 Blocking
-  - 01.04 SIMD: several floats in one instruction
+  - 01.03 SIMD: several floats in one instruction
+  - 01.04 Blocking
   - 01.05 Threads, and the distance left to BLAS
 - Learn from: [B-CSAPP], [P-GOTO], [A-MMCPU], [A-ALGO]
 

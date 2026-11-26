@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 124" fill="none">
+<title>From a seed to a float</title>
+<defs><marker id="seed-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="seed-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="seed-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="16" y="22" width="61.1" height="48" rx="8" stroke-width="1.5"/>
+<text class="t" x="46.5" y="42" font-size="11.5" font-weight="500" text-anchor="middle">state:</text>
+<text class="t" x="46.5" y="58" font-size="11.5" font-weight="500" text-anchor="middle">64 bits</text>
+<rect class="s f" x="99.6" y="22" width="112.6" height="48" rx="8" stroke-width="1.5"/>
+<text class="t" x="155.9" y="42" font-size="11.5" font-weight="500" text-anchor="middle">three shifts,</text>
+<text class="t" x="155.9" y="58" font-size="11.5" font-weight="500" text-anchor="middle">each XORed back</text>
+<line class="s" x1="80.1" y1="46.0" x2="96.6" y2="46.0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seed-ah)"/>
+<rect class="s f" x="234.7" y="22" width="125.5" height="48" rx="8" stroke-width="1.5"/>
+<text class="t" x="297.5" y="42" font-size="11.5" font-weight="500" text-anchor="middle">times a constant,</text>
+<text class="t" x="297.5" y="58" font-size="11.5" font-weight="500" text-anchor="middle">top 32 bits</text>
+<line class="s" x1="215.2" y1="46.0" x2="231.7" y2="46.0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seed-ah)"/>
+<rect class="a af" x="382.7" y="22" width="138.4" height="48" rx="8" stroke-width="1.5"/>
+<text class="ta" x="451.9" y="42" font-size="11.5" font-weight="700" text-anchor="middle">top 24 bits / 2^24:</text>
+<text class="ta" x="451.9" y="58" font-size="11.5" font-weight="700" text-anchor="middle">a float in [0, 1)</text>
+<line class="s" x1="363.2" y1="46.0" x2="379.7" y2="46.0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seed-ah)"/>
+<rect class="s f" x="543.6" y="22" width="80.4" height="48" rx="8" stroke-width="1.5"/>
+<text class="t" x="583.8" y="42" font-size="11.5" font-weight="500" text-anchor="middle">2x - 1:</text>
+<text class="t" x="583.8" y="58" font-size="11.5" font-weight="500" text-anchor="middle">in [-1, 1)</text>
+<line class="s" x1="524.1" y1="46.0" x2="540.6" y2="46.0" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seed-ah)"/>
+<line class="s" x1="46.5" y1="96" x2="46.5" y2="73" stroke-width="1.5" stroke-linecap="round" marker-end="url(#seed-ah)"/>
+<text class="t" x="16" y="114" font-size="12" font-weight="600">the seed is the first state</text>
+</svg>

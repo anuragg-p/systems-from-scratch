@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 293" fill="none">
+<title>Where 01.01 fits</title>
+<defs><marker id="map0101-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0101-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="map0101-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="m f" x="16" y="8" width="608" height="26" rx="8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="320.0" y="25.2" font-size="12" font-weight="500" text-anchor="middle">a small model on your kernels, against PyTorch (09)</text>
+<rect class="m" x="246" y="44" width="378" height="177" rx="12" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="258" y="60" font-size="12" font-weight="700">on the GPU</text>
+<rect class="m f" x="256" y="193" width="358" height="20" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="435.0" y="207.0" font-size="11.5" font-weight="500" text-anchor="middle">element-wise kernels (02)</text>
+<rect class="m f" x="256" y="168" width="358" height="20" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="435.0" y="182.0" font-size="11.5" font-weight="500" text-anchor="middle">matrix multiply (03)</text>
+<rect class="m f" x="256" y="143" width="358" height="20" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="435.0" y="157.0" font-size="11.5" font-weight="500" text-anchor="middle">sums across a block: RMS norm, softmax (04)</text>
+<rect class="m f" x="256" y="118" width="358" height="20" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="435.0" y="132.0" font-size="11.5" font-weight="500" text-anchor="middle">rotary positions and the KV cache in blocks (05)</text>
+<rect class="m f" x="256" y="93" width="358" height="20" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="435.0" y="107.0" font-size="11.5" font-weight="500" text-anchor="middle">attention: one token (06), a whole prompt (07)</text>
+<rect class="m f" x="256" y="68" width="358" height="20" rx="6" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="435.0" y="82.0" font-size="11.5" font-weight="500" text-anchor="middle">half precision (08)</text>
+<rect class="s" x="16" y="139" width="220" height="82" rx="12" stroke-width="1.5"/>
+<text class="t" x="28" y="155" font-size="12" font-weight="700">on the CPU</text>
+<rect class="s f" x="24" y="163" width="204" height="50" rx="8" stroke-width="1.5"/>
+<text class="t" x="126.0" y="179" font-size="11.5" font-weight="600" text-anchor="middle">matrix multiply (01)</text>
+<rect class="a af" x="30" y="187" width="24.6" height="20" rx="5" stroke-width="1.5"/>
+<text class="ta" x="42.3" y="200.7" font-size="10.5" font-weight="700" text-anchor="middle">ijk</text>
+<rect class="m f" x="58.6" y="187" width="24.6" height="20" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="70.9" y="200.7" font-size="10.5" font-weight="500" text-anchor="middle">ikj</text>
+<rect class="m f" x="87.2" y="187" width="30.5" height="20" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="102.5" y="200.7" font-size="10.5" font-weight="500" text-anchor="middle">simd</text>
+<rect class="m f" x="121.7" y="187" width="48.1" height="20" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="145.8" y="200.7" font-size="10.5" font-weight="500" text-anchor="middle">blocked</text>
+<rect class="m f" x="173.9" y="187" width="48.1" height="20" rx="5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="197.9" y="200.7" font-size="10.5" font-weight="500" text-anchor="middle">threads</text>
+<rect class="s f" x="16" y="231" width="608" height="54" rx="10" stroke-width="1.5"/>
+<text class="t" x="320.0" y="247" font-size="12" font-weight="700" text-anchor="middle">the workbench (00)</text>
+<rect class="s f" x="28.0" y="255" width="184.0" height="22" rx="6" stroke-width="1.5"/>
+<text class="t" x="120.0" y="270.2" font-size="12" font-weight="600" text-anchor="middle">plain version</text>
+<rect class="s f" x="228.0" y="255" width="184.0" height="22" rx="6" stroke-width="1.5"/>
+<text class="t" x="320.0" y="270.2" font-size="12" font-weight="600" text-anchor="middle">checker</text>
+<rect class="s f" x="428.0" y="255" width="184.0" height="22" rx="6" stroke-width="1.5"/>
+<text class="t" x="520.0" y="270.2" font-size="12" font-weight="600" text-anchor="middle">timer</text>
+<rect class="a af" x="20" y="50" width="24" height="14" rx="4" stroke-width="1.5"/>
+<text class="ta" x="52" y="61" font-size="11.5" font-weight="600">01.01: this lesson</text>
+<rect class="s f" x="20" y="72" width="24" height="14" rx="4" stroke-width="1.5"/>
+<text class="t" x="52" y="83" font-size="11.5" font-weight="400">built earlier</text>
+<rect class="m f" x="20" y="94" width="24" height="14" rx="4" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text class="tm" x="52" y="105" font-size="11.5" font-weight="400">still to come</text>
+</svg>

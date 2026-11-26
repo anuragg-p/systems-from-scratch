@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 156" fill="none">
+<title>The same eleven sums, one at a time and four at a time</title>
+<defs><marker id="twov-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="twov-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="twov-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<path class="s" d="M109 18V12H143V18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M153 18V12H187V18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M197 18V12H231V18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M241 18V12H275V18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M285 18V12H319V18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M329 18V12H363V18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M373 18V12H407V18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M417 18V12H451V18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M461 18V12H495V18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M505 18V12H539V18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M549 18V12H583V18" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t mono" x="90" y="43.5" font-size="13" font-weight="700" text-anchor="end">add_ref</text>
+<rect class="s f" x="104" y="24" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="126.0" y="43.2" font-size="12" text-anchor="middle">0</text>
+<rect class="s f" x="148" y="24" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="170.0" y="43.2" font-size="12" text-anchor="middle">1</text>
+<rect class="s f" x="192" y="24" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="214.0" y="43.2" font-size="12" text-anchor="middle">2</text>
+<rect class="s f" x="236" y="24" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="258.0" y="43.2" font-size="12" text-anchor="middle">3</text>
+<rect class="s f" x="280" y="24" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="302.0" y="43.2" font-size="12" text-anchor="middle">4</text>
+<rect class="s f" x="324" y="24" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="346.0" y="43.2" font-size="12" text-anchor="middle">5</text>
+<rect class="s f" x="368" y="24" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="390.0" y="43.2" font-size="12" text-anchor="middle">6</text>
+<rect class="s f" x="412" y="24" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="434.0" y="43.2" font-size="12" text-anchor="middle">7</text>
+<rect class="s f" x="456" y="24" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="478.0" y="43.2" font-size="12" text-anchor="middle">8</text>
+<rect class="s f" x="500" y="24" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="522.0" y="43.2" font-size="12" text-anchor="middle">9</text>
+<rect class="s f" x="544" y="24" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="566.0" y="43.2" font-size="12" text-anchor="middle">10</text>
+<path class="s" d="M109 104V98H275V104" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="192.0" y="92" font-size="12" font-weight="600" text-anchor="middle">one pass</text>
+<path class="s" d="M285 104V98H451V104" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="t" x="368.0" y="92" font-size="12" font-weight="600" text-anchor="middle">one pass</text>
+<path class="a" d="M461 104V98H495V104" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M505 104V98H539V104" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="a" d="M549 104V98H583V104" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<text class="ta" x="522.0" y="92" font-size="12" font-weight="700" text-anchor="middle">the tail, one at a time</text>
+<text class="t mono" x="90" y="129.5" font-size="13" font-weight="700" text-anchor="end">add</text>
+<rect class="s f" x="104" y="110" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="126.0" y="129.2" font-size="12" text-anchor="middle">0</text>
+<rect class="s f" x="148" y="110" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="170.0" y="129.2" font-size="12" text-anchor="middle">1</text>
+<rect class="s f" x="192" y="110" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="214.0" y="129.2" font-size="12" text-anchor="middle">2</text>
+<rect class="s f" x="236" y="110" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="258.0" y="129.2" font-size="12" text-anchor="middle">3</text>
+<rect class="s f" x="280" y="110" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="302.0" y="129.2" font-size="12" text-anchor="middle">4</text>
+<rect class="s f" x="324" y="110" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="346.0" y="129.2" font-size="12" text-anchor="middle">5</text>
+<rect class="s f" x="368" y="110" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="390.0" y="129.2" font-size="12" text-anchor="middle">6</text>
+<rect class="s f" x="412" y="110" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="434.0" y="129.2" font-size="12" text-anchor="middle">7</text>
+<rect class="a af" x="456" y="110" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="478.0" y="129.2" font-size="12" font-weight="700" text-anchor="middle">8</text>
+<rect class="a af" x="500" y="110" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="522.0" y="129.2" font-size="12" font-weight="700" text-anchor="middle">9</text>
+<rect class="a af" x="544" y="110" width="44" height="30" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="566.0" y="129.2" font-size="12" font-weight="700" text-anchor="middle">10</text>
+</svg>

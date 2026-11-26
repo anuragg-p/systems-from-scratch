@@ -1,0 +1,2 @@
+# Lessons ./learn verify does not hold to their annotations yet: one id per line.
+# None in gpu now: every lesson so far is written and passes ./learn verify.

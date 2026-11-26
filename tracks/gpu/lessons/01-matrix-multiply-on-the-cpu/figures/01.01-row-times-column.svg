@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 204" fill="none">
+<title>One element of c: a row of a times a column of b</title>
+<defs><marker id="rxc-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="rxc-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="rxc-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="s f" x="118.0" y="50.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="140.0" y="70.5" font-size="13" text-anchor="middle">1</text>
+<rect class="s f" x="162.0" y="50.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="184.0" y="70.5" font-size="13" text-anchor="middle">2</text>
+<rect class="s f" x="206.0" y="50.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="228.0" y="70.5" font-size="13" text-anchor="middle">3</text>
+<rect class="s fs" x="118.0" y="82.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="140.0" y="102.5" font-size="13" font-weight="700" text-anchor="middle">4</text>
+<rect class="s fs" x="162.0" y="82.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="184.0" y="102.5" font-size="13" font-weight="700" text-anchor="middle">5</text>
+<rect class="s fs" x="206.0" y="82.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="228.0" y="102.5" font-size="13" font-weight="700" text-anchor="middle">6</text>
+<text class="t mono" x="118.0" y="40.0" font-size="14" font-weight="700">a</text>
+<text class="tm" x="134.4" y="40.0" font-size="11.5">2 x 3</text>
+<text class="t mono" x="274.0" y="87.0" font-size="16" font-weight="600" text-anchor="middle">x</text>
+<rect class="s fs" x="298.0" y="34.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="320.0" y="54.5" font-size="13" font-weight="700" text-anchor="middle">7</text>
+<rect class="s f" x="342.0" y="34.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="364.0" y="54.5" font-size="13" text-anchor="middle">8</text>
+<rect class="s fs" x="298.0" y="66.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="320.0" y="86.5" font-size="13" font-weight="700" text-anchor="middle">9</text>
+<rect class="s f" x="342.0" y="66.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="364.0" y="86.5" font-size="13" text-anchor="middle">10</text>
+<rect class="s fs" x="298.0" y="98.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="320.0" y="118.5" font-size="13" font-weight="700" text-anchor="middle">11</text>
+<rect class="s f" x="342.0" y="98.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="364.0" y="118.5" font-size="13" text-anchor="middle">12</text>
+<text class="t mono" x="298.0" y="24.0" font-size="14" font-weight="700">b</text>
+<text class="tm" x="314.4" y="24.0" font-size="11.5">3 x 2</text>
+<text class="t mono" x="410.0" y="87.0" font-size="16" font-weight="600" text-anchor="middle">=</text>
+<rect class="s f" x="434.0" y="50.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="456.0" y="70.5" font-size="13" text-anchor="middle">58</text>
+<rect class="s f" x="478.0" y="50.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="500.0" y="70.5" font-size="13" text-anchor="middle">64</text>
+<rect class="a af" x="434.0" y="82.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="ta mono" x="456.0" y="102.5" font-size="13" font-weight="700" text-anchor="middle">139</text>
+<rect class="s f" x="478.0" y="82.0" width="44" height="32" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="500.0" y="102.5" font-size="13" text-anchor="middle">154</text>
+<text class="t mono" x="434.0" y="40.0" font-size="14" font-weight="700">c</text>
+<text class="tm" x="450.4" y="40.0" font-size="11.5">2 x 2</text>
+<rect class="s" x="118.0" y="82.0" width="132" height="32" stroke-width="2.5"/>
+<rect class="s" x="298.0" y="34.0" width="44" height="96" stroke-width="2.5"/>
+<text class="t" x="108.0" y="102.2" font-size="12" font-weight="600" text-anchor="end">row 1</text>
+<text class="t" x="320.0" y="148.0" font-size="12" font-weight="600" text-anchor="middle">column 0</text>
+<text class="t mono" x="136.7" y="182" font-size="13" font-weight="500"><tspan x="136.7" class="ta">c[1][0]</tspan><tspan x="199.1">= 4*7 + 5*9 + 6*11 = 28 + 45 + 66 =</tspan><tspan x="479.9" class="ta">139</tspan></text>
+</svg>

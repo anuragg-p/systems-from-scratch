@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 268" fill="none">
+<title>Each thread owns a band of c&#x27;s rows; all of them read a and b</title>
+<defs><marker id="rows-ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="s" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="rows-aa" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="a" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="rows-am" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="m" d="M1 1.5L8.5 5L1 8.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect class="m" x="16" y="14" width="144" height="250" rx="10" stroke-width="1.5"/>
+<rect class="s f" x="50" y="30" width="90" height="90" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="40" y="80.0" font-size="14" font-weight="700" text-anchor="end">a</text>
+<rect class="s f" x="50" y="140" width="90" height="90" rx="0" stroke-width="1.5"/>
+<text class="t mono" x="40" y="190.0" font-size="14" font-weight="700" text-anchor="end">b</text>
+<text class="t" x="88.0" y="254" font-size="12" font-weight="600" text-anchor="middle">read by every thread</text>
+<text class="t mono" x="390.0" y="20" font-size="14" font-weight="700" text-anchor="middle">c</text>
+<rect class="s f" x="300" y="30.0" width="180" height="50.0" rx="0" stroke-width="1.5"/>
+<rect class="a af" x="300" y="80.0" width="180" height="50.0" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="300" y="130.0" width="180" height="50.0" rx="0" stroke-width="1.5"/>
+<rect class="s f" x="300" y="180.0" width="180" height="50.0" rx="0" stroke-width="1.5"/>
+<text class="t" x="390.0" y="59.5" font-size="12.5" font-weight="500" text-anchor="middle">thread 0</text>
+<text class="tm mono" x="492" y="59.0" font-size="11">rows 0 to 249</text>
+<rect class="a" x="300" y="80.0" width="180" height="50.0" rx="0" stroke-width="1.5"/>
+<text class="ta" x="390.0" y="109.5" font-size="12.5" font-weight="700" text-anchor="middle">thread 1</text>
+<text class="ta mono" x="492" y="109.0" font-size="11" font-weight="600">rows 250 to 499</text>
+<text class="t" x="390.0" y="159.5" font-size="12.5" font-weight="500" text-anchor="middle">thread 2</text>
+<text class="tm mono" x="492" y="159.0" font-size="11">rows 500 to 749</text>
+<text class="t" x="390.0" y="209.5" font-size="12.5" font-weight="500" text-anchor="middle">thread 3</text>
+<text class="tm mono" x="492" y="209.0" font-size="11">rows 750 to 999</text>
+<text class="tm mono" x="492" y="20" font-size="11">m = 1000</text>
+<path class="s" d="M292 30H284V230H292" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M284 130.0H276" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path class="s" d="M144 75.0C210 75.0 214 130.0 272 130.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#rows-ah)"/>
+<path class="s" d="M144 185.0C210 185.0 214 130.0 272 130.0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#rows-ah)"/>
+<text class="t" x="390.0" y="254" font-size="12" font-weight="600" text-anchor="middle">no two threads write the same row, so no lock</text>
+</svg>
